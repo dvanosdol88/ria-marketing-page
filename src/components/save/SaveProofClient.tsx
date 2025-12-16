@@ -27,7 +27,7 @@ export function SaveProofClient({ calculatorState, searchParams }: Props) {
   }, [calculatorState, searchParams]);
 
   return (
-    <div className="space-y-12">
+    <div className="flex flex-col gap-12">
       <header className="section-shell text-center">
         <p className="text-xs font-semibold uppercase tracking-tightish text-brand-600">Save proof</p>
         <h1 className="mt-2 text-3xl font-semibold text-neutral-900 sm:text-4xl">Here is what fees do over time</h1>

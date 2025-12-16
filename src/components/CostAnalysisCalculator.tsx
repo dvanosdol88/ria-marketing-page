@@ -38,7 +38,7 @@ function Slider({
   onChange: (value: number) => void;
 }) {
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between text-sm font-medium text-neutral-700">
         <span>{label}</span>
         <span className="tabular-nums text-neutral-900">
@@ -133,7 +133,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         <div className="section-shell py-20 flex flex-col gap-16">
           <div className="card overflow-hidden relative">
             <div className="grid gap-8 p-6 lg:grid-cols-3 lg:p-8 relative overflow-hidden before:absolute before:inset-0 before:backdrop-blur-[2px] before:bg-gradient-to-b before:from-transparent before:via-[rgba(233,238,255,0.5)] before:to-[rgba(202,208,230,0.5)] before:pointer-events-none before:-z-10">
-              <div className="space-y-6 lg:col-span-1 relative z-10">
+              <div className="flex flex-col gap-6 lg:col-span-1 relative z-10">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-tightish text-brand-600">Instant math</p>
                   <h2 className="mt-2 text-2xl font-semibold text-neutral-900">What would you do with the savings?</h2>
@@ -143,7 +143,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                   </p>
                 </div>
 
-                <div className="space-y-4">
+                <div className="flex flex-col gap-4">
                   <Slider
                     label="Portfolio value"
                     min={50000}

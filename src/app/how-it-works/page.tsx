@@ -31,7 +31,7 @@ export default function HowItWorksPage({
   const linkQuery = paramsToRecord(params);
 
   return (
-    <main className="space-y-12 pb-16">
+    <main className="flex flex-col gap-12 pb-16">
       <header className="section-shell pt-12">
         <p className="text-xs font-semibold uppercase tracking-tightish text-brand-600">How it works</p>
         <h1 className="mt-3 text-4xl font-semibold text-neutral-900 sm:text-5xl">Transparent math, reusable links</h1>
@@ -58,7 +58,7 @@ export default function HowItWorksPage({
       <section className="section-shell grid gap-6 lg:grid-cols-3">
         <div className="card p-6">
           <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">Your inputs</p>
-          <ul className="mt-3 space-y-2 text-sm text-neutral-700">
+          <ul className="mt-3 flex flex-col gap-2 text-sm text-neutral-700">
             <li>Portfolio: {formatCurrency(calculatorState.portfolioValue)}</li>
             <li>Years: {calculatorState.years}</li>
             <li>Growth: {formatPercent(calculatorState.annualGrowthPercent)}</li>

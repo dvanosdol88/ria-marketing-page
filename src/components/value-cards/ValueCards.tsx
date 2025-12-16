@@ -63,7 +63,7 @@ export function ValueCards({
 
   return (
     <section className="w-full bg-white">
-      <div className="max-w-7xl mx-auto px-5 py-24">
+      <div className="section-shell py-24">
         {/* Main Title */}
         <h2 className="text-5xl md:text-6xl font-bold text-center mb-16 text-gray-800">
           <span className="text-primary">Upgrade</span>. <span className="text-primary">Improve</span>. <span className="text-green-600">Save?</span>
