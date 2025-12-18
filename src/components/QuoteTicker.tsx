@@ -200,7 +200,7 @@ export default function QuoteTicker({
           <div className="rounded-2xl border border-stone-800 overflow-hidden" style={{ backgroundColor: '#e7e5e4' }}>
             <div style={{ backgroundColor: '#e7e5e4', padding: '20px 20px 16px 20px' }}>
               <p className="text-stone-700 text-sm leading-relaxed" style={{ backgroundColor: '#e7e5e4' }}>
-                "{hoveredQuote.quote}"
+                &ldquo;{hoveredQuote.quote}&rdquo;
               </p>
             </div>
 
