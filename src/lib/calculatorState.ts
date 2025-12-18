@@ -6,9 +6,9 @@ export type CalculatorState = {
 };
 
 export const DEFAULT_STATE: CalculatorState = {
-  portfolioValue: 500000,
+  portfolioValue: 1000000,
   years: 20,
-  annualGrowthPercent: 7.5,
+  annualGrowthPercent: 8,
   annualFeePercent: 1,
 };
 

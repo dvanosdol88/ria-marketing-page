@@ -1,6 +1,5 @@
 import { CostAnalysisCalculator } from "@/components/CostAnalysisCalculator";
 import { CalculatorState, parseCalculatorState } from "@/lib/calculatorState";
-import { formatCurrency } from "@/lib/format";
 
 function normalizeSearchParams(searchParams: Record<string, string | string[] | undefined>) {
   const params = new URLSearchParams();
@@ -24,23 +23,22 @@ export default function Home({
 
   return (
     <main className="flex flex-col gap-16 pb-16">
-      <section className="section-shell pt-12 text-center">
-        <p className="text-xs font-semibold uppercase tracking-tightish text-brand-600">Fee-clarity landing</p>
-        <h1 className="mt-3 text-4xl font-semibold text-neutral-900 sm:text-5xl">What would you do with {formatCurrency(500000)}?</h1>
-        <p className="mt-4 text-lg text-neutral-600 sm:text-xl">
-          Start with your real numbers. Share the URL to keep the conversation moving.
-        </p>
-      </section>
-
       <CostAnalysisCalculator initialState={calculatorState} searchParams={searchParams} />
 
 
 
-      <footer className="section-shell border-t border-neutral-200 pt-8 text-sm text-neutral-500">
-        <p>
-          Advisory services are for illustrative purposes only. Chart projections are hypothetical and not a guarantee of future
-          returns. Review ADV and disclosures before investing.
-        </p>
+      <footer className="section-shell border-t border-stone-300 py-8 text-sm text-stone-500">
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
+          <p className="max-w-2xl">
+            Advisory services are for illustrative purposes only. Chart projections are hypothetical and not a guarantee of future
+            returns.
+          </p>
+          <div className="flex gap-6 text-stone-500">
+            <a href="#" className="hover:text-stone-700 no-underline">Disclosures</a>
+            <a href="#" className="hover:text-stone-700 no-underline">ADV</a>
+            <a href="#" className="hover:text-stone-700 no-underline">Privacy</a>
+          </div>
+        </div>
       </footer>
     </main>
   );

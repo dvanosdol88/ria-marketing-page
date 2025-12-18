@@ -189,46 +189,52 @@ export default function QuoteTicker({
       `}</style>
 
       {hoveredQuote && (
-        <div 
-          className="fixed z-[9999] w-80 rounded-2xl border border-stone-800 overflow-hidden"
-          style={{ 
+        <div
+          className="fixed z-[9999] w-80"
+          style={{
             left: `${Math.min(Math.max(tooltipPosition.x, 170), typeof window !== 'undefined' ? window.innerWidth - 170 : 600)}px`,
             top: `${tooltipPosition.y - 16}px`,
             transform: 'translate(-50%, -100%)',
-            backgroundColor: '#e7e5e4',
           }}
         >
-          <div style={{ backgroundColor: '#e7e5e4', padding: '20px 20px 16px 20px' }}>
-            <p className="text-stone-700 text-sm leading-relaxed" style={{ backgroundColor: '#e7e5e4' }}>
-              "{hoveredQuote.quote}"
-            </p>
-          </div>
-          
-          <div 
-            className="flex items-center gap-3 border-t border-stone-400"
-            style={{ backgroundColor: '#e7e5e4', padding: '12px 20px 20px 20px' }}
-          >
-            <div 
-              className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" 
-              style={{ backgroundColor: '#d6d3d1' }}
+          <div className="rounded-2xl border border-stone-800 overflow-hidden" style={{ backgroundColor: '#e7e5e4' }}>
+            <div style={{ backgroundColor: '#e7e5e4', padding: '20px 20px 16px 20px' }}>
+              <p className="text-stone-700 text-sm leading-relaxed" style={{ backgroundColor: '#e7e5e4' }}>
+                "{hoveredQuote.quote}"
+              </p>
+            </div>
+
+            <div
+              className="flex items-center gap-3 border-t border-stone-400"
+              style={{ backgroundColor: '#e7e5e4', padding: '12px 20px 20px 20px' }}
             >
-              <span className="text-stone-600 text-xs font-bold">
-                {hoveredQuote.firstName[0]}{hoveredQuote.lastName[0]}
-              </span>
-            </div>
-            <div style={{ backgroundColor: '#e7e5e4' }}>
-              <p className="text-stone-800 font-semibold text-sm" style={{ backgroundColor: '#e7e5e4' }}>
-                {hoveredQuote.firstName} {hoveredQuote.lastName}
-              </p>
-              <p className="text-stone-600 text-xs" style={{ backgroundColor: '#e7e5e4' }}>
-                {hoveredQuote.title}
-              </p>
+              <div
+                className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: '#d6d3d1' }}
+              >
+                <span className="text-stone-600 text-xs font-bold">
+                  {hoveredQuote.firstName[0]}{hoveredQuote.lastName[0]}
+                </span>
+              </div>
+              <div style={{ backgroundColor: '#e7e5e4' }}>
+                <p className="text-stone-800 font-semibold text-sm" style={{ backgroundColor: '#e7e5e4' }}>
+                  {hoveredQuote.firstName} {hoveredQuote.lastName}
+                </p>
+                <p className="text-stone-600 text-xs" style={{ backgroundColor: '#e7e5e4' }}>
+                  {hoveredQuote.title}
+                </p>
+              </div>
             </div>
           </div>
-          
-          <div 
-            className="absolute left-1/2 -bottom-2 w-4 h-4 border-r border-b border-stone-800 -translate-x-1/2 rotate-45"
-            style={{ backgroundColor: '#e7e5e4' }}
+
+          {/* Pointer arrow */}
+          <div
+            className="absolute left-1/2 w-4 h-4 border-r border-b border-stone-800"
+            style={{
+              backgroundColor: '#e7e5e4',
+              bottom: '-8px',
+              transform: 'translateX(-50%) rotate(45deg)',
+            }}
           />
         </div>
       )}
@@ -257,10 +263,10 @@ export default function QuoteTicker({
               onMouseLeave={handleMouseLeave}
             >
               <div className="flex flex-col items-center">
-                <span className="text-stone-400 font-medium text-lg leading-none whitespace-nowrap transition-colors duration-200 group-hover:text-stone-700">
+                <span className="text-stone-400 font-medium text-lg leading-none whitespace-nowrap">
                   {item.firstName}
                 </span>
-                <span className="text-stone-400 font-semibold text-3xl leading-none -mt-0.5 whitespace-nowrap transition-colors duration-200 group-hover:text-stone-700">
+                <span className="text-stone-400 font-semibold text-3xl leading-none -mt-0.5 whitespace-nowrap">
                   {item.lastName}
                 </span>
               </div>
