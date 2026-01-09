@@ -3,7 +3,7 @@ import "./globals.css";
 import { inter } from "./fonts";
 
 export const metadata: Metadata = {
-  title: "Finwise Calculator",
+  title: "Upgrade. Improve. Save.",
   description: "Landing calculator and proof for advisory fees.",
 };
 
