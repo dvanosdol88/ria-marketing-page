@@ -513,11 +513,11 @@ export default function Upgrade3() {
           <div className="flex flex-wrap gap-3 items-center justify-between">
             <div>Advisory services are for illustrative purposes only. Projections are hypothetical and not a guarantee of future returns.</div>
             <div className="flex gap-3 font-semibold">
-              <Link className="hover:underline no-underline text-neutral-500" href="/disclosures">Disclosures</Link>
+              <a className="hover:underline no-underline text-neutral-500" href="/disclosures">Disclosures</a>
               <span className="text-neutral-300">|</span>
-              <Link className="hover:underline no-underline text-neutral-500" href="/adv">ADV</Link>
+              <a className="hover:underline no-underline text-neutral-500" href="/adv">ADV</a>
               <span className="text-neutral-300">|</span>
-              <Link className="hover:underline no-underline text-neutral-500" href="/privacy">Privacy</Link>
+              <a className="hover:underline no-underline text-neutral-500" href="/privacy">Privacy</a>
             </div>
           </div>
         </footer>
