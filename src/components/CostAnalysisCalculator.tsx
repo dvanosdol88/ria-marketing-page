@@ -254,13 +254,16 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
               {/* Inputs Column */}
               <div className="inputs-column card p-6">
                 <div className="flex flex-col gap-4">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-900">Explore inputs</p>
-                    <p className="mt-2 text-sm text-neutral-900">
-                      Adjust the sliders to interrogate the outcome curve. Links preserve your exact scenario (and UTMs).
-                    </p>
-                  </div>
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="grid gap-4 sm:grid-cols-1">
+                    <Slider
+                      label="Advisory fee"
+                      min={0}
+                      max={3}
+                      step={0.05}
+                      value={state.annualFeePercent}
+                      onChange={(value) => setState((prev) => ({ ...prev, annualFeePercent: value }))}
+                      type="percent"
+                    />
                     <Slider
                       label="Portfolio value"
                       min={50000}
@@ -269,14 +272,6 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                       value={state.portfolioValue}
                       onChange={(value) => setState((prev) => ({ ...prev, portfolioValue: value }))}
                       type="currency"
-                    />
-                    <Slider
-                      label="Years"
-                      min={1}
-                      max={40}
-                      step={1}
-                      value={state.years}
-                      onChange={(value) => setState((prev) => ({ ...prev, years: value }))}
                     />
                     <Slider
                       label="Expected annual growth"
@@ -288,13 +283,12 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                       type="percent"
                     />
                     <Slider
-                      label="Advisory fee"
-                      min={0}
-                      max={3}
-                      step={0.05}
-                      value={state.annualFeePercent}
-                      onChange={(value) => setState((prev) => ({ ...prev, annualFeePercent: value }))}
-                      type="percent"
+                      label="Years"
+                      min={1}
+                      max={40}
+                      step={1}
+                      value={state.years}
+                      onChange={(value) => setState((prev) => ({ ...prev, years: value }))}
                     />
                   </div>
                 </div>
