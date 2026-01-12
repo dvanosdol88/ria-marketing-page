@@ -1,81 +1,57 @@
-
 import React from 'react';
-import Head from 'next/head';
+
+export const metadata = {
+  title: "Upgrade: Fiduciary + CFA + CFP®",
+  description: "What fiduciary really means—and why CFA + CFP® credentials matter. A higher standard of advice without the fee drag.",
+};
 
 export default function Upgrade8() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is a fiduciary always fee-only?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. “Fiduciary” is a standard of care (acting in the client’s best interest). Advisors can be fiduciaries under different fee models. The key is transparency and managing conflicts of interest."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What’s the difference between CFA and CFP®?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CFA is investment-analysis and portfolio-management rigor (hard skills). CFP® is comprehensive financial planning and client-centered process (planning and communication)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I verify these credentials?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Use the official directories: CFA Institute’s member directory for CFA charterholders, and CFP Board’s verification tool for CFP® certification status and background."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does a flat fee guarantee better performance?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. A flat fee doesn’t guarantee returns. It simply removes the percentage-based fee drag and can reduce incentive conflicts tied to asset gathering."
+        }
+      }
+    ]
+  };
+
   return (
     <>
-      <Head>
-        <title>Upgrade: Fiduciary + CFA + CFP®</title>
-        <meta
-          name="description"
-          content="What fiduciary really means—and why CFA + CFP® credentials matter. A higher standard of advice without the fee drag."
-        />
-        {/* FAQ structured data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": [
-                {
-                  "@type": "Question",
-                  "name": "Is a fiduciary always fee-only?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "No. “Fiduciary” is a standard of care (acting in the client’s best interest). Advisors can be fiduciaries under different fee models. The key is transparency and managing conflicts of interest."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "What’s the difference between CFA and CFP®?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "CFA is investment-analysis and portfolio-management rigor (hard skills). CFP® is comprehensive financial planning and client-centered process (planning and communication)."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "How do I verify these credentials?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Use the official directories: CFA Institute’s member directory for CFA charterholders, and CFP Board’s verification tool for CFP® certification status and background."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "Does a flat fee guarantee better performance?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "No. A flat fee doesn’t guarantee returns. It simply removes the percentage-based fee drag and can reduce incentive conflicts tied to asset gathering."
-                  }
-                }
-              ]
-            })
-          }}
-        />
-      </Head>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <div className="bg-[#0b0d12] text-white min-h-screen font-sans leading-relaxed">
-        <style jsx global>{`
-          :root {
-            --maxw: 1040px;
-            --pad: 24px;
-            --muted: rgba(255,255,255,.72);
-            --muted2: rgba(255,255,255,.55);
-            --card: rgba(255,255,255,.06);
-            --card2: rgba(255,255,255,.09);
-            --border: rgba(255,255,255,.12);
-          }
-          /* Additional global overrides if needed */
-          details > summary {
-            list-style: none;
-          }
-          details > summary::-webkit-details-marker {
-            display: none;
-          }
-        `}</style>
-
         <main>
           {/* HERO */}
           <header className="py-14 border-b border-[rgba(255,255,255,.12)]">
@@ -143,7 +119,7 @@ export default function Upgrade8() {
 
                   <div className="mt-3.5 space-y-2.5">
                     <details className="border border-[rgba(255,255,255,.12)] bg-[rgba(255,255,255,.03)] rounded-[14px] p-3">
-                      <summary className="cursor-pointer font-bold">CFP® Board: Fiduciary duty (short excerpt)</summary>
+                      <summary className="cursor-pointer font-bold list-none [&::-webkit-details-marker]:hidden">CFP® Board: Fiduciary duty (short excerpt)</summary>
                       <div className="pt-2.5 text-[rgba(255,255,255,.72)]">
                         <blockquote className="my-3 py-2.5 px-3 border-l-3 border-[rgba(255,255,255,.25)] bg-[rgba(255,255,255,.04)] rounded-[10px] text-[rgba(255,255,255,.86)]">
                           “A CFP® professional must act as a fiduciary and act in the client’s best interests.”
@@ -160,7 +136,7 @@ export default function Upgrade8() {
                     </details>
 
                     <details className="border border-[rgba(255,255,255,.12)] bg-[rgba(255,255,255,.03)] rounded-[14px] p-3">
-                      <summary className="cursor-pointer font-bold">CFA Institute: Client-first + independent judgment (short excerpt)</summary>
+                      <summary className="cursor-pointer font-bold list-none [&::-webkit-details-marker]:hidden">CFA Institute: Client-first + independent judgment (short excerpt)</summary>
                       <div className="pt-2.5 text-[rgba(255,255,255,.72)]">
                         <blockquote className="my-3 py-2.5 px-3 border-l-3 border-[rgba(255,255,255,.25)] bg-[rgba(255,255,255,.04)] rounded-[10px] text-[rgba(255,255,255,.86)]">
                           “Place the integrity of the profession and clients’ interests above your own.”
@@ -175,7 +151,7 @@ export default function Upgrade8() {
                     </details>
 
                     <details className="border border-[rgba(255,255,255,.12)] bg-[rgba(255,255,255,.03)] rounded-[14px] p-3">
-                      <summary className="cursor-pointer font-bold">What “loyalty, prudence, and care” means (plain English)</summary>
+                      <summary className="cursor-pointer font-bold list-none [&::-webkit-details-marker]:hidden">What “loyalty, prudence, and care” means (plain English)</summary>
                       <div className="pt-2.5 text-[rgba(255,255,255,.72)]">
                         <ul className="pl-4.5 list-disc">
                           <li className="my-2"><strong>Loyalty:</strong> recommendations are for your benefit, not the advisor’s revenue model.</li>
@@ -273,7 +249,7 @@ export default function Upgrade8() {
               </div>
 
               <details className="mt-3.5 border border-[rgba(255,255,255,.12)] bg-[rgba(255,255,255,.03)] rounded-[14px] p-3">
-                <summary className="cursor-pointer font-bold">Curriculum sampler (10-second skim)</summary>
+                <summary className="cursor-pointer font-bold list-none [&::-webkit-details-marker]:hidden">Curriculum sampler (10-second skim)</summary>
                 <div className="pt-2.5 text-[rgba(255,255,255,.72)]">
                   <p className="mb-2">
                     CFA curriculum evolves, but the “shape” is consistent: ethics + quantitative thinking + deep coverage
@@ -444,7 +420,7 @@ export default function Upgrade8() {
                   }
                 ].map((item, idx) => (
                   <details key={idx} className="border border-[rgba(255,255,255,.12)] bg-[rgba(255,255,255,.03)] rounded-[14px] p-3">
-                    <summary className="cursor-pointer font-bold">{item.q}</summary>
+                    <summary className="cursor-pointer font-bold list-none [&::-webkit-details-marker]:hidden">{item.q}</summary>
                     <div className="pt-2.5 text-[rgba(255,255,255,.72)]">
                       {item.a}
                     </div>
