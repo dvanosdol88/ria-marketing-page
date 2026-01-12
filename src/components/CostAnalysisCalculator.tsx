@@ -98,7 +98,7 @@ const Slider = ({
           step={step}
           value={value}
           onChange={handleSliderChange}
-          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 hover:accent-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+          className="custom-slider w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 hover:accent-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
         />
       </div>
       <div className="flex justify-between text-xs text-gray-400 -mt-2 px-1">

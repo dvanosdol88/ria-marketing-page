@@ -11,7 +11,7 @@ interface QuizOption {
 const quizOptions: QuizOption[] = [
   { id: "retire-early", label: "Retire Early" },
   { id: "vacation-home", label: "Vacation Home" },
-  { id: "give-to-advisor", label: "Give to my advisor" },
+  { id: "give-to-advisor", label: "Give to my advisor!" },
   { id: "invest-it", label: "Invest it" },
   { id: "pay-off-mortgage", label: "Pay off mortgage" },
   { id: "other", label: "Other" },
@@ -92,11 +92,11 @@ export function Quiz() {
           </h3>
 
           {/* 2 columns x 3 rows grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {quizOptions.map((option) => (
               <label
                 key={option.id}
-                className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all ${
+                className={`flex items-center gap-2 p-3 rounded-xl border-2 cursor-pointer transition-all ${
                   selected.has(option.id)
                     ? "border-brand-600 bg-brand-50"
                     : "border-neutral-200 hover:border-neutral-300 bg-white"

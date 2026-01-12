@@ -48,3 +48,30 @@ a:hover {
       flex: none;
     }
   }
+
+/* Custom Slider Styles */
+.custom-slider::-webkit-slider-runnable-track {
+  @apply h-2 bg-blue-100 rounded-full;
+}
+
+.custom-slider::-moz-range-track {
+  @apply h-2 bg-blue-100 rounded-full;
+}
+
+.custom-slider::-webkit-slider-thumb {
+  @apply w-5 h-5 bg-blue-600 rounded-full shadow-md -mt-1.5;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.custom-slider::-moz-range-thumb {
+  @apply w-5 h-5 bg-blue-600 rounded-full shadow-md;
+}
+
+.custom-slider:hover::-webkit-slider-thumb {
+  @apply bg-blue-700;
+}
+
+.custom-slider:hover::-moz-range-thumb {
+  @apply bg-blue-700;
+}
