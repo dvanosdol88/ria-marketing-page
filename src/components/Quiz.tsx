@@ -83,20 +83,20 @@ export function Quiz() {
       {/* Expandable quiz content - full width below */}
       <div
         className={`w-full overflow-hidden transition-all duration-500 ease-in-out ${
-          isOpen && !hasVoted ? "max-h-[500px] opacity-100 mt-6" : "max-h-0 opacity-0 mt-0"
+          isOpen && !hasVoted ? "max-h-[500px] opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"
         }`}
       >
-        <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 max-w-2xl mx-auto">
-          <h3 className="text-xl font-semibold text-neutral-900 mb-6 text-center">
+        <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 max-w-2xl mx-auto">
+          <h3 className="text-xl font-semibold text-neutral-900 mb-4 text-center">
             What matters most to you?
           </h3>
 
           {/* 2 columns x 3 rows grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {quizOptions.map((option) => (
               <label
                 key={option.id}
-                className={`flex items-center gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all ${
                   selected.has(option.id)
                     ? "border-brand-600 bg-brand-50"
                     : "border-neutral-200 hover:border-neutral-300 bg-white"
@@ -116,7 +116,7 @@ export function Quiz() {
           </div>
 
           {/* Submit area */}
-          <div className="mt-6 text-center">
+          <div className="mt-4 text-center">
             <button
               onClick={handleSubmit}
               disabled={selected.size === 0}
