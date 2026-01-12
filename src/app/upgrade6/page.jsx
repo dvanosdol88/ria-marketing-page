@@ -1,15 +1,15 @@
 import React from 'react';
 
-// Credential Badge Component
-const CredentialBadge = ({ type, name, tagline, stats, requirements, ethicsNote }) => {
-  const isLeftAligned = type === 'cfa';
+// Credential Section Component - Responsive alignment
+const CredentialSection = ({ type, name, tagline, stats, requirements, ethicsNote }) => {
+  const isCFA = type === 'cfa';
   
   return (
-    <div className={`flex flex-col ${isLeftAligned ? 'items-start text-left' : 'items-end text-right'}`}>
-      {/* Credential Name */}
+    <div className={`flex flex-col items-start text-left ${!isCFA ? 'md:items-end md:text-right' : ''}`}>
+      {/* Header */}
       <div className="mb-4">
         <span className="text-xs font-medium tracking-[0.2em] text-stone-400 uppercase">
-          {type === 'cfa' ? 'Investment Expertise' : 'Financial Planning'}
+          {isCFA ? 'Investment Expertise' : 'Financial Planning'}
         </span>
         <h3 className="text-2xl md:text-3xl font-serif text-stone-800 mt-1">
           {name}
@@ -17,27 +17,21 @@ const CredentialBadge = ({ type, name, tagline, stats, requirements, ethicsNote 
         <p className="text-sm text-stone-500 mt-1 italic">{tagline}</p>
       </div>
       
-      {/* Key Stats */}
-      <div className={`space-y-3 ${isLeftAligned ? '' : 'text-right'}`}>
+      {/* Stats - Horizontal wrap on mobile, vertical on desktop */}
+      <div className="flex flex-wrap gap-x-6 gap-y-3 md:flex-col md:space-y-3 md:gap-0">
         {stats.map((stat, idx) => (
-          <div key={idx} className="flex items-baseline gap-2">
-            {isLeftAligned ? (
-              <>
-                <span className="text-2xl md:text-3xl font-light text-emerald-700">{stat.value}</span>
-                <span className="text-sm text-stone-600">{stat.label}</span>
-              </>
-            ) : (
-              <>
-                <span className="text-sm text-stone-600">{stat.label}</span>
-                <span className="text-2xl md:text-3xl font-light text-emerald-700">{stat.value}</span>
-              </>
-            )}
+          <div 
+            key={idx} 
+            className={`flex items-baseline gap-2 ${!isCFA ? 'md:flex-row-reverse' : ''}`}
+          >
+            <span className="text-2xl md:text-3xl font-light text-emerald-700">{stat.value}</span>
+            <span className="text-sm text-stone-600">{stat.label}</span>
           </div>
         ))}
       </div>
       
       {/* Requirements */}
-      <div className={`mt-6 space-y-2 max-w-sm ${isLeftAligned ? '' : 'ml-auto'}`}>
+      <div className={`mt-6 space-y-2 max-w-sm ${!isCFA ? 'md:ml-auto' : ''}`}>
         {requirements.map((req, idx) => (
           <p key={idx} className="text-sm text-stone-600 leading-relaxed">
             {req}
@@ -46,7 +40,7 @@ const CredentialBadge = ({ type, name, tagline, stats, requirements, ethicsNote 
       </div>
       
       {/* Ethics Note */}
-      <div className={`mt-4 pt-4 border-t border-stone-200 max-w-sm ${isLeftAligned ? '' : 'ml-auto'}`}>
+      <div className={`mt-4 pt-4 border-t border-stone-200 max-w-sm ${!isCFA ? 'md:ml-auto' : ''}`}>
         <p className="text-xs text-stone-500 leading-relaxed">
           <span className="font-medium text-stone-600">Ethics Code: </span>
           {ethicsNote}
@@ -56,17 +50,46 @@ const CredentialBadge = ({ type, name, tagline, stats, requirements, ethicsNote 
   );
 };
 
-// Stat Callout Component
+// Stat Callout for Rarity Section
 const StatCallout = ({ stat, label, subtext }) => (
-  <div className="text-center">
-    <div className="text-4xl md:text-5xl font-light text-emerald-700">{stat}</div>
-    <div className="text-sm font-medium text-stone-700 mt-1">{label}</div>
-    {subtext && <div className="text-xs text-stone-500 mt-1">{subtext}</div>}
+  <div className="text-center py-4 sm:py-0">
+    <div className="text-4xl md:text-5xl font-light text-emerald-200">{stat}</div>
+    <div className="text-sm font-medium text-white mt-2">{label}</div>
+    {subtext && <div className="text-xs text-emerald-300 mt-1">{subtext}</div>}
   </div>
 );
 
-// Main Credentials Page
+// Benefit Card - Has background on mobile, clean on desktop
+const BenefitCard = ({ icon, title, description }) => (
+  <div className="bg-white p-6 rounded-xl border border-stone-200 md:bg-transparent md:p-0 md:border-0 md:rounded-none text-center md:text-left">
+    <div className="text-3xl text-emerald-600 mb-3">{icon}</div>
+    <h3 className="font-medium text-stone-800 mb-2">{title}</h3>
+    <p className="text-sm text-stone-600 leading-relaxed">{description}</p>
+  </div>
+);
+
+// Testimonial Quote Component
+const TestimonialQuote = ({ quote, author, title }) => (
+  <section className="px-6 py-12 md:py-16 bg-stone-100">
+    <div className="max-w-3xl mx-auto text-center">
+      <svg className="w-8 h-8 text-emerald-600 mx-auto mb-4 opacity-60" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+      </svg>
+      <blockquote className="text-xl md:text-2xl font-serif text-stone-700 leading-relaxed">
+        &quot;{quote}&quot;
+      </blockquote>
+      <cite className="block mt-4 text-sm text-stone-500 not-italic">
+        — <span className="font-medium text-stone-600">{author}</span>, {title}
+      </cite>
+    </div>
+  </section>
+);
+
+// Main Credentials Page Component
 export default function Upgrade6() {
+  const cfaBadgeUrl = '/cfa-charterholder-badge.png';
+
+  // CFA Credential Data
   const cfaData = {
     type: 'cfa',
     name: 'CFA Charterholder',
@@ -83,6 +106,7 @@ export default function Upgrade6() {
     ethicsNote: 'CFA charterholders must "act with integrity, competence, diligence" and "place clients\' interests above their own."',
   };
 
+  // CFP Credential Data
   const cfpData = {
     type: 'cfp',
     name: 'CFP® Professional',
@@ -99,7 +123,8 @@ export default function Upgrade6() {
     ethicsNote: 'CFP professionals commit to integrity, objectivity, competence, fairness, confidentiality, and placing your interests first.',
   };
 
-  const combinedBenefits = [
+  // Combined Benefits
+  const benefits = [
     {
       icon: '◎',
       title: '360° Expertise',
@@ -119,45 +144,69 @@ export default function Upgrade6() {
 
   return (
     <div className="min-h-screen bg-stone-50">
-      {/* Hero Section */}
-      <section className="px-6 py-16 md:py-24 max-w-5xl mx-auto">
-        <div className="text-center mb-4">
-          <span className="inline-block text-xs font-medium tracking-[0.25em] text-emerald-700 uppercase bg-emerald-50 px-4 py-2 rounded-full">
-            Credentials That Matter
-          </span>
+      
+      {/* Hero Section with Badge */}
+      <section className="px-6 py-12 md:py-20 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+          
+          {/* Text Content */}
+          <div className="order-2 md:order-1 text-center md:text-left">
+            <span className="inline-block text-xs font-medium tracking-[0.25em] text-emerald-700 uppercase bg-emerald-50 px-4 py-2 rounded-full mb-4">
+              Credentials That Matter
+            </span>
+            
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif text-stone-800 leading-tight">
+              Not Your Typical Advisor
+            </h1>
+            
+            <p className="text-lg text-stone-600 mt-4 leading-relaxed">
+              A CFA Charterholder. A CFP® Professional. 100% Fiduciary.
+            </p>
+            <p className="text-stone-500 mt-2">
+              Elite investment expertise and gold-standard financial planning—in one advisor.
+            </p>
+          </div>
+          
+          {/* CFA Badge */}
+          <div className="order-1 md:order-2 flex justify-center md:justify-end">
+            <div className="relative">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img 
+                src={cfaBadgeUrl}
+                alt="CFA Charterholder Badge - David James Van Osdol, CFA - Charter Awarded 2024" 
+                className="w-48 md:w-56 lg:w-64 shadow-lg rounded-lg"
+              />
+              {/* Subtle glow effect */}
+              <div className="absolute inset-0 bg-blue-900/5 rounded-lg blur-xl -z-10 scale-110" />
+            </div>
+          </div>
+          
         </div>
-        
-        <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif text-stone-800 text-center leading-tight">
-          Not Your Typical Advisor
-        </h1>
-        
-        <p className="text-lg md:text-xl text-stone-600 text-center mt-6 max-w-2xl mx-auto leading-relaxed">
-          A CFA Charterholder. A CFP® Professional. 100% Fiduciary.
-          <br />
-          <span className="text-stone-500 text-base">
-            Elite investment expertise and gold-standard financial planning—in one advisor.
-          </span>
-        </p>
       </section>
 
       {/* Credentials Comparison */}
       <section className="px-6 py-12 md:py-20 bg-white border-y border-stone-200">
         <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 md:gap-8 lg:gap-16">
-            {/* CFA Side */}
-            <CredentialBadge {...cfaData} />
+          <div className="grid md:grid-cols-2 gap-12 md:gap-8 lg:gap-16 relative">
             
-            {/* Divider (visible on md+) */}
+            <CredentialSection {...cfaData} />
+            
+            {/* Dividers */}
             <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-stone-200 transform -translate-x-1/2" />
+            <div className="md:hidden w-full h-px bg-stone-200" />
             
-            {/* CFP Side */}
-            <CredentialBadge {...cfpData} />
+            <CredentialSection {...cfpData} />
+            
           </div>
-          
-          {/* Mobile Divider */}
-          <div className="md:hidden w-24 h-px bg-stone-300 mx-auto my-8" />
         </div>
       </section>
+
+      {/* Testimonial Quote */}
+      <TestimonialQuote 
+        quote="If you hire investment professionals with a CFA, you… have confidence at the level of qualification."
+        author="Jenny Johnson"
+        title="CEO/President, Franklin Templeton"
+      />
 
       {/* Rarity Section */}
       <section className="px-6 py-16 md:py-24 bg-emerald-900 text-white">
@@ -166,22 +215,12 @@ export default function Upgrade6() {
             What Makes This Rare
           </h2>
           
-          <div className="grid grid-cols-3 gap-8 md:gap-12">
-            <StatCallout 
-              stat="<4%" 
-              label="hold CFA" 
-              subtext="of financial advisors"
-            />
-            <StatCallout 
-              stat="~20%" 
-              label="hold CFP®" 
-              subtext="of financial advisors"
-            />
-            <StatCallout 
-              stat="<1%" 
-              label="hold both" 
-              subtext="estimated"
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12">
+            <StatCallout stat="<4%" label="hold CFA" subtext="of financial advisors" />
+            <div className="hidden sm:block border-x border-emerald-700" />
+            <StatCallout stat="~20%" label="hold CFP®" subtext="of financial advisors" />
+            <div className="hidden sm:block" />
+            <StatCallout stat="<1%" label="hold both" subtext="estimated" />
           </div>
           
           <p className="mt-12 text-emerald-200 text-sm max-w-xl mx-auto">
@@ -202,13 +241,9 @@ export default function Upgrade6() {
           </p>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-8">
-          {combinedBenefits.map((benefit, idx) => (
-            <div key={idx} className="text-center md:text-left">
-              <div className="text-3xl text-emerald-600 mb-3">{benefit.icon}</div>
-              <h3 className="font-medium text-stone-800 mb-2">{benefit.title}</h3>
-              <p className="text-sm text-stone-600 leading-relaxed">{benefit.description}</p>
-            </div>
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          {benefits.map((benefit, idx) => (
+            <BenefitCard key={idx} {...benefit} />
           ))}
         </div>
       </section>
@@ -239,10 +274,10 @@ export default function Upgrade6() {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="px-8 py-4 bg-emerald-700 text-white font-medium rounded-lg hover:bg-emerald-800 transition-colors">
+          <button className="w-full sm:w-auto px-8 py-4 bg-emerald-700 text-white font-medium rounded-lg hover:bg-emerald-800 active:bg-emerald-900 transition-colors">
             Schedule a Consultation
           </button>
-          <button className="px-8 py-4 bg-white text-stone-700 font-medium rounded-lg border border-stone-300 hover:bg-stone-50 transition-colors">
+          <button className="w-full sm:w-auto px-8 py-4 bg-white text-stone-700 font-medium rounded-lg border border-stone-300 hover:bg-stone-50 active:bg-stone-100 transition-colors">
             Learn About Our Fee Model
           </button>
         </div>
@@ -252,16 +287,15 @@ export default function Upgrade6() {
         </p>
       </section>
 
-      {/* Footer Note */}
+      {/* Footer */}
       <footer className="px-6 py-8 bg-stone-100 border-t border-stone-200">
-        <p className="text-xs text-stone-500 text-center max-w-2xl mx-auto">
+        <p className="text-xs text-stone-500 text-center max-w-2xl mx-auto leading-relaxed">
           CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute. 
           CFP®, CERTIFIED FINANCIAL PLANNER™, and federally registered CFP (with flame design) marks 
           are certification marks owned by the Certified Financial Planner Board of Standards, Inc.
         </p>
       </footer>
+      
     </div>
   );
-};
-
-
+}
