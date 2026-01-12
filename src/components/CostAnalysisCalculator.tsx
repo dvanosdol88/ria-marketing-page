@@ -3,7 +3,7 @@
 
 
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Copy } from "lucide-react";
 import Link from "next/link";
@@ -21,63 +21,93 @@ type Props = {
   searchParams: Record<string, string | string[] | undefined>;
 };
 
-function Slider({
+const Slider = ({
   label,
   min,
   max,
   step,
   value,
   onChange,
-  suffix,
-  decimals,
+  type,
 }: {
   label: string;
   min: number;
   max: number;
   step: number;
   value: number;
-  suffix?: string;
-  decimals?: number;
+  type?: 'currency' | 'percent';
   onChange: (value: number) => void;
-}) {
-  const formatValue = (val: number) => {
-    if (decimals !== undefined) {
-      return val.toFixed(decimals);
+}) => {
+  const [inputValue, setInputValue] = useState(value.toString());
+
+  useEffect(() => {
+    setInputValue(value.toString());
+  }, [value]);
+
+  const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const parsed = parseFloat(event.target.value);
+    if (!isNaN(parsed)) {
+      setInputValue(parsed.toString());
+      onChange(parsed);
     }
-    return numberFormatter.format(val);
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+    const parsed = parseFloat(event.target.value);
+    if (!isNaN(parsed)) onChange(parsed);
+  };
+
+  const handleBlur = () => {
+    let parsed = parseFloat(inputValue);
+    if (isNaN(parsed)) parsed = min;
+    if (parsed < min) parsed = min;
+    if (parsed > max) parsed = max;
+    setInputValue(parsed.toString());
+    onChange(parsed);
+  };
+
+  const formatPrefix = type === 'currency' ? '$' : '';
+  const formatSuffix = type === 'percent' ? '%' : '';
+
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between text-sm font-medium text-neutral-900">
-        <span>{label}</span>
-        <span className="tabular-nums text-neutral-900">
-          {formatValue(value)}
-          {suffix}
-        </span>
+    <div className="flex flex-col gap-3 w-full p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+      <div className="flex justify-between items-center">
+        <label className="text-sm font-medium text-gray-600">{label}</label>
+        <div className="relative group">
+          {formatPrefix && (
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">{formatPrefix}</span>
+          )}
+          <input
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            className={`w-32 py-1 px-2 text-right font-bold text-gray-900 bg-gray-50 border border-gray-200 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all ${formatPrefix ? 'pl-6' : ''} ${formatSuffix ? 'pr-8' : ''}`}
+          />
+          {formatSuffix && (
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">{formatSuffix}</span>
+          )}
+        </div>
       </div>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={(event) => onChange(Number(event.target.value))}
-        className="w-full accent-brand-600"
-      />
-      <div className="flex justify-between text-xs text-neutral-900">
-        <span>
-          {formatValue(min)}
-          {suffix}
-        </span>
-        <span>
-          {formatValue(max)}
-          {suffix}
-        </span>
+      <div className="relative w-full h-6 flex items-center">
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={handleSliderChange}
+          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 hover:accent-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+        />
+      </div>
+      <div className="flex justify-between text-xs text-gray-400 -mt-2 px-1">
+        <span>{formatPrefix}{min}{formatSuffix}</span>
+        <span>{formatPrefix}{max}{formatSuffix}</span>
       </div>
     </div>
   );
-}
+};
 
 function normalizeSearchParams(searchParams: Record<string, string | string[] | undefined>) {
   const params = new URLSearchParams();
@@ -238,6 +268,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                       step={50000}
                       value={state.portfolioValue}
                       onChange={(value) => setState((prev) => ({ ...prev, portfolioValue: value }))}
+                      type="currency"
                     />
                     <Slider
                       label="Years"
@@ -245,7 +276,6 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                       max={40}
                       step={1}
                       value={state.years}
-                      suffix=" yrs"
                       onChange={(value) => setState((prev) => ({ ...prev, years: value }))}
                     />
                     <Slider
@@ -254,9 +284,8 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                       max={15}
                       step={0.1}
                       value={state.annualGrowthPercent}
-                      suffix="%"
-                      decimals={1}
                       onChange={(value) => setState((prev) => ({ ...prev, annualGrowthPercent: value }))}
+                      type="percent"
                     />
                     <Slider
                       label="Advisory fee"
@@ -264,9 +293,8 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                       max={3}
                       step={0.05}
                       value={state.annualFeePercent}
-                      suffix="%"
-                      decimals={2}
                       onChange={(value) => setState((prev) => ({ ...prev, annualFeePercent: value }))}
+                      type="percent"
                     />
                   </div>
                 </div>
