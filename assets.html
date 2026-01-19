@@ -3,27 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Project File Architecture | RIA Marketing Page</title>
+  <title>Project Architecture | RIA Marketing Page</title>
   <style>
     :root {
       --green-500: #22c55e;
       --green-600: #16a34a;
       --green-50: #f0fdf4;
-      --green-100: #dcfce7;
+      --blue-50: #eff6ff;
+      --blue-500: #3b82f6;
+      --amber-50: #fef3c7;
+      --amber-500: #f59e0b;
+      --purple-50: #faf5ff;
+      --purple-500: #a855f7;
       --neutral-50: #fafafa;
       --neutral-100: #f5f5f5;
       --neutral-200: #e5e5e5;
-      --neutral-300: #d4d4d4;
       --neutral-500: #737373;
       --neutral-700: #404040;
       --neutral-900: #171717;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -33,43 +33,20 @@
       padding: 2rem;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    .container { max-width: 1000px; margin: 0 auto; }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 2.25rem;
       font-weight: 800;
       text-align: center;
       margin-bottom: 0.5rem;
     }
-
-    h1 span {
-      color: var(--green-600);
-    }
+    h1 span { color: var(--green-600); }
 
     .subtitle {
       text-align: center;
       color: var(--neutral-500);
-      margin-bottom: 3rem;
-    }
-
-    h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    h2::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      background: var(--green-500);
-      border-radius: 50%;
+      margin-bottom: 2.5rem;
     }
 
     .section {
@@ -77,514 +54,289 @@
       border-radius: 1rem;
       border: 1px solid var(--neutral-200);
       padding: 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      margin-bottom: 1.5rem;
     }
 
-    .architecture-diagram {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      padding: 1rem;
-      background: var(--neutral-100);
-      border-radius: 0.75rem;
-    }
-
-    .layer {
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
       display: flex;
       align-items: center;
-      gap: 1rem;
-    }
-
-    .layer-label {
-      width: 100px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--neutral-500);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      flex-shrink: 0;
-    }
-
-    .layer-content {
-      display: flex;
-      flex-wrap: wrap;
       gap: 0.5rem;
-      flex: 1;
+    }
+    h2 .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
     }
 
-    .file-box {
-      background: white;
-      border: 1px solid var(--neutral-200);
-      border-radius: 0.5rem;
-      padding: 0.5rem 0.75rem;
+    .folder-tree {
       font-family: 'Monaco', 'Menlo', monospace;
-      font-size: 0.8rem;
-      white-space: nowrap;
-    }
-
-    .file-box.highlight {
-      background: var(--green-50);
-      border-color: var(--green-500);
-      color: var(--green-600);
-      font-weight: 600;
-    }
-
-    .file-box.asset {
-      background: #fef3c7;
-      border-color: #f59e0b;
-      color: #92400e;
-    }
-
-    .arrow-down {
-      display: flex;
-      justify-content: center;
-      padding: 0.25rem 0;
-      color: var(--neutral-300);
-      font-size: 1.5rem;
-    }
-
-    .relationship-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1rem;
-    }
-
-    .relationship-card {
+      font-size: 0.85rem;
       background: var(--neutral-100);
-      border-radius: 0.75rem;
       padding: 1rem;
+      border-radius: 0.5rem;
     }
 
-    .relationship-card h3 {
-      font-size: 0.9rem;
+    .folder-tree .folder {
       font-weight: 600;
-      margin-bottom: 0.75rem;
       color: var(--neutral-700);
     }
 
-    .rel-from {
-      font-family: monospace;
-      font-size: 0.8rem;
-      color: var(--green-600);
-      background: var(--green-50);
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-      display: inline-block;
+    .folder-tree .file {
+      color: var(--neutral-500);
+      margin-left: 1.5rem;
+    }
+
+    .folder-tree .desc {
+      color: var(--neutral-400);
+      font-style: italic;
+      margin-left: 0.5rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--neutral-100);
+      border-radius: 0.75rem;
+      padding: 1rem;
+    }
+
+    .card h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
       margin-bottom: 0.5rem;
     }
 
-    .rel-arrow {
-      color: var(--neutral-400);
-      padding: 0 0.5rem;
-    }
-
-    .rel-to {
-      font-family: monospace;
-      font-size: 0.8rem;
-      color: var(--neutral-700);
-      background: white;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
-      border: 1px solid var(--neutral-200);
-      display: inline-block;
-    }
-
-    .imports-list {
+    .card ul {
       list-style: none;
       font-size: 0.85rem;
+      color: var(--neutral-600);
     }
-
-    .imports-list li {
-      padding: 0.25rem 0;
+    .card li {
+      padding: 0.2rem 0;
       padding-left: 1rem;
       position: relative;
     }
-
-    .imports-list li::before {
-      content: '→';
+    .card li::before {
+      content: '•';
       position: absolute;
       left: 0;
       color: var(--neutral-400);
     }
 
-    .asset-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 0.75rem;
-    }
-
-    .asset-item {
-      background: white;
-      border: 1px solid var(--neutral-200);
-      border-radius: 0.5rem;
-      padding: 0.75rem;
-    }
-
-    .asset-name {
-      font-family: monospace;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--neutral-900);
-      word-break: break-all;
-    }
-
-    .asset-type {
+    .tag {
+      display: inline-block;
       font-size: 0.7rem;
-      color: var(--neutral-500);
-      margin-top: 0.25rem;
+      font-weight: 600;
+      padding: 0.15rem 0.4rem;
+      border-radius: 0.25rem;
+      margin-left: 0.5rem;
+    }
+    .tag.page { background: var(--green-50); color: var(--green-600); }
+    .tag.component { background: var(--blue-50); color: var(--blue-500); }
+    .tag.lib { background: var(--purple-50); color: var(--purple-500); }
+    .tag.asset { background: var(--amber-50); color: var(--amber-500); }
+
+    .flow-diagram {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: var(--neutral-100);
+      border-radius: 0.75rem;
     }
 
-    .asset-type.gif {
-      color: #f59e0b;
+    .flow-box {
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-align: center;
     }
+    .flow-box.page { background: var(--green-50); border: 1px solid var(--green-500); color: var(--green-600); }
+    .flow-box.component { background: var(--blue-50); border: 1px solid var(--blue-500); color: var(--blue-500); }
+    .flow-box.lib { background: var(--purple-50); border: 1px solid var(--purple-500); color: var(--purple-500); }
+    .flow-box.asset { background: var(--amber-50); border: 1px solid var(--amber-500); color: var(--amber-500); }
 
-    .asset-type.png {
-      color: #3b82f6;
-    }
+    .flow-arrow { color: var(--neutral-400); font-size: 1.25rem; }
 
     .legend {
       display: flex;
       flex-wrap: wrap;
       gap: 1rem;
+      justify-content: center;
       margin-top: 1rem;
       padding-top: 1rem;
       border-top: 1px solid var(--neutral-200);
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
       font-size: 0.8rem;
       color: var(--neutral-600);
     }
+    .legend-item { display: flex; align-items: center; gap: 0.4rem; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
 
-    .legend-box {
-      width: 16px;
-      height: 16px;
-      border-radius: 4px;
-      border: 1px solid;
-    }
-
-    .legend-box.page { background: var(--green-50); border-color: var(--green-500); }
-    .legend-box.component { background: white; border-color: var(--neutral-200); }
-    .legend-box.config { background: #eff6ff; border-color: #3b82f6; }
-    .legend-box.asset { background: #fef3c7; border-color: #f59e0b; }
-
-    .flow-diagram {
-      background: var(--neutral-100);
-      border-radius: 0.75rem;
-      padding: 1.5rem;
-      overflow-x: auto;
-    }
-
-    .flow-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .flow-box {
-      padding: 0.75rem 1rem;
-      border-radius: 0.5rem;
-      font-size: 0.85rem;
-      font-weight: 500;
-      text-align: center;
-      min-width: 150px;
-    }
-
-    .flow-box.page {
-      background: var(--green-50);
-      border: 2px solid var(--green-500);
-      color: var(--green-600);
-    }
-
-    .flow-box.component {
-      background: white;
-      border: 1px solid var(--neutral-300);
-    }
-
-    .flow-box.config {
-      background: #eff6ff;
-      border: 1px solid #3b82f6;
-      color: #1d4ed8;
-    }
-
-    .flow-box.asset {
-      background: #fef3c7;
-      border: 1px solid #f59e0b;
-      color: #92400e;
-    }
-
-    .flow-connector {
-      color: var(--neutral-400);
-      font-size: 1.25rem;
-    }
-
-    .code-block {
-      background: #1e1e1e;
-      color: #d4d4d4;
-      padding: 1rem;
-      border-radius: 0.5rem;
-      font-family: monospace;
-      font-size: 0.8rem;
-      overflow-x: auto;
-      margin-top: 0.75rem;
-    }
-
-    .code-keyword { color: #569cd6; }
-    .code-string { color: #ce9178; }
-    .code-comment { color: #6a9955; }
-
-    @media (max-width: 768px) {
+    @media (max-width: 600px) {
       body { padding: 1rem; }
-      h1 { font-size: 1.75rem; }
-      .layer { flex-direction: column; align-items: flex-start; }
-      .layer-label { width: auto; margin-bottom: 0.5rem; }
+      h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Project <span>File Architecture</span></h1>
-    <p class="subtitle">How files in the /improve page feature are connected</p>
+    <h1>RIA Marketing <span>Architecture</span></h1>
+    <p class="subtitle">High-level overview of the project structure</p>
 
-    <!-- Overview Diagram -->
+    <!-- Folder Structure -->
     <div class="section">
-      <h2>Architecture Overview</h2>
-      <div class="flow-diagram">
-        <div class="flow-row">
-          <div class="flow-box page">Homepage<br><small>/app/page.tsx</small></div>
-          <span class="flow-connector">→</span>
-          <div class="flow-box component">ValueCards<br><small>/components/value-cards/</small></div>
-          <span class="flow-connector">→ link to</span>
-          <div class="flow-box page">/improve<br><small>/app/improve/page.tsx</small></div>
-        </div>
-        <div class="flow-row" style="margin-top: 1rem;">
-          <span class="flow-connector">↓ imports</span>
-        </div>
-        <div class="flow-row">
-          <div class="flow-box component">FeatureSection</div>
-          <div class="flow-box component">ComparisonCard</div>
-          <div class="flow-box config">improvePageConfig.ts</div>
-        </div>
-        <div class="flow-row" style="margin-top: 1rem;">
-          <span class="flow-connector">↓ references</span>
-        </div>
-        <div class="flow-row">
-          <div class="flow-box asset">/public/assets/rightcapital/*.gif</div>
-          <div class="flow-box asset">/public/assets/rightcapital/*.png</div>
-        </div>
-      </div>
-
-      <div class="legend">
-        <div class="legend-item"><div class="legend-box page"></div> Page Routes</div>
-        <div class="legend-item"><div class="legend-box component"></div> Components</div>
-        <div class="legend-item"><div class="legend-box config"></div> Config Files</div>
-        <div class="legend-item"><div class="legend-box asset"></div> Static Assets</div>
-      </div>
-    </div>
-
-    <!-- Layer Diagram -->
-    <div class="section">
-      <h2>File Layers</h2>
-      <div class="architecture-diagram">
-        <div class="layer">
-          <div class="layer-label">Routes</div>
-          <div class="layer-content">
-            <div class="file-box highlight">src/app/improve/page.tsx</div>
-            <div class="file-box">src/app/page.tsx</div>
-          </div>
-        </div>
-
-        <div class="arrow-down">↓</div>
-
-        <div class="layer">
-          <div class="layer-label">Components</div>
-          <div class="layer-content">
-            <div class="file-box">src/components/improve/FeatureSection.tsx</div>
-            <div class="file-box">src/components/improve/ComparisonCard.tsx</div>
-            <div class="file-box">src/components/value-cards/ValueCards.tsx</div>
-          </div>
-        </div>
-
-        <div class="arrow-down">↓</div>
-
-        <div class="layer">
-          <div class="layer-label">Config</div>
-          <div class="layer-content">
-            <div class="file-box highlight">src/config/improvePageConfig.ts</div>
-          </div>
-        </div>
-
-        <div class="arrow-down">↓</div>
-
-        <div class="layer">
-          <div class="layer-label">Assets</div>
-          <div class="layer-content">
-            <div class="file-box asset">public/assets/rightcapital/</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Key Relationships -->
-    <div class="section">
-      <h2>Key Import Relationships</h2>
-      <div class="relationship-grid">
-
-        <div class="relationship-card">
-          <h3>Improve Page imports:</h3>
-          <div class="rel-from">app/improve/page.tsx</div>
-          <ul class="imports-list">
-            <li>FeatureSection from @/components/improve/</li>
-            <li>ComparisonCard from @/components/improve/</li>
-            <li>features, comparisonCards, navItems from @/config/improvePageConfig</li>
-            <li>next/image, next/link</li>
-          </ul>
-        </div>
-
-        <div class="relationship-card">
-          <h3>FeatureSection imports:</h3>
-          <div class="rel-from">components/improve/FeatureSection.tsx</div>
-          <ul class="imports-list">
-            <li>Feature type from @/config/improvePageConfig</li>
-            <li>next/image</li>
-          </ul>
-        </div>
-
-        <div class="relationship-card">
-          <h3>ComparisonCard imports:</h3>
-          <div class="rel-from">components/improve/ComparisonCard.tsx</div>
-          <ul class="imports-list">
-            <li>ComparisonCard type from @/config/improvePageConfig</li>
-          </ul>
-        </div>
-
-        <div class="relationship-card">
-          <h3>ValueCards links to:</h3>
-          <div class="rel-from">components/value-cards/ValueCards.tsx</div>
-          <ul class="imports-list">
-            <li>href: '/improve' (navigation link)</li>
-            <li>href: '/upgrade'</li>
-          </ul>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Config Structure -->
-    <div class="section">
-      <h2>Config File Structure</h2>
-      <p style="color: var(--neutral-600); margin-bottom: 1rem;">
-        The <code>improvePageConfig.ts</code> file is the single source of truth for all content on the /improve page.
-      </p>
-
-      <div class="code-block">
-<span class="code-comment">// Types exported for components</span>
-<span class="code-keyword">export interface</span> Feature {
-  id: <span class="code-string">string</span>;
-  title: <span class="code-string">string</span>;
-  tagline: <span class="code-string">string</span>;
-  description: <span class="code-string">string</span>;
-  whyItMatters: <span class="code-string">string</span>;
-  image: <span class="code-string">string</span>;          <span class="code-comment">// path to asset</span>
-  imagePosition: <span class="code-string">"left" | "right"</span>;
-  isAnimated?: <span class="code-string">boolean</span>;    <span class="code-comment">// for GIFs</span>
-}
-
-<span class="code-comment">// Data arrays</span>
-<span class="code-keyword">export const</span> features: Feature[] = [...]
-<span class="code-keyword">export const</span> comparisonCards: ComparisonCard[] = [...]
-<span class="code-keyword">export const</span> navItems = features.map(...)
-      </div>
-    </div>
-
-    <!-- Assets -->
-    <div class="section">
-      <h2>Static Assets</h2>
-      <p style="color: var(--neutral-600); margin-bottom: 1rem;">
-        Located in <code>public/assets/rightcapital/</code> - referenced by config file
-      </p>
-
-      <div class="asset-grid">
-        <div class="asset-item">
-          <div class="asset-name">cashflow-waterfall.gif</div>
-          <div class="asset-type gif">GIF - Hero animation</div>
-        </div>
-        <div class="asset-item">
-          <div class="asset-name">tax-bracket-slider.gif</div>
-          <div class="asset-type gif">GIF - Roth feature</div>
-        </div>
-        <div class="asset-item">
-          <div class="asset-name">solve-top-strategies.gif</div>
-          <div class="asset-type gif">GIF - Automation</div>
-        </div>
-        <div class="asset-item">
-          <div class="asset-name">roth-calibration-view.gif</div>
-          <div class="asset-type gif">GIF - (available)</div>
-        </div>
-        <div class="asset-item">
-          <div class="asset-name">monte-carlo-confidence.png</div>
-          <div class="asset-type png">PNG - Monte Carlo</div>
-        </div>
-        <div class="asset-item">
-          <div class="asset-name">stress-test-chart.png</div>
-          <div class="asset-type png">PNG - Stress Test</div>
-        </div>
-        <div class="asset-item">
-          <div class="asset-name">scenario-comparison.png</div>
-          <div class="asset-type png">PNG - Scenarios</div>
-        </div>
-        <div class="asset-item">
-          <div class="asset-name">roth-conversion-calibration.png</div>
-          <div class="asset-type png">PNG - (available)</div>
-        </div>
+      <h2><span class="dot" style="background: var(--neutral-700);"></span> Project Structure</h2>
+      <div class="folder-tree">
+        <div class="folder">src/</div>
+        <div class="file">app/ <span class="desc">— Page routes (Next.js App Router)</span></div>
+        <div class="file">components/ <span class="desc">— Reusable UI components</span></div>
+        <div class="file">config/ <span class="desc">— Data-driven configuration</span></div>
+        <div class="file">lib/ <span class="desc">— Utility functions & calculations</span></div>
+        <div class="file">styles/ <span class="desc">— Design tokens</span></div>
+        <br>
+        <div class="folder">public/</div>
+        <div class="file">assets/rightcapital/ <span class="desc">— Planning tool screenshots</span></div>
+        <div class="file">*.png, *.jpg <span class="desc">— Images & credentials</span></div>
       </div>
     </div>
 
     <!-- Data Flow -->
     <div class="section">
-      <h2>Data Flow Pattern</h2>
-      <p style="color: var(--neutral-600); margin-bottom: 1rem;">
-        This project follows a <strong>configuration-driven architecture</strong>. Content changes are made in one place.
-      </p>
+      <h2><span class="dot" style="background: var(--green-500);"></span> Data Flow</h2>
+      <div class="flow-diagram">
+        <div class="flow-box page">Pages</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box component">Components</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box lib">Lib / Config</div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-box asset">Assets</div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background: var(--green-500);"></div> Routes</div>
+        <div class="legend-item"><div class="legend-dot" style="background: var(--blue-500);"></div> Components</div>
+        <div class="legend-item"><div class="legend-dot" style="background: var(--purple-500);"></div> Logic/Config</div>
+        <div class="legend-item"><div class="legend-dot" style="background: var(--amber-500);"></div> Static Assets</div>
+      </div>
+    </div>
 
-      <div class="relationship-grid">
-        <div class="relationship-card">
-          <h3>1. Define in Config</h3>
-          <p style="font-size: 0.85rem; color: var(--neutral-600);">
-            Add/edit features, comparisons, and nav items in <code>improvePageConfig.ts</code>
-          </p>
+    <!-- Pages -->
+    <div class="section">
+      <h2><span class="dot" style="background: var(--green-500);"></span> Pages <span class="tag page">src/app/</span></h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Main Pages</h3>
+          <ul>
+            <li><strong>/</strong> — Homepage with calculator</li>
+            <li><strong>/improve</strong> — Planning tools showcase</li>
+            <li><strong>/save</strong> — Fee savings proof</li>
+            <li><strong>/how-it-works</strong> — Process explanation</li>
+          </ul>
         </div>
-        <div class="relationship-card">
-          <h3>2. Components Render</h3>
-          <p style="font-size: 0.85rem; color: var(--neutral-600);">
-            Components receive data as props and render dynamically using <code>.map()</code>
-          </p>
+        <div class="card">
+          <h3>Upgrade Variants</h3>
+          <ul>
+            <li><strong>/upgrade</strong> — Main upgrade page</li>
+            <li><strong>/upgrade1-8</strong> — Design iterations</li>
+            <li><strong>/substitution</strong> — Advisor comparison</li>
+          </ul>
         </div>
-        <div class="relationship-card">
-          <h3>3. Assets Referenced</h3>
-          <p style="font-size: 0.85rem; color: var(--neutral-600);">
-            Image paths in config point to static files in <code>/public/assets/</code>
-          </p>
+      </div>
+    </div>
+
+    <!-- Components -->
+    <div class="section">
+      <h2><span class="dot" style="background: var(--blue-500);"></span> Components <span class="tag component">src/components/</span></h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>charts/</h3>
+          <ul>
+            <li>FeeBreakdownBars — Bar chart visualization</li>
+            <li>FeeComparisonChart — Comparison over time</li>
+          </ul>
         </div>
-        <div class="relationship-card">
-          <h3>4. Single Source of Truth</h3>
-          <p style="font-size: 0.85rem; color: var(--neutral-600);">
-            Change a title once in config → updates everywhere automatically
-          </p>
+        <div class="card">
+          <h3>value-cards/</h3>
+          <ul>
+            <li>ValueCards — Homepage value propositions</li>
+            <li>ValueSection — Individual card layout</li>
+            <li>DonutChart — Circular visualization</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>improve/</h3>
+          <ul>
+            <li>FeatureSection — Tool feature display</li>
+            <li>ComparisonCard — Advisor comparison</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Root Components</h3>
+          <ul>
+            <li>CostAnalysisCalculator — Main calculator</li>
+            <li>Quiz — Interactive questionnaire</li>
+            <li>QuoteTicker — Scrolling quotes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lib & Config -->
+    <div class="section">
+      <h2><span class="dot" style="background: var(--purple-500);"></span> Logic & Config <span class="tag lib">src/lib/ & src/config/</span></h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>lib/ — Utilities</h3>
+          <ul>
+            <li>feeProjection.ts — Fee growth calculations</li>
+            <li>calculatorState.ts — State management</li>
+            <li>format.ts — Number formatting</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>config/ — Data</h3>
+          <ul>
+            <li>improvePageConfig.ts — /improve page content</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assets -->
+    <div class="section">
+      <h2><span class="dot" style="background: var(--amber-500);"></span> Assets <span class="tag asset">public/</span></h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>assets/rightcapital/</h3>
+          <ul>
+            <li>*.gif — Animated tool demos (4)</li>
+            <li>*.png — Static screenshots (4)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Root Images</h3>
+          <ul>
+            <li>Credential badges (CFP, CFA)</li>
+            <li>Goal images (boat, house, etc.)</li>
+            <li>Avatar / headshot</li>
+          </ul>
         </div>
       </div>
     </div>
 
     <!-- Footer -->
-    <footer style="text-align: center; color: var(--neutral-500); font-size: 0.8rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--neutral-200);">
-      Generated for RIA Marketing Page Project
+    <footer style="text-align: center; color: var(--neutral-500); font-size: 0.75rem; margin-top: 1.5rem;">
+      youarepayingtoomuch.com — Next.js + Tailwind CSS + Recharts
     </footer>
   </div>
 </body>
