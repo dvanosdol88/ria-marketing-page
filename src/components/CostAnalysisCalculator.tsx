@@ -16,7 +16,6 @@ import { Quiz } from "./Quiz";
 
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { SavingsMetersGrid } from "@/components/save/SavingsMetersGrid";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
 
@@ -257,17 +256,6 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                   />
                 </div>
               </div>
-            </ScrollReveal>
-
-            {/* Savings Meters Section */}
-            <ScrollReveal delay={0.2}>
-              <div className="mb-6">
-                <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">What could you do with the savings?</p>
-                <h3 className="text-xl font-semibold text-neutral-900">
-                  Your {formatCurrency(projection.savings)} could buy...
-                </h3>
-              </div>
-              <SavingsMetersGrid savings={projection.savings} />
             </ScrollReveal>
 
           </div>
