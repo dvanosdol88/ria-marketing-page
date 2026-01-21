@@ -9,35 +9,14 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  ReferenceLine,
 } from "recharts";
 import { formatCurrency } from "@/lib/format";
 import { motion } from "framer-motion";
 
 /**
- * PRO DASHBOARD CHART COMPONENT
+ * PRO DASHBOARD CHART COMPONENT - LIGHT MODE
  * ------------------------------------------------------------------
- * This component implements the "Pro Dashboard" visualization (Idea 1 + Idea 3).
- *
- * FEATURES:
- * 1. Dark Theme / Glassmorphism:
- *    - Uses a dark background (neutral-900) to create high contrast.
- *    - Uses backdrop filters for a modern feel.
- *
- * 2. Dynamic Annotations (The "HUD" Tooltip):
- *    - A custom tooltip acting as a Heads-Up Display.
- *    - Explicitly highlights the "Loss" (Gap) between the two lines.
- *
- * 3. Enhanced Visuals:
- *    - Gradients for area fills.
- *    - Lighter axis labels for readability on dark backgrounds.
- *
- * UNDO INSTRUCTIONS:
- * To revert to the original light-theme chart:
- * 1. Open `src/components/CostAnalysisCalculator.tsx`.
- * 2. Remove the import of `ProFeeChart`.
- * 3. Uncomment or restore the original Recharts JSX block.
- *    (See `src/components/CostAnalysisCalculator.original.tsx` for reference).
+ * "Clean Financial Dashboard" style.
  */
 
 type ChartDataPoint = {
@@ -48,13 +27,15 @@ type ChartDataPoint = {
 
 type ProFeeChartProps = {
   data: ChartDataPoint[];
-  finalLost: number; // Total amount lost (savings)
+  finalLost: number;
+  finalValueWithoutFees: number;
+  finalValueWithFees: number;
 };
 
 const CustomHUDTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
-    const withoutFees = payload[0].value; // First Area
-    const withFees = payload[1].value;    // Second Area
+    const withoutFees = payload[0].value;
+    const withFees = payload[1].value;
     const lostAmount = withoutFees - withFees;
 
     return (
@@ -62,40 +43,40 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.1 }}
-        className="backdrop-blur-xl bg-black/80 border border-white/10 p-4 rounded-xl shadow-2xl min-w-[200px]"
+        className="bg-white/95 backdrop-blur-sm border border-slate-100 p-4 rounded-xl shadow-xl min-w-[200px]"
       >
-        <p className="text-stone-400 text-xs font-medium mb-2 uppercase tracking-wider">
+        <p className="text-slate-500 text-xs font-medium mb-2 uppercase tracking-wider">
           Year {label}
         </p>
         
         <div className="space-y-3">
           {/* Potential Value */}
           <div>
-            <div className="flex justify-between items-center text-xs text-indigo-300 mb-1">
+            <div className="flex justify-between items-center text-xs text-emerald-600 mb-1">
               <span>Potential Growth</span>
-              <span className="h-1.5 w-1.5 rounded-full bg-indigo-400"></span>
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
             </div>
-            <p className="text-xl font-bold text-white tabular-nums">
+            <p className="text-xl font-bold text-slate-900 tabular-nums">
               {formatCurrency(withoutFees)}
             </p>
           </div>
 
           {/* Actual Value */}
           <div>
-            <div className="flex justify-between items-center text-xs text-emerald-300 mb-1">
+            <div className="flex justify-between items-center text-xs text-slate-500 mb-1">
               <span>Actual Value</span>
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+              <span className="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
             </div>
-            <p className="text-xl font-bold text-white tabular-nums">
+            <p className="text-xl font-bold text-slate-900 tabular-nums">
               {formatCurrency(withFees)}
             </p>
           </div>
 
           {/* The Gap / Loss */}
-          <div className="pt-2 border-t border-white/10 mt-2">
+          <div className="pt-2 border-t border-slate-100 mt-2">
             <div className="flex justify-between items-center">
-              <span className="text-xs text-red-400 font-semibold uppercase">Fee Impact</span>
-              <span className="text-red-400 font-bold tabular-nums">
+              <span className="text-xs text-red-500 font-semibold uppercase">Fee Impact</span>
+              <span className="text-red-600 font-bold tabular-nums">
                 -{formatCurrency(lostAmount)}
               </span>
             </div>
@@ -107,83 +88,73 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export function ProFeeChart({ data, finalLost }: ProFeeChartProps) {
+export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValueWithFees }: ProFeeChartProps) {
   return (
-    <div className="relative w-full h-full bg-neutral-900 rounded-2xl overflow-hidden shadow-2xl border border-white/5 ring-1 ring-black/5">
-      {/* Background Glow Effect (Idea 4 - Subtle inclusion) */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-900/20 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
-      <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-emerald-900/10 rounded-full blur-[80px] pointer-events-none translate-y-1/3 -translate-x-1/3" />
-
-      {/* Header / Title Overlay */}
-      <div className="absolute top-6 left-6 z-10 pointer-events-none">
-        <h3 className="text-white font-bold text-lg tracking-tight">Portfolio Trajectory</h3>
-        <p className="text-stone-400 text-sm mt-1">
-          Interactive projection of fee impact over time
-        </p>
-      </div>
-
-      <div className="absolute top-6 right-6 z-10 text-right pointer-events-none">
-         <div className="inline-block px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20 backdrop-blur-sm">
-            <p className="text-xs font-semibold text-red-400">
-               Total Impact: <span className="text-red-300">-{formatCurrency(finalLost)}</span>
-            </p>
-         </div>
+    <div className="relative w-full h-full bg-white rounded-t-2xl overflow-hidden">
+      
+      {/* Floating Legend Overlay - Upper Left Quadrant */}
+      <div className="absolute top-8 left-8 z-10 pointer-events-none space-y-4">
+        <div>
+          <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-1">Projected Value</p>
+          <p className="text-3xl font-bold text-emerald-700 tracking-tight">{formatCurrency(finalValueWithoutFees)}</p>
+        </div>
+        <div>
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">With Fees</p>
+          <p className="text-2xl font-semibold text-slate-600 tracking-tight">{formatCurrency(finalValueWithFees)}</p>
+        </div>
+        <div className="pt-2">
+           <p className="text-xs font-semibold text-red-500 uppercase tracking-wider mb-1">Lost to Fees</p>
+           <p className="text-2xl font-bold text-red-600 tracking-tight">-{formatCurrency(finalLost)}</p>
+        </div>
       </div>
 
       {/* The Chart */}
-      <div className="w-full h-full pt-20 pb-4 pr-4 pl-0">
+      <div className="w-full h-full pt-4 pb-0 pr-0 pl-0">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
             <defs>
-              {/* Custom Gradients for Dark Mode */}
-              <linearGradient id="proGreyGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#818cf8" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#818cf8" stopOpacity={0.05} />
+              <linearGradient id="emeraldGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#059669" stopOpacity={0.2} />
+                <stop offset="100%" stopColor="#059669" stopOpacity={0.0} />
               </linearGradient>
-              <linearGradient id="proGreenGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#34d399" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#34d399" stopOpacity={0.05} />
+              <linearGradient id="slateGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#64748b" stopOpacity={0.2} />
+                <stop offset="100%" stopColor="#64748b" stopOpacity={0.0} />
               </linearGradient>
             </defs>
 
-            <CartesianGrid strokeDasharray="3 3" stroke="#262626" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
             
             <XAxis 
               dataKey="year" 
               tickLine={false} 
               axisLine={false} 
-              tick={{ fill: "#78716c", fontSize: 12 }} 
+              tick={{ fill: "#9ca3af", fontSize: 12 }} 
               dy={10}
             />
             
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tick={{ fill: "#78716c", fontSize: 12 }}
-              tickFormatter={(value) => `${value / 1000}k`}
-              dx={-10}
-            />
+            <YAxis hide domain={['dataMin', 'auto']} />
 
-            <Tooltip content={<CustomHUDTooltip />} cursor={{ stroke: "#525252", strokeWidth: 1, strokeDasharray: "4 4" }} />
+            <Tooltip content={<CustomHUDTooltip />} cursor={{ stroke: "#e5e7eb", strokeWidth: 1, strokeDasharray: "4 4" }} />
 
-            {/* Potential Growth (Upper Line) */}
+            {/* Potential Growth (Upper Line) - Emerald Green */}
             <Area
               type="monotone"
               dataKey="withoutFees"
-              stroke="#818cf8" // Indigo-400
+              stroke="#059669" 
               strokeWidth={3}
-              fill="url(#proGreyGradient)"
-              activeDot={{ r: 6, fill: "#818cf8", stroke: "#fff", strokeWidth: 2 }}
+              fill="url(#emeraldGradient)"
+              activeDot={{ r: 6, fill: "#059669", stroke: "#fff", strokeWidth: 2 }}
             />
 
-            {/* Actual Value (Lower Line) */}
+            {/* Actual Value (Lower Line) - Muted Blue/Gray */}
             <Area
               type="monotone"
               dataKey="withFees"
-              stroke="#34d399" // Emerald-400
+              stroke="#64748b" 
               strokeWidth={3}
-              fill="url(#proGreenGradient)"
-              activeDot={{ r: 6, fill: "#34d399", stroke: "#fff", strokeWidth: 2 }}
+              fill="url(#slateGradient)"
+              activeDot={{ r: 6, fill: "#64748b", stroke: "#fff", strokeWidth: 2 }}
             />
           </AreaChart>
         </ResponsiveContainer>
