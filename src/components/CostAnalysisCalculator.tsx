@@ -16,6 +16,7 @@ import { Quiz } from "./Quiz";
 
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { SavingsMetersGrid } from "@/components/save/SavingsMetersGrid";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
 
@@ -200,39 +201,22 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8 pt-2 pb-20">
           <div className="flex flex-col gap-8">
-            {/* 1) Summary metrics */}
-            <ScrollReveal className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <div className="card p-4">
-                <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">Projected value (no fees)</p>
-                <p className="mt-2 text-2xl font-semibold text-neutral-900">{formatCurrency(projection.finalValueWithoutFees)}</p>
-                <p className="text-sm text-neutral-600">Over {state.years} years at {formatPercent(state.annualGrowthPercent)}.</p>
-              </div>
-              <div className="card p-4">
-                <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">Projected value (with fees)</p>
-                <p className="mt-2 text-2xl font-semibold text-neutral-900">{formatCurrency(projection.finalValueWithFees)}</p>
-                <p className="text-sm text-neutral-600">Assuming {formatPercent(state.annualFeePercent)} advisory fees.</p>
-              </div>
-              <div className="card p-4">
-                <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">Lost to fees</p>
-                <p className="mt-2 text-2xl font-semibold text-danger-600">{formatCurrency(projection.savings)}</p>
-                <p className="text-sm text-neutral-600">That is money that could keep compounding for you.</p>
-              </div>
-            </ScrollReveal>
-
-            {/* 2) Unified Calculator Card */}
-            <ScrollReveal delay={0.2} className="card bg-white overflow-hidden shadow-xl ring-1 ring-black/5">
+            
+            {/* Unified Calculator Card */}
+            <ScrollReveal className="card bg-white overflow-hidden shadow-xl ring-1 ring-black/5 rounded-2xl">
               
               {/* Chart Section - Full Width */}
               <div className="h-[450px] lg:h-[550px] w-full bg-neutral-900 relative">
-                <ProFeeChart data={projection.series} finalLost={projection.savings} />
+                <ProFeeChart 
+                  data={projection.series} 
+                  finalLost={projection.savings}
+                  finalValueWithoutFees={projection.finalValueWithoutFees}
+                  finalValueWithFees={projection.finalValueWithFees}
+                />
               </div>
 
               {/* Inputs Section - Below Chart */}
               <div className="p-6 lg:p-8 bg-white border-t border-gray-100">
-                <h3 className="text-sm font-semibold text-neutral-500 uppercase tracking-wider mb-6">
-                  Adjust your scenario
-                </h3>
-                
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                   <Slider
                     label="Advisory fee"
@@ -275,22 +259,17 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
               </div>
             </ScrollReveal>
 
-            {/* 4) Actions */}
-            <div className="flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={copyShareUrl}
-                className="inline-flex items-center gap-2 rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
-              >
-                <Copy size={16} /> Share this scenario
-              </button>
-              <Link href={{ pathname: "/save", query: linkQuery }} className="text-sm font-semibold text-neutral-900 no-underline hover:text-neutral-700">
-                See deeper proof →
-              </Link>
-              <Link href={{ pathname: "/how-it-works", query: linkQuery }} className="text-sm font-semibold text-neutral-900 no-underline hover:text-neutral-700">
-                How it works →
-              </Link>
-            </div>
+            {/* Savings Meters Section */}
+            <ScrollReveal delay={0.2}>
+              <div className="mb-6">
+                <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">What could you do with the savings?</p>
+                <h3 className="text-xl font-semibold text-neutral-900">
+                  Your {formatCurrency(projection.savings)} could buy...
+                </h3>
+              </div>
+              <SavingsMetersGrid savings={projection.savings} />
+            </ScrollReveal>
+
           </div>
         </div>
       </section>
