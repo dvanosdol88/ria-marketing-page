@@ -14,7 +14,6 @@ import { ValueCards } from "./value-cards/ValueCards";
 import QuoteTicker from "./QuoteTicker";
 import { Quiz } from "./Quiz";
 
-import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
@@ -221,13 +220,52 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
             {/* 2) Chart and Controls Dashboard */}
             <div className="calculator-dashboard">
-              {/* Chart Column - PRO DASHBOARD VERSION */}
-              {/* 
-                  NOTE: Replaced original light-theme chart with ProFeeChart (Dark Mode).
-                  To undo, see src/components/CostAnalysisCalculator.original.tsx
-              */}
-              <ScrollReveal className="chart-column h-[450px] lg:h-[500px]" delay={0.2}>
-                <ProFeeChart data={projection.series} finalLost={projection.savings} />
+              {/* Chart Column */}
+              <ScrollReveal className="chart-column card p-6 lg:p-8" delay={0.2}>
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">Growth vs. fee drag</p>
+                      <h3 className="text-lg font-semibold text-neutral-900">Your dollars over time</h3>
+                    </div>
+                    <div className="text-right text-xs text-neutral-500">
+                      <p>Without fees: {formatCurrency(projection.finalValueWithoutFees)}</p>
+                      <p>With {formatPercent(state.annualFeePercent)} fees: {formatCurrency(projection.finalValueWithFees)}</p>
+                    </div>
+                  </div>
+
+                  <div className="h-[320px] w-full lg:h-[420px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart data={projection.series} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
+                        <defs>
+                          <linearGradient id="greyGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#9ca3af" stopOpacity={0.3} />
+                            <stop offset="100%" stopColor="#9ca3af" stopOpacity={0.05} />
+                          </linearGradient>
+                          <linearGradient id="greenGradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#22c55e" stopOpacity={0.25} />
+                            <stop offset="100%" stopColor="#22c55e" stopOpacity={0.02} />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                        <XAxis dataKey="year" tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 12 }} />
+                        <YAxis
+                          tickLine={false}
+                          axisLine={false}
+                          tick={{ fill: "#64748b", fontSize: 12 }}
+                          tickFormatter={(value) => `${value / 1000}k`}
+                        />
+                        <Tooltip
+                          formatter={(value: number) => formatCurrency(value)}
+                          labelFormatter={(label) => `${label} years`}
+                          contentStyle={{ borderRadius: 12, borderColor: "#e2e8f0" }}
+                        />
+                        <Area type="monotone" dataKey="withoutFees" stroke="#6366f1" fill="url(#greyGradient)" />
+                        <Area type="monotone" dataKey="withFees" stroke="#22c55e" fill="url(#greenGradient)" />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
               </ScrollReveal>
 
               {/* Inputs Column */}
