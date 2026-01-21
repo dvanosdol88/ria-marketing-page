@@ -3,9 +3,9 @@
 import { savingsMeters } from "@/config/savingsMetersConfig";
 import { SavingsMeter } from "./SavingsMeter";
 
-interface Props {
+type Props = {
   savings: number;
-}
+};
 
 export function SavingsMetersGrid({ savings }: Props) {
   return (

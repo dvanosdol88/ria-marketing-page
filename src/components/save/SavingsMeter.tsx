@@ -4,10 +4,10 @@ import { useMemo } from "react";
 import { SavingsMeterConfig } from "@/config/savingsMetersConfig";
 import { formatCurrency } from "@/lib/format";
 
-interface Props {
+type Props = {
   meter: SavingsMeterConfig;
   savings: number;
-}
+};
 
 export function SavingsMeter({ meter, savings }: Props) {
   const { percentage, label } = useMemo(() => {
@@ -18,35 +18,30 @@ export function SavingsMeter({ meter, savings }: Props) {
 
   const Icon = meter.icon;
 
-  // Extract text color from bg color (e.g., "bg-blue-500" -> "text-blue-500")
-  const textColor = meter.color.replace("bg-", "text-");
-
   return (
-    <div className="card p-5">
-      <div className="flex items-start gap-3">
-        <div className={`p-2 rounded-lg ${meter.color} bg-opacity-10`}>
-          <Icon className={`w-5 h-5 ${textColor}`} />
+    <div className="card p-4 flex flex-col gap-3">
+      <div className="flex items-center gap-3">
+        <div className={`${meter.color} p-2 rounded-lg text-white`}>
+          <Icon size={20} />
         </div>
-        <div className="flex-1 min-w-0">
+        <div>
           <h4 className="font-semibold text-neutral-900">{meter.title}</h4>
-          <p className="text-sm text-neutral-500">{meter.description}</p>
+          <p className="text-xs text-neutral-500">{meter.description}</p>
         </div>
       </div>
 
-      {/* Progress Bar */}
-      <div className="mt-4">
-        <div className="h-3 bg-neutral-100 rounded-full overflow-hidden">
-          <div
-            className={`h-full ${meter.color} rounded-full transition-all duration-700 ease-out`}
-            style={{ width: `${percentage}%` }}
-          />
-        </div>
+      {/* Progress bar */}
+      <div className="w-full h-3 bg-neutral-100 rounded-full overflow-hidden">
+        <div
+          className={`h-full ${meter.color} transition-all duration-700 ease-out rounded-full`}
+          style={{ width: `${percentage}%` }}
+        />
       </div>
 
-      {/* Stats Row */}
-      <div className="mt-3 flex justify-between items-center text-sm">
-        <span className="text-neutral-600">
-          {formatCurrency(savings)} of {formatCurrency(meter.targetAmount)}
+      {/* Stats row */}
+      <div className="flex justify-between text-sm">
+        <span className="text-neutral-500">
+          Your savings: {formatCurrency(savings)}
         </span>
         <span className="font-semibold text-neutral-900">{label}</span>
       </div>

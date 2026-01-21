@@ -97,6 +97,17 @@ export function SaveProofClient({ calculatorState, searchParams }: Props) {
           <FeeBreakdownBars data={projection.series} />
         </div>
       </section>
+
+      {/* Savings Meters Section */}
+      <section className="section-shell">
+        <div className="mb-6">
+          <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">What could you do with the savings?</p>
+          <h3 className="text-xl font-semibold text-neutral-900">
+            Your {formatCurrency(projection.savings)} could buy...
+          </h3>
+        </div>
+        <SavingsMetersGrid savings={projection.savings} />
+      </section>
     </div>
   );
 }
