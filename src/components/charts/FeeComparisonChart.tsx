@@ -6,12 +6,11 @@ import { formatCurrency } from "@/lib/format";
 
 type Props = {
   data: ProjectionYear[];
-  height?: string;
 };
 
-export function FeeComparisonChart({ data, height = "h-80" }: Props) {
+export function FeeComparisonChart({ data }: Props) {
   return (
-    <div className={`${height} w-full`}>
+    <div className="h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />

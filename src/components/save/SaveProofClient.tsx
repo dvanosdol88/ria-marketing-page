@@ -6,7 +6,6 @@ import { CalculatorState, buildQueryFromState, paramsToRecord } from "@/lib/calc
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { FeeBreakdownBars } from "@/components/charts/FeeBreakdownBars";
 import { FeeComparisonChart } from "@/components/charts/FeeComparisonChart";
-import { SavingsMetersGrid } from "./SavingsMetersGrid";
 import Link from "next/link";
 
 type Props = {
@@ -53,10 +52,9 @@ export function SaveProofClient({ calculatorState, searchParams }: Props) {
         </div>
       </header>
 
-      {/* Primary Chart - Full Width, Larger */}
-      <section className="section-shell">
+      <section className="section-shell grid gap-8 lg:grid-cols-2">
         <div className="card p-6">
-          <div className="flex items-start justify-between mb-4">
+          <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">Portfolio growth</p>
               <h3 className="text-xl font-semibold text-neutral-900">With and without fees</h3>
@@ -66,25 +64,13 @@ export function SaveProofClient({ calculatorState, searchParams }: Props) {
               <p>With fees: {formatCurrency(projection.finalValueWithFees)}</p>
             </div>
           </div>
-          <FeeComparisonChart data={projection.series} height="h-96" />
+          <div className="mt-4">
+            <FeeComparisonChart data={projection.series} />
+          </div>
         </div>
-      </section>
 
-      {/* Savings Meters Section */}
-      <section className="section-shell">
-        <div className="mb-6">
-          <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">What could you do with the savings?</p>
-          <h3 className="text-xl font-semibold text-neutral-900">
-            Your {formatCurrency(projection.savings)} could buy...
-          </h3>
-        </div>
-        <SavingsMetersGrid savings={projection.savings} />
-      </section>
-
-      {/* Secondary Chart - Fee Breakdown */}
-      <section className="section-shell">
         <div className="card p-6">
-          <div className="flex items-start justify-between mb-4">
+          <div className="flex items-start justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">Fee drag</p>
               <h3 className="text-xl font-semibold text-neutral-900">Cumulative fees paid</h3>
@@ -94,7 +80,9 @@ export function SaveProofClient({ calculatorState, searchParams }: Props) {
               <p>Average per year: {formatCurrency(projection.totalFees / calculatorState.years)}</p>
             </div>
           </div>
-          <FeeBreakdownBars data={projection.series} />
+          <div className="mt-4">
+            <FeeBreakdownBars data={projection.series} />
+          </div>
         </div>
       </section>
     </div>
