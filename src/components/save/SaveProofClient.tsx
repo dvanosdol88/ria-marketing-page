@@ -6,6 +6,7 @@ import { CalculatorState, buildQueryFromState, paramsToRecord } from "@/lib/calc
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { FeeBreakdownBars } from "@/components/charts/FeeBreakdownBars";
 import { FeeComparisonChart } from "@/components/charts/FeeComparisonChart";
+import { SavingsMetersGrid } from "@/components/save/SavingsMetersGrid";
 import Link from "next/link";
 
 type Props = {
@@ -84,6 +85,17 @@ export function SaveProofClient({ calculatorState, searchParams }: Props) {
             <FeeBreakdownBars data={projection.series} />
           </div>
         </div>
+      </section>
+
+      {/* Savings Meters Section */}
+      <section className="section-shell">
+        <div className="mb-6">
+          <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">What could you do with the savings?</p>
+          <h3 className="text-xl font-semibold text-neutral-900">
+            Your {formatCurrency(projection.savings)} could buy...
+          </h3>
+        </div>
+        <SavingsMetersGrid savings={projection.savings} />
       </section>
     </div>
   );
