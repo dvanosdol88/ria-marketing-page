@@ -1,4 +1,4 @@
-# Cursor Rules for finwise-CODEX
+# Cursor Rules for RIA Marketing Page
 
 ## Autonomy Level: FULL
 
@@ -14,7 +14,7 @@ When given a task, complete it fully. Make reasonable assumptions. Fix errors yo
 
 ## Project Context
 
-- **Project:** finwise-CODEX (you-are-paying-too-much.com)
+- **Project:** RIA Marketing Page (you-are-paying-too-much.com)
 - **Stack:** Next.js 14 + TypeScript + Tailwind CSS + Recharts
 - **Deployment:** Vercel
 
