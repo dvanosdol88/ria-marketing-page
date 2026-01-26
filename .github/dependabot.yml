@@ -5,6 +5,10 @@ updates:
     schedule:
       interval: "weekly"
     groups:
-      dependencies:
+      # Group for minor and patch updates for all packages
+      safe-updates:
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
