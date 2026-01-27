@@ -35,10 +35,12 @@ export function buildFeeProjection({
   const series: ProjectionYear[] = [];
 
   for (let year = 0; year <= years; year += 1) {
+    let yearlyFee = 0;
+
     if (year > 0) {
       withoutFees = withoutFees * (1 + growthRate);
       const grossWithFees = withFees * (1 + growthRate);
-      const yearlyFee = grossWithFees * feeRate;
+      yearlyFee = grossWithFees * feeRate;
       withFees = grossWithFees - yearlyFee;
       cumulativeFees += yearlyFee;
     }
@@ -47,7 +49,7 @@ export function buildFeeProjection({
       year,
       withoutFees,
       withFees,
-      annualFeesPaid: year === 0 ? 0 : withFees * feeRate,
+      annualFeesPaid: yearlyFee,
       cumulativeFees,
     });
   }
