@@ -94,18 +94,37 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
     <div className="relative w-full h-full bg-white rounded-t-2xl overflow-hidden">
       
       {/* Floating Legend Overlay - Upper Left Quadrant */}
-      <div className="absolute top-8 left-8 z-10 pointer-events-none space-y-4">
-        <div>
-          <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider mb-1">Projected Value</p>
-          <p className="text-2xl font-semibold text-emerald-700 tracking-tight">{formatCurrency(finalValueWithoutFees)}</p>
-        </div>
-        <div>
-           <p className="text-xs font-semibold text-red-500 uppercase tracking-wider mb-1">Lost to Fees</p>
-           <p className="text-3xl font-bold text-red-600 tracking-tight">-{formatCurrency(finalLost)}</p>
-        </div>
-        <div>
-          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">With Fees</p>
-          <p className="text-2xl font-semibold text-slate-600 tracking-tight">{formatCurrency(finalValueWithFees)}</p>
+      <div className="absolute top-8 left-8 z-10 pointer-events-none">
+        <div className="grid grid-cols-[auto_auto] gap-x-4 items-baseline text-right">
+          
+          {/* Row 1: Projected Value */}
+          <p className="text-2xl font-semibold text-emerald-700 tracking-tight tabular-nums">
+            {formatCurrency(finalValueWithoutFees)}
+          </p>
+          <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider text-left">
+            Projected Value
+          </p>
+
+          {/* Row 2: Lost to Fees */}
+          <div className="border-b border-neutral-300 pb-2 mb-2">
+            <p className="text-3xl font-bold text-red-600 tracking-tight tabular-nums">
+              -{formatCurrency(finalLost)}
+            </p>
+          </div>
+          <div className="border-b border-transparent pb-2 mb-2">
+            <p className="text-xs font-semibold text-red-500 uppercase tracking-wider text-left">
+              Lost to Fees
+            </p>
+          </div>
+
+          {/* Row 3: With Fees */}
+          <p className="text-2xl font-semibold text-slate-600 tracking-tight tabular-nums">
+            {formatCurrency(finalValueWithFees)}
+          </p>
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">
+            With Fees
+          </p>
+          
         </div>
       </div>
 
