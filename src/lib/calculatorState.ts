@@ -19,10 +19,18 @@ export function parseNumber(value: string | null, fallback: number, min: number,
   return Math.min(Math.max(parsed, min), max);
 }
 
+export function parseInteger(value: string | null, fallback: number, min: number, max: number): number {
+  if (!value) return fallback;
+  const parsed = Number.parseFloat(value);
+  if (Number.isNaN(parsed)) return fallback;
+  const rounded = Math.round(parsed);
+  return Math.min(Math.max(rounded, min), max);
+}
+
 export function parseCalculatorState(searchParams: URLSearchParams): CalculatorState {
   return {
     portfolioValue: parseNumber(searchParams.get("portfolio"), DEFAULT_STATE.portfolioValue, 10000, 10000000),
-    years: parseNumber(searchParams.get("years"), DEFAULT_STATE.years, 1, 40),
+    years: parseInteger(searchParams.get("years"), DEFAULT_STATE.years, 1, 40),
     annualGrowthPercent: parseNumber(searchParams.get("growth"), DEFAULT_STATE.annualGrowthPercent, 0, 20),
     annualFeePercent: parseNumber(searchParams.get("fee"), DEFAULT_STATE.annualFeePercent, 0, 3),
   };
