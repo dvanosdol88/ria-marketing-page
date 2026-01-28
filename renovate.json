@@ -6,7 +6,6 @@
     ":semanticCommits",
     ":timezone(America/New_York)"
   ],
-  "schedule": ["after 10pm every weekday", "every weekend"],
   "minimumReleaseAge": "7 days",
   "prConcurrentLimit": 10,
   "rebaseWhen": "conflicted",
