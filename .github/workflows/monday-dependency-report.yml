@@ -31,12 +31,13 @@ jobs:
             if (!dashboard) {
               core.setOutput('found', 'false');
               core.setOutput('summary', 'No Dependency Dashboard found. Renovate may not be configured.');
+              core.setOutput('body', '');
               return;
             }
             
             core.setOutput('found', 'true');
             core.setOutput('url', dashboard.html_url);
-            core.setOutput('body', dashboard.body);
+            core.setOutput('body', dashboard.body || '');
             
             // Parse the dashboard for pending updates
             const body = dashboard.body || '';
@@ -44,31 +45,83 @@ jobs:
             // Count unchecked items (pending approvals)
             const pendingApprovals = (body.match(/- \[ \]/g) || []).length;
             const openPRs = (body.match(/- \[x\]/g) || []).length;
-            
+
             // Check for rate-limited or errored items
             const hasErrors = body.includes('⚠') || body.includes('❌');
             const hasRateLimited = body.toLowerCase().includes('rate-limited');
             
             // Build summary
-            let summary = `📊 *Dependency Dashboard Summary*\n\n`;
+            let summary = `📊 *Dashboard Summary*\n`;
             summary += `• Awaiting Approval: *${pendingApprovals}* updates\n`;
-            summary += `• Open PRs: *${openPRs}* in progress\n`;
+            summary += `• Open PRs: *${openPRs}* in progress`;
             
             if (hasErrors) {
-              summary += `• ⚠️ *Errors detected* - check dashboard\n`;
+              summary += `\n• ⚠️ *Errors detected* - check dashboard`;
             }
             if (hasRateLimited) {
-              summary += `• 🐢 Some updates are rate-limited\n`;
-            }
-            
-            if (pendingApprovals === 0 && !hasErrors) {
-              summary += `\n✅ *All clear!* No action needed this week.`;
-            } else if (pendingApprovals > 0) {
-              summary += `\n👉 <${dashboard.html_url}|Open Dashboard> to review.`;
+              summary += `\n• 🐢 Some updates are rate-limited`;
             }
             
             core.setOutput('summary', summary);
             core.setOutput('pending', pendingApprovals.toString());
+            core.setOutput('dashboard_url', dashboard.html_url);
+
+      - name: AI Risk Assessment
+        id: ai_analysis
+        if: steps.dashboard.outputs.found == 'true' && steps.dashboard.outputs.pending != '0'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DASHBOARD_BODY: ${{ steps.dashboard.outputs.body }}
+        run: |
+          # Create the prompt
+          PROMPT="You are a dependency update risk assessor for a Next.js/React project.
+
+          Analyze this Renovate Dependency Dashboard and provide a brief risk assessment for each pending update (items with unchecked boxes).
+
+          For each pending update, provide:
+          - Package name and version change
+          - Risk level: LOW (patch/minor, safe), MEDIUM (minor with notable changes), or HIGH (major version, breaking changes likely)
+          - One-line explanation
+
+          Keep it concise - max 3-4 lines per package. Focus only on updates awaiting approval (unchecked boxes).
+          If there are more than 5 pending updates, summarize the top 5 highest-risk ones.
+
+          Format for Slack (use *bold* for emphasis, no markdown headers).
+
+          Dashboard content:
+          $DASHBOARD_BODY"
+
+          # Call Claude API
+          RESPONSE=$(curl -s https://api.anthropic.com/v1/messages \
+            -H "Content-Type: application/json" \
+            -H "x-api-key: $ANTHROPIC_API_KEY" \
+            -H "anthropic-version: 2023-06-01" \
+            -d "$(jq -n \
+              --arg prompt "$PROMPT" \
+              '{
+                "model": "claude-sonnet-4-20250514",
+                "max_tokens": 1024,
+                "messages": [{"role": "user", "content": $prompt}]
+              }')")
+
+          # Extract the text response
+          AI_TEXT=$(echo "$RESPONSE" | jq -r '.content[0].text // "Unable to generate AI analysis."')
+          
+          # Handle potential errors
+          if echo "$RESPONSE" | jq -e '.error' > /dev/null 2>&1; then
+            AI_TEXT="⚠️ AI analysis unavailable: $(echo "$RESPONSE" | jq -r '.error.message')"
+          fi
+
+          # Output for next step (escape for GitHub Actions)
+          echo "analysis<<EOF" >> $GITHUB_OUTPUT
+          echo "$AI_TEXT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Set AI Output Fallback
+        id: ai_fallback
+        if: steps.ai_analysis.outcome == 'skipped' || steps.dashboard.outputs.pending == '0'
+        run: |
+          echo "analysis=✅ *All clear!* No pending updates require review this week." >> $GITHUB_OUTPUT
 
       - name: Send to Slack
         if: always()
@@ -90,6 +143,26 @@ jobs:
                   "text": {
                     "type": "mrkdwn",
                     "text": ${{ toJSON(steps.dashboard.outputs.summary) }}
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ${{ steps.ai_analysis.outputs.analysis && toJSON(format('🤖 *AI Risk Assessment*\n\n{0}', steps.ai_analysis.outputs.analysis)) || toJSON(steps.ai_fallback.outputs.analysis) }}
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "👉 <${{ steps.dashboard.outputs.dashboard_url }}|Open Dashboard> to review"
                   }
                 },
                 {
