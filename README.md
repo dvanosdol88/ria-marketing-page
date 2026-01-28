@@ -149,3 +149,11 @@ Private repository. All rights reserved.
 
 David J. Van Osdol, CFA, CFP
 [you-are-paying-too-much.com](https://you-are-paying-too-much.com)
+
+## 🤖 Dependency Management
+
+We use **Renovate** to automate dependency updates.
+* **Routine Updates:** Handled silently by the bot.
+* **Major Updates:** Managed via the pinned [Dependency Dashboard](https://github.com/dvanosdol88/ria-marketing-page/issues) issue.
+
+For full details on our automerge and safety policies, see [DEPENDENCY_STRATEGY.md](./DEPENDENCY_STRATEGY.md).
