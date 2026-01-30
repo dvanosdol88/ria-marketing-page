@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upgrade Your Advice - Extracted Sections</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-600: #4f46e5;
+      --brand-700: #4338ca;
+      --neutral-50: #fafafa;
+      --neutral-100: #f5f5f5;
+      --neutral-200: #e5e5e5;
+      --neutral-500: #737373;
+      --neutral-600: #525252;
+      --neutral-700: #404040;
+      --neutral-800: #262626;
+      --neutral-900: #171717;
+      --emerald-50: #ecfdf5;
+      --emerald-600: #059669;
+      --emerald-700: #047857;
+      --emerald-900: #064e3b;
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-400: #94a3b8;
+      --slate-500: #64748b;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --slate-900: #0f172a;
+      --blue-50: #eff6ff;
+      --blue-600: #2563eb;
+      --blue-700: #1d4ed8;
+      --blue-800: #1e40af;
+      --blue-900: #1e3a8a;
+      --stone-50: #fafaf9;
+      --stone-100: #f5f5f4;
+      --stone-200: #e7e5e4;
+      --stone-400: #a8a29e;
+      --stone-500: #78716c;
+      --stone-600: #57534e;
+      --stone-700: #44403c;
+      --stone-800: #292524;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--neutral-50);
+      color: var(--neutral-900);
+      line-height: 1.6;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 24px; }
+    .version-header {
+      background: var(--slate-800);
+      color: white;
+      padding: 16px 24px;
+      margin: 48px 0 24px 0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .version-header:first-child { margin-top: 0; }
+    .section-label {
+      background: var(--neutral-100);
+      color: var(--neutral-600);
+      padding: 8px 16px;
+      margin: 24px 0 16px 0;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-left: 4px solid var(--brand-600);
+    }
+    .hero-section {
+      background: linear-gradient(to bottom, var(--neutral-100), white);
+      padding: 48px 32px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+    .hero-headline {
+      font-size: 2.25rem;
+      font-weight: 800;
+      font-style: italic;
+      color: var(--neutral-900);
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+    .hero-subtext {
+      font-size: 1.125rem;
+      color: var(--neutral-700);
+      line-height: 1.7;
+    }
+    .highlight-yellow {
+      background: #FFFF00;
+      padding: 2px 6px;
+      font-weight: 700;
+    }
+    .yellow-box {
+      background: #FFFF00;
+      border: 4px solid #FFD700;
+      padding: 20px 24px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+    .photo-placeholder {
+      width: 200px;
+      height: 240px;
+      background: linear-gradient(135deg, #1e3a5f, #2d5a87);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+      margin: 24px auto;
+    }
+    .problem-section {
+      background: var(--neutral-100);
+      padding: 40px 32px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+    .section-heading {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--neutral-900);
+      margin-bottom: 16px;
+    }
+    .section-text {
+      color: var(--neutral-700);
+      margin-bottom: 16px;
+    }
+    .arrow-list {
+      list-style: none;
+      padding-left: 8px;
+      margin: 16px 0;
+    }
+    .arrow-list li {
+      padding-left: 24px;
+      margin-bottom: 12px;
+      color: var(--neutral-700);
+      position: relative;
+    }
+    .arrow-list li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--brand-600);
+    }
+    .muted-text { color: var(--neutral-500); }
+    .italic-text { font-style: italic; }
+    .model-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 24px 0;
+    }
+    .model-card {
+      padding: 24px;
+      border-radius: 12px;
+      border: 2px solid;
+    }
+    .model-card.traditional {
+      background: white;
+      border-color: var(--neutral-200);
+    }
+    .model-card.my-model {
+      background: #ecfdf5;
+      border-color: #86efac;
+    }
+    .model-card-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+    .model-card.traditional .model-card-title { color: var(--neutral-500); }
+    .model-card.my-model .model-card-title { color: var(--emerald-700); }
+    .model-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+    .model-item .icon { flex-shrink: 0; font-weight: 700; }
+    .model-card.traditional .icon { color: #ef4444; }
+    .model-card.my-model .icon { color: var(--emerald-600); }
+    .credential-card {
+      background: var(--slate-700);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--slate-600);
+    }
+    .credential-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+    .credential-card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: white;
+    }
+    .credential-card-subtitle {
+      font-size: 14px;
+      color: var(--slate-400);
+      margin-bottom: 16px;
+    }
+    .credential-card-text {
+      font-size: 14px;
+      color: #fcd34d;
+      line-height: 1.6;
+    }
+    .credential-badge {
+      width: 48px;
+      height: 48px;
+      background: white;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--slate-800);
+    }
+    .cta-section {
+      background: var(--slate-900);
+      padding: 48px 32px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .cta-heading {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .cta-text {
+      color: var(--slate-300);
+      margin-bottom: 24px;
+    }
+    .practice-section {
+      background: white;
+      padding: 40px 32px;
+      border-radius: 12px;
+      border: 1px solid var(--neutral-200);
+      margin-bottom: 24px;
+    }
+    .practice-item {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--neutral-100);
+    }
+    .practice-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    .practice-icon { font-size: 24px; flex-shrink: 0; }
+    .practice-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--neutral-900);
+      margin-bottom: 4px;
+    }
+    .practice-text {
+      color: var(--neutral-600);
+      font-size: 15px;
+    }
+    .edu-section {
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      border: 1px solid var(--neutral-200);
+      margin-bottom: 24px;
+    }
+    .edu-heading {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--neutral-900);
+      margin-bottom: 16px;
+    }
+    .edu-text {
+      color: var(--neutral-600);
+      margin-bottom: 12px;
+    }
+    .source-ref {
+      color: var(--brand-600);
+      font-size: 12px;
+      vertical-align: super;
+    }
+    .signal-card {
+      background: var(--neutral-50);
+      padding: 24px;
+      border-radius: 8px;
+      border-left: 4px solid var(--brand-600);
+      margin: 24px 0;
+    }
+    .signal-card-title {
+      font-weight: 700;
+      color: var(--neutral-900);
+      margin-bottom: 8px;
+    }
+    .client-benefit { font-size: 14px; color: var(--neutral-600); }
+    .client-benefit strong { color: var(--neutral-800); }
+    .combined-section {
+      background: white;
+      padding: 40px 32px;
+      border-radius: 12px;
+      border: 1px solid var(--neutral-200);
+      margin-bottom: 24px;
+    }
+    .combined-list {
+      list-style: disc;
+      padding-left: 24px;
+      margin: 16px 0;
+    }
+    .combined-list li {
+      margin-bottom: 8px;
+      color: var(--neutral-700);
+    }
+    .timeline-card {
+      background: var(--neutral-50);
+      padding: 24px;
+      border-radius: 8px;
+      border: 1px solid var(--neutral-200);
+      margin: 24px 0;
+    }
+    .timeline-title {
+      font-weight: 700;
+      color: var(--neutral-900);
+      margin-bottom: 8px;
+    }
+    .timeline-subtitle {
+      font-size: 14px;
+      color: var(--neutral-500);
+      margin-bottom: 16px;
+    }
+    .timeline-item {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .timeline-year {
+      font-weight: 700;
+      color: var(--brand-600);
+      min-width: 60px;
+    }
+    .quote-card {
+      background: var(--neutral-50);
+      padding: 24px;
+      border-radius: 8px;
+      border-left: 4px solid var(--brand-600);
+      margin: 24px 0;
+    }
+    .quote-intro {
+      font-size: 14px;
+      color: var(--neutral-500);
+      margin-bottom: 12px;
+    }
+    .quote-text {
+      font-size: 1.125rem;
+      font-style: italic;
+      color: var(--brand-700);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .quote-attribution {
+      font-size: 14px;
+      color: var(--neutral-600);
+    }
+    .sources-section {
+      background: var(--neutral-100);
+      padding: 32px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+    .sources-list {
+      list-style: decimal;
+      padding-left: 24px;
+    }
+    .sources-list li {
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: var(--neutral-600);
+    }
+    .trademark-box {
+      background: var(--neutral-100);
+      padding: 16px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--neutral-500);
+      margin-top: 24px;
+    }
+    .trademark-box strong { color: var(--neutral-700); }
+  </style>
+</head>
+<body>
+<div class="container">
+
+<!-- ============================================ -->
+<!-- UPGRADE v1 -->
+<!-- ============================================ -->
+<div class="version-header">Upgrade v1</div>
+
+<div class="section-label">1a. "A fiduciary is…matters more"</div>
+<div class="hero-section">
+  <h1 class="hero-headline">I left a good firm because I couldn't give you my best advice.</h1>
+  <p class="hero-subtext">A fiduciary is legally and ethically bound to put your interests first—always. But I learned that credentials alone don't guarantee unconflicted advice. <span class="highlight-yellow">The business model matters more.</span></p>
+</div>
+
+<div class="section-label">1b. My Picture</div>
+<div class="photo-placeholder">[David's Photo]</div>
+
+<div class="section-label">1c. "At my former firm…" through "MY MODEL: Tailored strategy…"</div>
+<div class="problem-section">
+  <h2 class="section-heading">The Problem I Couldn't Ignore</h2>
+  <p class="section-text">At my former firm, despite high ethical standards and good intentions, I was limited to offering three things:</p>
+  <ul class="arrow-list">
+    <li>A diversified portfolio of mutual funds <span class="muted-text">(with the standard 1% fee)</span></li>
+    <li>A handful of Separately Managed Accounts</li>
+    <li>A fixed or variable annuity</li>
+  </ul>
+  <p class="section-text">That's it. Cookie-cutter. I have a CFA® charter. I have a CFP® certification. And I was handing everyone the same playbook.</p>
+  <p class="section-text italic-text">I wasn't doing anything differentiated. I started to feel like I was breaking my own fiduciary promise—not because of bad intentions, but because of a limited scope.</p>
+</div>
+
+<div class="edu-section">
+  <h2 class="section-heading">The Model That Fixes It</h2>
+  <p class="section-text">Two structural changes eliminate the conflicts entirely.</p>
+  <div class="model-comparison">
+    <div class="model-card traditional">
+      <div class="model-card-title">Traditional Model</div>
+      <div class="model-item"><span class="icon">✗</span> Products to sell</div>
+      <div class="model-item"><span class="icon">✗</span> Must transfer your assets</div>
+      <div class="model-item"><span class="icon">✗</span> Fee grows with your portfolio</div>
+      <div class="model-item"><span class="icon">✗</span> Same playbook for everyone</div>
+    </div>
+    <div class="model-card my-model">
+      <div class="model-card-title">My Model</div>
+      <div class="model-item"><span class="icon">✓</span> No products. Advice only.</div>
+      <div class="model-item"><span class="icon">✓</span> Stay with your current custodian.</div>
+      <div class="model-item"><span class="icon">✓</span> Flat $100/month. Your growth is yours.</div>
+      <div class="model-item"><span class="icon">✓</span> Tailored strategy using top models.</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">1d. CFA Charterholder div (text-only)</div>
+<div class="credential-card" style="max-width: 450px;">
+  <div class="credential-card-header">
+    <div>
+      <div class="credential-card-title">CFA® Charterholder</div>
+      <div class="credential-card-subtitle">Chartered Financial Analyst</div>
+    </div>
+    <div class="credential-badge">CFA</div>
+  </div>
+  <p class="credential-card-text">The global standard for investment analysis and portfolio management. Bound by a Code of Ethics I reaffirm annually—ensuring integrity even in ambiguous situations.</p>
+</div>
+
+<div class="section-label">1e. CFP Professional div (text-only)</div>
+<div class="credential-card" style="max-width: 450px; margin-top: 16px;">
+  <div class="credential-card-header">
+    <div>
+      <div class="credential-card-title">CFP® Professional</div>
+      <div class="credential-card-subtitle">Certified Financial Planner</div>
+    </div>
+    <div class="credential-badge">CFP</div>
+  </div>
+  <p class="credential-card-text">The standard of excellence for comprehensive financial planning. Rigorous training in retirement, tax, and estate strategies—designed to protect your family for generations.</p>
+</div>
+
+<div class="section-label">1f. "Ready to see…your accounts"</div>
+<div class="cta-section">
+  <h2 class="cta-heading">Ready to see how it works?</h2>
+  <div class="yellow-box" style="display: inline-block; text-align: left;">
+    <p style="color: #171717; font-size: 1.125rem;">See how we take your existing portfolio and build a tailored, low-cost strategy—<strong>without moving your accounts.</strong></p>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- UPGRADE v2 -->
+<!-- ============================================ -->
+<div class="version-header">Upgrade v2</div>
+
+<div class="section-label">2a. "What this looks like…answer to your question."</div>
+<div class="practice-section">
+  <h2 class="section-heading">What This Looks Like in Practice</h2>
+  <p class="section-text" style="margin-bottom: 24px;">Unconflicted advice means I can say things most advisors can't.</p>
+  <div class="practice-item">
+    <span class="practice-icon">🚫</span>
+    <div>
+      <div class="practice-title">"You don't need that product."</div>
+      <p class="practice-text">I don't earn a dime from what you buy—so I'll tell you when something isn't worth it.</p>
+    </div>
+  </div>
+  <div class="practice-item">
+    <span class="practice-icon">📍</span>
+    <div>
+      <div class="practice-title">"Stay where you are."</div>
+      <p class="practice-text">Keep your custodian, your accounts, your broker. I'll work with what you have.</p>
+    </div>
+  </div>
+  <div class="practice-item">
+    <span class="practice-icon">💬</span>
+    <div>
+      <div class="practice-title">"Here's the honest answer."</div>
+      <p class="practice-text">No sales pitch. No upsell. Just the answer to your question.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- UPGRADE v3 -->
+<!-- ============================================ -->
+<div class="version-header">Upgrade v3</div>
+
+<div class="section-label">3a. Everything from "CFA explained…" through "Trademark notes:" box</div>
+
+<div class="edu-section">
+  <h2 class="edu-heading">CFA® explained in plain English</h2>
+  <p class="edu-text">Think of CFA® charterholders as "investment specialists": valuation, risk, portfolio construction, and ethics.</p>
+  <ul style="list-style: none; padding: 0; margin: 16px 0;">
+    <li style="margin-bottom: 8px; color: var(--neutral-600);">• CFA Institute describes the CFA Program as three exams covering investment tools, valuing assets, portfolio management. <span class="source-ref">[1]</span></li>
+    <li style="margin-bottom: 8px; color: var(--neutral-600);">• Exam session time is approximately 4.5 hours per level (plus tutorial/breaks). <span class="source-ref">[2]</span></li>
+    <li style="margin-bottom: 8px; color: var(--neutral-600);">• Pass rates vary by level and window and are published by CFA Institute. <span class="source-ref">[3]</span></li>
+  </ul>
+  <div class="signal-card">
+    <div class="signal-card-title">What it signals for clients</div>
+    <p class="edu-text">It's a credential with real friction: three exams, published requirements, and an ethics code. CFA Institute states charterholders commit to integrity and to placing the interests of clients above their own. <span class="source-ref">[4]</span></p>
+    <p class="client-benefit"><strong>Client benefit:</strong> You get investment decisions grounded in disciplined analysis—especially when the market narrative gets loud.</p>
+  </div>
+</div>
+
+<div class="edu-section">
+  <h2 class="edu-heading">CFP® explained in plain English</h2>
+  <p class="edu-text">If CFA® is investment depth, CFP® is holistic planning—turning the math into a plan that fits a real life.</p>
+  <ul style="list-style: none; padding: 0; margin: 16px 0;">
+    <li style="margin-bottom: 8px; color: var(--neutral-600);">• CFP Board describes the CFP® exam as 170 questions in two 3-hour sessions. <span class="source-ref">[5]</span></li>
+    <li style="margin-bottom: 8px; color: var(--neutral-600);">• CFP Board requires substantial experience: 6,000 hours (standard) or 4,000 hours (apprenticeship). <span class="source-ref">[6]</span></li>
+    <li style="margin-bottom: 8px; color: var(--neutral-600);">• CFP Board's standards emphasize a fiduciary duty when providing financial advice. <span class="source-ref">[7]</span></li>
+  </ul>
+  <div class="signal-card">
+    <div class="signal-card-title">What it signals for clients</div>
+    <p class="edu-text">CFP® is about building comprehensive plans—and doing it under a published ethical framework.</p>
+    <p class="client-benefit"><strong>Client benefit:</strong> You get planning that ties your investments to your life—so the portfolio supports the plan, not the other way around.</p>
+  </div>
+</div>
+
+<div class="combined-section">
+  <h2 class="section-heading">CFA® + CFP® = a higher standard of advice</h2>
+  <p class="section-text">Alone, each credential is valuable. Together, they cover the two hardest parts of advice: <strong>investment decisions under uncertainty</strong> and <strong>planning that survives real life</strong>.</p>
+  <ul class="combined-list">
+    <li>Portfolio design with a repeatable process (not hot takes).</li>
+    <li>Tradeoffs made explicit (so you can decide confidently).</li>
+    <li>A plan that integrates retirement, tax, insurance, and estate considerations.</li>
+    <li>Ethics and client-first duties that constrain behavior when incentives tempt shortcuts.</li>
+  </ul>
+  <div class="timeline-card">
+    <div class="timeline-title">Proof without bragging: a simple timeline</div>
+    <div class="timeline-subtitle">A timeline of dedication and standards achieved.</div>
+    <div class="timeline-item"><span class="timeline-year">Year 1:</span> CFA® Level I</div>
+    <div class="timeline-item"><span class="timeline-year">Year 2:</span> CFA® Level II</div>
+    <div class="timeline-item"><span class="timeline-year">Year 3:</span> Earned CFA® charter</div>
+    <div class="timeline-item"><span class="timeline-year">Year 4:</span> Earned CFP® certification</div>
+  </div>
+</div>
+
+<div class="edu-section">
+  <h2 class="section-heading">Fiduciary + ethics: where trust becomes enforceable</h2>
+  <p class="section-text">"Trust me" is not a standard. A fiduciary standard is a constraint—an obligation—especially when markets are stressful and incentives are noisy.</p>
+  <p class="section-text">The SEC has stated that an investment adviser is a fiduciary and must act in the best interests of clients. <span class="source-ref">[9]</span> CFP Board's standards also describe a fiduciary duty when providing financial advice. <span class="source-ref">[7]</span></p>
+  <div style="background: var(--neutral-100); padding: 16px 20px; border-radius: 8px; margin-top: 16px;">
+    <p class="section-text" style="margin: 0;"><strong>Practical takeaway:</strong> Ask two questions: "How are you paid?" and "What standard are you held to?" Credentials help. Transparency proves it.</p>
+  </div>
+  <div class="quote-card">
+    <p class="quote-intro">John C. Bogle on the point of fiduciary duty:</p>
+    <p class="quote-text">"Investors need… assurance that their broker is putting their interests first, rather than… his own… And that's what a fiduciary is and does."</p>
+    <p class="quote-attribution">— John C. Bogle <span class="source-ref">[10]</span></p>
+  </div>
+</div>
+
+<div class="sources-section">
+  <h3 class="section-heading" style="font-size: 1.25rem;">Sources (the "don't take our word for it" section)</h3>
+  <ol class="sources-list">
+    <li>CFA Institute — CFA Program overview</li>
+    <li>CFA Institute — CFA Program exam</li>
+    <li>CFA Institute — Exam results / pass rates</li>
+    <li>CFA Institute — Code of Ethics & Standards</li>
+    <li>CFP Board — CFP® exam format</li>
+    <li>CFP Board — Experience requirement</li>
+    <li>CFP Board — Roadmap to Code & Standards</li>
+    <li>CFP Board — CFP® population stats</li>
+    <li>U.S. SEC — Standard of Conduct for Investment Advisers</li>
+    <li>MarketWatch (2016) — John C. Bogle quote</li>
+  </ol>
+  <div class="trademark-box">
+    <strong>Trademark notes:</strong> CFP® is a certification mark owned by Certified Financial Planner Board of Standards, Inc. (CFP Board). CFA® and Chartered Financial Analyst® are registered trademarks of CFA Institute.
+  </div>
+</div>
+
+<!-- END OF PART 1 - Continue in Part 2 -->
+
+
+<!-- ============================================ -->
+<!-- UPGRADE v5 — ENTIRE PAGE -->
+<!-- ============================================ -->
+<div class="version-header">Upgrade v5 — ENTIRE PAGE</div>
+
+<div style="background: linear-gradient(135deg, #0f172a, #1e293b); padding: 64px 32px; border-radius: 12px; text-align: center; color: white; margin-bottom: 24px;">
+  <h1 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 16px;">We Answer to One Person.</h1>
+  <p style="font-size: 1.125rem; color: #cbd5e1; margin-bottom: 8px;">It isn't a sales manager, a fund provider, or a shareholder.</p>
+  <p style="font-size: 1.5rem; font-weight: 700; color: #fbbf24;">It is you.</p>
+  <p style="font-size: 1rem; color: #94a3b8; margin-top: 24px;">The Fiduciary Standard isn't just a badge we wear. It's the legal and ethical bedrock of our entire firm. No commissions. No hidden incentives. Just advice.</p>
+  <p style="font-size: 1rem; color: #94a3b8; font-style: italic; margin-top: 16px;">Most advisors are incentivized to keep your money. We are incentivized to keep your trust.</p>
+</div>
+
+<div class="edu-section">
+  <h2 class="section-heading">The High Cost of "Standard" Advice</h2>
+  <p class="section-text">A 1% fee sounds small. But over 20 years, it acts as a massive wealth transfer—moving hundreds of thousands of dollars from your family to your advisor.</p>
+  <div style="background: #fef3c7; padding: 16px 20px; border-radius: 8px; margin-top: 16px; font-style: italic; color: var(--neutral-700);">
+    Minimizing cost is not just about saving money; it is a fiduciary act of prudence. Prudence dictates that we should not waste your assets.
+  </div>
+  <div style="background: #f1f5f9; padding: 24px; border-radius: 8px; margin-top: 16px; text-align: center;">
+    <p style="color: #64748b; font-size: 14px;">[Fee Chart Visualization: Shows potential growth vs realized growth with 1% fee]</p>
+    <p style="color: #ef4444; font-weight: 700; margin-top: 8px;">Lost to Fees: $0.85M</p>
+  </div>
+  <div style="background: #f1f5f9; padding: 24px; border-radius: 8px; margin-top: 16px; text-align: center;">
+    <p style="color: #64748b; font-size: 14px;">[CFA Funnel Chart: Enrolled → Candidates → Passed Level I → Passed Level II → Charter Awarded]</p>
+    <p style="color: #334155; font-weight: 600; margin-top: 8px; font-style: italic;">Fewer than 1 in 5 candidates ever earn the charter.</p>
+  </div>
+</div>
+
+<div class="edu-section">
+  <h2 class="section-heading">The Science of Wealth Management</h2>
+  <h3 style="color: #64748b; font-size: 1rem; margin-bottom: 16px;">Chartered Financial Analyst (CFA®)</h3>
+  <p class="section-text">Investing is not a guessing game. It is a discipline grounded in economics, quantitative analysis, and behavioral science.</p>
+  <p class="section-text">The CFA charter is widely regarded as the "Gold Standard" of the investment profession. The curriculum covers over 9,000 pages of advanced finance and takes an average of 4 years to complete.</p>
+  <div class="quote-card">
+    <p class="quote-text">"The most respected and recognized investment designation in the world."</p>
+    <p class="quote-attribution">— Financial Times</p>
+  </div>
+</div>
+
+<div class="edu-section">
+  <h2 class="section-heading">The Art of Life Planning</h2>
+  <h3 style="color: #64748b; font-size: 1rem; margin-bottom: 16px;">Certified Financial Planner (CFP®)</h3>
+  <p class="section-text">Your money doesn't exist in a vacuum. It exists to support your life, your family, and your legacy.</p>
+  <p class="section-text">While the CFA ensures your investments are sound, the CFP ensures your plan is sound. We are trained in the Psychology of Financial Planning, helping you navigate fear and anxiety to make rational decisions.</p>
+  <p class="section-text" style="font-style: italic; font-weight: 600;">We don't just plan for your money. We plan for your peace of mind.</p>
+</div>
+
+<div class="edu-section">
+  <h2 class="section-heading">The Standard You Deserve</h2>
+  <table style="width: 100%; border-collapse: collapse; margin: 24px 0;">
+    <thead>
+      <tr style="border-bottom: 2px solid #334155;">
+        <th style="padding: 12px; text-align: left; font-size: 12px; text-transform: uppercase; color: #64748b;">Feature</th>
+        <th style="padding: 12px; text-align: left; font-size: 12px; text-transform: uppercase; color: #64748b;">Broker/Dealer (Industry Norm)</th>
+        <th style="padding: 12px; text-align: left; font-size: 12px; text-transform: uppercase; color: #059669; font-weight: 700;">True Fiduciary (Our Standard)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom: 1px solid #e5e5e5;">
+        <td style="padding: 12px; font-weight: 600;">Legal Standard</td>
+        <td style="padding: 12px; color: #ef4444;">✕ Suitability (Good enough)</td>
+        <td style="padding: 12px; color: #059669;">✓ Fiduciary (Best Interest)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #e5e5e5;">
+        <td style="padding: 12px; font-weight: 600;">Compensation</td>
+        <td style="padding: 12px;">Commissions & % Fees</td>
+        <td style="padding: 12px; color: #059669; font-weight: 600;">Flat Fee Only</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #e5e5e5;">
+        <td style="padding: 12px; font-weight: 600;">Products</td>
+        <td style="padding: 12px;">Proprietary / Incentivized</td>
+        <td style="padding: 12px; color: #059669; font-weight: 600;">Entire Market</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px; font-weight: 600;">Conflicts</td>
+        <td style="padding: 12px;">Buried in fine print</td>
+        <td style="padding: 12px; color: #059669; font-weight: 600;">Open & Transparent</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div style="background: #0f172a; padding: 40px 32px; border-radius: 12px; color: white; margin-bottom: 24px;">
+  <h2 style="font-size: 1.5rem; margin-bottom: 24px;">Our Fiduciary Oath</h2>
+  <ol style="list-style: none; padding: 0;">
+    <li style="padding-left: 36px; position: relative; margin-bottom: 16px; line-height: 1.6;">
+      <span style="position: absolute; left: 0; font-weight: 700; color: #fbbf24;">1.</span>
+      I will always put your best interests first.
+    </li>
+    <li style="padding-left: 36px; position: relative; margin-bottom: 16px; line-height: 1.6;">
+      <span style="position: absolute; left: 0; font-weight: 700; color: #fbbf24;">2.</span>
+      I will act with prudence; with the skill, care, diligence, and good judgment of a professional.
+    </li>
+    <li style="padding-left: 36px; position: relative; margin-bottom: 16px; line-height: 1.6;">
+      <span style="position: absolute; left: 0; font-weight: 700; color: #fbbf24;">3.</span>
+      I will not mislead you, and I will provide conspicuous, full and fair disclosure of all important facts.
+    </li>
+    <li style="padding-left: 36px; position: relative; margin-bottom: 16px; line-height: 1.6;">
+      <span style="position: absolute; left: 0; font-weight: 700; color: #fbbf24;">4.</span>
+      I will fully disclose and fairly manage, in your favor, any unavoidable conflicts.
+    </li>
+  </ol>
+  <p style="margin-top: 24px; font-style: italic; color: #94a3b8;">— David Van Osdol</p>
+</div>
+
+<!-- ============================================ -->
+<!-- UPGRADE v6 — ENTIRE PAGE -->
+<!-- ============================================ -->
+<div class="version-header">Upgrade v6 — ENTIRE PAGE</div>
+
+<div style="background: #fafaf9; padding: 48px 32px; border-radius: 12px; margin-bottom: 24px;">
+  <span style="display: inline-block; background: #ecfdf5; color: #047857; padding: 8px 16px; border-radius: 9999px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 16px;">Credentials That Matter</span>
+  <h1 style="font-size: 2.5rem; font-weight: 400; color: #292524; font-family: Georgia, serif;">Not Your Typical Advisor</h1>
+  <p style="font-size: 1.125rem; color: #57534e; margin-top: 16px;">A CFA Charterholder. A CFP® Professional. 100% Fiduciary.</p>
+  <p style="color: #78716c; margin-top: 8px;">Elite investment expertise and gold-standard financial planning—in one advisor.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 40px 32px; background: white; border: 1px solid #e7e5e4; border-radius: 12px; margin-bottom: 24px;">
+  <div>
+    <h3 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.15em; color: #a8a29e; margin-bottom: 4px;">Investment Expertise</h3>
+    <h4 style="font-size: 1.5rem; font-family: Georgia, serif; color: #292524; margin-bottom: 4px;">CFA Charterholder</h4>
+    <p style="font-size: 14px; font-style: italic; color: #78716c; margin-bottom: 16px;">The gold standard for investment analysis</p>
+    <div style="margin-bottom: 8px;"><span style="font-size: 1.75rem; font-weight: 300; color: #047857;">3</span> <span style="font-size: 14px; color: #57534e;">sequential exams</span></div>
+    <div style="margin-bottom: 8px;"><span style="font-size: 1.75rem; font-weight: 300; color: #047857;">~45%</span> <span style="font-size: 14px; color: #57534e;">pass rate per exam</span></div>
+    <div style="margin-bottom: 16px;"><span style="font-size: 1.75rem; font-weight: 300; color: #047857;">&lt;4%</span> <span style="font-size: 14px; color: #57534e;">of advisors hold this</span></div>
+    <p style="font-size: 14px; color: #57534e; line-height: 1.6; margin-bottom: 8px;">Over 900 hours of study across three 6-hour exams—one of the most rigorous financial credentials globally.</p>
+    <p style="font-size: 14px; color: #57534e; line-height: 1.6;">Deep expertise in portfolio management, investment analysis, economics, and ethics.</p>
+    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e7e5e4;">
+      <p style="font-size: 13px; color: #78716c;"><strong style="color: #57534e;">Ethics Code:</strong> CFA charterholders must "act with integrity, competence, diligence" and "place clients' interests above their own."</p>
+    </div>
+  </div>
+  <div style="border-left: 1px solid #e7e5e4; padding-left: 32px;">
+    <h3 style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.15em; color: #a8a29e; margin-bottom: 4px;">Financial Planning</h3>
+    <h4 style="font-size: 1.5rem; font-family: Georgia, serif; color: #292524; margin-bottom: 4px;">CFP® Professional</h4>
+    <p style="font-size: 14px; font-style: italic; color: #78716c; margin-bottom: 16px;">Comprehensive financial planning expertise</p>
+    <div style="margin-bottom: 8px;"><span style="font-size: 1.75rem; font-weight: 300; color: #047857;">~10hr</span> <span style="font-size: 14px; color: #57534e;">board examination</span></div>
+    <div style="margin-bottom: 8px;"><span style="font-size: 1.75rem; font-weight: 300; color: #047857;">~65%</span> <span style="font-size: 14px; color: #57534e;">pass rate</span></div>
+    <div style="margin-bottom: 16px;"><span style="font-size: 1.75rem; font-weight: 300; color: #047857;">~20%</span> <span style="font-size: 14px; color: #57534e;">of advisors certified</span></div>
+    <p style="font-size: 14px; color: #57534e; line-height: 1.6; margin-bottom: 8px;">Rigorous education covering taxes, retirement, estate planning, insurance, and investment management.</p>
+    <p style="font-size: 14px; color: #57534e; line-height: 1.6;">Required client-focused experience demonstrating real-world planning competence.</p>
+    <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e7e5e4;">
+      <p style="font-size: 13px; color: #78716c;"><strong style="color: #57534e;">Ethics Code:</strong> CFP professionals commit to integrity, objectivity, competence, fairness, confidentiality, and placing your interests first.</p>
+    </div>
+  </div>
+</div>
+
+<div class="quote-card">
+  <p class="quote-text">"If you hire investment professionals with a CFA, you… have confidence at the level of qualification."</p>
+  <p class="quote-attribution">— <strong>Jenny Johnson</strong>, CEO/President, Franklin Templeton</p>
+</div>
+
+<div style="background: #064e3b; padding: 48px 32px; border-radius: 12px; color: white; text-align: center; margin-bottom: 24px;">
+  <h2 style="font-size: 1.75rem; font-family: Georgia, serif; margin-bottom: 32px;">What Makes This Rare</h2>
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px;">
+    <div>
+      <div style="font-size: 3rem; font-weight: 300; color: #a7f3d0;">&lt;4%</div>
+      <div style="font-size: 14px; font-weight: 600; margin-top: 8px;">hold CFA</div>
+      <div style="font-size: 12px; color: #6ee7b7;">of financial advisors</div>
+    </div>
+    <div>
+      <div style="font-size: 3rem; font-weight: 300; color: #a7f3d0;">~20%</div>
+      <div style="font-size: 14px; font-weight: 600; margin-top: 8px;">hold CFP®</div>
+      <div style="font-size: 12px; color: #6ee7b7;">of financial advisors</div>
+    </div>
+    <div>
+      <div style="font-size: 3rem; font-weight: 300; color: #a7f3d0;">&lt;1%</div>
+      <div style="font-size: 14px; font-weight: 600; margin-top: 8px;">hold both</div>
+      <div style="font-size: 12px; color: #6ee7b7;">estimated</div>
+    </div>
+  </div>
+  <p style="margin-top: 32px; font-size: 14px; color: #a7f3d0; max-width: 600px; margin-left: auto; margin-right: auto;">Most advisors meet minimum licensing requirements. These credentials represent thousands of additional hours of study and demonstrated expertise beyond the baseline.</p>
+</div>
+
+<div style="padding: 40px 32px; margin-bottom: 24px;">
+  <h2 style="font-size: 1.75rem; font-family: Georgia, serif; color: #292524; text-align: center; margin-bottom: 8px;">Why Both Credentials Matter</h2>
+  <p style="text-align: center; color: #57534e; margin-bottom: 32px;">No need for separate "investment person" and "planning person"—it's all integrated.</p>
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+    <div style="text-align: center;">
+      <div style="font-size: 2rem; color: #059669; margin-bottom: 12px;">◎</div>
+      <h3 style="font-weight: 600; color: #292524; margin-bottom: 8px;">360° Expertise</h3>
+      <p style="font-size: 14px; color: #57534e; line-height: 1.6;">From complex investment strategy to holistic life planning—integrated, not fragmented.</p>
+    </div>
+    <div style="text-align: center;">
+      <div style="font-size: 2rem; color: #059669; margin-bottom: 12px;">◈</div>
+      <h3 style="font-weight: 600; color: #292524; margin-bottom: 8px;">Reinforced Fiduciary Duty</h3>
+      <p style="font-size: 14px; color: #57534e; line-height: 1.6;">Both credentials embed client-first obligations into their professional codes.</p>
+    </div>
+    <div style="text-align: center;">
+      <div style="font-size: 2rem; color: #059669; margin-bottom: 12px;">◇</div>
+      <h3 style="font-weight: 600; color: #292524; margin-bottom: 8px;">Continuous Excellence</h3>
+      <p style="font-size: 14px; color: #57534e; line-height: 1.6;">Ongoing education requirements ensure current knowledge, not outdated advice.</p>
+    </div>
+  </div>
+</div>
+
+<div style="background: #f5f5f4; padding: 24px 32px; border-radius: 12px; border-top: 1px solid #e7e5e4; border-bottom: 1px solid #e7e5e4; text-align: center; margin-bottom: 24px;">
+  <div style="display: inline-flex; align-items: center; gap: 8px; color: #047857; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;">
+    ✓ 100% Fiduciary
+  </div>
+  <p style="color: #44403c; max-width: 600px; margin: 0 auto;">Both CFA and CFP require adherence to strict ethical codes. As a fee-only fiduciary, I'm legally obligated to act in your best interest—not sell you products for commission.</p>
+</div>
+
+<div style="padding: 48px 32px; text-align: center; margin-bottom: 24px;">
+  <h2 style="font-size: 1.75rem; font-family: Georgia, serif; color: #292524; margin-bottom: 16px;">Ready for a Higher Standard?</h2>
+  <p style="color: #57534e; margin-bottom: 24px;">No percent-of-assets fee. Just straightforward advice from a qualified professional.</p>
+  <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+    <button style="padding: 14px 28px; background: #047857; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">Schedule a Consultation</button>
+    <button style="padding: 14px 28px; background: white; color: #44403c; border: 1px solid #d6d3d1; border-radius: 8px; font-weight: 600; cursor: pointer;">Learn About Our Fee Model</button>
+  </div>
+  <p style="font-size: 12px; color: #78716c; margin-top: 16px;">Flat monthly fee starting at $100/month. No hidden costs. No AUM percentage.</p>
+</div>
+
+<div class="trademark-box">
+  CFA® and Chartered Financial Analyst® are registered trademarks owned by CFA Institute. CFP®, CERTIFIED FINANCIAL PLANNER™, and federally registered CFP (with flame design) marks are certification marks owned by the Certified Financial Planner Board of Standards, Inc.
+</div>
+
+<!-- ============================================ -->
+<!-- UPGRADE v7 — ENTIRE PAGE -->
+<!-- ============================================ -->
+<div class="version-header">Upgrade v7 — ENTIRE PAGE</div>
+
+<div style="padding: 64px 32px; text-align: center; background: white; border-radius: 12px; margin-bottom: 24px;">
+  <h1 style="font-size: 2.75rem; font-weight: 800; color: #0f172a; margin-bottom: 16px;">Not Your Typical Advisor.</h1>
+  <p style="font-size: 1.25rem; font-weight: 600; color: #1e3a8a; margin-bottom: 16px;">A CFA Charterholder. A CFP® Professional. 100% Fiduciary.</p>
+  <div style="width: 96px; height: 4px; background: #2563eb; margin: 0 auto 16px;"></div>
+  <p style="font-size: 1.125rem; color: #475569;">Experience elite investment expertise and gold-standard financial planning — all in one advisor.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+  <div style="background: white; padding: 32px; border-radius: 12px; border: 1px solid #e2e8f0;">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+      <div style="width: 48px; height: 48px; background: #eff6ff; border-radius: 9999px; display: flex; align-items: center; justify-content: center; color: #1e40af; font-size: 20px;">📊</div>
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a;">The CFA® Charter</h2>
+    </div>
+    <p style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #1e3a8a; margin-bottom: 16px;">Hard Skills & Rigor</p>
+    <ul style="list-style: none; padding: 0;">
+      <li style="display: flex; gap: 12px; margin-bottom: 16px; line-height: 1.6;">
+        <span style="color: #2563eb; font-weight: 700;">•</span>
+        <span><strong>Global Toughness:</strong> Requires passing 3 sequential 6-hour exams known for low pass rates (historically ~40-50%).</span>
+      </li>
+      <li style="display: flex; gap: 12px; margin-bottom: 16px; line-height: 1.6;">
+        <span style="color: #2563eb; font-weight: 700;">•</span>
+        <span><strong>Deep Focus:</strong> Investment analysis, portfolio management, and ethics. We place client interests above our own.</span>
+      </li>
+      <li style="display: flex; gap: 12px; margin-bottom: 16px; line-height: 1.6;">
+        <span style="color: #2563eb; font-weight: 700;">•</span>
+        <span><strong>Elite Company:</strong> Fewer than 1 in 25 advisors holds a CFA charter. It is the mark of technical mastery.</span>
+      </li>
+    </ul>
+  </div>
+  <div style="background: white; padding: 32px; border-radius: 12px; border: 1px solid #e2e8f0;">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+      <div style="width: 48px; height: 48px; background: #eff6ff; border-radius: 9999px; display: flex; align-items: center; justify-content: center; color: #1e40af; font-size: 20px;">🧭</div>
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: #0f172a;">The CFP® Professional</h2>
+    </div>
+    <p style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #1e3a8a; margin-bottom: 16px;">Holistic Planning & Trust</p>
+    <ul style="list-style: none; padding: 0;">
+      <li style="display: flex; gap: 12px; margin-bottom: 16px; line-height: 1.6;">
+        <span style="color: #2563eb; font-weight: 700;">•</span>
+        <span><strong>The Gold Standard:</strong> The benchmark for planning. Requires rigorous education, a board exam, and years of experience.</span>
+      </li>
+      <li style="display: flex; gap: 12px; margin-bottom: 16px; line-height: 1.6;">
+        <span style="color: #2563eb; font-weight: 700;">•</span>
+        <span><strong>Real Life Application:</strong> Tailored roadmaps for <em>your</em> life (taxes, retirement, estate)—not just managing investments in a vacuum.</span>
+      </li>
+      <li style="display: flex; gap: 12px; margin-bottom: 16px; line-height: 1.6;">
+        <span style="color: #2563eb; font-weight: 700;">•</span>
+        <span><strong>Proven Trust:</strong> Roughly 20% of advisors have this. It guarantees proven competence and a pledge to serve you ethically.</span>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div style="background: white; padding: 40px 32px; border-radius: 12px; margin-bottom: 24px;">
+  <h3 style="font-size: 1.75rem; font-weight: 700; text-align: center; color: #0f172a; margin-bottom: 32px;">By The Numbers</h3>
+  <table style="width: 100%; border-collapse: collapse;">
+    <thead>
+      <tr style="border-bottom: 2px solid #1e293b;">
+        <th style="padding: 16px 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; font-weight: 500; text-align: left;">Feature</th>
+        <th style="padding: 16px 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; font-weight: 500; text-align: left;">CFA Charterholder</th>
+        <th style="padding: 16px 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #64748b; font-weight: 500; text-align: left;">CFP® Professional</th>
+        <th style="padding: 16px 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: #1e40af; font-weight: 800; text-align: left; background: #eff6ff;">David (You)</th>
+      </tr>
+    </thead>
+    <tbody style="color: #334155;">
+      <tr style="border-bottom: 1px solid #e2e8f0;">
+        <td style="padding: 16px 12px; font-weight: 700;">Primary Focus</td>
+        <td style="padding: 16px 12px;">Investment Analysis</td>
+        <td style="padding: 16px 12px;">Holistic Planning</td>
+        <td style="padding: 16px 12px; font-weight: 700; color: #1e3a8a; background: #eff6ff;">Both</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #e2e8f0;">
+        <td style="padding: 16px 12px; font-weight: 700;">Exam Rigor</td>
+        <td style="padding: 16px 12px;">3 Exams (18 hrs)</td>
+        <td style="padding: 16px 12px;">1 Board Exam (10 hrs)</td>
+        <td style="padding: 16px 12px; font-weight: 700; color: #1e3a8a; background: #eff6ff;">All Passed</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #e2e8f0;">
+        <td style="padding: 16px 12px; font-weight: 700;">Pass Rates</td>
+        <td style="padding: 16px 12px;">~40-50% (Historic)</td>
+        <td style="padding: 16px 12px;">~65%</td>
+        <td style="padding: 16px 12px; font-weight: 700; color: #1e3a8a; background: #eff6ff;">Top Tier</td>
+      </tr>
+      <tr>
+        <td style="padding: 16px 12px; font-weight: 700;">Market Rarity</td>
+        <td style="padding: 16px 12px;">&lt; 4% of Advisors</td>
+        <td style="padding: 16px 12px;">~20% of Advisors</td>
+        <td style="padding: 16px 12px; font-weight: 700; color: #1e3a8a; background: #eff6ff;">The Rare &lt; 1%</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="text-align: center; font-size: 14px; color: #94a3b8; font-style: italic; margin-top: 16px;">*Both designations require strict adherence to ethical codes and annual continuing education.</p>
+</div>
+
+<div style="background: #0f172a; padding: 64px 32px; border-radius: 12px; color: white; margin-bottom: 24px;">
+  <div style="text-align: center; margin-bottom: 48px;">
+    <h2 style="font-size: 1.75rem; font-weight: 700; margin-bottom: 8px;">Why settle for either/or?</h2>
+    <p style="color: #cbd5e1;">You get the rare advisor who blends analytic rigor with comprehensive planning.</p>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+    <div style="background: #1e293b; padding: 24px; border-radius: 12px; text-align: center;">
+      <div style="width: 48px; height: 48px; background: #2563eb; border-radius: 9999px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: white; font-size: 20px;">🔄</div>
+      <h4 style="font-weight: 700; margin-bottom: 8px;">360° Expertise</h4>
+      <p style="font-size: 14px; color: #94a3b8;">From complex investment strategy to life planning. No need for a separate "investment guy" and "planning person."</p>
+    </div>
+    <div style="background: #1e293b; padding: 24px; border-radius: 12px; text-align: center;">
+      <div style="width: 48px; height: 48px; background: #2563eb; border-radius: 9999px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: white; font-size: 20px;">🛡️</div>
+      <h4 style="font-weight: 700; margin-bottom: 8px;">Higher Fiduciary Standard</h4>
+      <p style="font-size: 14px; color: #94a3b8;">Not just a marketing promise; it is embedded in the professional codes we are sworn to follow.</p>
+    </div>
+    <div style="background: #1e293b; padding: 24px; border-radius: 12px; text-align: center;">
+      <div style="width: 48px; height: 48px; background: #2563eb; border-radius: 9999px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; color: white; font-size: 20px;">📚</div>
+      <h4 style="font-weight: 700; margin-bottom: 8px;">Continuous Improvement</h4>
+      <p style="font-size: 14px; color: #94a3b8;">We don't rest on minimum licenses. We stay ahead of the curve with mandatory ongoing education.</p>
+    </div>
+  </div>
+</div>
+
+<div style="background: #f8fafc; padding: 64px 32px; border-radius: 12px; text-align: center; margin-bottom: 24px;">
+  <blockquote style="font-size: 1.5rem; font-family: Georgia, serif; font-style: italic; color: #334155; max-width: 700px; margin: 0 auto 32px; line-height: 1.6;">
+    "The difference between advisors with top credentials and those without can be vast. Designations like CFP® or CFA signal a commitment to excellence that every client deserves."
+  </blockquote>
+  <p style="font-weight: 700; color: #0f172a; margin-bottom: 16px;">Ready for a higher standard of financial advice?</p>
+  <button style="background: #1d4ed8; color: white; font-weight: 700; padding: 16px 32px; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">Meet Your Advisor</button>
+  <p style="font-size: 12px; color: #64748b; margin-top: 16px;">No percent-of-assets fee – keep more of your money.</p>
+</div>
+
+<!-- END OF PART 2 - Continue in Part 3 -->
+
+
+
+<!-- ============================================ -->
+<!-- UPGRADE v8 — Specific Sections -->
+<!-- ============================================ -->
+<div class="version-header">Upgrade v8 — Specific Sections</div>
+
+<div class="section-label">8a. In the "Fiduciary means…" section — Links</div>
+
+<div style="background: #1a1a2e; padding: 32px; border-radius: 12px; color: white; margin-bottom: 24px;">
+  <h3 style="font-size: 1.25rem; margin-bottom: 16px;">CFP Board:</h3>
+  <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; border-left: 4px solid #4f46e5; margin-bottom: 24px;">
+    <blockquote style="font-style: italic; color: #e0e0e0; margin-bottom: 8px;">"A CFP® professional must act as a fiduciary and act in the client's best interests."</blockquote>
+    <cite style="font-size: 14px; color: #888;">— CFP Board Standards (excerpt)</cite>
+  </div>
+  
+  <h3 style="font-size: 1.25rem; margin-bottom: 16px;">CFA Institute:</h3>
+</div>
+
+</div>
+</body>
+</html>
