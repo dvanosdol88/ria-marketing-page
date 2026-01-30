@@ -1,0 +1,82 @@
+/* Quarterfinal 1 - Tournament Style CSS */
+
+.tournament-bg {
+  background: radial-gradient(circle at top, #1a1a1a 0%, #0a0a0a 100%);
+  color: #fff;
+}
+
+.bracket-line {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.bracket-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #10b981, transparent);
+}
+
+.quarterfinal-title {
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #10b981;
+  font-weight: 800;
+}
+
+.versus-card {
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.versus-card:hover {
+  border-color: #10b981;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+}
+
+.winner-badge {
+  background: #10b981;
+  color: #000;
+  font-weight: 900;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.versus-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.versus-divider::before,
+.versus-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.versus-text {
+  padding: 0 1.5rem;
+  font-style: italic;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 1.5rem;
+}
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.2); }
+  50% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+  100% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.2); }
+}
+
+.glow-active {
+  animation: glow 2s infinite;
+}
