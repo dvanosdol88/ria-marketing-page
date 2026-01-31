@@ -151,6 +151,16 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   );
 
   const [state, setState] = useState<CalculatorState>(mergedState);
+  const [isStuck, setIsStuck] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsStuck(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const projection = useMemo(
     () =>
@@ -189,13 +199,28 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
   return (
     <>
-      <section className="section-shell pt-12 pb-0 text-center">
-        <h1 className="text-4xl font-semibold text-green-600 sm:text-5xl">What would you do with {formatCurrency(projection.savings)}?</h1>
-        <div className="mt-2 text-lg text-neutral-900 sm:text-xl">
-          <span>See how much you can save.</span>{" "}
-          <Quiz />
+      <div
+        className={`sticky top-0 z-50 w-full transition-all duration-300 bg-white ${
+          isStuck ? "py-4 shadow-md" : "pt-12 pb-0 bg-transparent"
+        }`}
+      >
+        <div className="section-shell text-center">
+          <h1
+            className={`font-semibold text-green-600 transition-all duration-300 ${
+              isStuck ? "text-2xl sm:text-3xl" : "text-4xl sm:text-5xl"
+            }`}
+          >
+            What would you do with {formatCurrency(projection.savings)}?
+          </h1>
+          <div
+            className={`text-neutral-900 transition-all duration-300 ${
+              isStuck ? "mt-1 text-sm" : "mt-2 text-lg sm:text-xl"
+            }`}
+          >
+            <span>See how much you can save.</span> <Quiz />
+          </div>
         </div>
-      </section>
+      </div>
 
       <section className="w-full bg-neutral-50 relative overflow-hidden">
         <div className="absolute inset-x-0 top-[35%] bottom-0 bg-gradient-to-b from-transparent via-[rgba(233,238,255,0.6)] to-transparent pointer-events-none" />
