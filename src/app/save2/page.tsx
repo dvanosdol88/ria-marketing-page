@@ -6,66 +6,65 @@ import Script from 'next/script';
 export default function Save2Page() {
   const [chartLoaded, setChartLoaded] = useState(false);
 
+  // --- Utility: Label Wrapping ---
+  const wrapLabel = (str: string, maxLen = 16) => {
+    if (str.length <= maxLen) return str;
+    const words = str.split(' ');
+    const lines = [];
+    let currentLine = words[0];
+
+    for (let i = 1; i < words.length; i++) {
+        if ((currentLine + " " + words[i]).length <= maxLen) {
+            currentLine += " " + words[i];
+        } else {
+            lines.push(currentLine);
+            currentLine = words[i];
+        }
+    }
+    lines.push(currentLine);
+    return lines;
+  };
+
+  // --- Common Tooltip Configuration ---
+  const commonTooltipConfig = {
+    title: function(tooltipItems: any) {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+            return label.join(' ');
+        } else {
+            return label;
+        }
+    }
+  };
+
+  // --- Data Generation ---
+  const generateGrowthData = () => {
+    const labels = [];
+    const lowFeeData = [];
+    const highFeeData = [];
+    
+    const principal = 100000;
+    const grossReturn = 0.07;
+    const lowFee = 0.001;
+    const highFee = 0.020;
+
+    for(let i=0; i<=30; i+=5) {
+        labels.push(`Year ${i}`);
+        
+        // Calculate FV = PV * (1 + r)^n
+        const lowVal = principal * Math.pow(1 + (grossReturn - lowFee), i);
+        const highVal = principal * Math.pow(1 + (grossReturn - highFee), i);
+        
+        lowFeeData.push(lowVal);
+        highFeeData.push(highVal);
+    }
+    return { labels, lowFeeData, highFeeData };
+  };
+
   useEffect(() => {
     if (chartLoaded && typeof window !== 'undefined' && (window as any).Chart) {
       const Chart = (window as any).Chart;
-
-      // --- Utility: Label Wrapping ---
-      function wrapLabel(str: string, maxLen = 16) {
-        if (str.length <= maxLen) return str;
-        const words = str.split(' ');
-        const lines = [];
-        let currentLine = words[0];
-
-        for (let i = 1; i < words.length; i++) {
-            if ((currentLine + " " + words[i]).length <= maxLen) {
-                currentLine += " " + words[i];
-            } else {
-                lines.push(currentLine);
-                currentLine = words[i];
-            }
-        }
-        lines.push(currentLine);
-        return lines;
-      }
-
-      // --- Common Tooltip Configuration (Required) ---
-      const commonTooltipConfig = {
-        title: function(tooltipItems: any) {
-            const item = tooltipItems[0];
-            let label = item.chart.data.labels[item.dataIndex];
-            if (Array.isArray(label)) {
-                return label.join(' ');
-            } else {
-                return label;
-            }
-        }
-      };
-
-      // --- Data Generation ---
-      function generateGrowthData() {
-        const labels = [];
-        const lowFeeData = [];
-        const highFeeData = [];
-        
-        const principal = 100000;
-        const grossReturn = 0.07;
-        const lowFee = 0.001;
-        const highFee = 0.020;
-
-        for(let i=0; i<=30; i+=5) {
-            labels.push(`Year ${i}`);
-            
-            // Calculate FV = PV * (1 + r)^n
-            const lowVal = principal * Math.pow(1 + (grossReturn - lowFee), i);
-            const highVal = principal * Math.pow(1 + (grossReturn - highFee), i);
-            
-            lowFeeData.push(lowVal);
-            highFeeData.push(highVal);
-        }
-        return { labels, lowFeeData, highFeeData };
-      }
-
       const growthData = generateGrowthData();
 
       // --- Chart 1: Growth Line Chart ---
