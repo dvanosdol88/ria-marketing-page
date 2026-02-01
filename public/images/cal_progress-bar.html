@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .block-calendar {
+    font-family: sans-serif;
+    display: inline-block;
+    width: 200px;
+  }
+  .week-bar {
+    display: flex;
+    height: 24px;
+    margin-bottom: 4px;
+    background-color: #eceff1; /* Light BlueGrey background for normal times */
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .day-block {
+    flex: 1;
+    border-right: 1px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65em;
+    font-weight: bold;
+    color: transparent; /* Hide text in normal blocks */
+  }
+  .week-label-small {
+      font-size: 0.7em; color: #777; margin-bottom: 2px;
+  }
+  
+  /* Highlights */
+  .late-block {
+    background-color: #7b1fa2; /* Deep Purple */
+    color: white; /* Show text */
+  }
+  .sat-block {
+    background-color: #0288d1; /* Strong Blue */
+    color: white; /* Show text */
+    flex: 1; /* Ensure Saturday takes space */
+  }
+  .empty-sat {
+      flex: 1; background: transparent;
+  }
+</style>
+</head>
+<body>
+
+<div class="block-calendar">
+  
+  <div class="week-label-small">Week 1</div>
+  <div class="week-bar">
+    <div class="day-block late-block">MON</div>
+    <div class="day-block">T</div><div class="day-block">W</div><div class="day-block">T</div><div class="day-block">F</div><div class="empty-sat"></div>
+  </div>
+
+  <div class="week-label-small">Week 2</div>
+  <div class="week-bar">
+    <div class="day-block">M</div>
+    <div class="day-block late-block">TUE</div>
+    <div class="day-block">W</div><div class="day-block">T</div><div class="day-block">F</div><div class="empty-sat"></div>
+  </div>
+  
+  <div class="week-label-small">Week 3</div>
+  <div class="week-bar">
+    <div class="day-block">M</div><div class="day-block">T</div>
+    <div class="day-block late-block">WED</div>
+    <div class="day-block">T</div><div class="day-block">F</div><div class="empty-sat"></div>
+  </div>
+  
+  <div class="week-label-small">Week 4</div>
+  <div class="week-bar">
+    <div class="day-block">M</div><div class="day-block">T</div><div class="day-block">W</div>
+    <div class="day-block late-block">THU</div>
+    <div class="day-block">F</div>
+    <div class="day-block sat-block">SAT</div>
+  </div>
+
+</div>
+
+</body>
+</html>

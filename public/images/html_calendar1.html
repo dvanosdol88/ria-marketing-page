@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .calendar-grid {
+    font-family: sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 600px;
+  }
+  .calendar-grid th, .calendar-grid td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    width: 14.2%;
+  }
+  .header {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  .normal-day {
+    color: #555;
+    font-size: 0.9em;
+  }
+  /* Highlight Styles */
+  .extra-hours {
+    background-color: #fff9c4; /* Light Yellow */
+    font-weight: bold;
+    color: #d84315;
+  }
+  .saturday-hours {
+    background-color: #e1f5fe; /* Light Blue */
+    font-weight: bold;
+    color: #0277bd;
+  }
+  .legend {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+  }
+  .legend span {
+    display: inline-block;
+    margin-right: 15px;
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<h3>Monthly Schedule Pattern</h3>
+<p class="legend">
+  <span>Standard: M-F 9AM-6PM</span>
+  <span class="extra-hours" style="color: #d84315;">Extra Hours (11AM-7PM)</span>
+  <span class="saturday-hours" style="color: #0277bd;">Saturday Hours (10AM-4PM)</span>
+</p>
+
+<table class="calendar-grid">
+  <thead>
+    <tr class="header">
+      <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td class="extra-hours">Week 1<br>11am-7pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td>Closed</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="extra-hours">Week 2<br>11am-7pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td>Closed</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="extra-hours">Week 3<br>11am-7pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td>Closed</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="extra-hours">Week 4<br>11am-7pm</td>
+      <td class="normal-day">9am-6pm</td>
+      <td class="saturday-hours">Sat<br>10am-4pm</td>
+    </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

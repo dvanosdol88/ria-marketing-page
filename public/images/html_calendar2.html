@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  .schedule-list {
+    font-family: sans-serif;
+    max-width: 500px;
+  }
+  .schedule-list h4 {
+    margin-bottom: 5px;
+    color: #333;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+  }
+  .schedule-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 0;
+  }
+  .schedule-list li {
+    padding: 8px 0;
+    font-size: 1.1em;
+  }
+  .highlight-day {
+    color: #d84315; /* Deep Orange */
+    font-weight: bold;
+  }
+  .saturday-day {
+    color: #0277bd; /* Ocean Blue */
+    font-weight: bold;
+  }
+  .note {
+    font-style: italic;
+    color: #666;
+    font-size: 0.9em;
+  }
+</style>
+</head>
+<body>
+
+<div class="schedule-list">
+  <h3>Monthly Hours & Exceptions</h3>
+  <p><strong>Normal Hours:</strong> Monday - Friday, 9:00 AM - 6:00 PM</p>
+
+  <h4>Week 1</h4>
+  <ul>
+    <li><span class="highlight-day">Monday:</span> 11:00 AM - 7:00 PM</li>
+    <li class="note">(Tue-Fri: Normal Hours)</li>
+  </ul>
+
+  <h4>Week 2</h4>
+  <ul>
+    <li><span class="highlight-day">Tuesday:</span> 11:00 AM - 7:00 PM</li>
+    <li class="note">(Mon, Wed-Fri: Normal Hours)</li>
+  </ul>
+
+  <h4>Week 3</h4>
+  <ul>
+    <li><span class="highlight-day">Wednesday:</span> 11:00 AM - 7:00 PM</li>
+    <li class="note">(Mon-Tue, Thu-Fri: Normal Hours)</li>
+  </ul>
+
+  <h4>Week 4</h4>
+  <ul>
+    <li><span class="highlight-day">Thursday:</span> 11:00 AM - 7:00 PM</li>
+    <li><span class="saturday-day">Saturday:</span> 10:00 AM - 4:00 PM</li>
+    <li class="note">(Mon-Wed, Fri: Normal Hours)</li>
+  </ul>
+</div>
+
+</body>
+</html>
