@@ -47,168 +47,307 @@ export default function AnimatedHeader() {
 
   return (
     <div className="min-h-[60vh] bg-gradient-to-b from-slate-50 to-white flex flex-col items-center justify-center px-4 font-sans py-12">
-      {/* Main animated section */}
-      <div className="flex items-start gap-2 md:gap-4 flex-wrap justify-center">
-        {items.map((item, index) => (
-          <React.Fragment key={item.base}>
-            <div className="flex flex-col items-center relative">
-              {/* For last item (Outcomes): Better drops from above, Outcomes slides down */}
-              {item.isGreen && (
-                <div
-                  className="flex flex-col items-center relative ml-8"
-                  style={{
-                    minHeight: '4rem',
-                    transform: stage >= 7.5 ? 'scale(1.05)' : 'none',
-                    transformOrigin: 'center center',
-                    transition: 'transform 600ms cubic-bezier(0.4, 0, 0.2, 1)'
-                  }}
-                >
-                  {/* Better - drops from above using transform only */}
-                  <div
-                    className="text-2xl md:text-4xl font-bold tracking-tight leading-none absolute left-1/2"
-                    style={{
-                      color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
-                      transform: stage >= item.modifierStage
-                        ? 'translateX(-50%) translateY(0)'
-                        : 'translateX(-50%) translateY(-4rem)',
-                      opacity: stage >= item.modifierStage ? 1 : 0,
-                      transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1000ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out',
-                      top: 0
-                    }}
-                  >
-                    {item.label}
-                  </div>
 
-                  {/* Outcomes - slides down using transform only */}
-                  <span
-                    className="text-2xl md:text-4xl font-bold tracking-tight leading-none absolute left-1/2"
-                    style={{
-                      color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
-                      transform: stage >= item.modifierStage
-                        ? 'translateX(-50%) translateY(2.75rem)'
-                        : 'translateX(-50%) translateY(0)',
-                      transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out',
-                      top: 0
-                    }}
-                  >
-                    {item.base}
-                  </span>
+      {/* ==================== MOBILE VERSION ==================== */}
+      {/* Vertical stack with stubby down arrows */}
+      {/* Visible on screens < 768px, hidden on md and up */}
+      <div className="block md:hidden">
+        <div className="flex flex-col items-center">
+          {items.map((item, index) => (
+            <React.Fragment key={item.base}>
+              {/* Word pair container */}
+              <div
+                className="flex flex-col items-center"
+                style={{
+                  transform: (item.isGreen && stage >= 7.5) ? 'scale(1.05)' : 'none',
+                  transition: 'transform 600ms cubic-bezier(0.4, 0, 0.2, 1)'
+                }}
+              >
+                {/* Regular items (Tools, Information, Decisions) */}
+                {!item.isGreen && (
+                  <>
+                    {/* Base word */}
+                    <span
+                      className="text-2xl font-bold tracking-tight leading-none"
+                      style={{
+                        color: (stage >= 8 && item.base === 'Tools')
+                          ? '#00A540'
+                          : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
+                        transform: (stage >= 9 && item.base === 'Tools')
+                          ? 'translateY(1.75rem)'
+                          : 'translateY(0)',
+                        transition: 'color 800ms ease-out, transform 1000ms cubic-bezier(0.22, 1, 0.36, 1)'
+                      }}
+                    >
+                      {item.base}
+                    </span>
+                    {/* Modifier word */}
+                    <div
+                      className="text-2xl font-bold tracking-tight leading-none mt-1"
+                      style={{
+                        color: (stage >= 8 && item.label !== 'Improved')
+                          ? '#111827'
+                          : (stage >= item.modifierStage ? '#00A540' : '#9ca3af'),
+                        opacity: stage >= item.modifierStage ? 1 : 0,
+                        transform: (stage >= 9 && item.label === 'Improved')
+                          ? 'translateY(-1.75rem)'
+                          : (stage >= item.modifierStage ? 'translateY(0)' : 'translateY(1rem)'),
+                        transition: 'opacity 500ms ease-out, transform 1000ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out'
+                      }}
+                    >
+                      {item.label}
+                    </div>
+                  </>
+                )}
+
+                {/* Better/Outcomes (drops from above) */}
+                {item.isGreen && (
+                  <>
+                    <div
+                      className="text-2xl font-bold tracking-tight leading-none"
+                      style={{
+                        color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
+                        opacity: stage >= item.modifierStage ? 1 : 0,
+                        transform: stage >= item.modifierStage ? 'translateY(0)' : 'translateY(-2rem)',
+                        transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1000ms ease-out, color 800ms ease-out'
+                      }}
+                    >
+                      {item.label}
+                    </div>
+                    <span
+                      className="text-2xl font-bold tracking-tight leading-none mt-1"
+                      style={{
+                        color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
+                        transition: 'color 800ms ease-out'
+                      }}
+                    >
+                      {item.base}
+                    </span>
+                  </>
+                )}
+              </div>
+
+              {/* Stubby down arrow between pairs */}
+              {index < items.length - 1 && (
+                <div className="my-2">
+                  <svg width="24" height="20" viewBox="0 0 24 20">
+                    <path
+                      d="M12,2 L12,12"
+                      fill="none"
+                      stroke="#374151"
+                      strokeWidth="3.5"
+                      strokeLinecap="round"
+                      style={{
+                        strokeDasharray: 12,
+                        strokeDashoffset: item.arrowStage && stage >= item.arrowStage ? 0 : 12,
+                        transition: 'stroke-dashoffset 400ms ease-out'
+                      }}
+                    />
+                    <path
+                      d="M6,10 L12,17 L18,10"
+                      fill="none"
+                      stroke="#374151"
+                      strokeWidth="3.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{
+                        strokeDasharray: 20,
+                        strokeDashoffset: item.arrowStage && stage >= item.arrowStage ? 0 : 20,
+                        transition: 'stroke-dashoffset 300ms ease-out 300ms'
+                      }}
+                    />
+                  </svg>
                 </div>
               )}
+            </React.Fragment>
+          ))}
+        </div>
 
-              {/* Regular items: subject on top, modifier rises from below */}
-              {!item.isGreen && (
-                <>
-                  {/* Base word - starts muted, transitions to dark after delay */}
-                  <span
-                    className="text-2xl md:text-4xl font-bold tracking-tight leading-none relative z-10"
-                    style={{
-                      color: (stage >= 8 && item.base === 'Tools')
-                        ? '#00A540'
-                        : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
-                      transform: (stage >= 9 && item.base === 'Tools')
-                        ? 'translateY(2.5rem)'
-                        : 'translateY(0)',
-                      transition: (stage >= 8 && item.base === 'Tools')
-                        ? 'color 800ms ease-out, filter 500ms ease-out, transform 1000ms cubic-bezier(0.22, 1, 0.36, 1)'
-                        : 'color 800ms ease-out 300ms, filter 500ms ease-out 300ms, transform 500ms ease-out',
-                      filter: stage >= item.modifierStage
-                        ? 'drop-shadow(1px 1px 2px rgba(0,0,0,0.25))'
-                        : 'none'
-                    }}
-                  >
-                    {item.base}
-                  </span>
-
-                  {/* Modifier - arrives immediately, color transitions after delay */}
-                  <div
-                    className="text-2xl md:text-4xl font-bold tracking-tight leading-none relative z-10 mt-1"
-                    style={{
-                      color: (stage >= 8 && item.label !== 'Improved')
-                        ? '#111827'
-                        : (stage >= item.modifierStage ? '#00A540' : '#9ca3af'),
-                      opacity: stage >= item.modifierStage ? 1 : 0,
-                      transform: (stage >= 9 && item.label === 'Improved')
-                        ? 'translateY(-2.5rem)'
-                        : (stage >= item.modifierStage ? 'translateY(0)' : 'translateY(1.5rem)'),
-                      transition: (stage >= 8 && item.label === 'Improved')
-                        ? 'opacity 500ms ease-out, transform 1000ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out, filter 500ms ease-out'
-                        : 'opacity 500ms ease-out, transform 500ms ease-out, color 800ms ease-out 300ms, filter 500ms ease-out 300ms',
-                      filter: stage >= item.modifierStage
-                        ? 'drop-shadow(1px 1px 2px rgba(0,0,0,0.2))'
-                        : 'none'
-                    }}
-                  >
-                    {item.label}
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Arrows - hand-drawn casual flick style, animated drawing */}
-            {index < items.length - 1 && (
-              <div
-                className={`
-                  flex items-center pt-3
-                  ${index === items.length - 2 ? 'mr-6' : ''}
-                `}
-              >
-                <svg
-                  width={index === items.length - 2 ? "56" : "44"}
-                  height="24"
-                  viewBox="4.8 0 43.2 24"
-                >
-                  {/* Shaft - draws first */}
-                  <path
-                    d="M4,14 C14,13 26,11 36,12"
-                    fill="none"
-                    stroke="#374151"
-                    strokeWidth={index === items.length - 2 ? "4.7" : "3.5"}
-                    strokeLinecap="round"
-                    style={{
-                      strokeDasharray: 40,
-                      strokeDashoffset: item.arrowStage && stage >= item.arrowStage ? 0 : 40,
-                      transition: 'stroke-dashoffset 600ms ease-out'
-                    }}
-                  />
-                  {/* Arrowhead - draws after shaft */}
-                  <path
-                    d="M32,7 L40,12 L34,17"
-                    fill="none"
-                    stroke="#374151"
-                    strokeWidth={index === items.length - 2 ? "4.7" : "3.5"}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{
-                      strokeDasharray: 25,
-                      strokeDashoffset: item.arrowStage && stage >= item.arrowStage ? 0 : 25,
-                      transition: 'stroke-dashoffset 400ms ease-out 400ms'
-                    }}
-                  />
-                </svg>
-              </div>
-            )}
-          </React.Fragment>
-        ))}
+        {/* Replay button - mobile */}
+        <button
+          onClick={replay}
+          className={`
+            mt-8 px-6 py-2 text-sm font-medium
+            border rounded-full
+            hover:bg-green-50 transition-all duration-300
+            shadow-sm hover:shadow-md
+            ${stage >= 7 ? 'opacity-100' : 'opacity-0'}
+          `}
+          style={{
+            color: '#00A540',
+            borderColor: 'rgba(0, 165, 64, 0.4)'
+          }}
+        >
+          ↻ Replay Animation
+        </button>
       </div>
 
-      {/* Replay button */}
-      <button
-        onClick={replay}
-        className={`
-          mt-8 px-6 py-2 text-sm font-medium
-          border rounded-full
-          hover:bg-green-50 transition-all duration-300
-          shadow-sm hover:shadow-md
-          ${stage >= 7 ? 'opacity-100' : 'opacity-0'}
-        `}
-        style={{
-          color: '#00A540',
-          borderColor: 'rgba(0, 165, 64, 0.4)'
-        }}
-      >
-        ↻ Replay Animation
-      </button>
+      {/* ==================== DESKTOP VERSION ==================== */}
+      {/* Horizontal layout with right arrows */}
+      {/* Hidden on screens < 768px, visible on md and up */}
+      <div className="hidden md:block">
+        <div className="flex items-start gap-2 md:gap-4 flex-wrap justify-center">
+          {items.map((item, index) => (
+            <React.Fragment key={item.base}>
+              <div className="flex flex-col items-center relative">
+                {/* For last item (Outcomes): Better drops from above, Outcomes slides down */}
+                {item.isGreen && (
+                  <div
+                    className="flex flex-col items-center relative ml-8"
+                    style={{
+                      minHeight: '4rem',
+                      transform: stage >= 7.5 ? 'scale(1.05)' : 'none',
+                      transformOrigin: 'center center',
+                      transition: 'transform 600ms cubic-bezier(0.4, 0, 0.2, 1)'
+                    }}
+                  >
+                    {/* Better - drops from above using transform only */}
+                    <div
+                      className="text-2xl md:text-4xl font-bold tracking-tight leading-none absolute left-1/2"
+                      style={{
+                        color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
+                        transform: stage >= item.modifierStage
+                          ? 'translateX(-50%) translateY(0)'
+                          : 'translateX(-50%) translateY(-4rem)',
+                        opacity: stage >= item.modifierStage ? 1 : 0,
+                        transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1000ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out',
+                        top: 0
+                      }}
+                    >
+                      {item.label}
+                    </div>
+
+                    {/* Outcomes - slides down using transform only */}
+                    <span
+                      className="text-2xl md:text-4xl font-bold tracking-tight leading-none absolute left-1/2"
+                      style={{
+                        color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
+                        transform: stage >= item.modifierStage
+                          ? 'translateX(-50%) translateY(2.75rem)'
+                          : 'translateX(-50%) translateY(0)',
+                        transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out',
+                        top: 0
+                      }}
+                    >
+                      {item.base}
+                    </span>
+                  </div>
+                )}
+
+                {/* Regular items: subject on top, modifier rises from below */}
+                {!item.isGreen && (
+                  <>
+                    {/* Base word - starts muted, transitions to dark after delay */}
+                    <span
+                      className="text-2xl md:text-4xl font-bold tracking-tight leading-none relative z-10"
+                      style={{
+                        color: (stage >= 8 && item.base === 'Tools')
+                          ? '#00A540'
+                          : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
+                        transform: (stage >= 9 && item.base === 'Tools')
+                          ? 'translateY(2.5rem)'
+                          : 'translateY(0)',
+                        transition: (stage >= 8 && item.base === 'Tools')
+                          ? 'color 800ms ease-out, filter 500ms ease-out, transform 1000ms cubic-bezier(0.22, 1, 0.36, 1)'
+                          : 'color 800ms ease-out 300ms, filter 500ms ease-out 300ms, transform 500ms ease-out',
+                        filter: stage >= item.modifierStage
+                          ? 'drop-shadow(1px 1px 2px rgba(0,0,0,0.25))'
+                          : 'none'
+                      }}
+                    >
+                      {item.base}
+                    </span>
+
+                    {/* Modifier - arrives immediately, color transitions after delay */}
+                    <div
+                      className="text-2xl md:text-4xl font-bold tracking-tight leading-none relative z-10 mt-1"
+                      style={{
+                        color: (stage >= 8 && item.label !== 'Improved')
+                          ? '#111827'
+                          : (stage >= item.modifierStage ? '#00A540' : '#9ca3af'),
+                        opacity: stage >= item.modifierStage ? 1 : 0,
+                        transform: (stage >= 9 && item.label === 'Improved')
+                          ? 'translateY(-2.5rem)'
+                          : (stage >= item.modifierStage ? 'translateY(0)' : 'translateY(1.5rem)'),
+                        transition: (stage >= 8 && item.label === 'Improved')
+                          ? 'opacity 500ms ease-out, transform 1000ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out, filter 500ms ease-out'
+                          : 'opacity 500ms ease-out, transform 500ms ease-out, color 800ms ease-out 300ms, filter 500ms ease-out 300ms',
+                        filter: stage >= item.modifierStage
+                          ? 'drop-shadow(1px 1px 2px rgba(0,0,0,0.2))'
+                          : 'none'
+                      }}
+                    >
+                      {item.label}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Arrows - hand-drawn casual flick style, animated drawing */}
+              {index < items.length - 1 && (
+                <div
+                  className={`
+                    flex items-center pt-3
+                    ${index === items.length - 2 ? 'mr-6' : ''}
+                  `}
+                >
+                  <svg
+                    width={index === items.length - 2 ? "56" : "44"}
+                    height="24"
+                    viewBox="4.8 0 43.2 24"
+                  >
+                    {/* Shaft - draws first */}
+                    <path
+                      d="M4,14 C14,13 26,11 36,12"
+                      fill="none"
+                      stroke="#374151"
+                      strokeWidth={index === items.length - 2 ? "4.7" : "3.5"}
+                      strokeLinecap="round"
+                      style={{
+                        strokeDasharray: 40,
+                        strokeDashoffset: item.arrowStage && stage >= item.arrowStage ? 0 : 40,
+                        transition: 'stroke-dashoffset 600ms ease-out'
+                      }}
+                    />
+                    {/* Arrowhead - draws after shaft */}
+                    <path
+                      d="M32,7 L40,12 L34,17"
+                      fill="none"
+                      stroke="#374151"
+                      strokeWidth={index === items.length - 2 ? "4.7" : "3.5"}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      style={{
+                        strokeDasharray: 25,
+                        strokeDashoffset: item.arrowStage && stage >= item.arrowStage ? 0 : 25,
+                        transition: 'stroke-dashoffset 400ms ease-out 400ms'
+                      }}
+                    />
+                  </svg>
+                </div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+
+        {/* Replay button - desktop */}
+        <button
+          onClick={replay}
+          className={`
+            mt-8 px-6 py-2 text-sm font-medium
+            border rounded-full
+            hover:bg-green-50 transition-all duration-300
+            shadow-sm hover:shadow-md
+            ${stage >= 7 ? 'opacity-100' : 'opacity-0'}
+          `}
+          style={{
+            color: '#00A540',
+            borderColor: 'rgba(0, 165, 64, 0.4)'
+          }}
+        >
+          ↻ Replay Animation
+        </button>
+      </div>
     </div>
   );
 }
