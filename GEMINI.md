@@ -3,7 +3,7 @@
 
 ---
 
-## Project: RIA-marketing-page (you-are-paying-too-much.com)
+## Project: RIA-marketing-page (youarepayingtoomuch.com)
 
 A fee calculator/visualization tool showing the impact of investment fees over time.
 

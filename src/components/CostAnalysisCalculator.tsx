@@ -11,7 +11,7 @@ import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, DEFAULT_STATE, buildQueryFromState, paramsToRecord } from "@/lib/calculatorState";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { ValueCards } from "./value-cards/ValueCards";
-import QuoteTicker from "./QuoteTicker";
+import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { Quiz } from "./Quiz";
 
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
@@ -292,7 +292,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
       </section>
 
       <section className="w-full overflow-hidden bg-neutral-50">
-        <QuoteTicker />
+        <QuoteTickerWithPortraits />
       </section>
 
       <ValueCards

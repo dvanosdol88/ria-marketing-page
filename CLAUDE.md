@@ -1,7 +1,7 @@
 # CLAUDE.md
 # Location: Project root
 
-## Project: RIA-marketing-page (you-are-paying-too-much.com)
+## Project: RIA-marketing-page (youarepayingtoomuch.com)
 
 See `AGENTS.md` in this directory for full project context, deprecated files, and conventions.
 

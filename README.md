@@ -2,7 +2,7 @@
 
 A high-conversion marketing landing page for a flat-fee financial advisory service ($100/mo). The goal is to show users exactly how much they lose to traditional 1% advisory fees over time.
 
-**Live Site:** [you-are-paying-too-much.com](https://you-are-paying-too-much.com)
+**Live Site:** [youarepayingtoomuch.com](https://youarepayingtoomuch.com)
 
 ## About the Project
 
@@ -148,7 +148,7 @@ Private repository. All rights reserved.
 ## Contact
 
 David J. Van Osdol, CFA, CFP
-[you-are-paying-too-much.com](https://you-are-paying-too-much.com)
+[youarepayingtoomuch.com](https://youarepayingtoomuch.com)
 
 ## 🤖 Dependency Management
 
