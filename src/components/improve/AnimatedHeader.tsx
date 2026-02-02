@@ -102,28 +102,43 @@ export default function AnimatedHeader() {
 
                 {/* Better/Outcomes (drops from above) */}
                 {item.isGreen && (
-                  <>
-                    <div
-                      className="text-2xl font-bold tracking-tight leading-none"
-                      style={{
-                        color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
-                        opacity: stage >= item.modifierStage ? 1 : 0,
-                        transform: stage >= item.modifierStage ? 'translateY(0)' : 'translateY(-2rem)',
-                        transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1000ms ease-out, color 800ms ease-out'
-                      }}
-                    >
-                      {item.label}
+                  <div className="flex items-center gap-2">
+                    <div className="flex flex-col items-center">
+                      <div
+                        className="text-2xl font-bold tracking-tight leading-none"
+                        style={{
+                          color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
+                          opacity: stage >= item.modifierStage ? 1 : 0,
+                          transform: stage >= item.modifierStage ? 'translateY(0)' : 'translateY(-2rem)',
+                          transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1000ms ease-out, color 800ms ease-out'
+                        }}
+                      >
+                        {item.label}
+                      </div>
+                      <span
+                        className="text-2xl font-bold tracking-tight leading-none mt-1"
+                        style={{
+                          color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
+                          transition: 'color 800ms ease-out'
+                        }}
+                      >
+                        {item.base}
+                      </span>
                     </div>
-                    <span
-                      className="text-2xl font-bold tracking-tight leading-none mt-1"
+                    {/* Small replay circle */}
+                    <button
+                      onClick={replay}
+                      className="w-6 h-6 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors mt-2"
                       style={{
-                        color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
-                        transition: 'color 800ms ease-out'
+                        backgroundColor: '#e5e7eb',
+                        opacity: stage >= 8 ? 1 : 0,
+                        transition: 'opacity 500ms ease-out'
                       }}
+                      aria-label="Replay animation"
                     >
-                      {item.base}
-                    </span>
-                  </>
+                      <span className="text-gray-500 text-xs">↻</span>
+                    </button>
+                  </div>
                 )}
               </div>
 
@@ -163,23 +178,6 @@ export default function AnimatedHeader() {
           ))}
         </div>
 
-        {/* Replay button - mobile */}
-        <button
-          onClick={replay}
-          className={`
-            mt-8 px-6 py-2 text-sm font-medium
-            border rounded-full
-            hover:bg-green-50 transition-all duration-300
-            shadow-sm hover:shadow-md
-            ${stage >= 7 ? 'opacity-100' : 'opacity-0'}
-          `}
-          style={{
-            color: '#00A540',
-            borderColor: 'rgba(0, 165, 64, 0.4)'
-          }}
-        >
-          ↻ Replay Animation
-        </button>
       </div>
 
       {/* ==================== DESKTOP VERSION ==================== */}
@@ -192,45 +190,61 @@ export default function AnimatedHeader() {
               <div className="flex flex-col items-center relative">
                 {/* For last item (Outcomes): Better drops from above, Outcomes slides down */}
                 {item.isGreen && (
-                  <div
-                    className="flex flex-col items-center relative ml-8"
-                    style={{
-                      minHeight: '4rem',
-                      transform: stage >= 7.5 ? 'scale(1.05)' : 'none',
-                      transformOrigin: 'center center',
-                      transition: 'transform 600ms cubic-bezier(0.4, 0, 0.2, 1)'
-                    }}
-                  >
-                    {/* Better - drops from above using transform only */}
+                  <div className="flex items-start gap-3 ml-8">
                     <div
-                      className="text-2xl md:text-4xl font-bold tracking-tight leading-none absolute left-1/2"
+                      className="flex flex-col items-center relative"
                       style={{
-                        color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
-                        transform: stage >= item.modifierStage
-                          ? 'translateX(-50%) translateY(0)'
-                          : 'translateX(-50%) translateY(-4rem)',
-                        opacity: stage >= item.modifierStage ? 1 : 0,
-                        transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1000ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out',
-                        top: 0
+                        minHeight: '4rem',
+                        transform: stage >= 7.5 ? 'scale(1.05)' : 'none',
+                        transformOrigin: 'center center',
+                        transition: 'transform 600ms cubic-bezier(0.4, 0, 0.2, 1)'
                       }}
                     >
-                      {item.label}
+                      {/* Better - drops from above using transform only */}
+                      <div
+                        className="text-2xl md:text-4xl font-bold tracking-tight leading-none absolute left-1/2"
+                        style={{
+                          color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
+                          transform: stage >= item.modifierStage
+                            ? 'translateX(-50%) translateY(0)'
+                            : 'translateX(-50%) translateY(-4rem)',
+                          opacity: stage >= item.modifierStage ? 1 : 0,
+                          transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1000ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out',
+                          top: 0
+                        }}
+                      >
+                        {item.label}
+                      </div>
+
+                      {/* Outcomes - slides down using transform only */}
+                      <span
+                        className="text-2xl md:text-4xl font-bold tracking-tight leading-none absolute left-1/2"
+                        style={{
+                          color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
+                          transform: stage >= item.modifierStage
+                            ? 'translateX(-50%) translateY(2.75rem)'
+                            : 'translateX(-50%) translateY(0)',
+                          transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out',
+                          top: 0
+                        }}
+                      >
+                        {item.base}
+                      </span>
                     </div>
 
-                    {/* Outcomes - slides down using transform only */}
-                    <span
-                      className="text-2xl md:text-4xl font-bold tracking-tight leading-none absolute left-1/2"
+                    {/* Small replay circle */}
+                    <button
+                      onClick={replay}
+                      className="w-7 h-7 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors mt-1"
                       style={{
-                        color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
-                        transform: stage >= item.modifierStage
-                          ? 'translateX(-50%) translateY(2.75rem)'
-                          : 'translateX(-50%) translateY(0)',
-                        transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out',
-                        top: 0
+                        backgroundColor: '#e5e7eb',
+                        opacity: stage >= 8 ? 1 : 0,
+                        transition: 'opacity 500ms ease-out'
                       }}
+                      aria-label="Replay animation"
                     >
-                      {item.base}
-                    </span>
+                      <span className="text-gray-500 text-sm">↻</span>
+                    </button>
                   </div>
                 )}
 
@@ -330,23 +344,6 @@ export default function AnimatedHeader() {
           ))}
         </div>
 
-        {/* Replay button - desktop */}
-        <button
-          onClick={replay}
-          className={`
-            mt-8 px-6 py-2 text-sm font-medium
-            border rounded-full
-            hover:bg-green-50 transition-all duration-300
-            shadow-sm hover:shadow-md
-            ${stage >= 7 ? 'opacity-100' : 'opacity-0'}
-          `}
-          style={{
-            color: '#00A540',
-            borderColor: 'rgba(0, 165, 64, 0.4)'
-          }}
-        >
-          ↻ Replay Animation
-        </button>
       </div>
     </div>
   );
