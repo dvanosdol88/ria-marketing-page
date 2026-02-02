@@ -4,6 +4,7 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { FeatureSectionStacked } from "@/components/improve/FeatureSectionStacked";
 import { DesignerNav } from "@/components/DesignerNav";
+import AnimatedHeader from "@/components/improve/AnimatedHeader";
 import {
   heroContent,
   features,
@@ -26,7 +27,7 @@ export default function ImproveYourToolsV0Page() {
         <header className="flex justify-between items-center border-b border-neutral-200 py-4">
           <Link
             href="/"
-            className="font-bold flex items-center gap-2 hover:opacity-90 no-underline text-neutral-900"
+            className="font-bold flex items-center gap-2 hover:opacity-90 no-underline text-brand-600"
           >
             <span className="w-3 h-3 rounded-full bg-brand-600"></span>
             <span>Improve Your Tools</span>
@@ -62,21 +63,12 @@ export default function ImproveYourToolsV0Page() {
           </a>
         </header>
 
-        {/* HERO */}
-        <section id="top" className="pt-12 pb-8 text-center">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-neutral-900">
-            {heroContent.headline.split("=")[0]}
-            <span className="text-brand-600">=</span>
-            {heroContent.headline.split("=")[1]}
-            <span className="text-brand-600">=</span>
-            {heroContent.headline.split("=")[2]}
-          </h1>
+        {/* HERO - Animated Header */}
+        <section id="top">
+          <AnimatedHeader />
 
-          <p className="mt-4 text-lg sm:text-xl text-neutral-700 max-w-3xl mx-auto">
-            {heroContent.subhead}
-          </p>
-
-          <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center items-center">
+          {/* CTA buttons below animation */}
+          <div className="pb-8 flex flex-col sm:flex-row gap-3 justify-center items-center">
             <a
               href="#cta"
               className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-5 py-3 text-white font-semibold shadow-sm hover:bg-brand-700 transition-colors no-underline"
@@ -94,7 +86,7 @@ export default function ImproveYourToolsV0Page() {
           </div>
 
           {/* Hero Visual - Full Width */}
-          <div className="mt-10 bg-white rounded-2xl shadow-sm border border-neutral-200 p-3 sm:p-4 overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-sm border border-neutral-200 p-3 sm:p-4 overflow-hidden">
             <Zoom>
               <div className="relative w-full overflow-hidden rounded-lg" style={{ aspectRatio: 1.8 }}>
                 <Image
