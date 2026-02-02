@@ -37,7 +37,7 @@ The homepage highlights three core benefits, each leading to its own detailed su
 | **Improve Your Tools** | `/improve` | Better data, technology, and portfolio analytics |
 | **Save a TON of Money** | `/save` | The flat-fee value proposition with concrete savings projections |
 
-Each pillar has multiple variant pages (`/upgrade1`, `/upgrade2`, `/upgrade-your-advice-v0-cgpt`, `/save1`, `/save2`, `/save3`, etc.) for A/B testing different messaging approaches.
+Each pillar has multiple variant pages (`/upgrade1`, `/upgrade2`, `/upgrade-your-advice-v0-cgpt`, `/upgrade-your-advice-v0-gemini`, `/save1`, `/save2`, `/save3`, etc.) for A/B testing different messaging approaches.
 
 ### How It Works
 
