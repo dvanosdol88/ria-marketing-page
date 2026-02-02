@@ -46,7 +46,7 @@ export default function AnimatedHeader() {
   ];
 
   return (
-    <div className="min-h-[60vh] bg-gradient-to-b from-slate-50 to-white flex flex-col items-center justify-center px-4 font-sans py-12">
+    <div className="min-h-[60vh] bg-neutral-50 flex flex-col items-center justify-center px-4 font-sans py-12">
 
       {/* ==================== MOBILE VERSION ==================== */}
       {/* Vertical stack with stubby down arrows */}
