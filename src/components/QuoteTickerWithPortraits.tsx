@@ -28,6 +28,7 @@ interface QuoteTickerProps {
 const PORTRAITS: Record<string, string> = {
   'Bogle': '/images/portraits/WSJ-john-bogle.jpg',
   'Fama': '/images/portraits/WSJ-eugene-fama.jpg',
+  'Buffett': '/images/portraits/WSJ-warren-buffett.jpg',
   'Malkiel': '/images/portraits/WSJ-burton-malkiel.jpg',
   'Swensen': '/images/portraits/WSJ-david-swensen.jpg',
   'Munger': '/images/portraits/WSJ-charlie-munger.jpg',
@@ -280,42 +281,43 @@ export default function QuoteTickerWithPortraits({
           }}
         >
           <div className="rounded-2xl border border-stone-800 overflow-hidden" style={{ backgroundColor: '#e7e5e4' }}>
-            <div style={{ backgroundColor: '#e7e5e4', padding: '20px 20px 16px 20px' }}>
-              <p className="text-stone-700 text-sm leading-relaxed" style={{ backgroundColor: '#e7e5e4' }}>
+            <div style={{ backgroundColor: '#e7e5e4', padding: '24px 24px 20px 24px' }}>
+              <p className="text-stone-700 text-base leading-relaxed" style={{ backgroundColor: '#e7e5e4' }}>
                 &ldquo;{hoveredQuote.quote}&rdquo;
               </p>
             </div>
 
             <div
-              className="flex items-center gap-3 border-t border-stone-400"
-              style={{ backgroundColor: '#e7e5e4', padding: '12px 20px 20px 20px' }}
+              className="flex items-center gap-4 border-t border-stone-400"
+              style={{ backgroundColor: '#e7e5e4', padding: '16px 24px 24px 24px' }}
             >
               {/* Portrait or Initials Fallback */}
               {getPortrait(hoveredQuote.lastName) ? (
-                <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border border-stone-300">
+                <div className="w-[90px] h-[90px] rounded-full overflow-hidden flex-shrink-0 border border-stone-300">
                   <Image
                     src={getPortrait(hoveredQuote.lastName)!}
                     alt={`${hoveredQuote.firstName} ${hoveredQuote.lastName}`}
-                    width={48}
-                    height={48}
+                    width={90}
+                    height={90}
+                    quality={100}
                     className="object-cover object-top w-full h-full"
                   />
                 </div>
               ) : (
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+                  className="w-[90px] h-[90px] rounded-full flex items-center justify-center flex-shrink-0"
                   style={{ backgroundColor: '#d6d3d1' }}
                 >
-                  <span className="text-stone-600 text-sm font-bold">
+                  <span className="text-stone-600 text-base font-bold">
                     {hoveredQuote.firstName[0]}{hoveredQuote.lastName[0]}
                   </span>
                 </div>
               )}
               <div style={{ backgroundColor: '#e7e5e4' }}>
-                <p className="text-stone-800 font-semibold text-sm" style={{ backgroundColor: '#e7e5e4' }}>
+                <p className="text-stone-800 font-semibold text-base" style={{ backgroundColor: '#e7e5e4' }}>
                   {hoveredQuote.firstName} {hoveredQuote.lastName}
                 </p>
-                <p className="text-stone-600 text-xs" style={{ backgroundColor: '#e7e5e4' }}>
+                <p className="text-stone-600 text-sm" style={{ backgroundColor: '#e7e5e4' }}>
                   {hoveredQuote.title}
                 </p>
               </div>
