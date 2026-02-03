@@ -167,6 +167,30 @@ const QUOTES: Quote[] = [
 ];
 
 // ============================================================================
+// ANIMATION HELPERS
+// ============================================================================
+
+function tweenPlaybackRate(animation: Animation, targetRate: number, duration: number) {
+  const startRate = animation.playbackRate;
+  const startTime = performance.now();
+
+  function update(currentTime: number) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease out cubic
+    const ease = 1 - Math.pow(1 - progress, 3);
+    
+    animation.playbackRate = startRate + (targetRate - startRate) * ease;
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  }
+  
+  requestAnimationFrame(update);
+}
+
+// ============================================================================
 // QUOTE TICKER WITH PORTRAITS COMPONENT
 // ============================================================================
 
@@ -177,12 +201,9 @@ export default function QuoteTickerWithPortraits({
 }: QuoteTickerProps) {
   const [hoveredQuote, setHoveredQuote] = useState<Quote | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-  const [tickerStyle, setTickerStyle] = useState<React.CSSProperties>({
-    animation: `tickerScroll ${speed}s linear infinite`,
-    width: 'max-content',
-  });
+  
   const tickerRef = useRef<HTMLDivElement>(null);
-  const isHoveringRef = useRef(false);
+  const scrollerRef = useRef<Animation | null>(null);
 
   const getPortrait = (lastName: string): string | null => {
     return PORTRAITS[lastName] || null;
@@ -201,76 +222,49 @@ export default function QuoteTickerWithPortraits({
     setHoveredQuote(null);
   };
 
-  const tickerItems = [...QUOTES, ...QUOTES];
-
-  const getCurrentTranslateX = (element: HTMLDivElement) => {
-    const transformValue = window.getComputedStyle(element).transform;
-    if (!transformValue || transformValue === 'none') {
-      return 0;
+  const handleWrapperMouseEnter = () => {
+    if (scrollerRef.current) {
+      // Slow down to stop over 1.2 seconds
+      tweenPlaybackRate(scrollerRef.current, 0, 1200);
     }
-    const matrix = new DOMMatrixReadOnly(transformValue);
-    return matrix.m41;
   };
 
-  const smoothStopTicker = () => {
-    const ticker = tickerRef.current;
-    if (!ticker) {
-      return;
+  const handleWrapperMouseLeave = () => {
+    setHoveredQuote(null); // Also clear quote on wrapper leave just in case
+    if (scrollerRef.current) {
+      // Accelerate back to speed over 0.8 seconds
+      tweenPlaybackRate(scrollerRef.current, 1, 800);
     }
-
-    const currentX = getCurrentTranslateX(ticker);
-    const distance = ticker.scrollWidth / 2;
-    const pxPerSecond = distance > 0 ? distance / speed : 0;
-    const decelDuration = 0.8;
-    const decelDistance = (pxPerSecond * decelDuration) / 2;
-    const targetX = currentX - decelDistance;
-
-    setTickerStyle({
-      width: 'max-content',
-      transform: `translateX(${targetX}px)`,
-      transition: `transform ${decelDuration}s ease-out`,
-    });
-  };
-
-  const resumeTicker = () => {
-    const ticker = tickerRef.current;
-    if (!ticker) {
-      return;
-    }
-
-    const currentX = getCurrentTranslateX(ticker);
-    const distance = ticker.scrollWidth / 2;
-    const progress = distance > 0 ? Math.abs(currentX) / distance : 0;
-    const elapsed = progress * speed;
-
-    setTickerStyle({
-      animation: `tickerScroll ${speed}s linear infinite`,
-      animationDelay: `-${elapsed}s`,
-      width: 'max-content',
-    });
   };
 
   useEffect(() => {
-    if (!isHoveringRef.current) {
-      setTickerStyle({
-        animation: `tickerScroll ${speed}s linear infinite`,
-        width: 'max-content',
-      });
-    }
+    const ticker = tickerRef.current;
+    if (!ticker) return;
+
+    // Use Web Animation API for smooth playback control
+    const animation = ticker.animate(
+      [
+        { transform: 'translateX(0)' },
+        { transform: 'translateX(-50%)' }
+      ],
+      {
+        duration: speed * 1000,
+        iterations: Infinity,
+        easing: 'linear'
+      }
+    );
+
+    scrollerRef.current = animation;
+
+    return () => {
+      animation.cancel();
+    };
   }, [speed]);
+
+  const tickerItems = [...QUOTES, ...QUOTES];
 
   return (
     <>
-      <style>{`
-        @keyframes tickerScroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .ticker-scroll {
-          will-change: transform;
-        }
-      `}</style>
-
       {hoveredQuote && (
         <div
           className="fixed z-[9999] w-80"
@@ -278,6 +272,7 @@ export default function QuoteTickerWithPortraits({
             left: `${Math.min(Math.max(tooltipPosition.x, 170), typeof window !== 'undefined' ? window.innerWidth - 170 : 600)}px`,
             top: `${tooltipPosition.y - 16}px`,
             transform: 'translate(-50%, -100%)',
+            pointerEvents: 'none', // Prevent tooltip from interfering with mouse events
           }}
         >
           <div className="rounded-2xl border border-stone-800 overflow-hidden" style={{ backgroundColor: '#e7e5e4' }}>
@@ -300,6 +295,7 @@ export default function QuoteTickerWithPortraits({
                     width={90}
                     height={90}
                     quality={100}
+                    unoptimized // Helps with pixelated/stippled images not getting blurry
                     className="object-cover object-top w-full h-full"
                   />
                 </div>
@@ -337,15 +333,9 @@ export default function QuoteTickerWithPortraits({
       )}
 
       <div
-        className="relative py-8 overflow-hidden bg-transparent ticker-wrapper"
-        onMouseEnter={() => {
-          isHoveringRef.current = true;
-          smoothStopTicker();
-        }}
-        onMouseLeave={() => {
-          isHoveringRef.current = false;
-          resumeTicker();
-        }}
+        className="relative py-2 overflow-hidden bg-transparent ticker-wrapper" 
+        onMouseEnter={handleWrapperMouseEnter}
+        onMouseLeave={handleWrapperMouseLeave}
       >
         {showLabel && (
           <div className="text-center mb-[18px]">
@@ -359,7 +349,8 @@ export default function QuoteTickerWithPortraits({
           className="flex ticker-scroll"
           ref={tickerRef}
           style={{
-            ...tickerStyle,
+            width: 'max-content',
+            willChange: 'transform' // Optimize for compositing
           }}
         >
           {tickerItems.map((item, index) => (
