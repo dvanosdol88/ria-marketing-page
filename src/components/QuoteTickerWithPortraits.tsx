@@ -167,30 +167,6 @@ const QUOTES: Quote[] = [
 ];
 
 // ============================================================================
-// ANIMATION HELPERS
-// ============================================================================
-
-function tweenPlaybackRate(animation: Animation, targetRate: number, duration: number) {
-  const startRate = animation.playbackRate;
-  const startTime = performance.now();
-
-  function update(currentTime: number) {
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    // Ease out cubic
-    const ease = 1 - Math.pow(1 - progress, 3);
-    
-    animation.playbackRate = startRate + (targetRate - startRate) * ease;
-
-    if (progress < 1) {
-      requestAnimationFrame(update);
-    }
-  }
-  
-  requestAnimationFrame(update);
-}
-
-// ============================================================================
 // QUOTE TICKER WITH PORTRAITS COMPONENT
 // ============================================================================
 
@@ -204,9 +180,28 @@ export default function QuoteTickerWithPortraits({
   
   const tickerRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<Animation | null>(null);
+  const tweenRef = useRef<number | null>(null);
 
-  const getPortrait = (lastName: string): string | null => {
-    return PORTRAITS[lastName] || null;
+  const tweenPlaybackRate = (animation: Animation, targetRate: number, duration: number) => {
+    if (tweenRef.current) cancelAnimationFrame(tweenRef.current);
+    
+    const startRate = animation.playbackRate;
+    const startTime = performance.now();
+
+    const update = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic for a "heavy", smooth feel
+      const ease = 1 - Math.pow(1 - progress, 3);
+      
+      animation.playbackRate = startRate + (targetRate - startRate) * ease;
+
+      if (progress < 1) {
+        tweenRef.current = requestAnimationFrame(update);
+      }
+    };
+    
+    tweenRef.current = requestAnimationFrame(update);
   };
 
   const handleMouseEnter = (quote: Quote, e: React.MouseEvent<HTMLDivElement>) => {
@@ -224,16 +219,16 @@ export default function QuoteTickerWithPortraits({
 
   const handleWrapperMouseEnter = () => {
     if (scrollerRef.current) {
-      // Slow down to stop over 1.2 seconds
-      tweenPlaybackRate(scrollerRef.current, 0, 1200);
+      // Very slow come to a stop over 1.5 seconds
+      tweenPlaybackRate(scrollerRef.current, 0, 1500);
     }
   };
 
   const handleWrapperMouseLeave = () => {
-    setHoveredQuote(null); // Also clear quote on wrapper leave just in case
+    setHoveredQuote(null);
     if (scrollerRef.current) {
-      // Accelerate back to speed over 0.8 seconds
-      tweenPlaybackRate(scrollerRef.current, 1, 800);
+      // Gradual acceleration back to full speed over 1 second
+      tweenPlaybackRate(scrollerRef.current, 1, 1000);
     }
   };
 
@@ -241,7 +236,7 @@ export default function QuoteTickerWithPortraits({
     const ticker = tickerRef.current;
     if (!ticker) return;
 
-    // Use Web Animation API for smooth playback control
+    // Use Web Animation API for smooth programmatic control
     const animation = ticker.animate(
       [
         { transform: 'translateX(0)' },
@@ -258,6 +253,7 @@ export default function QuoteTickerWithPortraits({
 
     return () => {
       animation.cancel();
+      if (tweenRef.current) cancelAnimationFrame(tweenRef.current);
     };
   }, [speed]);
 
@@ -272,10 +268,10 @@ export default function QuoteTickerWithPortraits({
             left: `${Math.min(Math.max(tooltipPosition.x, 170), typeof window !== 'undefined' ? window.innerWidth - 170 : 600)}px`,
             top: `${tooltipPosition.y - 16}px`,
             transform: 'translate(-50%, -100%)',
-            pointerEvents: 'none', // Prevent tooltip from interfering with mouse events
+            pointerEvents: 'none',
           }}
         >
-          <div className="rounded-2xl border border-stone-800 overflow-hidden" style={{ backgroundColor: '#e7e5e4' }}>
+          <div className="rounded-2xl border border-stone-800 overflow-hidden shadow-2xl" style={{ backgroundColor: '#e7e5e4' }}>
             <div style={{ backgroundColor: '#e7e5e4', padding: '24px 24px 20px 24px' }}>
               <p className="text-stone-700 text-base leading-relaxed" style={{ backgroundColor: '#e7e5e4' }}>
                 &ldquo;{hoveredQuote.quote}&rdquo;
@@ -287,15 +283,15 @@ export default function QuoteTickerWithPortraits({
               style={{ backgroundColor: '#e7e5e4', padding: '16px 24px 24px 24px' }}
             >
               {/* Portrait or Initials Fallback */}
-              {getPortrait(hoveredQuote.lastName) ? (
-                <div className="w-[90px] h-[90px] rounded-full overflow-hidden flex-shrink-0 border border-stone-300">
+              {PORTRAITS[hoveredQuote.lastName] ? (
+                <div className="w-[90px] h-[90px] rounded-full overflow-hidden flex-shrink-0 border border-stone-300 bg-white">
                   <Image
-                    src={getPortrait(hoveredQuote.lastName)!}
+                    src={PORTRAITS[hoveredQuote.lastName]}
                     alt={`${hoveredQuote.firstName} ${hoveredQuote.lastName}`}
                     width={90}
                     height={90}
                     quality={100}
-                    unoptimized // Helps with pixelated/stippled images not getting blurry
+                    unoptimized
                     className="object-cover object-top w-full h-full"
                   />
                 </div>
@@ -322,7 +318,7 @@ export default function QuoteTickerWithPortraits({
 
           {/* Pointer arrow */}
           <div
-            className="absolute left-1/2 w-4 h-4 border-r border-b border-stone-800"
+            className="absolute left-1/2 w-4 h-4 border-r border-b border-stone-800 shadow-xl"
             style={{
               backgroundColor: '#e7e5e4',
               bottom: '-8px',
@@ -333,12 +329,12 @@ export default function QuoteTickerWithPortraits({
       )}
 
       <div
-        className="relative py-2 overflow-hidden bg-transparent ticker-wrapper" 
+        className="relative overflow-hidden bg-transparent ticker-wrapper" 
         onMouseEnter={handleWrapperMouseEnter}
         onMouseLeave={handleWrapperMouseLeave}
       >
         {showLabel && (
-          <div className="text-center mb-[18px]">
+          <div className="text-center mb-[18px] mt-2">
             <span className="text-base font-medium tracking-wide text-stone-800">
               {label}
             </span>
@@ -346,11 +342,11 @@ export default function QuoteTickerWithPortraits({
         )}
 
         <div 
-          className="flex ticker-scroll"
+          className="flex ticker-scroll pt-2 pb-6" 
           ref={tickerRef}
           style={{
             width: 'max-content',
-            willChange: 'transform' // Optimize for compositing
+            willChange: 'transform'
           }}
         >
           {tickerItems.map((item, index) => (
