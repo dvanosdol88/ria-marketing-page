@@ -12,3 +12,5 @@ gha-creds-*.json
 *.log
 *.err
 .playwright-mcp/
+test-results/
+playwright-report/
