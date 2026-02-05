@@ -4,10 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-import { FeatureSectionStacked } from "@/components/improve/FeatureSectionStacked";
 import { DesignerNav } from "@/components/DesignerNav";
 import AnimatedHeader from "@/components/improve/AnimatedHeader";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { TabbedFeatures } from "@/components/improve/TabbedFeatures";
 import {
   heroContent,
   features,
@@ -15,7 +15,7 @@ import {
   navItems,
 } from "@/config/improveToolsV0Config";
 
-export default function ImproveYourToolsPage() {
+export default function ImproveYourToolsTabsPage() {
   return (
     <main className="bg-neutral-50 text-neutral-900 antialiased">
       <DesignerNav />
@@ -110,12 +110,10 @@ export default function ImproveYourToolsPage() {
           </ScrollReveal>
         </section>
 
-        {/* FEATURE SECTIONS - Stacked Layout with ScrollReveal */}
-        {features.map((feature, index) => (
-          <ScrollReveal key={feature.id} delay={0.1 * (index % 3)}>
-            <FeatureSectionStacked feature={feature} />
-          </ScrollReveal>
-        ))}
+        {/* FEATURE SECTIONS - Tabbed Layout */}
+        <ScrollReveal>
+          <TabbedFeatures features={features} tabs={navItems} />
+        </ScrollReveal>
 
         {/* COMPARISON SECTION */}
         <ScrollReveal>
