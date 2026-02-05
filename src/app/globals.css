@@ -98,3 +98,12 @@ a:hover {
 .custom-slider::-moz-range-track {
   background: transparent;
 }
+
+/* Hide scrollbar for tab containers */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
