@@ -17,9 +17,9 @@ export function SiteNav() {
         {/* Logo / Site Name */}
         <Link
           href={"/" as any}
-          className="font-bold flex items-center gap-2 hover:opacity-90 no-underline text-neutral-900"
+          className="flex items-center gap-2 text-sm font-semibold text-neutral-600 hover:text-neutral-800 transition-colors no-underline"
         >
-          <span className="w-3 h-3 rounded-full bg-green-500" />
+          <span className="w-2 h-2 rounded-full bg-green-500/80" />
           <span>YouArePayingTooMuch.com</span>
         </Link>
 

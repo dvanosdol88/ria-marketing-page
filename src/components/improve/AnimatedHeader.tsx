@@ -9,10 +9,10 @@ export default function AnimatedHeader() {
   useEffect(() => {
     setStage(0);
     const timings = [
-      250,   // stage 0.2: Tools drops in
-      430,   // stage 0.3: Information drops in
-      610,   // stage 0.4: Decisions drops in
-      790,   // stage 0.5: Outcomes drops in
+      290,   // stage 0.2: Tools drops in
+      490,   // stage 0.3: Information drops in
+      690,   // stage 0.4: Decisions drops in
+      890,   // stage 0.5: Outcomes drops in
       1150,  // stage 1: Improved
       1900,  // stage 2: arrow 1
       2600,  // stage 3: Better (Information)
@@ -51,7 +51,7 @@ export default function AnimatedHeader() {
   ];
 
   return (
-    <div className="w-full bg-neutral-50 flex flex-col items-center px-4 py-3 md:py-4 font-sans">
+    <div className="w-full bg-neutral-50 flex flex-col items-center px-4 py-4 md:py-5 font-sans">
 
       {/* ==================== MOBILE VERSION ==================== */}
       {/* Vertical stack with stubby down arrows */}
