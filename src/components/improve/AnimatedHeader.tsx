@@ -9,19 +9,23 @@ export default function AnimatedHeader() {
   useEffect(() => {
     setStage(0);
     const timings = [
-      800,   // stage 1: Improved
-      1550,  // stage 2: arrow 1
-      2250,  // stage 3: Better (Information)
-      2800,  // stage 4: arrow 2
-      3550,  // stage 5: Smarter
-      4150,  // stage 6: arrow 3
-      4800,  // stage 7: Better/Outcomes drops
-      6250,  // stage 7.5: scale up
-      6900,  // stage 8: transition to green/black
-      7900   // stage 9: Improved slides up, Tools slides down
+      250,   // stage 0.2: Tools drops in
+      430,   // stage 0.3: Information drops in
+      610,   // stage 0.4: Decisions drops in
+      790,   // stage 0.5: Outcomes drops in
+      1150,  // stage 1: Improved
+      1900,  // stage 2: arrow 1
+      2600,  // stage 3: Better (Information)
+      3150,  // stage 4: arrow 2
+      3900,  // stage 5: Smarter
+      4500,  // stage 6: arrow 3
+      5150,  // stage 7: Better/Outcomes drops
+      6600,  // stage 7.5: scale up
+      7250,  // stage 8: transition to green/black
+      8250   // stage 9: Improved slides up, Tools slides down
     ];
 
-    const stages = [1, 2, 3, 4, 5, 6, 7, 7.5, 8, 9];
+    const stages = [0.2, 0.3, 0.4, 0.5, 1, 2, 3, 4, 5, 6, 7, 7.5, 8, 9];
 
     const timeouts = timings.map((delay, index) =>
       setTimeout(() => setStage(stages[index]), delay)
@@ -36,13 +40,14 @@ export default function AnimatedHeader() {
     label: string;
     base: string;
     modifierStage: number;
+    baseDropStage: number;
     arrowStage?: number;
     isGreen?: boolean;
   }> = [
-    { label: 'Improved', base: 'Tools', modifierStage: 1, arrowStage: 2 },
-    { label: 'Better', base: 'Information', modifierStage: 3, arrowStage: 4 },
-    { label: 'Smarter', base: 'Decisions', modifierStage: 5, arrowStage: 6 },
-    { label: 'Better', base: 'Outcomes', isGreen: true, modifierStage: 7 }
+    { label: 'Improved', base: 'Tools', modifierStage: 1, baseDropStage: 0.2, arrowStage: 2 },
+    { label: 'Better', base: 'Information', modifierStage: 3, baseDropStage: 0.3, arrowStage: 4 },
+    { label: 'Smarter', base: 'Decisions', modifierStage: 5, baseDropStage: 0.4, arrowStage: 6 },
+    { label: 'Better', base: 'Outcomes', isGreen: true, modifierStage: 7, baseDropStage: 0.5 }
   ];
 
   return (
@@ -75,8 +80,11 @@ export default function AnimatedHeader() {
                           : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
                         transform: (stage >= 9 && item.base === 'Tools')
                           ? 'translateY(1.75rem)'
-                          : 'translateY(0)',
-                        transition: 'color 800ms ease-out, transform 1000ms cubic-bezier(0.22, 1, 0.36, 1)'
+                          : (stage >= item.baseDropStage ? 'translateY(0)' : 'translateY(-1.4rem)'),
+                        opacity: stage >= item.baseDropStage ? 1 : 0,
+                        transition: (stage >= 9 && item.base === 'Tools')
+                          ? 'color 800ms ease-out, transform 1000ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease-out'
+                          : 'color 800ms ease-out, transform 320ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease-out'
                       }}
                     >
                       {item.base}
@@ -119,7 +127,9 @@ export default function AnimatedHeader() {
                         className="text-2xl font-bold tracking-tight leading-none mt-1"
                         style={{
                           color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
-                          transition: 'color 800ms ease-out'
+                          transform: stage >= item.baseDropStage ? 'translateY(0)' : 'translateY(-1.4rem)',
+                          opacity: stage >= item.baseDropStage ? 1 : 0,
+                          transition: 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease-out, color 800ms ease-out'
                         }}
                       >
                         {item.base}
@@ -217,17 +227,22 @@ export default function AnimatedHeader() {
                       </div>
 
                       {/* Outcomes - slides down using transform only */}
-                      <span
-                        className="text-2xl md:text-4xl font-bold tracking-tight leading-none absolute left-1/2"
-                        style={{
-                          color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
-                          transform: stage >= item.modifierStage
-                            ? 'translateX(-50%) translateY(2.75rem)'
-                            : 'translateX(-50%) translateY(0)',
-                          transition: 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out',
-                          top: 0
-                        }}
-                      >
+                    <span
+                      className="text-2xl md:text-4xl font-bold tracking-tight leading-none absolute left-1/2"
+                      style={{
+                        color: stage >= 8 ? '#00A540' : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
+                        transform: stage >= item.modifierStage
+                          ? 'translateX(-50%) translateY(2.75rem)'
+                          : (stage >= item.baseDropStage
+                              ? 'translateX(-50%) translateY(0)'
+                              : 'translateX(-50%) translateY(-2.25rem)'),
+                        opacity: stage >= item.baseDropStage ? 1 : 0,
+                        transition: stage >= item.modifierStage
+                          ? 'transform 1400ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out, opacity 200ms ease-out'
+                          : 'transform 320ms cubic-bezier(0.22, 1, 0.36, 1), color 800ms ease-out, opacity 220ms ease-out',
+                        top: 0
+                      }}
+                    >
                         {item.base}
                       </span>
                     </div>
@@ -260,10 +275,11 @@ export default function AnimatedHeader() {
                           : (stage >= item.modifierStage ? '#111827' : '#9ca3af'),
                         transform: (stage >= 9 && item.base === 'Tools')
                           ? 'translateY(2.5rem)'
-                          : 'translateY(0)',
+                          : (stage >= item.baseDropStage ? 'translateY(0)' : 'translateY(-2.25rem)'),
+                        opacity: stage >= item.baseDropStage ? 1 : 0,
                         transition: (stage >= 8 && item.base === 'Tools')
-                          ? 'color 800ms ease-out, filter 500ms ease-out, transform 1000ms cubic-bezier(0.22, 1, 0.36, 1)'
-                          : 'color 800ms ease-out 300ms, filter 500ms ease-out 300ms, transform 500ms ease-out',
+                          ? 'color 800ms ease-out, filter 500ms ease-out, transform 1000ms cubic-bezier(0.22, 1, 0.36, 1), opacity 200ms ease-out'
+                          : 'color 800ms ease-out 300ms, filter 500ms ease-out 300ms, transform 320ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease-out',
                         filter: stage >= item.modifierStage
                           ? 'drop-shadow(1px 1px 2px rgba(0,0,0,0.25))'
                           : 'none'
