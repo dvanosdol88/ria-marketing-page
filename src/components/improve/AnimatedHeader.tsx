@@ -9,9 +9,9 @@ export default function AnimatedHeader() {
   useEffect(() => {
     setStage(0);
     const timings = [
-      290,   // stage 0.2: Tools drops in
-      490,   // stage 0.3: Information drops in
-      690,   // stage 0.4: Decisions drops in
+      310,   // stage 0.2: Tools drops in
+      510,   // stage 0.3: Information drops in
+      710,   // stage 0.4: Decisions drops in
       890,   // stage 0.5: Outcomes drops in
       1150,  // stage 1: Improved
       1900,  // stage 2: arrow 1
