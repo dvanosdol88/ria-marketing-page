@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { siteNavLinks } from "@/config/siteNavConfig";
@@ -19,7 +20,13 @@ export function SiteNav() {
           href={"/" as any}
           className="flex items-center gap-2 text-sm font-semibold text-neutral-600 hover:text-neutral-800 transition-colors no-underline"
         >
-          <span className="w-2 h-2 rounded-full bg-green-500/80" />
+          <Image
+            src="/logo/logo-nav.png"
+            alt="YouArePayingTooMuch.com logo"
+            width={24}
+            height={24}
+            className="flex-shrink-0"
+          />
           <span>YouArePayingTooMuch.com</span>
         </Link>
 
