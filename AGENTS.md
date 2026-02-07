@@ -85,3 +85,43 @@ src/
 - NEVER recreate files that appear to be intentionally deleted
 - If an import points to a missing file, DELETE the import—don't create the file
 - ASK before modifying .env files or deployment configs
+
+---
+
+## Task Completion (REQUIRED)
+
+When finishing a task, ALWAYS provide a **Final Status** summary:
+
+### Format:
+```
+✅ DONE: [What was accomplished]
+📍 STATE: [Current deployment/build status]
+⚠️ NOTES: [Any warnings, limitations, or follow-ups]
+🔗 LINKS: [Relevant URLs if applicable]
+```
+
+### Examples:
+
+**After a successful deploy:**
+```
+✅ DONE: Added dark mode toggle to Settings page
+📍 STATE: Live on Vercel (Production)
+⚠️ NOTES: None
+🔗 LINKS: https://myapp.vercel.app/settings
+```
+
+**After a partial completion:**
+```
+✅ DONE: Fixed login validation bug
+📍 STATE: Pushed to main, Vercel preview deploying
+⚠️ NOTES: Preview URL will be ready in ~2 min
+🔗 LINKS: PR #47
+```
+
+**After hitting a blocker:**
+```
+✅ DONE: Identified root cause of API timeout
+📍 STATE: Code changes staged, NOT pushed
+⚠️ NOTES: Need your input on retry strategy (see options above)
+🔗 LINKS: None yet
+```
