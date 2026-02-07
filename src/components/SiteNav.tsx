@@ -26,7 +26,7 @@ export function SiteNav() {
             alt="Smarter Way Wealth"
             width={200}
             height={80}
-            className="h-7 w-auto sm:h-9"
+            className="h-[3.5rem] w-auto sm:h-[4.5rem]"
             priority
           />
         </Link>

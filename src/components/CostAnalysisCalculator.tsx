@@ -222,7 +222,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                 width={220}
                 height={88}
                 className={`w-auto transition-all duration-300 ${
-                  isStuck ? "h-6 sm:h-7" : "h-9 sm:h-11"
+                  isStuck ? "h-12 sm:h-[3.5rem]" : "h-[4.5rem] sm:h-[5.5rem]"
                 }`}
                 priority
               />
