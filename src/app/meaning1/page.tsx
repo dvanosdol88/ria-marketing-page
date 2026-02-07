@@ -25,7 +25,7 @@ export default function TasksMeaningPage() {
       {/* --- NAV (Matches Upgrade Pages) --- */}
       <nav className="max-w-[1100px] mx-auto px-6 py-6 flex justify-between items-center border-b border-stone-200">
         <Link href="/" className="font-bold flex items-center gap-2 hover:opacity-90 no-underline text-stone-900">
-          <Image src="/logo/logo-nav.png" alt="Logo" width={24} height={24} />
+          <span className="w-3 h-3 rounded-full bg-emerald-600"></span>
           <span>YouArePayingTooMuch.com</span>
         </Link>
         <div className="flex gap-6 text-sm font-semibold text-stone-600">

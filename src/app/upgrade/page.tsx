@@ -9,7 +9,7 @@ export default function UpgradePage() {
       {/* Header */}
       <header className="flex justify-between items-center border-b border-neutral-200 py-4">
         <Link href="/" className="font-bold flex items-center gap-2">
-          <Image src="/logo/logo-nav.png" alt="Logo" width={24} height={24} />
+          <span className="w-3 h-3 rounded-full bg-green-600" />
           YouArePayingTooMuch.com
         </Link>
         <nav className="flex gap-4 text-sm font-semibold">
