@@ -26,10 +26,20 @@ export function ImprovePage({ version }: ImprovePageProps) {
         <header className="flex justify-between items-center border-b border-neutral-200 py-4">
           <Link
             href="/"
-            className="font-bold flex items-center gap-2 hover:opacity-90 no-underline text-neutral-900"
+            className="font-bold flex items-center gap-3 hover:opacity-90 no-underline text-neutral-900"
+            aria-label="Smarter Way Wealth home"
           >
-            <span className="w-3 h-3 rounded-full bg-green-500"></span>
-            <span>Improve Your Tools</span>
+            <Image
+              src="/brand/logo.svg"
+              alt="Smarter Way Wealth"
+              width={180}
+              height={72}
+              className="h-7 w-auto"
+              priority
+            />
+            <span className="hidden sm:inline text-sm font-semibold text-neutral-600">
+              Improve Your Tools
+            </span>
           </Link>
 
           <nav className="hidden sm:flex gap-4 text-sm font-semibold">

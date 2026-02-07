@@ -4,9 +4,31 @@ import "./globals.css";
 import { inter } from "./fonts";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://youarepayingtoomuch.com"),
   title: "Upgrade. Improve. Save.",
   description: "Landing calculator and proof for advisory fees.",
   manifest: "/site.webmanifest",
+  openGraph: {
+    title: "Upgrade. Improve. Save.",
+    description: "Landing calculator and proof for advisory fees.",
+    type: "website",
+    url: "https://youarepayingtoomuch.com",
+    siteName: "Smarter Way Wealth",
+    images: [
+      {
+        url: "/brand/logo-800.png",
+        width: 800,
+        height: 320,
+        alt: "Smarter Way Wealth",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Upgrade. Improve. Save.",
+    description: "Landing calculator and proof for advisory fees.",
+    images: ["/brand/logo-800.png"],
+  },
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

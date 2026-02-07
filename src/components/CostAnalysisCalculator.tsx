@@ -6,6 +6,7 @@
 import { useCallback, useMemo, useState, useEffect } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Copy } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, DEFAULT_STATE, buildQueryFromState, paramsToRecord } from "@/lib/calculatorState";
@@ -205,6 +206,28 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         }`}
       >
         <div className="section-shell text-center">
+          <div
+            className={`flex justify-center transition-all duration-300 ${
+              isStuck ? "mb-2" : "mb-5"
+            }`}
+          >
+            <Link
+              href="/"
+              className="inline-flex rounded-md px-2 py-1 transition-opacity hover:opacity-90 no-underline"
+              aria-label="Smarter Way Wealth home"
+            >
+              <Image
+                src="/brand/logo.svg"
+                alt="Smarter Way Wealth"
+                width={220}
+                height={88}
+                className={`w-auto transition-all duration-300 ${
+                  isStuck ? "h-6 sm:h-7" : "h-8 sm:h-10"
+                }`}
+                priority
+              />
+            </Link>
+          </div>
           <h1
             className={`font-semibold transition-all duration-300 ${
               isStuck ? "text-2xl sm:text-3xl text-green-700" : "text-4xl sm:text-5xl text-green-600"

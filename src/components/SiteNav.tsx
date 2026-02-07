@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { siteNavLinks } from "@/config/siteNavConfig";
@@ -17,10 +18,17 @@ export function SiteNav() {
         {/* Logo / Site Name */}
         <Link
           href={"/" as any}
-          className="flex items-center gap-2 text-sm font-semibold text-neutral-600 hover:text-neutral-800 transition-colors no-underline"
+          className="flex items-center gap-2 rounded-md px-1 py-1 transition-opacity hover:opacity-90 no-underline"
+          aria-label="Smarter Way Wealth home"
         >
-          <span className="w-2 h-2 rounded-full bg-green-500/80" />
-          <span>YouArePayingTooMuch.com</span>
+          <Image
+            src="/brand/logo.svg"
+            alt="Smarter Way Wealth"
+            width={200}
+            height={80}
+            className="h-7 w-auto sm:h-8"
+            priority
+          />
         </Link>
 
         {/* Nav Links */}
