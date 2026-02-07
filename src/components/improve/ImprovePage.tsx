@@ -34,7 +34,7 @@ export function ImprovePage({ version }: ImprovePageProps) {
               alt="Smarter Way Wealth"
               width={180}
               height={72}
-              className="h-7 w-auto"
+              className="h-6 w-auto sm:h-7"
               priority
             />
             <span className="hidden sm:inline text-sm font-semibold text-neutral-600">

@@ -202,13 +202,13 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     <>
       <div
         className={`sticky top-0 z-50 w-full transition-all duration-300 bg-white ${
-          isStuck ? "py-4 shadow-md" : "pt-12 pb-0 bg-transparent"
+          isStuck ? "py-2 shadow-md" : "pt-6 pb-1 bg-transparent"
         }`}
       >
         <div className="section-shell text-center">
           <div
             className={`flex justify-center transition-all duration-300 ${
-              isStuck ? "mb-2" : "mb-5"
+              isStuck ? "mb-1" : "mb-3"
             }`}
           >
             <Link
@@ -222,7 +222,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                 width={220}
                 height={88}
                 className={`w-auto transition-all duration-300 ${
-                  isStuck ? "h-6 sm:h-7" : "h-8 sm:h-10"
+                  isStuck ? "h-4 sm:h-5" : "h-6 sm:h-8"
                 }`}
                 priority
               />
@@ -230,17 +230,18 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
           </div>
           <h1
             className={`font-semibold transition-all duration-300 ${
-              isStuck ? "text-2xl sm:text-3xl text-green-700" : "text-4xl sm:text-5xl text-green-600"
+              isStuck ? "text-xl sm:text-2xl text-green-700" : "text-3xl sm:text-5xl text-green-600"
             }`}
           >
             What would you do with {formatCurrency(projection.savings)}?
           </h1>
           <div
             className={`text-neutral-900 transition-all duration-300 ${
-              isStuck ? "mt-1 text-sm" : "mt-2 text-lg sm:text-xl"
+              isStuck ? "mt-0.5 text-xs sm:text-sm" : "mt-2 text-lg sm:text-xl"
             }`}
           >
-            <span>See how much you can save.</span> <Quiz />
+            <span>See how much you can save.</span>{" "}
+            {!isStuck && <Quiz />}
           </div>
         </div>
       </div>
