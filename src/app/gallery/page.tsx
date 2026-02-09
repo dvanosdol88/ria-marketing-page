@@ -221,10 +221,6 @@ const SECTIONS: Section[] = [
   },
 ];
 
-// Get localStorage key for a route/item
-function getStorageKey(id: string): string {
-  return `gallery-status-${id.replace(/\//g, '-')}`;
-}
 
 // Status dropdown component
 function StatusDropdown({
@@ -534,50 +530,69 @@ export default function GalleryPage() {
   const [filter, setFilter] = useState<StatusCode | 'all'>('all');
   const [mounted, setMounted] = useState(false);
 
-  // Load statuses from localStorage
+  // Load statuses from server
   useEffect(() => {
     setMounted(true);
-    const loaded: Record<string, StatusCode> = {};
 
-    // Collect all item IDs
-    SECTIONS.forEach((section) => {
-      if (section.items) {
-        section.items.forEach((item) => {
-          const stored = localStorage.getItem(getStorageKey(item.route));
-          loaded[item.route] = (stored as StatusCode) || '?';
+    fetch('/api/gallery/statuses')
+      .then((res) => res.json())
+      .then((saved: Record<string, StatusCode>) => {
+        // Build full map with defaults for any items not yet saved
+        const loaded: Record<string, StatusCode> = {};
+
+        SECTIONS.forEach((section) => {
+          if (section.items) {
+            section.items.forEach((item) => {
+              loaded[item.route] = saved[item.route] || '?';
+            });
+          }
+          if (section.subgroups) {
+            section.subgroups.forEach((group) => {
+              group.items.forEach((item) => {
+                loaded[item.route] = saved[item.route] || '?';
+              });
+            });
+          }
+          if (section.files) {
+            section.files.forEach((file) => {
+              loaded[file.path] = saved[file.path] || '?';
+            });
+          }
+          if (section.components) {
+            section.components.forEach((comp) => {
+              loaded[comp.path] = saved[comp.path] || '?';
+            });
+          }
         });
-      }
-      if (section.subgroups) {
-        section.subgroups.forEach((group) => {
-          group.items.forEach((item) => {
-            const stored = localStorage.getItem(getStorageKey(item.route));
-            loaded[item.route] = (stored as StatusCode) || '?';
+
+        setStatuses(loaded);
+      })
+      .catch((err) => {
+        console.error('Failed to load gallery statuses:', err);
+        // Fall back to all "?" if the API fails
+        const defaults: Record<string, StatusCode> = {};
+        SECTIONS.forEach((section) => {
+          section.items?.forEach((item) => { defaults[item.route] = '?'; });
+          section.subgroups?.forEach((group) => {
+            group.items.forEach((item) => { defaults[item.route] = '?'; });
           });
+          section.files?.forEach((file) => { defaults[file.path] = '?'; });
+          section.components?.forEach((comp) => { defaults[comp.path] = '?'; });
         });
-      }
-      if (section.files) {
-        section.files.forEach((file) => {
-          const stored = localStorage.getItem(getStorageKey(file.path));
-          loaded[file.path] = (stored as StatusCode) || '?';
-        });
-      }
-      if (section.components) {
-        section.components.forEach((comp) => {
-          const stored = localStorage.getItem(getStorageKey(comp.path));
-          loaded[comp.path] = (stored as StatusCode) || '?';
-        });
-      }
-    });
-
-    setStatuses(loaded);
+        setStatuses(defaults);
+      });
   }, []);
 
   // Handle status change
   const handleStatusChange = useCallback((id: string, status: StatusCode) => {
-    setStatuses((prev) => {
-      const updated = { ...prev, [id]: status };
-      localStorage.setItem(getStorageKey(id), status);
-      return updated;
+    setStatuses((prev) => ({ ...prev, [id]: status }));
+
+    fetch('/api/gallery/statuses', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, status }),
+    }).catch((err) => {
+      console.error('Failed to save gallery status:', err);
     });
   }, []);
 
