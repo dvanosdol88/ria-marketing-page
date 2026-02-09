@@ -6,10 +6,17 @@
     ":semanticCommits",
     ":timezone(America/New_York)"
   ],
+  "schedule": ["before 6am on monday"],
   "minimumReleaseAge": "7 days",
   "prConcurrentLimit": 10,
+  "prHourlyLimit": 4,
   "rebaseWhen": "conflicted",
   "platformAutomerge": true,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"],
+    "schedule": ["at any time"]
+  },
   "lockFileMaintenance": {
     "enabled": true,
     "automerge": true,
@@ -18,26 +25,63 @@
   },
   "packageRules": [
     {
-      "description": "TIER 1 (Silent): DevTools & Types. Merge silently to branch if CI passes.",
+      "description": "GREEN LANE: DevDependencies patch/minor — silent automerge (no PR created)",
       "matchDepTypes": ["devDependencies"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true,
       "automergeType": "branch"
     },
     {
-      "description": "TIER 2 (Auto-PR): Runtime patches. Create PR, auto-merge if CI passes.",
+      "description": "GREEN LANE: TypeScript types — silent automerge (except React/Node types)",
+      "matchPackageNames": ["@types/**", "!@types/react", "!@types/react-dom", "!@types/node"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "TypeScript Definitions",
+      "automerge": true,
+      "automergeType": "branch"
+    },
+    {
+      "description": "GREEN LANE: Production patches — automerge with PR (audit trail)",
       "matchDepTypes": ["dependencies"],
       "matchUpdateTypes": ["patch"],
       "automerge": true,
       "automergeType": "pr"
     },
     {
-      "description": "TIER 3 (Dashboard): Majors & Frameworks. Listed in Dashboard only.",
-      "matchUpdateTypes": ["major"],
-      "matchPackageNames": ["next", "react", "react-dom", "tailwindcss"],
+      "description": "GREEN LANE: Tailwind ecosystem — automerge non-major (grouped together)",
+      "matchPackageNames": [
+        "tailwindcss",
+        "postcss",
+        "autoprefixer",
+        "@tailwindcss/**",
+        "tailwind-merge",
+        "clsx"
+      ],
+      "groupName": "Tailwind CSS",
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "description": "YELLOW LANE: Next.js framework — ALWAYS require approval (any version change)",
+      "matchPackageNames": ["next", "eslint-config-next", "@next/**"],
+      "groupName": "Next.js",
       "dependencyDashboardApproval": true,
       "automerge": false,
-      "labels": ["requires-approval"]
+      "labels": ["dependencies", "framework", "requires-approval"]
+    },
+    {
+      "description": "YELLOW LANE: React ecosystem — ALWAYS require approval (any version change)",
+      "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"],
+      "groupName": "React",
+      "dependencyDashboardApproval": true,
+      "automerge": false,
+      "labels": ["dependencies", "framework", "requires-approval"]
+    },
+    {
+      "description": "RED LANE: ALL major updates — require dashboard approval (safety net)",
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true,
+      "automerge": false,
+      "labels": ["dependencies", "major-update", "requires-approval"]
     }
   ]
 }
