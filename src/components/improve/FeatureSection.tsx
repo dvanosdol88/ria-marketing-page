@@ -31,7 +31,7 @@ export function FeatureSection({ feature }: FeatureSectionProps) {
   const contentElement = (
     <div>
       {feature.badge && (
-        <div className="inline-block bg-green-100 text-green-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+        <div className="inline-block bg-brand-100 text-brand-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
           ★ {feature.badge}
         </div>
       )}
@@ -47,7 +47,7 @@ export function FeatureSection({ feature }: FeatureSectionProps) {
       <div
         className={`mt-5 p-4 border border-dashed rounded-xl text-sm ${
           feature.highlightCallout
-            ? "border-green-300 bg-green-50 text-green-800"
+            ? "border-brand-300 bg-brand-50 text-brand-800"
             : "border-neutral-300 bg-neutral-50 text-neutral-600"
         }`}
       >

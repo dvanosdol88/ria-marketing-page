@@ -3,7 +3,6 @@ import { FeatureSection } from "@/components/improve/FeatureSection";
 import { ComparisonCard } from "@/components/improve/ComparisonCard";
 import { HeroImage } from "@/components/improve/HeroImage";
 import { features, comparisonCards } from "@/config/improvePageConfig";
-import { SiteNav } from "@/components/SiteNav";
 
 export const metadata = {
   title: "Improve Your Tools | Better Information = Better Decisions",
@@ -14,14 +13,13 @@ export const metadata = {
 export default function ImproveYourTools() {
   return (
     <main className="bg-neutral-50 text-neutral-900 antialiased">
-      <SiteNav />
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 pb-16">
         {/* HERO */}
         <section id="top" className="pt-6 pb-8 text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight">
             Better Tools ={" "}
-            <span className="text-green-600">Better Information</span> ={" "}
-            <span className="text-green-600">Better Decisions</span>
+            <span className="text-brand-600">Better Information</span> ={" "}
+            <span className="text-brand-600">Better Decisions</span>
           </h1>
 
           <p className="mt-4 text-lg sm:text-xl text-neutral-700 max-w-3xl mx-auto">
@@ -71,7 +69,7 @@ export default function ImproveYourTools() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               <a
                 href="#"
-                className="inline-flex items-center gap-2 rounded-xl bg-green-600 px-6 py-3 text-white font-semibold shadow-sm hover:bg-green-700 transition-colors no-underline"
+                className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-6 py-3 text-white font-semibold shadow-sm hover:bg-brand-700 transition-colors no-underline"
               >
                 Schedule a Free Consultation →
               </a>

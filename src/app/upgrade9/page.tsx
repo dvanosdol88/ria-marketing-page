@@ -8,7 +8,7 @@ export default function Upgrade9() {
       {/* Hero Section: The Question */}
       <section className="bg-white py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <p className="text-green-500 font-semibold text-sm uppercase tracking-wide mb-4">
+          <p className="text-brand-500 font-semibold text-sm uppercase tracking-wide mb-4">
             A Different Kind of Advisor
           </p>
           <h1 className="text-4xl md:text-5xl font-extrabold text-stone-900 leading-tight mb-6">
@@ -89,10 +89,10 @@ export default function Upgrade9() {
             </div>
 
             {/* Purpose Column */}
-            <div className="bg-white rounded-2xl shadow-sm border-2 border-green-500 p-8 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-bl-full -mr-10 -mt-10"></div>
+            <div className="bg-white rounded-2xl shadow-sm border-2 border-brand-500 p-8 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-bl-full -mr-10 -mt-10"></div>
               <div className="relative">
-                <span className="inline-block px-3 py-1 bg-green-100 text-green-600 text-xs font-semibold rounded-full mb-4">
+                <span className="inline-block px-3 py-1 bg-brand-100 text-brand-600 text-xs font-semibold rounded-full mb-4">
                   THE PURPOSE
                 </span>
                 <h3 className="text-xl font-bold text-stone-900 mb-4">What I Actually Do</h3>
@@ -105,16 +105,16 @@ export default function Upgrade9() {
                     'Help you sleep at night',
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <svg className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-5 h-5 text-brand-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6 pt-6 border-t border-green-100">
+                <div className="mt-6 pt-6 border-t border-brand-100">
                   <p className="text-sm text-stone-500">
-                    My cost: <span className="font-semibold text-green-600">$100/month flat fee</span>
+                    My cost: <span className="font-semibold text-brand-600">$100/month flat fee</span>
                   </p>
                 </div>
               </div>
@@ -159,7 +159,7 @@ export default function Upgrade9() {
                   </div>
                   <div className="h-px bg-stone-200"></div>
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-lg bg-green-100 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-lg bg-brand-100 flex items-center justify-center">
                       <span className="text-2xl">🎯</span>
                     </div>
                     <div>
@@ -184,8 +184,8 @@ export default function Upgrade9() {
 
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
@@ -193,8 +193,8 @@ export default function Upgrade9() {
               <p className="text-sm text-stone-600">I don&apos;t earn commissions. Ever. My only incentive is your success.</p>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
@@ -202,8 +202,8 @@ export default function Upgrade9() {
               <p className="text-sm text-stone-600">Flat fee means I give you my best advice, not the advice that maximizes my revenue.</p>
             </div>
             <div className="bg-white rounded-xl p-6 shadow-sm border border-stone-200">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
@@ -215,7 +215,7 @@ export default function Upgrade9() {
 
           <Link
             href="/how-it-works"
-            className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-8 py-4 rounded-lg transition shadow-lg shadow-green-200"
+            className="inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-semibold px-8 py-4 rounded-lg transition shadow-lg shadow-green-200"
           >
             See How It Works
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

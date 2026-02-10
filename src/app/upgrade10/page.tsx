@@ -9,7 +9,7 @@ export default function Upgrade10() {
       <section className="bg-white py-24 px-6">
         <div className="max-w-3xl mx-auto">
           <div className="mb-8">
-            <span className="inline-block px-4 py-1.5 bg-green-100 text-green-600 text-sm font-semibold rounded-full">
+            <span className="inline-block px-4 py-1.5 bg-brand-100 text-brand-600 text-sm font-semibold rounded-full">
               My Philosophy
             </span>
           </div>
@@ -22,7 +22,7 @@ export default function Upgrade10() {
           </h1>
           <p className="text-2xl md:text-3xl font-bold text-stone-800 mb-8">
             I&apos;m in the business of{' '}
-            <span className="bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-500 to-brand-600 bg-clip-text text-transparent">
               helping you succeed.
             </span>
           </p>
@@ -114,13 +114,13 @@ export default function Upgrade10() {
 
               {/* Purpose Side */}
               <div className="relative">
-                <div className="bg-green-50 rounded-3xl p-8 md:p-10 border-2 border-green-200">
+                <div className="bg-brand-50 rounded-3xl p-8 md:p-10 border-2 border-brand-200">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center">
                       <span className="text-3xl">🎯</span>
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-green-600 uppercase tracking-wide">What you actually need</p>
+                      <p className="text-xs font-semibold text-brand-600 uppercase tracking-wide">What you actually need</p>
                       <h3 className="text-2xl font-bold text-stone-900">The Purpose</h3>
                     </div>
                   </div>
@@ -129,7 +129,7 @@ export default function Upgrade10() {
                   </p>
                   <div className="bg-white rounded-xl p-4">
                     <p className="text-sm text-stone-500 mb-1">My flat fee</p>
-                    <p className="text-2xl font-bold text-green-600">$100/month</p>
+                    <p className="text-2xl font-bold text-brand-600">$100/month</p>
                     <p className="text-xs text-stone-400">($1,200/year, period)</p>
                   </div>
                 </div>
@@ -169,8 +169,8 @@ export default function Upgrade10() {
 
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
-              <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-5">
-                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center mb-5">
+                <svg className="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
               </div>
@@ -182,8 +182,8 @@ export default function Upgrade10() {
             </div>
 
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
-              <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-5">
-                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center mb-5">
+                <svg className="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
@@ -194,8 +194,8 @@ export default function Upgrade10() {
             </div>
 
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
-              <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-5">
-                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center mb-5">
+                <svg className="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
               </div>
@@ -206,8 +206,8 @@ export default function Upgrade10() {
             </div>
 
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-stone-200">
-              <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-5">
-                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-12 h-12 rounded-xl bg-brand-100 flex items-center justify-center mb-5">
+                <svg className="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                 </svg>
               </div>
@@ -225,7 +225,7 @@ export default function Upgrade10() {
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-stone-900 mb-6">
             Ready to work with an advisor focused on{' '}
-            <span className="bg-gradient-to-r from-green-500 to-green-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-500 to-brand-600 bg-clip-text text-transparent">
               your purpose
             </span>
             ?
@@ -236,7 +236,7 @@ export default function Upgrade10() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/how-it-works"
-              className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-8 py-4 rounded-lg transition shadow-lg shadow-green-200"
+              className="inline-flex items-center justify-center gap-2 bg-brand-500 hover:bg-brand-600 text-white font-semibold px-8 py-4 rounded-lg transition shadow-lg shadow-green-200"
             >
               See How It Works
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

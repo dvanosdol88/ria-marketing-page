@@ -62,7 +62,7 @@ export function Quiz() {
     <>
       {/* Take the Quiz trigger - renders inline */}
       {hasVoted ? (
-        <span className="inline-flex items-center gap-1 text-green-600 font-semibold">
+        <span className="inline-flex items-center gap-1 text-brand-600 font-semibold">
           Thanks for voting!
           <Share2 className="h-5 w-5" />
         </span>

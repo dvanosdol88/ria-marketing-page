@@ -211,7 +211,7 @@ const Scorecard = () => (
       <div className="p-4 font-bold text-neutral-600 border-b bg-neutral-50 flex flex-col justify-end">
         BROKER/DEALER <span className="text-xs font-normal opacity-70">(Industry Norm)</span>
       </div>
-      <div className="p-4 font-bold text-green-700 border-b border-green-200 bg-green-50 flex flex-col justify-end">
+      <div className="p-4 font-bold text-brand-700 border-b border-brand-200 bg-brand-50 flex flex-col justify-end">
         TRUE FIDUCIARY <span className="text-xs font-normal opacity-70 text-neutral-600">(Our Standard)</span>
       </div>
 
@@ -220,24 +220,24 @@ const Scorecard = () => (
       <div className="p-4 border-b border-neutral-100 flex items-center gap-2">
         <span className="text-red-500">✕</span> Suitability <span className="text-xs opacity-50">(Good enough)</span>
       </div>
-      <div className="p-4 border-b border-green-200 bg-green-50/50 flex items-center gap-2 font-medium">
-        <span className="text-green-600">✓</span> Fiduciary <span className="text-xs opacity-75">(Best Interest)</span>
+      <div className="p-4 border-b border-brand-200 bg-brand-50/50 flex items-center gap-2 font-medium">
+        <span className="text-brand-600">✓</span> Fiduciary <span className="text-xs opacity-75">(Best Interest)</span>
       </div>
 
       {/* Row 2 */}
       <div className="p-4 border-b border-neutral-100 font-medium">Compensation</div>
       <div className="p-4 border-b border-neutral-100">Commissions &amp; % Fees</div>
-      <div className="p-4 border-b border-green-200 bg-green-50/50 font-medium">Flat Fee Only</div>
+      <div className="p-4 border-b border-brand-200 bg-brand-50/50 font-medium">Flat Fee Only</div>
 
       {/* Row 3 */}
       <div className="p-4 border-b border-neutral-100 font-medium">Products</div>
       <div className="p-4 border-b border-neutral-100">Proprietary / Incentivized</div>
-      <div className="p-4 border-b border-green-200 bg-green-50/50 font-medium">Entire Market</div>
+      <div className="p-4 border-b border-brand-200 bg-brand-50/50 font-medium">Entire Market</div>
 
       {/* Row 4 */}
       <div className="p-4 font-medium">Conflicts</div>
       <div className="p-4">Buried in fine print</div>
-      <div className="p-4 bg-green-50/50 font-medium">Open &amp; Transparent</div>
+      <div className="p-4 bg-brand-50/50 font-medium">Open &amp; Transparent</div>
     </div>
   </div>
 );
@@ -351,16 +351,16 @@ export default function Upgrade5() {
           <h3 className="text-2xl font-bold mb-8 font-serif">Our Fiduciary Oath</h3>
           <ul className="space-y-4 text-lg text-neutral-300">
             <li className="flex gap-3">
-              <span className="text-green-400">1.</span> I will always put your best interests first.
+              <span className="text-brand-400">1.</span> I will always put your best interests first.
             </li>
             <li className="flex gap-3">
-              <span className="text-green-400">2.</span> I will act with prudence; with the skill, care, diligence, and good judgment of a professional.
+              <span className="text-brand-400">2.</span> I will act with prudence; with the skill, care, diligence, and good judgment of a professional.
             </li>
             <li className="flex gap-3">
-              <span className="text-green-400">3.</span> I will not mislead you, and I will provide conspicuous, full and fair disclosure of all important facts.
+              <span className="text-brand-400">3.</span> I will not mislead you, and I will provide conspicuous, full and fair disclosure of all important facts.
             </li>
             <li className="flex gap-3">
-              <span className="text-green-400">4.</span> I will fully disclose and fairly manage, in your favor, any unavoidable conflicts.
+              <span className="text-brand-400">4.</span> I will fully disclose and fairly manage, in your favor, any unavoidable conflicts.
             </li>
           </ul>
 

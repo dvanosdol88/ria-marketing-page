@@ -230,7 +230,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
           </div>
           <h1
             className={`font-semibold transition-all duration-300 ${
-              isStuck ? "text-xl sm:text-2xl text-green-700" : "text-3xl sm:text-5xl text-green-600"
+              isStuck ? "text-xl sm:text-2xl text-brand-700" : "text-3xl sm:text-5xl text-brand-600"
             }`}
           >
             What would you do with {formatCurrency(projection.savings)}?

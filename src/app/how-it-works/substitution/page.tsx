@@ -39,7 +39,7 @@ function shuffleArray<T>(array: T[]): T[] {
 
 // --- BRAND COLOR PALETTE ---
 const PALETTE = {
-  primary: '#006044',   // Evergreen
+  primary: '#00682B',   // Evergreen
   blue600: '#009ddb',   // Mid-Blue
   blue800: '#00587a',   // Dark Blue
   red600: '#bc0b14',    // Brand Red
@@ -247,7 +247,7 @@ export default function PortfolioArchitect() {
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center w-full last:w-auto">
                 <div className={`flex flex-col items-center relative z-10 ${step >= s ? 'opacity-100' : 'opacity-50'}`}>
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold font-montserrat transition-all duration-500 ${step >= s ? 'bg-[#006044] text-white shadow-lg scale-110' : 'bg-gray-200 text-gray-500'}`}>
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold font-montserrat transition-all duration-500 ${step >= s ? 'bg-[#00682B] text-white shadow-lg scale-110' : 'bg-gray-200 text-gray-500'}`}>
                     {s}
                   </div>
                   <div className="absolute top-12 whitespace-nowrap text-xs font-bold uppercase tracking-wider font-montserrat">
@@ -256,7 +256,7 @@ export default function PortfolioArchitect() {
                 </div>
                 {s < 3 && (
                   <div className="flex-1 h-1 mx-4 bg-gray-200 rounded-full overflow-hidden">
-                    <div className={`h-full bg-[#006044] transition-all duration-700 ease-out`} style={{ width: step > s ? '100%' : '0%' }} />
+                    <div className={`h-full bg-[#00682B] transition-all duration-700 ease-out`} style={{ width: step > s ? '100%' : '0%' }} />
                   </div>
                 )}
               </div>
@@ -279,7 +279,7 @@ export default function PortfolioArchitect() {
                
                <div className="absolute top-6 left-6 z-10">
                  <h3 className="font-montserrat font-bold text-[#1a1a1a] flex items-center gap-2">
-                   <PieIcon className={`w-5 h-5 transition-colors duration-500 ${highlightChart ? 'text-[#009ddb]' : 'text-[#006044]'}`} />
+                   <PieIcon className={`w-5 h-5 transition-colors duration-500 ${highlightChart ? 'text-[#009ddb]' : 'text-[#00682B]'}`} />
                    {step === 1 ? 'Current Allocation' : step === 2 ? 'Target Strategy' : 'Optimized Portfolio'}
                  </h3>
                  <p className="text-xs text-[#4a4a4a] mt-1">
@@ -416,14 +416,14 @@ export default function PortfolioArchitect() {
                          <div>
                             <h2 className="text-xl font-bold font-montserrat text-[#1a1a1a] flex items-center gap-2">
                                Step 3: Optimization
-                               {showSavings && <span className="bg-green-100 text-[#006044] text-xs px-2 py-1 rounded-full border border-green-200">Completed</span>}
+                               {showSavings && <span className="bg-brand-100 text-[#00682B] text-xs px-2 py-1 rounded-full border border-brand-200">Completed</span>}
                             </h2>
                             <p className="text-sm text-[#4a4a4a]">Reducing structural costs to improve long-term returns.</p>
                          </div>
                          {showSavings && (
                             <div className="text-right">
                                <div className="text-xs font-bold text-[#4a4a4a] uppercase">Annual Savings</div>
-                               <div className="text-xl font-extrabold text-[#006044] animate-pulse">{formatCurrency(feeStats.annualSavings)}/yr</div>
+                               <div className="text-xl font-extrabold text-[#00682B] animate-pulse">{formatCurrency(feeStats.annualSavings)}/yr</div>
                             </div>
                          )}
                       </div>
@@ -432,7 +432,7 @@ export default function PortfolioArchitect() {
                       <div className="bg-gray-100 rounded-lg p-3 border border-gray-200">
                           <div className="flex justify-between text-xs font-bold text-[#4a4a4a] mb-1">
                              <span>Weighted Expense Ratio (Cost)</span>
-                             <span className={showSavings ? 'text-[#006044]' : 'text-red-500'}>
+                             <span className={showSavings ? 'text-[#00682B]' : 'text-red-500'}>
                                 {showSavings ? formatPercent(feeStats.newWeightedER) : formatPercent(feeStats.oldWeightedER)}
                              </span>
                           </div>
@@ -442,7 +442,7 @@ export default function PortfolioArchitect() {
                                 style={{ width: `${(feeStats.oldWeightedER / 1.5) * 100}%` }} 
                               />
                               <div 
-                                className="absolute top-0 left-0 h-full bg-[#006044] transition-all duration-[1500ms] ease-out z-10" 
+                                className="absolute top-0 left-0 h-full bg-[#00682B] transition-all duration-[1500ms] ease-out z-10" 
                                 style={{ width: showSavings ? `${(feeStats.newWeightedER / 1.5) * 100}%` : '0%' }}
                               />
                           </div>
@@ -453,7 +453,7 @@ export default function PortfolioArchitect() {
                      <button 
                        onClick={triggerOptimization}
                        disabled={isDemoActive}
-                       className={`w-full py-3 rounded-xl font-bold font-montserrat flex items-center justify-center gap-2 mb-4 transition-all ${isDemoActive ? 'bg-gray-100 text-gray-400' : 'bg-[#006044] text-white hover:bg-[#004d36] shadow-lg hover:shadow-xl'}`}
+                       className={`w-full py-3 rounded-xl font-bold font-montserrat flex items-center justify-center gap-2 mb-4 transition-all ${isDemoActive ? 'bg-gray-100 text-gray-400' : 'bg-[#00682B] text-white hover:bg-[#004d36] shadow-lg hover:shadow-xl'}`}
                      >
                        {isDemoActive ? 'Optimizing Portfolio...' : <><Play className="w-5 h-5 fill-current" /> Execute Optimization</>}
                      </button>
@@ -472,7 +472,7 @@ export default function PortfolioArchitect() {
                           const isActive = demoStep === index || (isDemoActive && demoStep === -1) || showSavings;
                           const hasSwapped = isActive || showSavings;
                           return (
-                            <div key={item.id} className={`p-3 rounded-lg border text-sm transition-all duration-500 ${hasSwapped ? 'bg-green-50 border-green-200' : 'bg-white border-gray-100'}`}>
+                            <div key={item.id} className={`p-3 rounded-lg border text-sm transition-all duration-500 ${hasSwapped ? 'bg-brand-50 border-brand-200' : 'bg-white border-gray-100'}`}>
                               <div className="flex items-center justify-between mb-2">
                                 <div className="flex items-center gap-2">
                                   <div className="w-2 h-2 rounded-full" style={{ background: item.color }} />
@@ -486,11 +486,11 @@ export default function PortfolioArchitect() {
                                    <div className="text-xs font-bold text-red-500">{item.client.er}%</div>
                                 </div>
                                 <div className="col-span-2 flex justify-center">
-                                   <ArrowRight className={`w-4 h-4 text-gray-300 ${hasSwapped ? 'text-[#006044]' : ''}`} />
+                                   <ArrowRight className={`w-4 h-4 text-gray-300 ${hasSwapped ? 'text-[#00682B]' : ''}`} />
                                 </div>
                                 <div className={`col-span-5 text-right transition-all duration-500 ${hasSwapped ? 'opacity-100 transform translate-x-0' : 'opacity-0 transform translate-x-4'}`}>
                                    <div className="text-xs truncate font-medium text-[#1a1a1a]">{item.our.names[0].split('(')[0]}</div>
-                                   <div className="text-xs font-bold text-[#006044]">{item.our.er}%</div>
+                                   <div className="text-xs font-bold text-[#00682B]">{item.our.er}%</div>
                                 </div>
                               </div>
                             </div>
@@ -530,9 +530,9 @@ export default function PortfolioArchitect() {
         </div>
 
         {/* --- FAQ FOOTER --- */}
-        <div className="mt-12 bg-white border-t-4 border-[#006044] rounded-lg shadow-sm p-6 max-w-4xl mx-auto w-full animate-fadeIn">
+        <div className="mt-12 bg-white border-t-4 border-[#00682B] rounded-lg shadow-sm p-6 max-w-4xl mx-auto w-full animate-fadeIn">
           <div className="flex gap-4 items-start">
-            <div className="p-2 bg-green-100 rounded-full text-[#006044] flex-shrink-0">
+            <div className="p-2 bg-brand-100 rounded-full text-[#00682B] flex-shrink-0">
                <Info className="w-6 h-6" />
             </div>
             <div>

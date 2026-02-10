@@ -73,7 +73,7 @@ export default function HomeV2({
             <div className="operator" style={{ fontSize: '2rem' }}>=</div>
             <div
               className="result"
-              style={{ color: '#2ecc71', fontWeight: 800, borderBottom: '3px solid #2ecc71' }}
+              style={{ color: '#14B254', fontWeight: 800, borderBottom: '3px solid #14B254' }}
             >
               Better Outcomes
             </div>
@@ -209,7 +209,7 @@ export default function HomeV2({
 
           {/* What We Are */}
           <div className="col-are">
-            <h3 style={{ color: '#2ecc71', marginBottom: '20px', fontSize: '1.5rem' }}>
+            <h3 style={{ color: '#14B254', marginBottom: '20px', fontSize: '1.5rem' }}>
               What We Are
             </h3>
             <ul style={{ listStyle: 'none', padding: 0, lineHeight: 1.6 }}>

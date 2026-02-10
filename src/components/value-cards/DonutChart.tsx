@@ -41,7 +41,7 @@ export default function DonutChart({
 
   const data = useMemo(() => [
     { name: 'Lost to Fees', value: lostToFees, color: '#ef4444' }, // Red
-    { name: 'Your Profit', value: keptGrowth, color: '#22c55e' }, // Green
+    { name: 'Your Profit', value: keptGrowth, color: '#14B254' }, // Green
   ], [lostToFees, keptGrowth]);
 
   const totalValue = lostToFees + keptGrowth;
@@ -96,8 +96,8 @@ export default function DonutChart({
           <span>Lost: <span className="font-bold text-red-500">{formatCurrency(lostToFees)}</span></span>
         </div>
         <div className="flex items-center gap-1">
-          <div className="w-3 h-3 rounded-full bg-green-500" />
-          <span>Kept: <span className="font-bold text-green-500">{formatCurrency(keptGrowth)}</span></span>
+          <div className="w-3 h-3 rounded-full bg-brand-500" />
+          <span>Kept: <span className="font-bold text-brand-500">{formatCurrency(keptGrowth)}</span></span>
         </div>
       </div>
     </div>

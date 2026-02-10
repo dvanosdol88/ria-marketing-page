@@ -56,7 +56,7 @@ export function ImprovePage({ version }: ImprovePageProps) {
             ))}
             <span className="text-neutral-300">|</span>
             <a
-              className="text-green-600 hover:underline no-underline"
+              className="text-brand-600 hover:underline no-underline"
               href="#cta"
             >
               Get started →
@@ -65,7 +65,7 @@ export function ImprovePage({ version }: ImprovePageProps) {
 
           <a
             href="#cta"
-            className="sm:hidden text-sm font-semibold text-green-600 hover:underline no-underline"
+            className="sm:hidden text-sm font-semibold text-brand-600 hover:underline no-underline"
             aria-label="Jump to get started"
           >
             Get started →
@@ -84,7 +84,7 @@ export function ImprovePage({ version }: ImprovePageProps) {
           <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center items-center">
             <a
               href="#cta"
-              className="inline-flex items-center gap-2 rounded-xl bg-green-600 px-5 py-3 text-white font-semibold shadow-sm hover:bg-green-700 transition-colors no-underline"
+              className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-5 py-3 text-white font-semibold shadow-sm hover:bg-brand-700 transition-colors no-underline"
             >
               Questions? Let&apos;s Talk →
             </a>
@@ -92,7 +92,7 @@ export function ImprovePage({ version }: ImprovePageProps) {
             {firstFeature && (
               <a
                 href={`#${firstFeature.id}`}
-                className="inline-flex items-center gap-2 text-green-700 font-semibold hover:underline no-underline"
+                className="inline-flex items-center gap-2 text-brand-700 font-semibold hover:underline no-underline"
               >
                 See the tools
                 <span aria-hidden="true">↓</span>
@@ -148,7 +148,7 @@ export function ImprovePage({ version }: ImprovePageProps) {
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
               <a
                 href="#"
-                className="inline-flex items-center gap-2 rounded-xl bg-green-600 px-6 py-3 text-white font-semibold shadow-sm hover:bg-green-700 transition-colors no-underline"
+                className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-6 py-3 text-white font-semibold shadow-sm hover:bg-brand-700 transition-colors no-underline"
               >
                 Schedule a Free Consultation →
               </a>

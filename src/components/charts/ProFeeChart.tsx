@@ -52,9 +52,9 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
         <div className="space-y-3">
           {/* Potential Value */}
           <div>
-            <div className="flex justify-between items-center text-xs text-emerald-600 mb-1">
+            <div className="flex justify-between items-center text-xs text-brand-600 mb-1">
               <span>Potential Growth</span>
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+              <span className="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
             </div>
             <p className="text-xl font-bold text-slate-900 tabular-nums">
               {formatCurrency(withoutFees)}
@@ -98,10 +98,10 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
         <div className="grid grid-cols-[auto_auto] gap-x-4 items-baseline text-right">
           
           {/* Row 1: Projected Value */}
-          <p className="text-2xl font-semibold text-emerald-700 tracking-tight tabular-nums">
+          <p className="text-2xl font-semibold text-brand-700 tracking-tight tabular-nums">
             {formatCurrency(finalValueWithoutFees)}
           </p>
-          <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wider text-left">
+          <p className="text-xs font-semibold text-brand-600 uppercase tracking-wider text-left">
             Projected Value
           </p>
 
@@ -134,8 +134,8 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
           <AreaChart data={data} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="emeraldGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#059669" stopOpacity={0.2} />
-                <stop offset="100%" stopColor="#059669" stopOpacity={0.0} />
+                <stop offset="0%" stopColor="#00A540" stopOpacity={0.2} />
+                <stop offset="100%" stopColor="#00A540" stopOpacity={0.0} />
               </linearGradient>
               <linearGradient id="slateGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#64748b" stopOpacity={0.2} />
@@ -161,10 +161,10 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
             <Area
               type="monotone"
               dataKey="withoutFees"
-              stroke="#059669" 
+              stroke="#00A540" 
               strokeWidth={3}
               fill="url(#emeraldGradient)"
-              activeDot={{ r: 6, fill: "#059669", stroke: "#fff", strokeWidth: 2 }}
+              activeDot={{ r: 6, fill: "#00A540", stroke: "#fff", strokeWidth: 2 }}
             />
 
             {/* Actual Value (Lower Line) - Muted Blue/Gray */}
