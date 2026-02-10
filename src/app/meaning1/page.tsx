@@ -11,7 +11,6 @@ import {
   Clock,
   ArrowRight
 } from 'lucide-react';
-import { DesignerNav } from "@/components/DesignerNav";
 
 export const metadata = {
   title: "Tasks vs. Meaning | The Philosophy",
@@ -21,18 +20,6 @@ export const metadata = {
 export default function TasksMeaningPage() {
   return (
     <main className="bg-stone-50 text-stone-900 font-sans selection:bg-brand-100">
-      <DesignerNav />
-      {/* --- NAV (Matches Upgrade Pages) --- */}
-      <nav className="max-w-[1100px] mx-auto px-6 py-6 flex justify-between items-center border-b border-stone-200">
-        <Link href="/" className="font-bold flex items-center gap-2 hover:opacity-90 no-underline text-stone-900">
-          <span className="w-3 h-3 rounded-full bg-brand-600"></span>
-          <span>YouArePayingTooMuch.com</span>
-        </Link>
-        <div className="flex gap-6 text-sm font-semibold text-stone-600">
-          <Link href="/upgrade-your-advice" className="hover:text-brand-700 transition-colors">The Standard</Link>
-          <Link href="/#calculator" className="hover:text-brand-700 transition-colors">The Math</Link>
-        </div>
-      </nav>
 
       {/* --- HERO SECTION --- */}
       <section className="pt-20 pb-16 px-6 max-w-4xl mx-auto text-center">
@@ -211,13 +198,6 @@ export default function TasksMeaningPage() {
         </div>
       </section>
 
-      {/* --- FOOTER --- */}
-      <footer className="bg-stone-50 py-12 px-6 border-t border-stone-200 text-center text-stone-500 text-sm">
-        <p className="max-w-2xl mx-auto">
-          Jensen Huang&apos;s &quot;Task vs. Meaning&quot; concept is a philosophical framework we apply to wealth management.
-          Advisory services are provided by David J. Van Osdol, CFA, CFP.
-        </p>
-      </footer>
 
     </main>
   );

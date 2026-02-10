@@ -3,7 +3,6 @@ import { FeatureSection } from "@/components/improve/FeatureSection";
 import { ComparisonCard } from "@/components/improve/ComparisonCard";
 import { HeroImage } from "@/components/improve/HeroImage";
 import { features, comparisonCards } from "@/config/improvePageConfig";
-import { SiteNav } from "@/components/SiteNav";
 
 export const metadata = {
   title: "Improve Your Tools | Better Information = Better Decisions",
@@ -14,7 +13,6 @@ export const metadata = {
 export default function ImproveYourTools() {
   return (
     <main className="bg-neutral-50 text-neutral-900 antialiased">
-      <SiteNav />
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 pb-16">
         {/* HERO */}
         <section id="top" className="pt-6 pb-8 text-center">
@@ -86,37 +84,6 @@ export default function ImproveYourTools() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="mt-14 pt-6 border-t border-neutral-200 text-xs text-neutral-500">
-          <div className="flex flex-wrap gap-3 items-center justify-between">
-            <div>
-              Software screenshots are for illustrative purposes. Features may
-              vary based on individual circumstances.
-            </div>
-            <div className="flex gap-3 font-semibold">
-              <a
-                className="hover:underline no-underline text-neutral-500"
-                href="/disclosures"
-              >
-                Disclosures
-              </a>
-              <span className="text-neutral-300">|</span>
-              <a
-                className="hover:underline no-underline text-neutral-500"
-                href="/adv"
-              >
-                ADV
-              </a>
-              <span className="text-neutral-300">|</span>
-              <a
-                className="hover:underline no-underline text-neutral-500"
-                href="/privacy"
-              >
-                Privacy
-              </a>
-            </div>
-          </div>
-        </footer>
       </div>
     </main>
   );
