@@ -20,28 +20,28 @@ export const metadata = {
 
 export default function TasksMeaningPage() {
   return (
-    <main className="bg-stone-50 text-stone-900 font-sans selection:bg-emerald-100">
+    <main className="bg-stone-50 text-stone-900 font-sans selection:bg-brand-100">
       <DesignerNav />
       {/* --- NAV (Matches Upgrade Pages) --- */}
       <nav className="max-w-[1100px] mx-auto px-6 py-6 flex justify-between items-center border-b border-stone-200">
         <Link href="/" className="font-bold flex items-center gap-2 hover:opacity-90 no-underline text-stone-900">
-          <span className="w-3 h-3 rounded-full bg-emerald-600"></span>
+          <span className="w-3 h-3 rounded-full bg-brand-600"></span>
           <span>YouArePayingTooMuch.com</span>
         </Link>
         <div className="flex gap-6 text-sm font-semibold text-stone-600">
-          <Link href="/upgrade" className="hover:text-emerald-700 transition-colors">The Standard</Link>
-          <Link href="/#calculator" className="hover:text-emerald-700 transition-colors">The Math</Link>
+          <Link href="/upgrade-your-advice" className="hover:text-brand-700 transition-colors">The Standard</Link>
+          <Link href="/#calculator" className="hover:text-brand-700 transition-colors">The Math</Link>
         </div>
       </nav>
 
       {/* --- HERO SECTION --- */}
       <section className="pt-20 pb-16 px-6 max-w-4xl mx-auto text-center">
-        <span className="inline-block py-1 px-3 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold tracking-widest uppercase mb-6">
+        <span className="inline-block py-1 px-3 rounded-full bg-brand-100 text-brand-800 text-xs font-bold tracking-widest uppercase mb-6">
           Our Philosophy
         </span>
         <h1 className="text-4xl md:text-6xl font-serif font-bold text-stone-900 leading-tight mb-6">
           The Radiologist<br/>
-          <span className="text-emerald-700">& The Scan</span>
+          <span className="text-brand-700">& The Scan</span>
         </h1>
         <p className="text-xl md:text-2xl text-stone-600 max-w-2xl mx-auto leading-relaxed">
           The task of a radiologist is not to read a scan; it is to heal a patient.
@@ -59,7 +59,7 @@ export default function TasksMeaningPage() {
             <p>
               In financial services, the &quot;Tasks&quot; are endless: compliance checks, rebalancing, trade execution, data entry, reporting. For decades, clients have been charged huge fees primarily to cover the human labor required to perform these tasks.
             </p>
-            <p className="font-serif text-2xl italic text-stone-800 border-l-4 border-emerald-500 pl-6 py-2 my-8 bg-stone-50">
+            <p className="font-serif text-2xl italic text-stone-800 border-l-4 border-brand-500 pl-6 py-2 my-8 bg-stone-50">
               &quot;We built our infrastructure to strip away the administrative noise so that every minute I spend with you is focused on your life, not your paperwork.&quot;
             </p>
             <p>
@@ -118,35 +118,35 @@ export default function TasksMeaningPage() {
             </div>
 
             {/* RIGHT: THE MEANING */}
-            <div className="bg-emerald-900 rounded-2xl shadow-xl border border-emerald-800 overflow-hidden flex flex-col text-white transform md:-translate-y-4 md:scale-105">
-              <div className="bg-emerald-800 p-6 border-b border-emerald-700">
-                <div className="flex items-center gap-3 text-emerald-200 mb-2">
+            <div className="bg-brand-900 rounded-2xl shadow-xl border border-brand-800 overflow-hidden flex flex-col text-white transform md:-translate-y-4 md:scale-105">
+              <div className="bg-brand-800 p-6 border-b border-brand-700">
+                <div className="flex items-center gap-3 text-brand-200 mb-2">
                   <Heart className="w-6 h-6" />
                   <span className="text-xs font-bold uppercase tracking-wider">The Pilot</span>
                 </div>
                 <h3 className="text-2xl font-bold text-white">The Meaning</h3>
-                <p className="text-emerald-100 mt-2 text-sm">
+                <p className="text-brand-100 mt-2 text-sm">
                   The mission. Human, strategic, and deeply personal.
                 </p>
               </div>
               <div className="p-8 flex-1">
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
-                    <Scale className="w-5 h-5 text-emerald-400 mt-0.5" />
-                    <span className="text-emerald-50"><strong>Ethical Stewardship</strong><br/>Acting as a true fiduciary when decisions are hard.</span>
+                    <Scale className="w-5 h-5 text-brand-400 mt-0.5" />
+                    <span className="text-brand-50"><strong>Ethical Stewardship</strong><br/>Acting as a true fiduciary when decisions are hard.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <Heart className="w-5 h-5 text-emerald-400 mt-0.5" />
-                    <span className="text-emerald-50"><strong>Family Legacy</strong><br/>Understanding what the money is actually <em>for</em>.</span>
+                    <Heart className="w-5 h-5 text-brand-400 mt-0.5" />
+                    <span className="text-brand-50"><strong>Family Legacy</strong><br/>Understanding what the money is actually <em>for</em>.</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <Clock className="w-5 h-5 text-emerald-400 mt-0.5" />
-                    <span className="text-emerald-50"><strong>Behavioral Coaching</strong><br/>Preventing panic when the world gets noisy.</span>
+                    <Clock className="w-5 h-5 text-brand-400 mt-0.5" />
+                    <span className="text-brand-50"><strong>Behavioral Coaching</strong><br/>Preventing panic when the world gets noisy.</span>
                   </li>
                 </ul>
-                <div className="mt-8 pt-6 border-t border-emerald-800">
-                  <p className="text-xs font-bold text-emerald-400 uppercase mb-2">This Is What You Hire Us For</p>
-                  <p className="text-emerald-200 text-sm">You aren&apos;t paying me to read contracts or stare at tickers. You are paying me to know you.</p>
+                <div className="mt-8 pt-6 border-t border-brand-800">
+                  <p className="text-xs font-bold text-brand-400 uppercase mb-2">This Is What You Hire Us For</p>
+                  <p className="text-brand-200 text-sm">You aren&apos;t paying me to read contracts or stare at tickers. You are paying me to know you.</p>
                 </div>
               </div>
             </div>
@@ -198,12 +198,12 @@ export default function TasksMeaningPage() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
             href="https://calendly.com"
-            className="inline-flex items-center justify-center gap-2 bg-emerald-700 text-white px-8 py-4 rounded-full font-bold hover:bg-emerald-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 no-underline"
+            className="inline-flex items-center justify-center gap-2 bg-brand-700 text-white px-8 py-4 rounded-full font-bold hover:bg-brand-800 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 no-underline"
           >
             Start the Conversation <ArrowRight className="w-5 h-5" />
           </a>
           <Link
-            href="/upgrade"
+            href="/upgrade-your-advice"
             className="inline-flex items-center justify-center gap-2 bg-stone-100 text-stone-700 px-8 py-4 rounded-full font-bold hover:bg-stone-200 transition-all no-underline"
           >
             View Credentials

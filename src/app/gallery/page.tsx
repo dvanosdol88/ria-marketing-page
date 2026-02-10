@@ -70,17 +70,9 @@ const SECTIONS: Section[] = [
     bgColor: 'bg-blue-600',
     subgroups: [
       {
-        name: 'Personal Story',
-        items: [
-          { route: '/upgrade1', title: 'Upgrade 1', description: 'Original "I left a good firm" with credential cards' },
-          { route: '/upgrade2', title: 'Upgrade 2', description: 'Same + "What This Looks Like in Practice" section' },
-        ],
-      },
-      {
-        name: 'Credential Education',
+        name: 'Credential Education (Source Material)',
         items: [
           { route: '/upgrade3', title: 'Upgrade 3', description: 'Comprehensive with 10 cited sources, academic tone' },
-          { route: '/upgrade4', title: 'Upgrade 4', description: 'Near-duplicate of upgrade3' },
           { route: '/upgrade5', title: 'Upgrade 5', description: 'Data visualizations — Recharts FeeChart, CFA Funnel, Advisor Matrix' },
           { route: '/upgrade6', title: 'Upgrade 6', description: 'Badge-focused design with CFA image, rarity stats' },
           { route: '/upgrade7', title: 'Upgrade 7', description: 'Newspaper-style with "By The Numbers" comparison table' },
@@ -90,18 +82,14 @@ const SECTIONS: Section[] = [
       {
         name: 'Independence & Custodian',
         items: [
-          { route: '/upgrade-your-advice-v0', title: 'Upgrade Your Advice v0', description: 'Directory route variant' },
           { route: '/upgrade-your-advice-v0-cgpt', title: 'v0-cgpt', description: 'Strongest "Keep your custodian" messaging + FAQ' },
-          { route: '/upgrade-your-advice-v0-gemini', title: 'v0-gemini', description: 'Tailwind CDN standalone variant' },
+          { route: '/upgrade-your-advice-v0-gemini', title: 'v0-gemini', description: 'Tailwind CDN standalone variant (Workshop)' },
         ],
       },
       {
-        name: 'Production & Meta',
+        name: 'Production',
         items: [
-          { route: '/upgrade', title: 'Upgrade', description: 'Compact credential verification page' },
-          { route: '/upgrade-your-advice', title: 'Upgrade Your Advice', description: '⚠️ PRODUCTION ROUTE — currently placeholder', highlight: true },
-          { route: '/quarterfinal-1', title: 'Quarterfinal 1', description: 'Tournament-themed "1% Dynasty vs Flat-Fee Fiduciary"' },
-          { route: '/upgrade-summary-1-10', title: 'Upgrade Summary 1-10', description: 'Existing meta page showing all 10 upgrades' },
+          { route: '/upgrade-your-advice', title: 'Upgrade Your Advice', description: '★ CONSOLIDATED — Merged from upgrade3-8 + v0-cgpt. Personal story, credentials, independence.', highlight: true },
         ],
       },
     ],
@@ -110,8 +98,8 @@ const SECTIONS: Section[] = [
     id: 'task-vs-purpose',
     title: 'TASK vs PURPOSE',
     tagline: '"Your advisor does tasks. I focus on purpose." (Jensen Huang Framework)',
-    color: 'text-emerald-700',
-    bgColor: 'bg-emerald-600',
+    color: 'text-brand-700',
+    bgColor: 'bg-brand-600',
     prominent: true,
     items: [
       { route: '/upgrade9', title: 'Upgrade 9', description: '"What\'s my job? Really." — The Dirty Secret, Task vs Purpose columns' },
@@ -646,7 +634,7 @@ export default function GalleryPage() {
                 href={`#${section.id}`}
                 className={`px-3 py-1 text-xs font-medium rounded-full no-underline transition-colors ${
                   section.prominent
-                    ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 ring-2 ring-yellow-400'
+                    ? 'bg-brand-100 text-brand-700 hover:bg-brand-200 ring-2 ring-yellow-400'
                     : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
                 }`}
               >

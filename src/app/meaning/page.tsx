@@ -136,7 +136,7 @@ export default function MeaningPage() {
               Home
             </a>
             <span aria-hidden>|</span>
-            <a href="/upgrade" className="hover:underline">
+            <a href="/upgrade-your-advice" className="hover:underline">
               Upgrade
             </a>
             <span aria-hidden>|</span>
@@ -151,7 +151,7 @@ export default function MeaningPage() {
         {/* HERO */}
         <section className="grid gap-10 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-8">
-            <p className="text-sm font-semibold tracking-wide text-green-700">
+            <p className="text-sm font-semibold tracking-wide text-brand-700">
               The narrative to anchor the brand
             </p>
             <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -180,8 +180,8 @@ export default function MeaningPage() {
 
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <a
-                href="/upgrade"
-                className="inline-flex items-center justify-center rounded-lg bg-green-700 px-5 py-3 text-sm font-semibold text-white hover:bg-green-800"
+                href="/upgrade-your-advice"
+                className="inline-flex items-center justify-center rounded-lg bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800"
               >
                 See how we upgrade advice
               </a>
@@ -297,7 +297,7 @@ export default function MeaningPage() {
                 <button
                   type="button"
                   onClick={playFromTimestamp}
-                  className="inline-flex items-center justify-center rounded-lg bg-green-700 px-5 py-3 text-sm font-semibold text-white hover:bg-green-800"
+                  className="inline-flex items-center justify-center rounded-lg bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800"
                 >
                   Play from {minutesLabel}
                 </button>
@@ -348,12 +348,12 @@ export default function MeaningPage() {
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <a
               href="/"
-              className="inline-flex items-center justify-center rounded-lg bg-green-700 px-5 py-3 text-sm font-semibold text-white hover:bg-green-800"
+              className="inline-flex items-center justify-center rounded-lg bg-brand-700 px-5 py-3 text-sm font-semibold text-white hover:bg-brand-800"
             >
               Run the fee scenario
             </a>
             <a
-              href="/upgrade"
+              href="/upgrade-your-advice"
               className="inline-flex items-center justify-center rounded-lg border px-5 py-3 text-sm font-semibold hover:bg-slate-50"
             >
               Read about fiduciary constraints
