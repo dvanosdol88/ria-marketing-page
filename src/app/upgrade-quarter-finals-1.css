@@ -17,14 +17,14 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(to bottom, transparent, #10b981, transparent);
+  background: linear-gradient(to bottom, transparent, #14B254, transparent);
 }
 
 .quarterfinal-title {
   font-family: 'Inter', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: #10b981;
+  color: #14B254;
   font-weight: 800;
 }
 
@@ -34,12 +34,12 @@
 }
 
 .versus-card:hover {
-  border-color: #10b981;
+  border-color: #14B254;
   box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
 }
 
 .winner-badge {
-  background: #10b981;
+  background: #14B254;
   color: #000;
   font-weight: 900;
   padding: 0.25rem 0.75rem;

@@ -47,7 +47,7 @@ export function SiteNav() {
                   href={link.href as any}
                   className={`hover:underline no-underline transition-colors ${
                     isActive
-                      ? "text-green-600"
+                      ? "text-brand-600"
                       : "text-neutral-700"
                   }`}
                 >

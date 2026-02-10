@@ -23,7 +23,7 @@ export function ValueCards({
 
   const cards = useMemo(() => [
     {
-      title: <><span className="text-green-600">Upgrade</span> Your Advice</>,
+      title: <><span className="text-brand-600">Upgrade</span> Your Advice</>,
       image: brainAiImage,
       href: '/upgrade1',
       description: (
@@ -44,7 +44,7 @@ export function ValueCards({
       ),
     },
     {
-      title: <><span className="text-green-600">Improve</span> Your Tools</>,
+      title: <><span className="text-brand-600">Improve</span> Your Tools</>,
       image: improveToolsImage,
       href: '/improve1',
       imageClassName: "h-40 w-auto object-contain",
@@ -55,7 +55,7 @@ export function ValueCards({
       ),
     },
     {
-      title: <><span className="text-green-600">Save</span> a TON of Money</>,
+      title: <><span className="text-brand-600">Save</span> a TON of Money</>,
       image: piggyBankImage,
       href: '/save',
       imageClassName: "h-40 w-auto object-contain",
@@ -72,7 +72,7 @@ export function ValueCards({
       <div className="section-shell py-24">
         {/* Main Title */}
         <h2 className="text-5xl md:text-6xl font-bold text-center mb-16 text-gray-800">
-          <span className="text-primary">Upgrade</span>. <span className="text-primary">Improve</span>. <span className="text-green-600">Save?</span>
+          <span className="text-primary">Upgrade</span>. <span className="text-primary">Improve</span>. <span className="text-brand-600">Save?</span>
         </h2>
 
         {/* --- Linear Layout --- */}

@@ -187,7 +187,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   return (
     <>
       <section className="section-shell pt-12 pb-0 text-center">
-        <h1 className="text-4xl font-semibold text-green-600 sm:text-5xl">What would you do with {formatCurrency(projection.savings)}?</h1>
+        <h1 className="text-4xl font-semibold text-brand-600 sm:text-5xl">What would you do with {formatCurrency(projection.savings)}?</h1>
         <div className="mt-4 text-lg text-neutral-900 sm:text-xl">
           <span>See how much you can save.</span>{" "}
           <Quiz />
@@ -243,8 +243,8 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                             <stop offset="100%" stopColor="#9ca3af" stopOpacity={0.05} />
                           </linearGradient>
                           <linearGradient id="greenGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#22c55e" stopOpacity={0.25} />
-                            <stop offset="100%" stopColor="#22c55e" stopOpacity={0.02} />
+                            <stop offset="0%" stopColor="#14B254" stopOpacity={0.25} />
+                            <stop offset="100%" stopColor="#14B254" stopOpacity={0.02} />
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -261,7 +261,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                           contentStyle={{ borderRadius: 12, borderColor: "#e2e8f0" }}
                         />
                         <Area type="monotone" dataKey="withoutFees" stroke="#6366f1" fill="url(#greyGradient)" />
-                        <Area type="monotone" dataKey="withFees" stroke="#22c55e" fill="url(#greenGradient)" />
+                        <Area type="monotone" dataKey="withFees" stroke="#14B254" fill="url(#greenGradient)" />
                       </AreaChart>
                     </ResponsiveContainer>
                   </div>

@@ -37,7 +37,7 @@ export const savingsMeters: SavingsMeterConfig[] = [
     description: "Years of income at $100k/year",
     targetAmount: 100_000,
     icon: Clock,
-    color: "bg-emerald-500",
+    color: "bg-brand-500",
     formatLabel: (savings, target) => {
       const years = Math.floor(savings / target);
       const months = Math.round(((savings % target) / target) * 12);
