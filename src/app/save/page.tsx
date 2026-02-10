@@ -1,6 +1,5 @@
 import { SaveProofClient } from "@/components/save/SaveProofClient";
 import { CalculatorState, parseCalculatorState } from "@/lib/calculatorState";
-import { DesignerNav } from "@/components/DesignerNav";
 
 function normalizeSearchParams(searchParams: Record<string, string | string[] | undefined>) {
   const params = new URLSearchParams();
@@ -22,10 +21,5 @@ export default function SavePage({
   const params = normalizeSearchParams(searchParams);
   const calculatorState: CalculatorState = parseCalculatorState(params);
 
-  return (
-    <>
-      <DesignerNav />
-      <SaveProofClient calculatorState={calculatorState} searchParams={params} />
-    </>
-  );
+  return <SaveProofClient calculatorState={calculatorState} searchParams={params} />;
 }

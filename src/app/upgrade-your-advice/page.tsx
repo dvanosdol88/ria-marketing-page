@@ -15,7 +15,6 @@ import {
   Bar,
   Cell,
 } from 'recharts';
-import { DesignerNav } from '@/components/DesignerNav';
 
 /* ═══════════════════════════════════════════════════════════════
    RECHARTS COMPONENT DEFINITIONS
@@ -277,7 +276,6 @@ export default function UpgradeYourAdvice() {
 
   return (
     <>
-      <DesignerNav />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -1460,40 +1458,6 @@ export default function UpgradeYourAdvice() {
             </div>
           </section>
 
-          {/* ═══════════════════════════════════════════════════════════════
-              FOOTER — Trademarks, Disclaimers
-          ═══════════════════════════════════════════════════════════════ */}
-          <footer className="py-8 px-4 border-t border-stone-200">
-            <div className="max-w-4xl mx-auto">
-              <div className="p-4 border border-dashed border-stone-300 rounded-xl bg-stone-50 text-xs text-stone-500 mb-6">
-                <strong className="font-extrabold">Trademark notes:</strong><br />
-                CFP&reg; is a certification mark owned by Certified Financial Planner Board of Standards, Inc. (CFP Board) in the United States and is used by individuals who meet CFP Board&apos;s certification requirements.<br /><br />
-                CFA&reg; and Chartered Financial Analyst&reg; are trademarks owned by CFA Institute. CFA Institute does not endorse, promote, or warrant the accuracy or quality of this site or the services described.<br /><br />
-                CFP&reg;, CERTIFIED FINANCIAL PLANNER&trade;, and federally registered CFP (with flame design) marks
-                are certification marks owned by the Certified Financial Planner Board of Standards, Inc.
-              </div>
-
-              <div className="flex flex-wrap gap-3 items-center justify-between text-xs text-stone-500">
-                <div>Advisory services are for illustrative purposes only. Projections are hypothetical and not a guarantee of future returns. This page is educational and does not constitute investment, legal, or tax advice.</div>
-                <div className="flex gap-3 font-semibold">
-                  <a className="hover:underline no-underline text-stone-500" href="/disclosures">Disclosures</a>
-                  <span className="text-stone-300">|</span>
-                  <a className="hover:underline no-underline text-stone-500" href="/adv">ADV</a>
-                  <span className="text-stone-300">|</span>
-                  <a className="hover:underline no-underline text-stone-500" href="/privacy">Privacy</a>
-                </div>
-              </div>
-
-              <p className="mt-4 text-stone-400 text-xs">
-                &copy; {new Date().getFullYear()} YouArePayingTooMuch.com. All rights reserved.
-              </p>
-
-              <p className="mt-4 text-stone-400 text-xs">
-                More credentials don&apos;t automatically mean better outcomes&mdash;but they do raise the bar for competence, ethics, and process.
-                That&apos;s the point of &quot;upgrade.&quot;
-              </p>
-            </div>
-          </footer>
 
         </main>
       </div>

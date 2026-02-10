@@ -1,43 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { DesignerNav } from "@/components/DesignerNav";
 
 export default function Upgrade3() {
   return (
     <main className="bg-neutral-50 text-neutral-900 antialiased">
-      <DesignerNav />
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 pb-16">
-        {/* Header / Nav */}
-        <header className="flex justify-between items-center border-b border-neutral-200 py-4">
-          <Link href="/" className="font-bold flex items-center gap-2 hover:opacity-90 no-underline text-neutral-900">
-            <span className="w-3 h-3 rounded-full bg-brand-600"></span>
-            <span>Upgrade Your Advisor</span>
-          </Link>
-
-          <nav className="hidden sm:flex gap-4 text-sm font-semibold">
-            <a className="hover:underline" href="#problem">Problem</a>
-            <span className="text-neutral-300">|</span>
-            <a className="hover:underline" href="#cfa">CFA®</a>
-            <span className="text-neutral-300">|</span>
-            <a className="hover:underline" href="#cfp">CFP®</a>
-            <span className="text-neutral-300">|</span>
-            <a className="hover:underline" href="#both">Both</a>
-            <span className="text-neutral-300">|</span>
-            <a className="hover:underline" href="#fiduciary">Fiduciary</a>
-            <span className="text-neutral-300">|</span>
-            <a className="hover:underline" href="#pricing">Flat fee</a>
-            <span className="text-neutral-300">|</span>
-            <a className="text-brand-700 hover:underline" href="#cta">Get started →</a>
-          </nav>
-
-          <a
-            href="#cta"
-            className="sm:hidden text-sm font-semibold text-brand-700 hover:underline"
-            aria-label="Jump to get started"
-          >
-            Get started →
-          </a>
-        </header>
 
         {/* HERO */}
         <section id="top" className="pt-12 pb-6 text-center">
@@ -510,19 +477,6 @@ export default function Upgrade3() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="mt-14 pt-6 border-t border-neutral-200 text-xs text-neutral-500">
-          <div className="flex flex-wrap gap-3 items-center justify-between">
-            <div>Advisory services are for illustrative purposes only. Projections are hypothetical and not a guarantee of future returns.</div>
-            <div className="flex gap-3 font-semibold">
-              <a className="hover:underline no-underline text-neutral-500" href="/disclosures">Disclosures</a>
-              <span className="text-neutral-300">|</span>
-              <a className="hover:underline no-underline text-neutral-500" href="/adv">ADV</a>
-              <span className="text-neutral-300">|</span>
-              <a className="hover:underline no-underline text-neutral-500" href="/privacy">Privacy</a>
-            </div>
-          </div>
-        </footer>
       </div>
     </main>
   );

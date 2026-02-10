@@ -174,7 +174,7 @@ export default function Save1Page() {
 
       <div className="save1-body antialiased min-h-screen">
         {/* Hero Section */}
-        <header className="vibrant-gradient text-white pt-16 pb-20 px-4 mb-12">
+        <section className="vibrant-gradient text-white pt-16 pb-20 px-4 mb-12">
             <div className="max-w-5xl mx-auto text-center">
                 <div className="inline-block bg-blue-500 bg-opacity-20 px-4 py-1 rounded-full text-sm font-semibold tracking-wide uppercase mb-4 text-blue-200">Financial Intelligence</div>
                 <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
@@ -184,7 +184,7 @@ export default function Save1Page() {
                     Why <strong className="text-white">Average Returns</strong> minus <strong className="text-white">Controllable Costs</strong> equals your <strong className="text-white">Net Reality</strong>.
                 </p>
             </div>
-        </header>
+        </section>
 
         <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 pb-20">
 
@@ -314,13 +314,6 @@ export default function Save1Page() {
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer className="text-center text-slate-500 pt-12 pb-8 border-t border-slate-200 mt-20">
-                <p className="text-xs max-w-2xl mx-auto">
-                    All concepts derived from &quot;The Arithmetic of Active Management&quot; (French) and &quot;Mind the Gap&quot; (Morningstar).
-                    Visualizations generated for educational purposes.
-                </p>
-            </footer>
 
         </main>
       </div>

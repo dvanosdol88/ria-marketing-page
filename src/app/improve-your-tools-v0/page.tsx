@@ -3,13 +3,11 @@ import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { FeatureSectionStacked } from "@/components/improve/FeatureSectionStacked";
-import { DesignerNav } from "@/components/DesignerNav";
 import AnimatedHeader from "@/components/improve/AnimatedHeader";
 import {
   heroContent,
   features,
   comparisonCards,
-  navItems,
 } from "@/config/improveToolsV0Config";
 
 export const metadata = {
@@ -21,47 +19,7 @@ export const metadata = {
 export default function ImproveYourToolsV0Page() {
   return (
     <main className="bg-neutral-50 text-neutral-900 antialiased">
-      <DesignerNav />
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 pb-16">
-        {/* Header / Nav */}
-        <header className="flex justify-between items-center border-b border-neutral-200 py-4">
-          <Link
-            href="/"
-            className="font-bold flex items-center gap-2 hover:opacity-90 no-underline text-brand-600"
-          >
-            <span className="w-3 h-3 rounded-full bg-brand-600"></span>
-            <span>Improve Your Tools</span>
-          </Link>
-
-          <nav className="hidden sm:flex gap-4 text-sm font-semibold">
-            {navItems.slice(0, 4).map((item, index) => (
-              <span key={item.id} className="flex items-center gap-4">
-                {index > 0 && <span className="text-neutral-300">|</span>}
-                <a
-                  className="hover:underline no-underline text-neutral-700"
-                  href={`#${item.id}`}
-                >
-                  {item.label}
-                </a>
-              </span>
-            ))}
-            <span className="text-neutral-300">|</span>
-            <a
-              className="text-brand-600 hover:underline no-underline"
-              href="#cta"
-            >
-              Get started →
-            </a>
-          </nav>
-
-          <a
-            href="#cta"
-            className="sm:hidden text-sm font-semibold text-brand-600 hover:underline no-underline"
-            aria-label="Jump to get started"
-          >
-            Get started →
-          </a>
-        </header>
 
         {/* HERO - Animated Header */}
         <section id="top">
@@ -187,37 +145,6 @@ export default function ImproveYourToolsV0Page() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="mt-14 pt-6 border-t border-neutral-200 text-xs text-neutral-500">
-          <div className="flex flex-wrap gap-3 items-center justify-between">
-            <div>
-              Software screenshots are for illustrative purposes. Features may
-              vary based on individual circumstances.
-            </div>
-            <div className="flex gap-3 font-semibold">
-              <a
-                className="hover:underline no-underline text-neutral-500"
-                href="/disclosures"
-              >
-                Disclosures
-              </a>
-              <span className="text-neutral-300">|</span>
-              <a
-                className="hover:underline no-underline text-neutral-500"
-                href="/adv"
-              >
-                ADV
-              </a>
-              <span className="text-neutral-300">|</span>
-              <a
-                className="hover:underline no-underline text-neutral-500"
-                href="/privacy"
-              >
-                Privacy
-              </a>
-            </div>
-          </div>
-        </footer>
       </div>
     </main>
   );

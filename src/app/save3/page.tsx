@@ -19,7 +19,6 @@ export default function Save3Page() {
 
   // Tab State
   const [activeTab, setActiveTab] = useState<'academic' | 'media' | 'industry'>('academic');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // --- Formatters ---
   const formatCurrency = (num: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(num);
@@ -177,7 +176,6 @@ export default function Save3Page() {
     const element = document.getElementById(id);
     if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
-        setMobileMenuOpen(false);
     }
   };
 
@@ -221,40 +219,8 @@ export default function Save3Page() {
 
       <div className="save3-body bg-stone-50 text-slate-800 min-h-screen">
 
-        {/* Navigation */}
-        <nav className="bg-white border-b border-stone-200 sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between h-16">
-                    <div className="flex items-center">
-                        <span className="text-2xl font-bold serif text-slate-900 tracking-tight">Fee<span className="text-slate-500">Analytics</span></span>
-                    </div>
-                    <div className="hidden sm:flex items-center space-x-8">
-                        <button onClick={() => scrollToSection('simulator')} className="text-sm font-medium text-slate-600 hover:text-slate-900 transition">Simulator</button>
-                        <button onClick={() => scrollToSection('evidence')} className="text-sm font-medium text-slate-600 hover:text-slate-900 transition">Expert Evidence</button>
-                        <button onClick={() => scrollToSection('analysis')} className="text-sm font-medium text-slate-600 hover:text-slate-900 transition">Visual Analysis</button>
-                    </div>
-                    {/* Mobile Menu Button */}
-                    <div className="flex items-center sm:hidden">
-                        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-slate-500 hover:text-slate-700 p-2">
-                            <span className="text-xl">☰</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            {/* Mobile Menu */}
-            {mobileMenuOpen && (
-                <div id="mobile-menu" className="sm:hidden bg-white border-b border-stone-200">
-                    <div className="px-2 pt-2 pb-3 space-y-1">
-                        <button onClick={() => scrollToSection('simulator')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-stone-100 rounded-md">Simulator</button>
-                        <button onClick={() => scrollToSection('evidence')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-stone-100 rounded-md">Expert Evidence</button>
-                        <button onClick={() => scrollToSection('analysis')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-stone-100 rounded-md">Visual Analysis</button>
-                    </div>
-                </div>
-            )}
-        </nav>
-
         {/* Hero Section */}
-        <header className="bg-white pt-16 pb-12 sm:pt-24 sm:pb-20 px-4 sm:px-6 lg:px-8 text-center max-w-5xl mx-auto">
+        <section className="bg-white pt-16 pb-12 sm:pt-24 sm:pb-20 px-4 sm:px-6 lg:px-8 text-center max-w-5xl mx-auto">
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6 leading-tight">
                 The Tyranny of Compounding Costs
             </h1>
@@ -269,7 +235,7 @@ export default function Save3Page() {
                     View the Research
                 </button>
             </div>
-        </header>
+        </section>
 
         {/* Context Bar */}
         <section className="bg-stone-100 border-y border-stone-200 py-8">
@@ -561,11 +527,6 @@ export default function Save3Page() {
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer className="text-center text-slate-500 text-sm pt-8 border-t border-stone-200">
-                <p>© 2024 Fee Analysis Dashboard. For educational purposes only.</p>
-                <p className="mt-2">Based on principles sourced from WSJ, CFA Institute, and Academic Research.</p>
-            </footer>
 
         </main>
       </div>

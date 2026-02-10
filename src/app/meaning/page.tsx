@@ -2,7 +2,6 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { DesignerNav } from "@/components/DesignerNav";
 
 /**
  * Meaning page
@@ -122,31 +121,6 @@ export default function MeaningPage() {
 
   return (
     <div className="min-h-screen">
-      <DesignerNav />
-      {/* Simple top nav (matches the minimal style used on /upgrade) */}
-      <header className="border-b">
-        <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4 text-sm">
-          <div className="font-semibold">
-            <a href="/" className="hover:underline">
-              YouArePayingTooMuch.com
-            </a>
-          </div>
-          <div className="flex items-center gap-2">
-            <a href="/" className="hover:underline">
-              Home
-            </a>
-            <span aria-hidden>|</span>
-            <a href="/upgrade-your-advice" className="hover:underline">
-              Upgrade
-            </a>
-            <span aria-hidden>|</span>
-            <a href="/" className="hover:underline">
-              Calculator
-            </a>
-          </div>
-        </nav>
-      </header>
-
       <main className="mx-auto max-w-5xl px-6 py-12">
         {/* HERO */}
         <section className="grid gap-10 lg:grid-cols-12 lg:items-center">
@@ -361,25 +335,6 @@ export default function MeaningPage() {
           </div>
         </section>
 
-        <footer className="mt-14 border-t pt-6 text-xs text-slate-600">
-          <p>
-            Advisory services are for illustrative purposes only. Nothing on this page constitutes
-            tax, legal, or investment advice.
-          </p>
-          <p className="mt-2">
-            <a className="hover:underline" href="/disclosures">
-              Disclosures
-            </a>
-            <span aria-hidden> · </span>
-            <a className="hover:underline" href="/adv">
-              ADV
-            </a>
-            <span aria-hidden> · </span>
-            <a className="hover:underline" href="/privacy">
-              Privacy
-            </a>
-          </p>
-        </footer>
       </main>
     </div>
   );

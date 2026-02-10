@@ -17,7 +17,6 @@ import {
   Area,
   AreaChart,
 } from 'recharts';
-import { DesignerNav } from "@/components/DesignerNav";
 
 // --- VISUAL 1: FEE CHART COMPONENT ---
 const FeeChart = () => {
@@ -246,7 +245,6 @@ const Scorecard = () => (
 export default function Upgrade5() {
   return (
     <main className="min-h-screen bg-white text-neutral-900 font-sans selection:bg-blue-100">
-      <DesignerNav />
 
       {/* 1. HERO SECTION: The Manifesto */}
       <section className="relative px-6 py-24 md:py-32 max-w-5xl mx-auto text-center">
@@ -378,19 +376,6 @@ export default function Upgrade5() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="px-6 py-8 border-t border-neutral-200 text-xs text-neutral-500 max-w-6xl mx-auto">
-        <div className="flex flex-wrap gap-3 items-center justify-between">
-          <div>Advisory services are for illustrative purposes only. Projections are hypothetical and not a guarantee of future returns.</div>
-          <div className="flex gap-3 font-semibold">
-            <a className="hover:underline" href="/disclosures">Disclosures</a>
-            <span className="text-neutral-300">|</span>
-            <a className="hover:underline" href="/adv">ADV</a>
-            <span className="text-neutral-300">|</span>
-            <a className="hover:underline" href="/privacy">Privacy</a>
-          </div>
-        </div>
-      </footer>
     </main>
   );
 }

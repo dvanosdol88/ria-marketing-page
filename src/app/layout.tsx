@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
 import { inter } from "./fonts";
+import { SiteNav } from "@/components/SiteNav";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://youarepayingtoomuch.com"),
@@ -60,7 +62,9 @@ export default function RootLayout({
     <ViewTransitions>
       <html lang="en">
         <body className={`${inter.variable} bg-neutral-50 text-neutral-900`}>
-          {children}
+          <SiteNav />
+          <div className="min-h-screen">{children}</div>
+          <SiteFooter />
         </body>
       </html>
     </ViewTransitions>
