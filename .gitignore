@@ -12,3 +12,9 @@ gha-creds-*.json
 *.log
 *.err
 .playwright-mcp/
+
+# Session dumps and temp files
+2026-*.txt
+nul
+*.log
+init.txt
