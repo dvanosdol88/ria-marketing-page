@@ -100,6 +100,19 @@ export default function ImproveYourToolsPage() {
           </section>
         </ScrollReveal>
 
+        {/* Summary Statement */}
+        <ScrollReveal>
+          <section className="mt-16 text-center">
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-3 text-neutral-900">
+              Plan for the Good, the Bad, and the Unexpected
+            </h2>
+            <p className="text-lg text-neutral-600 max-w-2xl mx-auto">
+              Stress test your plan, optimize taxes, and compare life decisions
+              side-by-side before you act.
+            </p>
+          </section>
+        </ScrollReveal>
+
         {/* CTA */}
         <ScrollReveal>
           <section id="cta" className="mt-16">
