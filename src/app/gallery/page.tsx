@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect, useCallback } from 'react';
 
 // Status types and configuration
-type StatusCode = '★' | 'W' | 'C' | 'M' | 'A' | 'X' | '?';
+type StatusCode = 'â˜…' | 'W' | 'C' | 'M' | 'A' | 'X' | '?';
 
 interface StatusConfig {
   code: StatusCode;
@@ -16,7 +16,7 @@ interface StatusConfig {
 }
 
 const STATUS_OPTIONS: StatusConfig[] = [
-  { code: '★', label: 'Winner', color: 'text-yellow-600', bgColor: 'bg-yellow-100', borderColor: 'border-yellow-400', meaning: 'Production ready' },
+  { code: 'â˜…', label: 'Winner', color: 'text-yellow-600', bgColor: 'bg-yellow-100', borderColor: 'border-yellow-400', meaning: 'Production ready' },
   { code: 'W', label: 'Workshop', color: 'text-blue-600', bgColor: 'bg-blue-100', borderColor: 'border-blue-400', meaning: 'Needs refinement' },
   { code: 'C', label: 'Compare', color: 'text-purple-600', bgColor: 'bg-purple-100', borderColor: 'border-purple-400', meaning: 'Side-by-side needed' },
   { code: 'M', label: 'Merge', color: 'text-orange-600', bgColor: 'bg-orange-100', borderColor: 'border-orange-400', meaning: 'Combine parts' },
@@ -69,22 +69,18 @@ const SECTIONS: Section[] = [
     color: 'text-blue-700',
     bgColor: 'bg-blue-600',
     items: [
-      { route: '/upgrade-your-advice', title: 'Upgrade Your Advice', description: '\u2705 PRODUCTION \u2014 Consolidated upgrade page (Personal Story, Credentials, Independence)', highlight: true },
-      { route: '/upgrade-your-advice-v0-gemini', title: 'v0-gemini', description: 'Tailwind CDN standalone variant (Workshop)' },
+      { route: '/upgrade-your-advice', title: 'Upgrade Your Advice', description: 'Production consolidated upgrade page', highlight: true },
     ],
   },
   {
     id: 'task-vs-purpose',
     title: 'TASK vs PURPOSE',
-    tagline: '"Your advisor does tasks. I focus on purpose." (Jensen Huang Framework)',
+    tagline: '"Your advisor does tasks. I focus on purpose."',
     color: 'text-brand-700',
     bgColor: 'bg-brand-600',
     prominent: true,
     items: [
-      { route: '/upgrade9', title: 'Upgrade 9', description: '"What\'s my job? Really." — The Dirty Secret, Task vs Purpose columns' },
-      { route: '/upgrade10', title: 'Upgrade 10', description: '★ Most polished — strikethrough headline, industry exposé, 4 solution cards', highlight: true },
-      { route: '/meaning', title: 'Meaning', description: '🎧 HAS JENSEN HUANG VIDEO — Spotify embed at 15:27, "Task isn\'t the job" narrative', highlight: true },
-      { route: '/meaning1', title: 'Meaning 1', description: '"The Radiologist & The Scan" — Engine vs Pilot framework, Jensen attribution' },
+      { route: '/meaning', title: 'Meaning', description: 'Consolidated Task vs Purpose page', highlight: true },
     ],
   },
   {
@@ -94,26 +90,18 @@ const SECTIONS: Section[] = [
     color: 'text-purple-700',
     bgColor: 'bg-purple-600',
     items: [
-      { route: '/improve', title: 'Improve', description: 'Static hero headline, FeatureSection components, comparison cards' },
-      { route: '/improve1', title: 'Improve 1', description: 'ImprovePage component version=1' },
-      { route: '/improve2', title: 'Improve 2', description: 'ImprovePage component version=2' },
-      { route: '/improve3', title: 'Improve 3', description: 'ImprovePage component version=3' },
-      { route: '/improve-your-tools-v0', title: 'Improve Your Tools v0', description: 'Config-driven with AnimatedHeader + zoomable RightCapital images' },
-      { route: '/improve-your-tools', title: 'Improve Your Tools', description: '⚠️ PRODUCTION ROUTE — has AnimatedHeader but placeholder content', highlight: true },
+      { route: '/improve-your-tools', title: 'Improve Your Tools', description: 'Production route', highlight: true },
     ],
   },
   {
     id: 'save-a-ton',
     title: 'SAVE A TON',
-    tagline: '"Are you REALLY getting $30K worth of value?"',
+    tagline: '"Are you REALLY getting 30K worth of value?"',
     color: 'text-amber-700',
     bgColor: 'bg-amber-600',
     items: [
-      { route: '/save1', title: 'Save 1', description: 'Foundation — "Arithmetic of Active Management", Control Matrix' },
-      { route: '/save2', title: 'Save 2', description: 'Blues/Corals palette — quote cards, fee quintile bar chart' },
-      { route: '/save3', title: 'Save 3', description: '★ Most interactive — 4-slider calculator, tabbed evidence, dual charts', highlight: true },
-      { route: '/save', title: 'Save', description: 'Wrapper rendering SaveProofClient with fee projection charts' },
-      { route: '/save-a-ton', title: 'Save A Ton', description: '⚠️ PRODUCTION ROUTE — currently placeholder', highlight: true },
+      { route: '/save', title: 'Save', description: 'Fee projection chart and savings meters' },
+      { route: '/save-a-ton', title: 'Save A Ton', description: 'Placeholder for merged Save content', highlight: true },
     ],
   },
   {
@@ -123,8 +111,8 @@ const SECTIONS: Section[] = [
     color: 'text-teal-700',
     bgColor: 'bg-teal-600',
     items: [
-      { route: '/how-it-works', title: 'How It Works', description: 'Technical page — URL param persistence, fee projection math' },
-      { route: '/how-it-works/substitution', title: 'Portfolio Architect', description: '★ Interactive 3-step process with Recharts donut, fund substitution demo, WordArt goals', highlight: true },
+      { route: '/how-it-works', title: 'How It Works', description: 'Production route' },
+      { route: '/how-it-works/substitution', title: 'Portfolio Architect', description: 'Production substitution route', highlight: true },
     ],
   },
   {
@@ -134,59 +122,11 @@ const SECTIONS: Section[] = [
     color: 'text-slate-700',
     bgColor: 'bg-slate-600',
     items: [
-      { route: '/', title: 'Home', description: 'Production home — CostAnalysisCalculator + footer' },
-      { route: '/v2', title: 'Home v2', description: 'Extended home — Calculator + Equation of Value + Three Pillars + Philosophy' },
-      { route: '/faq', title: 'FAQ', description: '⚠️ Placeholder — empty FAQ shell' },
-    ],
-  },
-  {
-    id: 'standalone-files',
-    title: 'STANDALONE FILES',
-    tagline: 'Not Next.js routes — cannot be iframed',
-    color: 'text-rose-700',
-    bgColor: 'bg-rose-600',
-    files: [
-      { path: 'src/app/upgrade-your-advice-v0-gemini.html', name: 'upgrade-your-advice-v0-gemini.html', size: '12KB', description: 'Tailwind CDN HTML with comparison table' },
-      { path: 'src/app/Improve-tools-header-final-responsive.jsx', name: 'Improve-tools-header-final-responsive.jsx', size: '16KB', description: 'Most polished animated header — responsive, uses brand #00A540, HAS green underlines' },
-      { path: 'src/app/Improve-tools-header-v0.jsx', name: 'Improve-tools-header-v0.jsx', size: '9.6KB', description: 'Earlier animated header — desktop only' },
-      { path: 'src/app/new-route-gemini.md', name: 'new-route-gemini.md', size: '11.4KB', description: 'HTML mockup despite .md extension — "Upgrade Your Advice"' },
-      { path: 'src/app/new-route-cgpt.md', name: 'new-route-cgpt.md', size: '6KB', description: 'Markdown copy with FAQ + publishing instructions' },
-    ],
-  },
-  {
-    id: 'shared-components',
-    title: 'SHARED COMPONENTS',
-    tagline: 'Reusable components — not full pages',
-    color: 'text-indigo-700',
-    bgColor: 'bg-indigo-600',
-    components: [
-      { name: 'CostAnalysisCalculator', path: 'src/components/CostAnalysisCalculator.tsx', usedBy: '/ (home), /v2' },
-      { name: 'CostAnalysisCalculator.original', path: 'src/components/CostAnalysisCalculator.original.tsx', usedBy: 'Backup version' },
-      { name: 'FeeComparisonChart', path: 'src/components/charts/FeeComparisonChart.tsx', usedBy: 'SaveProofClient' },
-      { name: 'FeeBreakdownBars', path: 'src/components/charts/FeeBreakdownBars.tsx', usedBy: 'SaveProofClient' },
-      { name: 'ProFeeChart', path: 'src/components/charts/ProFeeChart.tsx', usedBy: 'Unknown' },
-      { name: 'AnimatedHeader', path: 'src/components/improve/AnimatedHeader.tsx', usedBy: '/improve-your-tools, /improve-your-tools-v0' },
-      { name: 'ImprovePage', path: 'src/components/improve/ImprovePage.tsx', usedBy: '/improve1, /improve2, /improve3' },
-      { name: 'FeatureSection', path: 'src/components/improve/FeatureSection.tsx', usedBy: '/improve' },
-      { name: 'FeatureSectionStacked', path: 'src/components/improve/FeatureSectionStacked.tsx', usedBy: '/improve-your-tools-v0' },
-      { name: 'ComparisonCard', path: 'src/components/improve/ComparisonCard.tsx', usedBy: '/improve' },
-      { name: 'HeroImage', path: 'src/components/improve/HeroImage.tsx', usedBy: '/improve' },
-      { name: 'SaveProofClient', path: 'src/components/save/SaveProofClient.tsx', usedBy: '/save' },
-      { name: 'SavingsMeter', path: 'src/components/save/SavingsMeter.tsx', usedBy: 'SavingsMetersGrid' },
-      { name: 'SavingsMetersGrid', path: 'src/components/save/SavingsMetersGrid.tsx', usedBy: 'SaveProofClient' },
-      { name: 'DesignerNav', path: 'src/components/DesignerNav.tsx', usedBy: 'Many pages (dev navigation)' },
-      { name: 'ScrollReveal', path: 'src/components/ScrollReveal.tsx', usedBy: 'Production routes' },
-      { name: 'Quiz', path: 'src/components/Quiz.tsx', usedBy: 'Unknown' },
-      { name: 'QuoteTicker', path: 'src/components/QuoteTicker.tsx', usedBy: 'Unknown' },
-      { name: 'QuoteTickerWithPortraits', path: 'src/components/QuoteTickerWithPortraits.tsx', usedBy: 'Unknown' },
-      { name: 'ValueCards', path: 'src/components/value-cards/ValueCards.tsx', usedBy: 'Unknown' },
-      { name: 'ValueSection', path: 'src/components/value-cards/ValueSection.tsx', usedBy: 'Unknown' },
-      { name: 'DonutChart', path: 'src/components/value-cards/DonutChart.tsx', usedBy: 'Unknown' },
+      { route: '/', title: 'Home', description: 'Production home page' },
+      { route: '/faq', title: 'FAQ', description: 'Placeholder shell' },
     ],
   },
 ];
-
-
 // Status dropdown component
 function StatusDropdown({
   itemId,
@@ -311,11 +251,11 @@ function FileCard({
       </div>
       <div className="p-4">
         <div className="flex items-center gap-2 mb-3">
-          <span className="text-2xl">📄</span>
+          <span className="text-2xl">ðŸ“„</span>
           <span className="text-xs font-mono text-stone-500 break-all">{file.path}</span>
         </div>
         <p className="text-sm text-stone-600">{file.description}</p>
-        <p className="text-xs text-amber-600 mt-2 font-medium">⚠️ Cannot be iframed — open file directly</p>
+        <p className="text-xs text-amber-600 mt-2 font-medium">âš ï¸ Cannot be iframed â€” open file directly</p>
       </div>
     </div>
   );
@@ -481,7 +421,7 @@ function SectionHeader({
       </div>
       {section.prominent && (
         <div className="mt-2 text-yellow-200 text-sm font-medium">
-          ⭐ KEY DIFFERENTIATOR — Prioritize this section
+          â­ KEY DIFFERENTIATOR â€” Prioritize this section
         </div>
       )}
     </div>
@@ -562,7 +502,7 @@ export default function GalleryPage() {
   }, []);
 
   // Calculate counts
-  const counts: Record<StatusCode, number> = { '★': 0, W: 0, C: 0, M: 0, A: 0, X: 0, '?': 0 };
+  const counts: Record<StatusCode, number> = { 'â˜…': 0, W: 0, C: 0, M: 0, A: 0, X: 0, '?': 0 };
   Object.values(statuses).forEach((status) => {
     counts[status]++;
   });
@@ -634,7 +574,7 @@ export default function GalleryPage() {
                   {opt.code}
                 </span>
                 <span className="text-xs text-stone-600">
-                  {opt.label} — {opt.meaning}
+                  {opt.label} â€” {opt.meaning}
                 </span>
               </div>
             ))}

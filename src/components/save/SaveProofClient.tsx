@@ -4,7 +4,6 @@ import { useMemo } from "react";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, buildQueryFromState, paramsToRecord } from "@/lib/calculatorState";
 import { formatCurrency, formatPercent } from "@/lib/format";
-import { FeeBreakdownBars } from "@/components/charts/FeeBreakdownBars";
 import { FeeComparisonChart } from "@/components/charts/FeeComparisonChart";
 import { SavingsMetersGrid } from "./SavingsMetersGrid";
 import Link from "next/link";
@@ -81,22 +80,7 @@ export function SaveProofClient({ calculatorState, searchParams }: Props) {
         <SavingsMetersGrid savings={projection.savings} />
       </section>
 
-      {/* Secondary Chart - Fee Breakdown */}
-      <section className="section-shell">
-        <div className="card p-6">
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">Fee drag</p>
-              <h3 className="text-xl font-semibold text-neutral-900">Cumulative fees paid</h3>
-            </div>
-            <div className="text-right text-sm text-neutral-500">
-              <p>Lost to fees: {formatCurrency(projection.savings)}</p>
-              <p>Average per year: {formatCurrency(projection.totalFees / calculatorState.years)}</p>
-            </div>
-          </div>
-          <FeeBreakdownBars data={projection.series} />
-        </div>
-      </section>
+ 
     </div>
   );
 }
