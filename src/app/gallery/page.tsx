@@ -68,30 +68,9 @@ const SECTIONS: Section[] = [
     tagline: '"I am more qualified and less conflicted"',
     color: 'text-blue-700',
     bgColor: 'bg-blue-600',
-    subgroups: [
-      {
-        name: 'Credential Education (Source Material)',
-        items: [
-          { route: '/upgrade3', title: 'Upgrade 3', description: 'Comprehensive with 10 cited sources, academic tone' },
-          { route: '/upgrade5', title: 'Upgrade 5', description: 'Data visualizations — Recharts FeeChart, CFA Funnel, Advisor Matrix' },
-          { route: '/upgrade6', title: 'Upgrade 6', description: 'Badge-focused design with CFA image, rarity stats' },
-          { route: '/upgrade7', title: 'Upgrade 7', description: 'Newspaper-style with "By The Numbers" comparison table' },
-          { route: '/upgrade8', title: 'Upgrade 8', description: 'Dark theme, FAQ structured data, verification links' },
-        ],
-      },
-      {
-        name: 'Independence & Custodian',
-        items: [
-          { route: '/upgrade-your-advice-v0-cgpt', title: 'v0-cgpt', description: 'Strongest "Keep your custodian" messaging + FAQ' },
-          { route: '/upgrade-your-advice-v0-gemini', title: 'v0-gemini', description: 'Tailwind CDN standalone variant (Workshop)' },
-        ],
-      },
-      {
-        name: 'Production',
-        items: [
-          { route: '/upgrade-your-advice', title: 'Upgrade Your Advice', description: '★ CONSOLIDATED — Merged from upgrade3-8 + v0-cgpt. Personal story, credentials, independence.', highlight: true },
-        ],
-      },
+    items: [
+      { route: '/upgrade-your-advice', title: 'Upgrade Your Advice', description: '\u2705 PRODUCTION \u2014 Consolidated upgrade page (Personal Story, Credentials, Independence)', highlight: true },
+      { route: '/upgrade-your-advice-v0-gemini', title: 'v0-gemini', description: 'Tailwind CDN standalone variant (Workshop)' },
     ],
   },
   {
@@ -167,8 +146,6 @@ const SECTIONS: Section[] = [
     color: 'text-rose-700',
     bgColor: 'bg-rose-600',
     files: [
-      { path: 'src/app/upgrade-your-advice-v0.html', name: 'upgrade-your-advice-v0.html', size: '52KB', description: 'Master reference HTML — extracts from upgrades v1-v8' },
-      { path: 'src/app/upgrade-your-advice-v0-cgpt.html', name: 'upgrade-your-advice-v0-cgpt.html', size: '27KB', description: 'Polished HTML — strongest "Keep your custodian" messaging' },
       { path: 'src/app/upgrade-your-advice-v0-gemini.html', name: 'upgrade-your-advice-v0-gemini.html', size: '12KB', description: 'Tailwind CDN HTML with comparison table' },
       { path: 'src/app/Improve-tools-header-final-responsive.jsx', name: 'Improve-tools-header-final-responsive.jsx', size: '16KB', description: 'Most polished animated header — responsive, uses brand #00A540, HAS green underlines' },
       { path: 'src/app/Improve-tools-header-v0.jsx', name: 'Improve-tools-header-v0.jsx', size: '9.6KB', description: 'Earlier animated header — desktop only' },
