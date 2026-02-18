@@ -1,5 +1,6 @@
 {
   "extends": ["next", "next/core-web-vitals"],
+  "ignorePatterns": ["docs/", "scripts/"],
   "rules": {
     "react/jsx-key": "off"
   }
