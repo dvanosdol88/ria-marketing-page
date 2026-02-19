@@ -54,7 +54,7 @@ a:hover {
   appearance: none;
   width: 100%;
   height: 8px;
-  background: linear-gradient(to right, #22c55e 0%, #22c55e var(--value-percent, 50%), #e5e7eb var(--value-percent, 50%), #e5e7eb 100%);
+  background: linear-gradient(to right, #14B254 0%, #14B254 var(--value-percent, 50%), #e5e7eb var(--value-percent, 50%), #e5e7eb 100%);
   border-radius: 4px;
   outline: none;
   cursor: pointer;
@@ -66,7 +66,7 @@ a:hover {
   appearance: none;
   width: 20px;
   height: 20px;
-  background: #22c55e;
+  background: #14B254;
   border-radius: 50%;
   border: 3px solid white;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -88,7 +88,7 @@ a:hover {
 .custom-slider::-moz-range-thumb {
   width: 20px;
   height: 20px;
-  background: #22c55e;
+  background: #14B254;
   border-radius: 50%;
   border: 3px solid white;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);

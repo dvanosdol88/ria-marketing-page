@@ -119,7 +119,7 @@ const AdvisorMatrix = () => (
     <div className="bg-stone-50 rounded-xl p-6">
       <div className="grid grid-cols-2 gap-4 h-[350px]">
         {/* Top Right - Best */}
-        <div className="bg-green-50 rounded-lg p-4 flex flex-col justify-between border border-green-100">
+        <div className="bg-brand-50 rounded-lg p-4 flex flex-col justify-between border border-brand-100">
           <span className="text-xs text-[#00A540] font-semibold">High Rigor + Holistic</span>
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-[#00A540]"></span>
@@ -170,7 +170,7 @@ const Scorecard = () => (
       <div className="p-4 font-bold text-stone-600 border-b bg-stone-50 flex flex-col justify-end">
         BROKER/DEALER <span className="text-xs font-normal opacity-70">(Industry Norm)</span>
       </div>
-      <div className="p-4 font-bold text-[#00A540] border-b border-green-200 bg-green-50 flex flex-col justify-end">
+      <div className="p-4 font-bold text-[#00A540] border-b border-brand-200 bg-brand-50 flex flex-col justify-end">
         TRUE FIDUCIARY <span className="text-xs font-normal opacity-70 text-stone-600">(Our Standard)</span>
       </div>
       {/* Row 1 */}
@@ -178,21 +178,21 @@ const Scorecard = () => (
       <div className="p-4 border-b border-stone-100 flex items-center gap-2">
         <span className="text-red-500">&times;</span> Suitability <span className="text-xs opacity-50">(Good enough)</span>
       </div>
-      <div className="p-4 border-b border-green-200 bg-green-50/50 flex items-center gap-2 font-medium">
+      <div className="p-4 border-b border-brand-200 bg-brand-50/50 flex items-center gap-2 font-medium">
         <span className="text-[#00A540]">✓</span> Fiduciary <span className="text-xs opacity-75">(Best Interest)</span>
       </div>
       {/* Row 2 */}
       <div className="p-4 border-b border-stone-100 font-medium">Compensation</div>
       <div className="p-4 border-b border-stone-100">Commissions &amp; % Fees</div>
-      <div className="p-4 border-b border-green-200 bg-green-50/50 font-medium">Flat Fee Only</div>
+      <div className="p-4 border-b border-brand-200 bg-brand-50/50 font-medium">Flat Fee Only</div>
       {/* Row 3 */}
       <div className="p-4 border-b border-stone-100 font-medium">Products</div>
       <div className="p-4 border-b border-stone-100">Proprietary / Incentivized</div>
-      <div className="p-4 border-b border-green-200 bg-green-50/50 font-medium">Entire Market</div>
+      <div className="p-4 border-b border-brand-200 bg-brand-50/50 font-medium">Entire Market</div>
       {/* Row 4 */}
       <div className="p-4 font-medium">Conflicts</div>
       <div className="p-4">Buried in fine print</div>
-      <div className="p-4 bg-green-50/50 font-medium">Open &amp; Transparent</div>
+      <div className="p-4 bg-brand-50/50 font-medium">Open &amp; Transparent</div>
     </div>
   </div>
 );
@@ -374,7 +374,7 @@ export default function UpgradeYourAdvice() {
                   </div>
                 </div>
                 {/* My Model */}
-                <div className="bg-green-50 p-8 rounded-xl border-2 border-green-200">
+                <div className="bg-brand-50 p-8 rounded-xl border-2 border-brand-200">
                   <div className="text-xs font-bold uppercase tracking-widest text-[#00A540] mb-6">My Model</div>
                   <div className="space-y-4">
                     {[
@@ -463,7 +463,7 @@ export default function UpgradeYourAdvice() {
                   <p className="text-stone-600 mb-6">
                     The CFA charter is widely regarded as the <strong>&quot;Gold Standard&quot;</strong> of the investment profession. The curriculum covers over 9,000 pages of advanced finance and takes an average of 4 years to complete.
                   </p>
-                  <blockquote className="border-l-4 border-[#00A540] pl-4 italic text-stone-700 bg-green-50/50 py-2 pr-2 rounded-r">
+                  <blockquote className="border-l-4 border-[#00A540] pl-4 italic text-stone-700 bg-brand-50/50 py-2 pr-2 rounded-r">
                     &quot;The most respected and recognized investment designation in the world.&quot;
                     <footer className="text-xs text-stone-500 mt-2 not-italic">&mdash; Financial Times</footer>
                   </blockquote>
@@ -499,7 +499,7 @@ export default function UpgradeYourAdvice() {
               {/* CFA Card from upgrade7 */}
               <div className="mt-8 bg-white p-8 rounded-xl shadow-sm border border-stone-200">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-green-50 rounded-full">
+                  <div className="p-3 bg-brand-50 rounded-full">
                     <svg className="w-6 h-6 text-[#00A540]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><path d="M12 20V10M18 20V4M6 20v-6" /></svg>
                   </div>
                   <h3 className="text-2xl font-sans font-bold text-stone-900">The CFA&reg; Charter</h3>
@@ -692,7 +692,7 @@ export default function UpgradeYourAdvice() {
               {/* CFP Card from upgrade7 */}
               <div className="mt-8 bg-white p-8 rounded-xl shadow-sm border border-stone-200">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-green-50 rounded-full">
+                  <div className="p-3 bg-brand-50 rounded-full">
                     <svg className="w-6 h-6 text-[#00A540]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z" /></svg>
                   </div>
                   <h3 className="text-2xl font-sans font-bold text-stone-900">The CFP&reg; Professional</h3>
@@ -857,7 +857,7 @@ export default function UpgradeYourAdvice() {
                         <th className="py-4 text-stone-500 font-medium">Feature</th>
                         <th className="py-4 text-stone-500 font-medium">CFA Charterholder</th>
                         <th className="py-4 text-stone-500 font-medium">CFP&reg; Professional</th>
-                        <th className="py-4 text-[#00A540] font-extrabold bg-green-50 px-2">David (You)</th>
+                        <th className="py-4 text-[#00A540] font-extrabold bg-brand-50 px-2">David (You)</th>
                       </tr>
                     </thead>
                     <tbody className="text-stone-700">
@@ -865,25 +865,25 @@ export default function UpgradeYourAdvice() {
                         <td className="py-4 font-bold">Primary Focus</td>
                         <td className="py-4">Investment Analysis</td>
                         <td className="py-4">Holistic Planning</td>
-                        <td className="py-4 font-bold text-[#00A540] bg-green-50 px-2">Both</td>
+                        <td className="py-4 font-bold text-[#00A540] bg-brand-50 px-2">Both</td>
                       </tr>
                       <tr className="border-b border-stone-200">
                         <td className="py-4 font-bold">Exam Rigor</td>
                         <td className="py-4">3 Exams (18 hrs)</td>
                         <td className="py-4">1 Board Exam (10 hrs)</td>
-                        <td className="py-4 font-bold text-[#00A540] bg-green-50 px-2">All Passed</td>
+                        <td className="py-4 font-bold text-[#00A540] bg-brand-50 px-2">All Passed</td>
                       </tr>
                       <tr className="border-b border-stone-200">
                         <td className="py-4 font-bold">Pass Rates</td>
                         <td className="py-4">~40-50% (Historic)</td>
                         <td className="py-4">~65%</td>
-                        <td className="py-4 font-bold text-[#00A540] bg-green-50 px-2">Top Tier</td>
+                        <td className="py-4 font-bold text-[#00A540] bg-brand-50 px-2">Top Tier</td>
                       </tr>
                       <tr>
                         <td className="py-4 font-bold">Market Rarity</td>
                         <td className="py-4">&lt; 4% of Advisors</td>
                         <td className="py-4">~20% of Advisors</td>
-                        <td className="py-4 font-bold text-[#00A540] bg-green-50 px-2">The Rare &lt; 1%</td>
+                        <td className="py-4 font-bold text-[#00A540] bg-brand-50 px-2">The Rare &lt; 1%</td>
                       </tr>
                     </tbody>
                   </table>
