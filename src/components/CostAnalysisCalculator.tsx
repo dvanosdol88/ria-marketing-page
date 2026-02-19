@@ -207,7 +207,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
       >
         <div className="section-shell text-center">
           <div
-            className={`flex justify-center transition-all duration-300 ${
+            className={`flex transition-all duration-300 ${
               isStuck ? "mb-1" : "mb-3"
             }`}
           >
@@ -219,10 +219,10 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
               <Image
                 src="/brand/logo.svg"
                 alt="Smarter Way Wealth"
-                width={220}
-                height={88}
+                width={320}
+                height={128}
                 className={`w-auto transition-all duration-300 ${
-                  isStuck ? "h-12 sm:h-[3.5rem]" : "h-[4.5rem] sm:h-[5.5rem]"
+                  isStuck ? "h-14 sm:h-[4rem]" : "h-[6rem] sm:h-[7rem]"
                 }`}
                 priority
               />
