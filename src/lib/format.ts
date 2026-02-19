@@ -15,6 +15,9 @@ export function fmtPct(x: number) {
 
 // Backward-compatible aliases for existing imports elsewhere in repo.
 export const formatCurrency = fmtMoney;
+
+// NOTE: Existing callers pass whole numbers (e.g. 8 for 8%), not decimals.
+// fmtPct() above expects decimals (0.08) — don't confuse the two.
 export function formatPercent(value: number): string {
-  return `${(value * 100).toFixed(1)}%`;
+  return `${value.toFixed(1)}%`;
 }
