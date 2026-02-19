@@ -288,9 +288,9 @@ export default function QuoteTickerWithPortraits({
                   <Image
                     src={PORTRAITS[hoveredQuote.lastName]}
                     alt={`${hoveredQuote.firstName} ${hoveredQuote.lastName}`}
-                    width={180}
-                    height={180}
-                    quality={95}
+                    width={400}
+                    height={400}
+                    unoptimized
                     className="object-cover object-top w-full h-full"
                   />
                 </div>
