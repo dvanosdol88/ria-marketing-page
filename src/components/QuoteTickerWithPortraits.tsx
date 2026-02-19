@@ -357,10 +357,10 @@ export default function QuoteTickerWithPortraits({
               onMouseLeave={handleMouseLeave}
             >
               <div className="flex flex-col items-center">
-                <span className="text-stone-400 font-medium text-lg leading-none whitespace-nowrap transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:text-green-600">
+                <span className="text-stone-400 font-medium text-lg leading-none whitespace-nowrap transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:text-brand-600">
                   {item.firstName}
                 </span>
-                <span className="text-stone-400 font-semibold text-3xl leading-none -mt-0.5 whitespace-nowrap transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:text-green-600">
+                <span className="text-stone-400 font-semibold text-3xl leading-none -mt-0.5 whitespace-nowrap transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:text-brand-600">
                   {item.lastName}
                 </span>
               </div>
