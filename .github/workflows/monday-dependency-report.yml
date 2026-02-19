@@ -125,7 +125,7 @@ jobs:
 
       - name: Send to Slack
         if: always()
-        uses: slackapi/slack-github-action@v1.26.0
+        uses: slackapi/slack-github-action@v1.27.1
         with:
           payload: |
             {
