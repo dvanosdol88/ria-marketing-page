@@ -50,10 +50,10 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
         </p>
         
         <div className="space-y-3">
-          {/* Potential Value */}
+          {/* RIA Flat Fee Value */}
           <div>
             <div className="flex justify-between items-center text-xs text-brand-600 mb-1">
-              <span>Potential Growth</span>
+              <span>With RIA ($100/mo)</span>
               <span className="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
             </div>
             <p className="text-xl font-bold text-slate-900 tabular-nums">
@@ -61,21 +61,21 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
             </p>
           </div>
 
-          {/* The Gap / Loss */}
+          {/* Savings */}
           <div>
-            <div className="flex justify-between items-center text-xs text-red-500 mb-1">
-              <span>Fee Impact</span>
-              <span className="h-1.5 w-1.5 rounded-full bg-red-500"></span>
+            <div className="flex justify-between items-center text-xs text-brand-600 mb-1">
+              <span>You Save</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
             </div>
-            <p className="text-xl font-bold text-red-600 tabular-nums">
-              -{formatCurrency(lostAmount)}
+            <p className="text-xl font-bold text-brand-700 tabular-nums">
+              +{formatCurrency(lostAmount)}
             </p>
           </div>
 
-          {/* Actual Value */}
+          {/* AUM Advisor Value */}
           <div className="pt-2 border-t border-slate-100 mt-2">
             <div className="flex justify-between items-center text-xs text-slate-500 mb-1">
-              <span>Actual Value</span>
+              <span>With AUM Advisor</span>
               <span className="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
             </div>
             <p className="text-xl font-bold text-slate-900 tabular-nums">
@@ -97,32 +97,32 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
       <div className="absolute top-8 left-8 z-10 pointer-events-none">
         <div className="grid grid-cols-[auto_auto] gap-x-4 items-baseline text-right">
           
-          {/* Row 1: Projected Value */}
+          {/* Row 1: RIA Flat Fee */}
           <p className="text-2xl font-semibold text-brand-700 tracking-tight tabular-nums">
             {formatCurrency(finalValueWithoutFees)}
           </p>
           <p className="text-xs font-semibold text-brand-600 uppercase tracking-wider text-left">
-            Projected Value
+            With RIA ($100/mo)
           </p>
 
-          {/* Row 2: Lost to Fees */}
+          {/* Row 2: You Save */}
           <div className="border-b border-neutral-300 pb-2 mb-2">
-            <p className="text-3xl font-bold text-red-600 tracking-tight tabular-nums">
-              -{formatCurrency(finalLost)}
+            <p className="text-3xl font-bold text-brand-700 tracking-tight tabular-nums">
+              +{formatCurrency(finalLost)}
             </p>
           </div>
           <div className="border-b border-transparent pb-2 mb-2">
-            <p className="text-base font-bold text-red-500 uppercase tracking-wider text-left">
-              Lost to Fees
+            <p className="text-base font-bold text-brand-600 uppercase tracking-wider text-left">
+              You Save
             </p>
           </div>
 
-          {/* Row 3: With Fees */}
+          {/* Row 3: AUM Advisor */}
           <p className="text-2xl font-semibold text-slate-600 tracking-tight tabular-nums">
             {formatCurrency(finalValueWithFees)}
           </p>
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">
-            With Fees
+            With AUM Advisor
           </p>
           
         </div>
@@ -157,7 +157,7 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
 
             <Tooltip content={<CustomHUDTooltip />} cursor={{ stroke: "#e5e7eb", strokeWidth: 1, strokeDasharray: "4 4" }} />
 
-            {/* Potential Growth (Upper Line) - Emerald Green */}
+            {/* With RIA $100/mo (Upper Line) - Emerald Green */}
             <Area
               type="monotone"
               dataKey="withoutFees"
@@ -167,7 +167,7 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
               activeDot={{ r: 6, fill: "#00A540", stroke: "#fff", strokeWidth: 2 }}
             />
 
-            {/* Actual Value (Lower Line) - Muted Blue/Gray */}
+            {/* With AUM Advisor (Lower Line) - Muted Blue/Gray */}
             <Area
               type="monotone"
               dataKey="withFees"

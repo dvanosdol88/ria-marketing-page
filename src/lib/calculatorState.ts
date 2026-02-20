@@ -29,7 +29,7 @@ export function parseInteger(value: string | null, fallback: number, min: number
 
 export function parseCalculatorState(searchParams: URLSearchParams): CalculatorState {
   return {
-    portfolioValue: parseNumber(searchParams.get("portfolio"), DEFAULT_STATE.portfolioValue, 10000, 10000000),
+    portfolioValue: parseNumber(searchParams.get("portfolio"), DEFAULT_STATE.portfolioValue, 300000, 10000000),
     years: parseInteger(searchParams.get("years"), DEFAULT_STATE.years, 1, 40),
     annualGrowthPercent: parseNumber(searchParams.get("growth"), DEFAULT_STATE.annualGrowthPercent, 0, 20),
     annualFeePercent: parseNumber(searchParams.get("fee"), DEFAULT_STATE.annualFeePercent, 0, 3),

@@ -12,6 +12,7 @@ import { formatCurrency, formatPercent } from "@/lib/format";
 import { ValueCards } from "./value-cards/ValueCards";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { Quiz } from "./Quiz";
+import Link from "next/link";
 
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
@@ -256,7 +257,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                   />
                   <Slider
                     label="Portfolio value"
-                    min={50000}
+                    min={300000}
                     max={5000000}
                     step={50000}
                     value={state.portfolioValue}
@@ -284,6 +285,12 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                     onChange={(value) => setState((prev) => ({ ...prev, years: value }))}
                   />
                 </div>
+                <p className="mt-4 text-center text-xs text-gray-400">
+                  Compares our $100/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
+                  <Link href="/our-math" className="underline hover:text-brand-600 transition-colors">
+                    For finance nerds
+                  </Link>
+                </p>
               </div>
             </ScrollReveal>
 

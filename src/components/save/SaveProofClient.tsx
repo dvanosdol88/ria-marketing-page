@@ -32,9 +32,8 @@ export function SaveProofClient({ calculatorState, searchParams }: Props) {
         <p className="text-xs font-semibold uppercase tracking-tightish text-brand-600">Save proof</p>
         <h1 className="mt-2 text-3xl font-semibold text-neutral-900 sm:text-4xl">Here is what fees do over time</h1>
         <p className="mt-3 text-lg text-neutral-600">
-          A {formatPercent(calculatorState.annualFeePercent)} advisory fee on a {formatCurrency(calculatorState.portfolioValue)}
-          {" "}
-          portfolio compounds into {formatCurrency(projection.savings)} of lost wealth over {calculatorState.years} years.
+          Switching from a {formatPercent(calculatorState.annualFeePercent)} AUM advisor to RIA&apos;s $100/month flat fee
+          saves you {formatCurrency(projection.savings)} over {calculatorState.years} years on a {formatCurrency(calculatorState.portfolioValue)} portfolio.
         </p>
         <div className="mt-6 flex justify-center gap-4">
           <Link
@@ -58,11 +57,11 @@ export function SaveProofClient({ calculatorState, searchParams }: Props) {
           <div className="flex items-start justify-between mb-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">Portfolio growth</p>
-              <h3 className="text-xl font-semibold text-neutral-900">With and without fees</h3>
+              <h3 className="text-xl font-semibold text-neutral-900">RIA flat fee vs. AUM advisor</h3>
             </div>
             <div className="text-right text-sm text-neutral-500">
-              <p>No fees: {formatCurrency(projection.finalValueWithoutFees)}</p>
-              <p>With fees: {formatCurrency(projection.finalValueWithFees)}</p>
+              <p>With RIA ($100/mo): {formatCurrency(projection.finalValueWithoutFees)}</p>
+              <p>With AUM Advisor: {formatCurrency(projection.finalValueWithFees)}</p>
             </div>
           </div>
           <FeeComparisonChart data={projection.series} height="h-96" />

@@ -68,7 +68,7 @@ export default function HowItWorksPage({
         <div className="card p-6">
           <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">Projected savings</p>
           <h2 className="mt-2 text-2xl font-semibold text-neutral-900">{formatCurrency(projection.savings)}</h2>
-          <p className="mt-2 text-sm text-neutral-600">Saved by reducing fees over {calculatorState.years} years.</p>
+          <p className="mt-2 text-sm text-neutral-600">Saved by switching to RIA&apos;s $100/mo flat fee over {calculatorState.years} years.</p>
         </div>
         <div className="card p-6">
           <p className="text-xs font-semibold uppercase tracking-tightish text-neutral-500">Why it matters</p>
