@@ -28,7 +28,7 @@ export function FeeComparisonChart({ data, height = "h-80" }: Props) {
             contentStyle={{ borderRadius: 12, borderColor: "#e2e8f0" }}
           />
           <Legend />
-          <Area type="monotone" dataKey="withoutFees" name="With RIA ($100/mo)" stroke="#00A540" fill="#00A540" fillOpacity={0.25} />
+          <Area type="monotone" dataKey="withoutFees" name="With Smarter Way Wealth ($100/mo)" stroke="#00A540" fill="#00A540" fillOpacity={0.25} />
           <Area type="monotone" dataKey="withFees" name="With AUM Advisor" stroke="#64748b" fill="#64748b" fillOpacity={0.18} />
         </AreaChart>
       </ResponsiveContainer>

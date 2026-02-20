@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Our Math | RIA",
+  title: "Our Math | Smarter Way Wealth",
   description: "The formulas and methodology behind our fee comparison calculator.",
 };
 
@@ -17,7 +17,7 @@ export default function OurMathPage() {
         </h1>
         <p className="mt-4 text-lg text-neutral-600 max-w-2xl">
           Our savings calculator compares two scenarios: keeping your current
-          AUM-based advisor vs. switching to RIA&apos;s $100/month flat fee. Here
+          AUM-based advisor vs. switching to Smarter Way Wealth&apos;s $100/month flat fee. Here
           is the exact math.
         </p>
         <div className="mt-6">
@@ -53,7 +53,7 @@ export default function OurMathPage() {
         {/* Scenario A */}
         <section className="card p-6 sm:p-8">
           <h2 className="text-xl font-semibold text-brand-700 mb-4">
-            Scenario A: RIA flat fee ($100/month)
+            Scenario A: Smarter Way Wealth flat fee ($100/month)
           </h2>
           <p className="text-sm text-neutral-600 mb-4">
             Each month, the portfolio grows by the monthly rate, then $100 is
@@ -99,7 +99,7 @@ export default function OurMathPage() {
             Your savings
           </h2>
           <div className="bg-neutral-50 rounded-lg p-4 font-mono text-sm text-neutral-800 overflow-x-auto space-y-1">
-            <p>savings = RIA ending balance &minus; AUM ending balance</p>
+            <p>savings = Smarter Way Wealth ending balance &minus; AUM ending balance</p>
           </div>
           <p className="text-sm text-neutral-600 mt-4">
             This is the additional wealth you keep by paying a fixed $100/month
@@ -122,7 +122,7 @@ export default function OurMathPage() {
               <thead className="text-xs text-neutral-500 uppercase border-b border-neutral-200">
                 <tr>
                   <th className="py-2 pr-4">Year</th>
-                  <th className="py-2 pr-4">With RIA ($100/mo)</th>
+                  <th className="py-2 pr-4">With Smarter Way Wealth ($100/mo)</th>
                   <th className="py-2 pr-4">With 1% AUM</th>
                   <th className="py-2">Savings</th>
                 </tr>

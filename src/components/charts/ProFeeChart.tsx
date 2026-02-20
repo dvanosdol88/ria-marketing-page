@@ -53,7 +53,7 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
           {/* RIA Flat Fee Value */}
           <div>
             <div className="flex justify-between items-center text-xs text-brand-600 mb-1">
-              <span>With RIA ($100/mo)</span>
+              <span>With Smarter Way Wealth ($100/mo)</span>
               <span className="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
             </div>
             <p className="text-xl font-bold text-slate-900 tabular-nums">
@@ -102,7 +102,7 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
             {formatCurrency(finalValueWithoutFees)}
           </p>
           <p className="text-xs font-semibold text-brand-600 uppercase tracking-wider text-left">
-            With RIA ($100/mo)
+            With Smarter Way Wealth ($100/mo)
           </p>
 
           {/* Row 2: You Save */}
