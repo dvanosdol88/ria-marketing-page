@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ChevronDown, Share2 } from "lucide-react";
 
 interface QuizOption {
@@ -17,10 +17,40 @@ const quizOptions: QuizOption[] = [
   { id: "other", label: "Other" },
 ];
 
+function getPercentage(
+  id: string,
+  counts: Record<string, number>
+): string {
+  const total = Object.values(counts).reduce((sum, n) => sum + n, 0);
+  if (total === 0) return "0%";
+  const pct = Math.round(((counts[id] ?? 0) / total) * 100);
+  return `${pct}%`;
+}
+
 export function Quiz() {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [hasVoted, setHasVoted] = useState(false);
+  const [voteCounts, setVoteCounts] = useState<Record<string, number>>({});
+
+  const fetchCounts = useCallback(async () => {
+    try {
+      const res = await fetch("/api/quiz/vote");
+      if (res.ok) {
+        const data = await res.json();
+        setVoteCounts(data.counts || {});
+      }
+    } catch {
+      // Silently fail — percentages just won't show
+    }
+  }, []);
+
+  // Fetch vote counts when quiz is opened
+  useEffect(() => {
+    if (isOpen) {
+      fetchCounts();
+    }
+  }, [isOpen, fetchCounts]);
 
   const toggleOption = (id: string) => {
     setSelected((prev) => {
@@ -44,19 +74,21 @@ export function Quiz() {
         body: JSON.stringify({ votes: Array.from(selected) }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to submit vote");
+      if (response.ok) {
+        const data = await response.json();
+        setVoteCounts(data.counts || {});
       }
 
       setHasVoted(true);
       setIsOpen(false);
     } catch (error) {
       console.error("Vote submission error:", error);
-      // Still close and show thanks even if API fails
       setHasVoted(true);
       setIsOpen(false);
     }
   };
+
+  const hasAnyCounts = Object.values(voteCounts).some((n) => n > 0);
 
   return (
     <>
@@ -87,10 +119,6 @@ export function Quiz() {
         }`}
       >
         <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 max-w-2xl mx-auto">
-          <h3 className="text-xl font-semibold text-neutral-900 mb-4 text-center">
-            What matters most to you?
-          </h3>
-
           {/* 2 columns x 3 rows grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {quizOptions.map((option) => (
@@ -110,6 +138,11 @@ export function Quiz() {
                 />
                 <span className="text-neutral-900 font-medium">
                   {option.label}
+                  {hasAnyCounts && (
+                    <span className="ml-1 text-neutral-400 text-sm font-normal">
+                      ({getPercentage(option.id, voteCounts)})
+                    </span>
+                  )}
                 </span>
               </label>
             ))}
