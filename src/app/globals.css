@@ -99,6 +99,25 @@ a:hover {
   background: transparent;
 }
 
+/* Mobile-friendly slider touch targets */
+@media (max-width: 639px) {
+  .custom-slider {
+    height: 10px;
+    border-radius: 5px;
+  }
+  .custom-slider::-webkit-slider-thumb {
+    width: 28px;
+    height: 28px;
+    margin-top: -9px;
+    border-width: 3px;
+  }
+  .custom-slider::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
+    border-width: 3px;
+  }
+}
+
 /* Hide scrollbar for tab containers */
 .scrollbar-hide {
   -ms-overflow-style: none;

@@ -19,6 +19,19 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
 
+/** Compact format for slider min/max labels: 300000 → "300K", 5000000 → "5M" */
+function formatCompactNumber(value: number): string {
+  if (value >= 1_000_000) {
+    const m = value / 1_000_000;
+    return `${m % 1 === 0 ? m.toFixed(0) : m.toFixed(1)}M`;
+  }
+  if (value >= 1_000) {
+    const k = value / 1_000;
+    return `${k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)}K`;
+  }
+  return value.toString();
+}
+
 type Props = {
   initialState: CalculatorState;
   searchParams: Record<string, string | string[] | undefined>;
@@ -88,28 +101,33 @@ const Slider = ({
 
   const percent = ((value - min) / (max - min)) * 100;
 
+  /* Compact min/max labels for currency (e.g. "$300K" instead of "$300000") */
+  const minLabel = type === 'currency' ? `$${formatCompactNumber(min)}` : `${formatPrefix}${min}${formatSuffix}`;
+  const maxLabel = type === 'currency' ? `$${formatCompactNumber(max)}` : `${formatPrefix}${max}${formatSuffix}`;
+
   return (
-    <div className="flex flex-col gap-3 w-full p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+    <div className="flex flex-col gap-2 sm:gap-3 w-full p-3 sm:p-4 bg-white rounded-lg shadow-sm border border-gray-100">
       <div className="flex justify-between items-center">
-        <label className="text-sm font-medium text-gray-600">{label}</label>
+        <label className="text-sm font-medium text-gray-600 shrink-0">{label}</label>
         <div className="relative group">
           {formatPrefix && (
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">{formatPrefix}</span>
           )}
           <input
             type="text"
+            inputMode="decimal"
             value={inputValue}
             onChange={handleInputChange}
             onBlur={handleBlur}
             style={{ width: `${Math.max(inputValue.length, 1) + 2}ch`, minWidth: `${minInputWidthCh}ch` }}
-            className={`py-1 px-2 text-right font-bold text-gray-900 bg-gray-50 border border-gray-200 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all ${formatPrefix ? 'pl-6' : ''} ${formatSuffix ? 'pr-8' : ''}`}
+            className={`min-h-11 sm:min-h-0 py-2 sm:py-1 px-2 text-right font-bold text-gray-900 bg-gray-50 border border-gray-200 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all ${formatPrefix ? 'pl-6' : ''} ${formatSuffix ? 'pr-8' : ''}`}
           />
           {formatSuffix && (
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">{formatSuffix}</span>
           )}
         </div>
       </div>
-      <div className="relative w-full h-6 flex items-center">
+      <div className="relative w-full h-10 sm:h-6 flex items-center">
         <input
           type="range"
           min={min}
@@ -122,8 +140,8 @@ const Slider = ({
         />
       </div>
       <div className="flex justify-between text-xs text-gray-400 -mt-2 px-1">
-        <span>{formatPrefix}{min}{formatSuffix}</span>
-        <span>{formatPrefix}{max}{formatSuffix}</span>
+        <span>{minLabel}</span>
+        <span>{maxLabel}</span>
       </div>
     </div>
   );
@@ -187,15 +205,43 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     }
   }, [shareUrl]);
 
+  /* ── Mobile: detect scroll past hero to show compact sticky bar ── */
+  const [scrolledPastHero, setScrolledPastHero] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolledPastHero(window.scrollY > 100);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
-      <div className="w-full bg-transparent pt-6 pb-1">
+      {/* ── Compact mobile sticky savings bar (appears on scroll) ── */}
+      <div
+        className={`fixed top-16 left-0 right-0 z-40 sm:hidden bg-white/95 backdrop-blur-sm border-b border-gray-200 transition-all duration-300 ${
+          scrolledPastHero
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-full opacity-0 pointer-events-none"
+        }`}
+      >
+        <div className="flex items-center justify-center h-12 gap-2 px-4">
+          <span className="text-lg font-bold text-brand-700 tabular-nums">
+            +{formatCurrency(projection.savings)}
+          </span>
+          <span className="text-sm font-semibold text-brand-600 uppercase tracking-wider">
+            You Save
+          </span>
+        </div>
+      </div>
+
+      <div className="w-full bg-transparent pt-4 sm:pt-6 pb-1">
         <div className="section-shell text-center">
-          <h1 className="font-semibold text-3xl sm:text-5xl text-brand-600">
+          <h1 className="font-semibold text-2xl sm:text-5xl text-brand-600">
             What would you do with {formatCurrency(projection.savings)}?
           </h1>
-          <div className="mt-2 text-lg sm:text-xl text-neutral-900">
-            <span>See how much you can save.</span>{" "}
+          <div className="mt-2 flex items-center justify-center gap-1 flex-wrap text-base sm:text-xl text-neutral-900">
+            <span>See how much you can save.</span>
             <Quiz />
           </div>
         </div>
@@ -205,15 +251,15 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         <div className="absolute inset-x-0 top-[35%] bottom-0 bg-gradient-to-b from-transparent via-[rgba(233,238,255,0.6)] to-transparent pointer-events-none" />
 
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8 pt-0 pb-20">
-          <div className="flex flex-col gap-8">
-            
+          <div className="flex flex-col gap-4 sm:gap-8">
+
             {/* Unified Calculator Card */}
             <ScrollReveal className="card bg-white overflow-hidden shadow-xl ring-1 ring-black/5">
-              
-              {/* Chart Section - Full Width */}
-              <div className="h-[450px] lg:h-[550px] w-full relative">
-                <ProFeeChart 
-                  data={projection.series} 
+
+              {/* Chart Section - Full Width, shorter on mobile */}
+              <div className="sm:h-[450px] lg:h-[550px] w-full relative">
+                <ProFeeChart
+                  data={projection.series}
                   finalLost={projection.savings}
                   finalValueWithoutFees={projection.finalValueWithoutFees}
                   finalValueWithFees={projection.finalValueWithFees}
@@ -221,8 +267,8 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
               </div>
 
               {/* Inputs Section - Below Chart */}
-              <div className="p-6 lg:p-8 bg-white border-t border-gray-100">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="p-4 sm:p-6 lg:p-8 bg-white border-t border-gray-100">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                   <Slider
                     label="Advisory fee"
                     min={0}

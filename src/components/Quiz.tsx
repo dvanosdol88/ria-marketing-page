@@ -120,7 +120,7 @@ export function Quiz() {
       >
         <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 max-w-2xl mx-auto">
           {/* 2 columns x 3 rows grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-2">
             {quizOptions.map((option) => (
               <label
                 key={option.id}
