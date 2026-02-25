@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Area,
   AreaChart,
@@ -48,7 +48,7 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
         <p className="text-slate-500 text-xs font-medium mb-2 uppercase tracking-wider">
           Year {label}
         </p>
-        
+
         <div className="space-y-3">
           {/* RIA Flat Fee Value */}
           <div>
@@ -90,13 +90,53 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
 };
 
 export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValueWithFees }: ProFeeChartProps) {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
   return (
-    <div className="relative w-full h-full bg-white rounded-t-2xl overflow-hidden">
-      
-      {/* Floating Legend Overlay - Upper Left Quadrant */}
-      <div className="absolute top-8 left-8 z-10 pointer-events-none">
+    <div className="relative w-full h-full bg-white rounded-t-2xl overflow-hidden flex flex-col">
+
+      {/* ── Mobile Summary — stacked above chart, replaces clipped overlay ── */}
+      <div className="sm:hidden px-4 pt-4 pb-2 space-y-1.5 shrink-0">
+        {/* Row 1: Smarter Way Wealth */}
+        <div className="flex items-baseline justify-between">
+          <span className="text-lg font-semibold text-brand-700 tabular-nums">
+            {formatCurrency(finalValueWithoutFees)}
+          </span>
+          <span className="text-[11px] font-semibold text-brand-600 uppercase tracking-wider">
+            Smarter Way ($100/mo)
+          </span>
+        </div>
+        {/* Row 2: You Save — emphasized with pill bg */}
+        <div className="flex items-baseline justify-between bg-brand-50 rounded-lg px-3 py-1.5 -mx-1">
+          <span className="text-xl font-bold text-brand-700 tabular-nums">
+            +{formatCurrency(finalLost)}
+          </span>
+          <span className="text-sm font-bold text-brand-600 uppercase tracking-wider">
+            You Save
+          </span>
+        </div>
+        {/* Row 3: AUM Advisor */}
+        <div className="flex items-baseline justify-between">
+          <span className="text-lg font-semibold text-slate-600 tabular-nums">
+            {formatCurrency(finalValueWithFees)}
+          </span>
+          <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+            AUM Advisor
+          </span>
+        </div>
+      </div>
+
+      {/* ── Floating Legend Overlay — desktop only ── */}
+      <div className="hidden sm:block absolute top-8 left-8 z-10 pointer-events-none">
         <div className="grid grid-cols-[auto_auto] gap-x-4 items-baseline text-right">
-          
+
           {/* Row 1: RIA Flat Fee */}
           <p className="text-2xl font-semibold text-brand-700 tracking-tight tabular-nums">
             {formatCurrency(finalValueWithoutFees)}
@@ -124,14 +164,22 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider text-left">
             With AUM Advisor
           </p>
-          
+
         </div>
       </div>
 
-      {/* The Chart */}
-      <div className="w-full h-full pt-4 pb-0 pr-0 pl-0">
+      {/* ── The Chart ── */}
+      <div className="w-full h-[280px] sm:flex-1 sm:h-auto min-h-0 pt-2 sm:pt-4">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
+          <AreaChart
+            data={data}
+            margin={{
+              top: isMobile ? 10 : 20,
+              right: isMobile ? 4 : 0,
+              left: isMobile ? -15 : 0,
+              bottom: 0,
+            }}
+          >
             <defs>
               <linearGradient id="emeraldGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#00A540" stopOpacity={0.2} />
@@ -144,15 +192,16 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
             </defs>
 
             <CartesianGrid strokeDasharray="3 3" stroke="#cbd5e1" vertical={false} />
-            
-            <XAxis 
-              dataKey="year" 
-              tickLine={false} 
-              axisLine={false} 
-              tick={{ fill: "#9ca3af", fontSize: 12 }} 
+
+            <XAxis
+              dataKey="year"
+              tickLine={false}
+              axisLine={false}
+              tick={{ fill: "#9ca3af", fontSize: isMobile ? 11 : 12 }}
               dy={10}
+              interval={isMobile ? 4 : "preserveStartEnd"}
             />
-            
+
             <YAxis hide domain={['dataMin', 'auto']} />
 
             <Tooltip content={<CustomHUDTooltip />} cursor={{ stroke: "#e5e7eb", strokeWidth: 1, strokeDasharray: "4 4" }} />
@@ -161,20 +210,20 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
             <Area
               type="monotone"
               dataKey="withoutFees"
-              stroke="#00A540" 
-              strokeWidth={3}
+              stroke="#00A540"
+              strokeWidth={isMobile ? 2 : 3}
               fill="url(#emeraldGradient)"
-              activeDot={{ r: 6, fill: "#00A540", stroke: "#fff", strokeWidth: 2 }}
+              activeDot={{ r: isMobile ? 4 : 6, fill: "#00A540", stroke: "#fff", strokeWidth: 2 }}
             />
 
             {/* With AUM Advisor (Lower Line) - Muted Blue/Gray */}
             <Area
               type="monotone"
               dataKey="withFees"
-              stroke="#64748b" 
-              strokeWidth={3}
+              stroke="#64748b"
+              strokeWidth={isMobile ? 2 : 3}
               fill="url(#slateGradient)"
-              activeDot={{ r: 6, fill: "#64748b", stroke: "#fff", strokeWidth: 2 }}
+              activeDot={{ r: isMobile ? 4 : 6, fill: "#64748b", stroke: "#fff", strokeWidth: 2 }}
             />
           </AreaChart>
         </ResponsiveContainer>
