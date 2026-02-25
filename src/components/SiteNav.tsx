@@ -16,6 +16,7 @@ import { siteNavLinks } from "@/config/siteNavConfig";
  */
 export function SiteNav() {
   const pathname = usePathname();
+  const isLandingPage = pathname === "/";
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -73,11 +74,11 @@ export function SiteNav() {
               aria-label="Smarter Way Wealth home"
             >
               <Image
-                src="/brand/logo.svg"
+                src="/brand/logo-strong-primary-lightbg.png"
                 alt="Smarter Way Wealth"
-                width={200}
-                height={80}
-                className="h-10 w-auto"
+                width={1000}
+                height={375}
+                className={isLandingPage ? "h-12 w-auto" : "h-10 w-auto"}
                 priority
               />
             </Link>
@@ -87,18 +88,18 @@ export function SiteNav() {
           </div>
 
           {/* ── Desktop Layout ── */}
-          <div className="hidden h-[72px] items-center justify-between md:flex">
+          <div className={`hidden items-center justify-between md:flex ${isLandingPage ? "h-[104px]" : "h-[88px]"}`}>
             <Link
               href={"/" as any}
               className="flex shrink-0 items-center rounded-md transition-opacity hover:opacity-90"
               aria-label="Smarter Way Wealth home"
             >
               <Image
-                src="/brand/logo.svg"
+                src="/brand/logo-strong-primary-lightbg.png"
                 alt="Smarter Way Wealth"
-                width={200}
-                height={80}
-                className="h-14 w-auto"
+                width={1000}
+                height={375}
+                className={isLandingPage ? "h-24 w-auto" : "h-20 w-auto"}
                 priority
               />
             </Link>
@@ -157,11 +158,11 @@ export function SiteNav() {
             onClick={closeDrawer}
           >
             <Image
-              src="/brand/logo.svg"
+              src="/brand/logo-strong-primary-lightbg.png"
               alt="Smarter Way Wealth"
-              width={200}
-              height={80}
-              className="h-9 w-auto"
+              width={1000}
+              height={375}
+              className={isLandingPage ? "h-10 w-auto" : "h-9 w-auto"}
             />
           </Link>
           <button

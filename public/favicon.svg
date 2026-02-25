@@ -1,6 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
-  <!-- Chart bars - Progressive green (light to dark, ending at brand green) -->
-  <rect x="4" y="18" width="6" height="10" rx="1" fill="#66D980"/>
-  <rect x="13" y="12" width="6" height="16" rx="1" fill="#33BF60"/>
-  <rect x="22" y="4" width="6" height="24" rx="1" fill="#00A540"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 90" width="240" height="90">
+  <defs>
+    <style>
+      .wordmark { font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="240" height="90" fill="#000000"/>
+
+  <!-- Icon -->
+  <g>
+    <rect x="104" y="22" width="12" height="18" rx="1.5" fill="#3DA85C"/>
+    <rect x="118" y="12" width="12" height="28" rx="1.5" fill="#1E8F42"/>
+    <rect x="132" y="4" width="12" height="36" rx="1.5" fill="#007A2F"/>
+  </g>
+
+  <!-- SMARTER -->
+  <text x="120" y="62" class="wordmark" font-size="26" font-weight="700" fill="#EAEAEA" text-anchor="middle" letter-spacing="2">SMARTER</text>
+
+  <!-- WAY WEALTH -->
+  <text x="120" y="78" class="wordmark" font-size="10" font-weight="700" fill="#1E8F42" text-anchor="middle" letter-spacing="3">WAY WEALTH</text>
 </svg>
