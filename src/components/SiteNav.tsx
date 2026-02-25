@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { siteNavLinks } from "@/config/siteNavConfig";
 
@@ -13,6 +12,7 @@ import { siteNavLinks } from "@/config/siteNavConfig";
  * Mobile: hamburger + centered logo + future CTA slot.
  * Desktop: logo left + spaced nav links right.
  * Sticky with shadow-on-scroll.
+ * Drawer uses CSS transitions (always in DOM) for reliability.
  */
 export function SiteNav() {
   const pathname = usePathname();
@@ -22,7 +22,7 @@ export function SiteNav() {
   /* Track scroll to toggle shadow */
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll(); // check on mount
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -34,17 +34,12 @@ export function SiteNav() {
 
   /* Lock body scroll when drawer is open */
   useEffect(() => {
-    if (drawerOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = drawerOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [drawerOpen]);
 
   const toggleDrawer = useCallback(() => setDrawerOpen((p) => !p), []);
+  const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
   return (
     <>
@@ -54,22 +49,27 @@ export function SiteNav() {
           scrolled ? "shadow-md" : ""
         }`}
       >
-        <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
+        {/* Reset link styles for nav */}
+        <style>{`
+          .site-nav a { color: inherit; text-decoration: none; }
+          .site-nav a:hover { text-decoration: none; }
+        `}</style>
+
+        <div className="site-nav mx-auto max-w-[1200px] px-4 sm:px-6">
           {/* ── Mobile Layout ── */}
           <div className="flex h-16 items-center justify-between md:hidden">
-            {/* Hamburger */}
             <button
               onClick={toggleDrawer}
               aria-label={drawerOpen ? "Close menu" : "Open menu"}
+              aria-expanded={drawerOpen}
               className="flex h-10 w-10 items-center justify-center rounded-lg text-neutral-700 transition-colors hover:bg-neutral-100 active:bg-neutral-200"
             >
               <Menu className="h-6 w-6" strokeWidth={2} />
             </button>
 
-            {/* Centered Logo */}
             <Link
               href={"/" as any}
-              className="absolute left-1/2 -translate-x-1/2 no-underline"
+              className="absolute left-1/2 -translate-x-1/2"
               aria-label="Smarter Way Wealth home"
             >
               <Image
@@ -88,10 +88,9 @@ export function SiteNav() {
 
           {/* ── Desktop Layout ── */}
           <div className="hidden h-[72px] items-center justify-between md:flex">
-            {/* Logo */}
             <Link
               href={"/" as any}
-              className="flex shrink-0 items-center no-underline rounded-md transition-opacity hover:opacity-90"
+              className="flex shrink-0 items-center rounded-md transition-opacity hover:opacity-90"
               aria-label="Smarter Way Wealth home"
             >
               <Image
@@ -104,7 +103,6 @@ export function SiteNav() {
               />
             </Link>
 
-            {/* Nav Links */}
             <nav className="flex items-center gap-1">
               {siteNavLinks.map((link) => {
                 const isActive =
@@ -115,20 +113,15 @@ export function SiteNav() {
                   <Link
                     key={link.href}
                     href={link.href as any}
-                    className={`relative px-3 py-2 text-sm font-medium no-underline rounded-md transition-colors ${
+                    className={`relative px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                       isActive
                         ? "text-brand-600"
                         : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50"
                     }`}
                   >
                     {link.label}
-                    {/* Active indicator — subtle bottom bar */}
                     {isActive && (
-                      <motion.span
-                        layoutId="nav-active"
-                        className="absolute inset-x-2 -bottom-[1px] h-[2px] rounded-full bg-brand-600"
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
+                      <span className="absolute inset-x-2 -bottom-[1px] h-[2px] rounded-full bg-brand-600" />
                     )}
                   </Link>
                 );
@@ -138,104 +131,83 @@ export function SiteNav() {
         </div>
       </header>
 
-      {/* ── Mobile Drawer ── */}
-      <AnimatePresence>
-        {drawerOpen && (
-          <>
-            {/* Backdrop */}
-            <motion.div
-              key="backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[60] bg-black/40"
-              onClick={toggleDrawer}
-              aria-hidden="true"
+      {/* ── Mobile Drawer (always in DOM, toggled via CSS) ── */}
+      {/* Backdrop */}
+      <div
+        className={`fixed inset-0 z-[60] bg-black/40 transition-opacity duration-300 ${
+          drawerOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        onClick={closeDrawer}
+        aria-hidden="true"
+      />
+
+      {/* Panel */}
+      <nav
+        className={`site-nav fixed inset-y-0 left-0 z-[70] flex w-[280px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out ${
+          drawerOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        aria-label="Mobile navigation"
+        aria-hidden={!drawerOpen}
+      >
+        {/* Drawer Header */}
+        <div className="flex h-16 items-center justify-between px-4">
+          <Link
+            href={"/" as any}
+            aria-label="Smarter Way Wealth home"
+            onClick={closeDrawer}
+          >
+            <Image
+              src="/brand/logo.svg"
+              alt="Smarter Way Wealth"
+              width={200}
+              height={80}
+              className="h-9 w-auto"
             />
+          </Link>
+          <button
+            onClick={closeDrawer}
+            aria-label="Close menu"
+            className="flex h-10 w-10 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-100"
+          >
+            <X className="h-5 w-5" strokeWidth={2} />
+          </button>
+        </div>
 
-            {/* Panel */}
-            <motion.nav
-              key="drawer"
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", stiffness: 340, damping: 35 }}
-              className="fixed inset-y-0 left-0 z-[70] flex w-[280px] flex-col bg-white shadow-2xl"
-              aria-label="Mobile navigation"
-            >
-              {/* Drawer Header */}
-              <div className="flex h-16 items-center justify-between px-4">
-                <Link
-                  href={"/" as any}
-                  className="no-underline"
-                  aria-label="Smarter Way Wealth home"
-                  onClick={() => setDrawerOpen(false)}
-                >
-                  <Image
-                    src="/brand/logo.svg"
-                    alt="Smarter Way Wealth"
-                    width={200}
-                    height={80}
-                    className="h-9 w-auto"
-                  />
-                </Link>
-                <button
-                  onClick={toggleDrawer}
-                  aria-label="Close menu"
-                  className="flex h-10 w-10 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-100"
-                >
-                  <X className="h-5 w-5" strokeWidth={2} />
-                </button>
-              </div>
+        <div className="mx-4 border-t border-neutral-100" />
 
-              {/* Divider */}
-              <div className="mx-4 border-t border-neutral-100" />
+        {/* Links */}
+        <div className="flex-1 overflow-y-auto px-2 py-3">
+          {siteNavLinks.map((link) => {
+            const isActive =
+              pathname === link.href ||
+              (link.href !== "/" && pathname.startsWith(link.href));
 
-              {/* Links */}
-              <div className="flex-1 overflow-y-auto px-2 py-3">
-                {siteNavLinks.map((link, i) => {
-                  const isActive =
-                    pathname === link.href ||
-                    (link.href !== "/" && pathname.startsWith(link.href));
+            return (
+              <Link
+                key={link.href}
+                href={link.href as any}
+                onClick={closeDrawer}
+                className={`flex items-center gap-3 rounded-lg px-3 py-3.5 text-base font-medium transition-colors ${
+                  isActive
+                    ? "bg-brand-600/8 text-brand-600"
+                    : "text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900"
+                }`}
+              >
+                {isActive && (
+                  <span className="h-2 w-2 shrink-0 rounded-full bg-brand-600" />
+                )}
+                {link.label}
+              </Link>
+            );
+          })}
+        </div>
 
-                  return (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: -12 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.06 * i, duration: 0.2 }}
-                    >
-                      <Link
-                        href={link.href as any}
-                        onClick={() => setDrawerOpen(false)}
-                        className={`flex items-center gap-3 rounded-lg px-3 py-3.5 text-base font-medium no-underline transition-colors ${
-                          isActive
-                            ? "bg-brand-600/8 text-brand-600"
-                            : "text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900"
-                        }`}
-                      >
-                        {/* Active pip */}
-                        {isActive && (
-                          <span className="h-2 w-2 shrink-0 rounded-full bg-brand-600" />
-                        )}
-                        {link.label}
-                      </Link>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Drawer footer — brand accent */}
-              <div className="border-t border-neutral-100 px-4 py-4">
-                <p className="text-xs text-neutral-400">
-                  Smarter Way Wealth
-                </p>
-              </div>
-            </motion.nav>
-          </>
-        )}
-      </AnimatePresence>
+        <div className="border-t border-neutral-100 px-4 py-4">
+          <p className="text-xs text-neutral-400">
+            Smarter Way Wealth
+          </p>
+        </div>
+      </nav>
     </>
   );
 }
