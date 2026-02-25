@@ -135,7 +135,7 @@ export function SiteNav() {
       {/* ── Mobile Drawer (always in DOM, toggled via CSS) ── */}
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 z-[60] bg-black/40 transition-opacity duration-300 ${
+        className={`fixed inset-0 z-[60] bg-black/40 transition-opacity duration-300 md:hidden ${
           drawerOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={closeDrawer}
@@ -144,7 +144,7 @@ export function SiteNav() {
 
       {/* Panel */}
       <nav
-        className={`site-nav fixed inset-y-0 left-0 z-[70] flex w-[280px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out ${
+        className={`site-nav fixed inset-y-0 left-0 z-[70] flex w-[280px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out md:hidden ${
           drawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         aria-label="Mobile navigation"

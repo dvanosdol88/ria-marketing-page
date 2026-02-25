@@ -3,7 +3,7 @@
 
 
 
-import { useCallback, useMemo, useState, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { Copy } from "lucide-react";
 import { buildFeeProjection } from "@/lib/feeProjection";
@@ -151,16 +151,6 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   );
 
   const [state, setState] = useState<CalculatorState>(mergedState);
-  const [isStuck, setIsStuck] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsStuck(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const projection = useMemo(
     () =>
@@ -199,26 +189,14 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
   return (
     <>
-      <div
-        className={`sticky top-0 z-50 w-full transition-all duration-300 bg-white ${
-          isStuck ? "py-2 shadow-md" : "pt-6 pb-1 bg-transparent"
-        }`}
-      >
+      <div className="w-full bg-transparent pt-6 pb-1">
         <div className="section-shell text-center">
-          <h1
-            className={`font-semibold transition-all duration-300 ${
-              isStuck ? "text-xl sm:text-2xl text-brand-700" : "text-3xl sm:text-5xl text-brand-600"
-            }`}
-          >
+          <h1 className="font-semibold text-3xl sm:text-5xl text-brand-600">
             What would you do with {formatCurrency(projection.savings)}?
           </h1>
-          <div
-            className={`text-neutral-900 transition-all duration-300 ${
-              isStuck ? "mt-0.5 text-xs sm:text-sm" : "mt-2 text-lg sm:text-xl"
-            }`}
-          >
+          <div className="mt-2 text-lg sm:text-xl text-neutral-900">
             <span>See how much you can save.</span>{" "}
-            {!isStuck && <Quiz />}
+            <Quiz />
           </div>
         </div>
       </div>
