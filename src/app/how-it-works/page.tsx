@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CalculatorState, parseCalculatorState, paramsToRecord } from "@/lib/calculatorState";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { formatCurrency, formatPercent } from "@/lib/format";
+import { ScheduleSection } from "@/components/ScheduleSection";
 
 function normalizeSearchParams(searchParams: Record<string, string | string[] | undefined>) {
   const params = new URLSearchParams();
@@ -95,6 +96,8 @@ export default function HowItWorksPage({
           </p>
         </div>
       </section>
+
+      <ScheduleSection />
     </main>
   );
 }
