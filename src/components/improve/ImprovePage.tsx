@@ -19,7 +19,7 @@ export function ImprovePage({ version }: ImprovePageProps) {
   const [firstFeature] = variant.features;
 
   return (
-    <main className="bg-neutral-50 text-neutral-900 antialiased">
+    <main className="bg-[#EEF0F5] text-neutral-900 antialiased">
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 pb-16">
         <section id="top" className="pt-12 pb-8 text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight">

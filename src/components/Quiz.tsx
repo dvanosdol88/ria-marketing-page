@@ -94,14 +94,14 @@ export function Quiz() {
     <>
       {/* Take the Quiz trigger - renders inline */}
       {hasVoted ? (
-        <span className="inline-flex items-center gap-1 text-brand-600 font-semibold">
+        <span className="inline-flex items-center gap-1 text-[#007A2F] font-semibold">
           Thanks for voting!
           <Share2 className="h-5 w-5" />
         </span>
       ) : (
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="inline-flex items-center gap-1 text-brand-600 font-semibold hover:text-brand-700 transition-colors"
+          className="inline-flex items-center gap-1 text-[#007A2F] font-semibold hover:text-brand-700 transition-colors"
         >
           Take the quiz
           <ChevronDown

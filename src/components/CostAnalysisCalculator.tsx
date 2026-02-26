@@ -219,17 +219,17 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     <>
       {/* ── Compact mobile sticky savings bar (appears on scroll) ── */}
       <div
-        className={`fixed top-16 left-0 right-0 z-40 sm:hidden bg-white/95 backdrop-blur-sm border-b border-gray-200 transition-all duration-300 ${
+        className={`fixed top-12 left-0 right-0 z-40 sm:hidden bg-white/95 backdrop-blur-sm border-b border-gray-200 transition-all duration-300 ${
           scrolledPastHero
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0 pointer-events-none"
         }`}
       >
         <div className="flex items-center justify-center h-12 gap-2 px-4">
-          <span className="text-lg font-bold text-brand-700 tabular-nums">
+          <span className="text-lg font-bold text-[#007A2F] tabular-nums">
             +{formatCurrency(projection.savings)}
           </span>
-          <span className="text-sm font-semibold text-brand-600 uppercase tracking-wider">
+          <span className="text-sm font-semibold text-[#007A2F] uppercase tracking-wider">
             You Save
           </span>
         </div>
@@ -237,8 +237,10 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
       <div className="w-full bg-transparent pt-4 sm:pt-6 pb-1">
         <div className="section-shell text-center">
-          <h1 className="font-semibold text-2xl sm:text-5xl text-brand-600">
-            What would you do with {formatCurrency(projection.savings)}?
+          <h1 className="font-semibold text-2xl sm:text-5xl">
+            <span className="text-[#1B2A4A]">What would you do with </span>
+            <span className="text-[#007A2F]">{formatCurrency(projection.savings)}</span>
+            <span className="text-[#1B2A4A]">?</span>
           </h1>
           <div className="mt-2 flex items-center justify-center gap-1 flex-wrap text-base sm:text-xl text-neutral-900">
             <span>See how much you can save.</span>
@@ -247,7 +249,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         </div>
       </div>
 
-      <section className="w-full bg-neutral-50 relative overflow-hidden">
+      <section className="w-full bg-[#EEF0F5] relative overflow-hidden">
         <div className="absolute inset-x-0 top-[35%] bottom-0 bg-gradient-to-b from-transparent via-[rgba(233,238,255,0.6)] to-transparent pointer-events-none" />
 
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8 pt-0 pb-20">
@@ -322,7 +324,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         </div>
       </section>
 
-      <section className="w-full overflow-hidden bg-neutral-50">
+      <section className="w-full overflow-hidden bg-[#EEF0F5] py-12 sm:py-16">
         <QuoteTickerWithPortraits />
       </section>
 

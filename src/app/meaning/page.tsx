@@ -443,7 +443,7 @@ export default function MeaningPage() {
         {/* ═══════════════════════════════════════════════════════════════
             FROM /upgrade9 — TASK VS PURPOSE VISUAL (RED/GREEN LISTS)
         ═══════════════════════════════════════════════════════════════ */}
-        <section className="py-16 px-6 bg-neutral-50">
+        <section className="py-16 px-6 bg-[#EEF0F5]">
           <div className="max-w-4xl mx-auto">
             <div className="grid md:grid-cols-2 gap-6 mb-12">
               <div className="bg-white rounded-2xl shadow-sm border border-stone-200 p-8 relative overflow-hidden">
@@ -524,7 +524,7 @@ export default function MeaningPage() {
         {/* ═══════════════════════════════════════════════════════════════
             FROM /upgrade9 — MY COMMITMENT (3 CARDS)
         ═══════════════════════════════════════════════════════════════ */}
-        <section className="py-16 px-6 bg-neutral-50">
+        <section className="py-16 px-6 bg-[#EEF0F5]">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold text-stone-900 mb-6">My Commitment</h2>
             <p className="text-xl text-stone-600 max-w-2xl mx-auto mb-8">I don&apos;t get paid to manage a portfolio. I get paid to help you succeed financially. That&apos;s not a marketing line—it&apos;s how my fee structure actually works.</p>
@@ -631,7 +631,7 @@ export default function MeaningPage() {
         {/* ═══════════════════════════════════════════════════════════════
             FROM /upgrade10 — HOW I'M DIFFERENT (4 CARDS)
         ═══════════════════════════════════════════════════════════════ */}
-        <section className="py-20 px-6 bg-neutral-50">
+        <section className="py-20 px-6 bg-[#EEF0F5]">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-stone-900 mb-4">I built a practice focused on purpose, not tasks.</h2>

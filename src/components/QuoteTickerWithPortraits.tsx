@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
 
 // ============================================================================
@@ -12,7 +12,7 @@ interface Quote {
   lastName: string;
   title: string;
   quote: string;
-  portrait?: string; // Path to WSJ-style portrait image
+  portrait?: string;
 }
 
 interface QuoteTickerProps {
@@ -166,77 +166,138 @@ const QUOTES: Quote[] = [
   },
 ];
 
+/* The Buffett quote used for the first-visit auto-demo */
+const DEMO_QUOTE = QUOTES[2]; // Warren Buffett
+
 // ============================================================================
 // QUOTE TICKER WITH PORTRAITS COMPONENT
 // ============================================================================
 
-export default function QuoteTickerWithPortraits({ 
+export default function QuoteTickerWithPortraits({
   label = "Don't take our word for it.",
   showLabel = true,
   speed = 159,
 }: QuoteTickerProps) {
   const [hoveredQuote, setHoveredQuote] = useState<Quote | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
-  
+  const [showHint, setShowHint] = useState(true);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
   const tickerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<Animation | null>(null);
   const tweenRef = useRef<number | null>(null);
+  const hasAutoPlayedRef = useRef(false);
+  const hasInteractedRef = useRef(false);
 
-  const tweenPlaybackRate = (animation: Animation, targetRate: number, duration: number) => {
+  /* Detect touch device */
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
+
+  /* Fade out hint after 5 seconds */
+  useEffect(() => {
+    const timer = setTimeout(() => setShowHint(false), 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const dismissHint = useCallback(() => {
+    if (!hasInteractedRef.current) {
+      hasInteractedRef.current = true;
+      setShowHint(false);
+    }
+  }, []);
+
+  const tweenPlaybackRate = useCallback((animation: Animation, targetRate: number, duration: number) => {
     if (tweenRef.current) cancelAnimationFrame(tweenRef.current);
-    
+
     const startRate = animation.playbackRate;
     const startTime = performance.now();
 
     const update = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic for a "heavy", smooth feel
       const ease = 1 - Math.pow(1 - progress, 3);
-      
+
       animation.playbackRate = startRate + (targetRate - startRate) * ease;
 
       if (progress < 1) {
         tweenRef.current = requestAnimationFrame(update);
       }
     };
-    
-    tweenRef.current = requestAnimationFrame(update);
-  };
 
-  const handleMouseEnter = (quote: Quote, e: React.MouseEvent<HTMLDivElement>) => {
+    tweenRef.current = requestAnimationFrame(update);
+  }, []);
+
+  const handleMouseEnter = useCallback((quote: Quote, e: React.MouseEvent<HTMLDivElement>) => {
+    dismissHint();
     const rect = e.currentTarget.getBoundingClientRect();
-    setTooltipPosition({ 
+    setTooltipPosition({
       x: rect.left + rect.width / 2,
       y: rect.top,
     });
     setHoveredQuote(quote);
-  };
+  }, [dismissHint]);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setHoveredQuote(null);
-  };
+  }, []);
 
-  const handleWrapperMouseEnter = () => {
+  /* Touch/tap handler for mobile — toggles tooltip on tap */
+  const handleItemClick = useCallback((quote: Quote, e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isTouchDevice) return; // Desktop uses hover
+    e.preventDefault();
+    e.stopPropagation();
+    dismissHint();
+
+    if (hoveredQuote && hoveredQuote.lastName === quote.lastName && hoveredQuote.quote === quote.quote) {
+      // Tap same item → dismiss
+      setHoveredQuote(null);
+      if (scrollerRef.current) tweenPlaybackRate(scrollerRef.current, 1, 1000);
+    } else {
+      // Tap new item → show tooltip
+      const rect = e.currentTarget.getBoundingClientRect();
+      setTooltipPosition({ x: rect.left + rect.width / 2, y: rect.top });
+      setHoveredQuote(quote);
+      if (scrollerRef.current) tweenPlaybackRate(scrollerRef.current, 0, 1500);
+    }
+  }, [isTouchDevice, hoveredQuote, dismissHint, tweenPlaybackRate]);
+
+  /* Click-outside handler for mobile — dismiss tooltip when tapping outside ticker */
+  useEffect(() => {
+    if (!hoveredQuote || !isTouchDevice) return;
+
+    const handleOutside = (e: TouchEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setHoveredQuote(null);
+        if (scrollerRef.current) tweenPlaybackRate(scrollerRef.current, 1, 1000);
+      }
+    };
+
+    document.addEventListener('touchstart', handleOutside, { passive: true });
+    return () => document.removeEventListener('touchstart', handleOutside);
+  }, [hoveredQuote, isTouchDevice, tweenPlaybackRate]);
+
+  const handleWrapperMouseEnter = useCallback(() => {
+    if (isTouchDevice) return; // Mobile uses tap
     if (scrollerRef.current) {
-      // Very slow come to a stop over 1.5 seconds
       tweenPlaybackRate(scrollerRef.current, 0, 1500);
     }
-  };
+  }, [isTouchDevice, tweenPlaybackRate]);
 
-  const handleWrapperMouseLeave = () => {
+  const handleWrapperMouseLeave = useCallback(() => {
+    if (isTouchDevice) return;
     setHoveredQuote(null);
     if (scrollerRef.current) {
-      // Gradual acceleration back to full speed over 1 second
       tweenPlaybackRate(scrollerRef.current, 1, 1000);
     }
-  };
+  }, [isTouchDevice, tweenPlaybackRate]);
 
+  /* Set up Web Animation API scroller */
   useEffect(() => {
     const ticker = tickerRef.current;
     if (!ticker) return;
 
-    // Use Web Animation API for smooth programmatic control
     const animation = ticker.animate(
       [
         { transform: 'translateX(0)' },
@@ -256,6 +317,69 @@ export default function QuoteTickerWithPortraits({
       if (tweenRef.current) cancelAnimationFrame(tweenRef.current);
     };
   }, [speed]);
+
+  /* Auto-demo: on first session visit, showcase Buffett quote */
+  useEffect(() => {
+    if (hasAutoPlayedRef.current) return;
+
+    // Check sessionStorage
+    try {
+      if (sessionStorage.getItem('ticker-demo-played')) {
+        hasAutoPlayedRef.current = true;
+        return;
+      }
+    } catch { /* sessionStorage unavailable — proceed anyway */ }
+
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAutoPlayedRef.current) {
+          hasAutoPlayedRef.current = true;
+          observer.disconnect();
+
+          // Delay before triggering the demo
+          const startTimer = setTimeout(() => {
+            // Find the first Buffett element in the ticker
+            const buffettEl = wrapper.querySelector('[data-demo-name="Buffett"]') as HTMLElement;
+            if (!buffettEl || !scrollerRef.current) return;
+
+            // Decelerate ticker
+            tweenPlaybackRate(scrollerRef.current, 0, 1500);
+
+            // Show tooltip after deceleration starts
+            const showTimer = setTimeout(() => {
+              const rect = buffettEl.getBoundingClientRect();
+              setTooltipPosition({ x: rect.left + rect.width / 2, y: rect.top });
+              setHoveredQuote(DEMO_QUOTE);
+              setShowHint(false);
+
+              // Dismiss after 3.5 seconds and resume scrolling
+              const dismissTimer = setTimeout(() => {
+                setHoveredQuote(null);
+                if (scrollerRef.current) {
+                  tweenPlaybackRate(scrollerRef.current, 1, 1000);
+                }
+              }, 3500);
+
+              return () => clearTimeout(dismissTimer);
+            }, 800);
+
+            return () => clearTimeout(showTimer);
+          }, 2500);
+
+          try { sessionStorage.setItem('ticker-demo-played', '1'); } catch { /* ignore */ }
+
+          return () => clearTimeout(startTimer);
+        }
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(wrapper);
+    return () => observer.disconnect();
+  }, [tweenPlaybackRate]);
 
   const tickerItems = [...QUOTES, ...QUOTES];
 
@@ -282,7 +406,6 @@ export default function QuoteTickerWithPortraits({
               className="flex items-center gap-4 border-t border-stone-400"
               style={{ backgroundColor: '#e7e5e4', padding: '16px 24px 24px 24px' }}
             >
-              {/* Portrait or Initials Fallback */}
               {PORTRAITS[hoveredQuote.lastName] ? (
                 <div className="w-[90px] h-[90px] rounded-full overflow-hidden flex-shrink-0 border border-stone-300 bg-white">
                   <Image
@@ -328,20 +451,31 @@ export default function QuoteTickerWithPortraits({
       )}
 
       <div
-        className="relative overflow-hidden bg-transparent ticker-wrapper" 
+        ref={wrapperRef}
+        className="relative overflow-hidden bg-transparent ticker-wrapper"
         onMouseEnter={handleWrapperMouseEnter}
         onMouseLeave={handleWrapperMouseLeave}
       >
         {showLabel && (
-          <div className="text-center mb-[18px] mt-2">
+          <div className="text-center mb-3 mt-0">
             <span className="text-base font-medium tracking-wide text-stone-800">
               {label}
             </span>
+            {/* Subtle interaction hint — fades out after 5s or first interaction */}
+            <div
+              className={`mt-1 transition-opacity duration-700 ${
+                showHint ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              }`}
+            >
+              <span className="text-xs text-stone-400">
+                {isTouchDevice ? 'Tap a name to explore' : 'Hover over a name to explore'}
+              </span>
+            </div>
           </div>
         )}
 
-        <div 
-          className="flex ticker-scroll pt-2 pb-6" 
+        <div
+          className="flex ticker-scroll pt-2 pb-6"
           ref={tickerRef}
           style={{
             width: 'max-content',
@@ -352,14 +486,16 @@ export default function QuoteTickerWithPortraits({
             <div
               key={`${item.lastName}-${index}`}
               className="flex-shrink-0 px-12 cursor-pointer text-center group"
+              data-demo-name={item.lastName}
               onMouseEnter={(e) => handleMouseEnter(item, e)}
               onMouseLeave={handleMouseLeave}
+              onClick={(e) => handleItemClick(item, e)}
             >
               <div className="flex flex-col items-center">
-                <span className="text-stone-400 font-medium text-lg leading-none whitespace-nowrap transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:text-brand-600">
+                <span className="text-stone-400 font-medium text-lg leading-none whitespace-nowrap transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:text-[#007A2F]">
                   {item.firstName}
                 </span>
-                <span className="text-stone-400 font-semibold text-3xl leading-none -mt-0.5 whitespace-nowrap transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:text-brand-600">
+                <span className="text-stone-400 font-semibold text-3xl leading-none -mt-0.5 whitespace-nowrap transition-all duration-300 ease-in-out transform group-hover:scale-110 group-hover:text-[#007A2F]">
                   {item.lastName}
                 </span>
               </div>

@@ -8,21 +8,29 @@ import { Menu, X } from "lucide-react";
 import { siteNavLinks } from "@/config/siteNavConfig";
 
 /**
- * Site-wide navigation bar — "Authority" style.
+ * Site-wide navigation bar — "Authority" style with collapsing behavior.
+ *
+ * Two states driven by scroll position:
+ *   Initial (scrollY ≤ 100): Full-height bar, full logo with wordmark, no shadow.
+ *   Collapsed (scrollY > 100): Compact bar (~52px desktop, 48px mobile),
+ *     icon-only logo (ascending green bars), light shadow.
+ *
+ * Logo swap uses an opacity cross-fade — both logo elements are always in the
+ * DOM (grid-stacked) to avoid layout shifts.
+ *
  * Mobile: hamburger + centered logo + future CTA slot.
  * Desktop: logo left + spaced nav links right.
- * Sticky with shadow-on-scroll.
  * Drawer uses CSS transitions (always in DOM) for reliability.
  */
 export function SiteNav() {
   const pathname = usePathname();
   const isLandingPage = pathname === "/";
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
-  /* Track scroll to toggle shadow */
+  /* Track scroll to toggle collapsed state */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setCollapsed(window.scrollY > 100);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -46,8 +54,8 @@ export function SiteNav() {
     <>
       {/* ── Sticky Header Bar ── */}
       <header
-        className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${
-          scrolled ? "shadow-md" : ""
+        className={`sticky top-0 z-50 bg-white transition-all duration-300 ease-in-out ${
+          collapsed ? "shadow-[0_1px_4px_rgba(0,0,0,0.10)]" : ""
         }`}
       >
         {/* Reset link styles for nav */}
@@ -58,7 +66,9 @@ export function SiteNav() {
 
         <div className="site-nav mx-auto max-w-[1200px] px-4 sm:px-6">
           {/* ── Mobile Layout ── */}
-          <div className="flex h-16 items-center justify-between md:hidden">
+          <div className={`flex items-center justify-between md:hidden transition-all duration-300 ease-in-out ${
+            collapsed ? "h-12" : "h-16"
+          }`}>
             <button
               onClick={toggleDrawer}
               aria-label={drawerOpen ? "Close menu" : "Open menu"}
@@ -68,9 +78,10 @@ export function SiteNav() {
               <Menu className="h-6 w-6" strokeWidth={2} />
             </button>
 
+            {/* Mobile logo — cross-fade between full and icon-only */}
             <Link
               href={"/" as any}
-              className="absolute left-1/2 -translate-x-1/2"
+              className="absolute left-1/2 -translate-x-1/2 grid items-center"
               aria-label="Smarter Way Wealth home"
             >
               <Image
@@ -78,8 +89,23 @@ export function SiteNav() {
                 alt="Smarter Way Wealth"
                 width={1000}
                 height={375}
-                className={isLandingPage ? "h-12 w-auto" : "h-10 w-auto"}
+                style={{ gridArea: "1/1" }}
+                className={`w-auto justify-self-center transition-all duration-300 ease-in-out ${
+                  collapsed
+                    ? "h-7 opacity-0"
+                    : `opacity-100 ${isLandingPage ? "h-12" : "h-10"}`
+                }`}
                 priority
+              />
+              <img
+                src="/brand/logo-icon.svg"
+                alt="Smarter Way Wealth"
+                style={{ gridArea: "1/1" }}
+                className={`w-auto justify-self-center transition-all duration-300 ease-in-out ${
+                  collapsed
+                    ? "h-7 opacity-100"
+                    : `opacity-0 ${isLandingPage ? "h-12" : "h-10"}`
+                }`}
               />
             </Link>
 
@@ -88,10 +114,13 @@ export function SiteNav() {
           </div>
 
           {/* ── Desktop Layout ── */}
-          <div className={`hidden items-center justify-between md:flex ${isLandingPage ? "h-[104px]" : "h-[88px]"}`}>
+          <div className={`hidden items-center justify-between md:flex transition-all duration-300 ease-in-out ${
+            collapsed ? "h-[52px]" : isLandingPage ? "h-[104px]" : "h-[88px]"
+          }`}>
+            {/* Desktop logo — cross-fade between full and icon-only */}
             <Link
               href={"/" as any}
-              className="flex shrink-0 items-center rounded-md transition-opacity hover:opacity-90"
+              className="grid shrink-0 items-center rounded-md transition-opacity hover:opacity-90"
               aria-label="Smarter Way Wealth home"
             >
               <Image
@@ -99,8 +128,23 @@ export function SiteNav() {
                 alt="Smarter Way Wealth"
                 width={1000}
                 height={375}
-                className={isLandingPage ? "h-24 w-auto" : "h-20 w-auto"}
+                style={{ gridArea: "1/1" }}
+                className={`w-auto justify-self-start transition-all duration-300 ease-in-out ${
+                  collapsed
+                    ? "h-8 opacity-0"
+                    : `opacity-100 ${isLandingPage ? "h-24" : "h-20"}`
+                }`}
                 priority
+              />
+              <img
+                src="/brand/logo-icon.svg"
+                alt="Smarter Way Wealth"
+                style={{ gridArea: "1/1" }}
+                className={`w-auto justify-self-start transition-all duration-300 ease-in-out ${
+                  collapsed
+                    ? "h-8 opacity-100"
+                    : `opacity-0 ${isLandingPage ? "h-24" : "h-20"}`
+                }`}
               />
             </Link>
 
@@ -116,13 +160,13 @@ export function SiteNav() {
                     href={link.href as any}
                     className={`relative px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                       isActive
-                        ? "text-brand-600"
+                        ? "text-[#007A2F]"
                         : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50"
                     }`}
                   >
                     {link.label}
                     {isActive && (
-                      <span className="absolute inset-x-2 -bottom-[1px] h-[2px] rounded-full bg-brand-600" />
+                      <span className="absolute inset-x-2 -bottom-[1px] h-[2px] rounded-full bg-[#007A2F]" />
                     )}
                   </Link>
                 );
@@ -190,12 +234,12 @@ export function SiteNav() {
                 onClick={closeDrawer}
                 className={`flex items-center gap-3 rounded-lg px-3 py-3.5 text-base font-medium transition-colors ${
                   isActive
-                    ? "bg-brand-600/8 text-brand-600"
+                    ? "bg-[#007A2F]/8 text-[#007A2F]"
                     : "text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900"
                 }`}
               >
                 {isActive && (
-                  <span className="h-2 w-2 shrink-0 rounded-full bg-brand-600" />
+                  <span className="h-2 w-2 shrink-0 rounded-full bg-[#007A2F]" />
                 )}
                 {link.label}
               </Link>

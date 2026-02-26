@@ -16,7 +16,7 @@ import {
 
 export default function ImproveYourToolsPage() {
   return (
-    <main className="bg-neutral-50 text-neutral-900 antialiased">
+    <main className="bg-[#EEF0F5] text-neutral-900 antialiased">
       <div className="max-w-[1100px] mx-auto px-4 sm:px-6 pb-16">
         {/* HERO - Animated Header (has its own animations, no ScrollReveal) */}
         <section id="top">

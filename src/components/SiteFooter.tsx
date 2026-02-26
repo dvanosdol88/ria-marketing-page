@@ -7,7 +7,7 @@ import Link from "next/link";
  */
 export function SiteFooter() {
   return (
-    <footer className="border-t border-neutral-200 bg-neutral-50">
+    <footer className="border-t border-neutral-200 bg-[#EEF0F5]">
       <div className="mx-auto max-w-[1100px] px-4 py-10 sm:px-6">
         <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:items-start">
           {/* Left: Logo + Disclaimer */}
