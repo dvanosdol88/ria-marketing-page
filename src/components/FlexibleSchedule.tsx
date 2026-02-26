@@ -2,64 +2,20 @@
 
 /**
  * FlexibleSchedule — animated calendar showing rotating extended hours.
- * - Mon→Tue→Wed→Thu rotate "late night" (11am-7pm) each week
- * - Week 4 Saturday is open (10am-4pm)
- * - Cells pulse with a green highlight on a staggered 12.5s loop
- * Self-contained: all animation CSS is embedded via <style> JSX.
+ *
+ * Schedule data lives in src/config/scheduleConfig.ts — update hours,
+ * rotation pattern, or animation speed there without touching this file.
+ *
+ * Layout: 6-column grid (Mon–Sat, no Sunday).
+ * Animation: staggered green pulse across the "late" and "saturday" cells.
  */
 
-type DayCell = {
-  label?: string;
-  hours?: string;
-  variant: "normal" | "closed" | "late" | "saturday";
-  /** Animation stagger delay index (1-5) — only for late/saturday variants */
-  delay?: number;
-};
-
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] as const;
-
-const WEEKS: DayCell[][] = [
-  // Week 1 — Monday late
-  [
-    { variant: "closed" },
-    { label: "Week 1", hours: "11am–7pm", variant: "late", delay: 1 },
-    { hours: "9am–6pm", variant: "normal" },
-    { hours: "9am–6pm", variant: "normal" },
-    { hours: "9am–6pm", variant: "normal" },
-    { hours: "9am–6pm", variant: "normal" },
-    { hours: "Closed", variant: "closed" },
-  ],
-  // Week 2 — Tuesday late
-  [
-    { variant: "closed" },
-    { hours: "9am–6pm", variant: "normal" },
-    { label: "Week 2", hours: "11am–7pm", variant: "late", delay: 2 },
-    { hours: "9am–6pm", variant: "normal" },
-    { hours: "9am–6pm", variant: "normal" },
-    { hours: "9am–6pm", variant: "normal" },
-    { hours: "Closed", variant: "closed" },
-  ],
-  // Week 3 — Wednesday late
-  [
-    { variant: "closed" },
-    { hours: "9am–6pm", variant: "normal" },
-    { hours: "9am–6pm", variant: "normal" },
-    { label: "Week 3", hours: "11am–7pm", variant: "late", delay: 3 },
-    { hours: "9am–6pm", variant: "normal" },
-    { hours: "9am–6pm", variant: "normal" },
-    { hours: "Closed", variant: "closed" },
-  ],
-  // Week 4 — Thursday late + Saturday open
-  [
-    { variant: "closed" },
-    { hours: "9am–6pm", variant: "normal" },
-    { hours: "9am–6pm", variant: "normal" },
-    { hours: "9am–6pm", variant: "normal" },
-    { label: "Week 4", hours: "11am–7pm", variant: "late", delay: 4 },
-    { hours: "9am–6pm", variant: "normal" },
-    { label: "Sat", hours: "10am–4pm", variant: "saturday", delay: 5 },
-  ],
-];
+import {
+  SCHEDULE_DAYS,
+  SCHEDULE_WEEKS,
+  ANIMATION_CYCLE_S,
+  ANIMATION_STAGGER_S,
+} from "@/config/scheduleConfig";
 
 export function FlexibleSchedule() {
   return (
@@ -141,11 +97,11 @@ export function FlexibleSchedule() {
         } as React.CSSProperties}
       >
         <div
-          className="grid grid-cols-7 gap-[2px] rounded-lg overflow-hidden"
+          className="grid grid-cols-6 gap-[2px] rounded-lg overflow-hidden"
           style={{ backgroundColor: "#404040", border: "1px solid #404040" }}
         >
           {/* Day headers */}
-          {DAYS.map((day) => (
+          {SCHEDULE_DAYS.map((day) => (
             <div
               key={day}
               className="text-center font-semibold py-3 px-1 text-[0.8rem] max-[480px]:text-[0.7rem] max-[480px]:py-2 tracking-wide"
@@ -156,11 +112,11 @@ export function FlexibleSchedule() {
           ))}
 
           {/* Week rows */}
-          {WEEKS.map((week, wi) =>
+          {SCHEDULE_WEEKS.map((week, wi) =>
             week.map((cell, di) => {
               const isAnimated = cell.variant === "late" || cell.variant === "saturday";
               const animName = cell.variant === "saturday" ? "fs-pulse-sat" : "fs-pulse-late";
-              const delaySeconds = cell.delay ? (cell.delay - 1) * 2.5 : 0;
+              const delaySeconds = cell.delay ? (cell.delay - 1) * ANIMATION_STAGGER_S : 0;
 
               return (
                 <div
@@ -177,7 +133,7 @@ export function FlexibleSchedule() {
                     color: cell.variant === "closed" ? "#888888" : "#F5F5F5",
                     ...(isAnimated
                       ? {
-                          animation: `${animName} 12.5s infinite`,
+                          animation: `${animName} ${ANIMATION_CYCLE_S}s infinite`,
                           animationDelay: `${delaySeconds}s`,
                           zIndex: 1,
                         }
