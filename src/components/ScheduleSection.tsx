@@ -13,7 +13,7 @@ import { FlexibleSchedule } from "@/components/FlexibleSchedule";
  */
 
 const TOOLTIP_TEXT =
-  "We meet when it works for you — rotating evenings until 7, and one Saturday a month.";
+  "We meet when it works for you — rotating evenings until 7, and every Second Saturday.";
 
 export function ScheduleSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
