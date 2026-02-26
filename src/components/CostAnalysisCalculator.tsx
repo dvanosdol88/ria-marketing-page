@@ -324,7 +324,13 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         </div>
       </section>
 
-      <section className="w-full overflow-hidden bg-[#EEF0F5] py-12 sm:py-16">
+      <section
+        className="w-full overflow-hidden py-12 sm:py-16 relative"
+        style={{
+          backgroundColor: '#E8F5EC',
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 Q35 15 30 25 Q25 15 30 5Z' fill='%2300A540' fill-opacity='0.04'/%3E%3Cpath d='M10 35 Q15 45 10 55 Q5 45 10 35Z' fill='%23007A2F' fill-opacity='0.03'/%3E%3Cpath d='M50 40 Q55 50 50 60 Q45 50 50 40Z' fill='%2300A540' fill-opacity='0.03'/%3E%3C/svg%3E")`,
+        }}
+      >
         <QuoteTickerWithPortraits />
       </section>
 
