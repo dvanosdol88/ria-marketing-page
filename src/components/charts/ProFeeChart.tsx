@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Area,
   AreaChart,
@@ -30,6 +30,8 @@ type ProFeeChartProps = {
   finalLost: number;
   finalValueWithoutFees: number;
   finalValueWithFees: number;
+  showSummary?: boolean;
+  activeScenario?: "smarter" | "traditional" | null;
 };
 
 const CustomHUDTooltip = ({ active, payload, label }: any) => {
@@ -89,7 +91,14 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValueWithFees }: ProFeeChartProps) {
+export function ProFeeChart({
+  data,
+  finalLost,
+  finalValueWithoutFees,
+  finalValueWithFees,
+  showSummary = true,
+  activeScenario = null,
+}: ProFeeChartProps) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -99,10 +108,14 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  const smarterOpacity = activeScenario === "traditional" ? 0.3 : 1;
+  const traditionalOpacity = activeScenario === "smarter" ? 0.3 : 1;
+
   return (
     <div className="relative w-full h-full bg-white rounded-t-2xl overflow-hidden flex flex-col">
 
       {/* ── Mobile Summary — stacked above chart, replaces clipped overlay ── */}
+      {showSummary && (
       <div className="sm:hidden px-4 pt-4 pb-2 space-y-1.5 shrink-0">
         {/* Row 1: Smarter Way Wealth */}
         <div className="flex items-baseline justify-between">
@@ -132,8 +145,10 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
           </span>
         </div>
       </div>
+      )}
 
       {/* ── Floating Legend Overlay — desktop only ── */}
+      {showSummary && (
       <div className="hidden sm:block absolute top-8 left-8 z-10 pointer-events-none">
         <div className="grid grid-cols-[auto_auto] gap-x-4 items-baseline text-right">
 
@@ -167,6 +182,7 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
 
         </div>
       </div>
+      )}
 
       {/* ── The Chart ── */}
       <div className="w-full h-[280px] sm:flex-1 sm:h-auto min-h-0 pt-2 sm:pt-4">
@@ -213,6 +229,8 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
               stroke="#00A540"
               strokeWidth={isMobile ? 2 : 3}
               fill="url(#emeraldGradient)"
+              fillOpacity={smarterOpacity}
+              strokeOpacity={smarterOpacity}
               activeDot={{ r: isMobile ? 4 : 6, fill: "#00A540", stroke: "#fff", strokeWidth: 2 }}
             />
 
@@ -223,6 +241,8 @@ export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValue
               stroke="#64748b"
               strokeWidth={isMobile ? 2 : 3}
               fill="url(#slateGradient)"
+              fillOpacity={traditionalOpacity}
+              strokeOpacity={traditionalOpacity}
               activeDot={{ r: isMobile ? 4 : 6, fill: "#64748b", stroke: "#fff", strokeWidth: 2 }}
             />
           </AreaChart>
