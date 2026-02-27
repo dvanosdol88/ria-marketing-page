@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Info, Minus, Plus } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, DEFAULT_STATE, buildQueryFromState, paramsToRecord } from "@/lib/calculatorState";
@@ -26,6 +26,16 @@ function formatCompactNumber(value: number): string {
   return value.toString();
 }
 
+function tryHaptic() {
+  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+    navigator.vibrate(5);
+  }
+}
+
+function valuesMatch(a: number, b: number, step: number): boolean {
+  return Math.abs(a - b) <= Math.max(step / 2, 0.0001);
+}
+
 type Props = {
   initialState: CalculatorState;
   searchParams: Record<string, string | string[] | undefined>;
@@ -36,142 +46,128 @@ type SliderChip = {
   value: number;
 };
 
-const Slider = ({
-  label,
-  min,
-  max,
-  step,
-  value,
-  onChange,
-  type,
-  decimals,
-  minInputWidthCh = 4,
-  chips,
-}: {
+interface StepperSliderProps {
   label: string;
+  value: number;
   min: number;
   max: number;
   step: number;
-  value: number;
-  type?: "currency" | "percent";
-  decimals?: number;
-  minInputWidthCh?: number;
-  chips?: SliderChip[];
   onChange: (nextValue: number) => void;
-}) => {
-  const displayDecimals = decimals !== undefined ? decimals : type === "percent" ? 2 : 0;
+  format?: (value: number) => string;
+  infoText?: string;
+  chips?: SliderChip[];
+}
+
+function StepperSlider({
+  label,
+  value,
+  min,
+  max,
+  step,
+  onChange,
+  format,
+  infoText,
+  chips,
+}: StepperSliderProps) {
+  const [showInfo, setShowInfo] = useState(false);
+  const lastHapticValue = useRef(value);
+  const precision = useMemo(() => {
+    const decimalPart = step.toString().split(".")[1];
+    return decimalPart ? decimalPart.length : 0;
+  }, [step]);
+
+  const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
+  const displayValue = format ? format(value) : String(value);
 
   const clamp = useCallback(
     (candidate: number) => {
-      const clamped = Math.min(max, Math.max(min, candidate));
-      const stepped = Math.round(clamped / step) * step;
-      return Number(stepped.toFixed(Math.max(displayDecimals, 0)));
+      const bounded = Math.min(max, Math.max(min, candidate));
+      return Number(bounded.toFixed(precision));
     },
-    [displayDecimals, max, min, step]
+    [max, min, precision]
   );
 
-  const parseInput = useCallback((raw: string) => {
-    const cleaned = raw.replace(/[^0-9.]/g, "");
-    const parsed = Number.parseFloat(cleaned);
-    return Number.isNaN(parsed) ? null : parsed;
-  }, []);
-
-  const formatValue = useCallback(
-    (candidate: number) => {
-      if (type === "currency") {
-        return numberFormatter.format(Math.round(candidate));
+  const emit = useCallback(
+    (candidate: number, vibrate: boolean) => {
+      const next = clamp(candidate);
+      if (vibrate && Math.round(next / step) !== Math.round(lastHapticValue.current / step)) {
+        tryHaptic();
       }
-      if (type === "percent") {
-        return candidate.toFixed(displayDecimals);
-      }
-      return candidate.toFixed(Math.max(displayDecimals, 0));
+      lastHapticValue.current = next;
+      onChange(next);
     },
-    [displayDecimals, type]
+    [clamp, onChange, step]
   );
-
-  const [inputValue, setInputValue] = useState(formatValue(value));
 
   useEffect(() => {
-    setInputValue(formatValue(value));
-  }, [formatValue, value]);
+    lastHapticValue.current = value;
+  }, [value]);
 
-  const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const parsed = Number.parseFloat(event.target.value);
-    if (!Number.isNaN(parsed)) {
-      const next = clamp(parsed);
-      setInputValue(formatValue(next));
-      onChange(next);
-    }
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const raw = event.target.value;
-    setInputValue(raw);
-    const parsed = parseInput(raw);
-    if (parsed !== null) {
-      onChange(clamp(parsed));
-    }
-  };
-
-  const handleBlur = () => {
-    const parsed = parseInput(inputValue);
-    const next = clamp(parsed ?? min);
-    setInputValue(formatValue(next));
-    onChange(next);
-  };
-
-  const stepDown = () => {
-    const next = clamp(value - step);
-    setInputValue(formatValue(next));
-    onChange(next);
-  };
-
-  const stepUp = () => {
-    const next = clamp(value + step);
-    setInputValue(formatValue(next));
-    onChange(next);
-  };
-
-  const formatPrefix = type === "currency" ? "$" : "";
-  const formatSuffix = type === "percent" ? "%" : "";
-  const percent = ((value - min) / (max - min)) * 100;
-  const minLabel = type === "currency" ? `$${formatCompactNumber(min)}` : `${formatPrefix}${min}${formatSuffix}`;
-  const maxLabel = type === "currency" ? `$${formatCompactNumber(max)}` : `${formatPrefix}${max}${formatSuffix}`;
+  const handleSliderChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const raw = Number.parseFloat(event.target.value);
+      if (Number.isNaN(raw)) return;
+      const stepped = Math.round(raw / step) * step;
+      emit(stepped, true);
+    },
+    [emit, step]
+  );
 
   return (
-    <div className="w-full rounded-xl border border-gray-100 bg-white p-3 shadow-sm sm:p-4">
-      <div className="mb-2.5 flex items-center justify-between gap-3">
-        <label className="text-sm font-medium text-gray-700">{label}</label>
-        <div className="relative">
-          {formatPrefix && (
-            <span className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400">{formatPrefix}</span>
-          )}
-          <input
-            type="text"
-            inputMode={type === "currency" ? "numeric" : "decimal"}
-            value={inputValue}
-            onChange={handleInputChange}
-            onBlur={handleBlur}
-            style={{ width: `${Math.max(inputValue.length + 2, minInputWidthCh)}ch` }}
-            className={`min-h-11 rounded-lg border border-gray-200 bg-gray-50 py-2 text-right text-sm font-bold text-gray-900 outline-none transition-all focus:border-[#007A2F] focus:ring-1 focus:ring-[#007A2F] ${formatPrefix ? "pl-6 pr-2" : "px-2"} ${formatSuffix ? "pr-6" : ""}`}
-          />
-          {formatSuffix && (
-            <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400">{formatSuffix}</span>
+    <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm">
+      <div className="mb-2.5 flex items-center justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-1.5">
+          <span className="whitespace-nowrap text-sm font-medium text-gray-800">{label}</span>
+          {infoText && (
+            <button
+              type="button"
+              onClick={() => setShowInfo((prev) => !prev)}
+              className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors hover:bg-gray-200"
+              aria-label={`More information about ${label}`}
+            >
+              <Info className="h-2.5 w-2.5" />
+            </button>
           )}
         </div>
       </div>
 
+      {chips && chips.length > 0 && (
+        <div className="mb-2.5 flex flex-wrap items-center gap-1.5">
+          {chips.map((chip) => (
+            <button
+              key={chip.value}
+              type="button"
+              onClick={() => emit(chip.value, true)}
+              className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
+                valuesMatch(value, chip.value, step)
+                  ? "bg-[#007A2F] text-white shadow-sm"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              {chip.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {showInfo && infoText && (
+        <div className="mb-2.5 rounded-lg bg-gray-900 p-2.5 text-xs leading-relaxed text-white">{infoText}</div>
+      )}
+
       <div className="flex items-center gap-2">
         <button
           type="button"
-          onClick={stepDown}
+          onClick={() => emit(value - step, true)}
           disabled={value <= min}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-30"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-gray-200 disabled:pointer-events-none disabled:opacity-30"
           aria-label={`Decrease ${label}`}
         >
-          <Minus className="h-4 w-4" />
+          <Minus className="h-3.5 w-3.5" />
         </button>
-        <div className="relative flex h-10 flex-1 items-center">
+
+        <div className="relative flex h-8 flex-1 items-center">
+          <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200" />
+          <div className="absolute left-0 h-1.5 rounded-full bg-[#00A540] transition-all duration-150" style={{ width: `${pct}%` }} />
           <input
             type="range"
             min={min}
@@ -179,68 +175,204 @@ const Slider = ({
             step={step}
             value={value}
             onChange={handleSliderChange}
-            className="custom-slider"
-            style={{ "--value-percent": `${percent}%` } as React.CSSProperties}
+            className="absolute inset-x-0 z-10 h-8 w-full cursor-pointer opacity-0"
             aria-label={`${label} slider`}
           />
+          <div
+            className="pointer-events-none absolute h-5 w-5 rounded-full border-2 border-[#00A540] bg-white shadow-md transition-all duration-150"
+            style={{ left: `calc(${pct}% - 10px)` }}
+          />
         </div>
+
         <button
           type="button"
-          onClick={stepUp}
+          onClick={() => emit(value + step, true)}
           disabled={value >= max}
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-30"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-gray-200 disabled:pointer-events-none disabled:opacity-30"
           aria-label={`Increase ${label}`}
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="h-3.5 w-3.5" />
         </button>
-      </div>
 
-      <div className="mt-2 flex justify-between px-1 text-xs text-gray-400">
-        <span>{minLabel}</span>
-        <span>{maxLabel}</span>
+        <span className="ml-1 min-w-[4.6rem] text-right text-sm font-bold tabular-nums text-gray-900">{displayValue}</span>
+      </div>
+    </div>
+  );
+}
+
+interface CurrencyInputCardProps {
+  label: string;
+  value: number;
+  onChange: (nextValue: number) => void;
+  min: number;
+  max: number;
+  step: number;
+  chips?: SliderChip[];
+}
+
+function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: CurrencyInputCardProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
+
+  const clamp = useCallback(
+    (candidate: number) => {
+      const bounded = Math.min(max, Math.max(min, candidate));
+      return Math.round(bounded);
+    },
+    [max, min]
+  );
+
+  const handleTap = useCallback(() => {
+    setEditValue(String(Math.round(value)));
+    setIsEditing(true);
+    setTimeout(() => inputRef.current?.focus(), 40);
+  }, [value]);
+
+  const handleBlur = useCallback(() => {
+    const parsed = Number.parseInt(editValue.replace(/[^0-9]/g, ""), 10);
+    if (!Number.isNaN(parsed)) {
+      onChange(clamp(parsed));
+    }
+    setIsEditing(false);
+  }, [clamp, editValue, onChange]);
+
+  const adjustValue = useCallback(
+    (candidate: number) => {
+      onChange(clamp(candidate));
+      tryHaptic();
+    },
+    [clamp, onChange]
+  );
+
+  return (
+    <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm">
+      <div className="mb-2.5 flex items-center justify-between gap-2">
+        <span className="whitespace-nowrap text-sm font-medium text-gray-800">{label}</span>
       </div>
 
       {chips && chips.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-1.5">
-          {chips.map((chip) => {
-            const selected = Math.abs(value - chip.value) < step / 2;
-            return (
-              <button
-                key={chip.value}
-                type="button"
-                onClick={() => {
-                  const next = clamp(chip.value);
-                  setInputValue(formatValue(next));
-                  onChange(next);
-                }}
-                className={`rounded-full px-2.5 py-1 text-xs font-medium transition-colors ${
-                  selected ? "bg-[#007A2F] text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {chip.label}
-              </button>
-            );
-          })}
+        <div className="mb-2.5 flex flex-wrap items-center gap-1.5">
+          {chips.map((chip) => (
+            <button
+              key={chip.value}
+              type="button"
+              onClick={() => adjustValue(chip.value)}
+              className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
+                valuesMatch(value, chip.value, step)
+                  ? "bg-[#007A2F] text-white shadow-sm"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
+            >
+              {chip.label}
+            </button>
+          ))}
         </div>
       )}
+
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => adjustValue(value - step)}
+          disabled={value <= min}
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-gray-200 disabled:pointer-events-none disabled:opacity-30"
+          aria-label={`Decrease ${label}`}
+        >
+          <Minus className="h-3.5 w-3.5" />
+        </button>
+
+        <div className="relative flex h-8 flex-1 items-center">
+          <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200" />
+          <div className="absolute left-0 h-1.5 rounded-full bg-[#00A540] transition-all duration-150" style={{ width: `${pct}%` }} />
+          <input
+            type="range"
+            min={min}
+            max={max}
+            step={step}
+            value={value}
+            onChange={(event) => adjustValue(Number.parseInt(event.target.value, 10))}
+            className="absolute inset-x-0 z-10 h-8 w-full cursor-pointer opacity-0"
+            aria-label={`${label} slider`}
+          />
+          <div
+            className="pointer-events-none absolute h-5 w-5 rounded-full border-2 border-[#00A540] bg-white shadow-md transition-all duration-150"
+            style={{ left: `calc(${pct}% - 10px)` }}
+          />
+        </div>
+
+        <button
+          type="button"
+          onClick={() => adjustValue(value + step)}
+          disabled={value >= max}
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-gray-200 disabled:pointer-events-none disabled:opacity-30"
+          aria-label={`Increase ${label}`}
+        >
+          <Plus className="h-3.5 w-3.5" />
+        </button>
+
+        {isEditing ? (
+          <input
+            ref={inputRef}
+            type="number"
+            inputMode="numeric"
+            value={editValue}
+            onChange={(event) => setEditValue(event.target.value)}
+            onBlur={handleBlur}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") handleBlur();
+            }}
+            className="w-28 rounded-lg bg-gray-100 px-2 py-1 text-right text-sm font-bold tabular-nums text-gray-900 outline-none ring-2 ring-[#00A540]"
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={handleTap}
+            className="min-w-[5.8rem] text-right text-sm font-bold tabular-nums text-gray-900 transition-colors hover:text-[#007A2F]"
+            aria-label={`Edit ${label}`}
+          >
+            {formatCurrency(value)}
+          </button>
+        )}
+      </div>
+
+      <div className="mt-2 flex justify-between px-1 text-xs text-gray-400">
+        <span>${formatCompactNumber(min)}</span>
+        <span>${formatCompactNumber(max)}</span>
+      </div>
     </div>
   );
-};
+}
 
 function ValueCard({
   label,
   value,
-  accentClass,
+  variant,
+  isActive,
+  isDimmed,
+  onPress,
 }: {
   label: string;
   value: number;
-  accentClass: string;
+  variant: "smarter" | "traditional";
+  isActive: boolean;
+  isDimmed: boolean;
+  onPress: () => void;
 }) {
+  const baseAccent =
+    variant === "smarter" ? "border-[#007A2F]/25 bg-[#007A2F]/5" : "border-gray-200 bg-gray-50/80";
+  const activeRing = isActive ? "ring-2 ring-[#007A2F]/35" : "";
+
   return (
-    <div className={`rounded-xl border p-4 sm:p-5 ${accentClass}`}>
+    <button
+      type="button"
+      onClick={onPress}
+      className={`rounded-xl border p-4 text-left transition-all sm:p-5 ${baseAccent} ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"}`}
+      aria-pressed={isActive}
+    >
       <p className="text-xs font-semibold uppercase tracking-wide text-neutral-600">{label}</p>
       <p className="mt-2 text-2xl font-semibold text-neutral-900 sm:text-3xl">{formatCurrency(value)}</p>
-    </div>
+    </button>
   );
 }
 
@@ -266,6 +398,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   );
 
   const [state, setState] = useState<CalculatorState>(mergedState);
+  const [activeCard, setActiveCard] = useState<"smarter" | "traditional" | null>(null);
 
   const projection = useMemo(
     () =>
@@ -314,6 +447,10 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const handleCardTap = (card: "smarter" | "traditional") => {
+    setActiveCard((prev) => (prev === card ? null : card));
+  };
+
   return (
     <>
       <div
@@ -351,12 +488,18 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                 <ValueCard
                   label="Smarter Way Wealth"
                   value={projection.finalValueWithoutFees}
-                  accentClass="border-[#007A2F]/25 bg-[#007A2F]/5"
+                  variant="smarter"
+                  isActive={activeCard === "smarter"}
+                  isDimmed={activeCard === "traditional"}
+                  onPress={() => handleCardTap("smarter")}
                 />
                 <ValueCard
                   label="Traditional AUM"
                   value={projection.finalValueWithFees}
-                  accentClass="border-gray-200 bg-gray-50/80"
+                  variant="traditional"
+                  isActive={activeCard === "traditional"}
+                  isDimmed={activeCard === "smarter"}
+                  onPress={() => handleCardTap("traditional")}
                 />
               </div>
 
@@ -366,64 +509,67 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                   finalLost={projection.savings}
                   finalValueWithoutFees={projection.finalValueWithoutFees}
                   finalValueWithFees={projection.finalValueWithFees}
+                  showSummary={false}
+                  activeScenario={activeCard}
                 />
               </div>
 
               <div className="border-t border-gray-100 bg-white p-4 sm:p-6 lg:p-8">
+                <h2 className="mb-4 px-1 text-xs font-semibold uppercase tracking-wider text-gray-500">Adjust Your Inputs</h2>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-                  <Slider
-                    label="Advisory fee"
-                    min={0}
-                    max={3}
-                    step={0.05}
-                    value={state.annualFeePercent}
-                    onChange={(nextValue) => setState((prev) => ({ ...prev, annualFeePercent: nextValue }))}
-                    type="percent"
-                    decimals={2}
-                    chips={[
-                      { label: "0.50%", value: 0.5 },
-                      { label: "1.00%", value: 1.0 },
-                      { label: "1.50%", value: 1.5 },
-                    ]}
-                  />
-                  <Slider
+                  <CurrencyInputCard
                     label="Portfolio value"
+                    value={state.portfolioValue}
                     min={300000}
                     max={5000000}
                     step={50000}
-                    value={state.portfolioValue}
                     onChange={(nextValue) => setState((prev) => ({ ...prev, portfolioValue: nextValue }))}
-                    type="currency"
-                    minInputWidthCh={10}
                     chips={[
-                      { label: "$500K", value: 500000 },
                       { label: "$1M", value: 1000000 },
                       { label: "$2M", value: 2000000 },
+                      { label: "$3M", value: 3000000 },
                     ]}
                   />
-                  <Slider
+                  <StepperSlider
+                    label="Advisory fee"
+                    value={state.annualFeePercent}
+                    min={0}
+                    max={3}
+                    step={0.05}
+                    onChange={(nextValue) => setState((prev) => ({ ...prev, annualFeePercent: nextValue }))}
+                    format={(val) => `${val.toFixed(2)}%`}
+                    infoText="The industry average is around 1.0%. Check your recent statements to see your exact fee."
+                    chips={[
+                      { label: "0.50%", value: 0.5 },
+                      { label: "0.75%", value: 0.75 },
+                      { label: "1.00%", value: 1.0 },
+                      { label: "1.25%", value: 1.25 },
+                      { label: "1.50%", value: 1.5 },
+                    ]}
+                  />
+                  <StepperSlider
                     label="Annual growth"
+                    value={state.annualGrowthPercent}
                     min={0}
                     max={15}
                     step={0.1}
-                    value={state.annualGrowthPercent}
                     onChange={(nextValue) => setState((prev) => ({ ...prev, annualGrowthPercent: nextValue }))}
-                    type="percent"
-                    decimals={1}
-                    minInputWidthCh={10}
+                    format={(val) => `${val.toFixed(1)}%`}
                     chips={[
-                      { label: "6.0%", value: 6.0 },
-                      { label: "8.0%", value: 8.0 },
-                      { label: "10.0%", value: 10.0 },
+                      { label: "6%", value: 6.0 },
+                      { label: "8%", value: 8.0 },
+                      { label: "10%", value: 10.0 },
+                      { label: "12%", value: 12.0 },
                     ]}
                   />
-                  <Slider
-                    label="Time horizon (Years)"
+                  <StepperSlider
+                    label="Time horizon"
+                    value={state.years}
                     min={1}
                     max={40}
                     step={1}
-                    value={state.years}
                     onChange={(nextValue) => setState((prev) => ({ ...prev, years: nextValue }))}
+                    format={(val) => `${val} yrs`}
                     chips={[
                       { label: "10 yrs", value: 10 },
                       { label: "20 yrs", value: 20 },
