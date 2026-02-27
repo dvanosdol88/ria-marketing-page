@@ -61,7 +61,7 @@ export default function RootLayout({
   return (
     <ViewTransitions>
       <html lang="en">
-        <body className={`${inter.variable} bg-neutral-50 text-neutral-900`}>
+        <body className={`${inter.variable} bg-[#EEF0F5] text-neutral-900`}>
           <SiteNav />
           <div className="min-h-screen">{children}</div>
           <SiteFooter />

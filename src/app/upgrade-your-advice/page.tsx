@@ -313,7 +313,7 @@ export default function UpgradeYourAdvice() {
           {/* ═══════════════════════════════════════════════════════════════
               SECTION A — PERSONAL STORY (exact approved text)
           ═══════════════════════════════════════════════════════════════ */}
-          <section className="py-16 px-4 bg-stone-50">
+          <section className="py-16 px-4 bg-stone-100">
             <div className="max-w-3xl mx-auto">
               <h2 className="font-['Source_Serif_4'] text-3xl font-bold text-stone-900 mb-8">
                 The Problem I Couldn&apos;t Ignore
@@ -410,7 +410,7 @@ export default function UpgradeYourAdvice() {
           ═══════════════════════════════════════════════════════════════ */}
 
           {/* ─── C.1: "We Answer to One Person" Manifesto (from upgrade5) ─── */}
-          <section className="py-20 px-4 bg-stone-50">
+          <section className="py-20 px-4 bg-stone-100">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="font-['Source_Serif_4'] text-3xl md:text-4xl font-bold text-stone-900 mb-8">
                 We Answer to One Person.
@@ -625,7 +625,7 @@ export default function UpgradeYourAdvice() {
           </section>
 
           {/* ─── C.3: CFP® — Deep Dive (from upgrade3, upgrade5, upgrade7, upgrade8) ─── */}
-          <section className="py-20 px-4 bg-stone-50">
+          <section className="py-20 px-4 bg-stone-100">
             <div className="max-w-6xl mx-auto">
 
               {/* CFP Header (from upgrade3) */}
@@ -994,7 +994,7 @@ export default function UpgradeYourAdvice() {
           </section>
 
           {/* ─── C.6: Jenny Johnson Testimonial (single copy from upgrade6/8) ─── */}
-          <section className="px-6 py-12 md:py-16 bg-stone-50">
+          <section className="px-6 py-12 md:py-16 bg-stone-100">
             <div className="max-w-3xl mx-auto text-center">
               <svg className="w-8 h-8 text-[#00A540] mx-auto mb-4 opacity-60" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
@@ -1160,7 +1160,7 @@ export default function UpgradeYourAdvice() {
           </section>
 
           {/* ─── C.8: Scorecard & Fiduciary Oath (from upgrade5) ─── */}
-          <section className="py-20 px-4 bg-stone-50">
+          <section className="py-20 px-4 bg-stone-100">
             <div className="max-w-4xl mx-auto">
               <h2 className="font-['Source_Serif_4'] text-3xl font-bold text-center text-stone-900 mb-12">The Standard You Deserve</h2>
               <div className="mb-20">
@@ -1239,7 +1239,7 @@ export default function UpgradeYourAdvice() {
           {/* ═══════════════════════════════════════════════════════════════
               SECTION D — INDEPENDENCE & CUSTODIAN (from v0-cgpt + existing)
           ═══════════════════════════════════════════════════════════════ */}
-          <section className="py-16 px-4 bg-stone-50">
+          <section className="py-16 px-4 bg-stone-100">
             <div className="max-w-3xl mx-auto">
               <h2 className="font-['Source_Serif_4'] text-3xl font-bold text-stone-900 mb-6">
                 Keep your custodian. Upgrade your advice.
@@ -1324,7 +1324,7 @@ export default function UpgradeYourAdvice() {
           </section>
 
           {/* ─── D.3: How this works (from v0-cgpt) ─── */}
-          <section className="py-16 px-4 bg-stone-50">
+          <section className="py-16 px-4 bg-stone-100">
             <div className="max-w-3xl mx-auto">
               <h2 className="font-['Source_Serif_4'] text-3xl font-bold text-stone-900 mb-8">
                 How this works (without moving your accounts)
@@ -1385,7 +1385,7 @@ export default function UpgradeYourAdvice() {
           {/* ═══════════════════════════════════════════════════════════════
               SOURCES (from upgrade3)
           ═══════════════════════════════════════════════════════════════ */}
-          <section id="sources" className="py-16 px-4 bg-stone-50">
+          <section id="sources" className="py-16 px-4 bg-stone-100">
             <div className="max-w-4xl mx-auto">
               <h2 className="font-['Source_Serif_4'] text-2xl sm:text-3xl font-bold text-stone-900 mb-6">
                 Sources (the &quot;don&apos;t take our word for it&quot; section)
