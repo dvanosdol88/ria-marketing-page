@@ -5,6 +5,9 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
+  Cell,
+  Pie,
+  PieChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -91,6 +94,42 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
+function LostToFeesDonut({ percentLost }: { percentLost: number }) {
+  const donutData = [
+    { name: "Lost", value: percentLost, fill: "#BE123C" },
+    { name: "Kept", value: Math.max(0, 100 - percentLost), fill: "#0F172A" },
+  ];
+
+  return (
+    <div className="pointer-events-none absolute left-2 top-2 z-20 rounded-lg border border-red-100 bg-white/90 px-2 py-2 shadow-sm backdrop-blur-sm sm:left-4 sm:top-4">
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Portfolio Lost</div>
+      <div className="relative h-14 w-14 sm:h-16 sm:w-16">
+        <PieChart width={64} height={64}>
+          <Pie
+            data={donutData}
+            dataKey="value"
+            cx="50%"
+            cy="50%"
+            innerRadius={18}
+            outerRadius={28}
+            startAngle={90}
+            endAngle={-270}
+            stroke="none"
+          >
+            {donutData.map((entry) => (
+              <Cell key={entry.name} fill={entry.fill} />
+            ))}
+          </Pie>
+        </PieChart>
+        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold tabular-nums text-red-700">
+          {percentLost.toFixed(1)}%
+        </div>
+      </div>
+      <div className="mt-0.5 text-[10px] text-slate-500">to fees</div>
+    </div>
+  );
+}
+
 export function ProFeeChart({
   data,
   finalLost,
@@ -110,9 +149,11 @@ export function ProFeeChart({
 
   const smarterOpacity = activeScenario === "traditional" ? 0.3 : 1;
   const traditionalOpacity = activeScenario === "smarter" ? 0.3 : 1;
+  const percentLost = finalValueWithoutFees > 0 ? Math.min(100, Math.max(0, (finalLost / finalValueWithoutFees) * 100)) : 0;
 
   return (
     <div className="relative w-full h-full bg-white rounded-t-2xl overflow-hidden flex flex-col">
+      <LostToFeesDonut percentLost={percentLost} />
 
       {/* ── Mobile Summary — stacked above chart, replaces clipped overlay ── */}
       {showSummary && (
@@ -220,7 +261,7 @@ export function ProFeeChart({
 
             <YAxis hide domain={['dataMin', 'auto']} />
 
-            <Tooltip content={<CustomHUDTooltip />} cursor={{ stroke: "#e5e7eb", strokeWidth: 1, strokeDasharray: "4 4" }} />
+            {!isMobile && <Tooltip content={<CustomHUDTooltip />} cursor={{ stroke: "#e5e7eb", strokeWidth: 1, strokeDasharray: "4 4" }} />}
 
             {/* With RIA $100/mo (Upper Line) - Emerald Green */}
             <Area
