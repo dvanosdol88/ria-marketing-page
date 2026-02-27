@@ -48,42 +48,42 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.1 }}
-        className="bg-white/95 backdrop-blur-sm border border-slate-100 p-4 rounded-xl shadow-xl min-w-[200px]"
+        className="min-w-[155px] rounded-lg border border-slate-200 bg-white/95 p-2.5 shadow-lg backdrop-blur-sm"
       >
-        <p className="text-slate-500 text-xs font-medium mb-2 uppercase tracking-wider">
+        <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
           Year {label}
         </p>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           {/* RIA Flat Fee Value */}
           <div>
-            <div className="flex justify-between items-center text-xs text-brand-600 mb-1">
-              <span>With Smarter Way Wealth ($100/mo)</span>
+            <div className="mb-0.5 flex items-center justify-between text-[10px] text-brand-600">
+              <span>Smarter Way Wealth</span>
               <span className="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
             </div>
-            <p className="text-xl font-bold text-slate-900 tabular-nums">
+            <p className="text-lg font-bold tabular-nums text-slate-900">
               {formatCurrency(withoutFees)}
             </p>
           </div>
 
-          {/* Savings */}
+          {/* Lost to fees */}
           <div>
-            <div className="flex justify-between items-center text-xs text-brand-600 mb-1">
-              <span>You Save</span>
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
+            <div className="mb-0.5 flex items-center justify-between text-[10px] text-red-700">
+              <span>Lost to fees</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
             </div>
-            <p className="text-xl font-bold text-brand-700 tabular-nums">
-              +{formatCurrency(lostAmount)}
+            <p className="text-lg font-bold tabular-nums text-red-700">
+              -{formatCurrency(lostAmount)}
             </p>
           </div>
 
           {/* AUM Advisor Value */}
-          <div className="pt-2 border-t border-slate-100 mt-2">
-            <div className="flex justify-between items-center text-xs text-slate-500 mb-1">
-              <span>With AUM Advisor</span>
+          <div className="mt-1 border-t border-slate-100 pt-1.5">
+            <div className="mb-0.5 flex items-center justify-between text-[10px] text-slate-500">
+              <span>Traditional AUM</span>
               <span className="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
             </div>
-            <p className="text-xl font-bold text-slate-900 tabular-nums">
+            <p className="text-lg font-bold tabular-nums text-slate-900">
               {formatCurrency(withFees)}
             </p>
           </div>
@@ -94,7 +94,10 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-function LostToFeesDonut({ percentLost }: { percentLost: number }) {
+function LostToFeesDonut({ percentLost, isMobile }: { percentLost: number; isMobile: boolean }) {
+  const chartSize = isMobile ? 56 : 70;
+  const innerRadius = isMobile ? 15 : 19;
+  const outerRadius = isMobile ? 24 : 30;
   const donutData = [
     { name: "Lost", value: percentLost, fill: "#BE123C" },
     { name: "Kept", value: Math.max(0, 100 - percentLost), fill: "#0F172A" },
@@ -102,16 +105,16 @@ function LostToFeesDonut({ percentLost }: { percentLost: number }) {
 
   return (
     <div className="pointer-events-none absolute left-2 top-2 z-20 rounded-lg border border-red-100 bg-white/90 px-2 py-2 shadow-sm backdrop-blur-sm sm:left-4 sm:top-4">
-      <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Portfolio Lost</div>
-      <div className="relative h-14 w-14 sm:h-16 sm:w-16">
-        <PieChart width={64} height={64}>
+      <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-500 sm:text-[10px] md:text-xs">Lost Wealth</div>
+      <div className="relative" style={{ height: chartSize, width: chartSize }}>
+        <PieChart width={chartSize} height={chartSize}>
           <Pie
             data={donutData}
             dataKey="value"
             cx="50%"
             cy="50%"
-            innerRadius={18}
-            outerRadius={28}
+            innerRadius={innerRadius}
+            outerRadius={outerRadius}
             startAngle={90}
             endAngle={-270}
             stroke="none"
@@ -121,11 +124,10 @@ function LostToFeesDonut({ percentLost }: { percentLost: number }) {
             ))}
           </Pie>
         </PieChart>
-        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold tabular-nums text-red-700">
+        <div className="absolute inset-0 flex items-center justify-center text-[11px] font-bold tabular-nums text-red-700 sm:text-xs">
           {percentLost.toFixed(1)}%
         </div>
       </div>
-      <div className="mt-0.5 text-[10px] text-slate-500">to fees</div>
     </div>
   );
 }
@@ -153,7 +155,7 @@ export function ProFeeChart({
 
   return (
     <div className="relative w-full h-full bg-white rounded-t-2xl overflow-hidden flex flex-col">
-      <LostToFeesDonut percentLost={percentLost} />
+      <LostToFeesDonut percentLost={percentLost} isMobile={isMobile} />
 
       {/* ── Mobile Summary — stacked above chart, replaces clipped overlay ── */}
       {showSummary && (
@@ -232,8 +234,8 @@ export function ProFeeChart({
             data={data}
             margin={{
               top: isMobile ? 10 : 20,
-              right: isMobile ? 4 : 0,
-              left: isMobile ? -15 : 0,
+              right: 5,
+              left: 5,
               bottom: 0,
             }}
           >

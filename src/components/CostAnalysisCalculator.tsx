@@ -18,14 +18,13 @@ const sliderAccent = homeCalculatorConfig.controls.sliderAccent;
 
 function formatCompactNumber(value: number): string {
   if (value >= 1_000_000) {
-    const m = value / 1_000_000;
-    return `${m % 1 === 0 ? m.toFixed(0) : m.toFixed(1)}M`;
+    return `${(value / 1_000_000).toFixed(2)}M`;
   }
   if (value >= 1_000) {
-    const k = value / 1_000;
-    return `${k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)}K`;
+    const thousands = value / 1_000;
+    return `${thousands >= 100 ? thousands.toFixed(0) : thousands.toFixed(1)}K`;
   }
-  return value.toString();
+  return numberFormatter.format(value);
 }
 
 function tryHaptic() {
@@ -117,7 +116,7 @@ function StepperSlider({
 
   return (
     <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm">
-      <div className="mb-2.5 flex items-center justify-between gap-2">
+      <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-1.5">
           <span className="whitespace-nowrap text-sm font-medium text-gray-800">{label}</span>
           {infoText && (
@@ -131,26 +130,25 @@ function StepperSlider({
             </button>
           )}
         </div>
+        {chips && chips.length > 0 && (
+          <div className="flex flex-wrap items-center justify-end gap-1.5">
+            {chips.map((chip) => (
+              <button
+                key={chip.value}
+                type="button"
+                onClick={() => emit(chip.value, true)}
+                className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
+                  valuesMatch(value, chip.value, step)
+                    ? homeCalculatorConfig.controls.chipActiveClasses
+                    : homeCalculatorConfig.controls.chipInactiveClasses
+                }`}
+              >
+                {chip.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
-
-      {chips && chips.length > 0 && (
-        <div className="mb-2.5 flex flex-wrap items-center gap-1.5">
-          {chips.map((chip) => (
-            <button
-              key={chip.value}
-              type="button"
-              onClick={() => emit(chip.value, true)}
-              className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
-                valuesMatch(value, chip.value, step)
-                  ? homeCalculatorConfig.controls.chipActiveClasses
-                  : homeCalculatorConfig.controls.chipInactiveClasses
-              }`}
-            >
-              {chip.label}
-            </button>
-          ))}
-        </div>
-      )}
 
       {showInfo && infoText && (
         <div className="mb-2.5 rounded-lg bg-gray-900 p-2.5 text-xs leading-relaxed text-white">{infoText}</div>
@@ -250,28 +248,27 @@ function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: Cu
 
   return (
     <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm">
-      <div className="mb-2.5 flex items-center justify-between gap-2">
+      <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
         <span className="whitespace-nowrap text-sm font-medium text-gray-800">{label}</span>
+        {chips && chips.length > 0 && (
+          <div className="flex flex-wrap items-center justify-end gap-1.5">
+            {chips.map((chip) => (
+              <button
+                key={chip.value}
+                type="button"
+                onClick={() => adjustValue(chip.value)}
+                className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
+                  valuesMatch(value, chip.value, step)
+                    ? homeCalculatorConfig.controls.chipActiveClasses
+                    : homeCalculatorConfig.controls.chipInactiveClasses
+                }`}
+              >
+                {chip.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
-
-      {chips && chips.length > 0 && (
-        <div className="mb-2.5 flex flex-wrap items-center gap-1.5">
-          {chips.map((chip) => (
-            <button
-              key={chip.value}
-              type="button"
-              onClick={() => adjustValue(chip.value)}
-              className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
-                valuesMatch(value, chip.value, step)
-                  ? homeCalculatorConfig.controls.chipActiveClasses
-                  : homeCalculatorConfig.controls.chipInactiveClasses
-              }`}
-            >
-              {chip.label}
-            </button>
-          ))}
-        </div>
-      )}
 
       <div className="flex items-center gap-2">
         <button
@@ -324,23 +321,18 @@ function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: Cu
             onKeyDown={(event) => {
               if (event.key === "Enter") handleBlur();
             }}
-            className="w-28 rounded-lg border border-slate-300 bg-slate-50 px-2 py-1 text-right text-sm font-bold tabular-nums text-gray-900 outline-none ring-2 ring-[#1B2A4A]"
+            className="w-28 rounded-lg border border-slate-300 bg-slate-50 px-2 py-1 text-right text-sm font-bold tabular-nums text-gray-900 outline-none ring-2 ring-[#2A3F63]"
           />
         ) : (
           <button
             type="button"
             onClick={handleTap}
-            className="min-w-[5.8rem] text-right text-sm font-bold tabular-nums text-gray-900 transition-colors hover:text-[#1B2A4A]"
+            className="min-w-[5.8rem] text-right text-sm font-bold tabular-nums text-gray-900 transition-colors hover:text-[#2A3F63]"
             aria-label={`Edit ${label}`}
           >
             {formatCurrency(value)}
           </button>
         )}
-      </div>
-
-      <div className="mt-2 flex justify-between px-1 text-xs text-gray-400">
-        <span>${formatCompactNumber(min)}</span>
-        <span>${formatCompactNumber(max)}</span>
       </div>
     </div>
   );
@@ -382,7 +374,7 @@ function ValueCard({
 function LostFeesCard({ value }: { value: number }) {
   return (
     <div
-      className="col-span-2 rounded-xl border p-3 text-left sm:p-4"
+      className="col-span-2 rounded-xl border p-3 text-center sm:p-4"
       style={{
         borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
         backgroundColor: homeCalculatorConfig.cards.lostToFeesBg,
@@ -542,7 +534,6 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
               </div>
 
               <div className="border-t border-gray-100 bg-white p-4 sm:p-6 lg:p-8">
-                <h2 className="mb-4 px-1 text-xs font-semibold uppercase tracking-wider text-gray-500">Adjust Your Inputs</h2>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
                   <CurrencyInputCard
                     label="Portfolio value"
@@ -578,7 +569,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                     label="Annual growth"
                     value={state.annualGrowthPercent}
                     min={0}
-                    max={15}
+                    max={14}
                     step={0.1}
                     onChange={(nextValue) => setState((prev) => ({ ...prev, annualGrowthPercent: nextValue }))}
                     format={(val) => `${val.toFixed(1)}%`}
