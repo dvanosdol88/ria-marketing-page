@@ -1,11 +1,11 @@
 export const homeCalculatorConfig = {
   hero: {
-    promptColor: "#1B2A4A",
+    promptColor: "#2A3F63",
     savingsColor: "#00682B",
   },
   controls: {
-    sliderAccent: "#1B2A4A",
-    chipActiveClasses: "border border-[#1B2A4A] bg-[#1B2A4A] text-white shadow-sm",
+    sliderAccent: "#2A3F63",
+    chipActiveClasses: "border border-[#2A3F63] bg-[#2A3F63] text-white shadow-sm",
     chipInactiveClasses:
       "border border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50",
     buttonClasses:
@@ -19,7 +19,7 @@ export const homeCalculatorConfig = {
   },
   quoteTicker: {
     label: "Don't take our word for it.",
-    subLabel: "What investors and fee experts have said about long-term costs.",
+    subLabel: "Read what these legends have to say about long-term costs",
     touchHint: "Tap a name for details. Swipe left or right to browse.",
     hoverHint: "Hover over a name to explore.",
   },

@@ -7,6 +7,9 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { siteNavLinks } from "@/config/siteNavConfig";
 
+const COLLAPSE_SCROLL_Y = 132;
+const EXPAND_SCROLL_Y = 82;
+
 /**
  * Site-wide navigation bar — "Authority" style with collapsing behavior.
  *
@@ -30,8 +33,24 @@ export function SiteNav() {
 
   /* Track scroll to toggle collapsed state */
   useEffect(() => {
-    const onScroll = () => setCollapsed(window.scrollY > 100);
-    onScroll();
+    let ticking = false;
+
+    const updateState = () => {
+      const currentY = window.scrollY;
+      setCollapsed((prev) => {
+        if (prev) return currentY > EXPAND_SCROLL_Y;
+        return currentY > COLLAPSE_SCROLL_Y;
+      });
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(updateState);
+    };
+
+    updateState();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -54,7 +73,7 @@ export function SiteNav() {
     <>
       {/* ── Sticky Header Bar ── */}
       <header
-        className={`sticky top-0 z-50 bg-white transition-all duration-300 ease-in-out ${
+        className={`sticky top-0 z-50 bg-white transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           collapsed ? "shadow-[0_1px_4px_rgba(0,0,0,0.10)]" : ""
         }`}
       >
@@ -66,7 +85,7 @@ export function SiteNav() {
 
         <div className="site-nav mx-auto max-w-[1200px] px-4 sm:px-6">
           {/* ── Mobile Layout ── */}
-          <div className={`flex items-center justify-between md:hidden transition-all duration-300 ease-in-out ${
+          <div className={`flex items-center justify-between md:hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             collapsed ? "h-12" : "h-16"
           }`}>
             <button
@@ -90,7 +109,7 @@ export function SiteNav() {
                 width={1000}
                 height={375}
                 style={{ gridArea: "1/1" }}
-                className={`w-auto justify-self-center transition-all duration-300 ease-in-out ${
+                className={`w-auto justify-self-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                   collapsed
                     ? "h-7 opacity-0"
                     : `opacity-100 ${isLandingPage ? "h-12" : "h-10"}`
@@ -101,7 +120,7 @@ export function SiteNav() {
                 src="/brand/logo-icon.svg"
                 alt="Smarter Way Wealth"
                 style={{ gridArea: "1/1" }}
-                className={`w-auto justify-self-center transition-all duration-300 ease-in-out ${
+                className={`w-auto justify-self-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                   collapsed
                     ? "h-7 opacity-100"
                     : `opacity-0 ${isLandingPage ? "h-12" : "h-10"}`
@@ -114,7 +133,7 @@ export function SiteNav() {
           </div>
 
           {/* ── Desktop Layout ── */}
-          <div className={`hidden items-center justify-between md:flex transition-all duration-300 ease-in-out ${
+          <div className={`hidden items-center justify-between md:flex transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             collapsed ? "h-[52px]" : isLandingPage ? "h-[104px]" : "h-[88px]"
           }`}>
             {/* Desktop logo — cross-fade between full and icon-only */}
@@ -129,7 +148,7 @@ export function SiteNav() {
                 width={1000}
                 height={375}
                 style={{ gridArea: "1/1" }}
-                className={`w-auto justify-self-start transition-all duration-300 ease-in-out ${
+                className={`w-auto justify-self-start transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                   collapsed
                     ? "h-8 opacity-0"
                     : `opacity-100 ${isLandingPage ? "h-24" : "h-20"}`
@@ -140,7 +159,7 @@ export function SiteNav() {
                 src="/brand/logo-icon.svg"
                 alt="Smarter Way Wealth"
                 style={{ gridArea: "1/1" }}
-                className={`w-auto justify-self-start transition-all duration-300 ease-in-out ${
+                className={`w-auto justify-self-start transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                   collapsed
                     ? "h-8 opacity-100"
                     : `opacity-0 ${isLandingPage ? "h-24" : "h-20"}`
