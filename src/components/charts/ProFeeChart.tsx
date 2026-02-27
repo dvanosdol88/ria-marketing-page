@@ -95,17 +95,17 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
 };
 
 function LostToFeesDonut({ percentLost, isMobile }: { percentLost: number; isMobile: boolean }) {
-  const chartSize = isMobile ? 56 : 70;
-  const innerRadius = isMobile ? 15 : 19;
-  const outerRadius = isMobile ? 24 : 30;
+  const chartSize = isMobile ? 64 : 108;
+  const innerRadius = isMobile ? 18 : 35;
+  const outerRadius = isMobile ? 28 : 52;
   const donutData = [
     { name: "Lost", value: percentLost, fill: "#BE123C" },
     { name: "Kept", value: Math.max(0, 100 - percentLost), fill: "#0F172A" },
   ];
 
   return (
-    <div className="pointer-events-none absolute left-2 top-2 z-20 rounded-lg border border-red-100 bg-white/90 px-2 py-2 shadow-sm backdrop-blur-sm sm:left-4 sm:top-4">
-      <div className="text-[9px] font-semibold uppercase tracking-wider text-slate-500 sm:text-[10px] md:text-xs">Lost Wealth</div>
+    <div className="pointer-events-none absolute left-2 top-2 z-20 sm:left-4 sm:top-4">
+      <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 sm:text-xs md:text-sm">Lost Wealth</div>
       <div className="relative" style={{ height: chartSize, width: chartSize }}>
         <PieChart width={chartSize} height={chartSize}>
           <Pie
@@ -124,7 +124,7 @@ function LostToFeesDonut({ percentLost, isMobile }: { percentLost: number; isMob
             ))}
           </Pie>
         </PieChart>
-        <div className="absolute inset-0 flex items-center justify-center text-[11px] font-bold tabular-nums text-red-700 sm:text-xs">
+        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold tabular-nums text-red-700 sm:text-sm md:text-base">
           {percentLost.toFixed(1)}%
         </div>
       </div>
