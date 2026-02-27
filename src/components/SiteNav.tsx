@@ -73,8 +73,10 @@ export function SiteNav() {
     <>
       {/* ── Sticky Header Bar ── */}
       <header
-        className={`sticky top-0 z-50 bg-white transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          collapsed ? "shadow-[0_1px_4px_rgba(0,0,0,0.10)]" : ""
+        className={`sticky top-0 z-50 transition-[background-color,backdrop-filter,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          collapsed
+            ? "bg-white/90 backdrop-blur-md shadow-sm supports-[backdrop-filter]:bg-white/85"
+            : "bg-white"
         }`}
       >
         {/* Reset link styles for nav */}
