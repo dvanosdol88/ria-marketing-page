@@ -362,11 +362,11 @@ function ValueCard({
     <button
       type="button"
       onClick={onPress}
-      className={`rounded-xl border p-3 text-left transition-all sm:p-5 ${baseAccent} ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"}`}
+      className={`h-full rounded-xl border p-3 text-left transition-all sm:p-4 lg:p-5 ${baseAccent} ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"}`}
       aria-pressed={isActive}
     >
       <p className="text-xs font-semibold uppercase tracking-wide text-neutral-600">{label}</p>
-      <p className="mt-1 text-lg font-semibold text-neutral-900 sm:mt-2 sm:text-3xl">{compactDisplay}</p>
+      <p className="mt-1 text-[clamp(1.1rem,2vw,2rem)] font-semibold text-neutral-900 sm:mt-2">{compactDisplay}</p>
     </button>
   );
 }
@@ -374,7 +374,7 @@ function ValueCard({
 function LostFeesCard({ value }: { value: number }) {
   return (
     <div
-      className="col-span-2 rounded-xl border p-3 text-center sm:p-4"
+      className="col-span-2 h-full rounded-xl border p-3 text-center sm:p-4 min-[860px]:col-span-1"
       style={{
         borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
         backgroundColor: homeCalculatorConfig.cards.lostToFeesBg,
@@ -383,7 +383,7 @@ function LostFeesCard({ value }: { value: number }) {
       <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
         {homeCalculatorConfig.cards.lostToFeesLabel}
       </p>
-      <p className="mt-1 text-xl font-bold tabular-nums sm:text-2xl" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
+      <p className="mt-1 text-[clamp(1.1rem,1.8vw,1.7rem)] font-bold tabular-nums" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
         -{formatCurrency(value)}
       </p>
     </div>
@@ -502,7 +502,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-20 pt-0 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:gap-8">
             <ScrollReveal className="card overflow-hidden bg-white shadow-xl ring-1 ring-black/5">
-              <div className="grid grid-cols-2 gap-3 border-b border-gray-100 p-4 sm:gap-4 sm:p-6 lg:p-8">
+              <div className="grid grid-cols-2 gap-3 border-b border-gray-100 p-4 sm:gap-4 sm:p-6 lg:p-8 min-[860px]:grid-cols-3">
                 <ValueCard
                   label="Smarter Way Wealth"
                   value={projection.finalValueWithoutFees}
