@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
+import { homeCalculatorConfig } from '@/config/homeCalculatorConfig';
 
 // ============================================================================
 // TYPES
@@ -17,6 +18,7 @@ interface Quote {
 
 interface QuoteTickerProps {
   label?: string;
+  subLabel?: string;
   showLabel?: boolean;
   speed?: number;
 }
@@ -174,7 +176,8 @@ const DEMO_QUOTE = QUOTES[2]; // Warren Buffett
 // ============================================================================
 
 export default function QuoteTickerWithPortraits({
-  label = "Don't take our word for it.",
+  label = homeCalculatorConfig.quoteTicker.label,
+  subLabel = homeCalculatorConfig.quoteTicker.subLabel,
   showLabel = true,
   speed = 159,
 }: QuoteTickerProps) {
@@ -187,6 +190,8 @@ export default function QuoteTickerWithPortraits({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const scrollerRef = useRef<Animation | null>(null);
   const tweenRef = useRef<number | null>(null);
+  const swipeStartRef = useRef<{ x: number; y: number } | null>(null);
+  const swipeResumeRef = useRef<number | null>(null);
   const hasAutoPlayedRef = useRef(false);
   const hasInteractedRef = useRef(false);
 
@@ -243,6 +248,22 @@ export default function QuoteTickerWithPortraits({
     setHoveredQuote(null);
   }, []);
 
+  const nudgeTicker = useCallback((direction: 'next' | 'prev') => {
+    const animation = scrollerRef.current;
+    if (!animation) return;
+
+    const baseTime = typeof animation.currentTime === 'number' ? animation.currentTime : 0;
+    const jump = speed * 1000 * 0.08;
+    const delta = direction === 'next' ? jump : -jump;
+    animation.currentTime = Math.max(0, baseTime + delta);
+
+    tweenPlaybackRate(animation, 0.55, 220);
+    if (swipeResumeRef.current) window.clearTimeout(swipeResumeRef.current);
+    swipeResumeRef.current = window.setTimeout(() => {
+      if (scrollerRef.current) tweenPlaybackRate(scrollerRef.current, 1, 550);
+    }, 220);
+  }, [speed, tweenPlaybackRate]);
+
   /* Touch/tap handler for mobile — toggles tooltip on tap */
   const handleItemClick = useCallback((quote: Quote, e: React.MouseEvent<HTMLDivElement>) => {
     if (!isTouchDevice) return; // Desktop uses hover
@@ -293,6 +314,30 @@ export default function QuoteTickerWithPortraits({
     }
   }, [isTouchDevice, tweenPlaybackRate]);
 
+  const handleWrapperTouchStart = useCallback((event: React.TouchEvent<HTMLDivElement>) => {
+    if (!isTouchDevice) return;
+    const touch = event.touches[0];
+    if (!touch) return;
+    swipeStartRef.current = { x: touch.clientX, y: touch.clientY };
+  }, [isTouchDevice]);
+
+  const handleWrapperTouchEnd = useCallback((event: React.TouchEvent<HTMLDivElement>) => {
+    if (!isTouchDevice || !swipeStartRef.current) return;
+    const touch = event.changedTouches[0];
+    if (!touch) return;
+
+    const deltaX = touch.clientX - swipeStartRef.current.x;
+    const deltaY = touch.clientY - swipeStartRef.current.y;
+    swipeStartRef.current = null;
+
+    const isHorizontalSwipe = Math.abs(deltaX) > 36 && Math.abs(deltaX) > Math.abs(deltaY);
+    if (!isHorizontalSwipe) return;
+
+    dismissHint();
+    setHoveredQuote(null);
+    nudgeTicker(deltaX < 0 ? 'next' : 'prev');
+  }, [dismissHint, isTouchDevice, nudgeTicker]);
+
   /* Set up Web Animation API scroller */
   useEffect(() => {
     const ticker = tickerRef.current;
@@ -315,6 +360,7 @@ export default function QuoteTickerWithPortraits({
     return () => {
       animation.cancel();
       if (tweenRef.current) cancelAnimationFrame(tweenRef.current);
+      if (swipeResumeRef.current) window.clearTimeout(swipeResumeRef.current);
     };
   }, [speed]);
 
@@ -455,12 +501,15 @@ export default function QuoteTickerWithPortraits({
         className="relative overflow-hidden bg-transparent ticker-wrapper"
         onMouseEnter={handleWrapperMouseEnter}
         onMouseLeave={handleWrapperMouseLeave}
+        onTouchStart={handleWrapperTouchStart}
+        onTouchEnd={handleWrapperTouchEnd}
       >
         {showLabel && (
-          <div className="text-center mb-3 mt-0">
-            <span className="text-base font-medium tracking-wide text-stone-800">
+          <div className="mb-3 mt-0 text-center">
+            <p className="text-xl font-semibold tracking-tight text-stone-800">
               {label}
-            </span>
+            </p>
+            <p className="mt-1 text-sm text-stone-600">{subLabel}</p>
             {/* Subtle interaction hint — fades out after 5s or first interaction */}
             <div
               className={`mt-1 transition-opacity duration-700 ${
@@ -468,7 +517,7 @@ export default function QuoteTickerWithPortraits({
               }`}
             >
               <span className="text-xs text-stone-400">
-                {isTouchDevice ? 'Tap a name to explore' : 'Hover over a name to explore'}
+                {isTouchDevice ? homeCalculatorConfig.quoteTicker.touchHint : homeCalculatorConfig.quoteTicker.hoverHint}
               </span>
             </div>
           </div>

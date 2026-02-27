@@ -73,9 +73,9 @@ export function SiteNav() {
               onClick={toggleDrawer}
               aria-label={drawerOpen ? "Close menu" : "Open menu"}
               aria-expanded={drawerOpen}
-              className="flex h-10 w-10 items-center justify-center rounded-lg text-neutral-700 transition-colors hover:bg-neutral-100 active:bg-neutral-200"
+              className="relative z-10 flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-800 shadow-sm transition-colors hover:bg-neutral-100 active:bg-neutral-200"
             >
-              <Menu className="h-6 w-6" strokeWidth={2} />
+              {drawerOpen ? <X className="h-5 w-5" strokeWidth={2.2} /> : <Menu className="h-6 w-6" strokeWidth={2.2} />}
             </button>
 
             {/* Mobile logo — cross-fade between full and icon-only */}

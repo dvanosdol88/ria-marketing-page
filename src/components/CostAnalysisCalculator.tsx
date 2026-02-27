@@ -11,8 +11,10 @@ import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { Quiz } from "./Quiz";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
+const sliderAccent = homeCalculatorConfig.controls.sliderAccent;
 
 function formatCompactNumber(value: number): string {
   if (value >= 1_000_000) {
@@ -122,7 +124,7 @@ function StepperSlider({
             <button
               type="button"
               onClick={() => setShowInfo((prev) => !prev)}
-              className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors hover:bg-gray-200"
+              className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-500 transition-colors hover:bg-slate-50"
               aria-label={`More information about ${label}`}
             >
               <Info className="h-2.5 w-2.5" />
@@ -140,8 +142,8 @@ function StepperSlider({
               onClick={() => emit(chip.value, true)}
               className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
                 valuesMatch(value, chip.value, step)
-                  ? "bg-[#007A2F] text-white shadow-sm"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  ? homeCalculatorConfig.controls.chipActiveClasses
+                  : homeCalculatorConfig.controls.chipInactiveClasses
               }`}
             >
               {chip.label}
@@ -159,7 +161,7 @@ function StepperSlider({
           type="button"
           onClick={() => emit(value - step, true)}
           disabled={value <= min}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-gray-200 disabled:pointer-events-none disabled:opacity-30"
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${homeCalculatorConfig.controls.buttonClasses}`}
           aria-label={`Decrease ${label}`}
         >
           <Minus className="h-3.5 w-3.5" />
@@ -167,7 +169,7 @@ function StepperSlider({
 
         <div className="relative flex h-8 flex-1 items-center">
           <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200" />
-          <div className="absolute left-0 h-1.5 rounded-full bg-[#00A540] transition-all duration-150" style={{ width: `${pct}%` }} />
+          <div className="absolute left-0 h-1.5 rounded-full transition-all duration-150" style={{ width: `${pct}%`, backgroundColor: sliderAccent }} />
           <input
             type="range"
             min={min}
@@ -179,8 +181,8 @@ function StepperSlider({
             aria-label={`${label} slider`}
           />
           <div
-            className="pointer-events-none absolute h-5 w-5 rounded-full border-2 border-[#00A540] bg-white shadow-md transition-all duration-150"
-            style={{ left: `calc(${pct}% - 10px)` }}
+            className="pointer-events-none absolute h-5 w-5 rounded-full border-2 border-white shadow-md transition-all duration-150"
+            style={{ left: `calc(${pct}% - 10px)`, backgroundColor: sliderAccent }}
           />
         </div>
 
@@ -188,7 +190,7 @@ function StepperSlider({
           type="button"
           onClick={() => emit(value + step, true)}
           disabled={value >= max}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-gray-200 disabled:pointer-events-none disabled:opacity-30"
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${homeCalculatorConfig.controls.buttonClasses}`}
           aria-label={`Increase ${label}`}
         >
           <Plus className="h-3.5 w-3.5" />
@@ -261,8 +263,8 @@ function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: Cu
               onClick={() => adjustValue(chip.value)}
               className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
                 valuesMatch(value, chip.value, step)
-                  ? "bg-[#007A2F] text-white shadow-sm"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  ? homeCalculatorConfig.controls.chipActiveClasses
+                  : homeCalculatorConfig.controls.chipInactiveClasses
               }`}
             >
               {chip.label}
@@ -276,7 +278,7 @@ function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: Cu
           type="button"
           onClick={() => adjustValue(value - step)}
           disabled={value <= min}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-gray-200 disabled:pointer-events-none disabled:opacity-30"
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${homeCalculatorConfig.controls.buttonClasses}`}
           aria-label={`Decrease ${label}`}
         >
           <Minus className="h-3.5 w-3.5" />
@@ -284,7 +286,7 @@ function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: Cu
 
         <div className="relative flex h-8 flex-1 items-center">
           <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200" />
-          <div className="absolute left-0 h-1.5 rounded-full bg-[#00A540] transition-all duration-150" style={{ width: `${pct}%` }} />
+          <div className="absolute left-0 h-1.5 rounded-full transition-all duration-150" style={{ width: `${pct}%`, backgroundColor: sliderAccent }} />
           <input
             type="range"
             min={min}
@@ -296,8 +298,8 @@ function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: Cu
             aria-label={`${label} slider`}
           />
           <div
-            className="pointer-events-none absolute h-5 w-5 rounded-full border-2 border-[#00A540] bg-white shadow-md transition-all duration-150"
-            style={{ left: `calc(${pct}% - 10px)` }}
+            className="pointer-events-none absolute h-5 w-5 rounded-full border-2 border-white shadow-md transition-all duration-150"
+            style={{ left: `calc(${pct}% - 10px)`, backgroundColor: sliderAccent }}
           />
         </div>
 
@@ -305,7 +307,7 @@ function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: Cu
           type="button"
           onClick={() => adjustValue(value + step)}
           disabled={value >= max}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition-colors hover:bg-gray-200 disabled:pointer-events-none disabled:opacity-30"
+          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${homeCalculatorConfig.controls.buttonClasses}`}
           aria-label={`Increase ${label}`}
         >
           <Plus className="h-3.5 w-3.5" />
@@ -322,13 +324,13 @@ function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: Cu
             onKeyDown={(event) => {
               if (event.key === "Enter") handleBlur();
             }}
-            className="w-28 rounded-lg bg-gray-100 px-2 py-1 text-right text-sm font-bold tabular-nums text-gray-900 outline-none ring-2 ring-[#00A540]"
+            className="w-28 rounded-lg border border-slate-300 bg-slate-50 px-2 py-1 text-right text-sm font-bold tabular-nums text-gray-900 outline-none ring-2 ring-[#1B2A4A]"
           />
         ) : (
           <button
             type="button"
             onClick={handleTap}
-            className="min-w-[5.8rem] text-right text-sm font-bold tabular-nums text-gray-900 transition-colors hover:text-[#007A2F]"
+            className="min-w-[5.8rem] text-right text-sm font-bold tabular-nums text-gray-900 transition-colors hover:text-[#1B2A4A]"
             aria-label={`Edit ${label}`}
           >
             {formatCurrency(value)}
@@ -362,17 +364,37 @@ function ValueCard({
   const baseAccent =
     variant === "smarter" ? "border-[#007A2F]/25 bg-[#007A2F]/5" : "border-gray-200 bg-gray-50/80";
   const activeRing = isActive ? "ring-2 ring-[#007A2F]/35" : "";
+  const compactDisplay = value >= 1_000_000 ? `$${formatCompactNumber(value)}` : formatCurrency(value);
 
   return (
     <button
       type="button"
       onClick={onPress}
-      className={`rounded-xl border p-4 text-left transition-all sm:p-5 ${baseAccent} ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"}`}
+      className={`rounded-xl border p-3 text-left transition-all sm:p-5 ${baseAccent} ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"}`}
       aria-pressed={isActive}
     >
       <p className="text-xs font-semibold uppercase tracking-wide text-neutral-600">{label}</p>
-      <p className="mt-2 text-2xl font-semibold text-neutral-900 sm:text-3xl">{formatCurrency(value)}</p>
+      <p className="mt-1 text-lg font-semibold text-neutral-900 sm:mt-2 sm:text-3xl">{compactDisplay}</p>
     </button>
+  );
+}
+
+function LostFeesCard({ value }: { value: number }) {
+  return (
+    <div
+      className="col-span-2 rounded-xl border p-3 text-left sm:p-4"
+      style={{
+        borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
+        backgroundColor: homeCalculatorConfig.cards.lostToFeesBg,
+      }}
+    >
+      <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
+        {homeCalculatorConfig.cards.lostToFeesLabel}
+      </p>
+      <p className="mt-1 text-xl font-bold tabular-nums sm:text-2xl" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
+        -{formatCurrency(value)}
+      </p>
+    </div>
   );
 }
 
@@ -459,17 +481,21 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         }`}
       >
         <div className="flex h-12 items-center justify-center gap-2 px-4">
-          <span className="tabular-nums text-lg font-bold text-[#007A2F]">+{formatCurrency(projection.savings)}</span>
-          <span className="text-sm font-semibold uppercase tracking-wider text-[#007A2F]">You Save</span>
+          <span className="tabular-nums text-lg font-bold" style={{ color: homeCalculatorConfig.hero.savingsColor }}>
+            +{formatCurrency(projection.savings)}
+          </span>
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: homeCalculatorConfig.hero.savingsColor }}>
+            You Save
+          </span>
         </div>
       </div>
 
       <div className="w-full bg-transparent pb-1 pt-4 sm:pt-6">
         <div className="section-shell text-center">
           <h1 className="text-2xl font-semibold sm:text-5xl">
-            <span className="text-[#1B2A4A]">What would you do with </span>
-            <span className="text-[#007A2F]">{formatCurrency(projection.savings)}</span>
-            <span className="text-[#1B2A4A]">?</span>
+            <span style={{ color: homeCalculatorConfig.hero.promptColor }}>What would you do with </span>
+            <span style={{ color: homeCalculatorConfig.hero.savingsColor }}>{formatCurrency(projection.savings)}</span>
+            <span style={{ color: homeCalculatorConfig.hero.promptColor }}>?</span>
           </h1>
           <div className="mt-2 flex flex-wrap items-center justify-center gap-1 text-base text-neutral-900 sm:text-xl">
             <span>See how much you can save.</span>
@@ -484,7 +510,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-20 pt-0 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:gap-8">
             <ScrollReveal className="card overflow-hidden bg-white shadow-xl ring-1 ring-black/5">
-              <div className="grid grid-cols-1 gap-3 border-b border-gray-100 p-4 sm:grid-cols-2 sm:gap-4 sm:p-6 lg:p-8">
+              <div className="grid grid-cols-2 gap-3 border-b border-gray-100 p-4 sm:gap-4 sm:p-6 lg:p-8">
                 <ValueCard
                   label="Smarter Way Wealth"
                   value={projection.finalValueWithoutFees}
@@ -501,6 +527,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                   isDimmed={activeCard === "smarter"}
                   onPress={() => handleCardTap("traditional")}
                 />
+                <LostFeesCard value={projection.savings} />
               </div>
 
               <div className="relative w-full sm:h-[450px] lg:h-[550px]">
@@ -592,12 +619,14 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
       <section
         className="relative w-full overflow-hidden py-12 sm:py-16"
         style={{
-          backgroundColor: "#E8F5EC",
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 Q35 15 30 25 Q25 15 30 5Z' fill='%2300A540' fill-opacity='0.04'/%3E%3Cpath d='M10 35 Q15 45 10 55 Q5 45 10 35Z' fill='%23007A2F' fill-opacity='0.03'/%3E%3Cpath d='M50 40 Q55 50 50 60 Q45 50 50 40Z' fill='%2300A540' fill-opacity='0.03'/%3E%3C/svg%3E\")",
+          backgroundColor: homeCalculatorConfig.quoteSection.backgroundColor,
+          backgroundImage: homeCalculatorConfig.quoteSection.backgroundImage,
         }}
       >
-        <QuoteTickerWithPortraits />
+        <QuoteTickerWithPortraits
+          label={homeCalculatorConfig.quoteTicker.label}
+          subLabel={homeCalculatorConfig.quoteTicker.subLabel}
+        />
       </section>
 
       <ValueCards
