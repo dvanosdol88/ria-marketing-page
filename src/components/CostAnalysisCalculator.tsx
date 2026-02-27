@@ -507,6 +507,8 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
           </h1>
           <div className="mt-2 flex flex-wrap items-center justify-center gap-1 text-base text-neutral-900 sm:text-xl">
             <span>See how much you can save.</span>
+          </div>
+          <div className="mt-5">
             <Quiz />
           </div>
         </div>
