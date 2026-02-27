@@ -2,11 +2,11 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
 }
 
 body {
-  @apply bg-[#EEF0F5] text-neutral-900 font-sans antialiased;
+  @apply bg-[#EEF0F5] text-neutral-900 font-sans antialiased dark:bg-slate-950 dark:text-slate-100;
 }
 
 a {
@@ -22,7 +22,7 @@ a:hover {
 }
 
 .card {
-  @apply rounded-2xl border border-neutral-200 bg-white shadow-sm;
+  @apply rounded-2xl border border-neutral-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900;
 }
 
 .calculator-dashboard {

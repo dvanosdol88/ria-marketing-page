@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Info, Minus, Plus } from "lucide-react";
+import { Check, Info, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
-import { CalculatorState, DEFAULT_STATE, buildQueryFromState, paramsToRecord } from "@/lib/calculatorState";
+import { CalculatorState, DEFAULT_STATE, buildQueryFromState } from "@/lib/calculatorState";
 import { formatCurrency } from "@/lib/format";
 import { ValueCards } from "./value-cards/ValueCards";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
@@ -116,15 +116,15 @@ function StepperSlider({
   );
 
   return (
-    <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm">
+    <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:shadow-none">
       <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-1.5">
-          <span className="whitespace-nowrap text-sm font-medium text-gray-800">{label}</span>
+          <span className="whitespace-nowrap text-sm font-medium text-gray-800 dark:text-slate-100">{label}</span>
           {infoText && (
             <button
               type="button"
               onClick={() => setShowInfo((prev) => !prev)}
-              className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-500 transition-colors hover:bg-slate-50"
+              className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-500 transition-colors hover:bg-slate-50 dark:border-slate-500 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
               aria-label={`More information about ${label}`}
             >
               <Info className="h-2.5 w-2.5" />
@@ -152,7 +152,7 @@ function StepperSlider({
       </div>
 
       {showInfo && infoText && (
-        <div className="mb-2.5 rounded-lg bg-gray-900 p-2.5 text-xs leading-relaxed text-white">{infoText}</div>
+        <div className="mb-2.5 rounded-lg bg-gray-900 p-2.5 text-xs leading-relaxed text-white dark:bg-slate-800">{infoText}</div>
       )}
 
       <div className="flex items-center gap-2">
@@ -167,7 +167,7 @@ function StepperSlider({
         </button>
 
         <div className="relative flex h-8 flex-1 items-center">
-          <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200" />
+          <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200 dark:bg-slate-700" />
           <div className="absolute left-0 h-1.5 rounded-full transition-all duration-150" style={{ width: `${pct}%`, backgroundColor: sliderAccent }} />
           <input
             type="range"
@@ -195,7 +195,7 @@ function StepperSlider({
           <Plus className="h-3.5 w-3.5" />
         </button>
 
-        <span className="ml-1 min-w-[4.6rem] text-right text-sm font-bold tabular-nums text-gray-900">{displayValue}</span>
+        <span className="ml-1 min-w-[4.6rem] text-right text-sm font-bold tabular-nums text-gray-900 dark:text-slate-100">{displayValue}</span>
       </div>
     </div>
   );
@@ -248,9 +248,9 @@ function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: Cu
   );
 
   return (
-    <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm">
+    <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:shadow-none">
       <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
-        <span className="whitespace-nowrap text-sm font-medium text-gray-800">{label}</span>
+        <span className="whitespace-nowrap text-sm font-medium text-gray-800 dark:text-slate-100">{label}</span>
         {chips && chips.length > 0 && (
           <div className="flex flex-wrap items-center justify-end gap-1.5">
             {chips.map((chip) => (
@@ -283,7 +283,7 @@ function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: Cu
         </button>
 
         <div className="relative flex h-8 flex-1 items-center">
-          <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200" />
+          <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200 dark:bg-slate-700" />
           <div className="absolute left-0 h-1.5 rounded-full transition-all duration-150" style={{ width: `${pct}%`, backgroundColor: sliderAccent }} />
           <input
             type="range"
@@ -322,13 +322,13 @@ function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: Cu
             onKeyDown={(event) => {
               if (event.key === "Enter") handleBlur();
             }}
-            className="w-28 rounded-lg border border-slate-300 bg-slate-50 px-2 py-1 text-right text-sm font-bold tabular-nums text-gray-900 outline-none ring-2 ring-[#2A3F63]"
+            className="w-28 rounded-lg border border-slate-300 bg-slate-50 px-2 py-1 text-right text-sm font-bold tabular-nums text-gray-900 outline-none ring-2 ring-[#2A3F63] dark:border-slate-500 dark:bg-slate-800 dark:text-slate-100"
           />
         ) : (
           <button
             type="button"
             onClick={handleTap}
-            className="min-w-[5.8rem] text-right text-sm font-bold tabular-nums text-gray-900 transition-colors hover:text-[#2A3F63]"
+            className="min-w-[5.8rem] text-right text-sm font-bold tabular-nums text-gray-900 transition-colors hover:text-[#2A3F63] dark:text-slate-100 dark:hover:text-emerald-300"
             aria-label={`Edit ${label}`}
           >
             {formatCurrency(value)}
@@ -346,6 +346,7 @@ function ValueCard({
   isActive,
   isDimmed,
   onPress,
+  isDarkMode,
   className,
 }: {
   label: string;
@@ -354,17 +355,22 @@ function ValueCard({
   isActive: boolean;
   isDimmed: boolean;
   onPress: () => void;
+  isDarkMode: boolean;
   className?: string;
 }) {
   const cardStyle =
     variant === "smarter"
       ? {
           borderColor: homeCalculatorConfig.cards.smarterWayBorder,
-          backgroundColor: homeCalculatorConfig.cards.smarterWayBg,
+          backgroundColor: isDarkMode
+            ? homeCalculatorConfig.cards.smarterWayDarkBg
+            : homeCalculatorConfig.cards.smarterWayBg,
         }
       : {
           borderColor: homeCalculatorConfig.cards.traditionalAumBorder,
-          backgroundColor: homeCalculatorConfig.cards.traditionalAumBg,
+          backgroundColor: isDarkMode
+            ? homeCalculatorConfig.cards.traditionalAumDarkBg
+            : homeCalculatorConfig.cards.traditionalAumBg,
         };
   const activeRing = isActive
     ? variant === "smarter"
@@ -381,20 +387,22 @@ function ValueCard({
       style={{ borderWidth: homeCalculatorConfig.cards.borderWidthPx, ...cardStyle }}
       aria-pressed={isActive}
     >
-      <p className="text-xs font-semibold uppercase tracking-wide text-neutral-600">{label}</p>
-      <p className="mt-1 text-[clamp(1.1rem,2vw,2rem)] font-semibold text-neutral-900 sm:mt-2">{compactDisplay}</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-neutral-600 dark:text-slate-300">{label}</p>
+      <p className="mt-1 text-[clamp(1.1rem,2vw,2rem)] font-semibold text-neutral-900 dark:text-slate-100 sm:mt-2">{compactDisplay}</p>
     </button>
   );
 }
 
-function LostFeesCard({ value, className }: { value: number; className?: string }) {
+function LostFeesCard({ value, isDarkMode, className }: { value: number; isDarkMode: boolean; className?: string }) {
   return (
     <div
       className={`col-span-2 h-full rounded-xl border p-3 text-center sm:p-4 min-[860px]:col-span-1 ${className ?? ""}`}
       style={{
         borderWidth: homeCalculatorConfig.cards.borderWidthPx,
         borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
-        backgroundColor: homeCalculatorConfig.cards.lostToFeesBg,
+        backgroundColor: isDarkMode
+          ? homeCalculatorConfig.cards.lostToFeesDarkBg
+          : homeCalculatorConfig.cards.lostToFeesBg,
       }}
     >
       <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
@@ -430,6 +438,8 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
   const [state, setState] = useState<CalculatorState>(mergedState);
   const [activeCard, setActiveCard] = useState<"smarter" | "traditional" | null>(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [shareFeedback, setShareFeedback] = useState<"idle" | "success" | "error">("idle");
 
   const projection = useMemo(
     () =>
@@ -451,23 +461,54 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     return `${base}?${query}`;
   }, [paramsFromServer, state]);
 
-  const linkQuery = useMemo(() => {
-    const params = new URLSearchParams(buildQueryFromState(state, paramsFromServer));
-    return paramsToRecord(params);
-  }, [paramsFromServer, state]);
+  const shareSummary = useMemo(
+    () =>
+      [
+        "Smarter Way Wealth projection",
+        `Portfolio value: ${formatCurrency(state.portfolioValue)}`,
+        `Advisory fee: ${state.annualFeePercent.toFixed(2)}%`,
+        `Annual growth: ${state.annualGrowthPercent.toFixed(1)}%`,
+        `Time horizon: ${state.years} years`,
+        `Smarter Way Wealth value: ${formatCurrency(projection.finalValueWithoutFees)}`,
+        `Traditional AUM value: ${formatCurrency(projection.finalValueWithFees)}`,
+        `Lost to fees: -${formatCurrency(projection.savings)}`,
+      ].join("\n"),
+    [projection.finalValueWithFees, projection.finalValueWithoutFees, projection.savings, state]
+  );
 
-  const copyShareUrl = useCallback(async () => {
-    if (!shareUrl) return;
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      alert("Link copied with your numbers!");
-    } catch (error) {
-      console.error("Unable to copy", error);
+  const shareResult = useCallback(async () => {
+    if (!shareUrl || typeof navigator === "undefined") {
+      setShareFeedback("error");
+      return;
     }
-  }, [shareUrl]);
 
-  void linkQuery;
-  void copyShareUrl;
+    const shareText = `${shareSummary}\n${shareUrl}`;
+
+    try {
+      if (typeof navigator.share === "function") {
+        await navigator.share({
+          title: "Smarter Way Wealth projection",
+          text: shareSummary,
+          url: shareUrl,
+        });
+        setShareFeedback("success");
+        return;
+      }
+
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(shareText);
+        setShareFeedback("success");
+        return;
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name === "AbortError") {
+        return;
+      }
+      console.error("Unable to share", error);
+    }
+
+    setShareFeedback("error");
+  }, [shareSummary, shareUrl]);
 
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
 
@@ -478,22 +519,59 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const updateMode = () => setIsDarkMode(media.matches);
+    updateMode();
+    media.addEventListener("change", updateMode);
+
+    return () => {
+      media.removeEventListener("change", updateMode);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (shareFeedback === "idle") return;
+    const timeout = window.setTimeout(() => setShareFeedback("idle"), 2200);
+    return () => window.clearTimeout(timeout);
+  }, [shareFeedback]);
+
   const handleCardTap = (card: "smarter" | "traditional") => {
     setActiveCard((prev) => (prev === card ? null : card));
   };
 
+  const heroPromptColor = isDarkMode ? "#D9E4F5" : homeCalculatorConfig.hero.promptColor;
+  const heroSavingsColor = isDarkMode ? "#34D399" : homeCalculatorConfig.hero.savingsColor;
+
+  const quoteSectionStyle = isDarkMode
+    ? {
+        backgroundColor: "#0B1220",
+        backgroundImage:
+          "url(\"data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='14' y='34' font-size='20' font-family='Arial' fill='%2322C55E' fill-opacity='0.12'%3E%24%3C/text%3E%3Ctext x='68' y='72' font-size='18' font-family='Arial' fill='%2314B8A6' fill-opacity='0.08'%3E%24%3C/text%3E%3Ctext x='30' y='106' font-size='16' font-family='Arial' fill='%235EEAD4' fill-opacity='0.06'%3E%24%3C/text%3E%3C/svg%3E\")",
+      }
+    : {
+        backgroundColor: homeCalculatorConfig.quoteSection.backgroundColor,
+        backgroundImage: homeCalculatorConfig.quoteSection.backgroundImage,
+      };
+
+  const shareButtonLabel =
+    shareFeedback === "success" ? "Copied" : shareFeedback === "error" ? "Sharing unavailable" : "Share your result";
+  const ShareIcon = shareFeedback === "success" ? Check : Share2;
+
   return (
     <>
       <div
-        className={`fixed left-0 right-0 top-12 z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-300 sm:hidden ${
+        className={`fixed left-0 right-0 top-12 z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-300 dark:border-slate-700 dark:bg-slate-900/90 sm:hidden ${
           scrolledPastHero ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
         <div className="flex h-12 items-center justify-center gap-2 px-4">
-          <span style={{ color: homeCalculatorConfig.hero.savingsColor }}>
+          <span style={{ color: heroSavingsColor }}>
             <Odometer value={projection.savings} prefix="+$" duration={1000} className="text-lg font-bold" />
           </span>
-          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: homeCalculatorConfig.hero.savingsColor }}>
+          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: heroSavingsColor }}>
             You Save
           </span>
         </div>
@@ -502,28 +580,39 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
       <div className="w-full bg-transparent pb-1 pt-4 sm:pt-6">
         <div className="section-shell text-center">
           <h1 className="text-2xl font-semibold sm:text-5xl">
-            <span style={{ color: homeCalculatorConfig.hero.promptColor }}>What would you do with </span>
-            <span style={{ color: homeCalculatorConfig.hero.savingsColor }}>
+            <span style={{ color: heroPromptColor }}>What would you do with </span>
+            <span style={{ color: heroSavingsColor }}>
               <Odometer value={projection.savings} prefix="$" duration={1400} className="align-baseline" />
             </span>
-            <span style={{ color: homeCalculatorConfig.hero.promptColor }}>?</span>
+            <span style={{ color: heroPromptColor }}>?</span>
           </h1>
-          <div className="mt-2 flex flex-wrap items-center justify-center gap-1 text-base text-neutral-900 sm:text-xl">
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-1 text-base text-neutral-900 dark:text-slate-200 sm:text-xl">
             <span>See how much you can save.</span>
           </div>
           <div className="mt-5">
             <Quiz />
           </div>
+          <div className="mt-3 flex justify-center">
+            <button
+              type="button"
+              onClick={shareResult}
+              className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 sm:text-sm"
+              aria-label="Share your result"
+            >
+              <ShareIcon className="h-3.5 w-3.5" />
+              {shareButtonLabel}
+            </button>
+          </div>
         </div>
       </div>
 
-      <section className="relative w-full overflow-hidden bg-[#EEF0F5]">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 top-[35%] bg-gradient-to-b from-transparent via-[rgba(233,238,255,0.6)] to-transparent" />
+      <section className="relative w-full overflow-hidden bg-[#EEF0F5] dark:bg-slate-950">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 top-[35%] bg-gradient-to-b from-transparent via-[rgba(233,238,255,0.6)] to-transparent dark:via-[rgba(15,23,42,0.5)]" />
 
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-20 pt-0 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:gap-8">
-            <ScrollReveal className="card overflow-hidden bg-white shadow-xl ring-1 ring-black/5">
-              <div className="grid grid-cols-2 gap-3 border-b border-gray-100 p-4 sm:gap-4 sm:p-6 lg:p-8 min-[860px]:grid-cols-3">
+            <ScrollReveal className="card overflow-hidden bg-white shadow-xl ring-1 ring-black/5 dark:bg-slate-900 dark:ring-slate-700/70">
+              <div className="grid grid-cols-2 gap-3 border-b border-gray-100 p-4 dark:border-slate-700 sm:gap-4 sm:p-6 lg:p-8 min-[860px]:grid-cols-3">
                 <ValueCard
                   label="Smarter Way Wealth"
                   value={projection.finalValueWithoutFees}
@@ -531,6 +620,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                   isActive={activeCard === "smarter"}
                   isDimmed={activeCard === "traditional"}
                   onPress={() => handleCardTap("smarter")}
+                  isDarkMode={isDarkMode}
                   className="order-1"
                 />
                 <ValueCard
@@ -540,9 +630,10 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                   isActive={activeCard === "traditional"}
                   isDimmed={activeCard === "smarter"}
                   onPress={() => handleCardTap("traditional")}
+                  isDarkMode={isDarkMode}
                   className="order-2 min-[860px]:order-3"
                 />
-                <LostFeesCard value={projection.savings} className="order-3 min-[860px]:order-2" />
+                <LostFeesCard value={projection.savings} isDarkMode={isDarkMode} className="order-3 min-[860px]:order-2" />
               </div>
 
               <div className="relative w-full sm:h-[450px] lg:h-[550px]">
@@ -556,7 +647,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                 />
               </div>
 
-              <div className="border-t border-gray-100 bg-white p-4 sm:p-6 lg:p-8">
+              <div className="border-t border-gray-100 bg-white p-4 dark:border-slate-700 dark:bg-slate-900 sm:p-6 lg:p-8">
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
                   <CurrencyInputCard
                     label="Portfolio value"
@@ -618,7 +709,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                     ]}
                   />
                 </div>
-                <p className="mt-4 text-center text-xs text-gray-400">
+                <p className="mt-4 text-center text-xs text-gray-400 dark:text-slate-400">
                   Compares our $100/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
                   <Link href="/our-math" className="underline transition-colors hover:text-brand-600">
                     For finance nerds
@@ -632,10 +723,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
       <section
         className="relative w-full overflow-hidden py-12 sm:py-16"
-        style={{
-          backgroundColor: homeCalculatorConfig.quoteSection.backgroundColor,
-          backgroundImage: homeCalculatorConfig.quoteSection.backgroundImage,
-        }}
+        style={quoteSectionStyle}
       >
         <QuoteTickerWithPortraits
           label={homeCalculatorConfig.quoteTicker.label}
