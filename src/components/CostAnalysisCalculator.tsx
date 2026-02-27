@@ -1,13 +1,23 @@
 "use client";
 
-
-
-
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { Copy } from "lucide-react";
 import { buildFeeProjection } from "@/lib/feeProjection";
-import { CalculatorState, DEFAULT_STATE, buildQueryFromState, paramsToRecord } from "@/lib/calculatorState";
+import {
+  CalculatorState,
+  DEFAULT_STATE,
+  buildQueryFromState,
+  paramsToRecord,
+} from "@/lib/calculatorState";
 import { formatCurrency, formatPercent } from "@/lib/format";
 import { ValueCards } from "./value-cards/ValueCards";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
@@ -53,18 +63,22 @@ const Slider = ({
   max: number;
   step: number;
   value: number;
-  type?: 'currency' | 'percent';
+  type?: "currency" | "percent";
   decimals?: number;
   minInputWidthCh?: number;
   onChange: (value: number) => void;
 }) => {
-  const formatValue = useCallback((val: number) => {
-    if (type === 'percent' || decimals !== undefined) {
-      const d = decimals !== undefined ? decimals : (type === 'percent' ? 2 : 0);
-      return val.toFixed(d);
-    }
-    return val.toString();
-  }, [type, decimals]);
+  const formatValue = useCallback(
+    (val: number) => {
+      if (type === "percent" || decimals !== undefined) {
+        const d =
+          decimals !== undefined ? decimals : type === "percent" ? 2 : 0;
+        return val.toFixed(d);
+      }
+      return val.toString();
+    },
+    [type, decimals],
+  );
 
   const [inputValue, setInputValue] = useState(formatValue(value));
 
@@ -82,8 +96,6 @@ const Slider = ({
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
-    const parsed = parseFloat(event.target.value);
-    if (!isNaN(parsed)) onChange(parsed);
   };
 
   const handleBlur = () => {
@@ -91,27 +103,37 @@ const Slider = ({
     if (isNaN(parsed)) parsed = min;
     if (parsed < min) parsed = min;
     if (parsed > max) parsed = max;
-    
+
     setInputValue(formatValue(parsed));
     onChange(parsed);
   };
 
-  const formatPrefix = type === 'currency' ? '$' : '';
-  const formatSuffix = type === 'percent' ? '%' : '';
+  const formatPrefix = type === "currency" ? "$" : "";
+  const formatSuffix = type === "percent" ? "%" : "";
 
   const percent = ((value - min) / (max - min)) * 100;
 
   /* Compact min/max labels for currency (e.g. "$300K" instead of "$300000") */
-  const minLabel = type === 'currency' ? `$${formatCompactNumber(min)}` : `${formatPrefix}${min}${formatSuffix}`;
-  const maxLabel = type === 'currency' ? `$${formatCompactNumber(max)}` : `${formatPrefix}${max}${formatSuffix}`;
+  const minLabel =
+    type === "currency"
+      ? `$${formatCompactNumber(min)}`
+      : `${formatPrefix}${min}${formatSuffix}`;
+  const maxLabel =
+    type === "currency"
+      ? `$${formatCompactNumber(max)}`
+      : `${formatPrefix}${max}${formatSuffix}`;
 
   return (
     <div className="flex flex-col gap-2 sm:gap-3 w-full p-3 sm:p-4 bg-white rounded-lg shadow-sm border border-gray-100">
       <div className="flex justify-between items-center">
-        <label className="text-sm font-medium text-gray-600 shrink-0">{label}</label>
+        <label className="text-sm font-medium text-gray-600 shrink-0">
+          {label}
+        </label>
         <div className="relative group">
           {formatPrefix && (
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">{formatPrefix}</span>
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+              {formatPrefix}
+            </span>
           )}
           <input
             type="text"
@@ -119,11 +141,16 @@ const Slider = ({
             value={inputValue}
             onChange={handleInputChange}
             onBlur={handleBlur}
-            style={{ width: `${Math.max(inputValue.length, 1) + 2}ch`, minWidth: `${minInputWidthCh}ch` }}
-            className={`min-h-11 sm:min-h-0 py-2 sm:py-1 px-2 text-right font-bold text-gray-900 bg-gray-50 border border-gray-200 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all ${formatPrefix ? 'pl-6' : ''} ${formatSuffix ? 'pr-8' : ''}`}
+            style={{
+              width: `${Math.max(inputValue.length, 1) + 2}ch`,
+              minWidth: `${minInputWidthCh}ch`,
+            }}
+            className={`min-h-11 sm:min-h-0 py-2 sm:py-1 px-2 text-right font-bold text-gray-900 bg-gray-50 border border-gray-200 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all ${formatPrefix ? "pl-6" : ""} ${formatSuffix ? "pr-8" : ""}`}
           />
           {formatSuffix && (
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">{formatSuffix}</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+              {formatSuffix}
+            </span>
           )}
         </div>
       </div>
@@ -136,7 +163,7 @@ const Slider = ({
           value={value}
           onChange={handleSliderChange}
           className="custom-slider"
-          style={{ '--value-percent': `${percent}%` } as React.CSSProperties}
+          style={{ "--value-percent": `${percent}%` } as React.CSSProperties}
         />
       </div>
       <div className="flex justify-between text-xs text-gray-400 -mt-2 px-1">
@@ -147,7 +174,9 @@ const Slider = ({
   );
 };
 
-function normalizeSearchParams(searchParams: Record<string, string | string[] | undefined>) {
+function normalizeSearchParams(
+  searchParams: Record<string, string | string[] | undefined>,
+) {
   const params = new URLSearchParams();
   Object.entries(searchParams).forEach(([key, value]) => {
     if (Array.isArray(value)) {
@@ -165,7 +194,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
       ...DEFAULT_STATE,
       ...initialState,
     }),
-    [initialState]
+    [initialState],
   );
 
   const [state, setState] = useState<CalculatorState>(mergedState);
@@ -178,10 +207,13 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         annualFeePercent: state.annualFeePercent,
         annualGrowthPercent: state.annualGrowthPercent,
       }),
-    [state]
+    [state],
   );
 
-  const paramsFromServer = useMemo(() => normalizeSearchParams(searchParams), [searchParams]);
+  const paramsFromServer = useMemo(
+    () => normalizeSearchParams(searchParams),
+    [searchParams],
+  );
 
   const shareUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
@@ -191,7 +223,9 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   }, [paramsFromServer, state]);
 
   const linkQuery = useMemo(() => {
-    const params = new URLSearchParams(buildQueryFromState(state, paramsFromServer));
+    const params = new URLSearchParams(
+      buildQueryFromState(state, paramsFromServer),
+    );
     return paramsToRecord(params);
   }, [paramsFromServer, state]);
 
@@ -252,10 +286,8 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8 pt-0 pb-20">
           <div className="flex flex-col gap-4 sm:gap-8">
-
             {/* Unified Calculator Card */}
             <ScrollReveal className="card bg-white overflow-hidden shadow-xl ring-1 ring-black/5">
-
               {/* Chart Section - Full Width, shorter on mobile */}
               <div className="sm:h-[450px] lg:h-[550px] w-full relative">
                 <ProFeeChart
@@ -275,7 +307,9 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                     max={3}
                     step={0.05}
                     value={state.annualFeePercent}
-                    onChange={(value) => setState((prev) => ({ ...prev, annualFeePercent: value }))}
+                    onChange={(value) =>
+                      setState((prev) => ({ ...prev, annualFeePercent: value }))
+                    }
                     type="percent"
                     decimals={2}
                   />
@@ -285,7 +319,9 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                     max={5000000}
                     step={50000}
                     value={state.portfolioValue}
-                    onChange={(value) => setState((prev) => ({ ...prev, portfolioValue: value }))}
+                    onChange={(value) =>
+                      setState((prev) => ({ ...prev, portfolioValue: value }))
+                    }
                     type="currency"
                     minInputWidthCh={10}
                   />
@@ -295,7 +331,12 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                     max={15}
                     step={0.1}
                     value={state.annualGrowthPercent}
-                    onChange={(value) => setState((prev) => ({ ...prev, annualGrowthPercent: value }))}
+                    onChange={(value) =>
+                      setState((prev) => ({
+                        ...prev,
+                        annualGrowthPercent: value,
+                      }))
+                    }
                     type="percent"
                     decimals={1}
                     minInputWidthCh={10}
@@ -306,18 +347,23 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                     max={40}
                     step={1}
                     value={state.years}
-                    onChange={(value) => setState((prev) => ({ ...prev, years: value }))}
+                    onChange={(value) =>
+                      setState((prev) => ({ ...prev, years: value }))
+                    }
                   />
                 </div>
                 <p className="mt-4 text-center text-xs text-gray-400">
-                  Compares our $100/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
-                  <Link href="/our-math" className="underline hover:text-brand-600 transition-colors">
+                  Compares our $100/mo flat fee vs. a traditional AUM advisory
+                  fee, compounded monthly.{" "}
+                  <Link
+                    href="/our-math"
+                    className="underline hover:text-brand-600 transition-colors"
+                  >
                     For finance nerds
                   </Link>
                 </p>
               </div>
             </ScrollReveal>
-
           </div>
         </div>
       </section>
