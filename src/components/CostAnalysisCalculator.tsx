@@ -345,6 +345,7 @@ function ValueCard({
   isActive,
   isDimmed,
   onPress,
+  className,
 }: {
   label: string;
   value: number;
@@ -352,6 +353,7 @@ function ValueCard({
   isActive: boolean;
   isDimmed: boolean;
   onPress: () => void;
+  className?: string;
 }) {
   const baseAccent =
     variant === "smarter" ? "border-[#007A2F]/25 bg-[#007A2F]/5" : "border-gray-200 bg-gray-50/80";
@@ -362,7 +364,7 @@ function ValueCard({
     <button
       type="button"
       onClick={onPress}
-      className={`h-full rounded-xl border p-3 text-left transition-all sm:p-4 lg:p-5 ${baseAccent} ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"}`}
+      className={`h-full rounded-xl border p-3 text-left transition-all sm:p-4 lg:p-5 ${baseAccent} ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"} ${className ?? ""}`}
       aria-pressed={isActive}
     >
       <p className="text-xs font-semibold uppercase tracking-wide text-neutral-600">{label}</p>
@@ -371,10 +373,10 @@ function ValueCard({
   );
 }
 
-function LostFeesCard({ value }: { value: number }) {
+function LostFeesCard({ value, className }: { value: number; className?: string }) {
   return (
     <div
-      className="col-span-2 h-full rounded-xl border p-3 text-center sm:p-4 min-[860px]:col-span-1"
+      className={`col-span-2 h-full rounded-xl border p-3 text-center sm:p-4 min-[860px]:col-span-1 ${className ?? ""}`}
       style={{
         borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
         backgroundColor: homeCalculatorConfig.cards.lostToFeesBg,
@@ -510,6 +512,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                   isActive={activeCard === "smarter"}
                   isDimmed={activeCard === "traditional"}
                   onPress={() => handleCardTap("smarter")}
+                  className="order-1"
                 />
                 <ValueCard
                   label="Traditional AUM"
@@ -518,8 +521,9 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                   isActive={activeCard === "traditional"}
                   isDimmed={activeCard === "smarter"}
                   onPress={() => handleCardTap("traditional")}
+                  className="order-2 min-[860px]:order-3"
                 />
-                <LostFeesCard value={projection.savings} />
+                <LostFeesCard value={projection.savings} className="order-3 min-[860px]:order-2" />
               </div>
 
               <div className="relative w-full sm:h-[450px] lg:h-[550px]">
