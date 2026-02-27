@@ -1,13 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Area,
   AreaChart,
   CartesianGrid,
-  Cell,
-  Pie,
-  PieChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -33,8 +30,6 @@ type ProFeeChartProps = {
   finalLost: number;
   finalValueWithoutFees: number;
   finalValueWithFees: number;
-  showSummary?: boolean;
-  activeScenario?: "smarter" | "traditional" | null;
 };
 
 const CustomHUDTooltip = ({ active, payload, label }: any) => {
@@ -48,42 +43,42 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.1 }}
-        className="min-w-[155px] rounded-lg border border-slate-200 bg-white/95 p-2.5 shadow-lg backdrop-blur-sm"
+        className="bg-white/95 backdrop-blur-sm border border-slate-100 p-4 rounded-xl shadow-xl min-w-[200px]"
       >
-        <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+        <p className="text-slate-500 text-xs font-medium mb-2 uppercase tracking-wider">
           Year {label}
         </p>
 
-        <div className="space-y-2">
+        <div className="space-y-3">
           {/* RIA Flat Fee Value */}
           <div>
-            <div className="mb-0.5 flex items-center justify-between text-[10px] text-brand-600">
-              <span>Smarter Way Wealth</span>
+            <div className="flex justify-between items-center text-xs text-brand-600 mb-1">
+              <span>With Smarter Way Wealth ($100/mo)</span>
               <span className="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
             </div>
-            <p className="text-lg font-bold tabular-nums text-slate-900">
+            <p className="text-xl font-bold text-slate-900 tabular-nums">
               {formatCurrency(withoutFees)}
             </p>
           </div>
 
-          {/* Lost to fees */}
+          {/* Savings */}
           <div>
-            <div className="mb-0.5 flex items-center justify-between text-[10px] text-red-700">
-              <span>Lost to fees</span>
-              <span className="h-1.5 w-1.5 rounded-full bg-red-600"></span>
+            <div className="flex justify-between items-center text-xs text-brand-600 mb-1">
+              <span>You Save</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-brand-500"></span>
             </div>
-            <p className="text-lg font-bold tabular-nums text-red-700">
-              -{formatCurrency(lostAmount)}
+            <p className="text-xl font-bold text-brand-700 tabular-nums">
+              +{formatCurrency(lostAmount)}
             </p>
           </div>
 
           {/* AUM Advisor Value */}
-          <div className="mt-1 border-t border-slate-100 pt-1.5">
-            <div className="mb-0.5 flex items-center justify-between text-[10px] text-slate-500">
-              <span>Traditional AUM</span>
+          <div className="pt-2 border-t border-slate-100 mt-2">
+            <div className="flex justify-between items-center text-xs text-slate-500 mb-1">
+              <span>With AUM Advisor</span>
               <span className="h-1.5 w-1.5 rounded-full bg-slate-400"></span>
             </div>
-            <p className="text-lg font-bold tabular-nums text-slate-900">
+            <p className="text-xl font-bold text-slate-900 tabular-nums">
               {formatCurrency(withFees)}
             </p>
           </div>
@@ -94,52 +89,7 @@ const CustomHUDTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-function LostToFeesDonut({ percentLost, isMobile }: { percentLost: number; isMobile: boolean }) {
-  const chartSize = isMobile ? 64 : 108;
-  const innerRadius = isMobile ? 18 : 35;
-  const outerRadius = isMobile ? 28 : 52;
-  const donutData = [
-    { name: "Lost", value: percentLost, fill: "#BE123C" },
-    { name: "Kept", value: Math.max(0, 100 - percentLost), fill: "#0F172A" },
-  ];
-
-  return (
-    <div className="pointer-events-none absolute left-2 top-2 z-20 sm:left-4 sm:top-4">
-      <div className="text-[10px] font-semibold uppercase tracking-wider text-slate-500 sm:text-xs md:text-sm">Lost Wealth</div>
-      <div className="relative" style={{ height: chartSize, width: chartSize }}>
-        <PieChart width={chartSize} height={chartSize}>
-          <Pie
-            data={donutData}
-            dataKey="value"
-            cx="50%"
-            cy="50%"
-            innerRadius={innerRadius}
-            outerRadius={outerRadius}
-            startAngle={90}
-            endAngle={-270}
-            stroke="none"
-          >
-            {donutData.map((entry) => (
-              <Cell key={entry.name} fill={entry.fill} />
-            ))}
-          </Pie>
-        </PieChart>
-        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold tabular-nums text-red-700 sm:text-sm md:text-base">
-          {percentLost.toFixed(1)}%
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function ProFeeChart({
-  data,
-  finalLost,
-  finalValueWithoutFees,
-  finalValueWithFees,
-  showSummary = true,
-  activeScenario = null,
-}: ProFeeChartProps) {
+export function ProFeeChart({ data, finalLost, finalValueWithoutFees, finalValueWithFees }: ProFeeChartProps) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -149,16 +99,10 @@ export function ProFeeChart({
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  const smarterOpacity = activeScenario === "traditional" ? 0.3 : 1;
-  const traditionalOpacity = activeScenario === "smarter" ? 0.3 : 1;
-  const percentLost = finalValueWithoutFees > 0 ? Math.min(100, Math.max(0, (finalLost / finalValueWithoutFees) * 100)) : 0;
-
   return (
     <div className="relative w-full h-full bg-white rounded-t-2xl overflow-hidden flex flex-col">
-      <LostToFeesDonut percentLost={percentLost} isMobile={isMobile} />
 
       {/* ── Mobile Summary — stacked above chart, replaces clipped overlay ── */}
-      {showSummary && (
       <div className="sm:hidden px-4 pt-4 pb-2 space-y-1.5 shrink-0">
         {/* Row 1: Smarter Way Wealth */}
         <div className="flex items-baseline justify-between">
@@ -188,10 +132,8 @@ export function ProFeeChart({
           </span>
         </div>
       </div>
-      )}
 
       {/* ── Floating Legend Overlay — desktop only ── */}
-      {showSummary && (
       <div className="hidden sm:block absolute top-8 left-8 z-10 pointer-events-none">
         <div className="grid grid-cols-[auto_auto] gap-x-4 items-baseline text-right">
 
@@ -225,7 +167,6 @@ export function ProFeeChart({
 
         </div>
       </div>
-      )}
 
       {/* ── The Chart ── */}
       <div className="w-full h-[280px] sm:flex-1 sm:h-auto min-h-0 pt-2 sm:pt-4">
@@ -234,8 +175,8 @@ export function ProFeeChart({
             data={data}
             margin={{
               top: isMobile ? 10 : 20,
-              right: 5,
-              left: 5,
+              right: isMobile ? 4 : 0,
+              left: isMobile ? -15 : 0,
               bottom: 0,
             }}
           >
@@ -263,7 +204,7 @@ export function ProFeeChart({
 
             <YAxis hide domain={['dataMin', 'auto']} />
 
-            {!isMobile && <Tooltip content={<CustomHUDTooltip />} cursor={{ stroke: "#e5e7eb", strokeWidth: 1, strokeDasharray: "4 4" }} />}
+            <Tooltip content={<CustomHUDTooltip />} cursor={{ stroke: "#e5e7eb", strokeWidth: 1, strokeDasharray: "4 4" }} />
 
             {/* With RIA $100/mo (Upper Line) - Emerald Green */}
             <Area
@@ -272,8 +213,6 @@ export function ProFeeChart({
               stroke="#00A540"
               strokeWidth={isMobile ? 2 : 3}
               fill="url(#emeraldGradient)"
-              fillOpacity={smarterOpacity}
-              strokeOpacity={smarterOpacity}
               activeDot={{ r: isMobile ? 4 : 6, fill: "#00A540", stroke: "#fff", strokeWidth: 2 }}
             />
 
@@ -284,8 +223,6 @@ export function ProFeeChart({
               stroke="#64748b"
               strokeWidth={isMobile ? 2 : 3}
               fill="url(#slateGradient)"
-              fillOpacity={traditionalOpacity}
-              strokeOpacity={traditionalOpacity}
               activeDot={{ r: isMobile ? 4 : 6, fill: "#64748b", stroke: "#fff", strokeWidth: 2 }}
             />
           </AreaChart>

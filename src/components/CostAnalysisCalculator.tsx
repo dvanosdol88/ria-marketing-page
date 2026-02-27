@@ -1,40 +1,35 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Info, Minus, Plus } from "lucide-react";
-import Link from "next/link";
+
+
+
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Copy } from "lucide-react";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, DEFAULT_STATE, buildQueryFromState, paramsToRecord } from "@/lib/calculatorState";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatPercent } from "@/lib/format";
 import { ValueCards } from "./value-cards/ValueCards";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { Quiz } from "./Quiz";
+import Link from "next/link";
+
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
-const sliderAccent = homeCalculatorConfig.controls.sliderAccent;
 
+/** Compact format for slider min/max labels: 300000 → "300K", 5000000 → "5M" */
 function formatCompactNumber(value: number): string {
   if (value >= 1_000_000) {
-    return `${(value / 1_000_000).toFixed(2)}M`;
+    const m = value / 1_000_000;
+    return `${m % 1 === 0 ? m.toFixed(0) : m.toFixed(1)}M`;
   }
   if (value >= 1_000) {
-    const thousands = value / 1_000;
-    return `${thousands >= 100 ? thousands.toFixed(0) : thousands.toFixed(1)}K`;
+    const k = value / 1_000;
+    return `${k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)}K`;
   }
-  return numberFormatter.format(value);
-}
-
-function tryHaptic() {
-  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
-    navigator.vibrate(5);
-  }
-}
-
-function valuesMatch(a: number, b: number, step: number): boolean {
-  return Math.abs(a - b) <= Math.max(step / 2, 0.0001);
+  return value.toString();
 }
 
 type Props = {
@@ -42,369 +37,115 @@ type Props = {
   searchParams: Record<string, string | string[] | undefined>;
 };
 
-type SliderChip = {
-  label: string;
-  value: number;
-};
-
-interface StepperSliderProps {
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  step: number;
-  onChange: (nextValue: number) => void;
-  format?: (value: number) => string;
-  infoText?: string;
-  chips?: SliderChip[];
-}
-
-function StepperSlider({
+const Slider = ({
   label,
-  value,
   min,
   max,
   step,
+  value,
   onChange,
-  format,
-  infoText,
-  chips,
-}: StepperSliderProps) {
-  const [showInfo, setShowInfo] = useState(false);
-  const lastHapticValue = useRef(value);
-  const precision = useMemo(() => {
-    const decimalPart = step.toString().split(".")[1];
-    return decimalPart ? decimalPart.length : 0;
-  }, [step]);
-
-  const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
-  const displayValue = format ? format(value) : String(value);
-
-  const clamp = useCallback(
-    (candidate: number) => {
-      const bounded = Math.min(max, Math.max(min, candidate));
-      return Number(bounded.toFixed(precision));
-    },
-    [max, min, precision]
-  );
-
-  const emit = useCallback(
-    (candidate: number, vibrate: boolean) => {
-      const next = clamp(candidate);
-      if (vibrate && Math.round(next / step) !== Math.round(lastHapticValue.current / step)) {
-        tryHaptic();
-      }
-      lastHapticValue.current = next;
-      onChange(next);
-    },
-    [clamp, onChange, step]
-  );
-
-  useEffect(() => {
-    lastHapticValue.current = value;
-  }, [value]);
-
-  const handleSliderChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = Number.parseFloat(event.target.value);
-      if (Number.isNaN(raw)) return;
-      const stepped = Math.round(raw / step) * step;
-      emit(stepped, true);
-    },
-    [emit, step]
-  );
-
-  return (
-    <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm">
-      <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
-        <div className="flex min-w-0 items-center gap-1.5">
-          <span className="whitespace-nowrap text-sm font-medium text-gray-800">{label}</span>
-          {infoText && (
-            <button
-              type="button"
-              onClick={() => setShowInfo((prev) => !prev)}
-              className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-500 transition-colors hover:bg-slate-50"
-              aria-label={`More information about ${label}`}
-            >
-              <Info className="h-2.5 w-2.5" />
-            </button>
-          )}
-        </div>
-        {chips && chips.length > 0 && (
-          <div className="flex flex-wrap items-center justify-end gap-1.5">
-            {chips.map((chip) => (
-              <button
-                key={chip.value}
-                type="button"
-                onClick={() => emit(chip.value, true)}
-                className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
-                  valuesMatch(value, chip.value, step)
-                    ? homeCalculatorConfig.controls.chipActiveClasses
-                    : homeCalculatorConfig.controls.chipInactiveClasses
-                }`}
-              >
-                {chip.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {showInfo && infoText && (
-        <div className="mb-2.5 rounded-lg bg-gray-900 p-2.5 text-xs leading-relaxed text-white">{infoText}</div>
-      )}
-
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => emit(value - step, true)}
-          disabled={value <= min}
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${homeCalculatorConfig.controls.buttonClasses}`}
-          aria-label={`Decrease ${label}`}
-        >
-          <Minus className="h-3.5 w-3.5" />
-        </button>
-
-        <div className="relative flex h-8 flex-1 items-center">
-          <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200" />
-          <div className="absolute left-0 h-1.5 rounded-full transition-all duration-150" style={{ width: `${pct}%`, backgroundColor: sliderAccent }} />
-          <input
-            type="range"
-            min={min}
-            max={max}
-            step={step}
-            value={value}
-            onChange={handleSliderChange}
-            className="absolute inset-x-0 z-10 h-8 w-full cursor-pointer opacity-0"
-            aria-label={`${label} slider`}
-          />
-          <div
-            className="pointer-events-none absolute h-5 w-5 rounded-full border-2 border-white shadow-md transition-all duration-150"
-            style={{ left: `calc(${pct}% - 10px)`, backgroundColor: sliderAccent }}
-          />
-        </div>
-
-        <button
-          type="button"
-          onClick={() => emit(value + step, true)}
-          disabled={value >= max}
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${homeCalculatorConfig.controls.buttonClasses}`}
-          aria-label={`Increase ${label}`}
-        >
-          <Plus className="h-3.5 w-3.5" />
-        </button>
-
-        <span className="ml-1 min-w-[4.6rem] text-right text-sm font-bold tabular-nums text-gray-900">{displayValue}</span>
-      </div>
-    </div>
-  );
-}
-
-interface CurrencyInputCardProps {
+  type,
+  decimals,
+  minInputWidthCh = 4,
+}: {
   label: string;
-  value: number;
-  onChange: (nextValue: number) => void;
   min: number;
   max: number;
   step: number;
-  chips?: SliderChip[];
-}
-
-function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: CurrencyInputCardProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editValue, setEditValue] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
-  const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
-
-  const clamp = useCallback(
-    (candidate: number) => {
-      const bounded = Math.min(max, Math.max(min, candidate));
-      return Math.round(bounded);
-    },
-    [max, min]
-  );
-
-  const handleTap = useCallback(() => {
-    setEditValue(String(Math.round(value)));
-    setIsEditing(true);
-    setTimeout(() => inputRef.current?.focus(), 40);
-  }, [value]);
-
-  const handleBlur = useCallback(() => {
-    const parsed = Number.parseInt(editValue.replace(/[^0-9]/g, ""), 10);
-    if (!Number.isNaN(parsed)) {
-      onChange(clamp(parsed));
-    }
-    setIsEditing(false);
-  }, [clamp, editValue, onChange]);
-
-  const adjustValue = useCallback(
-    (candidate: number) => {
-      onChange(clamp(candidate));
-      tryHaptic();
-    },
-    [clamp, onChange]
-  );
-
-  return (
-    <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm">
-      <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
-        <span className="whitespace-nowrap text-sm font-medium text-gray-800">{label}</span>
-        {chips && chips.length > 0 && (
-          <div className="flex flex-wrap items-center justify-end gap-1.5">
-            {chips.map((chip) => (
-              <button
-                key={chip.value}
-                type="button"
-                onClick={() => adjustValue(chip.value)}
-                className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
-                  valuesMatch(value, chip.value, step)
-                    ? homeCalculatorConfig.controls.chipActiveClasses
-                    : homeCalculatorConfig.controls.chipInactiveClasses
-                }`}
-              >
-                {chip.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => adjustValue(value - step)}
-          disabled={value <= min}
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${homeCalculatorConfig.controls.buttonClasses}`}
-          aria-label={`Decrease ${label}`}
-        >
-          <Minus className="h-3.5 w-3.5" />
-        </button>
-
-        <div className="relative flex h-8 flex-1 items-center">
-          <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200" />
-          <div className="absolute left-0 h-1.5 rounded-full transition-all duration-150" style={{ width: `${pct}%`, backgroundColor: sliderAccent }} />
-          <input
-            type="range"
-            min={min}
-            max={max}
-            step={step}
-            value={value}
-            onChange={(event) => adjustValue(Number.parseInt(event.target.value, 10))}
-            className="absolute inset-x-0 z-10 h-8 w-full cursor-pointer opacity-0"
-            aria-label={`${label} slider`}
-          />
-          <div
-            className="pointer-events-none absolute h-5 w-5 rounded-full border-2 border-white shadow-md transition-all duration-150"
-            style={{ left: `calc(${pct}% - 10px)`, backgroundColor: sliderAccent }}
-          />
-        </div>
-
-        <button
-          type="button"
-          onClick={() => adjustValue(value + step)}
-          disabled={value >= max}
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${homeCalculatorConfig.controls.buttonClasses}`}
-          aria-label={`Increase ${label}`}
-        >
-          <Plus className="h-3.5 w-3.5" />
-        </button>
-
-        {isEditing ? (
-          <input
-            ref={inputRef}
-            type="number"
-            inputMode="numeric"
-            value={editValue}
-            onChange={(event) => setEditValue(event.target.value)}
-            onBlur={handleBlur}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") handleBlur();
-            }}
-            className="w-28 rounded-lg border border-slate-300 bg-slate-50 px-2 py-1 text-right text-sm font-bold tabular-nums text-gray-900 outline-none ring-2 ring-[#2A3F63]"
-          />
-        ) : (
-          <button
-            type="button"
-            onClick={handleTap}
-            className="min-w-[5.8rem] text-right text-sm font-bold tabular-nums text-gray-900 transition-colors hover:text-[#2A3F63]"
-            aria-label={`Edit ${label}`}
-          >
-            {formatCurrency(value)}
-          </button>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function ValueCard({
-  label,
-  value,
-  variant,
-  isActive,
-  isDimmed,
-  onPress,
-  className,
-}: {
-  label: string;
   value: number;
-  variant: "smarter" | "traditional";
-  isActive: boolean;
-  isDimmed: boolean;
-  onPress: () => void;
-  className?: string;
-}) {
-  const cardStyle =
-    variant === "smarter"
-      ? {
-          borderColor: homeCalculatorConfig.cards.smarterWayBorder,
-          backgroundColor: homeCalculatorConfig.cards.smarterWayBg,
-        }
-      : {
-          borderColor: homeCalculatorConfig.cards.traditionalAumBorder,
-          backgroundColor: homeCalculatorConfig.cards.traditionalAumBg,
-        };
-  const activeRing = isActive
-    ? variant === "smarter"
-      ? "ring-2 ring-[#007A2F]/35"
-      : "ring-2 ring-[#2A3F63]/30"
-    : "";
-  const compactDisplay = value >= 1_000_000 ? `$${formatCompactNumber(value)}` : formatCurrency(value);
+  type?: 'currency' | 'percent';
+  decimals?: number;
+  minInputWidthCh?: number;
+  onChange: (value: number) => void;
+}) => {
+  const formatValue = useCallback((val: number) => {
+    if (type === 'percent' || decimals !== undefined) {
+      const d = decimals !== undefined ? decimals : (type === 'percent' ? 2 : 0);
+      return val.toFixed(d);
+    }
+    return val.toString();
+  }, [type, decimals]);
+
+  const [inputValue, setInputValue] = useState(formatValue(value));
+
+  useEffect(() => {
+    setInputValue(formatValue(value));
+  }, [value, formatValue]);
+
+  const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const parsed = parseFloat(event.target.value);
+    if (!isNaN(parsed)) {
+      setInputValue(formatValue(parsed));
+      onChange(parsed);
+    }
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+    const parsed = parseFloat(event.target.value);
+    if (!isNaN(parsed)) onChange(parsed);
+  };
+
+  const handleBlur = () => {
+    let parsed = parseFloat(inputValue);
+    if (isNaN(parsed)) parsed = min;
+    if (parsed < min) parsed = min;
+    if (parsed > max) parsed = max;
+    
+    setInputValue(formatValue(parsed));
+    onChange(parsed);
+  };
+
+  const formatPrefix = type === 'currency' ? '$' : '';
+  const formatSuffix = type === 'percent' ? '%' : '';
+
+  const percent = ((value - min) / (max - min)) * 100;
+
+  /* Compact min/max labels for currency (e.g. "$300K" instead of "$300000") */
+  const minLabel = type === 'currency' ? `$${formatCompactNumber(min)}` : `${formatPrefix}${min}${formatSuffix}`;
+  const maxLabel = type === 'currency' ? `$${formatCompactNumber(max)}` : `${formatPrefix}${max}${formatSuffix}`;
 
   return (
-    <button
-      type="button"
-      onClick={onPress}
-      className={`h-full rounded-xl border p-3 text-left transition-all sm:p-4 lg:p-5 ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"} ${className ?? ""}`}
-      style={{ borderWidth: homeCalculatorConfig.cards.borderWidthPx, ...cardStyle }}
-      aria-pressed={isActive}
-    >
-      <p className="text-xs font-semibold uppercase tracking-wide text-neutral-600">{label}</p>
-      <p className="mt-1 text-[clamp(1.1rem,2vw,2rem)] font-semibold text-neutral-900 sm:mt-2">{compactDisplay}</p>
-    </button>
-  );
-}
-
-function LostFeesCard({ value, className }: { value: number; className?: string }) {
-  return (
-    <div
-      className={`col-span-2 h-full rounded-xl border p-3 text-center sm:p-4 min-[860px]:col-span-1 ${className ?? ""}`}
-      style={{
-        borderWidth: homeCalculatorConfig.cards.borderWidthPx,
-        borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
-        backgroundColor: homeCalculatorConfig.cards.lostToFeesBg,
-      }}
-    >
-      <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
-        {homeCalculatorConfig.cards.lostToFeesLabel}
-      </p>
-      <p className="mt-1 text-[clamp(1.1rem,1.8vw,1.7rem)] font-bold tabular-nums" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
-        -{formatCurrency(value)}
-      </p>
+    <div className="flex flex-col gap-2 sm:gap-3 w-full p-3 sm:p-4 bg-white rounded-lg shadow-sm border border-gray-100">
+      <div className="flex justify-between items-center">
+        <label className="text-sm font-medium text-gray-600 shrink-0">{label}</label>
+        <div className="relative group">
+          {formatPrefix && (
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">{formatPrefix}</span>
+          )}
+          <input
+            type="text"
+            inputMode="decimal"
+            value={inputValue}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            style={{ width: `${Math.max(inputValue.length, 1) + 2}ch`, minWidth: `${minInputWidthCh}ch` }}
+            className={`min-h-11 sm:min-h-0 py-2 sm:py-1 px-2 text-right font-bold text-gray-900 bg-gray-50 border border-gray-200 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all ${formatPrefix ? 'pl-6' : ''} ${formatSuffix ? 'pr-8' : ''}`}
+          />
+          {formatSuffix && (
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">{formatSuffix}</span>
+          )}
+        </div>
+      </div>
+      <div className="relative w-full h-10 sm:h-6 flex items-center">
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={handleSliderChange}
+          className="custom-slider"
+          style={{ '--value-percent': `${percent}%` } as React.CSSProperties}
+        />
+      </div>
+      <div className="flex justify-between text-xs text-gray-400 -mt-2 px-1">
+        <span>{minLabel}</span>
+        <span>{maxLabel}</span>
+      </div>
     </div>
   );
-}
+};
 
 function normalizeSearchParams(searchParams: Record<string, string | string[] | undefined>) {
   const params = new URLSearchParams();
@@ -428,7 +169,6 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   );
 
   const [state, setState] = useState<CalculatorState>(mergedState);
-  const [activeCard, setActiveCard] = useState<"smarter" | "traditional" | null>(null);
 
   const projection = useMemo(
     () =>
@@ -465,9 +205,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     }
   }, [shareUrl]);
 
-  void linkQuery;
-  void copyShareUrl;
-
+  /* ── Mobile: detect scroll past hero to show compact sticky bar ── */
   const [scrolledPastHero, setScrolledPastHero] = useState(false);
 
   useEffect(() => {
@@ -477,165 +215,115 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleCardTap = (card: "smarter" | "traditional") => {
-    setActiveCard((prev) => (prev === card ? null : card));
-  };
-
   return (
     <>
+      {/* ── Compact mobile sticky savings bar (appears on scroll) ── */}
       <div
-        className={`fixed left-0 right-0 top-12 z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-300 sm:hidden ${
-          scrolledPastHero ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
+        className={`fixed top-16 left-0 right-0 z-40 sm:hidden bg-white/95 backdrop-blur-sm border-b border-gray-200 transition-all duration-300 ${
+          scrolledPastHero
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-full opacity-0 pointer-events-none"
         }`}
       >
-        <div className="flex h-12 items-center justify-center gap-2 px-4">
-          <span className="tabular-nums text-lg font-bold" style={{ color: homeCalculatorConfig.hero.savingsColor }}>
+        <div className="flex items-center justify-center h-12 gap-2 px-4">
+          <span className="text-lg font-bold text-brand-700 tabular-nums">
             +{formatCurrency(projection.savings)}
           </span>
-          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: homeCalculatorConfig.hero.savingsColor }}>
+          <span className="text-sm font-semibold text-brand-600 uppercase tracking-wider">
             You Save
           </span>
         </div>
       </div>
 
-      <div className="w-full bg-transparent pb-1 pt-4 sm:pt-6">
+      <div className="w-full bg-transparent pt-4 sm:pt-6 pb-1">
         <div className="section-shell text-center">
-          <h1 className="text-2xl font-semibold sm:text-5xl">
-            <span style={{ color: homeCalculatorConfig.hero.promptColor }}>What would you do with </span>
-            <span style={{ color: homeCalculatorConfig.hero.savingsColor }}>{formatCurrency(projection.savings)}</span>
-            <span style={{ color: homeCalculatorConfig.hero.promptColor }}>?</span>
+          <h1 className="font-semibold text-2xl sm:text-5xl text-brand-600">
+            What would you do with {formatCurrency(projection.savings)}?
           </h1>
-          <div className="mt-2 flex flex-wrap items-center justify-center gap-1 text-base text-neutral-900 sm:text-xl">
+          <div className="mt-2 flex items-center justify-center gap-1 flex-wrap text-base sm:text-xl text-neutral-900">
             <span>See how much you can save.</span>
             <Quiz />
           </div>
         </div>
       </div>
 
-      <section className="relative w-full overflow-hidden bg-[#EEF0F5]">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 top-[35%] bg-gradient-to-b from-transparent via-[rgba(233,238,255,0.6)] to-transparent" />
+      <section className="w-full bg-neutral-50 relative overflow-hidden">
+        <div className="absolute inset-x-0 top-[35%] bottom-0 bg-gradient-to-b from-transparent via-[rgba(233,238,255,0.6)] to-transparent pointer-events-none" />
 
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-20 pt-0 sm:px-6 lg:px-8">
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8 pt-0 pb-20">
           <div className="flex flex-col gap-4 sm:gap-8">
-            <ScrollReveal className="card overflow-hidden bg-white shadow-xl ring-1 ring-black/5">
-              <div className="grid grid-cols-2 gap-3 border-b border-gray-100 p-4 sm:gap-4 sm:p-6 lg:p-8 min-[860px]:grid-cols-3">
-                <ValueCard
-                  label="Smarter Way Wealth"
-                  value={projection.finalValueWithoutFees}
-                  variant="smarter"
-                  isActive={activeCard === "smarter"}
-                  isDimmed={activeCard === "traditional"}
-                  onPress={() => handleCardTap("smarter")}
-                  className="order-1"
-                />
-                <ValueCard
-                  label="Traditional AUM"
-                  value={projection.finalValueWithFees}
-                  variant="traditional"
-                  isActive={activeCard === "traditional"}
-                  isDimmed={activeCard === "smarter"}
-                  onPress={() => handleCardTap("traditional")}
-                  className="order-2 min-[860px]:order-3"
-                />
-                <LostFeesCard value={projection.savings} className="order-3 min-[860px]:order-2" />
-              </div>
 
-              <div className="relative w-full sm:h-[450px] lg:h-[550px]">
+            {/* Unified Calculator Card */}
+            <ScrollReveal className="card bg-white overflow-hidden shadow-xl ring-1 ring-black/5">
+
+              {/* Chart Section - Full Width, shorter on mobile */}
+              <div className="sm:h-[450px] lg:h-[550px] w-full relative">
                 <ProFeeChart
                   data={projection.series}
                   finalLost={projection.savings}
                   finalValueWithoutFees={projection.finalValueWithoutFees}
                   finalValueWithFees={projection.finalValueWithFees}
-                  showSummary={false}
-                  activeScenario={activeCard}
                 />
               </div>
 
-              <div className="border-t border-gray-100 bg-white p-4 sm:p-6 lg:p-8">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-                  <CurrencyInputCard
-                    label="Portfolio value"
-                    value={state.portfolioValue}
-                    min={300000}
-                    max={5000000}
-                    step={50000}
-                    onChange={(nextValue) => setState((prev) => ({ ...prev, portfolioValue: nextValue }))}
-                    chips={[
-                      { label: "$1M", value: 1000000 },
-                      { label: "$2M", value: 2000000 },
-                      { label: "$3M", value: 3000000 },
-                    ]}
-                  />
-                  <StepperSlider
+              {/* Inputs Section - Below Chart */}
+              <div className="p-4 sm:p-6 lg:p-8 bg-white border-t border-gray-100">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                  <Slider
                     label="Advisory fee"
-                    value={state.annualFeePercent}
                     min={0}
                     max={3}
                     step={0.05}
-                    onChange={(nextValue) => setState((prev) => ({ ...prev, annualFeePercent: nextValue }))}
-                    format={(val) => `${val.toFixed(2)}%`}
-                    infoText="The industry average is around 1.0%. Check your recent statements to see your exact fee."
-                    chips={[
-                      { label: "0.50%", value: 0.5 },
-                      { label: "0.75%", value: 0.75 },
-                      { label: "1.00%", value: 1.0 },
-                      { label: "1.25%", value: 1.25 },
-                      { label: "1.50%", value: 1.5 },
-                    ]}
+                    value={state.annualFeePercent}
+                    onChange={(value) => setState((prev) => ({ ...prev, annualFeePercent: value }))}
+                    type="percent"
+                    decimals={2}
                   />
-                  <StepperSlider
+                  <Slider
+                    label="Portfolio value"
+                    min={300000}
+                    max={5000000}
+                    step={50000}
+                    value={state.portfolioValue}
+                    onChange={(value) => setState((prev) => ({ ...prev, portfolioValue: value }))}
+                    type="currency"
+                    minInputWidthCh={10}
+                  />
+                  <Slider
                     label="Annual growth"
-                    value={state.annualGrowthPercent}
                     min={0}
-                    max={14}
+                    max={15}
                     step={0.1}
-                    onChange={(nextValue) => setState((prev) => ({ ...prev, annualGrowthPercent: nextValue }))}
-                    format={(val) => `${val.toFixed(1)}%`}
-                    chips={[
-                      { label: "6%", value: 6.0 },
-                      { label: "8%", value: 8.0 },
-                      { label: "10%", value: 10.0 },
-                      { label: "12%", value: 12.0 },
-                    ]}
+                    value={state.annualGrowthPercent}
+                    onChange={(value) => setState((prev) => ({ ...prev, annualGrowthPercent: value }))}
+                    type="percent"
+                    decimals={1}
+                    minInputWidthCh={10}
                   />
-                  <StepperSlider
-                    label="Time horizon"
-                    value={state.years}
+                  <Slider
+                    label="Time horizon (Years)"
                     min={1}
                     max={40}
                     step={1}
-                    onChange={(nextValue) => setState((prev) => ({ ...prev, years: nextValue }))}
-                    format={(val) => `${val} yrs`}
-                    chips={[
-                      { label: "10 yrs", value: 10 },
-                      { label: "20 yrs", value: 20 },
-                      { label: "30 yrs", value: 30 },
-                    ]}
+                    value={state.years}
+                    onChange={(value) => setState((prev) => ({ ...prev, years: value }))}
                   />
                 </div>
                 <p className="mt-4 text-center text-xs text-gray-400">
                   Compares our $100/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
-                  <Link href="/our-math" className="underline transition-colors hover:text-brand-600">
+                  <Link href="/our-math" className="underline hover:text-brand-600 transition-colors">
                     For finance nerds
                   </Link>
                 </p>
               </div>
             </ScrollReveal>
+
           </div>
         </div>
       </section>
 
-      <section
-        className="relative w-full overflow-hidden py-12 sm:py-16"
-        style={{
-          backgroundColor: homeCalculatorConfig.quoteSection.backgroundColor,
-          backgroundImage: homeCalculatorConfig.quoteSection.backgroundImage,
-        }}
-      >
-        <QuoteTickerWithPortraits
-          label={homeCalculatorConfig.quoteTicker.label}
-          subLabel={homeCalculatorConfig.quoteTicker.subLabel}
-        />
+      <section className="w-full overflow-hidden bg-neutral-50">
+        <QuoteTickerWithPortraits />
       </section>
 
       <ValueCards
