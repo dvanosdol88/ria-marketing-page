@@ -355,16 +355,29 @@ function ValueCard({
   onPress: () => void;
   className?: string;
 }) {
-  const baseAccent =
-    variant === "smarter" ? "border-[#007A2F]/25 bg-[#007A2F]/5" : "border-gray-200 bg-gray-50/80";
-  const activeRing = isActive ? "ring-2 ring-[#007A2F]/35" : "";
+  const cardStyle =
+    variant === "smarter"
+      ? {
+          borderColor: homeCalculatorConfig.cards.smarterWayBorder,
+          backgroundColor: homeCalculatorConfig.cards.smarterWayBg,
+        }
+      : {
+          borderColor: homeCalculatorConfig.cards.traditionalAumBorder,
+          backgroundColor: homeCalculatorConfig.cards.traditionalAumBg,
+        };
+  const activeRing = isActive
+    ? variant === "smarter"
+      ? "ring-2 ring-[#007A2F]/35"
+      : "ring-2 ring-[#2A3F63]/30"
+    : "";
   const compactDisplay = value >= 1_000_000 ? `$${formatCompactNumber(value)}` : formatCurrency(value);
 
   return (
     <button
       type="button"
       onClick={onPress}
-      className={`h-full rounded-xl border p-3 text-left transition-all sm:p-4 lg:p-5 ${baseAccent} ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"} ${className ?? ""}`}
+      className={`h-full rounded-xl border p-3 text-left transition-all sm:p-4 lg:p-5 ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"} ${className ?? ""}`}
+      style={{ borderWidth: homeCalculatorConfig.cards.borderWidthPx, ...cardStyle }}
       aria-pressed={isActive}
     >
       <p className="text-xs font-semibold uppercase tracking-wide text-neutral-600">{label}</p>
@@ -378,6 +391,7 @@ function LostFeesCard({ value, className }: { value: number; className?: string 
     <div
       className={`col-span-2 h-full rounded-xl border p-3 text-center sm:p-4 min-[860px]:col-span-1 ${className ?? ""}`}
       style={{
+        borderWidth: homeCalculatorConfig.cards.borderWidthPx,
         borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
         backgroundColor: homeCalculatorConfig.cards.lostToFeesBg,
       }}

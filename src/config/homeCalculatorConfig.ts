@@ -12,6 +12,11 @@ export const homeCalculatorConfig = {
       "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-30",
   },
   cards: {
+    borderWidthPx: 1.5,
+    smarterWayBorder: "#007A2F",
+    smarterWayBg: "#F2FBF6",
+    traditionalAumBorder: "#2A3F63",
+    traditionalAumBg: "#F7F9FC",
     lostToFeesLabel: "Lost to Fees",
     lostToFeesBorder: "#BE123C",
     lostToFeesText: "#B91C1C",
