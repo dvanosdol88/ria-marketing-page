@@ -12,6 +12,7 @@ import { Quiz } from "./Quiz";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
+import { Odometer } from "@/components/Odometer";
 
 const numberFormatter = new Intl.NumberFormat("en-US");
 const sliderAccent = homeCalculatorConfig.controls.sliderAccent;
@@ -489,8 +490,8 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         }`}
       >
         <div className="flex h-12 items-center justify-center gap-2 px-4">
-          <span className="tabular-nums text-lg font-bold" style={{ color: homeCalculatorConfig.hero.savingsColor }}>
-            +{formatCurrency(projection.savings)}
+          <span style={{ color: homeCalculatorConfig.hero.savingsColor }}>
+            <Odometer value={projection.savings} prefix="+$" duration={1000} className="text-lg font-bold" />
           </span>
           <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: homeCalculatorConfig.hero.savingsColor }}>
             You Save
@@ -502,7 +503,9 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         <div className="section-shell text-center">
           <h1 className="text-2xl font-semibold sm:text-5xl">
             <span style={{ color: homeCalculatorConfig.hero.promptColor }}>What would you do with </span>
-            <span style={{ color: homeCalculatorConfig.hero.savingsColor }}>{formatCurrency(projection.savings)}</span>
+            <span style={{ color: homeCalculatorConfig.hero.savingsColor }}>
+              <Odometer value={projection.savings} prefix="$" duration={1400} className="align-baseline" />
+            </span>
             <span style={{ color: homeCalculatorConfig.hero.promptColor }}>?</span>
           </h1>
           <div className="mt-2 flex flex-wrap items-center justify-center gap-1 text-base text-neutral-900 sm:text-xl">
