@@ -118,28 +118,28 @@ export function Quiz() {
           isOpen && !hasVoted ? "max-h-[500px] opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"
         }`}
       >
-        <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 max-w-2xl mx-auto">
-          {/* 2 columns x 3 rows grid */}
-          <div className="grid grid-cols-1 min-[400px]:grid-cols-2 gap-2">
+        <div className="bg-[#C1DFC8] dark:bg-[#1a3d24] rounded-2xl shadow-lg p-3 sm:p-4 mx-auto">
+          {/* 3 columns x 2 rows grid */}
+          <div className="grid grid-cols-3 gap-2">
             {quizOptions.map((option) => (
               <label
                 key={option.id}
-                className={`flex items-center gap-2 p-3 rounded-xl border-2 cursor-pointer transition-all ${
+                className={`flex items-center justify-center gap-1.5 p-2.5 rounded-xl border-2 cursor-pointer transition-all text-center ${
                   selected.has(option.id)
-                    ? "border-brand-600 bg-brand-50"
-                    : "border-neutral-200 hover:border-neutral-300 bg-white"
+                    ? "border-brand-600 bg-brand-50 dark:bg-brand-600/20"
+                    : "border-neutral-200 dark:border-slate-600 hover:border-neutral-300 bg-white dark:bg-slate-800"
                 }`}
               >
                 <input
                   type="checkbox"
                   checked={selected.has(option.id)}
                   onChange={() => toggleOption(option.id)}
-                  className="w-5 h-5 rounded border-neutral-300 text-brand-600 focus:ring-brand-500"
+                  className="w-4 h-4 rounded border-neutral-300 text-brand-600 focus:ring-brand-500"
                 />
-                <span className="text-neutral-900 font-medium">
+                <span className="text-neutral-900 dark:text-slate-100 font-bold text-sm">
                   {option.label}
                   {hasAnyCounts && (
-                    <span className="ml-1 text-neutral-400 text-sm font-normal">
+                    <span className="ml-1 text-neutral-400 text-xs font-normal">
                       ({getPercentage(option.id, voteCounts)})
                     </span>
                   )}

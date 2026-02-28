@@ -60,8 +60,13 @@ export default function RootLayout({
 }) {
   return (
     <ViewTransitions>
-      <html lang="en">
-        <body className={`${inter.variable} bg-[#EEF0F5] text-neutral-900`}>
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${inter.variable} bg-[#EEF0F5] dark:bg-slate-950 text-neutral-900 dark:text-slate-100`}>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme:dark)').matches)){document.documentElement.classList.add('dark')}}catch(e){}})()`,
+            }}
+          />
           <SiteNav />
           <div className="min-h-screen">{children}</div>
           <SiteFooter />

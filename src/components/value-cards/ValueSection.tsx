@@ -18,9 +18,9 @@ interface ValueSectionProps {
 
 export function ValueSection({ item }: ValueSectionProps) {
   return (
-    <div className="flex flex-col items-center text-center max-w-4xl mx-auto py-16 md:py-24 px-4">
+    <div className="flex flex-col items-center text-center max-w-2xl mx-auto py-14 md:py-20 px-4">
       {/* Title */}
-      <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+      <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-slate-100 mb-5">
         {item.title}
       </h3>
 
@@ -40,9 +40,9 @@ export function ValueSection({ item }: ValueSectionProps) {
       ) : null}
 
       {/* Description */}
-      <div className="text-lg md:text-xl text-gray-600 leading-relaxed mb-8 max-w-2xl">
+      <p className="text-lg text-gray-600 dark:text-slate-400 leading-relaxed mb-6">
         {item.description}
-      </div>
+      </p>
 
       {/* Learn More Link */}
       {item.href ? (

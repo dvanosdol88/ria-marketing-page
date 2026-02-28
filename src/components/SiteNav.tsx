@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { siteNavLinks } from "@/config/siteNavConfig";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const COLLAPSE_SCROLL_Y = 132;
 const EXPAND_SCROLL_Y = 82;
@@ -130,8 +131,8 @@ export function SiteNav() {
               />
             </Link>
 
-            {/* Right slot — reserved for future CTA */}
-            <div className="w-10" aria-hidden="true" />
+            {/* Right slot — theme toggle */}
+            <ThemeToggle />
           </div>
 
           {/* ── Desktop Layout ── */}
@@ -181,17 +182,20 @@ export function SiteNav() {
                     href={link.href as any}
                     className={`relative px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                       isActive
-                        ? "text-[#007A2F]"
-                        : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50"
+                        ? "text-[#007A2F] dark:text-green-400"
+                        : "text-neutral-600 dark:text-slate-300 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-50 dark:hover:bg-slate-800"
                     }`}
                   >
                     {link.label}
                     {isActive && (
-                      <span className="absolute inset-x-2 -bottom-[1px] h-[2px] rounded-full bg-[#007A2F]" />
+                      <span className="absolute inset-x-2 -bottom-[1px] h-[2px] rounded-full bg-[#007A2F] dark:bg-green-400" />
                     )}
                   </Link>
                 );
               })}
+              <div className="ml-2">
+                <ThemeToggle />
+              </div>
             </nav>
           </div>
         </div>

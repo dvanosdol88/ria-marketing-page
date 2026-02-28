@@ -522,14 +522,12 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const updateMode = () => setIsDarkMode(media.matches);
-    updateMode();
-    media.addEventListener("change", updateMode);
+    const check = () => setIsDarkMode(document.documentElement.classList.contains("dark"));
+    check();
+    const observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
-    return () => {
-      media.removeEventListener("change", updateMode);
-    };
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -587,7 +585,6 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
             <span style={{ color: heroPromptColor }}>?</span>
           </h1>
           <div className="mt-2 flex flex-wrap items-center justify-center gap-1 text-base text-neutral-900 dark:text-slate-200 sm:text-xl">
-            <span>See how much you can save.</span>
             <Quiz />
           </div>
           <div className="mt-3 flex justify-center">
