@@ -520,16 +520,8 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   }, []);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const updateMode = () => setIsDarkMode(media.matches);
-    updateMode();
-    media.addEventListener("change", updateMode);
-
-    return () => {
-      media.removeEventListener("change", updateMode);
-    };
+    if (typeof document === "undefined") return;
+    setIsDarkMode(document.documentElement.classList.contains("dark"));
   }, []);
 
   useEffect(() => {
