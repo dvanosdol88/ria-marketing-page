@@ -9,4 +9,17 @@ const nextConfig = {
   },
 };
 
-export default withSentryConfig(nextConfig);
+export default withSentryConfig(nextConfig, {
+  // Sentry organization and project slugs
+  org: "dvo-inc",
+  project: "youarepayingtoomuch",
+
+  // Upload wider set of client source files for better stack trace resolution
+  widenClientFileUpload: true,
+
+  // Create a proxy API route to bypass ad-blockers
+  tunnelRoute: "/monitoring",
+
+  // Suppress non-CI output
+  silent: !process.env.CI,
+});
