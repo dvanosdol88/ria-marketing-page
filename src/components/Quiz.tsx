@@ -150,6 +150,7 @@ export function Quiz() {
           const isWinner = hasVoted && winningOptionId === option.id;
           const isSubmitting = isSubmittingOption === option.id;
           const percentage = percentages[option.id] ?? 0;
+          const hasAnyCounts = Object.values(voteCounts).some((n) => n > 0);
 
           return (
             <button
@@ -163,10 +164,10 @@ export function Quiz() {
                   : "border-neutral-200 bg-white hover:border-brand-300 hover:shadow-sm"
               } ${isSelected ? "ring-2 ring-brand-400" : ""}`}
             >
-              {hasVoted && (
+              {hasAnyCounts && (
                 <div
                   className={`absolute inset-y-0 left-0 transition-all duration-700 ${
-                    isWinner ? "bg-brand-300/45" : "bg-brand-200/35"
+                    isWinner ? "bg-brand-300/45" : hasVoted ? "bg-brand-200/35" : "bg-brand-100/40"
                   }`}
                   style={{ width: `${percentage}%` }}
                   aria-hidden="true"
@@ -181,8 +182,8 @@ export function Quiz() {
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
                     Submitting...
                   </span>
-                ) : hasVoted ? (
-                  <span className="text-sm font-semibold text-neutral-700">{percentage}%</span>
+                ) : hasAnyCounts ? (
+                  <span className={`text-sm font-semibold ${hasVoted ? "text-neutral-700" : "text-neutral-400"}`}>{percentage}%</span>
                 ) : null}
               </div>
             </button>
