@@ -27,7 +27,6 @@ const EXPAND_SCROLL_Y = 82;
  */
 export function SiteNav() {
   const pathname = usePathname();
-  const isLandingPage = pathname === "/";
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
@@ -114,7 +113,7 @@ export function SiteNav() {
                 className={`w-auto justify-self-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                   collapsed
                     ? "h-7 opacity-0"
-                    : `opacity-100 ${isLandingPage ? "h-12" : "h-10"}`
+                    : "h-12 opacity-100"
                 }`}
                 priority
               />
@@ -125,7 +124,7 @@ export function SiteNav() {
                 className={`w-auto justify-self-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                   collapsed
                     ? "h-7 opacity-100"
-                    : `opacity-0 ${isLandingPage ? "h-12" : "h-10"}`
+                    : "h-12 opacity-0"
                 }`}
               />
             </Link>
@@ -136,7 +135,7 @@ export function SiteNav() {
 
           {/* ── Desktop Layout ── */}
           <div className={`hidden items-center justify-between md:flex transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-            collapsed ? "h-[52px]" : isLandingPage ? "h-[104px]" : "h-[88px]"
+            collapsed ? "h-[52px]" : "h-[104px]"
           }`}>
             {/* Desktop logo — cross-fade between full and icon-only */}
             <Link
@@ -153,7 +152,7 @@ export function SiteNav() {
                 className={`w-auto justify-self-start transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                   collapsed
                     ? "h-8 opacity-0"
-                    : `opacity-100 ${isLandingPage ? "h-24" : "h-20"}`
+                    : "h-24 opacity-100"
                 }`}
                 priority
               />
@@ -164,7 +163,7 @@ export function SiteNav() {
                 className={`w-auto justify-self-start transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                   collapsed
                     ? "h-8 opacity-100"
-                    : `opacity-0 ${isLandingPage ? "h-24" : "h-20"}`
+                    : "h-24 opacity-0"
                 }`}
               />
             </Link>
@@ -227,7 +226,7 @@ export function SiteNav() {
               alt="Smarter Way Wealth"
               width={1000}
               height={375}
-              className={isLandingPage ? "h-10 w-auto" : "h-9 w-auto"}
+              className="h-10 w-auto"
             />
           </Link>
           <button

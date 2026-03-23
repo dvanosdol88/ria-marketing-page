@@ -113,16 +113,16 @@ function LostToFeesDonut({
   isMobile: boolean;
   isDarkMode: boolean;
 }) {
-  const chartSize = isMobile ? 64 : 108;
-  const innerRadius = isMobile ? 18 : 35;
-  const outerRadius = isMobile ? 28 : 52;
+  const chartSize = isMobile ? 77 : 130;
+  const innerRadius = isMobile ? 22 : 42;
+  const outerRadius = isMobile ? 34 : 62;
   const donutData = [
-    { name: "Lost", value: percentLost, fill: "#BE123C" },
-    { name: "Kept", value: Math.max(0, 100 - percentLost), fill: isDarkMode ? "#94A3B8" : "#0F172A" },
+    { name: "Lost", value: percentLost, fill: isDarkMode ? "#93A5C3" : "#64748B" },
+    { name: "Kept", value: Math.max(0, 100 - percentLost), fill: isDarkMode ? "#34D399" : "#00A540" },
   ];
 
   return (
-    <div className="pointer-events-none absolute left-2 top-2 z-20 sm:left-4 sm:top-4">
+    <div className="pointer-events-none absolute left-6 top-6 z-20 sm:left-10 sm:top-8">
       <div className={`text-[10px] font-semibold uppercase tracking-wider sm:text-xs md:text-sm ${isDarkMode ? "text-slate-300" : "text-slate-500"}`}>
         Lost Wealth
       </div>
@@ -144,7 +144,7 @@ function LostToFeesDonut({
             ))}
           </Pie>
         </PieChart>
-        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold tabular-nums text-red-700 sm:text-sm md:text-base">
+        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold tabular-nums text-slate-700 dark:text-slate-200 sm:text-sm md:text-base">
           {percentLost.toFixed(1)}%
         </div>
       </div>
