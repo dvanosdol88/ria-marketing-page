@@ -1,9 +1,18 @@
 import { kv } from "@vercel/kv";
 import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "edge";
-
 const VOTE_KEY = "quiz:votes";
+const KV_TIMEOUT_MS = 5000;
+
+// Wraps a promise with a timeout so KV calls don't hang indefinitely
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error(`KV timeout after ${ms}ms`)), ms)
+    ),
+  ]);
+}
 
 const validOptions = [
   "retire-early",
@@ -65,9 +74,12 @@ export async function POST(request: NextRequest) {
     for (const vote of votes) {
       pipeline.hincrby(VOTE_KEY, vote, 1);
     }
-    await pipeline.exec();
+    await withTimeout(pipeline.exec(), KV_TIMEOUT_MS);
 
-    const counts = await kv.hgetall<Record<string, string | number>>(VOTE_KEY);
+    const counts = await withTimeout(
+      kv.hgetall<Record<string, string | number>>(VOTE_KEY),
+      KV_TIMEOUT_MS
+    );
 
     return NextResponse.json({ success: true, counts: normalizeCounts(counts) });
   } catch (error) {
@@ -78,10 +90,14 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    const counts = await kv.hgetall<Record<string, string | number>>(VOTE_KEY);
+    const counts = await withTimeout(
+      kv.hgetall<Record<string, string | number>>(VOTE_KEY),
+      KV_TIMEOUT_MS
+    );
     return NextResponse.json({ counts: normalizeCounts(counts) });
   } catch (error) {
     console.error("Vote fetch error:", error);
-    return NextResponse.json({ error: "Failed to fetch votes" }, { status: 500 });
+    // Graceful degradation: return empty counts so the UI still renders
+    return NextResponse.json({ counts: {} });
   }
 }
