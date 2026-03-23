@@ -383,12 +383,12 @@ function ValueCard({
     <button
       type="button"
       onClick={onPress}
-      className={`h-full rounded-xl border p-3 text-left transition-all sm:p-4 lg:p-5 ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"} ${className ?? ""}`}
+      className={`h-full rounded-xl border px-3 py-2 text-left transition-all sm:px-4 sm:py-2.5 lg:px-5 lg:py-3 ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"} ${className ?? ""}`}
       style={{ borderWidth: homeCalculatorConfig.cards.borderWidthPx, ...cardStyle }}
       aria-pressed={isActive}
     >
       <p className="text-xs font-semibold uppercase tracking-wide text-neutral-600 dark:text-slate-300">{label}</p>
-      <p className="mt-1 text-[clamp(1.1rem,2vw,2rem)] font-semibold text-neutral-900 dark:text-slate-100 sm:mt-2">{compactDisplay}</p>
+      <p className="mt-0.5 text-[clamp(1.1rem,2vw,2rem)] font-semibold text-neutral-900 dark:text-slate-100 sm:mt-1">{compactDisplay}</p>
     </button>
   );
 }
@@ -396,7 +396,7 @@ function ValueCard({
 function LostFeesCard({ value, isDarkMode, className }: { value: number; isDarkMode: boolean; className?: string }) {
   return (
     <div
-      className={`col-span-2 h-full rounded-xl border p-3 text-center sm:p-4 min-[860px]:col-span-1 ${className ?? ""}`}
+      className={`col-span-2 h-full rounded-xl border px-3 py-2 text-center sm:px-4 sm:py-2.5 min-[860px]:col-span-1 ${className ?? ""}`}
       style={{
         borderWidth: homeCalculatorConfig.cards.borderWidthPx,
         borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
@@ -408,7 +408,7 @@ function LostFeesCard({ value, isDarkMode, className }: { value: number; isDarkM
       <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
         {homeCalculatorConfig.cards.lostToFeesLabel}
       </p>
-      <p className="mt-1 text-[clamp(1.1rem,1.8vw,1.7rem)] font-bold tabular-nums" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
+      <p className="mt-0.5 text-[clamp(1.1rem,1.8vw,1.7rem)] font-bold tabular-nums" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
         -{formatCurrency(value)}
       </p>
     </div>
@@ -604,7 +604,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-20 pt-0 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:gap-8">
             <ScrollReveal className="card overflow-hidden bg-white shadow-xl ring-1 ring-black/5 dark:bg-slate-900 dark:ring-slate-700/70">
-              <div className="grid grid-cols-2 gap-3 border-b border-gray-100 p-4 dark:border-slate-700 sm:gap-4 sm:p-6 lg:p-8 min-[860px]:grid-cols-3">
+              <div className="grid grid-cols-2 gap-3 border-b border-gray-100 px-4 py-3 dark:border-slate-700 sm:gap-4 sm:px-6 sm:py-4 lg:px-8 lg:py-5 min-[860px]:grid-cols-3">
                 <ValueCard
                   label="Smarter Way Wealth"
                   value={projection.finalValueWithoutFees}
