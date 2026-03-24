@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
 import { homeCalculatorConfig } from '@/config/homeCalculatorConfig';
+import MobileQuoteCarousel from './MobileQuoteCarousel';
 
 // ============================================================================
 // TYPES
@@ -431,6 +432,18 @@ export default function QuoteTickerWithPortraits({
 
   return (
     <>
+      {/* Mobile: card carousel */}
+      <div className="sm:hidden">
+        <MobileQuoteCarousel
+          quotes={QUOTES}
+          portraits={PORTRAITS}
+          label={showLabel ? label : undefined}
+          subLabel={showLabel ? subLabel : undefined}
+        />
+      </div>
+
+      {/* Desktop: scrolling ticker with hover tooltips */}
+      <div className="hidden sm:block">
       {hoveredQuote && (
         <div
           className="fixed z-[9999] w-80"
@@ -551,6 +564,7 @@ export default function QuoteTickerWithPortraits({
             </div>
           ))}
         </div>
+      </div>
       </div>
     </>
   );
