@@ -68,6 +68,21 @@ export function SiteNav() {
   const toggleDrawer = useCallback(() => setDrawerOpen((p) => !p), []);
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
+  /* ── Tiered Logo Component ── */
+  const Logo = ({ heightClass, isCentered = false }: { heightClass: string, isCentered?: boolean }) => (
+    <div className={`flex items-center gap-2 ${isCentered ? "justify-center" : "justify-start"}`}>
+      <img
+        src="/brand/logo-icon.svg"
+        alt="Smarter Way Wealth"
+        className={`w-auto transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${heightClass}`}
+      />
+      <div className="flex items-center whitespace-nowrap text-[#00A540] font-bold tracking-tightish">
+        <span className="hidden sm:inline text-[0.85em]">Smarter</span>
+        <span className="hidden md:inline text-[0.85em]">&nbsp;Way Wealth</span>
+      </div>
+    </div>
+  );
+
   return (
     <>
       {/* ── Sticky Header Bar ── */}
@@ -98,34 +113,15 @@ export function SiteNav() {
               {drawerOpen ? <X className="h-5 w-5" strokeWidth={2.2} /> : <Menu className="h-6 w-6" strokeWidth={2.2} />}
             </button>
 
-            {/* Mobile logo — cross-fade between full and icon-only */}
+            {/* Mobile logo — tiered implementation */}
             <Link
               href={"/" as any}
-              className="absolute left-1/2 -translate-x-1/2 grid items-center"
+              className="absolute left-1/2 -translate-x-1/2 flex items-center"
               aria-label="Smarter Way Wealth home"
             >
-              <Image
-                src="/brand/logo-strong-primary-lightbg.png"
-                alt="Smarter Way Wealth"
-                width={1000}
-                height={375}
-                style={{ gridArea: "1/1" }}
-                className={`w-auto justify-self-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                  collapsed
-                    ? "h-[34px] opacity-0"
-                    : "h-[58px] opacity-100"
-                }`}
-                priority
-              />
-              <img
-                src="/brand/logo-icon.svg"
-                alt="Smarter Way Wealth"
-                style={{ gridArea: "1/1" }}
-                className={`w-auto justify-self-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                  collapsed
-                    ? "h-[34px] opacity-100"
-                    : "h-[58px] opacity-0"
-                }`}
+              <Logo
+                heightClass={collapsed ? "h-[34px]" : "h-[58px]"}
+                isCentered={true}
               />
             </Link>
 
@@ -137,35 +133,13 @@ export function SiteNav() {
           <div className={`hidden items-center justify-between md:flex transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             collapsed ? "h-[52px]" : "h-[104px]"
           }`}>
-            {/* Desktop logo — cross-fade between full and icon-only */}
+            {/* Desktop logo — tiered implementation */}
             <Link
               href={"/" as any}
-              className="grid shrink-0 items-center rounded-md transition-opacity hover:opacity-90"
+              className="shrink-0 rounded-md transition-opacity hover:opacity-90"
               aria-label="Smarter Way Wealth home"
             >
-              <Image
-                src="/brand/logo-strong-primary-lightbg.png"
-                alt="Smarter Way Wealth"
-                width={1000}
-                height={375}
-                style={{ gridArea: "1/1" }}
-                className={`w-auto justify-self-start transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                  collapsed
-                    ? "h-8 opacity-0"
-                    : "h-24 opacity-100"
-                }`}
-                priority
-              />
-              <img
-                src="/brand/logo-icon.svg"
-                alt="Smarter Way Wealth"
-                style={{ gridArea: "1/1" }}
-                className={`w-auto justify-self-start transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-                  collapsed
-                    ? "h-8 opacity-100"
-                    : "h-24 opacity-0"
-                }`}
-              />
+              <Logo heightClass={collapsed ? "h-8" : "h-20"} />
             </Link>
 
             <nav className="flex items-center gap-1">
@@ -221,13 +195,7 @@ export function SiteNav() {
             aria-label="Smarter Way Wealth home"
             onClick={closeDrawer}
           >
-            <Image
-              src="/brand/logo-strong-primary-lightbg.png"
-              alt="Smarter Way Wealth"
-              width={1000}
-              height={375}
-              className="h-12 w-auto"
-            />
+            <Logo heightClass="h-10" />
           </Link>
           <button
             onClick={closeDrawer}
