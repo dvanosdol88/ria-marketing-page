@@ -29,22 +29,28 @@ export function getAdminDb(): Firestore {
     // Vercel's UI may wrap long lines, inserting extra whitespace into the
     // PEM headers/body (e.g. "PRIVATE   \n  KEY"). Strip everything that
     // isn't base64 and rebuild a clean PEM.
-    if (serviceAccount.private_key) {
-      const pk = serviceAccount.private_key;
+    let privateKey = serviceAccount.private_key || (serviceAccount as any).privateKey;
+    if (privateKey) {
       // Remove literal '\n' strings and all actual whitespace
-      const flat = pk.replace(/\\n/g, "").replace(/\s/g, "");
+      const flat = privateKey.replace(/\\n/g, "").replace(/\s/g, "");
       // Extract everything between the BEGIN and END markers
-      // This is robust against mangled internal header text like "PRIVATE   KEY"
       const match = flat.match(/-+BEGIN[^-]+-+([^-]+)-+END[^-]+-+/i);
       if (match && match[1]) {
         const base64 = match[1];
-        serviceAccount.private_key =
+        privateKey =
           "-----BEGIN PRIVATE KEY-----\n" +
           (base64.match(/.{1,64}/g)?.join("\n") ?? base64) +
           "\n-----END PRIVATE KEY-----\n";
       }
     }
-    initializeApp({ credential: cert(serviceAccount) });
+
+    initializeApp({
+      credential: cert({
+        projectId: serviceAccount.project_id || (serviceAccount as any).projectId,
+        clientEmail: serviceAccount.client_email || (serviceAccount as any).clientEmail,
+        privateKey: privateKey,
+      }),
+    });
   }
 
   _db = getFirestore();
