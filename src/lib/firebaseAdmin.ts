@@ -26,30 +26,34 @@ export function getAdminDb(): Firestore {
       const sanitized = serviceAccountJson.replace(/\n/g, "\\n");
       serviceAccount = JSON.parse(sanitized);
     }
-    // Vercel's UI may wrap long lines, inserting extra whitespace into the
-    // PEM headers/body (e.g. "PRIVATE   \n  KEY"). Strip everything that
-    // isn't base64 and rebuild a clean PEM.
-    let privateKey = serviceAccount.private_key || (serviceAccount as any).privateKey;
-    if (privateKey) {
-      // Remove literal '\n' strings and all actual whitespace
-      const flat = privateKey.replace(/\\n/g, "").replace(/\s/g, "");
-      // Extract everything between the BEGIN and END markers
-      const match = flat.match(/-+BEGIN[^-]+-+([^-]+)-+END[^-]+-+/i);
-      if (match && match[1]) {
-        const base64 = match[1];
-        privateKey =
-          "-----BEGIN PRIVATE KEY-----\n" +
-          (base64.match(/.{1,64}/g)?.join("\n") ?? base64) +
-          "\n-----END PRIVATE KEY-----\n";
-      }
+    // Vercel's UI may wrap long lines or expand \n, inserting extra whitespace
+    // into the PEM. We extract only the base64 characters and rebuild a clean PEM.
+    let rawPk = serviceAccount.private_key || (serviceAccount as any).privateKey;
+    if (rawPk) {
+      // 1. Remove literal '\n' strings and headers/footers
+      const noHeaders = rawPk
+        .replace(/\\n/g, "")
+        .replace(/-+BEGIN[\s\S]*?KEY-+/i, "")
+        .replace(/-+END[\s\S]*?KEY-+/i, "");
+      
+      // 2. Strip EVERY character that isn't a valid Base64 character
+      const base64 = noHeaders.replace(/[^A-Za-z0-9+/=]/g, "");
+      
+      // 3. Rebuild with proper 64-char line breaks
+      rawPk = "-----BEGIN PRIVATE KEY-----\n" +
+              (base64.match(/.{1,64}/g)?.join("\n") ?? base64) +
+              "\n-----END PRIVATE KEY-----\n";
     }
 
+    const certConfig = {
+      projectId: serviceAccount.project_id || (serviceAccount as any).projectId,
+      clientEmail: serviceAccount.client_email || (serviceAccount as any).clientEmail,
+      privateKey: rawPk,
+    };
+
     initializeApp({
-      credential: cert({
-        projectId: serviceAccount.project_id || (serviceAccount as any).projectId,
-        clientEmail: serviceAccount.client_email || (serviceAccount as any).clientEmail,
-        privateKey: privateKey,
-      }),
+      credential: cert(certConfig),
+      projectId: certConfig.projectId,
     });
   }
 
