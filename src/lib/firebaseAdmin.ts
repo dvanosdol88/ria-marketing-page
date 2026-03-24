@@ -16,19 +16,23 @@ export function getAdminDb(): Firestore {
       );
     }
 
-    // Try parsing as-is first (works locally with properly escaped JSON).
-    // If that fails (Vercel expands \n to real newlines), fall back to
-    // replacing real newlines then restoring them in the private key.
-    let serviceAccount: ServiceAccount & { private_key?: string };
+    // Vercel's UI often "pretty-prints" long JSON env vars, inserting real
+    // newlines and indentation spaces into the middle of field values.
+    // We strip all real newlines and their subsequent indentation.
+    const sanitizedJson = serviceAccountJson.replace(/\n\s*/g, "");
+    
+    let serviceAccount: any;
     try {
-      serviceAccount = JSON.parse(serviceAccountJson);
-    } catch {
-      const sanitized = serviceAccountJson.replace(/\n/g, "\\n");
-      serviceAccount = JSON.parse(sanitized);
+      serviceAccount = JSON.parse(sanitizedJson);
+    } catch (e) {
+      // Fallback: try re-escaping if it was a different mangling
+      const reEscaped = serviceAccountJson.replace(/\n/g, "\\n");
+      serviceAccount = JSON.parse(reEscaped);
     }
+
     // Vercel's UI may wrap long lines or expand \n, inserting extra whitespace
     // into the PEM. We extract only the base64 characters and rebuild a clean PEM.
-    const sa = serviceAccount as any;
+    const sa = serviceAccount;
     let rawPk = sa.private_key || sa.privateKey;
     if (rawPk) {
       // 1. Remove literal '\n' strings and headers/footers
