@@ -43,6 +43,8 @@ function groupByLastName(quotes: Quote[]) {
 // MOBILE QUOTE CAROUSEL
 // ============================================================================
 
+const FADE_MS = 250;
+
 export default function MobileQuoteCarousel({
   quotes,
   portraits,
@@ -53,7 +55,7 @@ export default function MobileQuoteCarousel({
   const groups = useRef(groupByLastName(quotes)).current;
   const [activeGroup, setActiveGroup] = useState(0);
   const [activeQuoteInGroup, setActiveQuoteInGroup] = useState(0);
-  const [fadeKey, setFadeKey] = useState(0); // triggers fade animation on change
+  const [visible, setVisible] = useState(true); // controls fade opacity
 
   // Touch tracking via refs (no re-renders during swipe)
   const cardRef = useRef<HTMLDivElement>(null);
@@ -66,29 +68,44 @@ export default function MobileQuoteCarousel({
 
   const autoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const nameStripRef = useRef<HTMLDivElement>(null);
+  const pendingNavRef = useRef<(() => void) | null>(null);
 
   const totalQuotes = groups.reduce((sum, [, q]) => sum + q.length, 0);
 
   const currentQuotes = groups[activeGroup][1];
   const currentQuote = currentQuotes[activeQuoteInGroup];
 
-  // ── Trigger fade on any quote change ────────────────────────────────
-  useEffect(() => {
-    setFadeKey((k) => k + 1);
-  }, [activeGroup, activeQuoteInGroup]);
+  // ── Crossfade navigation helper ─────────────────────────────────────
+  // Fade out → apply navigation → fade in
+  const navigateWithFade = useCallback((navFn: () => void) => {
+    pendingNavRef.current = navFn;
+    setVisible(false); // triggers fade-out
+  }, []);
+
+  // When fade-out completes, apply the pending nav and fade back in
+  const handleTransitionEnd = useCallback(() => {
+    if (!visible && pendingNavRef.current) {
+      pendingNavRef.current();
+      pendingNavRef.current = null;
+      // Small delay so React renders new content before fading in
+      requestAnimationFrame(() => setVisible(true));
+    }
+  }, [visible]);
 
   // ── Auto-advance ──────────────────────────────────────────────────────
   const resetAutoTimer = useCallback(() => {
     if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
     autoTimerRef.current = setTimeout(() => {
-      setActiveQuoteInGroup((prev) => {
-        const groupQuotes = groups[activeGroup][1];
-        if (prev + 1 < groupQuotes.length) return prev + 1;
-        setActiveGroup((g) => (g + 1) % groups.length);
-        return 0;
+      navigateWithFade(() => {
+        setActiveQuoteInGroup((prev) => {
+          const groupQuotes = groups[activeGroup][1];
+          if (prev + 1 < groupQuotes.length) return prev + 1;
+          setActiveGroup((g) => (g + 1) % groups.length);
+          return 0;
+        });
       });
     }, autoAdvanceMs);
-  }, [activeGroup, autoAdvanceMs, groups]);
+  }, [activeGroup, autoAdvanceMs, groups, navigateWithFade]);
 
   useEffect(() => {
     resetAutoTimer();
@@ -111,31 +128,46 @@ export default function MobileQuoteCarousel({
     }
   }, [activeGroup]);
 
-  // ── Navigation helpers ────────────────────────────────────────────────
+  // ── Navigation helpers (wrapped in fade) ──────────────────────────────
   const goNext = useCallback(() => {
-    const groupQuotes = groups[activeGroup][1];
-    if (activeQuoteInGroup + 1 < groupQuotes.length) {
-      setActiveQuoteInGroup((p) => p + 1);
-    } else {
-      setActiveGroup((g) => (g + 1) % groups.length);
-      setActiveQuoteInGroup(0);
-    }
-  }, [activeGroup, activeQuoteInGroup, groups]);
+    navigateWithFade(() => {
+      const groupQuotes = groups[activeGroup][1];
+      if (activeQuoteInGroup + 1 < groupQuotes.length) {
+        setActiveQuoteInGroup((p) => p + 1);
+      } else {
+        setActiveGroup((g) => (g + 1) % groups.length);
+        setActiveQuoteInGroup(0);
+      }
+    });
+  }, [activeGroup, activeQuoteInGroup, groups, navigateWithFade]);
 
   const goPrev = useCallback(() => {
-    if (activeQuoteInGroup > 0) {
-      setActiveQuoteInGroup((p) => p - 1);
-    } else {
-      const prevGroup = (activeGroup - 1 + groups.length) % groups.length;
-      setActiveGroup(prevGroup);
-      setActiveQuoteInGroup(groups[prevGroup][1].length - 1);
-    }
-  }, [activeGroup, activeQuoteInGroup, groups]);
+    navigateWithFade(() => {
+      if (activeQuoteInGroup > 0) {
+        setActiveQuoteInGroup((p) => p - 1);
+      } else {
+        const prevGroup = (activeGroup - 1 + groups.length) % groups.length;
+        setActiveGroup(prevGroup);
+        setActiveQuoteInGroup(groups[prevGroup][1].length - 1);
+      }
+    });
+  }, [activeGroup, activeQuoteInGroup, groups, navigateWithFade]);
 
   const jumpToGroup = useCallback((index: number) => {
-    setActiveGroup(index);
-    setActiveQuoteInGroup(0);
-  }, []);
+    if (index === activeGroup) return;
+    navigateWithFade(() => {
+      setActiveGroup(index);
+      setActiveQuoteInGroup(0);
+    });
+  }, [activeGroup, navigateWithFade]);
+
+  const jumpToQuoteInGroup = useCallback((index: number) => {
+    if (index === activeQuoteInGroup) return;
+    navigateWithFade(() => {
+      setActiveQuoteInGroup(index);
+    });
+    resetAutoTimer();
+  }, [activeQuoteInGroup, navigateWithFade, resetAutoTimer]);
 
   // ── Touch handlers (direct DOM, direction-locked) ─────────────────────
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -147,7 +179,6 @@ export default function MobileQuoteCarousel({
       currentX: touch.clientX,
       locked: null,
     };
-    // Remove transition during active drag
     if (cardRef.current) {
       cardRef.current.style.transition = 'none';
     }
@@ -162,22 +193,20 @@ export default function MobileQuoteCarousel({
     const dx = touch.clientX - state.startX;
     const dy = touch.clientY - state.startY;
 
-    // Lock direction on first significant movement
     if (!state.locked) {
       const absDx = Math.abs(dx);
       const absDy = Math.abs(dy);
-      if (absDx < 8 && absDy < 8) return; // dead zone
+      if (absDx < 8 && absDy < 8) return;
       state.locked = absDx > absDy ? 'horizontal' : 'vertical';
     }
 
-    if (state.locked === 'vertical') return; // let page scroll normally
+    if (state.locked === 'vertical') return;
 
-    // Horizontal swipe — prevent vertical scroll and move card
     e.preventDefault();
     state.currentX = touch.clientX;
 
     if (cardRef.current) {
-      const offset = (touch.clientX - state.startX) * 0.5; // damped
+      const offset = (touch.clientX - state.startX) * 0.5;
       cardRef.current.style.transform = `translateX(${offset}px)`;
     }
   }, []);
@@ -186,7 +215,6 @@ export default function MobileQuoteCarousel({
     const state = touchRef.current;
     touchRef.current = null;
 
-    // Snap back with transition
     if (cardRef.current) {
       cardRef.current.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
       cardRef.current.style.transform = 'translateX(0)';
@@ -213,17 +241,6 @@ export default function MobileQuoteCarousel({
 
   return (
     <div className="select-none">
-      {/* Fade-in animation */}
-      <style>{`
-        @keyframes carouselFadeIn {
-          from { opacity: 0; transform: translateY(6px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .carousel-fade-in {
-          animation: carouselFadeIn 0.35s ease-out both;
-        }
-      `}</style>
-
       {/* Header */}
       {label && (
         <div className="mb-4 text-center">
@@ -235,7 +252,7 @@ export default function MobileQuoteCarousel({
       {/* Name strip */}
       <div
         ref={nameStripRef}
-        className="scrollbar-hide mb-4 flex gap-2 overflow-x-auto px-2 pb-1"
+        className="scrollbar-hide mb-3 flex gap-2 overflow-x-auto px-2 pb-1"
         style={{ WebkitOverflowScrolling: 'touch' }}
       >
         {groups.map(([lastName], i) => (
@@ -267,8 +284,12 @@ export default function MobileQuoteCarousel({
           style={{ willChange: 'transform' }}
         >
           <div
-            key={fadeKey}
-            className="carousel-fade-in rounded-2xl border border-stone-200 bg-white p-5 shadow-sm"
+            className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm"
+            style={{
+              opacity: visible ? 1 : 0,
+              transition: `opacity ${FADE_MS}ms ease-in-out`,
+            }}
+            onTransitionEnd={handleTransitionEnd}
           >
             {/* Quote text */}
             <p className="text-base leading-relaxed text-stone-700">
@@ -276,7 +297,7 @@ export default function MobileQuoteCarousel({
             </p>
 
             {/* Attribution */}
-            <div className="mt-4 flex items-center gap-3">
+            <div className="mt-3 flex items-center gap-3">
               {portraits[currentQuote.lastName] ? (
                 <div className="h-[58px] w-[58px] flex-shrink-0 overflow-hidden rounded-full border border-stone-200 bg-white">
                   <Image
@@ -303,14 +324,14 @@ export default function MobileQuoteCarousel({
               </div>
             </div>
 
-            {/* Multi-quote indicator for this person (50% larger dots) */}
-            {currentQuotes.length > 1 && (
-              <div className="mt-3 flex items-center justify-center gap-2">
-                {currentQuotes.map((_, i) => (
+            {/* Multi-quote dots — always rendered for uniform height */}
+            <div className="mt-2 flex h-4 items-center justify-center gap-2">
+              {currentQuotes.length > 1 &&
+                currentQuotes.map((_, i) => (
                   <button
                     key={i}
                     type="button"
-                    onClick={() => { setActiveQuoteInGroup(i); resetAutoTimer(); }}
+                    onClick={() => jumpToQuoteInGroup(i)}
                     className={`rounded-full transition-all duration-300 ${
                       i === activeQuoteInGroup
                         ? 'h-2.5 w-6 bg-[#00A540]'
@@ -319,14 +340,13 @@ export default function MobileQuoteCarousel({
                     aria-label={`Quote ${i + 1} of ${currentQuotes.length}`}
                   />
                 ))}
-              </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Global progress: "3 of 20" */}
-      <p className="mt-3 text-center text-xs text-stone-400">
+      <p className="mt-2 text-center text-xs text-stone-400">
         {globalIndex + 1} of {totalQuotes}
       </p>
     </div>

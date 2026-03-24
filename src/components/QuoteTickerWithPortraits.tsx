@@ -145,6 +145,12 @@ const QUOTES: Quote[] = [
     quote: "Money makes money. And the money that money makes, makes money.",
   },
   {
+    firstName: "Benjamin",
+    lastName: "Franklin",
+    title: "Founding Father",
+    quote: "A penny saved is a penny earned.",
+  },
+  {
     firstName: "Warren",
     lastName: "Buffett",
     title: "Berkshire Hathaway Letter, 2016",
