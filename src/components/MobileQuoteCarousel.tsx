@@ -40,22 +40,38 @@ function groupByLastName(quotes: Quote[]) {
 }
 
 // ============================================================================
-// MOBILE QUOTE CAROUSEL
+// CONSTANTS
 // ============================================================================
 
-const FADE_MS = 250;
+const ROLL_MS = 400;   // quote text roll duration
+const FADE_MS = 300;   // full-card crossfade duration
+
+// ============================================================================
+// MOBILE QUOTE CAROUSEL
+// ============================================================================
 
 export default function MobileQuoteCarousel({
   quotes,
   portraits,
   label,
   subLabel,
-  autoAdvanceMs = 5000,
+  autoAdvanceMs = 6000,
 }: MobileQuoteCarouselProps) {
   const groups = useRef(groupByLastName(quotes)).current;
   const [activeGroup, setActiveGroup] = useState(0);
   const [activeQuoteInGroup, setActiveQuoteInGroup] = useState(0);
-  const [visible, setVisible] = useState(true); // controls fade opacity
+
+  // ── Displayed content (lags behind active when animating) ───────────
+  const [displayedGroup, setDisplayedGroup] = useState(0);
+  const [displayedQuoteInGroup, setDisplayedQuoteInGroup] = useState(0);
+
+  // ── Animation state ─────────────────────────────────────────────────
+  const [isRolling, setIsRolling] = useState(false);     // within-person quote roll
+  const [cardFade, setCardFade] = useState(true);         // full-card opacity (true = visible)
+
+  // ── Quote area fixed height ─────────────────────────────────────────
+  const [quoteHeight, setQuoteHeight] = useState<number | undefined>(undefined);
+  const measureRef = useRef<HTMLDivElement>(null);
 
   // Touch tracking via refs (no re-renders during swipe)
   const cardRef = useRef<HTMLDivElement>(null);
@@ -68,44 +84,64 @@ export default function MobileQuoteCarousel({
 
   const autoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const nameStripRef = useRef<HTMLDivElement>(null);
-  const pendingNavRef = useRef<(() => void) | null>(null);
 
   const totalQuotes = groups.reduce((sum, [, q]) => sum + q.length, 0);
 
-  const currentQuotes = groups[activeGroup][1];
-  const currentQuote = currentQuotes[activeQuoteInGroup];
+  const displayedQuotes = groups[displayedGroup][1];
+  const displayedQuote = displayedQuotes[displayedQuoteInGroup];
+  const nextQuote = groups[activeGroup][1][activeQuoteInGroup];
 
-  // ── Crossfade navigation helper ─────────────────────────────────────
-  // Fade out → apply navigation → fade in
-  const navigateWithFade = useCallback((navFn: () => void) => {
-    pendingNavRef.current = navFn;
-    setVisible(false); // triggers fade-out
+  // ── Measure max quote height on mount ───────────────────────────────
+  useEffect(() => {
+    const el = measureRef.current;
+    if (!el) return;
+    let maxH = 0;
+    const children = el.children;
+    for (let i = 0; i < children.length; i++) {
+      const h = (children[i] as HTMLElement).offsetHeight;
+      if (h > maxH) maxH = h;
+    }
+    if (maxH > 0) setQuoteHeight(maxH);
   }, []);
 
-  // When fade-out completes, apply the pending nav and fade back in
-  const handleTransitionEnd = useCallback(() => {
-    if (!visible && pendingNavRef.current) {
-      pendingNavRef.current();
-      pendingNavRef.current = null;
-      // Small delay so React renders new content before fading in
-      requestAnimationFrame(() => setVisible(true));
+  // ── Handle navigation changes with animations ──────────────────────
+  useEffect(() => {
+    const sameGroup = activeGroup === displayedGroup;
+    const sameQuote = activeQuoteInGroup === displayedQuoteInGroup;
+    if (sameGroup && sameQuote) return;
+
+    if (sameGroup) {
+      // Within-person: roll quote text only
+      setIsRolling(true);
+      const timer = setTimeout(() => {
+        setDisplayedQuoteInGroup(activeQuoteInGroup);
+        setIsRolling(false);
+      }, ROLL_MS);
+      return () => clearTimeout(timer);
+    } else {
+      // Different person: fade entire card
+      setCardFade(false);
+      const timer = setTimeout(() => {
+        setDisplayedGroup(activeGroup);
+        setDisplayedQuoteInGroup(activeQuoteInGroup);
+        requestAnimationFrame(() => setCardFade(true));
+      }, FADE_MS);
+      return () => clearTimeout(timer);
     }
-  }, [visible]);
+  }, [activeGroup, activeQuoteInGroup, displayedGroup, displayedQuoteInGroup]);
 
   // ── Auto-advance ──────────────────────────────────────────────────────
   const resetAutoTimer = useCallback(() => {
     if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
     autoTimerRef.current = setTimeout(() => {
-      navigateWithFade(() => {
-        setActiveQuoteInGroup((prev) => {
-          const groupQuotes = groups[activeGroup][1];
-          if (prev + 1 < groupQuotes.length) return prev + 1;
-          setActiveGroup((g) => (g + 1) % groups.length);
-          return 0;
-        });
+      setActiveQuoteInGroup((prev) => {
+        const groupQuotes = groups[activeGroup][1];
+        if (prev + 1 < groupQuotes.length) return prev + 1;
+        setActiveGroup((g) => (g + 1) % groups.length);
+        return 0;
       });
     }, autoAdvanceMs);
-  }, [activeGroup, autoAdvanceMs, groups, navigateWithFade]);
+  }, [activeGroup, autoAdvanceMs, groups]);
 
   useEffect(() => {
     resetAutoTimer();
@@ -128,46 +164,38 @@ export default function MobileQuoteCarousel({
     }
   }, [activeGroup]);
 
-  // ── Navigation helpers (wrapped in fade) ──────────────────────────────
+  // ── Navigation helpers ────────────────────────────────────────────────
   const goNext = useCallback(() => {
-    navigateWithFade(() => {
-      const groupQuotes = groups[activeGroup][1];
-      if (activeQuoteInGroup + 1 < groupQuotes.length) {
-        setActiveQuoteInGroup((p) => p + 1);
-      } else {
-        setActiveGroup((g) => (g + 1) % groups.length);
-        setActiveQuoteInGroup(0);
-      }
-    });
-  }, [activeGroup, activeQuoteInGroup, groups, navigateWithFade]);
+    const groupQuotes = groups[activeGroup][1];
+    if (activeQuoteInGroup + 1 < groupQuotes.length) {
+      setActiveQuoteInGroup((p) => p + 1);
+    } else {
+      setActiveGroup((g) => (g + 1) % groups.length);
+      setActiveQuoteInGroup(0);
+    }
+  }, [activeGroup, activeQuoteInGroup, groups]);
 
   const goPrev = useCallback(() => {
-    navigateWithFade(() => {
-      if (activeQuoteInGroup > 0) {
-        setActiveQuoteInGroup((p) => p - 1);
-      } else {
-        const prevGroup = (activeGroup - 1 + groups.length) % groups.length;
-        setActiveGroup(prevGroup);
-        setActiveQuoteInGroup(groups[prevGroup][1].length - 1);
-      }
-    });
-  }, [activeGroup, activeQuoteInGroup, groups, navigateWithFade]);
+    if (activeQuoteInGroup > 0) {
+      setActiveQuoteInGroup((p) => p - 1);
+    } else {
+      const prevGroup = (activeGroup - 1 + groups.length) % groups.length;
+      setActiveGroup(prevGroup);
+      setActiveQuoteInGroup(groups[prevGroup][1].length - 1);
+    }
+  }, [activeGroup, activeQuoteInGroup, groups]);
 
   const jumpToGroup = useCallback((index: number) => {
     if (index === activeGroup) return;
-    navigateWithFade(() => {
-      setActiveGroup(index);
-      setActiveQuoteInGroup(0);
-    });
-  }, [activeGroup, navigateWithFade]);
+    setActiveGroup(index);
+    setActiveQuoteInGroup(0);
+  }, [activeGroup]);
 
   const jumpToQuoteInGroup = useCallback((index: number) => {
     if (index === activeQuoteInGroup) return;
-    navigateWithFade(() => {
-      setActiveQuoteInGroup(index);
-    });
+    setActiveQuoteInGroup(index);
     resetAutoTimer();
-  }, [activeQuoteInGroup, navigateWithFade, resetAutoTimer]);
+  }, [activeQuoteInGroup, resetAutoTimer]);
 
   // ── Touch handlers (direct DOM, direction-locked) ─────────────────────
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
@@ -232,15 +260,27 @@ export default function MobileQuoteCarousel({
     resetAutoTimer();
   }, [goNext, goPrev, resetAutoTimer]);
 
-  // ── Global progress indicator ─────────────────────────────────────────
+  // ── Global progress ─────────────────────────────────────────────────
   let globalIndex = 0;
   for (let i = 0; i < activeGroup; i++) {
     globalIndex += groups[i][1].length;
   }
   globalIndex += activeQuoteInGroup;
 
+  // Currently displayed person's quotes (for dots)
+  const currentPersonQuotes = groups[displayedGroup][1];
+
   return (
     <div className="select-none">
+      {/* Hidden measurement container — renders all quotes to find max height */}
+      <div ref={measureRef} className="pointer-events-none absolute left-0 right-0 -z-10 px-8 opacity-0" aria-hidden="true">
+        {quotes.map((q, i) => (
+          <p key={i} className="text-base leading-relaxed">
+            &ldquo;{q.quote}&rdquo;
+          </p>
+        ))}
+      </div>
+
       {/* Header */}
       {label && (
         <div className="mb-4 text-center">
@@ -283,51 +323,84 @@ export default function MobileQuoteCarousel({
           className="px-4"
           style={{ willChange: 'transform' }}
         >
-          <div
-            className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm"
-            style={{
-              opacity: visible ? 1 : 0,
-              transition: `opacity ${FADE_MS}ms ease-in-out`,
-            }}
-            onTransitionEnd={handleTransitionEnd}
-          >
-            {/* Quote text */}
-            <p className="text-base leading-relaxed text-stone-700">
-              &ldquo;{currentQuote.quote}&rdquo;
-            </p>
+          <div className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
 
-            {/* Attribution */}
-            <div className="mt-3 flex items-center gap-3">
-              {portraits[currentQuote.lastName] ? (
-                <div className="h-[58px] w-[58px] flex-shrink-0 overflow-hidden rounded-full border border-stone-200 bg-white">
+            {/* ── Quote text area (rolls within person, fades between persons) ── */}
+            <div
+              className="relative overflow-hidden"
+              style={quoteHeight ? { height: quoteHeight } : undefined}
+            >
+              {/* Outgoing quote (current displayed) */}
+              <div
+                className="absolute inset-x-0 top-0"
+                style={{
+                  transform: isRolling ? 'translateY(-100%)' : 'translateY(0)',
+                  opacity: isRolling ? 0 : (cardFade ? 1 : 0),
+                  transition: isRolling
+                    ? `transform ${ROLL_MS}ms cubic-bezier(0.4, 0, 0.2, 1), opacity ${ROLL_MS}ms ease-in`
+                    : `opacity ${FADE_MS}ms ease-in-out`,
+                }}
+              >
+                <p className="text-base leading-relaxed text-stone-700">
+                  &ldquo;{displayedQuote.quote}&rdquo;
+                </p>
+              </div>
+
+              {/* Incoming quote (rolls up into view) — only during roll */}
+              {isRolling && (
+                <div
+                  className="absolute inset-x-0 top-0"
+                  style={{
+                    transform: 'translateY(0)',
+                    opacity: 1,
+                    animation: `rollIn ${ROLL_MS}ms cubic-bezier(0.4, 0, 0.2, 1) both`,
+                  }}
+                >
+                  <p className="text-base leading-relaxed text-stone-700">
+                    &ldquo;{nextQuote.quote}&rdquo;
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* ── Attribution (static within person, fades between persons) ── */}
+            <div
+              className="mt-3 flex items-center gap-3"
+              style={{
+                opacity: cardFade ? 1 : 0,
+                transition: `opacity ${FADE_MS}ms ease-in-out`,
+              }}
+            >
+              {portraits[displayedQuote.lastName] ? (
+                <div className="h-[67px] w-[67px] flex-shrink-0 overflow-hidden rounded-full border border-stone-200 bg-white">
                   <Image
-                    src={portraits[currentQuote.lastName]}
-                    alt={`${currentQuote.firstName} ${currentQuote.lastName}`}
-                    width={96}
-                    height={96}
+                    src={portraits[displayedQuote.lastName]}
+                    alt={`${displayedQuote.firstName} ${displayedQuote.lastName}`}
+                    width={134}
+                    height={134}
                     unoptimized
                     className="h-full w-full object-cover object-top"
                   />
                 </div>
               ) : (
-                <div className="flex h-[58px] w-[58px] flex-shrink-0 items-center justify-center rounded-full bg-stone-100">
-                  <span className="text-sm font-bold text-stone-500">
-                    {currentQuote.firstName[0]}{currentQuote.lastName[0]}
+                <div className="flex h-[67px] w-[67px] flex-shrink-0 items-center justify-center rounded-full bg-stone-100">
+                  <span className="text-base font-bold text-stone-500">
+                    {displayedQuote.firstName[0]}{displayedQuote.lastName[0]}
                   </span>
                 </div>
               )}
               <div>
-                <p className="text-sm font-semibold text-stone-800">
-                  {currentQuote.firstName} {currentQuote.lastName}
+                <p className="text-base font-semibold text-stone-800">
+                  {displayedQuote.firstName} {displayedQuote.lastName}
                 </p>
-                <p className="text-xs text-stone-500">{currentQuote.title}</p>
+                <p className="text-sm text-stone-500">{displayedQuote.title}</p>
               </div>
             </div>
 
-            {/* Multi-quote dots — always rendered for uniform height */}
+            {/* ── Multi-quote dots (always rendered for uniform height) ── */}
             <div className="mt-2 flex h-4 items-center justify-center gap-2">
-              {currentQuotes.length > 1 &&
-                currentQuotes.map((_, i) => (
+              {currentPersonQuotes.length > 1 &&
+                currentPersonQuotes.map((_, i) => (
                   <button
                     key={i}
                     type="button"
@@ -337,13 +410,21 @@ export default function MobileQuoteCarousel({
                         ? 'h-2.5 w-6 bg-[#00A540]'
                         : 'h-2.5 w-2.5 bg-stone-300'
                     }`}
-                    aria-label={`Quote ${i + 1} of ${currentQuotes.length}`}
+                    aria-label={`Quote ${i + 1} of ${currentPersonQuotes.length}`}
                   />
                 ))}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Roll-in keyframe */}
+      <style>{`
+        @keyframes rollIn {
+          from { transform: translateY(100%); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+      `}</style>
 
       {/* Global progress: "3 of 20" */}
       <p className="mt-2 text-center text-xs text-stone-400">
