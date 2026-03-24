@@ -28,7 +28,8 @@ export function getAdminDb(): Firestore {
     }
     // Vercel's UI may wrap long lines or expand \n, inserting extra whitespace
     // into the PEM. We extract only the base64 characters and rebuild a clean PEM.
-    let rawPk = serviceAccount.private_key || (serviceAccount as any).privateKey;
+    const sa = serviceAccount as any;
+    let rawPk = sa.private_key || sa.privateKey;
     if (rawPk) {
       // 1. Remove literal '\n' strings and headers/footers
       const noHeaders = rawPk
@@ -46,8 +47,8 @@ export function getAdminDb(): Firestore {
     }
 
     const certConfig = {
-      projectId: serviceAccount.project_id || (serviceAccount as any).projectId,
-      clientEmail: serviceAccount.client_email || (serviceAccount as any).clientEmail,
+      projectId: sa.project_id || sa.projectId,
+      clientEmail: sa.client_email || sa.clientEmail,
       privateKey: rawPk,
     };
 
