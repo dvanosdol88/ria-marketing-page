@@ -71,8 +71,9 @@ export async function POST(request: NextRequest) {
     const counts = await readCounts();
     return NextResponse.json({ success: true, counts });
   } catch (error) {
-    console.error("Vote submission error:", error);
-    return NextResponse.json({ error: "Failed to submit vote" }, { status: 500 });
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("Vote submission error:", message, error);
+    return NextResponse.json({ error: "Failed to submit vote", detail: message }, { status: 500 });
   }
 }
 
