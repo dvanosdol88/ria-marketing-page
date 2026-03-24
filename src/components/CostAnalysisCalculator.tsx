@@ -555,16 +555,14 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   return (
     <>
       <div
-        className={`fixed left-0 right-0 top-12 z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-300 dark:border-slate-700 dark:bg-slate-900/90 sm:hidden ${
+        className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-300 dark:border-slate-700 dark:bg-slate-900/90 sm:hidden ${
           scrolledPastHero ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
-        <div className="flex h-12 items-center justify-center gap-2 px-4">
-          <span style={{ color: heroSavingsColor }}>
-            <Odometer value={projection.savings} prefix="+$" duration={1000} className="text-lg font-bold" />
-          </span>
-          <span className="text-sm font-semibold uppercase tracking-wider" style={{ color: heroSavingsColor }}>
-            You Save
+        <div className="flex h-12 items-center justify-center gap-2 px-4 text-red-600 dark:text-red-400">
+          <Odometer value={projection.savings} prefix="$" duration={1000} className="text-lg font-bold" />
+          <span className="text-sm font-semibold uppercase tracking-wider">
+            lost to fees!
           </span>
         </div>
       </div>

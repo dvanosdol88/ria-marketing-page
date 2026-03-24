@@ -87,7 +87,7 @@ export function SiteNav() {
         <div className="site-nav mx-auto max-w-[1200px] px-4 sm:px-6">
           {/* ── Mobile Layout ── */}
           <div className={`flex items-center justify-between md:hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-            collapsed ? "h-12" : "h-16"
+            collapsed ? "h-[58px]" : "h-[77px]"
           }`}>
             <button
               onClick={toggleDrawer}
@@ -112,8 +112,8 @@ export function SiteNav() {
                 style={{ gridArea: "1/1" }}
                 className={`w-auto justify-self-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                   collapsed
-                    ? "h-7 opacity-0"
-                    : "h-12 opacity-100"
+                    ? "h-[34px] opacity-0"
+                    : "h-[58px] opacity-100"
                 }`}
                 priority
               />
@@ -123,8 +123,8 @@ export function SiteNav() {
                 style={{ gridArea: "1/1" }}
                 className={`w-auto justify-self-center transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                   collapsed
-                    ? "h-7 opacity-100"
-                    : "h-12 opacity-0"
+                    ? "h-[34px] opacity-100"
+                    : "h-[58px] opacity-0"
                 }`}
               />
             </Link>
@@ -215,7 +215,7 @@ export function SiteNav() {
         aria-hidden={!drawerOpen}
       >
         {/* Drawer Header */}
-        <div className="flex h-16 items-center justify-between px-4">
+        <div className="flex h-[77px] items-center justify-between px-4">
           <Link
             href={"/" as any}
             aria-label="Smarter Way Wealth home"
@@ -226,7 +226,7 @@ export function SiteNav() {
               alt="Smarter Way Wealth"
               width={1000}
               height={375}
-              className="h-10 w-auto"
+              className="h-12 w-auto"
             />
           </Link>
           <button
