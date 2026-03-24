@@ -69,16 +69,24 @@ export function SiteNav() {
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
   /* ── Tiered Logo Component ── */
-  const Logo = ({ heightClass, isCentered = false }: { heightClass: string, isCentered?: boolean }) => (
-    <div className={`flex items-center gap-2 ${isCentered ? "justify-center" : "justify-start"}`}>
+  const Logo = ({ 
+    heightClass, 
+    isCentered = false,
+    textSizeClass = "text-xl"
+  }: { 
+    heightClass: string, 
+    isCentered?: boolean,
+    textSizeClass?: string
+  }) => (
+    <div className={`flex items-center gap-2 sm:gap-3 ${isCentered ? "justify-center" : "justify-start"}`}>
       <img
         src="/brand/logo-icon.svg"
         alt="Smarter Way Wealth"
         className={`w-auto transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${heightClass}`}
       />
-      <div className="flex items-center whitespace-nowrap text-[#00A540] font-bold tracking-tightish">
-        <span className="hidden sm:inline text-[0.85em]">Smarter</span>
-        <span className="hidden md:inline text-[0.85em]">&nbsp;Way Wealth</span>
+      <div className={`flex items-baseline whitespace-nowrap tracking-tightish transition-all duration-500 ${textSizeClass}`}>
+        <span className="hidden sm:inline font-bold text-[#2A3F63]">Smarter</span>
+        <span className="hidden md:inline font-medium text-[#00A540]">&nbsp;Way Wealth</span>
       </div>
     </div>
   );
@@ -121,6 +129,7 @@ export function SiteNav() {
             >
               <Logo
                 heightClass={collapsed ? "h-[34px]" : "h-[58px]"}
+                textSizeClass={collapsed ? "text-lg" : "text-2xl"}
                 isCentered={true}
               />
             </Link>
@@ -139,7 +148,10 @@ export function SiteNav() {
               className="shrink-0 rounded-md transition-opacity hover:opacity-90"
               aria-label="Smarter Way Wealth home"
             >
-              <Logo heightClass={collapsed ? "h-8" : "h-20"} />
+              <Logo 
+                heightClass={collapsed ? "h-8" : "h-20"} 
+                textSizeClass={collapsed ? "text-xl" : "text-4xl"}
+              />
             </Link>
 
             <nav className="flex items-center gap-1">
@@ -195,7 +207,10 @@ export function SiteNav() {
             aria-label="Smarter Way Wealth home"
             onClick={closeDrawer}
           >
-            <Logo heightClass="h-10" />
+            <Logo 
+              heightClass="h-10" 
+              textSizeClass="text-2xl"
+            />
           </Link>
           <button
             onClick={closeDrawer}
