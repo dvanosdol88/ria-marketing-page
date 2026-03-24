@@ -96,8 +96,24 @@ export async function GET() {
     const counts = await readCounts();
     return NextResponse.json({ counts });
   } catch (error) {
-    console.error("Vote fetch error:", error);
-    // Graceful degradation: return empty counts so the UI still renders
-    return NextResponse.json({ counts: {} });
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("Vote fetch error:", message, error);
+    
+    let pkDebug = "";
+    try {
+      const raw = process.env.FIREBASE_SERVICE_ACCOUNT_KEY ?? "";
+      const parsed = JSON.parse(raw.replace(/\n/g, "\\n"));
+      const pk: string = parsed.private_key ?? "";
+      const restored = pk.includes("\n") ? pk : pk.replace(/\\n/g, "\n");
+      const flat = restored.replace(/\\n/g, "").replace(/\s/g, "");
+      const match = flat.match(/-+BEGIN[^-]+-+([^-]+)-+END[^-]+-+/i);
+      const cleanedStart = match ? match[1].slice(0, 40) : "no-match";
+      pkDebug = `len=${restored.length} rawStart=${JSON.stringify(restored.slice(0, 50))} cleanedStart=${cleanedStart}`;
+    } catch (e) {
+      pkDebug = `parse-err: ${e instanceof Error ? e.message : String(e)}`;
+    }
+    
+    // Graceful degradation: return empty counts so the UI still renders, but include debug info
+    return NextResponse.json({ counts: {}, error: message, pkDebug });
   }
 }
