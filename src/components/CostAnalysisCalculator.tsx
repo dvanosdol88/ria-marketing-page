@@ -377,13 +377,13 @@ function ValueCard({
       ? "ring-2 ring-[#007A2F]/35"
       : "ring-2 ring-[#2A3F63]/30"
     : "";
-  const compactDisplay = value >= 1_000_000 ? `$${formatCompactNumber(value)}` : formatCurrency(value);
+  const compactDisplay = formatCurrency(value);
 
   return (
     <button
       type="button"
       onClick={onPress}
-      className={`h-full rounded-xl border px-3 py-2 text-left transition-all sm:px-4 sm:py-2.5 lg:px-5 lg:py-3 ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"} ${className ?? ""}`}
+      className={`flex flex-col items-center justify-center h-full rounded-xl border px-3 py-2 text-center transition-all sm:px-4 sm:py-2.5 lg:px-5 lg:py-3 ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"} ${className ?? ""}`}
       style={{ borderWidth: homeCalculatorConfig.cards.borderWidthPx, ...cardStyle }}
       aria-pressed={isActive}
     >
@@ -396,7 +396,7 @@ function ValueCard({
 function LostFeesCard({ value, isDarkMode, className }: { value: number; isDarkMode: boolean; className?: string }) {
   return (
     <div
-      className={`col-span-2 h-full rounded-xl border px-3 py-2 text-center sm:px-4 sm:py-2.5 min-[860px]:col-span-1 ${className ?? ""}`}
+      className={`flex flex-col items-center justify-center col-span-2 h-full rounded-xl border px-3 py-2 text-center sm:px-4 sm:py-2.5 min-[860px]:col-span-1 ${className ?? ""}`}
       style={{
         borderWidth: homeCalculatorConfig.cards.borderWidthPx,
         borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
@@ -408,7 +408,7 @@ function LostFeesCard({ value, isDarkMode, className }: { value: number; isDarkM
       <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
         {homeCalculatorConfig.cards.lostToFeesLabel}
       </p>
-      <p className="mt-0.5 text-[clamp(1.1rem,1.8vw,1.7rem)] font-bold tabular-nums" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
+      <p className="mt-0.5 text-[clamp(1.1rem,2vw,2rem)] font-semibold tabular-nums" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
         -{formatCurrency(value)}
       </p>
     </div>
@@ -573,10 +573,12 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         <div className="section-shell text-center">
           <h1 className="text-2xl font-semibold sm:text-5xl">
             <span style={{ color: heroPromptColor }}>What would you do with </span>
-            <span style={{ color: heroSavingsColor }}>
-              <Odometer value={projection.savings} prefix="$" duration={1400} className="align-baseline" />
+            <span className="whitespace-nowrap">
+              <span style={{ color: heroSavingsColor }}>
+                <Odometer value={projection.savings} prefix="$" duration={1400} className="align-baseline" />
+              </span>
+              <span style={{ color: heroPromptColor }}>?</span>
             </span>
-            <span style={{ color: heroPromptColor }}>?</span>
           </h1>
           <div className="mt-2 flex flex-wrap items-center justify-center gap-1 text-base text-neutral-900 dark:text-slate-200 sm:text-xl">
             <span>See how much you can save.</span>
