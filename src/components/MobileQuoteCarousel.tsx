@@ -53,18 +53,29 @@ export default function MobileQuoteCarousel({
   const groups = useRef(groupByLastName(quotes)).current;
   const [activeGroup, setActiveGroup] = useState(0);
   const [activeQuoteInGroup, setActiveQuoteInGroup] = useState(0);
-  const [swipeX, setSwipeX] = useState(0);
-  const [isSwiping, setIsSwiping] = useState(false);
+  const [fadeKey, setFadeKey] = useState(0); // triggers fade animation on change
 
-  const touchStartRef = useRef<{ x: number; y: number; time: number } | null>(null);
+  // Touch tracking via refs (no re-renders during swipe)
+  const cardRef = useRef<HTMLDivElement>(null);
+  const touchRef = useRef<{
+    startX: number;
+    startY: number;
+    currentX: number;
+    locked: 'horizontal' | 'vertical' | null;
+  } | null>(null);
+
   const autoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const nameStripRef = useRef<HTMLDivElement>(null);
 
   const totalQuotes = groups.reduce((sum, [, q]) => sum + q.length, 0);
 
-  // Flatten current position to a global index for display
   const currentQuotes = groups[activeGroup][1];
   const currentQuote = currentQuotes[activeQuoteInGroup];
+
+  // ── Trigger fade on any quote change ────────────────────────────────
+  useEffect(() => {
+    setFadeKey((k) => k + 1);
+  }, [activeGroup, activeQuoteInGroup]);
 
   // ── Auto-advance ──────────────────────────────────────────────────────
   const resetAutoTimer = useCallback(() => {
@@ -73,7 +84,6 @@ export default function MobileQuoteCarousel({
       setActiveQuoteInGroup((prev) => {
         const groupQuotes = groups[activeGroup][1];
         if (prev + 1 < groupQuotes.length) return prev + 1;
-        // Move to next group
         setActiveGroup((g) => (g + 1) % groups.length);
         return 0;
       });
@@ -87,13 +97,17 @@ export default function MobileQuoteCarousel({
     };
   }, [activeGroup, activeQuoteInGroup, resetAutoTimer]);
 
-  // ── Scroll active name into view ──────────────────────────────────────
+  // ── Scroll active name into view (start flush-left for Bogle) ───────
   useEffect(() => {
     const strip = nameStripRef.current;
     if (!strip) return;
-    const activeEl = strip.children[activeGroup] as HTMLElement | undefined;
-    if (activeEl) {
-      activeEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    if (activeGroup === 0) {
+      strip.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      const activeEl = strip.children[activeGroup] as HTMLElement | undefined;
+      if (activeEl) {
+        activeEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
     }
   }, [activeGroup]);
 
@@ -123,38 +137,72 @@ export default function MobileQuoteCarousel({
     setActiveQuoteInGroup(0);
   }, []);
 
-  // ── Touch handlers ────────────────────────────────────────────────────
+  // ── Touch handlers (direct DOM, direction-locked) ─────────────────────
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     const touch = e.touches[0];
     if (!touch) return;
-    touchStartRef.current = { x: touch.clientX, y: touch.clientY, time: Date.now() };
-    setIsSwiping(true);
+    touchRef.current = {
+      startX: touch.clientX,
+      startY: touch.clientY,
+      currentX: touch.clientX,
+      locked: null,
+    };
+    // Remove transition during active drag
+    if (cardRef.current) {
+      cardRef.current.style.transition = 'none';
+    }
   }, []);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!touchStartRef.current) return;
+    const state = touchRef.current;
+    if (!state) return;
     const touch = e.touches[0];
     if (!touch) return;
-    const dx = touch.clientX - touchStartRef.current.x;
-    const dy = touch.clientY - touchStartRef.current.y;
-    // Only track horizontal movement
-    if (Math.abs(dx) > Math.abs(dy)) {
-      setSwipeX(dx);
+
+    const dx = touch.clientX - state.startX;
+    const dy = touch.clientY - state.startY;
+
+    // Lock direction on first significant movement
+    if (!state.locked) {
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+      if (absDx < 8 && absDy < 8) return; // dead zone
+      state.locked = absDx > absDy ? 'horizontal' : 'vertical';
+    }
+
+    if (state.locked === 'vertical') return; // let page scroll normally
+
+    // Horizontal swipe — prevent vertical scroll and move card
+    e.preventDefault();
+    state.currentX = touch.clientX;
+
+    if (cardRef.current) {
+      const offset = (touch.clientX - state.startX) * 0.5; // damped
+      cardRef.current.style.transform = `translateX(${offset}px)`;
     }
   }, []);
 
   const handleTouchEnd = useCallback(() => {
-    const threshold = 50;
-    if (swipeX < -threshold) {
+    const state = touchRef.current;
+    touchRef.current = null;
+
+    // Snap back with transition
+    if (cardRef.current) {
+      cardRef.current.style.transition = 'transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      cardRef.current.style.transform = 'translateX(0)';
+    }
+
+    if (!state || state.locked !== 'horizontal') return;
+
+    const dx = state.currentX - state.startX;
+    const threshold = 40;
+    if (dx < -threshold) {
       goNext();
-    } else if (swipeX > threshold) {
+    } else if (dx > threshold) {
       goPrev();
     }
-    setSwipeX(0);
-    setIsSwiping(false);
-    touchStartRef.current = null;
     resetAutoTimer();
-  }, [swipeX, goNext, goPrev, resetAutoTimer]);
+  }, [goNext, goPrev, resetAutoTimer]);
 
   // ── Global progress indicator ─────────────────────────────────────────
   let globalIndex = 0;
@@ -165,6 +213,17 @@ export default function MobileQuoteCarousel({
 
   return (
     <div className="select-none">
+      {/* Fade-in animation */}
+      <style>{`
+        @keyframes carouselFadeIn {
+          from { opacity: 0; transform: translateY(6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .carousel-fade-in {
+          animation: carouselFadeIn 0.35s ease-out both;
+        }
+      `}</style>
+
       {/* Header */}
       {label && (
         <div className="mb-4 text-center">
@@ -184,7 +243,7 @@ export default function MobileQuoteCarousel({
             key={lastName}
             type="button"
             onClick={() => jumpToGroup(i)}
-            className={`flex-shrink-0 rounded-full px-3 py-1 text-sm font-medium transition-colors ${
+            className={`flex-shrink-0 rounded-full px-3 py-1 text-sm font-medium transition-colors duration-300 ${
               i === activeGroup
                 ? 'bg-[#00A540] text-white'
                 : 'bg-stone-100 text-stone-500'
@@ -197,19 +256,20 @@ export default function MobileQuoteCarousel({
 
       {/* Quote card with swipe */}
       <div
-        className="relative overflow-hidden"
+        className="relative overflow-hidden touch-pan-y"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         <div
+          ref={cardRef}
           className="px-4"
-          style={{
-            transform: isSwiping ? `translateX(${swipeX * 0.4}px)` : undefined,
-            transition: isSwiping ? 'none' : 'transform 0.3s ease-out',
-          }}
+          style={{ willChange: 'transform' }}
         >
-          <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+          <div
+            key={fadeKey}
+            className="carousel-fade-in rounded-2xl border border-stone-200 bg-white p-5 shadow-sm"
+          >
             {/* Quote text */}
             <p className="text-base leading-relaxed text-stone-700">
               &ldquo;{currentQuote.quote}&rdquo;
@@ -243,16 +303,18 @@ export default function MobileQuoteCarousel({
               </div>
             </div>
 
-            {/* Multi-quote indicator for this person */}
+            {/* Multi-quote indicator for this person (50% larger dots) */}
             {currentQuotes.length > 1 && (
-              <div className="mt-3 flex items-center justify-center gap-1.5">
+              <div className="mt-3 flex items-center justify-center gap-2">
                 {currentQuotes.map((_, i) => (
                   <button
                     key={i}
                     type="button"
                     onClick={() => { setActiveQuoteInGroup(i); resetAutoTimer(); }}
-                    className={`h-1.5 rounded-full transition-all ${
-                      i === activeQuoteInGroup ? 'w-4 bg-[#00A540]' : 'w-1.5 bg-stone-300'
+                    className={`rounded-full transition-all duration-300 ${
+                      i === activeQuoteInGroup
+                        ? 'h-2.5 w-6 bg-[#00A540]'
+                        : 'h-2.5 w-2.5 bg-stone-300'
                     }`}
                     aria-label={`Quote ${i + 1} of ${currentQuotes.length}`}
                   />
