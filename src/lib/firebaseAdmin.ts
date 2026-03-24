@@ -16,12 +16,17 @@ export function getAdminDb(): Firestore {
       );
     }
 
-    // Vercel's env var UI converts \n escape sequences into actual newlines.
-    // Parse the JSON with those real newlines replaced, then restore the
-    // private key's newlines which PEM format requires.
-    const sanitized = serviceAccountJson.replace(/\n/g, "\\n");
-    const serviceAccount = JSON.parse(sanitized) as ServiceAccount & { private_key?: string };
-    if (serviceAccount.private_key) {
+    // Try parsing as-is first (works locally with properly escaped JSON).
+    // If that fails (Vercel expands \n to real newlines), fall back to
+    // replacing real newlines then restoring them in the private key.
+    let serviceAccount: ServiceAccount & { private_key?: string };
+    try {
+      serviceAccount = JSON.parse(serviceAccountJson);
+    } catch {
+      const sanitized = serviceAccountJson.replace(/\n/g, "\\n");
+      serviceAccount = JSON.parse(sanitized);
+    }
+    if (serviceAccount.private_key && !serviceAccount.private_key.includes("\n")) {
       serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, "\n");
     }
     initializeApp({ credential: cert(serviceAccount) });
