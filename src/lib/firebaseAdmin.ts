@@ -26,14 +26,15 @@ export function getAdminDb(): Firestore {
       const sanitized = serviceAccountJson.replace(/\n/g, "\\n");
       serviceAccount = JSON.parse(sanitized);
     }
-    // Vercel's UI may also wrap long lines, inserting extra whitespace
-    // into the PEM headers/body. Rebuild the key from its base64 content.
+    // Vercel's UI may wrap long lines, inserting extra whitespace into the
+    // PEM headers/body (e.g. "PRIVATE   \n  KEY"). Strip everything that
+    // isn't base64 and rebuild a clean PEM.
     if (serviceAccount.private_key) {
       const pk = serviceAccount.private_key.replace(/\\n/g, "\n");
       const base64 = pk
-        .replace(/-----BEGIN PRIVATE KEY-----/i, "")
-        .replace(/-----END PRIVATE KEY-----/i, "")
-        .replace(/\s+/g, "");
+        .replace(/-+BEGIN[\s\S]*?KEY-+/i, "")
+        .replace(/-+END[\s\S]*?KEY-+/i, "")
+        .replace(/[^A-Za-z0-9+/=]/g, "");
       serviceAccount.private_key =
         "-----BEGIN PRIVATE KEY-----\n" + base64.match(/.{1,64}/g)!.join("\n") + "\n-----END PRIVATE KEY-----\n";
     }
