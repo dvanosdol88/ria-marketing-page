@@ -59,14 +59,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ViewTransitions>
-      <html lang="en">
-        <body className={`${inter.variable} bg-[#EEF0F5] text-neutral-900`}>
+    <html lang="en">
+      <body className={`${inter.variable} bg-[#EEF0F5] text-neutral-900`}>
+        <ViewTransitions>
           <SiteNav />
           <div className="min-h-screen">{children}</div>
           <SiteFooter />
-        </body>
-      </html>
-    </ViewTransitions>
+        </ViewTransitions>
+      </body>
+    </html>
   );
 }

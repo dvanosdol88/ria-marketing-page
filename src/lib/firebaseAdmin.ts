@@ -30,13 +30,19 @@ export function getAdminDb(): Firestore {
     // PEM headers/body (e.g. "PRIVATE   \n  KEY"). Strip everything that
     // isn't base64 and rebuild a clean PEM.
     if (serviceAccount.private_key) {
-      const pk = serviceAccount.private_key.replace(/\\n/g, "\n");
-      const base64 = pk
-        .replace(/-+BEGIN[\s\S]*?KEY-+/i, "")
-        .replace(/-+END[\s\S]*?KEY-+/i, "")
-        .replace(/[^A-Za-z0-9+/=]/g, "");
-      serviceAccount.private_key =
-        "-----BEGIN PRIVATE KEY-----\n" + base64.match(/.{1,64}/g)!.join("\n") + "\n-----END PRIVATE KEY-----\n";
+      const pk = serviceAccount.private_key;
+      // Remove literal '\n' strings and all actual whitespace
+      const flat = pk.replace(/\\n/g, "").replace(/\s/g, "");
+      // Extract everything between the BEGIN and END markers
+      // This is robust against mangled internal header text like "PRIVATE   KEY"
+      const match = flat.match(/-+BEGIN[^-]+-+([^-]+)-+END[^-]+-+/i);
+      if (match && match[1]) {
+        const base64 = match[1];
+        serviceAccount.private_key =
+          "-----BEGIN PRIVATE KEY-----\n" +
+          (base64.match(/.{1,64}/g)?.join("\n") ?? base64) +
+          "\n-----END PRIVATE KEY-----\n";
+      }
     }
     initializeApp({ credential: cert(serviceAccount) });
   }
