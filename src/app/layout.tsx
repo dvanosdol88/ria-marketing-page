@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
-import { inter } from "./fonts";
+import { inter, dmSans } from "./fonts";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 
@@ -60,7 +60,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} bg-[#EEF0F5] text-neutral-900`}>
+      <body className={`${inter.variable} ${dmSans.variable} bg-[#EEF0F5] text-neutral-900`}>
         <ViewTransitions>
           <SiteNav />
           <div className="min-h-screen">{children}</div>

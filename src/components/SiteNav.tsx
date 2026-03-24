@@ -72,11 +72,11 @@ export function SiteNav() {
   const Logo = ({ 
     heightClass, 
     isCentered = false,
-    textSizeClass = "text-xl"
+    fontSizeBase = "1rem"
   }: { 
     heightClass: string, 
     isCentered?: boolean,
-    textSizeClass?: string
+    fontSizeBase?: string
   }) => (
     <div className={`flex items-center gap-2 sm:gap-3 ${isCentered ? "justify-center" : "justify-start"}`}>
       <img
@@ -84,9 +84,16 @@ export function SiteNav() {
         alt="Smarter Way Wealth"
         className={`w-auto transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${heightClass}`}
       />
-      <div className={`flex items-baseline whitespace-nowrap tracking-tightish transition-all duration-500 ${textSizeClass}`}>
-        <span className="hidden sm:inline font-bold text-[#2A3F63]">Smarter</span>
-        <span className="hidden md:inline font-medium text-[#00A540]">&nbsp;Way Wealth</span>
+      <div 
+        className="flex flex-col items-start leading-[1.1] transition-all duration-500 font-logo"
+        style={{ fontSize: fontSizeBase }}
+      >
+        <span className="hidden sm:block font-bold uppercase text-[#4A4A4A] tracking-[0.166em]">
+          Smarter
+        </span>
+        <span className="hidden md:block font-normal uppercase text-[#00A540] tracking-[0.222em]" style={{ fontSize: '0.5em' }}>
+          Way Wealth
+        </span>
       </div>
     </div>
   );
@@ -129,7 +136,7 @@ export function SiteNav() {
             >
               <Logo
                 heightClass={collapsed ? "h-[34px]" : "h-[58px]"}
-                textSizeClass={collapsed ? "text-lg" : "text-2xl"}
+                fontSizeBase={collapsed ? "1.1rem" : "1.4rem"}
                 isCentered={true}
               />
             </Link>
@@ -150,7 +157,7 @@ export function SiteNav() {
             >
               <Logo 
                 heightClass={collapsed ? "h-8" : "h-20"} 
-                textSizeClass={collapsed ? "text-xl" : "text-4xl"}
+                fontSizeBase={collapsed ? "1.2rem" : "2.4rem"}
               />
             </Link>
 
@@ -209,7 +216,7 @@ export function SiteNav() {
           >
             <Logo 
               heightClass="h-10" 
-              textSizeClass="text-2xl"
+              fontSizeBase="1.4rem"
             />
           </Link>
           <button

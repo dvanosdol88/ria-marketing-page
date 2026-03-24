@@ -285,7 +285,15 @@ export default function MobileQuoteCarousel({
       {label && (
         <div className="mb-4 text-center">
           <p className="text-xl font-semibold tracking-tight text-stone-800">{label}</p>
-          {subLabel && <p className="mt-1 text-sm text-stone-600">{subLabel}</p>}
+          {subLabel && (
+            <p className="mt-1 text-sm text-stone-600">
+              {subLabel.split(/(legends)/i).map((part, i) =>
+                part.toLowerCase() === 'legends'
+                  ? <span key={i} className="font-bold text-[#00A540]">{part}</span>
+                  : part
+              )}
+            </p>
+          )}
         </div>
       )}
 
@@ -323,7 +331,7 @@ export default function MobileQuoteCarousel({
           className="px-4"
           style={{ willChange: 'transform' }}
         >
-          <div className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm">
+          <div className="rounded-2xl border border-[#00A540] bg-white p-4 pb-2 shadow-sm">
 
             {/* ── Quote text area (rolls within person, fades between persons) ── */}
             <div
@@ -335,9 +343,9 @@ export default function MobileQuoteCarousel({
                 className="absolute inset-x-0 top-0"
                 style={{
                   transform: isRolling ? 'translateY(-100%)' : 'translateY(0)',
-                  opacity: isRolling ? 0 : (cardFade ? 1 : 0),
+                  opacity: cardFade ? 1 : 0,
                   transition: isRolling
-                    ? `transform ${ROLL_MS}ms cubic-bezier(0.4, 0, 0.2, 1), opacity ${ROLL_MS}ms ease-in`
+                    ? `transform ${ROLL_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`
                     : `opacity ${FADE_MS}ms ease-in-out`,
                 }}
               >
@@ -365,7 +373,7 @@ export default function MobileQuoteCarousel({
 
             {/* ── Attribution (static within person, fades between persons) ── */}
             <div
-              className="mt-3 flex items-center gap-3"
+              className="mt-2 flex items-center gap-3"
               style={{
                 opacity: cardFade ? 1 : 0,
                 transition: `opacity ${FADE_MS}ms ease-in-out`,
@@ -398,7 +406,7 @@ export default function MobileQuoteCarousel({
             </div>
 
             {/* ── Multi-quote dots (always rendered for uniform height) ── */}
-            <div className="mt-2 flex h-4 items-center justify-center gap-2">
+            <div className="mt-1 flex h-4 items-center justify-center gap-2">
               {currentPersonQuotes.length > 1 &&
                 currentPersonQuotes.map((_, i) => (
                   <button

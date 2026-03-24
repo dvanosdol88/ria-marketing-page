@@ -529,7 +529,13 @@ export default function QuoteTickerWithPortraits({
             <p className="text-xl font-semibold tracking-tight text-stone-800">
               {label}
             </p>
-            <p className="mt-1 text-sm text-stone-600">{subLabel}</p>
+            <p className="mt-1 text-sm text-stone-600">
+              {subLabel.split(/(legends)/i).map((part, i) =>
+                part.toLowerCase() === 'legends'
+                  ? <span key={i} className="font-bold text-[#00A540]">{part}</span>
+                  : part
+              )}
+            </p>
             {/* Subtle interaction hint — fades out after 5s or first interaction */}
             <div
               className={`mt-1 transition-opacity duration-700 ${
