@@ -16,7 +16,11 @@ export function getAdminDb(): Firestore {
       );
     }
 
-    const serviceAccount = JSON.parse(serviceAccountJson) as ServiceAccount;
+    // Vercel's env var UI converts \n escape sequences into actual newlines,
+    // which breaks JSON.parse. Replace real newlines inside string values
+    // with the escaped form so the JSON is valid.
+    const sanitized = serviceAccountJson.replace(/\n/g, "\\n");
+    const serviceAccount = JSON.parse(sanitized) as ServiceAccount;
     initializeApp({ credential: cert(serviceAccount) });
   }
 
