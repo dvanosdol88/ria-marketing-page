@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     console.error("Vote submission error:", message, error);
-    // Temporarily include private key diagnostics (first/last 100 chars)
+    // Temporarily include diagnostics
     let pkDebug = "";
     try {
       const raw = process.env.FIREBASE_SERVICE_ACCOUNT_KEY ?? "";
@@ -83,7 +83,7 @@ export async function POST(request: NextRequest) {
       const flat = restored.replace(/\\n/g, "").replace(/\s/g, "");
       const match = flat.match(/-+BEGIN[^-]+-+([^-]+)-+END[^-]+-+/i);
       const cleanedStart = match ? match[1].slice(0, 40) : "no-match";
-      pkDebug = `len=${restored.length} rawStart=${JSON.stringify(restored.slice(0, 50))} cleanedStart=${cleanedStart}`;
+      pkDebug = `id=${parsed.project_id} email=${parsed.client_email} len=${restored.length} rawStart=${JSON.stringify(restored.slice(0, 50))} cleanedStart=${cleanedStart}`;
     } catch (e) {
       pkDebug = `parse-err: ${e instanceof Error ? e.message : String(e)}`;
     }
@@ -108,7 +108,7 @@ export async function GET() {
       const flat = restored.replace(/\\n/g, "").replace(/\s/g, "");
       const match = flat.match(/-+BEGIN[^-]+-+([^-]+)-+END[^-]+-+/i);
       const cleanedStart = match ? match[1].slice(0, 40) : "no-match";
-      pkDebug = `len=${restored.length} rawStart=${JSON.stringify(restored.slice(0, 50))} cleanedStart=${cleanedStart}`;
+      pkDebug = `id=${parsed.project_id} email=${parsed.client_email} len=${restored.length} rawStart=${JSON.stringify(restored.slice(0, 50))} cleanedStart=${cleanedStart}`;
     } catch (e) {
       pkDebug = `parse-err: ${e instanceof Error ? e.message : String(e)}`;
     }
