@@ -1,18 +1,10 @@
-import { kv } from "@vercel/kv";
+import { getAdminDb } from "@/lib/firebaseAdmin";
+import { FieldValue } from "firebase-admin/firestore";
 import { NextRequest, NextResponse } from "next/server";
 
-const VOTE_KEY = "quiz:votes";
-const KV_TIMEOUT_MS = 5000;
+export const dynamic = "force-dynamic";
 
-// Wraps a promise with a timeout so KV calls don't hang indefinitely
-function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
-  return Promise.race([
-    promise,
-    new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error(`KV timeout after ${ms}ms`)), ms)
-    ),
-  ]);
-}
+const VOTES_DOC = "quiz/votes";
 
 const validOptions = [
   "retire-early",
@@ -40,17 +32,16 @@ function normalizeVotePayload(body: VoteBody): string[] {
   return [];
 }
 
-function normalizeCounts(counts: Record<string, string | number> | null): Record<string, number> {
-  const normalized: Record<string, number> = {};
+async function readCounts(): Promise<Record<string, number>> {
+  const snap = await getAdminDb().doc(VOTES_DOC).get();
+  if (!snap.exists) return {};
 
-  if (!counts) return normalized;
-
-  for (const [key, value] of Object.entries(counts)) {
-    const parsed = typeof value === "number" ? value : Number.parseInt(value, 10);
-    normalized[key] = Number.isFinite(parsed) ? parsed : 0;
+  const data = snap.data() as Record<string, unknown>;
+  const counts: Record<string, number> = {};
+  for (const [key, value] of Object.entries(data)) {
+    if (typeof value === "number") counts[key] = value;
   }
-
-  return normalized;
+  return counts;
 }
 
 export async function POST(request: NextRequest) {
@@ -70,18 +61,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const pipeline = kv.pipeline();
+    // Atomically increment each voted option
+    const updates: Record<string, FieldValue> = {};
     for (const vote of votes) {
-      pipeline.hincrby(VOTE_KEY, vote, 1);
+      updates[vote] = FieldValue.increment(1);
     }
-    await withTimeout(pipeline.exec(), KV_TIMEOUT_MS);
+    await getAdminDb().doc(VOTES_DOC).set(updates, { merge: true });
 
-    const counts = await withTimeout(
-      kv.hgetall<Record<string, string | number>>(VOTE_KEY),
-      KV_TIMEOUT_MS
-    );
-
-    return NextResponse.json({ success: true, counts: normalizeCounts(counts) });
+    const counts = await readCounts();
+    return NextResponse.json({ success: true, counts });
   } catch (error) {
     console.error("Vote submission error:", error);
     return NextResponse.json({ error: "Failed to submit vote" }, { status: 500 });
@@ -90,11 +78,8 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
-    const counts = await withTimeout(
-      kv.hgetall<Record<string, string | number>>(VOTE_KEY),
-      KV_TIMEOUT_MS
-    );
-    return NextResponse.json({ counts: normalizeCounts(counts) });
+    const counts = await readCounts();
+    return NextResponse.json({ counts });
   } catch (error) {
     console.error("Vote fetch error:", error);
     // Graceful degradation: return empty counts so the UI still renders

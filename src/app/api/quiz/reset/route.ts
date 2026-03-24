@@ -1,40 +1,32 @@
-import { kv } from "@vercel/kv";
+import { getAdminDb } from "@/lib/firebaseAdmin";
 import { NextRequest, NextResponse } from "next/server";
 
-const VOTE_KEY = "quiz:votes";
-// Simple internal secret for protection. 
-// In production, this should ideally be an environment variable.
+export const dynamic = "force-dynamic";
+
+const VOTES_DOC = "quiz/votes";
 const INTERNAL_SECRET = process.env.INTERNAL_RESET_SECRET || "internal-admin-reset-key";
 
 export async function POST(request: NextRequest) {
   try {
-    // Check for authorization header
     const authHeader = request.headers.get("authorization");
     const secret = request.nextUrl.searchParams.get("key");
 
-    const isAuthorized = 
+    const isAuthorized =
       (authHeader && authHeader === `Bearer ${INTERNAL_SECRET}`) ||
       (secret && secret === INTERNAL_SECRET);
 
     if (!isAuthorized) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Delete the votes key
-    await kv.del(VOTE_KEY);
+    await getAdminDb().doc(VOTES_DOC).delete();
 
-    return NextResponse.json({ 
-      success: true, 
-      message: "All votes have been reset to 0." 
+    return NextResponse.json({
+      success: true,
+      message: "All votes have been reset to 0.",
     });
   } catch (error) {
     console.error("Vote reset error:", error);
-    return NextResponse.json(
-      { error: "Failed to reset votes" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to reset votes" }, { status: 500 });
   }
 }
