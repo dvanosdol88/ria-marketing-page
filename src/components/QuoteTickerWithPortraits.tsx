@@ -40,6 +40,7 @@ const PORTRAITS: Record<string, string> = {
   'Franklin': '/images/portraits/optimized/WSJ-benjamin-franklin.png',
   'Ramsey': '/images/portraits/optimized/WSJ-dave-ramsey.png',
   'Van Osdol': '/images/portraits/optimized/WSJ-DVO.png',
+  'Viewpoints': '/images/portraits/optimized/fidelity-logo.png',
 };
 
 // ============================================================================

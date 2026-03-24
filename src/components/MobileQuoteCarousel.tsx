@@ -278,7 +278,7 @@ export default function MobileQuoteCarousel({
             {/* Attribution */}
             <div className="mt-4 flex items-center gap-3">
               {portraits[currentQuote.lastName] ? (
-                <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full border border-stone-200 bg-white">
+                <div className="h-[58px] w-[58px] flex-shrink-0 overflow-hidden rounded-full border border-stone-200 bg-white">
                   <Image
                     src={portraits[currentQuote.lastName]}
                     alt={`${currentQuote.firstName} ${currentQuote.lastName}`}
@@ -289,7 +289,7 @@ export default function MobileQuoteCarousel({
                   />
                 </div>
               ) : (
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-stone-100">
+                <div className="flex h-[58px] w-[58px] flex-shrink-0 items-center justify-center rounded-full bg-stone-100">
                   <span className="text-sm font-bold text-stone-500">
                     {currentQuote.firstName[0]}{currentQuote.lastName[0]}
                   </span>
