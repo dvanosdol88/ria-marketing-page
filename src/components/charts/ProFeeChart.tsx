@@ -364,7 +364,7 @@ export function ProFeeChart({
                   x2="0"
                   y2="2"
                   stroke={palette.hatchColor}
-                  strokeWidth="0.75"
+                  strokeWidth="0.5"
                 />
               </pattern>
               <pattern
@@ -413,6 +413,22 @@ export function ProFeeChart({
                   x2="4"
                   y2="5"
                   stroke={palette.hatchColor}
+                  strokeWidth="0.5"
+                />
+              </pattern>
+              <pattern
+                id="crossHatch"
+                patternUnits="userSpaceOnUse"
+                width="2"
+                height="2"
+                patternTransform="rotate(-30)"
+              >
+                <line
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="2"
+                  stroke={isDarkMode ? "#F8FAFC" : "#000000"}
                   strokeWidth="1.0"
                 />
               </pattern>
@@ -492,6 +508,19 @@ export function ProFeeChart({
                 stroke: isDarkMode ? "#0F172A" : "#FFFFFF",
                 strokeWidth: 2,
               }}
+            />
+
+            {/* Layered Cross-Hatch for Traditional Area */}
+            <Area
+              type="monotone"
+              dataKey="withFees"
+              stroke="none"
+              fill="url(#crossHatch)"
+              fillOpacity={1}
+              isAnimationActive={animateOnMount}
+              animationDuration={1400}
+              animationBegin={120}
+              animationEasing="ease-out"
             />
           </AreaChart>
         </ResponsiveContainer>
