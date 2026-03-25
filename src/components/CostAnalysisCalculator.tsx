@@ -38,6 +38,12 @@ function tryMediumHaptic() {
   }
 }
 
+function tryGrabHaptic() {
+  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+    navigator.vibrate(20);
+  }
+}
+
 type Props = {
   initialState: CalculatorState;
   searchParams: Record<string, string | string[] | undefined>;
@@ -83,6 +89,7 @@ function PillSlider({
   }, [value, values]);
 
   const lastRef = useRef(isArrayMode ? arrayIdx : value);
+  const [isActive, setIsActive] = useState(false);
 
   // Native input props
   const inputMin = isArrayMode ? 0 : (min ?? 0);
@@ -150,7 +157,7 @@ function PillSlider({
           className="absolute left-0 h-1 rounded-full transition-[width] duration-75"
           style={{ width: `${pct}%`, backgroundColor: trackColor }}
         />
-        {/* Hidden native range input for accessibility + drag */}
+        {/* Native range input — enlarged invisible thumb for better grab area */}
         <input
           type="range"
           min={inputMin}
@@ -158,16 +165,23 @@ function PillSlider({
           step={inputStep}
           value={inputValue}
           onChange={handleChange}
-          className="absolute inset-x-0 z-20 h-12 w-full cursor-grab opacity-0 active:cursor-grabbing"
+          onPointerDown={() => { setIsActive(true); tryGrabHaptic(); }}
+          onPointerUp={() => setIsActive(false)}
+          onPointerCancel={() => setIsActive(false)}
+          className="pill-slider-input absolute inset-x-0 z-20 h-12 w-full cursor-grab opacity-0 active:cursor-grabbing"
           aria-label={label}
         />
-        {/* Visual pill thumb */}
+        {/* Visual pill thumb — glows + scales on grab */}
         <div
-          className="pointer-events-none absolute z-10 flex h-10 items-center justify-center rounded-full px-3.5 shadow-[0_2px_12px_rgba(0,0,0,0.2)] transition-[left] duration-75"
+          className="pointer-events-none absolute z-10 flex h-10 items-center justify-center rounded-full px-3.5 transition-all duration-150"
           style={{
             left: `${pct}%`,
-            transform: `translateX(-${pct}%)`,
+            transform: `translateX(-${pct}%)${isActive ? " scale(1.08)" : ""}`,
             backgroundColor: pillColor,
+            filter: isActive ? "brightness(0.85)" : undefined,
+            boxShadow: isActive
+              ? `0 0 0 4px ${pillColor}40, 0 0 20px ${pillColor}50`
+              : "0 2px 12px rgba(0,0,0,0.2)",
           }}
         >
           <span className="text-sm font-bold tabular-nums text-white whitespace-nowrap">
@@ -415,7 +429,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     <>
       {/* Mobile Sticky Fee Bar */}
       <div
-        className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-600 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu dark:border-slate-700 dark:bg-slate-900/90 sm:hidden ${
+        className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu dark:border-slate-700 dark:bg-slate-900/90 sm:hidden ${
           scrolledPastHero ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
@@ -441,7 +455,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
       {/* Desktop Sticky Fee Bar */}
       <div
-        className={`fixed left-0 right-0 top-[52px] z-40 hidden border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-600 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu md:block ${
+        className={`fixed left-0 right-0 top-[52px] z-40 hidden border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu md:block ${
           showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
