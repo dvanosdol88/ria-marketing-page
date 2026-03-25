@@ -46,6 +46,14 @@ function groupByLastName(quotes: Quote[]) {
 const ROLL_MS = 400;   // quote text roll duration
 const FADE_MS = 300;   // full-card crossfade duration
 
+// Per-person horizontal offset (px) to center portraits in the circle
+const PORTRAIT_OFFSET: Record<string, number> = {
+  'Fama': -10,
+  'Munger': -10,
+  'Franklin': -10,
+  'Sharpe': 10,
+};
+
 // ============================================================================
 // MOBILE QUOTE CAROUSEL
 // ============================================================================
@@ -341,7 +349,7 @@ export default function MobileQuoteCarousel({
           className="px-4"
           style={{ willChange: 'transform' }}
         >
-          <div className="rounded-2xl border border-[#00A540] bg-white p-4 pb-2 shadow-sm">
+          <div className="rounded-2xl border border-stone-200 bg-white p-4 pb-2 shadow-sm">
 
             {/* ── Quote text area (rolls within person, fades between persons) ── */}
             <div
@@ -398,6 +406,9 @@ export default function MobileQuoteCarousel({
                     height={134}
                     unoptimized
                     className="h-full w-full object-cover object-top"
+                    style={PORTRAIT_OFFSET[displayedQuote.lastName] ? {
+                      objectPosition: `calc(50% + ${PORTRAIT_OFFSET[displayedQuote.lastName]}px) top`,
+                    } : undefined}
                   />
                 </div>
               ) : (
