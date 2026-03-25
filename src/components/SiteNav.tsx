@@ -91,7 +91,7 @@ export function SiteNav() {
         <span className="hidden sm:block font-bold uppercase text-[#4A4A4A] tracking-[0.166em]">
           Smarter
         </span>
-        <span className="hidden md:block font-normal uppercase text-[#00A540] tracking-[0.222em]" style={{ fontSize: '0.5em' }}>
+        <span className="hidden md:block font-medium uppercase text-[#007A2F] tracking-[0.222em]" style={{ fontSize: '0.5em' }}>
           Way Wealth
         </span>
       </div>
