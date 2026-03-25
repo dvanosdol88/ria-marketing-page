@@ -20,8 +20,8 @@ import { Odometer } from "@/components/Odometer";
 
 const DESTRUCTIVE_COLOR = "#B91C1C";
 const DESTRUCTIVE_TRACK = "#FECACA";
-const ACCUMULATION_COLOR = "#00A540";
-const ACCUMULATION_TRACK = "#BBF7D0";
+const ACCUMULATION_COLOR = "#4B5563";
+const ACCUMULATION_TRACK = "#D1D5DB";
 
 const TIME_HORIZON_VALUES = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25, 30];
 const TIME_HORIZON_MAJOR = new Set([15, 20, 25, 30]);
@@ -461,7 +461,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
       >
         <div className="mx-auto flex h-11 max-w-5xl items-center justify-center gap-6 px-4 text-sm font-medium">
           <div className="flex items-center gap-2">
-            <span className="text-gray-500 dark:text-slate-400">Smarter Way Wealth:</span>
+            <span className="text-gray-500 dark:text-slate-400">SMARTER $100/mo. Flat Fee:</span>
             <Odometer
               value={projection.finalValueWithoutFees}
               prefix="$"
@@ -541,7 +541,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
             <ScrollReveal className="card overflow-hidden bg-white shadow-xl ring-1 ring-black/5 dark:bg-slate-900 dark:ring-slate-700/70">
               <div className="grid grid-cols-2 gap-3 border-b border-gray-100 px-4 py-3 dark:border-slate-700 sm:gap-4 sm:px-6 sm:py-4 lg:px-8 lg:py-5 min-[860px]:grid-cols-3">
                 <ValueCard
-                  label="Smarter Way Wealth"
+                  label="SMARTER $100/mo. FLAT FEE"
                   value={projection.finalValueWithoutFees}
                   variant="smarter"
                   isActive={activeCard === "smarter"}
