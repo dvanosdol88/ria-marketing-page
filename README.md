@@ -141,6 +141,18 @@ The site is deployed on Vercel with automatic deployments from the `main` branch
 vercel --prod
 ```
 
+## Recent Design Updates
+
+### Tiered Responsive Logo & Branding (March 2026)
+We migrated the site's navigation logo from static images to a high-fidelity, tiered HTML implementation to ensure pixel-perfect brand consistency and responsiveness:
+- **Custom Typography:** Integrated the **DM Sans** font (weights 400 and 700) to match the brand's vector identity exactly.
+- **Three-Tier Response:**
+  - **Tier 1 (Mobile):** Icon-only for tight viewports.
+  - **Tier 2 (Tablet):** Icon + "SMARTER" (Primary brand mark).
+  - **Tier 3 (Desktop):** Icon + Full stacked logo ("SMARTER" over "WAY WEALTH").
+- **Precision Styling:** Matched brand colors precisely (`#4A4A4A` for Smarter, `#007A2F` for Way Wealth) and aligned the text baseline with the bottom of the brand icon bars.
+- **Urgency Messaging:** Updated the mobile sticky results header to a red "lost to fees!" message to increase conversion pressure when users scroll past the hero section.
+
 ## License
 
 Private repository. All rights reserved.
