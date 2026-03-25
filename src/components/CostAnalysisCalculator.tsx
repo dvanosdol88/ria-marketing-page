@@ -575,7 +575,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     <>
       {/* Mobile Sticky Fee Bar */}
       <div
-        className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-300 dark:border-slate-700 dark:bg-slate-900/90 sm:hidden ${
+        className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu dark:border-slate-700 dark:bg-slate-900/90 sm:hidden ${
           scrolledPastHero ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
@@ -589,7 +589,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
       {/* Desktop Sticky Fee Bar */}
       <div
-        className={`fixed left-0 right-0 top-[52px] z-40 hidden border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-300 dark:border-slate-700 dark:bg-slate-900/90 md:block ${
+        className={`fixed left-0 right-0 top-[52px] z-40 hidden border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu md:block ${
           showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >

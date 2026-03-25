@@ -78,20 +78,20 @@ export function SiteNav() {
     isCentered?: boolean,
     fontSizeBase?: string
   }) => (
-    <div className={`flex items-end gap-2 sm:gap-3 ${isCentered ? "justify-center" : "justify-start"}`}>
+    <div className={`flex items-end gap-2 sm:gap-3 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu ${isCentered ? "justify-center" : "justify-start"}`}>
       <img
         src="/brand/logo-icon.svg"
         alt="Smarter Way Wealth"
-        className={`w-auto transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${heightClass}`}
+        className={`w-auto transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu ${heightClass}`}
       />
       <div 
-        className="flex flex-col items-start leading-[1.1] transition-all duration-500 font-logo"
+        className="flex flex-col items-start leading-[1.1] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu font-logo"
         style={{ fontSize: fontSizeBase }}
       >
-        <span className="hidden sm:block font-bold uppercase text-[#4A4A4A] tracking-[0.166em]">
+        <span className="hidden sm:block font-bold uppercase text-[#4A4A4A] tracking-[0.166em] transition-all duration-500">
           Smarter
         </span>
-        <span className="hidden md:block font-medium uppercase text-[#007A2F] tracking-[0.222em]" style={{ fontSize: '0.5em' }}>
+        <span className="hidden md:block font-medium uppercase text-[#007A2F] tracking-[0.222em] transition-all duration-500" style={{ fontSize: '0.5em' }}>
           Way Wealth
         </span>
       </div>
@@ -102,7 +102,7 @@ export function SiteNav() {
     <>
       {/* ── Sticky Header Bar ── */}
       <header
-        className={`sticky top-0 z-50 transition-[background-color,backdrop-filter,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`sticky top-0 z-50 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu will-change-[height,background-color,backdrop-filter,box-shadow] ${
           collapsed
             ? "bg-white/90 backdrop-blur-md shadow-sm supports-[backdrop-filter]:bg-white/85"
             : "bg-white"
@@ -114,16 +114,16 @@ export function SiteNav() {
           .site-nav a:hover { text-decoration: none; }
         `}</style>
 
-        <div className="site-nav mx-auto max-w-[1200px] px-4 sm:px-6">
+        <div className="site-nav mx-auto max-w-[1200px] px-4 sm:px-6 transition-all duration-500">
           {/* ── Mobile Layout ── */}
-          <div className={`flex items-center justify-between md:hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          <div className={`flex items-center justify-between md:hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu ${
             collapsed ? "h-[58px]" : "h-[77px]"
           }`}>
             <button
               onClick={toggleDrawer}
               aria-label={drawerOpen ? "Close menu" : "Open menu"}
               aria-expanded={drawerOpen}
-              className="relative z-10 flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-800 shadow-sm transition-colors hover:bg-neutral-100 active:bg-neutral-200"
+              className="relative z-10 flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-800 shadow-sm transition-colors duration-300 hover:bg-neutral-100 active:bg-neutral-200"
             >
               {drawerOpen ? <X className="h-5 w-5" strokeWidth={2.2} /> : <Menu className="h-6 w-6" strokeWidth={2.2} />}
             </button>
@@ -131,7 +131,7 @@ export function SiteNav() {
             {/* Mobile logo — tiered implementation */}
             <Link
               href={"/" as any}
-              className="absolute left-1/2 -translate-x-1/2 flex items-center"
+              className="absolute left-1/2 -translate-x-1/2 flex items-center transform-gpu"
               aria-label="Smarter Way Wealth home"
             >
               <Logo
@@ -146,13 +146,13 @@ export function SiteNav() {
           </div>
 
           {/* ── Desktop Layout ── */}
-          <div className={`hidden items-center justify-between md:flex transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          <div className={`hidden items-center justify-between md:flex transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu ${
             collapsed ? "h-[52px]" : "h-[104px]"
           }`}>
             {/* Desktop logo — tiered implementation */}
             <Link
               href={"/" as any}
-              className="shrink-0 rounded-md transition-opacity hover:opacity-90"
+              className="shrink-0 rounded-md transition-opacity duration-300 hover:opacity-90"
               aria-label="Smarter Way Wealth home"
             >
               <Logo 
