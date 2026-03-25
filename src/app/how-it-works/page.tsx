@@ -23,10 +23,12 @@ export default function HowItWorksPage({
 }) {
   const params = normalizeSearchParams(searchParams);
   const calculatorState: CalculatorState = parseCalculatorState(params);
+  const totalAnnualFeePercent =
+    calculatorState.annualFeePercent + calculatorState.mutualFundExpensePercent;
   const projection = buildFeeProjection({
     initialInvestment: calculatorState.portfolioValue,
     years: calculatorState.years,
-    annualFeePercent: calculatorState.annualFeePercent,
+    annualFeePercent: totalAnnualFeePercent,
     annualGrowthPercent: calculatorState.annualGrowthPercent,
   });
   const linkQuery = paramsToRecord(params);
@@ -64,6 +66,8 @@ export default function HowItWorksPage({
             <li>Years: {calculatorState.years}</li>
             <li>Growth: {formatPercent(calculatorState.annualGrowthPercent)}</li>
             <li>Advisory fee: {formatPercent(calculatorState.annualFeePercent)}</li>
+            <li>Mutual fund expenses: {formatPercent(calculatorState.mutualFundExpensePercent)}</li>
+            <li>Total annual fee load: {formatPercent(totalAnnualFeePercent)}</li>
           </ul>
         </div>
         <div className="card p-6">
@@ -84,8 +88,8 @@ export default function HowItWorksPage({
         <div className="card p-6">
           <h3 className="text-xl font-semibold text-neutral-900">Repeatable links</h3>
           <p className="mt-2 text-sm text-neutral-600">
-            All three pages read and write the same query parameters: <code>portfolio</code>, <code>years</code>, <code>growth</code>, and
-            <code>fee</code>. UTM parameters are preserved so you can attribute inbound clicks.
+            All three pages read and write the same query parameters: <code>portfolio</code>, <code>years</code>, <code>growth</code>,{" "}
+            <code>fee</code>, and <code>mfe</code>. UTM parameters are preserved so you can attribute inbound clicks.
           </p>
         </div>
         <div className="card p-6">

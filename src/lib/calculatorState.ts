@@ -3,6 +3,7 @@ export type CalculatorState = {
   years: number;
   annualGrowthPercent: number;
   annualFeePercent: number;
+  mutualFundExpensePercent: number;
 };
 
 export const DEFAULT_STATE: CalculatorState = {
@@ -10,6 +11,7 @@ export const DEFAULT_STATE: CalculatorState = {
   years: 20,
   annualGrowthPercent: 8,
   annualFeePercent: 1,
+  mutualFundExpensePercent: 0,
 };
 
 export function parseNumber(value: string | null, fallback: number, min: number, max: number): number {
@@ -33,6 +35,7 @@ export function parseCalculatorState(searchParams: URLSearchParams): CalculatorS
     years: parseInteger(searchParams.get("years"), DEFAULT_STATE.years, 1, 40),
     annualGrowthPercent: parseNumber(searchParams.get("growth"), DEFAULT_STATE.annualGrowthPercent, 0, 20),
     annualFeePercent: parseNumber(searchParams.get("fee"), DEFAULT_STATE.annualFeePercent, 0, 3),
+    mutualFundExpensePercent: parseNumber(searchParams.get("mfe"), DEFAULT_STATE.mutualFundExpensePercent, 0, 3),
   };
 }
 
@@ -43,6 +46,7 @@ export function buildQueryFromState(state: CalculatorState, existingSearchParams
   params.set("years", state.years.toString());
   params.set("growth", state.annualGrowthPercent.toString());
   params.set("fee", state.annualFeePercent.toString());
+  params.set("mfe", state.mutualFundExpensePercent.toString());
 
   return params.toString();
 }

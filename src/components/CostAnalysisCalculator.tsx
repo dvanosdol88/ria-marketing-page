@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Check, Share2 } from "lucide-react";
+import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Check, ChevronDown, ChevronUp, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, DEFAULT_STATE, buildQueryFromState } from "@/lib/calculatorState";
@@ -18,7 +18,7 @@ import { Odometer } from "@/components/Odometer";
 // PILL SLIDER — Value-in-pill thumb with color-coded track
 // ============================================================================
 
-const DESTRUCTIVE_COLOR = "#B91C1C";
+const DESTRUCTIVE_COLOR = "#991B1B";
 const DESTRUCTIVE_TRACK = "#FECACA";
 const ACCUMULATION_COLOR = "#4B5563";
 const ACCUMULATION_TRACK = "#D1D5DB";
@@ -55,6 +55,7 @@ interface PillSliderProps {
   onChange: (v: number) => void;
   format: (v: number) => string;
   variant: "destructive" | "accumulation";
+  labelAction?: ReactNode;
   // Standard mode (min/max/step)
   min?: number;
   max?: number;
@@ -70,6 +71,7 @@ function PillSlider({
   onChange,
   format,
   variant,
+  labelAction,
   min,
   max,
   step,
@@ -146,9 +148,12 @@ function PillSlider({
 
   return (
     <div>
-      <p className="mb-0 text-[13px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-slate-300">
-        {label}
-      </p>
+      <div className="mb-0 flex items-center justify-between gap-3">
+        <p className="text-[13px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-slate-300">
+          {label}
+        </p>
+        {labelAction}
+      </div>
       <div className="relative flex h-12 items-center">
         {/* Track background */}
         <div className="absolute inset-x-0 h-1 rounded-full bg-gray-200 dark:bg-slate-700" />
@@ -294,16 +299,22 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   const [activeCard, setActiveCard] = useState<"smarter" | "traditional" | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [shareFeedback, setShareFeedback] = useState<"idle" | "success" | "error">("idle");
+  const [slidersExpanded, setSlidersExpanded] = useState(true);
+  const [showMutualFundExpenses, setShowMutualFundExpenses] = useState(
+    mergedState.mutualFundExpensePercent > 0
+  );
+
+  const totalAnnualFeePercent = state.annualFeePercent + state.mutualFundExpensePercent;
 
   const projection = useMemo(
     () =>
       buildFeeProjection({
         initialInvestment: state.portfolioValue,
         years: state.years,
-        annualFeePercent: state.annualFeePercent,
+        annualFeePercent: totalAnnualFeePercent,
         annualGrowthPercent: state.annualGrowthPercent,
       }),
-    [state]
+    [state.annualGrowthPercent, state.portfolioValue, state.years, totalAnnualFeePercent]
   );
 
   const paramsFromServer = useMemo(() => normalizeSearchParams(searchParams), [searchParams]);
@@ -321,13 +332,15 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         "Smarter Way Wealth projection",
         `Portfolio value: ${formatCurrency(state.portfolioValue)}`,
         `Advisory fee: ${state.annualFeePercent.toFixed(2)}%`,
+        `Mutual fund expenses: ${state.mutualFundExpensePercent.toFixed(2)}%`,
+        `Total annual fee load: ${totalAnnualFeePercent.toFixed(2)}%`,
         `Annual growth: ${state.annualGrowthPercent.toFixed(1)}%`,
         `Time horizon: ${state.years} years`,
         `Smarter Way Wealth value: ${formatCurrency(projection.finalValueWithoutFees)}`,
         `Traditional asset-based fee value: ${formatCurrency(projection.finalValueWithFees)}`,
         `Lost to asset-based fees: -${formatCurrency(projection.savings)}`,
       ].join("\n"),
-    [projection.finalValueWithFees, projection.finalValueWithoutFees, projection.savings, state]
+    [projection.finalValueWithFees, projection.finalValueWithoutFees, projection.savings, state, totalAnnualFeePercent]
   );
 
   const shareResult = useCallback(async () => {
@@ -566,6 +579,19 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
               </div>
 
               <div className="border-t border-gray-100 bg-white p-4 dark:border-slate-700 dark:bg-slate-900 sm:p-6 lg:p-8">
+                <div className="mb-3 flex items-center justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setSlidersExpanded((prev) => !prev)}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800/60"
+                    aria-expanded={slidersExpanded}
+                  >
+                    {slidersExpanded ? "Collapse all sliders" : "Expand all sliders"}
+                    {slidersExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+                  </button>
+                </div>
+                {slidersExpanded && (
+                <>
                 <div className="grid grid-cols-1 gap-x-8 gap-y-5 min-[480px]:grid-cols-2 lg:grid-cols-3">
                   {/* Advisory Fee — destructive, always full-width top row */}
                   <div className="col-span-full">
@@ -578,8 +604,45 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                       min={0}
                       max={3}
                       step={0.05}
+                      labelAction={
+                        !showMutualFundExpenses ? (
+                          <button
+                            type="button"
+                            onClick={() => setShowMutualFundExpenses(true)}
+                            className="text-[11px] font-semibold tracking-wide text-[#4C7AB6] transition-colors hover:text-[#3C6393]"
+                          >
+                            + add mutual fund expenses
+                          </button>
+                        ) : undefined
+                      }
                     />
                   </div>
+                  {showMutualFundExpenses && (
+                    <div className="col-span-full">
+                      <PillSlider
+                        label="Mutual fund expenses"
+                        value={state.mutualFundExpensePercent}
+                        onChange={(v) => setState((prev) => ({ ...prev, mutualFundExpensePercent: v }))}
+                        format={(v) => `${v.toFixed(2)}%`}
+                        variant="destructive"
+                        min={0}
+                        max={3}
+                        step={0.05}
+                        labelAction={
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setShowMutualFundExpenses(false);
+                              setState((prev) => ({ ...prev, mutualFundExpensePercent: 0 }));
+                            }}
+                            className="text-[11px] font-semibold tracking-wide text-slate-500 transition-colors hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+                          >
+                            remove
+                          </button>
+                        }
+                      />
+                    </div>
+                  )}
                   {/* Portfolio Value — accumulation */}
                   <div className="min-[480px]:col-span-2 lg:col-span-1">
                     <PillSlider
@@ -621,6 +684,8 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                     For finance nerds
                   </Link>
                 </p>
+                </>
+                )}
               </div>
             </ScrollReveal>
           </div>
@@ -639,7 +704,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
       <ValueCards
         portfolioValue={state.portfolioValue}
-        annualFeePercent={state.annualFeePercent}
+        annualFeePercent={totalAnnualFeePercent}
         portfolioGrowth={state.annualGrowthPercent}
         years={state.years}
       />

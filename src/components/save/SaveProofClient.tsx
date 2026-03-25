@@ -14,12 +14,13 @@ type Props = {
 };
 
 export function SaveProofClient({ calculatorState, searchParams }: Props) {
+  const totalAnnualFeePercent = calculatorState.annualFeePercent + calculatorState.mutualFundExpensePercent;
   const projection = useMemo(() => buildFeeProjection({
     initialInvestment: calculatorState.portfolioValue,
     years: calculatorState.years,
-    annualFeePercent: calculatorState.annualFeePercent,
+    annualFeePercent: totalAnnualFeePercent,
     annualGrowthPercent: calculatorState.annualGrowthPercent,
-  }), [calculatorState]);
+  }), [calculatorState.annualGrowthPercent, calculatorState.portfolioValue, calculatorState.years, totalAnnualFeePercent]);
 
   const linkQuery = useMemo(() => {
     const params = new URLSearchParams(buildQueryFromState(calculatorState, searchParams));
@@ -32,7 +33,7 @@ export function SaveProofClient({ calculatorState, searchParams }: Props) {
         <p className="text-xs font-semibold uppercase tracking-tightish text-brand-600">Save proof</p>
         <h1 className="mt-2 text-3xl font-semibold text-neutral-900 sm:text-4xl">Here is what fees do over time</h1>
         <p className="mt-3 text-lg text-neutral-600">
-          Switching from a {formatPercent(calculatorState.annualFeePercent)} AUM advisor to Smarter Way Wealth&apos;s $100/month flat fee
+          Switching from a {formatPercent(totalAnnualFeePercent)} total annual fee load to Smarter Way Wealth&apos;s $100/month flat fee
           saves you {formatCurrency(projection.savings)} over {calculatorState.years} years on a {formatCurrency(calculatorState.portfolioValue)} portfolio.
         </p>
         <div className="mt-6 flex justify-center gap-4">

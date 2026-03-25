@@ -58,6 +58,8 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
   const withFees = payload[1].value;
   const lostAmount = withoutFees - withFees;
 
+  const smarterColor = isDark ? "#E2E8F0" : "#0F172A";
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -73,10 +75,10 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
 
       <div className="space-y-1">
         <div>
-          <div className="flex items-center justify-between text-[10px] text-[#00A540]">
+          <div className="flex items-center justify-between text-[10px]" style={{ color: smarterColor }}>
             <span>SMARTER $100/mo Flat Fee</span>
           </div>
-          <p className="text-base font-bold tabular-nums text-[#00A540]">
+          <p className="text-base font-bold tabular-nums" style={{ color: smarterColor }}>
             {formatCurrency(withoutFees)}
           </p>
         </div>
@@ -194,7 +196,7 @@ function LostToFeesDonut({
   const outerRadius = isMobile ? 34 : 62;
   const donutData = [
     { name: "Lost", value: percentLost, fill: "#B91C1C" },
-    { name: "Kept", value: Math.max(0, 100 - percentLost), fill: isDarkMode ? "#64748B" : "#94A3B8" },
+    { name: "Kept", value: Math.max(0, 100 - percentLost), fill: isDarkMode ? "#E2E8F0" : "#0F172A" },
   ];
 
   return (
@@ -264,8 +266,9 @@ export function ProFeeChart({
     () =>
       isDarkMode
         ? {
-            smarterStroke: "#34D399",
-            smarterArea: "#34D399",
+            smarterStroke: "#E2E8F0",
+            smarterArea: "#E2E8F0",
+            hatchColor: "#FCA5A5",
             traditionalStroke: "#93A5C3",
             traditionalArea: "#93A5C3",
             grid: "#334155",
@@ -274,8 +277,9 @@ export function ProFeeChart({
             cursor: "#64748B",
           }
         : {
-            smarterStroke: "#00A540",
-            smarterArea: "#00A540",
+            smarterStroke: "#0F172A",
+            smarterArea: "#0F172A",
+            hatchColor: "#B91C1C",
             traditionalStroke: "#64748B",
             traditionalArea: "#64748B",
             grid: "#CBD5E1",
@@ -297,12 +301,12 @@ export function ProFeeChart({
       {showSummary && (
         <div className="shrink-0 space-y-1.5 px-4 pb-2 pt-4 sm:hidden">
           <div className="flex items-baseline justify-between">
-            <span className="tabular-nums text-lg font-semibold text-brand-700">{formatCurrency(finalValueWithoutFees)}</span>
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-brand-600">Smarter Way ($100/mo)</span>
+            <span className="tabular-nums text-lg font-semibold text-slate-900 dark:text-slate-100">{formatCurrency(finalValueWithoutFees)}</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Smarter Way ($100/mo)</span>
           </div>
-          <div className="mx-[-4px] flex items-baseline justify-between rounded-lg bg-brand-50 px-3 py-1.5 dark:bg-emerald-950/40">
-            <span className="tabular-nums text-xl font-bold text-brand-700">+{formatCurrency(finalLost)}</span>
-            <span className="text-sm font-bold uppercase tracking-wider text-brand-600">You Save</span>
+          <div className="mx-[-4px] flex items-baseline justify-between rounded-lg bg-slate-50 px-3 py-1.5 dark:bg-slate-800/40">
+            <span className="tabular-nums text-xl font-bold text-slate-900 dark:text-slate-100">+{formatCurrency(finalLost)}</span>
+            <span className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">You Save</span>
           </div>
           <div className="flex items-baseline justify-between">
             <span className="tabular-nums text-lg font-semibold text-slate-600 dark:text-slate-300">{formatCurrency(finalValueWithFees)}</span>
@@ -314,14 +318,14 @@ export function ProFeeChart({
       {showSummary && (
         <div className="pointer-events-none absolute left-8 top-8 z-10 hidden sm:block">
           <div className="grid grid-cols-[auto_auto] items-baseline gap-x-4 text-right">
-            <p className="tabular-nums text-2xl font-semibold tracking-tight text-brand-700">{formatCurrency(finalValueWithoutFees)}</p>
-            <p className="text-left text-xs font-semibold uppercase tracking-wider text-brand-600">With Smarter Way Wealth ($100/mo)</p>
+            <p className="tabular-nums text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">{formatCurrency(finalValueWithoutFees)}</p>
+            <p className="text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">With Smarter Way Wealth ($100/mo)</p>
 
             <div className="mb-2 border-b border-neutral-300 pb-2 dark:border-slate-700">
-              <p className="tabular-nums text-3xl font-bold tracking-tight text-brand-700">+{formatCurrency(finalLost)}</p>
+              <p className="tabular-nums text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-100">+{formatCurrency(finalLost)}</p>
             </div>
             <div className="mb-2 border-b border-transparent pb-2">
-              <p className="text-left text-base font-bold uppercase tracking-wider text-brand-600">You Save</p>
+              <p className="text-left text-base font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">You Save</p>
             </div>
 
             <p className="tabular-nums text-2xl font-semibold tracking-tight text-slate-600 dark:text-slate-200">
@@ -346,10 +350,22 @@ export function ProFeeChart({
             }}
           >
             <defs>
-              <linearGradient id="emeraldGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={palette.smarterArea} stopOpacity={isDarkMode ? 0.38 : 0.2} />
-                <stop offset="100%" stopColor={palette.smarterArea} stopOpacity={0} />
-              </linearGradient>
+              <pattern
+                id="diagonalHatch"
+                patternUnits="userSpaceOnUse"
+                width="8"
+                height="8"
+                patternTransform="rotate(45)"
+              >
+                <line
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="8"
+                  stroke={palette.hatchColor}
+                  strokeWidth="1.5"
+                />
+              </pattern>
               <linearGradient id="slateGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor={palette.traditionalArea} stopOpacity={isDarkMode ? 0.5 : 0.35} />
                 <stop offset="100%" stopColor={palette.traditionalArea} stopOpacity={0.05} />
@@ -394,7 +410,7 @@ export function ProFeeChart({
               dataKey="withoutFees"
               stroke={palette.smarterStroke}
               strokeWidth={isMobile ? 2 : 3}
-              fill="url(#emeraldGradient)"
+              fill="url(#diagonalHatch)"
               fillOpacity={smarterOpacity}
               strokeOpacity={smarterOpacity}
               isAnimationActive={animateOnMount}
