@@ -73,11 +73,11 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
 
       <div className="space-y-1">
         <div>
-          <div className="flex items-center justify-between text-[10px] text-brand-600">
+          <div className="flex items-center justify-between text-[10px] text-[#00A540]">
             <span>Smarter Way Wealth</span>
-            <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#00A540]" />
           </div>
-          <p className="text-base font-bold tabular-nums text-brand-600">
+          <p className="text-base font-bold tabular-nums text-[#00A540]">
             {formatCurrency(withoutFees)}
           </p>
         </div>
@@ -122,7 +122,6 @@ const FeeDragCursor = ({ points, height, top, cursorColor }: any) => {
         x1={x} y1={smarterPt.y} x2={x} y2={traditionalPt.y}
         stroke="#B91C1C"
         strokeWidth={1.5}
-        strokeDasharray="4 3"
         strokeOpacity={0.7}
       />
     </g>
@@ -148,9 +147,6 @@ function LostToFeesDonut({
 
   return (
     <div className="pointer-events-none absolute left-6 top-6 z-20 sm:left-[80px] sm:top-8">
-      <div className={`text-[10px] font-semibold uppercase tracking-wider sm:text-xs md:text-sm ${isDarkMode ? "text-slate-300" : "text-slate-500"}`}>
-        Lost Wealth
-      </div>
       <div className="relative" style={{ height: chartSize, width: chartSize }}>
         <PieChart width={chartSize} height={chartSize}>
           <Pie
@@ -303,8 +299,8 @@ export function ProFeeChart({
                 <stop offset="100%" stopColor={palette.smarterArea} stopOpacity={0} />
               </linearGradient>
               <linearGradient id="slateGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={palette.traditionalArea} stopOpacity={isDarkMode ? 0.3 : 0.2} />
-                <stop offset="100%" stopColor={palette.traditionalArea} stopOpacity={0} />
+                <stop offset="0%" stopColor={palette.traditionalArea} stopOpacity={isDarkMode ? 0.5 : 0.35} />
+                <stop offset="100%" stopColor={palette.traditionalArea} stopOpacity={0.05} />
               </linearGradient>
             </defs>
 

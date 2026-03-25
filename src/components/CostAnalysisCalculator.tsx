@@ -146,7 +146,7 @@ function PillSlider({
 
   return (
     <div>
-      <p className="mb-3 text-[13px] font-semibold uppercase tracking-wider text-gray-400 dark:text-slate-500">
+      <p className="mb-1 text-[13px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-slate-300">
         {label}
       </p>
       <div className="relative flex h-12 items-center">
@@ -429,7 +429,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     <>
       {/* Mobile Sticky Fee Bar */}
       <div
-        className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu dark:border-slate-700 dark:bg-slate-900/90 sm:hidden ${
+        className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu dark:border-slate-700 dark:bg-slate-900/90 sm:hidden ${
           scrolledPastHero ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
