@@ -267,7 +267,6 @@ export function ProFeeChart({
       isDarkMode
         ? {
             smarterStroke: "#E2E8F0",
-            smarterArea: "#E2E8F0",
             hatchColor: "#FCA5A5",
             traditionalStroke: "#93A5C3",
             traditionalArea: "#93A5C3",
@@ -275,10 +274,10 @@ export function ProFeeChart({
             xTick: "#94A3B8",
             yTick: "#94A3B8",
             cursor: "#64748B",
+            chartBg: "#0F172A",
           }
         : {
             smarterStroke: "#0F172A",
-            smarterArea: "#0F172A",
             hatchColor: "#B91C1C",
             traditionalStroke: "#64748B",
             traditionalArea: "#64748B",
@@ -286,6 +285,7 @@ export function ProFeeChart({
             xTick: "#9CA3AF",
             yTick: "#6B7280",
             cursor: "#E5E7EB",
+            chartBg: "#FFFFFF",
           },
     [isDarkMode]
   );
@@ -351,18 +351,43 @@ export function ProFeeChart({
           >
             <defs>
               <pattern
-                id="alternatingHatch"
+                id="blackHatch"
                 patternUnits="userSpaceOnUse"
                 width="4"
                 height="4"
                 patternTransform="rotate(45)"
               >
-                <rect width="4" height="4" fill={palette.smarterArea} />
+                <rect width="4" height="4" fill={palette.chartBg} />
                 <line
                   x1="0"
                   y1="0"
                   x2="0"
                   y2="4"
+                  stroke={palette.smarterStroke}
+                  strokeWidth="0.75"
+                />
+              </pattern>
+              <pattern
+                id="alternatingHatch"
+                patternUnits="userSpaceOnUse"
+                width="8"
+                height="8"
+                patternTransform="rotate(45)"
+              >
+                <rect width="8" height="8" fill={palette.chartBg} />
+                <line
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="8"
+                  stroke={palette.smarterStroke}
+                  strokeWidth="0.75"
+                />
+                <line
+                  x1="4"
+                  y1="0"
+                  x2="4"
+                  y2="8"
                   stroke={palette.hatchColor}
                   strokeWidth="0.75"
                 />
@@ -411,7 +436,7 @@ export function ProFeeChart({
               dataKey="withoutFees"
               stroke={palette.smarterStroke}
               strokeWidth={isMobile ? 2 : 3}
-              fill={palette.smarterArea}
+              fill="url(#blackHatch)"
               fillOpacity={1}
               strokeOpacity={smarterOpacity}
               isAnimationActive={animateOnMount}
