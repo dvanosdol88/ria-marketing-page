@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Check, Info, Minus, Plus, Share2 } from "lucide-react";
+import { Check, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, DEFAULT_STATE, buildQueryFromState } from "@/lib/calculatorState";
@@ -14,28 +14,28 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
 
-const numberFormatter = new Intl.NumberFormat("en-US");
-const sliderAccent = homeCalculatorConfig.controls.sliderAccent;
+// ============================================================================
+// PILL SLIDER — Value-in-pill thumb with color-coded track
+// ============================================================================
 
-function formatCompactNumber(value: number): string {
-  if (value >= 1_000_000) {
-    return `${(value / 1_000_000).toFixed(2)}M`;
-  }
-  if (value >= 1_000) {
-    const thousands = value / 1_000;
-    return `${thousands >= 100 ? thousands.toFixed(0) : thousands.toFixed(1)}K`;
-  }
-  return numberFormatter.format(value);
-}
+const DESTRUCTIVE_COLOR = "#B91C1C";
+const DESTRUCTIVE_TRACK = "#FECACA";
+const ACCUMULATION_COLOR = "#00A540";
+const ACCUMULATION_TRACK = "#BBF7D0";
 
-function tryHaptic() {
+const TIME_HORIZON_VALUES = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25, 30];
+const TIME_HORIZON_MAJOR = new Set([15, 20, 25, 30]);
+
+function tryLightHaptic() {
   if (typeof navigator !== "undefined" && "vibrate" in navigator) {
     navigator.vibrate(5);
   }
 }
 
-function valuesMatch(a: number, b: number, step: number): boolean {
-  return Math.abs(a - b) <= Math.max(step / 2, 0.0001);
+function tryMediumHaptic() {
+  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+    navigator.vibrate(15);
+  }
 }
 
 type Props = {
@@ -43,297 +43,137 @@ type Props = {
   searchParams: Record<string, string | string[] | undefined>;
 };
 
-type SliderChip = {
+interface PillSliderProps {
   label: string;
   value: number;
-};
-
-interface StepperSliderProps {
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  step: number;
-  onChange: (nextValue: number) => void;
-  format?: (value: number) => string;
-  infoText?: string;
-  chips?: SliderChip[];
+  onChange: (v: number) => void;
+  format: (v: number) => string;
+  variant: "destructive" | "accumulation";
+  // Standard mode (min/max/step)
+  min?: number;
+  max?: number;
+  step?: number;
+  // Array mode — overrides min/max/step when provided
+  values?: number[];
+  majorSteps?: Set<number>;
 }
 
-function StepperSlider({
+function PillSlider({
   label,
   value,
+  onChange,
+  format,
+  variant,
   min,
   max,
   step,
-  onChange,
-  format,
-  infoText,
-  chips,
-}: StepperSliderProps) {
-  const [showInfo, setShowInfo] = useState(false);
-  const lastHapticValue = useRef(value);
-  const precision = useMemo(() => {
-    const decimalPart = step.toString().split(".")[1];
-    return decimalPart ? decimalPart.length : 0;
-  }, [step]);
+  values,
+  majorSteps,
+}: PillSliderProps) {
+  const isArrayMode = !!values;
 
-  const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
-  const displayValue = format ? format(value) : String(value);
-
-  const clamp = useCallback(
-    (candidate: number) => {
-      const bounded = Math.min(max, Math.max(min, candidate));
-      return Number(bounded.toFixed(precision));
-    },
-    [max, min, precision]
-  );
-
-  const emit = useCallback(
-    (candidate: number, vibrate: boolean) => {
-      const next = clamp(candidate);
-      if (vibrate && Math.round(next / step) !== Math.round(lastHapticValue.current / step)) {
-        tryHaptic();
-      }
-      lastHapticValue.current = next;
-      onChange(next);
-    },
-    [clamp, onChange, step]
-  );
-
-  useEffect(() => {
-    lastHapticValue.current = value;
-  }, [value]);
-
-  const handleSliderChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = Number.parseFloat(event.target.value);
-      if (Number.isNaN(raw)) return;
-      const stepped = Math.round(raw / step) * step;
-      emit(stepped, true);
-    },
-    [emit, step]
-  );
-
-  return (
-    <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:shadow-none">
-      <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
-        <div className="flex min-w-0 items-center gap-1.5">
-          <span className="whitespace-nowrap text-sm font-medium text-gray-800 dark:text-slate-100">{label}</span>
-          {infoText && (
-            <button
-              type="button"
-              onClick={() => setShowInfo((prev) => !prev)}
-              className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-500 transition-colors hover:bg-slate-50 dark:border-slate-500 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
-              aria-label={`More information about ${label}`}
-            >
-              <Info className="h-2.5 w-2.5" />
-            </button>
-          )}
-        </div>
-        {chips && chips.length > 0 && (
-          <div className="flex flex-wrap items-center justify-end gap-1.5">
-            {chips.map((chip) => (
-              <button
-                key={chip.value}
-                type="button"
-                onClick={() => emit(chip.value, true)}
-                className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
-                  valuesMatch(value, chip.value, step)
-                    ? homeCalculatorConfig.controls.chipActiveClasses
-                    : homeCalculatorConfig.controls.chipInactiveClasses
-                }`}
-              >
-                {chip.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {showInfo && infoText && (
-        <div className="mb-2.5 rounded-lg bg-gray-900 p-2.5 text-xs leading-relaxed text-white dark:bg-slate-800">{infoText}</div>
-      )}
-
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => emit(value - step, true)}
-          disabled={value <= min}
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${homeCalculatorConfig.controls.buttonClasses}`}
-          aria-label={`Decrease ${label}`}
-        >
-          <Minus className="h-3.5 w-3.5" />
-        </button>
-
-        <div className="relative flex h-8 flex-1 items-center">
-          <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200 dark:bg-slate-700" />
-          <div className="absolute left-0 h-1.5 rounded-full transition-all duration-150" style={{ width: `${pct}%`, backgroundColor: sliderAccent }} />
-          <input
-            type="range"
-            min={min}
-            max={max}
-            step={step}
-            value={value}
-            onChange={handleSliderChange}
-            className="absolute inset-x-0 z-10 h-8 w-full cursor-pointer opacity-0"
-            aria-label={`${label} slider`}
-          />
-          <div
-            className="pointer-events-none absolute h-5 w-5 rounded-full border-2 border-white shadow-md transition-all duration-150"
-            style={{ left: `calc(${pct}% - 10px)`, backgroundColor: sliderAccent }}
-          />
-        </div>
-
-        <button
-          type="button"
-          onClick={() => emit(value + step, true)}
-          disabled={value >= max}
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${homeCalculatorConfig.controls.buttonClasses}`}
-          aria-label={`Increase ${label}`}
-        >
-          <Plus className="h-3.5 w-3.5" />
-        </button>
-
-        <span className="ml-1 min-w-[4.6rem] text-right text-sm font-bold tabular-nums text-gray-900 dark:text-slate-100">{displayValue}</span>
-      </div>
-    </div>
-  );
-}
-
-interface CurrencyInputCardProps {
-  label: string;
-  value: number;
-  onChange: (nextValue: number) => void;
-  min: number;
-  max: number;
-  step: number;
-  chips?: SliderChip[];
-}
-
-function CurrencyInputCard({ label, value, onChange, min, max, step, chips }: CurrencyInputCardProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editValue, setEditValue] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
-  const pct = Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100));
-
-  const clamp = useCallback(
-    (candidate: number) => {
-      const bounded = Math.min(max, Math.max(min, candidate));
-      return Math.round(bounded);
-    },
-    [max, min]
-  );
-
-  const handleTap = useCallback(() => {
-    setEditValue(String(Math.round(value)));
-    setIsEditing(true);
-    setTimeout(() => inputRef.current?.focus(), 40);
-  }, [value]);
-
-  const handleBlur = useCallback(() => {
-    const parsed = Number.parseInt(editValue.replace(/[^0-9]/g, ""), 10);
-    if (!Number.isNaN(parsed)) {
-      onChange(clamp(parsed));
+  // Array mode: find closest index for the current value
+  const arrayIdx = useMemo(() => {
+    if (!values) return 0;
+    let best = 0;
+    for (let i = 1; i < values.length; i++) {
+      if (Math.abs(values[i] - value) < Math.abs(values[best] - value)) best = i;
     }
-    setIsEditing(false);
-  }, [clamp, editValue, onChange]);
+    return best;
+  }, [value, values]);
 
-  const adjustValue = useCallback(
-    (candidate: number) => {
-      onChange(clamp(candidate));
-      tryHaptic();
+  const lastRef = useRef(isArrayMode ? arrayIdx : value);
+
+  // Native input props
+  const inputMin = isArrayMode ? 0 : (min ?? 0);
+  const inputMax = isArrayMode ? values!.length - 1 : (max ?? 100);
+  const inputStep = isArrayMode ? 1 : (step ?? 1);
+  const inputValue = isArrayMode ? arrayIdx : value;
+
+  // Percentage for positioning
+  const pct =
+    inputMax > inputMin ? ((inputValue - inputMin) / (inputMax - inputMin)) * 100 : 0;
+
+  // Displayed value (resolved from array if needed)
+  const displayValue = isArrayMode ? values![arrayIdx] : value;
+
+  const pillColor = variant === "destructive" ? DESTRUCTIVE_COLOR : ACCUMULATION_COLOR;
+  const trackColor = variant === "destructive" ? DESTRUCTIVE_TRACK : ACCUMULATION_TRACK;
+
+  const precision = useMemo(() => {
+    if (isArrayMode || !step) return 0;
+    return step.toString().split(".")[1]?.length ?? 0;
+  }, [isArrayMode, step]);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const raw = Number.parseFloat(e.target.value);
+      if (Number.isNaN(raw)) return;
+
+      if (isArrayMode) {
+        const newIdx = Math.round(raw);
+        const clamped = Math.min(values!.length - 1, Math.max(0, newIdx));
+        if (clamped !== lastRef.current) {
+          const newVal = values![clamped];
+          if (majorSteps?.has(newVal)) {
+            tryMediumHaptic();
+          } else {
+            tryLightHaptic();
+          }
+          lastRef.current = clamped;
+          onChange(newVal);
+        }
+      } else {
+        const s = step ?? 1;
+        const snapped = Number((Math.round(raw / s) * s).toFixed(precision));
+        const clamped = Math.min(max ?? 100, Math.max(min ?? 0, snapped));
+        if (Math.round(clamped / s) !== Math.round((lastRef.current as number) / s)) {
+          tryLightHaptic();
+        }
+        lastRef.current = clamped;
+        onChange(clamped);
+      }
     },
-    [clamp, onChange]
+    [isArrayMode, values, majorSteps, min, max, step, precision, onChange]
   );
 
   return (
-    <div className="rounded-xl border border-gray-100 bg-white px-4 py-3 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:shadow-none">
-      <div className="mb-2.5 flex flex-wrap items-center justify-between gap-2">
-        <span className="whitespace-nowrap text-sm font-medium text-gray-800 dark:text-slate-100">{label}</span>
-        {chips && chips.length > 0 && (
-          <div className="flex flex-wrap items-center justify-end gap-1.5">
-            {chips.map((chip) => (
-              <button
-                key={chip.value}
-                type="button"
-                onClick={() => adjustValue(chip.value)}
-                className={`rounded-full px-2.5 py-1 text-xs font-medium transition-all ${
-                  valuesMatch(value, chip.value, step)
-                    ? homeCalculatorConfig.controls.chipActiveClasses
-                    : homeCalculatorConfig.controls.chipInactiveClasses
-                }`}
-              >
-                {chip.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={() => adjustValue(value - step)}
-          disabled={value <= min}
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${homeCalculatorConfig.controls.buttonClasses}`}
-          aria-label={`Decrease ${label}`}
+    <div>
+      <p className="mb-3 text-[13px] font-semibold uppercase tracking-wider text-gray-400 dark:text-slate-500">
+        {label}
+      </p>
+      <div className="relative flex h-12 items-center">
+        {/* Track background */}
+        <div className="absolute inset-x-0 h-1 rounded-full bg-gray-200 dark:bg-slate-700" />
+        {/* Track fill */}
+        <div
+          className="absolute left-0 h-1 rounded-full transition-[width] duration-75"
+          style={{ width: `${pct}%`, backgroundColor: trackColor }}
+        />
+        {/* Hidden native range input for accessibility + drag */}
+        <input
+          type="range"
+          min={inputMin}
+          max={inputMax}
+          step={inputStep}
+          value={inputValue}
+          onChange={handleChange}
+          className="absolute inset-x-0 z-20 h-12 w-full cursor-grab opacity-0 active:cursor-grabbing"
+          aria-label={label}
+        />
+        {/* Visual pill thumb */}
+        <div
+          className="pointer-events-none absolute z-10 flex h-10 items-center justify-center rounded-full px-3.5 shadow-[0_2px_12px_rgba(0,0,0,0.2)] transition-[left] duration-75"
+          style={{
+            left: `${pct}%`,
+            transform: `translateX(-${pct}%)`,
+            backgroundColor: pillColor,
+          }}
         >
-          <Minus className="h-3.5 w-3.5" />
-        </button>
-
-        <div className="relative flex h-8 flex-1 items-center">
-          <div className="absolute inset-x-0 h-1.5 rounded-full bg-gray-200 dark:bg-slate-700" />
-          <div className="absolute left-0 h-1.5 rounded-full transition-all duration-150" style={{ width: `${pct}%`, backgroundColor: sliderAccent }} />
-          <input
-            type="range"
-            min={min}
-            max={max}
-            step={step}
-            value={value}
-            onChange={(event) => adjustValue(Number.parseInt(event.target.value, 10))}
-            className="absolute inset-x-0 z-10 h-8 w-full cursor-pointer opacity-0"
-            aria-label={`${label} slider`}
-          />
-          <div
-            className="pointer-events-none absolute h-5 w-5 rounded-full border-2 border-white shadow-md transition-all duration-150"
-            style={{ left: `calc(${pct}% - 10px)`, backgroundColor: sliderAccent }}
-          />
+          <span className="text-sm font-bold tabular-nums text-white whitespace-nowrap">
+            {format(displayValue)}
+          </span>
         </div>
-
-        <button
-          type="button"
-          onClick={() => adjustValue(value + step)}
-          disabled={value >= max}
-          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors ${homeCalculatorConfig.controls.buttonClasses}`}
-          aria-label={`Increase ${label}`}
-        >
-          <Plus className="h-3.5 w-3.5" />
-        </button>
-
-        {isEditing ? (
-          <input
-            ref={inputRef}
-            type="number"
-            inputMode="numeric"
-            value={editValue}
-            onChange={(event) => setEditValue(event.target.value)}
-            onBlur={handleBlur}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") handleBlur();
-            }}
-            className="w-28 rounded-lg border border-slate-300 bg-slate-50 px-2 py-1 text-right text-sm font-bold tabular-nums text-gray-900 outline-none ring-2 ring-[#2A3F63] dark:border-slate-500 dark:bg-slate-800 dark:text-slate-100"
-          />
-        ) : (
-          <button
-            type="button"
-            onClick={handleTap}
-            className="min-w-[5.8rem] text-right text-sm font-bold tabular-nums text-gray-900 transition-colors hover:text-[#2A3F63] dark:text-slate-100 dark:hover:text-emerald-300"
-            aria-label={`Edit ${label}`}
-          >
-            {formatCurrency(value)}
-          </button>
-        )}
       </div>
     </div>
   );
@@ -721,68 +561,54 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
               </div>
 
               <div className="border-t border-gray-100 bg-white p-4 dark:border-slate-700 dark:bg-slate-900 sm:p-6 lg:p-8">
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-                  <CurrencyInputCard
+                <div className="grid grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-3">
+                  {/* Advisory Fee — destructive, always full-width top row */}
+                  <div className="col-span-full">
+                    <PillSlider
+                      label="Advisory fee"
+                      value={state.annualFeePercent}
+                      onChange={(v) => setState((prev) => ({ ...prev, annualFeePercent: v }))}
+                      format={(v) => `${v.toFixed(2)}%`}
+                      variant="destructive"
+                      min={0}
+                      max={3}
+                      step={0.05}
+                    />
+                  </div>
+                  {/* Portfolio Value — accumulation */}
+                  <PillSlider
                     label="Portfolio value"
                     value={state.portfolioValue}
+                    onChange={(v) => setState((prev) => ({ ...prev, portfolioValue: v }))}
+                    format={(v) => formatCurrency(v)}
+                    variant="accumulation"
                     min={300000}
                     max={5000000}
                     step={50000}
-                    onChange={(nextValue) => setState((prev) => ({ ...prev, portfolioValue: nextValue }))}
-                    chips={[
-                      { label: "$1M", value: 1000000 },
-                      { label: "$2M", value: 2000000 },
-                      { label: "$3M", value: 3000000 },
-                    ]}
                   />
-                  <StepperSlider
-                    label="Advisory fee"
-                    value={state.annualFeePercent}
-                    min={0}
-                    max={3}
-                    step={0.05}
-                    onChange={(nextValue) => setState((prev) => ({ ...prev, annualFeePercent: nextValue }))}
-                    format={(val) => `${val.toFixed(2)}%`}
-                    infoText="The industry average is around 1.0%. Check your recent statements to see your exact fee."
-                    chips={[
-                      { label: "0.50%", value: 0.5 },
-                      { label: "0.75%", value: 0.75 },
-                      { label: "1.00%", value: 1.0 },
-                      { label: "1.25%", value: 1.25 },
-                      { label: "1.50%", value: 1.5 },
-                    ]}
-                  />
-                  <StepperSlider
+                  {/* Annual Growth — accumulation, 0.5% snaps */}
+                  <PillSlider
                     label="Annual growth"
                     value={state.annualGrowthPercent}
+                    onChange={(v) => setState((prev) => ({ ...prev, annualGrowthPercent: v }))}
+                    format={(v) => `${v.toFixed(1)}%`}
+                    variant="accumulation"
                     min={0}
                     max={14}
-                    step={0.1}
-                    onChange={(nextValue) => setState((prev) => ({ ...prev, annualGrowthPercent: nextValue }))}
-                    format={(val) => `${val.toFixed(1)}%`}
-                    chips={[
-                      { label: "6%", value: 6.0 },
-                      { label: "8%", value: 8.0 },
-                      { label: "10%", value: 10.0 },
-                      { label: "12%", value: 12.0 },
-                    ]}
+                    step={0.5}
                   />
-                  <StepperSlider
+                  {/* Time Horizon — accumulation, custom array with major step haptics */}
+                  <PillSlider
                     label="Time horizon"
                     value={state.years}
-                    min={1}
-                    max={40}
-                    step={1}
-                    onChange={(nextValue) => setState((prev) => ({ ...prev, years: nextValue }))}
-                    format={(val) => `${val} yrs`}
-                    chips={[
-                      { label: "10 yrs", value: 10 },
-                      { label: "20 yrs", value: 20 },
-                      { label: "30 yrs", value: 30 },
-                    ]}
+                    onChange={(v) => setState((prev) => ({ ...prev, years: v }))}
+                    format={(v) => `${v} yrs`}
+                    variant="accumulation"
+                    values={TIME_HORIZON_VALUES}
+                    majorSteps={TIME_HORIZON_MAJOR}
                   />
                 </div>
-                <p className="mt-4 text-center text-xs text-gray-400 dark:text-slate-400">
+                <p className="mt-5 text-center text-xs text-gray-400 dark:text-slate-400">
                   Compares our $100/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
                   <Link href="/our-math" className="underline transition-colors hover:text-brand-600">
                     For finance nerds
