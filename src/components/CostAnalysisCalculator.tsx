@@ -575,7 +575,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
               </div>
 
               <div className="border-t border-gray-100 bg-white p-4 dark:border-slate-700 dark:bg-slate-900 sm:p-6 lg:p-8">
-                <div className="grid grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-3">
+                <div className="grid grid-cols-1 gap-x-8 gap-y-5 min-[480px]:grid-cols-2 lg:grid-cols-3">
                   {/* Advisory Fee — destructive, always full-width top row */}
                   <div className="col-span-full">
                     <PillSlider
@@ -590,16 +590,18 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                     />
                   </div>
                   {/* Portfolio Value — accumulation */}
-                  <PillSlider
-                    label="Portfolio value"
-                    value={state.portfolioValue}
-                    onChange={(v) => setState((prev) => ({ ...prev, portfolioValue: v }))}
-                    format={(v) => formatCurrency(v)}
-                    variant="accumulation"
-                    min={300000}
-                    max={5000000}
-                    step={50000}
-                  />
+                  <div className="min-[480px]:col-span-2 lg:col-span-1">
+                    <PillSlider
+                      label="Portfolio value"
+                      value={state.portfolioValue}
+                      onChange={(v) => setState((prev) => ({ ...prev, portfolioValue: v }))}
+                      format={(v) => formatCurrency(v)}
+                      variant="accumulation"
+                      min={300000}
+                      max={5000000}
+                      step={50000}
+                    />
+                  </div>
                   {/* Annual Growth — accumulation, 0.5% snaps */}
                   <PillSlider
                     label="Annual growth"
@@ -607,8 +609,8 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                     onChange={(v) => setState((prev) => ({ ...prev, annualGrowthPercent: v }))}
                     format={(v) => `${v.toFixed(1)}%`}
                     variant="accumulation"
-                    min={0}
-                    max={14}
+                    min={4}
+                    max={12}
                     step={0.5}
                   />
                   {/* Time Horizon — accumulation, custom array with major step haptics */}

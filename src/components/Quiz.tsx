@@ -9,7 +9,7 @@ interface QuizOption {
 }
 
 const quizOptions: QuizOption[] = [
-  { id: "retire-early", label: "Retire Early" },
+  { id: "retire-early", label: "Retire Earlier" },
   { id: "vacation-home", label: "Vacation Home" },
   { id: "give-to-advisor", label: "Give to my advisor!" },
   { id: "invest-it", label: "Invest it" },

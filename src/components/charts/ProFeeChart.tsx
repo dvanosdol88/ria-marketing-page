@@ -8,6 +8,7 @@ import {
   Cell,
   Pie,
   PieChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -75,7 +76,6 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
         <div>
           <div className="flex items-center justify-between text-[10px] text-[#00A540]">
             <span>Smarter Way Wealth</span>
-            <span className="h-1.5 w-1.5 rounded-full bg-[#00A540]" />
           </div>
           <p className="text-base font-bold tabular-nums text-[#00A540]">
             {formatCurrency(withoutFees)}
@@ -85,7 +85,6 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
         <div>
           <div className="flex items-center justify-between text-[10px] text-[#B91C1C]">
             <span>Lost to fees</span>
-            <span className="h-1.5 w-1.5 rounded-full bg-[#B91C1C]" />
           </div>
           <p className="text-base font-bold tabular-nums text-[#B91C1C]">-{formatCurrency(lostAmount)}</p>
         </div>
@@ -93,7 +92,6 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
         <div className={`border-t pt-1 ${isDark ? "border-slate-700" : "border-slate-100"}`}>
           <div className={`flex items-center justify-between text-[10px] ${isDark ? "text-slate-400" : "text-slate-500"}`}>
             <span>Traditional AUM</span>
-            <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
           </div>
           <p className={`text-base font-bold tabular-nums ${isDark ? "text-slate-400" : "text-slate-500"}`}>
             {formatCurrency(withFees)}
@@ -104,11 +102,10 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
   );
 };
 
-// Custom cursor: faint full-height dashed line + red dashed "gap" line between the two data points
+// Custom cursor: faint full-height dashed guide line
 const FeeDragCursor = ({ points, height, top, cursorColor }: any) => {
   if (!points || points.length < 2) return null;
-  const [smarterPt, traditionalPt] = points;
-  const x = smarterPt.x;
+  const x = points[0].x;
 
   return (
     <g>
@@ -117,12 +114,6 @@ const FeeDragCursor = ({ points, height, top, cursorColor }: any) => {
         stroke={cursorColor ?? "#E5E7EB"}
         strokeWidth={1}
         strokeDasharray="4 4"
-      />
-      <line
-        x1={x} y1={smarterPt.y} x2={x} y2={traditionalPt.y}
-        stroke="#B91C1C"
-        strokeWidth={1.5}
-        strokeOpacity={0.7}
       />
     </g>
   );
@@ -190,6 +181,7 @@ export function ProFeeChart({
   const [isMobile, setIsMobile] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [animateOnMount, setAnimateOnMount] = useState(true);
+  const [activeGap, setActiveGap] = useState<{ year: number; withoutFees: number; withFees: number } | null>(null);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 640);
@@ -286,6 +278,18 @@ export function ProFeeChart({
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
+            onMouseMove={(state: any) => {
+              const row = state?.activePayload?.[0]?.payload;
+              if (
+                row &&
+                typeof row.year === "number" &&
+                typeof row.withoutFees === "number" &&
+                typeof row.withFees === "number"
+              ) {
+                setActiveGap({ year: row.year, withoutFees: row.withoutFees, withFees: row.withFees });
+              }
+            }}
+            onMouseLeave={() => setActiveGap(null)}
             margin={{
               top: isMobile ? 10 : 20,
               right: 5,
@@ -375,6 +379,19 @@ export function ProFeeChart({
                 strokeWidth: 2,
               }}
             />
+
+            {!isMobile && activeGap && (
+              <ReferenceLine
+                segment={[
+                  { x: activeGap.year, y: activeGap.withoutFees },
+                  { x: activeGap.year, y: activeGap.withFees },
+                ]}
+                stroke="#B91C1C"
+                strokeWidth={3}
+                strokeOpacity={0.95}
+                strokeLinecap="round"
+              />
+            )}
           </AreaChart>
         </ResponsiveContainer>
       </div>
