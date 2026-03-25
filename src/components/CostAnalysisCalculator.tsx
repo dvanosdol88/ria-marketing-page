@@ -325,7 +325,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         `Time horizon: ${state.years} years`,
         `Smarter Way Wealth value: ${formatCurrency(projection.finalValueWithoutFees)}`,
         `Traditional AUM value: ${formatCurrency(projection.finalValueWithFees)}`,
-        `Lost to fees: -${formatCurrency(projection.savings)}`,
+        `Lost to asset-based fees: -${formatCurrency(projection.savings)}`,
       ].join("\n"),
     [projection.finalValueWithFees, projection.finalValueWithoutFees, projection.savings, state]
   );
@@ -447,7 +447,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
           >
             <Odometer value={projection.savings} prefix="$" duration={1000} className="text-lg font-bold" />
             <span className="text-xs font-bold uppercase tracking-wider">
-              lost to fees!
+              lost to asset-based fees!
             </span>
           </div>
         </div>
@@ -481,7 +481,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
               color: homeCalculatorConfig.cards.lostToFeesText
             }}
           >
-            <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">Lost to Fees:</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">Lost to Asset-Based Fees:</span>
             <Odometer
               value={projection.savings}
               prefix="-$"

@@ -20,7 +20,7 @@ export const homeCalculatorConfig = {
     traditionalAumBorder: "#2A3F63",
     traditionalAumBg: "#F7F9FC",
     traditionalAumDarkBg: "rgba(96,165,250,0.12)",
-    lostToFeesLabel: "Lost to Fees",
+    lostToFeesLabel: "Lost to Asset-Based Fees",
     lostToFeesBorder: "#BE123C",
     lostToFeesText: "#B91C1C",
     lostToFeesBg: "#FFF1F2",

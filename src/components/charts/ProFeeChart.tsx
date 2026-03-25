@@ -64,7 +64,7 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.1 }}
       className={`inline-block rounded-lg border px-2 py-1.5 shadow-lg backdrop-blur-sm ${
-        isDark ? "border-slate-700 bg-slate-900/50" : "border-slate-200 bg-white/50"
+        isDark ? "border-slate-700/60 bg-slate-900/30" : "border-slate-200/60 bg-white/30"
       }`}
     >
       <p className={`mb-0.5 text-[10px] font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>
@@ -74,7 +74,7 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
       <div className="space-y-1">
         <div>
           <div className="flex items-center justify-between text-[10px] text-[#00A540]">
-            <span>Smarter Way Wealth</span>
+            <span>SMARTER $100/mo Flat Fee</span>
           </div>
           <p className="text-base font-bold tabular-nums text-[#00A540]">
             {formatCurrency(withoutFees)}
@@ -83,7 +83,7 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
 
         <div>
           <div className="flex items-center justify-between text-[10px] text-[#B91C1C]">
-            <span>Lost to fees</span>
+            <span>Lost to asset-based fees</span>
           </div>
           <p className="text-base font-bold tabular-nums text-[#B91C1C]">-{formatCurrency(lostAmount)}</p>
         </div>
@@ -102,14 +102,28 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
 };
 
 // Custom cursor: faint full-height dashed guide line + fee gap segment
-const FeeDragCursor = ({ points, height, top, cursorColor }: any) => {
+const FeeDragCursor = ({ points, height, top, cursorColor, payload, yAxisMap }: any) => {
   if (!points || points.length < 2) return null;
   const x = points[0].x;
-  const yValues = points
-    .map((point: any) => point?.y)
-    .filter((y: unknown): y is number => typeof y === "number");
-  const yTop = Math.min(...yValues);
-  const yBottom = Math.max(...yValues);
+  const numericValues = (payload ?? [])
+    .map((entry: any) => entry?.value)
+    .filter((value: unknown): value is number => typeof value === "number");
+  const primaryYAxis = yAxisMap ? Object.values(yAxisMap)[0] : null;
+  const scale = (primaryYAxis as any)?.scale;
+  const mappedY = numericValues
+    .map((value: number) => (typeof scale === "function" ? scale(value) : null))
+    .filter((value: unknown): value is number => typeof value === "number" && Number.isFinite(value));
+  if (typeof window !== "undefined") {
+    (window as any).__feeCursorDebug = {
+      points,
+      payloadValues: (payload ?? []).map((entry: any) => entry?.value),
+      hasScale: typeof scale === "function",
+      mappedY,
+    };
+  }
+
+  const yTop = mappedY.length === 2 ? Math.min(...mappedY) : Math.min(points[0].y, points[1].y);
+  const yBottom = mappedY.length === 2 ? Math.max(...mappedY) : Math.max(points[0].y, points[1].y);
   const endpointInset = 6;
   const segmentTop = yTop + endpointInset;
   const segmentBottom = yBottom - endpointInset;
