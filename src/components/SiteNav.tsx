@@ -93,7 +93,7 @@ export function SiteNav() {
         className={`flex flex-col items-start leading-[1.1] transition-all duration-800 ${easingClass} transform-gpu font-logo`}
         style={{ fontSize: fontSizeBase }}
       >
-        <span className={`hidden sm:block font-bold uppercase text-[#4A4A4A] tracking-[0.166em] transition-all duration-800 ${easingClass}`}>
+        <span className={`block font-bold uppercase text-[#4A4A4A] tracking-[0.166em] transition-all duration-800 ${easingClass}`}>
           Smarter
         </span>
         <span className={`hidden md:block font-medium uppercase text-[#007A2F] tracking-[0.222em] transition-all duration-800 ${easingClass}`} style={{ fontSize: '0.5em' }}>
