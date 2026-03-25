@@ -99,6 +99,30 @@ a:hover {
   background: transparent;
 }
 
+/* Pill slider — enlarged invisible thumb for better mobile grab area */
+.pill-slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 60px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  cursor: grab;
+}
+.pill-slider-input::-webkit-slider-thumb:active {
+  cursor: grabbing;
+}
+.pill-slider-input::-moz-range-thumb {
+  width: 60px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  cursor: grab;
+}
+.pill-slider-input::-moz-range-track {
+  background: transparent;
+}
+
 /* Mobile-friendly slider touch targets */
 @media (max-width: 639px) {
   .custom-slider {
