@@ -586,7 +586,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                   <button
                     type="button"
                     onClick={() => setSlidersExpanded((prev) => !prev)}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:text-slate-400 dark:hover:bg-slate-800/60"
+                    className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-0 dark:text-slate-400 dark:hover:bg-slate-800/60"
                     aria-expanded={slidersExpanded}
                   >
                     {slidersExpanded ? "Collapse all sliders" : "Expand all sliders"}

@@ -350,91 +350,14 @@ export function ProFeeChart({
             }}
           >
             <defs>
-              <pattern
-                id="redHatch"
-                patternUnits="userSpaceOnUse"
-                width="2"
-                height="2"
-                patternTransform="rotate(60)"
-              >
-                <rect width="2" height="2" fill={palette.chartBg} />
-                <line
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="2"
-                  stroke={palette.hatchColor}
-                  strokeWidth="0.5"
-                />
-              </pattern>
-              <pattern
-                id="alternatingHatch"
-                patternUnits="userSpaceOnUse"
-                width="5"
-                height="5"
-                patternTransform="rotate(30)"
-              >
-                <rect width="5" height="5" fill={palette.chartBg} />
-                <line
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="5"
-                  stroke={isDarkMode ? "#F8FAFC" : "#000000"}
-                  strokeWidth="1.0"
-                />
-                <line
-                  x1="1"
-                  y1="0"
-                  x2="1"
-                  y2="5"
-                  stroke={isDarkMode ? "#F8FAFC" : "#000000"}
-                  strokeWidth="1.0"
-                />
-                <line
-                  x1="2"
-                  y1="0"
-                  x2="2"
-                  y2="5"
-                  stroke={isDarkMode ? "#F8FAFC" : "#000000"}
-                  strokeWidth="1.0"
-                />
-                <line
-                  x1="3"
-                  y1="0"
-                  x2="3"
-                  y2="5"
-                  stroke={isDarkMode ? "#F8FAFC" : "#000000"}
-                  strokeWidth="1.0"
-                />
-                <line
-                  x1="4"
-                  y1="0"
-                  x2="4"
-                  y2="5"
-                  stroke={palette.hatchColor}
-                  strokeWidth="0.5"
-                />
-              </pattern>
-              <pattern
-                id="crossHatch"
-                patternUnits="userSpaceOnUse"
-                width="2"
-                height="2"
-                patternTransform="rotate(-30)"
-              >
-                <line
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="2"
-                  stroke={isDarkMode ? "#F8FAFC" : "#000000"}
-                  strokeWidth="1.0"
-                />
-              </pattern>
-              <linearGradient id="slateGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={palette.traditionalArea} stopOpacity={isDarkMode ? 0.5 : 0.35} />
-                <stop offset="100%" stopColor={palette.traditionalArea} stopOpacity={0.05} />
+              <linearGradient id="redGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#ef4444" stopOpacity={0.9} />
+                <stop offset="100%" stopColor="#fee2e2" stopOpacity={0.2} />
+              </linearGradient>
+
+              <linearGradient id="blackGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#18181b" stopOpacity={0.4} />
+                <stop offset="100%" stopColor="#18181b" stopOpacity={0.05} />
               </linearGradient>
             </defs>
 
@@ -476,7 +399,7 @@ export function ProFeeChart({
               dataKey="withoutFees"
               stroke={palette.smarterStroke}
               strokeWidth={isMobile ? 2 : 3}
-              fill="url(#redHatch)"
+              fill="url(#redGradient)"
               fillOpacity={1}
               strokeOpacity={smarterOpacity}
               isAnimationActive={animateOnMount}
@@ -490,12 +413,27 @@ export function ProFeeChart({
               }}
             />
 
+            {/* Solid background for withFees to prevent red bleeding through */}
+            <Area
+              type="monotone"
+              dataKey="withFees"
+              stroke="none"
+              fill={palette.chartBg}
+              fillOpacity={1}
+              isAnimationActive={animateOnMount}
+              animationDuration={1400}
+              animationBegin={120}
+              animationEasing="ease-out"
+              activeDot={false}
+            />
+
+            {/* Black Gradient beneath the lower bottom line */}
             <Area
               type="monotone"
               dataKey="withFees"
               stroke={palette.traditionalStroke}
               strokeWidth={isMobile ? 2 : 3}
-              fill="url(#alternatingHatch)"
+              fill="url(#blackGradient)"
               fillOpacity={1}
               strokeOpacity={traditionalOpacity}
               isAnimationActive={animateOnMount}
@@ -508,19 +446,6 @@ export function ProFeeChart({
                 stroke: isDarkMode ? "#0F172A" : "#FFFFFF",
                 strokeWidth: 2,
               }}
-            />
-
-            {/* Layered Cross-Hatch for Traditional Area */}
-            <Area
-              type="monotone"
-              dataKey="withFees"
-              stroke="none"
-              fill="url(#crossHatch)"
-              fillOpacity={1}
-              isAnimationActive={animateOnMount}
-              animationDuration={1400}
-              animationBegin={120}
-              animationEasing="ease-out"
             />
           </AreaChart>
         </ResponsiveContainer>
