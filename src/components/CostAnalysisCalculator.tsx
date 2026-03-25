@@ -324,7 +324,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         `Annual growth: ${state.annualGrowthPercent.toFixed(1)}%`,
         `Time horizon: ${state.years} years`,
         `Smarter Way Wealth value: ${formatCurrency(projection.finalValueWithoutFees)}`,
-        `Traditional AUM value: ${formatCurrency(projection.finalValueWithFees)}`,
+        `Traditional asset-based fee value: ${formatCurrency(projection.finalValueWithFees)}`,
         `Lost to asset-based fees: -${formatCurrency(projection.savings)}`,
       ].join("\n"),
     [projection.finalValueWithFees, projection.finalValueWithoutFees, projection.savings, state]
@@ -363,15 +363,6 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
     setShareFeedback("error");
   }, [shareSummary, shareUrl]);
-
-  const [scrolledPastHero, setScrolledPastHero] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolledPastHero(window.scrollY > 100);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -429,8 +420,8 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     <>
       {/* Mobile Sticky Fee Bar */}
       <div
-        className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu dark:border-slate-700 dark:bg-slate-900/90 md:hidden ${
-          scrolledPastHero ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
+        className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu dark:border-slate-700 dark:bg-slate-900/90 md:hidden ${
+          showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
         <div className="flex h-12 items-center justify-center px-4">
@@ -491,7 +482,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-gray-500 dark:text-slate-400">Traditional AUM:</span>
+            <span className="text-gray-500 dark:text-slate-400">Traditional Asset-Based Fee:</span>
             <Odometer
               value={projection.finalValueWithFees}
               prefix="$"
@@ -551,7 +542,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                   className="order-1"
                 />
                 <ValueCard
-                  label="Traditional AUM"
+                  label="Traditional Asset-Based Fee"
                   value={projection.finalValueWithFees}
                   variant="traditional"
                   isActive={activeCard === "traditional"}

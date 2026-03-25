@@ -14,7 +14,7 @@ export const homeCalculatorConfig = {
   },
   cards: {
     borderWidthPx: 1.5,
-    smarterWayBorder: "#94A3B8",
+    smarterWayBorder: "#2A3F63",
     smarterWayBg: "#F2FBF6",
     smarterWayDarkBg: "rgba(34,197,94,0.14)",
     traditionalAumBorder: "#2A3F63",
