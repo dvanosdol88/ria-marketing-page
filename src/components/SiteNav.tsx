@@ -78,7 +78,7 @@ export function SiteNav() {
     isCentered?: boolean,
     fontSizeBase?: string
   }) => (
-    <div className={`flex items-center gap-2 sm:gap-3 ${isCentered ? "justify-center" : "justify-start"}`}>
+    <div className={`flex items-end gap-2 sm:gap-3 ${isCentered ? "justify-center" : "justify-start"}`}>
       <img
         src="/brand/logo-icon.svg"
         alt="Smarter Way Wealth"
