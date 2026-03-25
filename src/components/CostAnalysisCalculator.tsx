@@ -56,6 +56,7 @@ interface PillSliderProps {
   format: (v: number) => string;
   variant: "destructive" | "accumulation";
   labelAction?: ReactNode;
+  pillColorOverride?: string;
   // Standard mode (min/max/step)
   min?: number;
   max?: number;
@@ -72,6 +73,7 @@ function PillSlider({
   format,
   variant,
   labelAction,
+  pillColorOverride,
   min,
   max,
   step,
@@ -106,7 +108,8 @@ function PillSlider({
   // Displayed value (resolved from array if needed)
   const displayValue = isArrayMode ? values![arrayIdx] : value;
 
-  const pillColor = variant === "destructive" ? DESTRUCTIVE_COLOR : ACCUMULATION_COLOR;
+  const basePillColor = variant === "destructive" ? DESTRUCTIVE_COLOR : ACCUMULATION_COLOR;
+  const pillColor = pillColorOverride ?? basePillColor;
   const trackColor = variant === "destructive" ? DESTRUCTIVE_TRACK : ACCUMULATION_TRACK;
 
   const precision = useMemo(() => {
@@ -578,12 +581,12 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                 />
               </div>
 
-              <div className="border-t border-gray-100 bg-white p-4 dark:border-slate-700 dark:bg-slate-900 sm:p-6 lg:p-8">
+              <div className="border-t border-gray-100 bg-white px-4 pb-4 pt-2 dark:border-slate-700 dark:bg-slate-900 sm:px-6 sm:pb-6 sm:pt-3 lg:px-8 lg:pb-8 lg:pt-4">
                 <div className="mb-3 flex items-center justify-end">
                   <button
                     type="button"
                     onClick={() => setSlidersExpanded((prev) => !prev)}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-slate-600 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800/60"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:text-slate-400 dark:hover:bg-slate-800/60"
                     aria-expanded={slidersExpanded}
                   >
                     {slidersExpanded ? "Collapse all sliders" : "Expand all sliders"}
@@ -625,6 +628,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                         onChange={(v) => setState((prev) => ({ ...prev, mutualFundExpensePercent: v }))}
                         format={(v) => `${v.toFixed(2)}%`}
                         variant="destructive"
+                        pillColorOverride="#7F1D1D"
                         min={0}
                         max={3}
                         step={0.05}

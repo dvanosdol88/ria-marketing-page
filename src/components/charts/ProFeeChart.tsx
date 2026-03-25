@@ -351,19 +351,20 @@ export function ProFeeChart({
           >
             <defs>
               <pattern
-                id="diagonalHatch"
+                id="alternatingHatch"
                 patternUnits="userSpaceOnUse"
-                width="8"
-                height="8"
+                width="4"
+                height="4"
                 patternTransform="rotate(45)"
               >
+                <rect width="4" height="4" fill={palette.smarterArea} />
                 <line
                   x1="0"
                   y1="0"
                   x2="0"
-                  y2="8"
+                  y2="4"
                   stroke={palette.hatchColor}
-                  strokeWidth="1.5"
+                  strokeWidth="0.75"
                 />
               </pattern>
               <linearGradient id="slateGradient" x1="0" y1="0" x2="0" y2="1">
@@ -410,8 +411,8 @@ export function ProFeeChart({
               dataKey="withoutFees"
               stroke={palette.smarterStroke}
               strokeWidth={isMobile ? 2 : 3}
-              fill="url(#diagonalHatch)"
-              fillOpacity={smarterOpacity}
+              fill={palette.smarterArea}
+              fillOpacity={1}
               strokeOpacity={smarterOpacity}
               isAnimationActive={animateOnMount}
               animationDuration={1400}
@@ -429,8 +430,8 @@ export function ProFeeChart({
               dataKey="withFees"
               stroke={palette.traditionalStroke}
               strokeWidth={isMobile ? 2 : 3}
-              fill="url(#slateGradient)"
-              fillOpacity={traditionalOpacity}
+              fill="url(#alternatingHatch)"
+              fillOpacity={1}
               strokeOpacity={traditionalOpacity}
               isAnimationActive={animateOnMount}
               animationDuration={1400}
