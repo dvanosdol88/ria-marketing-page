@@ -90,7 +90,7 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
 
         <div className={`border-t pt-1 ${isDark ? "border-slate-700" : "border-slate-100"}`}>
           <div className={`flex items-center justify-between text-[10px] ${isDark ? "text-slate-400" : "text-slate-500"}`}>
-            <span>Traditional AUM</span>
+            <span>Traditional Asset-Based Fee</span>
           </div>
           <p className={`text-base font-bold tabular-nums ${isDark ? "text-slate-400" : "text-slate-500"}`}>
             {formatCurrency(withFees)}
@@ -101,32 +101,60 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
   );
 };
 
-// Custom cursor: faint full-height dashed guide line + fee gap segment
-const FeeDragCursor = ({ points, height, top, cursorColor, payload, yAxisMap }: any) => {
+// Custom cursor: faint full-height dashed guide line
+const FeeDragCursor = ({ points, height, top, cursorColor, payload }: any) => {
   if (!points || points.length < 2) return null;
   const x = points[0].x;
-  const numericValues = (payload ?? [])
+  const payloadValues = (payload ?? [])
     .map((entry: any) => entry?.value)
-    .filter((value: unknown): value is number => typeof value === "number");
-  const primaryYAxis = yAxisMap ? Object.values(yAxisMap)[0] : null;
-  const scale = (primaryYAxis as any)?.scale;
-  const mappedY = numericValues
-    .map((value: number) => (typeof scale === "function" ? scale(value) : null))
     .filter((value: unknown): value is number => typeof value === "number" && Number.isFinite(value));
-  if (typeof window !== "undefined") {
-    (window as any).__feeCursorDebug = {
-      points,
-      payloadValues: (payload ?? []).map((entry: any) => entry?.value),
-      hasScale: typeof scale === "function",
-      mappedY,
-    };
-  }
 
-  const yTop = mappedY.length === 2 ? Math.min(...mappedY) : Math.min(points[0].y, points[1].y);
-  const yBottom = mappedY.length === 2 ? Math.max(...mappedY) : Math.max(points[0].y, points[1].y);
-  const endpointInset = 6;
-  const segmentTop = yTop + endpointInset;
-  const segmentBottom = yBottom - endpointInset;
+  const parseAxisTick = (label: string): number | null => {
+    const normalized = label.replace(/\$/g, "").replace(/,/g, "").trim().toUpperCase();
+    if (!normalized) return null;
+    if (normalized.endsWith("M")) {
+      const n = Number.parseFloat(normalized.slice(0, -1));
+      return Number.isFinite(n) ? n * 1_000_000 : null;
+    }
+    if (normalized.endsWith("K")) {
+      const n = Number.parseFloat(normalized.slice(0, -1));
+      return Number.isFinite(n) ? n * 1_000 : null;
+    }
+    const n = Number.parseFloat(normalized);
+    return Number.isFinite(n) ? n : null;
+  };
+
+  const axisTicks =
+    typeof document === "undefined"
+      ? []
+      : Array.from(document.querySelectorAll(".recharts-yAxis .recharts-cartesian-axis-tick text"))
+          .map((tick) => {
+            const y = Number.parseFloat(tick.getAttribute("y") ?? "NaN");
+            const value = parseAxisTick(tick.textContent ?? "");
+            return { y, value };
+          })
+          .filter((tick): tick is { y: number; value: number } => Number.isFinite(tick.y) && tick.value !== null);
+
+  const minTick = axisTicks.reduce<{ y: number; value: number } | null>(
+    (acc, tick) => (acc === null || tick.value < acc.value ? tick : acc),
+    null
+  );
+  const maxTick = axisTicks.reduce<{ y: number; value: number } | null>(
+    (acc, tick) => (acc === null || tick.value > acc.value ? tick : acc),
+    null
+  );
+
+  const mapValueToY = (value: number): number | null => {
+    if (!minTick || !maxTick || maxTick.value === minTick.value) return null;
+    const ratio = (value - minTick.value) / (maxTick.value - minTick.value);
+    return minTick.y + ratio * (maxTick.y - minTick.y);
+  };
+
+  const yPoints = payloadValues
+    .map(mapValueToY)
+    .filter((y: number | null): y is number => y !== null && Number.isFinite(y));
+  const yTop = yPoints.length >= 2 ? Math.min(...yPoints) : null;
+  const yBottom = yPoints.length >= 2 ? Math.max(...yPoints) : null;
 
   return (
     <g>
@@ -136,12 +164,12 @@ const FeeDragCursor = ({ points, height, top, cursorColor, payload, yAxisMap }: 
         strokeWidth={1}
         strokeDasharray="4 4"
       />
-      {segmentBottom > segmentTop && (
+      {yTop !== null && yBottom !== null && yBottom - yTop > 2 && (
         <line
           x1={x}
-          y1={segmentTop}
+          y1={yTop + 1}
           x2={x}
-          y2={segmentBottom}
+          y2={yBottom - 1}
           stroke="#B91C1C"
           strokeWidth={3}
           strokeOpacity={0.95}
