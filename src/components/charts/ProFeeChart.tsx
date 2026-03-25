@@ -355,7 +355,7 @@ export function ProFeeChart({
                 patternUnits="userSpaceOnUse"
                 width="2"
                 height="2"
-                patternTransform="rotate(60)"
+                patternTransform="rotate(30)"
               >
                 <rect width="2" height="2" fill={palette.chartBg} />
                 <line
@@ -370,24 +370,24 @@ export function ProFeeChart({
               <pattern
                 id="alternatingHatch"
                 patternUnits="userSpaceOnUse"
-                width="8"
-                height="8"
-                patternTransform="rotate(45)"
+                width="4"
+                height="4"
+                patternTransform="rotate(30)"
               >
-                <rect width="8" height="8" fill={palette.chartBg} />
+                <rect width="4" height="4" fill={palette.chartBg} />
                 <line
                   x1="0"
                   y1="0"
                   x2="0"
-                  y2="8"
+                  y2="4"
                   stroke={isDarkMode ? "#F8FAFC" : "#000000"}
-                  strokeWidth="1.5"
+                  strokeWidth="0.75"
                 />
                 <line
-                  x1="4"
+                  x1="2"
                   y1="0"
-                  x2="4"
-                  y2="8"
+                  x2="2"
+                  y2="4"
                   stroke={palette.hatchColor}
                   strokeWidth="0.75"
                 />
