@@ -63,39 +63,39 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.1 }}
-      className={`min-w-[155px] rounded-lg border p-2.5 shadow-lg backdrop-blur-sm ${
+      className={`min-w-[140px] rounded-lg border px-2 py-1.5 shadow-lg backdrop-blur-sm ${
         isDark ? "border-slate-700 bg-slate-900/95" : "border-slate-200 bg-white/95"
       }`}
     >
-      <p className={`mb-1 text-[10px] font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>
+      <p className={`mb-0.5 text-[10px] font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>
         Year {label}
       </p>
 
-      <div className="space-y-2">
+      <div className="space-y-1">
         <div>
-          <div className="mb-0.5 flex items-center justify-between text-[10px] text-brand-600">
+          <div className="flex items-center justify-between text-[10px] text-brand-600">
             <span>Smarter Way Wealth</span>
             <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
           </div>
-          <p className={`text-lg font-bold tabular-nums ${isDark ? "text-slate-100" : "text-slate-900"}`}>
+          <p className="text-base font-bold tabular-nums text-brand-600">
             {formatCurrency(withoutFees)}
           </p>
         </div>
 
         <div>
-          <div className="mb-0.5 flex items-center justify-between text-[10px] text-red-700">
+          <div className="flex items-center justify-between text-[10px] text-[#B91C1C]">
             <span>Lost to fees</span>
-            <span className="h-1.5 w-1.5 rounded-full bg-red-600" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#B91C1C]" />
           </div>
-          <p className="text-lg font-bold tabular-nums text-red-700">-{formatCurrency(lostAmount)}</p>
+          <p className="text-base font-bold tabular-nums text-[#B91C1C]">-{formatCurrency(lostAmount)}</p>
         </div>
 
-        <div className={`mt-1 border-t pt-1.5 ${isDark ? "border-slate-700" : "border-slate-100"}`}>
-          <div className={`mb-0.5 flex items-center justify-between text-[10px] ${isDark ? "text-slate-400" : "text-slate-500"}`}>
+        <div className={`border-t pt-1 ${isDark ? "border-slate-700" : "border-slate-100"}`}>
+          <div className={`flex items-center justify-between text-[10px] ${isDark ? "text-slate-400" : "text-slate-500"}`}>
             <span>Traditional AUM</span>
             <span className="h-1.5 w-1.5 rounded-full bg-slate-400" />
           </div>
-          <p className={`text-lg font-bold tabular-nums ${isDark ? "text-slate-100" : "text-slate-900"}`}>
+          <p className={`text-base font-bold tabular-nums ${isDark ? "text-slate-400" : "text-slate-500"}`}>
             {formatCurrency(withFees)}
           </p>
         </div>
@@ -117,7 +117,7 @@ function LostToFeesDonut({
   const innerRadius = isMobile ? 22 : 42;
   const outerRadius = isMobile ? 34 : 62;
   const donutData = [
-    { name: "Lost", value: percentLost, fill: isDarkMode ? "#93A5C3" : "#64748B" },
+    { name: "Lost", value: percentLost, fill: "#B91C1C" },
     { name: "Kept", value: Math.max(0, 100 - percentLost), fill: isDarkMode ? "#34D399" : "#00A540" },
   ];
 
@@ -138,14 +138,20 @@ function LostToFeesDonut({
             startAngle={90}
             endAngle={-270}
             stroke="none"
+            isAnimationActive={false}
           >
             {donutData.map((entry) => (
               <Cell key={entry.name} fill={entry.fill} />
             ))}
           </Pie>
         </PieChart>
-        <div className="absolute inset-0 flex items-center justify-center text-xs font-bold tabular-nums text-slate-700 dark:text-slate-200 sm:text-sm md:text-base">
-          {percentLost.toFixed(1)}%
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-xs font-bold tabular-nums text-[#B91C1C] sm:text-sm md:text-base">
+            {percentLost.toFixed(1)}%
+          </span>
+          <span className="text-[7px] font-semibold uppercase tracking-wider text-[#B91C1C]/70 sm:text-[8px] md:text-[9px]">
+            Lost
+          </span>
         </div>
       </div>
     </div>
