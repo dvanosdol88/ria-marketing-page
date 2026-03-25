@@ -104,6 +104,31 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
   );
 };
 
+// Custom cursor: faint full-height dashed line + red dashed "gap" line between the two data points
+const FeeDragCursor = ({ points, height, top, cursorColor }: any) => {
+  if (!points || points.length < 2) return null;
+  const [smarterPt, traditionalPt] = points;
+  const x = smarterPt.x;
+
+  return (
+    <g>
+      <line
+        x1={x} y1={top} x2={x} y2={top + height}
+        stroke={cursorColor ?? "#E5E7EB"}
+        strokeWidth={1}
+        strokeDasharray="4 4"
+      />
+      <line
+        x1={x} y1={smarterPt.y} x2={x} y2={traditionalPt.y}
+        stroke="#B91C1C"
+        strokeWidth={1.5}
+        strokeDasharray="4 3"
+        strokeOpacity={0.7}
+      />
+    </g>
+  );
+};
+
 function LostToFeesDonut({
   percentLost,
   isMobile,
@@ -118,11 +143,11 @@ function LostToFeesDonut({
   const outerRadius = isMobile ? 34 : 62;
   const donutData = [
     { name: "Lost", value: percentLost, fill: "#B91C1C" },
-    { name: "Kept", value: Math.max(0, 100 - percentLost), fill: isDarkMode ? "#34D399" : "#00A540" },
+    { name: "Kept", value: Math.max(0, 100 - percentLost), fill: isDarkMode ? "#64748B" : "#94A3B8" },
   ];
 
   return (
-    <div className="pointer-events-none absolute left-6 top-6 z-20 sm:left-10 sm:top-8">
+    <div className="pointer-events-none absolute left-6 top-6 z-20 sm:left-[80px] sm:top-8">
       <div className={`text-[10px] font-semibold uppercase tracking-wider sm:text-xs md:text-sm ${isDarkMode ? "text-slate-300" : "text-slate-500"}`}>
         Lost Wealth
       </div>
@@ -146,10 +171,10 @@ function LostToFeesDonut({
           </Pie>
         </PieChart>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-xs font-bold tabular-nums text-[#B91C1C] sm:text-sm md:text-base">
+          <span className="text-[10px] font-semibold tabular-nums text-[#B91C1C] sm:text-xs md:text-sm">
             {percentLost.toFixed(1)}%
           </span>
-          <span className="text-[7px] font-semibold uppercase tracking-wider text-[#B91C1C]/70 sm:text-[8px] md:text-[9px]">
+          <span className="text-xs font-bold uppercase tracking-wider text-[#B91C1C] sm:text-sm md:text-base">
             Lost
           </span>
         </div>
@@ -308,7 +333,11 @@ export function ProFeeChart({
             {!isMobile && (
               <Tooltip
                 content={<CustomHUDTooltip isDark={isDarkMode} />}
-                cursor={{ stroke: palette.cursor, strokeWidth: 1, strokeDasharray: "4 4" }}
+                cursor={
+                  <FeeDragCursor
+                    cursorColor={palette.cursor}
+                  />
+                }
               />
             )}
 
