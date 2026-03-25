@@ -353,16 +353,16 @@ export function ProFeeChart({
               <pattern
                 id="redHatch"
                 patternUnits="userSpaceOnUse"
-                width="4"
-                height="4"
-                patternTransform="rotate(45)"
+                width="2"
+                height="2"
+                patternTransform="rotate(60)"
               >
-                <rect width="4" height="4" fill={palette.chartBg} />
+                <rect width="2" height="2" fill={palette.chartBg} />
                 <line
                   x1="0"
                   y1="0"
                   x2="0"
-                  y2="4"
+                  y2="2"
                   stroke={palette.hatchColor}
                   strokeWidth="0.75"
                 />
@@ -381,7 +381,7 @@ export function ProFeeChart({
                   x2="0"
                   y2="8"
                   stroke={isDarkMode ? "#F8FAFC" : "#000000"}
-                  strokeWidth="1.25"
+                  strokeWidth="1.5"
                 />
                 <line
                   x1="4"
