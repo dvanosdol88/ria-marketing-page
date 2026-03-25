@@ -268,7 +268,7 @@ export function ProFeeChart({
         ? {
             smarterStroke: "#E2E8F0",
             hatchColor: "#FCA5A5",
-            traditionalStroke: "#93A5C3",
+            traditionalStroke: "#F8FAFC",
             traditionalArea: "#93A5C3",
             grid: "#334155",
             xTick: "#94A3B8",
@@ -279,7 +279,7 @@ export function ProFeeChart({
         : {
             smarterStroke: "#0F172A",
             hatchColor: "#B91C1C",
-            traditionalStroke: "#64748B",
+            traditionalStroke: "#000000",
             traditionalArea: "#64748B",
             grid: "#CBD5E1",
             xTick: "#9CA3AF",
@@ -370,42 +370,50 @@ export function ProFeeChart({
               <pattern
                 id="alternatingHatch"
                 patternUnits="userSpaceOnUse"
-                width="4"
-                height="4"
+                width="5"
+                height="5"
                 patternTransform="rotate(30)"
               >
-                <rect width="4" height="4" fill={palette.chartBg} />
+                <rect width="5" height="5" fill={palette.chartBg} />
                 <line
                   x1="0"
                   y1="0"
                   x2="0"
-                  y2="4"
+                  y2="5"
                   stroke={isDarkMode ? "#F8FAFC" : "#000000"}
-                  strokeWidth="0.75"
+                  strokeWidth="1.0"
                 />
                 <line
                   x1="1"
                   y1="0"
                   x2="1"
-                  y2="4"
+                  y2="5"
                   stroke={isDarkMode ? "#F8FAFC" : "#000000"}
-                  strokeWidth="0.75"
+                  strokeWidth="1.0"
                 />
                 <line
                   x1="2"
                   y1="0"
                   x2="2"
-                  y2="4"
+                  y2="5"
                   stroke={isDarkMode ? "#F8FAFC" : "#000000"}
-                  strokeWidth="0.75"
+                  strokeWidth="1.0"
                 />
                 <line
                   x1="3"
                   y1="0"
                   x2="3"
-                  y2="4"
+                  y2="5"
+                  stroke={isDarkMode ? "#F8FAFC" : "#000000"}
+                  strokeWidth="1.0"
+                />
+                <line
+                  x1="4"
+                  y1="0"
+                  x2="4"
+                  y2="5"
                   stroke={palette.hatchColor}
-                  strokeWidth="0.75"
+                  strokeWidth="1.0"
                 />
               </pattern>
               <linearGradient id="slateGradient" x1="0" y1="0" x2="0" y2="1">
