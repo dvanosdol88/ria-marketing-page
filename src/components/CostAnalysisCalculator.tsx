@@ -575,25 +575,37 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     <>
       {/* Mobile Sticky Fee Bar */}
       <div
-        className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu dark:border-slate-700 dark:bg-slate-900/90 sm:hidden ${
+        className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-600 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu dark:border-slate-700 dark:bg-slate-900/90 sm:hidden ${
           scrolledPastHero ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
-        <div className="flex h-12 items-center justify-center gap-2 px-4 text-red-600 dark:text-red-400">
-          <Odometer value={projection.savings} prefix="$" duration={1000} className="text-lg font-bold" />
-          <span className="text-sm font-semibold uppercase tracking-wider">
-            lost to fees!
-          </span>
+        <div className="flex h-12 items-center justify-center px-4">
+          <div 
+            className="flex items-center gap-2 rounded-full px-4 py-1.5 shadow-sm"
+            style={{
+              borderWidth: homeCalculatorConfig.cards.borderWidthPx,
+              borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
+              backgroundColor: isDarkMode
+                ? homeCalculatorConfig.cards.lostToFeesDarkBg
+                : homeCalculatorConfig.cards.lostToFeesBg,
+              color: homeCalculatorConfig.cards.lostToFeesText
+            }}
+          >
+            <Odometer value={projection.savings} prefix="$" duration={1000} className="text-lg font-bold" />
+            <span className="text-xs font-bold uppercase tracking-wider">
+              lost to fees!
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Desktop Sticky Fee Bar */}
       <div
-        className={`fixed left-0 right-0 top-[52px] z-40 hidden border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu md:block ${
+        className={`fixed left-0 right-0 top-[52px] z-40 hidden border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-600 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu md:block ${
           showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
-        <div className="mx-auto flex h-10 max-w-5xl items-center justify-center gap-10 px-4 text-sm font-medium">
+        <div className="mx-auto flex h-11 max-w-5xl items-center justify-center gap-6 px-4 text-sm font-medium">
           <div className="flex items-center gap-2">
             <span className="text-gray-500 dark:text-slate-400">Smarter Way Wealth:</span>
             <Odometer
@@ -603,15 +615,27 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
               className="font-bold text-[#00A540]"
             />
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-red-600 dark:text-red-400">Lost to Fees:</span>
+          
+          <div 
+            className="flex items-center gap-2 rounded-lg px-3 py-1 shadow-sm"
+            style={{
+              borderWidth: homeCalculatorConfig.cards.borderWidthPx,
+              borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
+              backgroundColor: isDarkMode
+                ? homeCalculatorConfig.cards.lostToFeesDarkBg
+                : homeCalculatorConfig.cards.lostToFeesBg,
+              color: homeCalculatorConfig.cards.lostToFeesText
+            }}
+          >
+            <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">Lost to Fees:</span>
             <Odometer
               value={projection.savings}
               prefix="-$"
               duration={800}
-              className="font-bold text-red-600 dark:text-red-400"
+              className="font-bold"
             />
           </div>
+
           <div className="flex items-center gap-2">
             <span className="text-gray-500 dark:text-slate-400">Traditional AUM:</span>
             <Odometer
