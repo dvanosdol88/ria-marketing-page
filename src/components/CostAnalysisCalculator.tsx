@@ -146,7 +146,7 @@ function PillSlider({
 
   return (
     <div>
-      <p className="mb-1 text-[13px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-slate-300">
+      <p className="mb-0 text-[13px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-slate-300">
         {label}
       </p>
       <div className="relative flex h-12 items-center">
@@ -173,7 +173,7 @@ function PillSlider({
         />
         {/* Visual pill thumb — glows + scales on grab */}
         <div
-          className="pointer-events-none absolute z-10 flex h-10 items-center justify-center rounded-full px-3.5 transition-all duration-150"
+          className="pointer-events-none absolute z-10 flex h-9 items-center justify-center rounded-full px-3.5 transition-all duration-150"
           style={{
             left: `${pct}%`,
             transform: `translateX(-${pct}%)${isActive ? " scale(1.08)" : ""}`,

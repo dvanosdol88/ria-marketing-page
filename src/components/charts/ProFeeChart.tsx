@@ -8,7 +8,6 @@ import {
   Cell,
   Pie,
   PieChart,
-  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -64,8 +63,8 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.1 }}
-      className={`min-w-[140px] rounded-lg border px-2 py-1.5 shadow-lg backdrop-blur-sm ${
-        isDark ? "border-slate-700 bg-slate-900/95" : "border-slate-200 bg-white/95"
+      className={`inline-block rounded-lg border px-2 py-1.5 shadow-lg backdrop-blur-sm ${
+        isDark ? "border-slate-700 bg-slate-900/50" : "border-slate-200 bg-white/50"
       }`}
     >
       <p className={`mb-0.5 text-[10px] font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>
@@ -102,10 +101,18 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
   );
 };
 
-// Custom cursor: faint full-height dashed guide line
+// Custom cursor: faint full-height dashed guide line + fee gap segment
 const FeeDragCursor = ({ points, height, top, cursorColor }: any) => {
   if (!points || points.length < 2) return null;
   const x = points[0].x;
+  const yValues = points
+    .map((point: any) => point?.y)
+    .filter((y: unknown): y is number => typeof y === "number");
+  const yTop = Math.min(...yValues);
+  const yBottom = Math.max(...yValues);
+  const endpointInset = 6;
+  const segmentTop = yTop + endpointInset;
+  const segmentBottom = yBottom - endpointInset;
 
   return (
     <g>
@@ -115,6 +122,18 @@ const FeeDragCursor = ({ points, height, top, cursorColor }: any) => {
         strokeWidth={1}
         strokeDasharray="4 4"
       />
+      {segmentBottom > segmentTop && (
+        <line
+          x1={x}
+          y1={segmentTop}
+          x2={x}
+          y2={segmentBottom}
+          stroke="#B91C1C"
+          strokeWidth={3}
+          strokeOpacity={0.95}
+          strokeLinecap="round"
+        />
+      )}
     </g>
   );
 };
@@ -181,7 +200,6 @@ export function ProFeeChart({
   const [isMobile, setIsMobile] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [animateOnMount, setAnimateOnMount] = useState(true);
-  const [activeGap, setActiveGap] = useState<{ year: number; withoutFees: number; withFees: number } | null>(null);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 640);
@@ -278,18 +296,6 @@ export function ProFeeChart({
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
-            onMouseMove={(state: any) => {
-              const row = state?.activePayload?.[0]?.payload;
-              if (
-                row &&
-                typeof row.year === "number" &&
-                typeof row.withoutFees === "number" &&
-                typeof row.withFees === "number"
-              ) {
-                setActiveGap({ year: row.year, withoutFees: row.withoutFees, withFees: row.withFees });
-              }
-            }}
-            onMouseLeave={() => setActiveGap(null)}
             margin={{
               top: isMobile ? 10 : 20,
               right: 5,
@@ -379,19 +385,6 @@ export function ProFeeChart({
                 strokeWidth: 2,
               }}
             />
-
-            {!isMobile && activeGap && (
-              <ReferenceLine
-                segment={[
-                  { x: activeGap.year, y: activeGap.withoutFees },
-                  { x: activeGap.year, y: activeGap.withFees },
-                ]}
-                stroke="#B91C1C"
-                strokeWidth={3}
-                strokeOpacity={0.95}
-                strokeLinecap="round"
-              />
-            )}
           </AreaChart>
         </ResponsiveContainer>
       </div>
