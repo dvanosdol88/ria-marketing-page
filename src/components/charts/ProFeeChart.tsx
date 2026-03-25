@@ -381,7 +381,7 @@ export function ProFeeChart({
                   x2="0"
                   y2="8"
                   stroke={isDarkMode ? "#F8FAFC" : "#000000"}
-                  strokeWidth="0.75"
+                  strokeWidth="1.0"
                 />
                 <line
                   x1="4"
