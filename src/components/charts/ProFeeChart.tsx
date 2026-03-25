@@ -300,15 +300,15 @@ export function ProFeeChart({
 
       {showSummary && (
         <div className="shrink-0 space-y-1.5 px-4 pb-2 pt-4 sm:hidden">
-          <div className="flex items-baseline justify-between">
+          <div className="flex items-baseline justify-between rounded-lg bg-slate-50 px-3 py-1.5 dark:bg-slate-800/40">
             <span className="tabular-nums text-lg font-semibold text-slate-900 dark:text-slate-100">{formatCurrency(finalValueWithoutFees)}</span>
             <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Smarter Way ($100/mo)</span>
           </div>
-          <div className="mx-[-4px] flex items-baseline justify-between rounded-lg bg-slate-50 px-3 py-1.5 dark:bg-slate-800/40">
+          <div className="mx-[-4px] flex items-baseline justify-between px-3 py-1.5">
             <span className="tabular-nums text-xl font-bold text-slate-900 dark:text-slate-100">+{formatCurrency(finalLost)}</span>
             <span className="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">You Save</span>
           </div>
-          <div className="flex items-baseline justify-between">
+          <div className="flex items-baseline justify-between rounded-lg bg-slate-50 px-3 py-1.5 dark:bg-slate-800/40">
             <span className="tabular-nums text-lg font-semibold text-slate-600 dark:text-slate-300">{formatCurrency(finalValueWithFees)}</span>
             <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">AUM Advisor</span>
           </div>
