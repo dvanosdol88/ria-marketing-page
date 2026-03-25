@@ -49,6 +49,7 @@ const FADE_MS = 300;   // full-card crossfade duration
 // Per-person horizontal offset (px) to center portraits in the circle
 const PORTRAIT_OFFSET: Record<string, number> = {
   'Fama': 10,
+  'Malkiel': 10,
   'Munger': 10,
   'Franklin': 10,
   'Sharpe': -10,
