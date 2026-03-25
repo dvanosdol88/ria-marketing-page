@@ -212,6 +212,14 @@ export default function MobileQuoteCarousel({
     }
   }, []);
 
+  // Check if swiping in a direction stays within the same person
+  const wouldStayInGroup = useCallback((direction: 'next' | 'prev') => {
+    const groupQuotes = groups[activeGroup][1];
+    return direction === 'next'
+      ? activeQuoteInGroup + 1 < groupQuotes.length
+      : activeQuoteInGroup > 0;
+  }, [activeGroup, activeQuoteInGroup, groups]);
+
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     const state = touchRef.current;
     if (!state) return;
@@ -233,11 +241,13 @@ export default function MobileQuoteCarousel({
     e.preventDefault();
     state.currentX = touch.clientX;
 
-    if (cardRef.current) {
-      const offset = (touch.clientX - state.startX) * 0.5;
+    // Only slide card if swipe would change person; within-person uses text roll only
+    const direction = dx < 0 ? 'next' : 'prev';
+    if (cardRef.current && !wouldStayInGroup(direction)) {
+      const offset = dx * 0.5;
       cardRef.current.style.transform = `translateX(${offset}px)`;
     }
-  }, []);
+  }, [wouldStayInGroup]);
 
   const handleTouchEnd = useCallback(() => {
     const state = touchRef.current;
