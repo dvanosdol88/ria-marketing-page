@@ -534,6 +534,25 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     setActiveCard((prev) => (prev === card ? null : card));
   };
 
+  const calculatorRef = useRef<HTMLDivElement>(null);
+  const [showDesktopBar, setShowDesktopBar] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Show bar when calculator is NOT intersecting AND we have scrolled down past it
+        setShowDesktopBar(!entry.isIntersecting && entry.boundingClientRect.top < 0);
+      },
+      { threshold: 0 }
+    );
+
+    if (calculatorRef.current) {
+      observer.observe(calculatorRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const heroPromptColor = isDarkMode ? "#D9E4F5" : homeCalculatorConfig.hero.promptColor;
   const heroSavingsColor = isDarkMode ? "#34D399" : homeCalculatorConfig.hero.savingsColor;
 
@@ -554,6 +573,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
   return (
     <>
+      {/* Mobile Sticky Fee Bar */}
       <div
         className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-300 dark:border-slate-700 dark:bg-slate-900/90 sm:hidden ${
           scrolledPastHero ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
@@ -567,7 +587,44 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         </div>
       </div>
 
-      <div className="w-full bg-transparent pb-1 pt-4 sm:pt-6">
+      {/* Desktop Sticky Fee Bar */}
+      <div
+        className={`fixed left-0 right-0 top-[52px] z-40 hidden border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-300 dark:border-slate-700 dark:bg-slate-900/90 md:block ${
+          showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
+        }`}
+      >
+        <div className="mx-auto flex h-10 max-w-5xl items-center justify-center gap-10 px-4 text-sm font-medium">
+          <div className="flex items-center gap-2">
+            <span className="text-gray-500 dark:text-slate-400">Smarter Way Wealth:</span>
+            <Odometer
+              value={projection.finalValueWithoutFees}
+              prefix="$"
+              duration={800}
+              className="font-bold text-[#00A540]"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-red-600 dark:text-red-400">Lost to Fees:</span>
+            <Odometer
+              value={projection.savings}
+              prefix="-$"
+              duration={800}
+              className="font-bold text-red-600 dark:text-red-400"
+            />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-gray-500 dark:text-slate-400">Traditional AUM:</span>
+            <Odometer
+              value={projection.finalValueWithFees}
+              prefix="$"
+              duration={800}
+              className="font-bold text-gray-900 dark:text-slate-100"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div ref={calculatorRef} className="w-full bg-transparent pb-1 pt-4 sm:pt-6">
         <div className="section-shell text-center">
           <h1 className="text-2xl font-semibold sm:text-5xl">
             <span style={{ color: heroPromptColor }}>What would you do with </span>
