@@ -351,7 +351,7 @@ export function ProFeeChart({
           >
             <defs>
               <pattern
-                id="blackHatch"
+                id="redHatch"
                 patternUnits="userSpaceOnUse"
                 width="4"
                 height="4"
@@ -363,7 +363,7 @@ export function ProFeeChart({
                   y1="0"
                   x2="0"
                   y2="4"
-                  stroke={palette.smarterStroke}
+                  stroke={palette.hatchColor}
                   strokeWidth="0.75"
                 />
               </pattern>
@@ -380,7 +380,7 @@ export function ProFeeChart({
                   y1="0"
                   x2="0"
                   y2="8"
-                  stroke={palette.smarterStroke}
+                  stroke={isDarkMode ? "#F8FAFC" : "#000000"}
                   strokeWidth="0.75"
                 />
                 <line
@@ -436,7 +436,7 @@ export function ProFeeChart({
               dataKey="withoutFees"
               stroke={palette.smarterStroke}
               strokeWidth={isMobile ? 2 : 3}
-              fill="url(#blackHatch)"
+              fill="url(#redHatch)"
               fillOpacity={1}
               strokeOpacity={smarterOpacity}
               isAnimationActive={animateOnMount}
