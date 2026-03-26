@@ -7,6 +7,8 @@ import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, DEFAULT_STATE, buildQueryFromState } from "@/lib/calculatorState";
 import { formatCurrency } from "@/lib/format";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
+import { Quiz } from "./Quiz";
+import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
