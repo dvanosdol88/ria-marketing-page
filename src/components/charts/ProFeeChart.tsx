@@ -195,7 +195,7 @@ function LostToFeesDonut({
   const innerRadius = isMobile ? 22 : 42;
   const outerRadius = isMobile ? 34 : 62;
   const donutData = [
-    { name: "Lost", value: percentLost, fill: "#B91C1C" },
+    { name: "Lost", value: percentLost, fill: "url(#donutLostGradient)" },
     { name: "Kept", value: Math.max(0, 100 - percentLost), fill: isDarkMode ? "#E2E8F0" : "#0F172A" },
   ];
 
@@ -203,6 +203,12 @@ function LostToFeesDonut({
     <div className="pointer-events-none absolute left-6 top-6 z-20 sm:left-[80px] sm:top-8">
       <div className="relative" style={{ height: chartSize, width: chartSize }}>
         <PieChart width={chartSize} height={chartSize}>
+          <defs>
+            <linearGradient id="donutLostGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#ef4444" />
+              <stop offset="100%" stopColor="#b91c1c" />
+            </linearGradient>
+          </defs>
           <Pie
             data={donutData}
             dataKey="value"
