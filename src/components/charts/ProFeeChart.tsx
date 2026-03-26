@@ -273,9 +273,21 @@ function LostToFeesDonut({
             <span className="opacity-70">Time:</span>
             <span className="font-bold">{years} Years</span>
           </div>
-          <div className="flex gap-1.5">
-            <span className="opacity-70">Fees:</span>
-            <span className="font-bold text-[#B91C1C]">{totalFee.toFixed(2)}%</span>
+          
+          <div className="mt-1 flex flex-col">
+            <div className="flex gap-1.5 text-[#B91C1C]">
+              <span className="opacity-70">Advisory Fees:</span>
+              <span className="font-bold">{annualFeePercent?.toFixed(2)}%</span>
+            </div>
+            <div className="flex gap-1.5 text-[#B91C1C]">
+              <span className="opacity-70">Mutual Fund Expenses:</span>
+              <span className="font-bold">{mutualFundExpensePercent?.toFixed(2)}%</span>
+            </div>
+            <div className="my-0.5 h-px w-full bg-[#B91C1C]/30" />
+            <div className="flex gap-1.5 text-[#B91C1C]">
+              <span className="opacity-70">Total Fees:</span>
+              <span className="font-bold">{totalFee.toFixed(2)}%</span>
+            </div>
           </div>
         </div>
       )}
