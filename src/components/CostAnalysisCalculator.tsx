@@ -6,10 +6,7 @@ import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, DEFAULT_STATE, buildQueryFromState } from "@/lib/calculatorState";
 import { formatCurrency } from "@/lib/format";
-import { ValueCards } from "./value-cards/ValueCards";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
-import { Quiz } from "./Quiz";
-import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
@@ -201,79 +198,6 @@ function PillSlider({
   );
 }
 
-function ValueCard({
-  label,
-  value,
-  variant,
-  isActive,
-  isDimmed,
-  onPress,
-  isDarkMode,
-  className,
-}: {
-  label: string;
-  value: number;
-  variant: "smarter" | "traditional";
-  isActive: boolean;
-  isDimmed: boolean;
-  onPress: () => void;
-  isDarkMode: boolean;
-  className?: string;
-}) {
-  const cardStyle =
-    variant === "smarter"
-      ? {
-          backgroundColor: isDarkMode
-            ? homeCalculatorConfig.cards.smarterWayDarkBg
-            : homeCalculatorConfig.cards.smarterWayBg,
-        }
-      : {
-          backgroundColor: isDarkMode
-            ? homeCalculatorConfig.cards.traditionalAumDarkBg
-            : homeCalculatorConfig.cards.traditionalAumBg,
-        };
-  const activeRing = isActive
-    ? variant === "smarter"
-      ? "ring-2 ring-[#007A2F]/35"
-      : "ring-2 ring-[#2A3F63]/30"
-    : "";
-  const compactDisplay = formatCurrency(value);
-
-  return (
-    <button
-      type="button"
-      onClick={onPress}
-      className={`flex flex-col items-center justify-center h-full rounded-xl px-3 py-2 text-center transition-all sm:px-4 sm:py-2.5 lg:px-5 lg:py-3 ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"} ${className ?? ""}`}
-      style={{ border: "none", ...cardStyle }}
-      aria-pressed={isActive}
-    >
-      <p className="text-xs font-semibold uppercase tracking-wide text-neutral-600 dark:text-slate-300">{label}</p>
-      <p className="mt-0.5 text-[clamp(1.1rem,2vw,2rem)] font-semibold text-neutral-900 dark:text-slate-100 sm:mt-1">{compactDisplay}</p>
-    </button>
-  );
-}
-
-function LostFeesCard({ value, isDarkMode, className }: { value: number; isDarkMode: boolean; className?: string }) {
-  return (
-    <div
-      className={`flex flex-col items-center justify-center col-span-2 h-full rounded-xl px-3 py-2 text-center sm:px-4 sm:py-2.5 min-[860px]:col-span-1 ${className ?? ""}`}
-      style={{
-        border: "none",
-        backgroundColor: isDarkMode
-          ? homeCalculatorConfig.cards.lostToFeesDarkBg
-          : homeCalculatorConfig.cards.lostToFeesBg,
-      }}
-    >
-      <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
-        {homeCalculatorConfig.cards.lostToFeesLabel}
-      </p>
-      <p className="mt-0.5 text-[clamp(1.1rem,2vw,2rem)] font-semibold tabular-nums" style={{ color: homeCalculatorConfig.cards.lostToFeesText }}>
-        -{formatCurrency(value)}
-      </p>
-    </div>
-  );
-}
-
 function normalizeSearchParams(searchParams: Record<string, string | string[] | undefined>) {
   const params = new URLSearchParams();
   Object.entries(searchParams).forEach(([key, value]) => {
@@ -433,7 +357,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
     <>
       {/* Mobile Sticky Fee Bar */}
       <div
-        className={`fixed left-0 right-0 top-[58px] z-40 border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu dark:border-slate-700 dark:bg-slate-900/90 md:hidden ${
+        className={`fixed left-0 right-0 top-[58px] z-40 bg-white/95 backdrop-blur-sm transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu dark:bg-slate-900/90 md:hidden ${
           showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
@@ -441,8 +365,6 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
           <div 
             className="flex items-center gap-2 rounded-full px-4 py-1.5 shadow-sm"
             style={{
-              borderWidth: homeCalculatorConfig.cards.borderWidthPx,
-              borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
               backgroundColor: isDarkMode
                 ? homeCalculatorConfig.cards.lostToFeesDarkBg
                 : homeCalculatorConfig.cards.lostToFeesBg,
@@ -459,13 +381,13 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
       {/* Desktop Sticky Fee Bar */}
       <div
-        className={`fixed left-0 right-0 top-[52px] z-40 hidden border-b border-gray-200 bg-white/95 backdrop-blur-sm transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu md:block ${
+        className={`fixed left-0 right-0 top-[52px] z-40 hidden bg-white/95 backdrop-blur-sm transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu md:block ${
           showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
         }`}
       >
         <div className="mx-auto flex h-11 max-w-5xl items-center justify-center gap-6 px-4 text-sm font-medium">
           <div className="flex items-center gap-2">
-            <span className="text-gray-500 dark:text-slate-400">SMARTER $100/mo. Flat Fee:</span>
+            <span className="text-gray-500 dark:text-slate-400">SMARTER Way ($100/mo):</span>
             <Odometer
               value={projection.finalValueWithoutFees}
               prefix="$"
@@ -477,15 +399,13 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
           <div 
             className="flex items-center gap-2 rounded-lg px-3 py-1 shadow-sm"
             style={{
-              borderWidth: homeCalculatorConfig.cards.borderWidthPx,
-              borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
               backgroundColor: isDarkMode
                 ? homeCalculatorConfig.cards.lostToFeesDarkBg
                 : homeCalculatorConfig.cards.lostToFeesBg,
               color: homeCalculatorConfig.cards.lostToFeesText
             }}
           >
-            <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">Lost to Asset-Based Fees:</span>
+            <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">Lost to Fees:</span>
             <Odometer
               value={projection.savings}
               prefix="-$"
@@ -495,7 +415,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-gray-500 dark:text-slate-400">Traditional Asset-Based Fee:</span>
+            <span className="text-gray-500 dark:text-slate-400">AUM Advisor:</span>
             <Odometer
               value={projection.finalValueWithFees}
               prefix="$"
@@ -543,30 +463,6 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-20 pt-0 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:gap-8">
             <ScrollReveal className="card overflow-hidden bg-white shadow-xl ring-1 ring-black/5 dark:bg-slate-900 dark:ring-slate-700/70">
-              <div className="grid grid-cols-2 gap-3 border-b border-gray-100 px-4 py-3 dark:border-slate-700 sm:gap-4 sm:px-6 sm:py-4 lg:px-8 lg:py-5 min-[860px]:grid-cols-3">
-                <ValueCard
-                  label="SMARTER $100/mo. FLAT FEE"
-                  value={projection.finalValueWithoutFees}
-                  variant="smarter"
-                  isActive={activeCard === "smarter"}
-                  isDimmed={activeCard === "traditional"}
-                  onPress={() => handleCardTap("smarter")}
-                  isDarkMode={isDarkMode}
-                  className="order-1"
-                />
-                <ValueCard
-                  label="Traditional Asset-Based Fee"
-                  value={projection.finalValueWithFees}
-                  variant="traditional"
-                  isActive={activeCard === "traditional"}
-                  isDimmed={activeCard === "smarter"}
-                  onPress={() => handleCardTap("traditional")}
-                  isDarkMode={isDarkMode}
-                  className="order-2 min-[860px]:order-3"
-                />
-                <LostFeesCard value={projection.savings} isDarkMode={isDarkMode} className="order-3 min-[860px]:order-2" />
-              </div>
-
               <div className="relative w-full sm:h-[450px] lg:h-[550px]">
                 <ProFeeChart
                   data={projection.series}
@@ -707,13 +603,6 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
           subLabel={homeCalculatorConfig.quoteTicker.subLabel}
         />
       </section>
-
-      <ValueCards
-        portfolioValue={state.portfolioValue}
-        annualFeePercent={totalAnnualFeePercent}
-        portfolioGrowth={state.annualGrowthPercent}
-        years={state.years}
-      />
     </>
   );
 }

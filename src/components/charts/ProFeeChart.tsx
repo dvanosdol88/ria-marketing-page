@@ -197,6 +197,9 @@ function LostToFeesDonut({
   annualGrowthPercent,
   annualFeePercent,
   mutualFundExpensePercent,
+  finalLost,
+  finalValueWithoutFees,
+  finalValueWithFees,
 }: {
   percentLost: number;
   isMobile: boolean;
@@ -206,6 +209,9 @@ function LostToFeesDonut({
   annualGrowthPercent?: number;
   annualFeePercent?: number;
   mutualFundExpensePercent?: number;
+  finalLost?: number;
+  finalValueWithoutFees?: number;
+  finalValueWithFees?: number;
 }) {
   const chartSize = isMobile ? 77 : 130;
   const innerRadius = isMobile ? 22 : 42;
@@ -218,68 +224,87 @@ function LostToFeesDonut({
   const totalFee = (annualFeePercent ?? 0) + (mutualFundExpensePercent ?? 0);
 
   return (
-    <div className="pointer-events-none absolute left-6 top-6 z-20 flex items-center gap-4 sm:left-[80px] sm:top-8">
-      <div className="relative" style={{ height: chartSize, width: chartSize }}>
-        <PieChart width={chartSize} height={chartSize}>
-          <defs>
-            <linearGradient id="donutLostGradient" x1="0" y1="0" x2="0" y2={chartSize} gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#f87171" />
-              <stop offset="100%" stopColor="#7f1d1d" />
-            </linearGradient>
-            <linearGradient id="donutKeptGradient" x1="0" y1="0" x2="0" y2={chartSize} gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor={isDarkMode ? "#cbd5e1" : "#475569"} />
-              <stop offset="100%" stopColor={isDarkMode ? "#020617" : "#0F172A"} />
-            </linearGradient>
-          </defs>
-          <Pie
-            data={donutData}
-            dataKey="value"
-            cx="50%"
-            cy="50%"
-            innerRadius={innerRadius}
-            outerRadius={outerRadius}
-            startAngle={90}
-            endAngle={-270}
-            stroke="none"
-            isAnimationActive={false}
-          >
-            {donutData.map((entry) => (
-              <Cell key={entry.name} fill={entry.fill} />
-            ))}
-          </Pie>
-        </PieChart>
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-[10px] font-semibold tabular-nums text-[#B91C1C] sm:text-xs md:text-sm">
-            {percentLost.toFixed(1)}%
-          </span>
-          <span className="text-xs font-bold uppercase tracking-wider text-[#B91C1C] sm:text-sm md:text-base">
-            Lost
-          </span>
+    <div className="pointer-events-none absolute left-6 top-6 z-20 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white/80 p-4 backdrop-blur-sm dark:border-slate-700/50 dark:bg-slate-900/80 sm:left-[40px] sm:top-6 sm:flex-row sm:items-center sm:gap-8">
+      <div className="flex flex-col items-center gap-3">
+        <div className="relative" style={{ height: chartSize, width: chartSize }}>
+          <PieChart width={chartSize} height={chartSize}>
+            <defs>
+              <linearGradient id="donutLostGradient" x1="0" y1="0" x2="0" y2={chartSize} gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor="#f87171" />
+                <stop offset="100%" stopColor="#7f1d1d" />
+              </linearGradient>
+              <linearGradient id="donutKeptGradient" x1="0" y1="0" x2="0" y2={chartSize} gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stopColor={isDarkMode ? "#cbd5e1" : "#475569"} />
+                <stop offset="100%" stopColor={isDarkMode ? "#020617" : "#0F172A"} />
+              </linearGradient>
+            </defs>
+            <Pie
+              data={donutData}
+              dataKey="value"
+              cx="50%"
+              cy="50%"
+              innerRadius={innerRadius}
+              outerRadius={outerRadius}
+              startAngle={90}
+              endAngle={-270}
+              stroke="none"
+              isAnimationActive={false}
+            >
+              {donutData.map((entry) => (
+                <Cell key={entry.name} fill={entry.fill} />
+              ))}
+            </Pie>
+          </PieChart>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-[10px] font-semibold tabular-nums text-[#B91C1C] sm:text-xs md:text-sm">
+              {percentLost.toFixed(1)}%
+            </span>
+            <span className="text-xs font-bold uppercase tracking-wider text-[#B91C1C] sm:text-sm md:text-base">
+              Lost
+            </span>
+          </div>
         </div>
+
+        {/* Variables Key — Below Donut */}
+        {!isMobile && (
+          <div className="grid grid-cols-[min-content_auto] items-baseline gap-x-2 gap-y-0.5 text-[10px] font-medium leading-tight text-slate-600 dark:text-slate-400">
+            <span className="font-bold tabular-nums text-slate-900 dark:text-slate-200">{formatCurrency(portfolioValue ?? 0)}</span>
+            <span className="opacity-70 whitespace-nowrap">Beginning Value</span>
+            
+            <span className="font-bold tabular-nums text-slate-900 dark:text-slate-200">{annualGrowthPercent}%</span>
+            <span className="opacity-70 whitespace-nowrap">Growth</span>
+            
+            <span className="font-bold tabular-nums text-slate-900 dark:text-slate-200">{years} yrs</span>
+            <span className="opacity-70 whitespace-nowrap">Time</span>
+          </div>
+        )}
       </div>
 
-      {/* Variables Key */}
+      {/* Results Summary — Right of Donut */}
       {!isMobile && (
-        <div className="grid grid-cols-[min-content_auto] items-baseline gap-x-3 gap-y-0.5 text-[11px] font-medium leading-tight text-black dark:text-slate-300">
-          <span className="font-bold tabular-nums">{formatCurrency(portfolioValue ?? 0)}</span>
-          <span className="opacity-70 whitespace-nowrap">Beginning Portfolio Value</span>
+        <div className="flex flex-col text-sm leading-tight text-slate-900 dark:text-slate-100 md:text-base">
+          <div className="grid grid-cols-[auto_min-content] items-end gap-x-8 gap-y-1">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Ending Value ($100/mo flat fee)</span>
+            <span className="text-right text-lg font-bold tabular-nums text-[#00A540]">{formatCurrency(finalValueWithoutFees ?? 0)}</span>
+            
+            <span className="text-xs text-slate-500 dark:text-slate-400">Lost to Advisory & Fund Fees</span>
+            <div className="flex items-center justify-end gap-1 text-[#B91C1C]">
+              <span className="font-bold">-</span>
+              <span className="text-right font-bold tabular-nums">{formatCurrency(finalLost ?? 0)}</span>
+            </div>
+          </div>
           
-          <span className="font-bold tabular-nums">{annualGrowthPercent}%</span>
-          <span className="opacity-70 whitespace-nowrap">Annualized Growth</span>
+          <div className="my-2 h-px w-full bg-slate-300 dark:bg-slate-600" />
           
-          <span className="font-bold tabular-nums">{years} Years</span>
-          <span className="opacity-70 whitespace-nowrap">Time</span>
-          
-          <span className="mt-1.5 font-bold tabular-nums text-[#B91C1C]">{annualFeePercent?.toFixed(2)}%</span>
-          <span className="mt-1.5 opacity-70 text-[#B91C1C] whitespace-nowrap">Advisory Fees</span>
-          
-          <span className="font-bold tabular-nums text-[#B91C1C]">{mutualFundExpensePercent?.toFixed(2)}%</span>
-          <span className="opacity-70 text-[#B91C1C] whitespace-nowrap">Mutual Fund Expenses</span>
-          
-          <div className="col-span-2 my-0.5 h-px w-full bg-[#B91C1C]/20" />
-          
-          <span className="font-bold tabular-nums text-[#B91C1C]">{totalFee.toFixed(2)}%</span>
-          <span className="font-bold uppercase tracking-wider text-[9px] text-[#B91C1C] opacity-80">Total Fees</span>
+          <div className="grid grid-cols-[auto_min-content] items-end gap-x-8">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Traditional Ending Value</span>
+            <span className="text-right text-lg font-bold tabular-nums text-slate-900 dark:text-slate-100">{formatCurrency(finalValueWithFees ?? 0)}</span>
+          </div>
+
+          <div className="mt-3 flex items-center gap-2 border-t border-dashed border-slate-200 pt-2 dark:border-slate-700">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Fee Load:</span>
+            <span className="text-[10px] font-bold text-[#B91C1C]">{totalFee.toFixed(2)}% Annualized</span>
+          </div>
         </div>
       )}
     </div>
@@ -363,6 +388,9 @@ export function ProFeeChart({
         annualGrowthPercent={annualGrowthPercent}
         annualFeePercent={annualFeePercent}
         mutualFundExpensePercent={mutualFundExpensePercent}
+        finalLost={finalLost}
+        finalValueWithoutFees={finalValueWithoutFees}
+        finalValueWithFees={finalValueWithFees}
       />
 
       {showSummary && (
