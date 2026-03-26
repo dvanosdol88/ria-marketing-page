@@ -196,7 +196,7 @@ function LostToFeesDonut({
   const outerRadius = isMobile ? 34 : 62;
   const donutData = [
     { name: "Lost", value: percentLost, fill: "url(#donutLostGradient)" },
-    { name: "Kept", value: Math.max(0, 100 - percentLost), fill: isDarkMode ? "#E2E8F0" : "#0F172A" },
+    { name: "Kept", value: Math.max(0, 100 - percentLost), fill: "url(#donutKeptGradient)" },
   ];
 
   return (
@@ -204,9 +204,13 @@ function LostToFeesDonut({
       <div className="relative" style={{ height: chartSize, width: chartSize }}>
         <PieChart width={chartSize} height={chartSize}>
           <defs>
-            <linearGradient id="donutLostGradient" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="donutLostGradient" x1="0" y1="0" x2="0" y2={chartSize} gradientUnits="userSpaceOnUse">
               <stop offset="0%" stopColor="#ef4444" />
               <stop offset="100%" stopColor="#b91c1c" />
+            </linearGradient>
+            <linearGradient id="donutKeptGradient" x1="0" y1="0" x2="0" y2={chartSize} gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor={isDarkMode ? "#F8FAFC" : "#475569"} />
+              <stop offset="100%" stopColor={isDarkMode ? "#94A3B8" : "#0F172A"} />
             </linearGradient>
           </defs>
           <Pie
