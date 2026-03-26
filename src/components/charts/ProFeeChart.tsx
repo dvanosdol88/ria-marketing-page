@@ -260,35 +260,26 @@ function LostToFeesDonut({
 
       {/* Variables Key */}
       {!isMobile && (
-        <div className="flex flex-col gap-0.5 text-[11px] font-medium leading-tight text-black dark:text-slate-300">
-          <div className="flex gap-1.5">
-            <span className="opacity-70">Portfolio:</span>
-            <span className="font-bold">{formatCurrency(portfolioValue ?? 0)}</span>
-          </div>
-          <div className="flex gap-1.5">
-            <span className="opacity-70">Growth:</span>
-            <span className="font-bold">{annualGrowthPercent}%</span>
-          </div>
-          <div className="flex gap-1.5">
-            <span className="opacity-70">Time:</span>
-            <span className="font-bold">{years} Years</span>
-          </div>
+        <div className="grid grid-cols-[min-content_auto] items-baseline gap-x-3 gap-y-0.5 text-[11px] font-medium leading-tight text-black dark:text-slate-300">
+          <span className="font-bold tabular-nums">{formatCurrency(portfolioValue ?? 0)}</span>
+          <span className="opacity-70 whitespace-nowrap">Beginning Portfolio Value</span>
           
-          <div className="mt-1 flex flex-col">
-            <div className="flex gap-1.5 text-[#B91C1C]">
-              <span className="opacity-70">Advisory Fees:</span>
-              <span className="font-bold">{annualFeePercent?.toFixed(2)}%</span>
-            </div>
-            <div className="flex gap-1.5 text-[#B91C1C]">
-              <span className="opacity-70">Mutual Fund Expenses:</span>
-              <span className="font-bold">{mutualFundExpensePercent?.toFixed(2)}%</span>
-            </div>
-            <div className="my-0.5 h-px w-full bg-[#B91C1C]/30" />
-            <div className="flex gap-1.5 text-[#B91C1C]">
-              <span className="opacity-70">Total Fees:</span>
-              <span className="font-bold">{totalFee.toFixed(2)}%</span>
-            </div>
-          </div>
+          <span className="font-bold tabular-nums">{annualGrowthPercent}%</span>
+          <span className="opacity-70 whitespace-nowrap">Annualized Growth</span>
+          
+          <span className="font-bold tabular-nums">{years} Years</span>
+          <span className="opacity-70 whitespace-nowrap">Time</span>
+          
+          <span className="mt-1.5 font-bold tabular-nums text-[#B91C1C]">{annualFeePercent?.toFixed(2)}%</span>
+          <span className="mt-1.5 opacity-70 text-[#B91C1C] whitespace-nowrap">Advisory Fees</span>
+          
+          <span className="font-bold tabular-nums text-[#B91C1C]">{mutualFundExpensePercent?.toFixed(2)}%</span>
+          <span className="opacity-70 text-[#B91C1C] whitespace-nowrap">Mutual Fund Expenses</span>
+          
+          <div className="col-span-2 my-0.5 h-px w-full bg-[#B91C1C]/20" />
+          
+          <span className="font-bold tabular-nums text-[#B91C1C]">{totalFee.toFixed(2)}%</span>
+          <span className="font-bold uppercase tracking-wider text-[9px] text-[#B91C1C] opacity-80">Total Fees</span>
         </div>
       )}
     </div>
@@ -436,8 +427,6 @@ export function ProFeeChart({
                 <stop offset="100%" stopColor="#18181b" stopOpacity={0.05} />
               </linearGradient>
             </defs>
-
-            <CartesianGrid strokeDasharray="3 3" stroke={palette.grid} vertical={false} />
 
             <XAxis
               dataKey="year"
