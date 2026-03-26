@@ -29,6 +29,12 @@ type ProFeeChartProps = {
   finalValueWithFees: number;
   showSummary?: boolean;
   activeScenario?: "smarter" | "traditional" | null;
+  // New variables for the key
+  portfolioValue?: number;
+  years?: number;
+  annualGrowthPercent?: number;
+  annualFeePercent?: number;
+  mutualFundExpensePercent?: number;
 };
 
 function formatYAxisCurrency(value: number): string {
@@ -186,10 +192,20 @@ function LostToFeesDonut({
   percentLost,
   isMobile,
   isDarkMode,
+  portfolioValue,
+  years,
+  annualGrowthPercent,
+  annualFeePercent,
+  mutualFundExpensePercent,
 }: {
   percentLost: number;
   isMobile: boolean;
   isDarkMode: boolean;
+  portfolioValue?: number;
+  years?: number;
+  annualGrowthPercent?: number;
+  annualFeePercent?: number;
+  mutualFundExpensePercent?: number;
 }) {
   const chartSize = isMobile ? 77 : 130;
   const innerRadius = isMobile ? 22 : 42;
@@ -199,18 +215,20 @@ function LostToFeesDonut({
     { name: "Kept", value: Math.max(0, 100 - percentLost), fill: "url(#donutKeptGradient)" },
   ];
 
+  const totalFee = (annualFeePercent ?? 0) + (mutualFundExpensePercent ?? 0);
+
   return (
-    <div className="pointer-events-none absolute left-6 top-6 z-20 sm:left-[80px] sm:top-8">
+    <div className="pointer-events-none absolute left-6 top-6 z-20 flex items-center gap-4 sm:left-[80px] sm:top-8">
       <div className="relative" style={{ height: chartSize, width: chartSize }}>
         <PieChart width={chartSize} height={chartSize}>
           <defs>
             <linearGradient id="donutLostGradient" x1="0" y1="0" x2="0" y2={chartSize} gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#ef4444" />
-              <stop offset="100%" stopColor="#b91c1c" />
+              <stop offset="0%" stopColor="#f87171" />
+              <stop offset="100%" stopColor="#7f1d1d" />
             </linearGradient>
             <linearGradient id="donutKeptGradient" x1="0" y1="0" x2="0" y2={chartSize} gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor={isDarkMode ? "#F8FAFC" : "#475569"} />
-              <stop offset="100%" stopColor={isDarkMode ? "#94A3B8" : "#0F172A"} />
+              <stop offset="0%" stopColor={isDarkMode ? "#cbd5e1" : "#475569"} />
+              <stop offset="100%" stopColor={isDarkMode ? "#020617" : "#0F172A"} />
             </linearGradient>
           </defs>
           <Pie
@@ -239,6 +257,28 @@ function LostToFeesDonut({
           </span>
         </div>
       </div>
+
+      {/* Variables Key */}
+      {!isMobile && (
+        <div className="flex flex-col gap-0.5 text-[11px] font-medium leading-tight text-black dark:text-slate-300">
+          <div className="flex gap-1.5">
+            <span className="opacity-70">Portfolio:</span>
+            <span className="font-bold">{formatCurrency(portfolioValue ?? 0)}</span>
+          </div>
+          <div className="flex gap-1.5">
+            <span className="opacity-70">Growth:</span>
+            <span className="font-bold">{annualGrowthPercent}%</span>
+          </div>
+          <div className="flex gap-1.5">
+            <span className="opacity-70">Time:</span>
+            <span className="font-bold">{years} Years</span>
+          </div>
+          <div className="flex gap-1.5">
+            <span className="opacity-70">Fees:</span>
+            <span className="font-bold text-[#B91C1C]">{totalFee.toFixed(2)}%</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -250,6 +290,11 @@ export function ProFeeChart({
   finalValueWithFees,
   showSummary = true,
   activeScenario = null,
+  portfolioValue,
+  years,
+  annualGrowthPercent,
+  annualFeePercent,
+  mutualFundExpensePercent,
 }: ProFeeChartProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -306,7 +351,16 @@ export function ProFeeChart({
 
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden rounded-t-2xl bg-white dark:bg-slate-900">
-      <LostToFeesDonut percentLost={percentLost} isMobile={isMobile} isDarkMode={isDarkMode} />
+      <LostToFeesDonut
+        percentLost={percentLost}
+        isMobile={isMobile}
+        isDarkMode={isDarkMode}
+        portfolioValue={portfolioValue}
+        years={years}
+        annualGrowthPercent={annualGrowthPercent}
+        annualFeePercent={annualFeePercent}
+        mutualFundExpensePercent={mutualFundExpensePercent}
+      />
 
       {showSummary && (
         <div className="shrink-0 space-y-1.5 px-4 pb-2 pt-4 sm:hidden">

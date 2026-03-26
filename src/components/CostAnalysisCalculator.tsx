@@ -223,13 +223,11 @@ function ValueCard({
   const cardStyle =
     variant === "smarter"
       ? {
-          borderColor: homeCalculatorConfig.cards.smarterWayBorder,
           backgroundColor: isDarkMode
             ? homeCalculatorConfig.cards.smarterWayDarkBg
             : homeCalculatorConfig.cards.smarterWayBg,
         }
       : {
-          borderColor: homeCalculatorConfig.cards.traditionalAumBorder,
           backgroundColor: isDarkMode
             ? homeCalculatorConfig.cards.traditionalAumDarkBg
             : homeCalculatorConfig.cards.traditionalAumBg,
@@ -245,8 +243,8 @@ function ValueCard({
     <button
       type="button"
       onClick={onPress}
-      className={`flex flex-col items-center justify-center h-full rounded-xl border px-3 py-2 text-center transition-all sm:px-4 sm:py-2.5 lg:px-5 lg:py-3 ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"} ${className ?? ""}`}
-      style={{ borderWidth: homeCalculatorConfig.cards.borderWidthPx, ...cardStyle }}
+      className={`flex flex-col items-center justify-center h-full rounded-xl px-3 py-2 text-center transition-all sm:px-4 sm:py-2.5 lg:px-5 lg:py-3 ${activeRing} ${isDimmed ? "opacity-55" : "opacity-100"} ${className ?? ""}`}
+      style={{ border: "none", ...cardStyle }}
       aria-pressed={isActive}
     >
       <p className="text-xs font-semibold uppercase tracking-wide text-neutral-600 dark:text-slate-300">{label}</p>
@@ -258,10 +256,9 @@ function ValueCard({
 function LostFeesCard({ value, isDarkMode, className }: { value: number; isDarkMode: boolean; className?: string }) {
   return (
     <div
-      className={`flex flex-col items-center justify-center col-span-2 h-full rounded-xl border px-3 py-2 text-center sm:px-4 sm:py-2.5 min-[860px]:col-span-1 ${className ?? ""}`}
+      className={`flex flex-col items-center justify-center col-span-2 h-full rounded-xl px-3 py-2 text-center sm:px-4 sm:py-2.5 min-[860px]:col-span-1 ${className ?? ""}`}
       style={{
-        borderWidth: homeCalculatorConfig.cards.borderWidthPx,
-        borderColor: homeCalculatorConfig.cards.lostToFeesBorder,
+        border: "none",
         backgroundColor: isDarkMode
           ? homeCalculatorConfig.cards.lostToFeesDarkBg
           : homeCalculatorConfig.cards.lostToFeesBg,
@@ -578,6 +575,11 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                   finalValueWithFees={projection.finalValueWithFees}
                   showSummary={false}
                   activeScenario={activeCard}
+                  portfolioValue={state.portfolioValue}
+                  years={state.years}
+                  annualGrowthPercent={state.annualGrowthPercent}
+                  annualFeePercent={state.annualFeePercent}
+                  mutualFundExpensePercent={state.mutualFundExpensePercent}
                 />
               </div>
 
