@@ -93,6 +93,9 @@ The site will be available at `http://localhost:3000`
 | `npm run build` | Create production build |
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
+| `npm test` | Run unit tests (Vitest) |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run test:coverage` | Run tests with coverage report |
 | `npx tsc --noEmit` | Type check without emitting |
 
 ## Project Structure
@@ -131,6 +134,30 @@ The calculator state is preserved in URL query parameters for shareability:
 | `years` | Time Horizon | 20 |
 
 Example: `/?pv=1000000&fee=1&growth=7&years=30`
+
+## Testing
+
+Tests are written with [Vitest](https://vitest.dev/) and run in a jsdom environment.
+
+```bash
+# Run all tests once
+npm test
+
+# Run tests in watch mode (re-runs on file change)
+npm run test:watch
+
+# Generate a coverage report (HTML + JSON in ./coverage/)
+npm run test:coverage
+```
+
+Coverage thresholds are set at 80% for lines/statements/functions and 70% for branches across `src/lib/`. The test suite covers:
+
+- `src/lib/calc.ts` — monthly compounding fee-drag projection
+- `src/lib/feeProjection.ts` — flat-fee vs AUM-fee comparison
+- `src/lib/calculatorState.ts` — URL state parsing/serialization
+- `src/lib/format.ts` — currency and percentage formatters
+- `src/lib/query.ts` — query string input serialization
+- `src/lib/csv.ts` — CSV export generation
 
 ## Deployment
 
