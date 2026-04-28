@@ -47,6 +47,10 @@ export default function Page() {
           <p className="mt-1 text-sm text-slate-600">
             Hypothetical illustration of how fees may affect outcomes over time.
           </p>
+          <p className="mt-1 text-xs text-slate-500">
+            Use of this calculator does not establish an advisory relationship
+            with Smarter Way Wealth, LLC.
+          </p>
         </div>
 
         <button
