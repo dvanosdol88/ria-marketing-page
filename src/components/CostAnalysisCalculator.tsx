@@ -456,6 +456,10 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
               {shareButtonLabel}
             </button>
           </div>
+          <p className="mx-auto mt-3 max-w-xl text-center text-xs leading-snug text-neutral-500 dark:text-slate-400">
+            Use of this calculator does not establish an advisory relationship
+            with Smarter Way Wealth, LLC.
+          </p>
         </div>
       </div>
 
@@ -588,6 +592,18 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                     For finance nerds
                   </Link>
                 </p>
+                <div className="mx-auto mt-4 max-w-2xl space-y-2 text-center text-xs leading-snug text-neutral-500 dark:text-slate-400">
+                  <p>
+                    Savings calculations are hypothetical illustrations based on
+                    assumptions you provide. Actual results will vary. This is
+                    not a guarantee of performance or savings.
+                  </p>
+                  <p>
+                    The annual growth rate above is an assumption you control,
+                    not a forecast or recommendation. Smarter Way Wealth does
+                    not guarantee the accuracy of third-party data.
+                  </p>
+                </div>
                 </>
                 )}
               </div>
