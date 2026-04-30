@@ -133,6 +133,7 @@ function MiniTextInput({
 }) {
   const [draft, setDraft] = useState(() => formatMiniNumber(value, decimals, useGrouping));
   const [isFocused, setIsFocused] = useState(false);
+  const inputWidth = `${Math.min(13, Math.max(suffix ? 8 : 4.5, draft.length + (suffix ? 4 : 1)))}ch`;
 
   useEffect(() => {
     if (!isFocused) {
@@ -159,9 +160,9 @@ function MiniTextInput({
   };
 
   return (
-    <label className="grid grid-cols-[62px_minmax(84px,1fr)] items-center gap-2 text-[12px] leading-none text-emerald-50/45">
+    <label className="flex items-center justify-between gap-3 text-[12px] leading-none text-emerald-50/45">
       <span className="font-medium tracking-normal">{label}</span>
-      <span className="relative block">
+      <span className="relative inline-flex justify-end">
         <input
           type="text"
           inputMode={decimals > 0 ? "decimal" : "numeric"}
@@ -177,8 +178,9 @@ function MiniTextInput({
           }}
           onFocus={() => setIsFocused(true)}
           className={`h-7 w-full rounded-[3px] border border-white/10 bg-white/[0.035] px-2 ${
-            suffix ? "pr-6" : ""
+            suffix ? "pr-5" : ""
           } text-right text-[12px] font-medium tabular-nums text-white/65 outline-none transition focus:border-emerald-200/35 focus:bg-white/[0.08] focus:text-white`}
+          style={{ width: inputWidth }}
           aria-label={label}
         />
         {suffix && (
@@ -220,7 +222,7 @@ function AdvisorMiniCalculator({
       className={`text-white opacity-70 transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100 ${className}`}
       aria-label={`Savings: ${formatCurrency(savings)}`}
     >
-      <div className="w-[250px] max-w-full border-l border-emerald-200/30 bg-slate-950/[0.04] py-2 pl-4 pr-1 backdrop-blur-[2px]">
+      <div className="w-[232px] max-w-full bg-slate-950/[0.04] py-2 backdrop-blur-[2px]">
         <div className="space-y-2">
           <MiniTextInput
             label="Portfolio"
@@ -265,6 +267,16 @@ function AdvisorMiniCalculator({
           <p className="text-[12px] font-medium tracking-normal text-emerald-50/55">Savings</p>
           <p className="mt-1 text-[30px] font-semibold leading-none tracking-normal text-white/90">
             {formatCurrency(savings)}
+          </p>
+          <p className="mt-1 text-[12px] leading-snug text-emerald-50/45">
+            vs. $100/mo. flat fee
+            <a
+              href="/our-math#assumptions"
+              className="ml-0.5 text-emerald-200/70 underline decoration-emerald-200/30 underline-offset-2 transition hover:text-emerald-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200"
+              aria-label="View calculator assumptions and disclosures"
+            >
+              *
+            </a>
           </p>
         </div>
       </div>

@@ -136,32 +136,32 @@ export default function OurMathPage() {
                 </tr>
                 <tr className="border-b border-neutral-100">
                   <td className="py-2 pr-4">5</td>
-                  <td className="py-2 pr-4">$1,450,305</td>
-                  <td className="py-2 pr-4">$1,400,498</td>
-                  <td className="py-2 text-brand-700 font-medium">$49,807</td>
+                  <td className="py-2 pr-4">$1,462,034</td>
+                  <td className="py-2 pr-4">$1,397,639</td>
+                  <td className="py-2 text-brand-700 font-medium">$64,395</td>
                 </tr>
                 <tr className="border-b border-neutral-100">
                   <td className="py-2 pr-4">10</td>
-                  <td className="py-2 pr-4">$2,108,568</td>
-                  <td className="py-2 pr-4">$1,961,399</td>
-                  <td className="py-2 text-brand-700 font-medium">$147,169</td>
+                  <td className="py-2 pr-4">$2,140,913</td>
+                  <td className="py-2 pr-4">$1,953,395</td>
+                  <td className="py-2 text-brand-700 font-medium">$187,518</td>
                 </tr>
                 <tr className="border-b border-neutral-100">
                   <td className="py-2 pr-4">20</td>
-                  <td className="py-2 pr-4">$4,478,105</td>
-                  <td className="py-2 pr-4">$3,842,165</td>
-                  <td className="py-2 text-brand-700 font-semibold">$635,940</td>
+                  <td className="py-2 pr-4">$4,604,057</td>
+                  <td className="py-2 pr-4">$3,815,751</td>
+                  <td className="py-2 text-brand-700 font-semibold">$788,306</td>
                 </tr>
               </tbody>
             </table>
           </div>
           <p className="text-sm text-neutral-500 mt-4">
-            Total flat fees paid: $24,000. Total AUM fees paid: ~$399,084.
+            Total flat fees paid: $24,000. Total AUM fees paid: ~$422,058.
           </p>
         </section>
 
         {/* Assumptions */}
-        <section className="card p-6 sm:p-8">
+        <section id="assumptions" className="card scroll-mt-24 p-6 sm:p-8">
           <h2 className="text-xl font-semibold text-neutral-900 mb-4">
             Assumptions &amp; limitations
           </h2>
@@ -174,6 +174,13 @@ export default function OurMathPage() {
             <li>
               This calculator is for illustration only and does not constitute
               financial advice. Past performance does not guarantee future results.
+            </li>
+            <li>
+              See the site&apos;s{" "}
+              <Link href="/privacy#disclosures" className="text-brand-700 underline underline-offset-2">
+                important disclosures
+              </Link>
+              .
             </li>
           </ul>
         </section>
