@@ -232,7 +232,24 @@ function AdvisorMiniCalculator({
       aria-label={`Savings: ${formatCurrency(savings)}`}
     >
       <div className="w-[232px] max-w-full bg-slate-950/[0.04] py-2 backdrop-blur-[2px]">
-        <div className="space-y-2">
+        <div className="pb-3" aria-live="polite">
+          <p className="text-[12px] font-medium tracking-normal text-emerald-50/55">Savings</p>
+          <p className="mt-1 text-[30px] font-semibold leading-none tracking-normal text-white/90">
+            {formatCurrency(savings)}
+          </p>
+          <p className="mt-1 text-[12px] leading-snug text-emerald-50/45">
+            vs. $100/mo. flat fee
+            <a
+              href="/our-math#assumptions"
+              className="ml-0.5 text-emerald-200/70 underline decoration-emerald-200/30 underline-offset-2 transition hover:text-emerald-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200"
+              aria-label="View calculator assumptions and disclosures"
+            >
+              *
+            </a>
+          </p>
+        </div>
+
+        <div className="space-y-2 border-t border-white/10 pt-3">
           <MiniTextInput
             label="Portfolio"
             min={300000}
@@ -271,23 +288,6 @@ function AdvisorMiniCalculator({
             value={years}
             onValueChange={(value) => onCalculatorChange({ years: Math.round(value) })}
           />
-        </div>
-
-        <div className="mt-4 border-t border-white/10 pt-3">
-          <p className="text-[12px] font-medium tracking-normal text-emerald-50/55">Savings</p>
-          <p className="mt-1 text-[30px] font-semibold leading-none tracking-normal text-white/90">
-            {formatCurrency(savings)}
-          </p>
-          <p className="mt-1 text-[12px] leading-snug text-emerald-50/45">
-            vs. $100/mo. flat fee
-            <a
-              href="/our-math#assumptions"
-              className="ml-0.5 text-emerald-200/70 underline decoration-emerald-200/30 underline-offset-2 transition hover:text-emerald-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-200"
-              aria-label="View calculator assumptions and disclosures"
-            >
-              *
-            </a>
-          </p>
         </div>
       </div>
     </motion.div>
@@ -370,7 +370,7 @@ export function HomeMarketingHero({
             <AdvisorMiniCalculator
               annualFeePercent={annualFeePercent}
               annualGrowthPercent={annualGrowthPercent}
-              className="ml-auto mt-7 md:hidden"
+              className="ml-auto mt-5 md:hidden"
               mutualFundExpensePercent={mutualFundExpensePercent}
               onCalculatorChange={onCalculatorChange}
               portfolioValue={portfolioValue}
