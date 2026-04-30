@@ -361,6 +361,12 @@ export function HomeMarketingHero({
           </div>
 
           {isDarkHero && (
+            <p className="mt-4 text-2xl font-bold tracking-normal text-white">
+              $100/mo. flat monthly fee
+            </p>
+          )}
+
+          {isDarkHero && (
             <AdvisorMiniCalculator
               annualFeePercent={annualFeePercent}
               annualGrowthPercent={annualGrowthPercent}

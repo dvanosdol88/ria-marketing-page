@@ -231,9 +231,9 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
       position: "right center",
     },
     calculator: {
-      sectionClassName: "bg-[#02150D] text-white",
+      sectionClassName: "bg-white text-slate-950",
       backdropClassName:
-        "bg-[radial-gradient(circle_at_80%_12%,rgba(52,211,153,0.18),transparent_34%),linear-gradient(180deg,#02150D_0%,#06301D_54%,#02150D_100%)]",
+        "bg-[linear-gradient(180deg,#007A2F_0%,#00993B_24%,#E5F7EC_64%,#FFFFFF_100%)]",
       eyebrowClassName: "text-emerald-200",
       titleClassName: "text-white",
       amountClassName: "text-emerald-300",

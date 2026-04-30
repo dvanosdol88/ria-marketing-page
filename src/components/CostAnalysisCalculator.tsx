@@ -356,12 +356,9 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
   const quoteSectionStyle = isDarkMode
     ? {
         backgroundColor: "#0B1220",
-        backgroundImage:
-          "url(\"data:image/svg+xml,%3Csvg width='120' height='120' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='14' y='34' font-size='20' font-family='Arial' fill='%2322C55E' fill-opacity='0.12'%3E%24%3C/text%3E%3Ctext x='68' y='72' font-size='18' font-family='Arial' fill='%2314B8A6' fill-opacity='0.08'%3E%24%3C/text%3E%3Ctext x='30' y='106' font-size='16' font-family='Arial' fill='%235EEAD4' fill-opacity='0.06'%3E%24%3C/text%3E%3C/svg%3E\")",
       }
     : {
         backgroundColor: homeCalculatorConfig.quoteSection.backgroundColor,
-        backgroundImage: homeCalculatorConfig.quoteSection.backgroundImage,
       };
 
   const shareButtonLabel =

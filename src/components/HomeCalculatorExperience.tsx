@@ -173,13 +173,15 @@ function ConsoleControlGroup({
   title,
 }: {
   children: ReactNode;
-  title: string;
+  title?: string;
 }) {
   return (
     <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-      <h3 className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-emerald-100/70">
-        {title}
-      </h3>
+      {title && (
+        <h3 className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-emerald-100/70">
+          {title}
+        </h3>
+      )}
       <div className="space-y-4">{children}</div>
     </div>
   );
@@ -562,11 +564,11 @@ function AdvisorCalculatorExperience(props: HomeCalculatorExperienceProps) {
 
             {slidersExpanded && (
               <div className="space-y-4">
-                <ConsoleControlGroup title="Fee stack">
+                <ConsoleControlGroup>
                   {sliders.advisoryFee}
                   {sliders.mutualFundExpenses}
                 </ConsoleControlGroup>
-                <ConsoleControlGroup title="Planning model">
+                <ConsoleControlGroup>
                   {sliders.portfolio}
                   {sliders.growth}
                   {sliders.years}
