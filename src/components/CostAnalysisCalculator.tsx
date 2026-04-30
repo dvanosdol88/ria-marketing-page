@@ -12,6 +12,11 @@ import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
+import { HomeMarketingHero } from "@/components/HomeMarketingHero";
+import {
+  HomeMarketingVariantId,
+  homeMarketingVariants,
+} from "@/config/homeMarketingVariants";
 
 // ============================================================================
 // PILL SLIDER — Value-in-pill thumb with color-coded track
@@ -46,6 +51,7 @@ function tryGrabHaptic() {
 type Props = {
   initialState: CalculatorState;
   searchParams: Record<string, string | string[] | undefined>;
+  marketingVariantId: HomeMarketingVariantId;
 };
 
 interface PillSliderProps {
@@ -212,7 +218,7 @@ function normalizeSearchParams(searchParams: Record<string, string | string[] | 
   return params;
 }
 
-export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
+export function CostAnalysisCalculator({ initialState, searchParams, marketingVariantId }: Props) {
   const mergedState = useMemo(
     () => ({
       ...DEFAULT_STATE,
@@ -229,6 +235,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   const [showMutualFundExpenses, setShowMutualFundExpenses] = useState(
     mergedState.mutualFundExpensePercent > 0
   );
+  const [chartReady, setChartReady] = useState(false);
 
   const totalAnnualFeePercent = state.annualFeePercent + state.mutualFundExpensePercent;
 
@@ -309,6 +316,10 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   }, []);
 
   useEffect(() => {
+    setChartReady(true);
+  }, []);
+
+  useEffect(() => {
     if (shareFeedback === "idle") return;
     const timeout = window.setTimeout(() => setShareFeedback("idle"), 2200);
     return () => window.clearTimeout(timeout);
@@ -339,6 +350,7 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
 
   const heroPromptColor = isDarkMode ? "#D9E4F5" : homeCalculatorConfig.hero.promptColor;
   const heroSavingsColor = isDarkMode ? "#34D399" : homeCalculatorConfig.hero.savingsColor;
+  const marketingVariant = homeMarketingVariants[marketingVariantId];
 
   const quoteSectionStyle = isDarkMode
     ? {
@@ -354,9 +366,22 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
   const shareButtonLabel =
     shareFeedback === "success" ? "Copied" : shareFeedback === "error" ? "Sharing unavailable" : "Share your result";
   const ShareIcon = shareFeedback === "success" ? Check : Share2;
+  const percentLost =
+    projection.finalValueWithoutFees > 0
+      ? Math.min(100, Math.max(0, (projection.savings / projection.finalValueWithoutFees) * 100))
+      : 0;
 
   return (
     <>
+      <HomeMarketingHero
+        variant={marketingVariant}
+        savings={projection.savings}
+        portfolioValue={state.portfolioValue}
+        years={state.years}
+        onShare={shareResult}
+        shareButtonLabel={shareButtonLabel}
+      />
+
       {/* Mobile Sticky Fee Bar */}
       <div
         className={`fixed left-0 right-0 top-[58px] z-40 bg-white/95 backdrop-blur-sm transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu dark:bg-slate-900/90 md:hidden ${
@@ -428,31 +453,33 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
         </div>
       </div>
 
-      <div ref={calculatorRef} className="w-full bg-transparent pb-1 pt-4 sm:pt-6">
-        <div className="section-shell text-center">
-          <h1 className="text-2xl font-semibold sm:text-5xl">
-            <span style={{ color: heroPromptColor }}>What would you do with </span>
-            <span className="whitespace-nowrap">
-              <span style={{ color: heroSavingsColor }}>
-                <Odometer value={projection.savings} prefix="$" duration={1400} className="align-baseline" />
-              </span>
-              <span style={{ color: heroPromptColor }}>?</span>
+      <section
+        id="calculator"
+        ref={calculatorRef}
+        className="relative w-full scroll-mt-24 overflow-hidden bg-[#EEF0F5] dark:bg-slate-950"
+      >
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 top-[35%] bg-gradient-to-b from-transparent via-[rgba(233,238,255,0.6)] to-transparent dark:via-[rgba(15,23,42,0.5)]" />
+
+        <div className="section-shell relative z-10 pt-10 text-center sm:pt-14">
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#00682B]">Interactive calculator</p>
+          <h2 className="mx-auto mt-3 max-w-4xl text-3xl font-semibold tracking-normal sm:text-5xl" style={{ color: heroPromptColor }}>
+            What would you do with{" "}
+            <span className="whitespace-nowrap" style={{ color: heroSavingsColor }}>
+              <Odometer value={projection.savings} prefix="$" duration={1000} className="align-baseline" />
             </span>
-          </h1>
-          <div className="mt-2 flex flex-wrap items-center justify-center gap-1 text-base text-neutral-900 dark:text-slate-200 sm:text-xl">
-            <span>See how much you can save.</span>
-          </div>
-          <div className="mt-5">
-            <Quiz />
-          </div>
-          <div className="mt-3 flex justify-center">
+            ?
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-700 dark:text-slate-300 sm:text-lg">
+            Change the fee, portfolio value, growth assumption, and time horizon. The chart updates immediately.
+          </p>
+          <div className="mt-5 flex justify-center">
             <button
               type="button"
               onClick={shareResult}
-              className="inline-flex items-center gap-2 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 sm:text-sm"
+              className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
               aria-label="Share your result"
             >
-              <ShareIcon className="h-3.5 w-3.5" />
+              <ShareIcon className="h-4 w-4" />
               {shareButtonLabel}
             </button>
           </div>
@@ -461,28 +488,72 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
             with Smarter Way Wealth, LLC.
           </p>
         </div>
-      </div>
 
-      <section className="relative w-full overflow-hidden bg-[#EEF0F5] dark:bg-slate-950">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 top-[35%] bg-gradient-to-b from-transparent via-[rgba(233,238,255,0.6)] to-transparent dark:via-[rgba(15,23,42,0.5)]" />
-
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-20 pt-0 sm:px-6 lg:px-8">
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-20 pt-8 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:gap-8">
             <ScrollReveal className="card overflow-hidden bg-white shadow-xl ring-1 ring-black/5 dark:bg-slate-900 dark:ring-slate-700/70">
-              <div className="relative w-full sm:h-[450px] lg:h-[550px]">
-                <ProFeeChart
-                  data={projection.series}
-                  finalLost={projection.savings}
-                  finalValueWithoutFees={projection.finalValueWithoutFees}
-                  finalValueWithFees={projection.finalValueWithFees}
-                  showSummary={false}
-                  activeScenario={activeCard}
-                  portfolioValue={state.portfolioValue}
-                  years={state.years}
-                  annualGrowthPercent={state.annualGrowthPercent}
-                  annualFeePercent={state.annualFeePercent}
-                  mutualFundExpensePercent={state.mutualFundExpensePercent}
-                />
+              <div className="relative h-[390px] w-full sm:h-[450px] lg:h-[550px]">
+                {chartReady ? (
+                  <ProFeeChart
+                    data={projection.series}
+                    finalLost={projection.savings}
+                    finalValueWithoutFees={projection.finalValueWithoutFees}
+                    finalValueWithFees={projection.finalValueWithFees}
+                    showSummary={false}
+                    activeScenario={activeCard}
+                    portfolioValue={state.portfolioValue}
+                    years={state.years}
+                    annualGrowthPercent={state.annualGrowthPercent}
+                    annualFeePercent={state.annualFeePercent}
+                    mutualFundExpensePercent={state.mutualFundExpensePercent}
+                  />
+                ) : (
+                  <div className="flex h-full flex-col justify-between bg-white p-5 dark:bg-slate-900 sm:p-8">
+                    <div className="flex items-start justify-between gap-4">
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                          Calculator result
+                        </p>
+                        <p className="mt-3 text-3xl font-semibold tracking-normal text-slate-950 dark:text-white sm:text-5xl">
+                          {formatCurrency(projection.savings)}
+                        </p>
+                        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                          Projected wealth difference over {state.years} years.
+                        </p>
+                      </div>
+                      <div className="shrink-0 text-right">
+                        <p className="text-2xl font-bold text-red-700">{percentLost.toFixed(1)}%</p>
+                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-red-700">lost</p>
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="h-3 w-full rounded-full bg-slate-100 dark:bg-slate-800">
+                        <div className="h-3 rounded-full bg-[#007A2F]" style={{ width: "82%" }} />
+                      </div>
+                      <div className="h-3 w-full rounded-full bg-red-100 dark:bg-red-950/40">
+                        <div className="h-3 rounded-full bg-red-500" style={{ width: `${Math.max(8, Math.min(88, percentLost * 4))}%` }} />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+                      <div>
+                        <p className="font-semibold text-slate-950 dark:text-white">{formatCurrency(state.portfolioValue)}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Starting value</p>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-slate-950 dark:text-white">{state.annualGrowthPercent.toFixed(1)}%</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Growth</p>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-slate-950 dark:text-white">{state.years} yrs</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Time</p>
+                      </div>
+                      <div>
+                        <p className="font-semibold text-red-700">{totalAnnualFeePercent.toFixed(2)}%</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">Fee load</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="border-t border-gray-100 bg-white px-4 pb-4 pt-2 dark:border-slate-700 dark:bg-slate-900 sm:px-6 sm:pb-6 sm:pt-3 lg:px-8 lg:pb-8 lg:pt-4">
@@ -607,6 +678,10 @@ export function CostAnalysisCalculator({ initialState, searchParams }: Props) {
                 </>
                 )}
               </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.1} className="mx-auto w-full max-w-3xl">
+              <Quiz />
             </ScrollReveal>
           </div>
         </div>

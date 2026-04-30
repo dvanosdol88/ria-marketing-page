@@ -63,23 +63,6 @@ function useAnimatedValue(target: number, duration: number) {
   return display;
 }
 
-function DigitColumn({ digit }: { digit: number }) {
-  return (
-    <span className="relative inline-block h-[1em] w-[0.62em] overflow-hidden align-baseline" aria-hidden="true">
-      <span
-        className="flex flex-col transition-transform duration-150 [transition-timing-function:cubic-bezier(0.25,1,0.5,1)]"
-        style={{ transform: `translateY(-${digit * 10}%)` }}
-      >
-        {Array.from({ length: 10 }, (_, value) => (
-          <span key={value} className="flex h-[1em] items-center justify-center">
-            {value}
-          </span>
-        ))}
-      </span>
-    </span>
-  );
-}
-
 export interface OdometerProps {
   value: number;
   prefix?: string;
@@ -91,22 +74,14 @@ export function Odometer({ value, prefix = "$", className = "", duration = 1400 
   const animatedValue = useAnimatedValue(value, duration);
   const formattedDisplay = formatWithCommas(animatedValue);
   const formattedFinal = formatWithCommas(value);
-  const chars = formattedDisplay.split("");
 
   return (
-    <span className={`inline-flex items-baseline tabular-nums ${className}`} aria-label={`${prefix}${formattedFinal}`}>
-      {prefix ? <span aria-hidden="true">{prefix}</span> : null}
-      {chars.map((char, index) => {
-        if (!/\d/.test(char)) {
-          return (
-            <span key={`sep-${index}`} className="inline-block" aria-hidden="true">
-              {char}
-            </span>
-          );
-        }
-
-        return <DigitColumn key={`digit-${index}-${char}-${chars.length}`} digit={Number.parseInt(char, 10)} />;
-      })}
+    <span
+      className={`inline-block tabular-nums transition-transform duration-150 [transition-timing-function:cubic-bezier(0.25,1,0.5,1)] ${className}`}
+      aria-label={`${prefix}${formattedFinal}`}
+    >
+      {prefix}
+      {formattedDisplay}
     </span>
   );
 }

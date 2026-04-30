@@ -1,8 +1,10 @@
 import { CostAnalysisCalculator } from "@/components/CostAnalysisCalculator";
 import { CalculatorState, parseCalculatorState } from "@/lib/calculatorState";
+import { getHomeMarketingVariantId } from "@/config/homeMarketingVariants";
 
+type HomeSearchParams = Record<string, string | string[] | undefined>;
 
-function normalizeSearchParams(searchParams: Record<string, string | string[] | undefined>) {
+function normalizeSearchParams(searchParams: HomeSearchParams) {
   const params = new URLSearchParams();
   Object.entries(searchParams).forEach(([key, value]) => {
     if (Array.isArray(value)) {
@@ -14,17 +16,23 @@ function normalizeSearchParams(searchParams: Record<string, string | string[] | 
   return params;
 }
 
-export default function Home({
+export default async function Home({
   searchParams,
 }: {
-  searchParams: Record<string, string | string[] | undefined>;
+  searchParams: Promise<HomeSearchParams>;
 }) {
-  const params = normalizeSearchParams(searchParams);
+  const resolvedSearchParams = await searchParams;
+  const params = normalizeSearchParams(resolvedSearchParams);
   const calculatorState: CalculatorState = parseCalculatorState(params);
+  const marketingVariantId = getHomeMarketingVariantId(resolvedSearchParams.variant);
 
   return (
-    <main className="flex flex-col gap-16 pb-16">
-      <CostAnalysisCalculator initialState={calculatorState} searchParams={searchParams} />
+    <main className="flex flex-col pb-16">
+      <CostAnalysisCalculator
+        initialState={calculatorState}
+        searchParams={resolvedSearchParams}
+        marketingVariantId={marketingVariantId}
+      />
     </main>
   );
 }

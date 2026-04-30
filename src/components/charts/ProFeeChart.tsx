@@ -439,8 +439,8 @@ export function ProFeeChart({
             data={data}
             margin={{
               top: isMobile ? 10 : 20,
-              right: 5,
-              left: 5,
+              right: isMobile ? 20 : 5,
+              left: isMobile ? 12 : 5,
               bottom: 0,
             }}
           >
