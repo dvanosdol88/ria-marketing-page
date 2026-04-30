@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowDown, Calculator, CheckCircle2, Share2 } from "lucide-react";
 import { HomeMarketingVariant } from "@/config/homeMarketingVariants";
+import type { CalculatorState } from "@/lib/calculatorState";
 import { formatCurrency } from "@/lib/format";
 
 type HomeMarketingHeroProps = {
@@ -11,6 +13,10 @@ type HomeMarketingHeroProps = {
   savings: number;
   portfolioValue: number;
   years: number;
+  annualGrowthPercent: number;
+  annualFeePercent: number;
+  mutualFundExpensePercent: number;
+  onCalculatorChange: (patch: Partial<CalculatorState>) => void;
   onShare: () => void;
   shareButtonLabel: string;
 };
@@ -91,11 +97,190 @@ function ReceiptVisual({ savings, portfolioValue, years }: { savings: number; po
   );
 }
 
+function clampMiniValue(value: number, min: number, max: number, decimals: number) {
+  const clamped = Math.min(max, Math.max(min, value));
+  return decimals === 0 ? Math.round(clamped) : Number(clamped.toFixed(decimals));
+}
+
+function parseMiniNumber(value: string) {
+  const parsed = Number.parseFloat(value.replace(/[$,%\s]/g, "").replace(/,/g, ""));
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function formatMiniNumber(value: number, decimals: number, useGrouping = false) {
+  if (decimals > 0) return value.toFixed(decimals);
+  return useGrouping ? Math.round(value).toLocaleString("en-US") : Math.round(value).toString();
+}
+
+function MiniTextInput({
+  decimals = 0,
+  label,
+  max,
+  min,
+  onValueChange,
+  suffix,
+  useGrouping = false,
+  value,
+}: {
+  decimals?: number;
+  label: string;
+  max: number;
+  min: number;
+  onValueChange: (value: number) => void;
+  suffix?: string;
+  useGrouping?: boolean;
+  value: number;
+}) {
+  const [draft, setDraft] = useState(() => formatMiniNumber(value, decimals, useGrouping));
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (!isFocused) {
+      setDraft(formatMiniNumber(value, decimals, useGrouping));
+    }
+  }, [decimals, isFocused, useGrouping, value]);
+
+  const commitDraft = (nextValue: string, shouldFormat: boolean) => {
+    const parsed = parseMiniNumber(nextValue);
+
+    if (parsed === null) {
+      if (shouldFormat) {
+        setDraft(formatMiniNumber(value, decimals, useGrouping));
+      }
+      return;
+    }
+
+    const normalized = clampMiniValue(parsed, min, max, decimals);
+    onValueChange(normalized);
+
+    if (shouldFormat) {
+      setDraft(formatMiniNumber(normalized, decimals, useGrouping));
+    }
+  };
+
+  return (
+    <label className="grid grid-cols-[62px_minmax(84px,1fr)] items-center gap-2 text-[12px] leading-none text-emerald-50/45">
+      <span className="font-medium tracking-normal">{label}</span>
+      <span className="relative block">
+        <input
+          type="text"
+          inputMode={decimals > 0 ? "decimal" : "numeric"}
+          value={draft}
+          onBlur={() => {
+            setIsFocused(false);
+            commitDraft(draft, true);
+          }}
+          onChange={(event) => {
+            const nextValue = event.target.value;
+            setDraft(nextValue);
+            commitDraft(nextValue, false);
+          }}
+          onFocus={() => setIsFocused(true)}
+          className={`h-7 w-full rounded-[3px] border border-white/10 bg-white/[0.035] px-2 ${
+            suffix ? "pr-6" : ""
+          } text-right text-[12px] font-medium tabular-nums text-white/65 outline-none transition focus:border-emerald-200/35 focus:bg-white/[0.08] focus:text-white`}
+          aria-label={label}
+        />
+        {suffix && (
+          <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[12px] text-emerald-50/35">
+            {suffix}
+          </span>
+        )}
+      </span>
+    </label>
+  );
+}
+
+function AdvisorMiniCalculator({
+  annualFeePercent,
+  annualGrowthPercent,
+  className = "",
+  mutualFundExpensePercent,
+  onCalculatorChange,
+  portfolioValue,
+  savings,
+  years,
+}: {
+  annualFeePercent: number;
+  annualGrowthPercent: number;
+  className?: string;
+  mutualFundExpensePercent: number;
+  onCalculatorChange: (patch: Partial<CalculatorState>) => void;
+  portfolioValue: number;
+  savings: number;
+  years: number;
+}) {
+  const totalFeePercent = annualFeePercent + mutualFundExpensePercent;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.16, duration: 0.55, ease: "easeOut" }}
+      className={`text-white opacity-70 transition-opacity duration-300 hover:opacity-100 focus-within:opacity-100 ${className}`}
+      aria-label={`Savings: ${formatCurrency(savings)}`}
+    >
+      <div className="w-[250px] max-w-full border-l border-emerald-200/30 bg-slate-950/[0.04] py-2 pl-4 pr-1 backdrop-blur-[2px]">
+        <div className="space-y-2">
+          <MiniTextInput
+            label="Portfolio"
+            min={300000}
+            max={5000000}
+            value={portfolioValue}
+            useGrouping
+            onValueChange={(value) => onCalculatorChange({ portfolioValue: value })}
+          />
+          <MiniTextInput
+            decimals={2}
+            label="Fee"
+            min={0}
+            max={3}
+            suffix="%"
+            value={totalFeePercent}
+            onValueChange={(value) =>
+              onCalculatorChange({
+                annualFeePercent: Math.max(0, Number((value - mutualFundExpensePercent).toFixed(2))),
+              })
+            }
+          />
+          <MiniTextInput
+            decimals={1}
+            label="Growth"
+            min={0}
+            max={20}
+            suffix="%"
+            value={annualGrowthPercent}
+            onValueChange={(value) => onCalculatorChange({ annualGrowthPercent: value })}
+          />
+          <MiniTextInput
+            label="Years"
+            min={1}
+            max={40}
+            value={years}
+            onValueChange={(value) => onCalculatorChange({ years: Math.round(value) })}
+          />
+        </div>
+
+        <div className="mt-4 border-t border-white/10 pt-3">
+          <p className="text-[12px] font-medium tracking-normal text-emerald-50/55">Savings</p>
+          <p className="mt-1 text-[30px] font-semibold leading-none tracking-normal text-white/90">
+            {formatCurrency(savings)}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 export function HomeMarketingHero({
   variant,
   savings,
   portfolioValue,
   years,
+  annualGrowthPercent,
+  annualFeePercent,
+  mutualFundExpensePercent,
+  onCalculatorChange,
   onShare,
   shareButtonLabel,
 }: HomeMarketingHeroProps) {
@@ -152,11 +337,35 @@ export function HomeMarketingHero({
               </div>
             ))}
           </div>
+
+          {isDarkHero && (
+            <AdvisorMiniCalculator
+              annualFeePercent={annualFeePercent}
+              annualGrowthPercent={annualGrowthPercent}
+              className="ml-auto mt-7 md:hidden"
+              mutualFundExpensePercent={mutualFundExpensePercent}
+              onCalculatorChange={onCalculatorChange}
+              portfolioValue={portfolioValue}
+              savings={savings}
+              years={years}
+            />
+          )}
         </motion.div>
 
-        <div className="relative hidden items-end justify-end md:flex">
+        <div className="relative hidden min-h-[420px] items-start justify-end self-start pt-5 md:flex lg:pt-8">
           {variant.layout === "receipt" ? (
             <ReceiptVisual savings={savings} portfolioValue={portfolioValue} years={years} />
+          ) : isDarkHero ? (
+            <AdvisorMiniCalculator
+              annualFeePercent={annualFeePercent}
+              annualGrowthPercent={annualGrowthPercent}
+              className="mr-0"
+              mutualFundExpensePercent={mutualFundExpensePercent}
+              onCalculatorChange={onCalculatorChange}
+              portfolioValue={portfolioValue}
+              savings={savings}
+              years={years}
+            />
           ) : (
             <motion.div
               initial={{ opacity: 0, y: 18 }}

@@ -32,6 +32,8 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - verified follow-up: `npm run lint` (passes with same 3 pre-existing `<img>` warnings), `npm run build` (passes with the known Tailwind tokens warning), and Playwright mobile checks for all 3 variant URLs confirmed unique calculator headings, 4 range inputs, 2 chart SVGs, working advisory-fee slider updates, and zero console errors.
 - quote ticker polish: desktop hover portraits now offset Fama, Munger, Franklin, and Sharpe left within the circular crop; mobile Sharpe crop matches the leftward offset; Franklin quotes are separated in both ticker data arrays.
 - verified quote ticker polish: `npm run lint` (passes with same 3 pre-existing `<img>` warnings), `npm run build` (passes with known Tailwind tokens warning), local browser hover check confirmed the four portrait offsets, no consecutive Franklin items, and zero console errors.
+- fiduciary hero mini-calculator follow-up: replaced the hero overlay sliders with four subtle 12px text inputs (Portfolio, Fee, Growth, Years), moved the control higher/right on desktop, and reduced the output to a single 30px Savings number.
+- verified mini-calculator follow-up: `npm run lint` (passes with same 3 pre-existing `<img>` warnings), `npm run build` (passes with known Tailwind tokens warning), in-app browser screenshot at `/?variant=fiduciary-upgrade`, and Playwright desktop/mobile checks confirmed 4 visible text inputs, 0 visible hero range inputs, Fee edits update Savings, and zero console errors.
 - not deployed: left as local/branch work for David to review before choosing what should become production default.
 
 ### 2026-04-29 — Compliance footer + inline calculator disclosures + agent-readiness canon

@@ -596,6 +596,10 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
         savings={projection.savings}
         portfolioValue={state.portfolioValue}
         years={state.years}
+        annualGrowthPercent={state.annualGrowthPercent}
+        annualFeePercent={state.annualFeePercent}
+        mutualFundExpensePercent={state.mutualFundExpensePercent}
+        onCalculatorChange={(patch) => setState((prev) => ({ ...prev, ...patch }))}
         onShare={shareResult}
         shareButtonLabel={shareButtonLabel}
       />
