@@ -403,8 +403,8 @@ export default function MobileQuoteCarousel({
                   <Image
                     src={portraits[displayedQuote.lastName]}
                     alt={`${displayedQuote.firstName} ${displayedQuote.lastName}`}
-                    width={134}
-                    height={134}
+                    width={1024}
+                    height={1024}
                     unoptimized
                     className="h-full w-full object-cover object-top"
                     style={PORTRAIT_OFFSET[displayedQuote.lastName] ? {

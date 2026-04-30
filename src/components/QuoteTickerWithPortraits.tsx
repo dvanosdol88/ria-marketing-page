@@ -29,17 +29,17 @@ interface QuoteTickerProps {
 // ============================================================================
 
 const PORTRAITS: Record<string, string> = {
-  'Bogle': '/images/portraits/optimized/WSJ-john-bogle.png',
-  'Fama': '/images/portraits/optimized/WSJ-eugene-fama.png',
-  'Buffett': '/images/portraits/optimized/WSJ-warren-buffett.png',
-  'Malkiel': '/images/portraits/optimized/WSJ-burton-malkiel.png',
-  'Swensen': '/images/portraits/optimized/WSJ-david-swensen.png',
-  'Munger': '/images/portraits/optimized/WSJ-charlie-munger.png',
-  'Sharpe': '/images/portraits/optimized/WSJ-william-sharpe.png',
-  'Orman': '/images/portraits/optimized/WSJ-suzie-orman.png',
-  'Franklin': '/images/portraits/optimized/WSJ-benjamin-franklin.png',
-  'Ramsey': '/images/portraits/optimized/WSJ-dave-ramsey.png',
-  'Van Osdol': '/images/portraits/optimized/WSJ-DVO.png',
+  'Bogle': '/images/portraits/WSJ-john-bogle.jpg',
+  'Fama': '/images/portraits/WSJ-eugene-fama.jpg',
+  'Buffett': '/images/portraits/WSJ-warren-buffett.jpg',
+  'Malkiel': '/images/portraits/WSJ-burton-malkiel.jpg',
+  'Swensen': '/images/portraits/WSJ-david-swensen.jpg',
+  'Munger': '/images/portraits/WSJ-charlie-munger.jpg',
+  'Sharpe': '/images/portraits/WSJ-william-sharpe.jpg',
+  'Orman': '/images/portraits/WSJ-suzie-orman.jpg',
+  'Franklin': '/images/portraits/WSJ-benjamin-franklin.jpg',
+  'Ramsey': '/images/portraits/WSJ-dave-ramsey.jpg',
+  'Van Osdol': '/images/portraits/WSJ-DVO.jpg',
   'Viewpoints': '/images/portraits/optimized/fidelity-logo.png',
 };
 
@@ -484,8 +484,8 @@ export default function QuoteTickerWithPortraits({
                   <Image
                     src={PORTRAITS[hoveredQuote.lastName]}
                     alt={`${hoveredQuote.firstName} ${hoveredQuote.lastName}`}
-                    width={400}
-                    height={400}
+                    width={1024}
+                    height={1024}
                     unoptimized
                     className="object-cover object-top w-full h-full"
                     style={PORTRAIT_OFFSET[hoveredQuote.lastName] ? {
