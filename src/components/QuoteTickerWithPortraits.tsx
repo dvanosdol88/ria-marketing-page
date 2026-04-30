@@ -43,6 +43,13 @@ const PORTRAITS: Record<string, string> = {
   'Viewpoints': '/images/portraits/optimized/fidelity-logo.png',
 };
 
+const PORTRAIT_OFFSET: Record<string, number> = {
+  'Fama': 10,
+  'Munger': 10,
+  'Franklin': 10,
+  'Sharpe': 10,
+};
+
 // ============================================================================
 // QUOTES DATA
 // ============================================================================
@@ -145,16 +152,16 @@ const QUOTES: Quote[] = [
     quote: "Money makes money. And the money that money makes, makes money.",
   },
   {
-    firstName: "Benjamin",
-    lastName: "Franklin",
-    title: "Founding Father",
-    quote: "A penny saved is a penny earned.",
-  },
-  {
     firstName: "Warren",
     lastName: "Buffett",
     title: "Berkshire Hathaway Letter, 2016",
     quote: "The massive fees levied by 'helpers' would leave clients worse off than if they simply invested in an unmanaged low-cost index fund.",
+  },
+  {
+    firstName: "Benjamin",
+    lastName: "Franklin",
+    title: "Founding Father",
+    quote: "A penny saved is a penny earned.",
   },
   {
     firstName: "William F.",
@@ -481,6 +488,9 @@ export default function QuoteTickerWithPortraits({
                     height={400}
                     unoptimized
                     className="object-cover object-top w-full h-full"
+                    style={PORTRAIT_OFFSET[hoveredQuote.lastName] ? {
+                      objectPosition: `calc(50% + ${PORTRAIT_OFFSET[hoveredQuote.lastName]}px) top`,
+                    } : undefined}
                   />
                 </div>
               ) : (

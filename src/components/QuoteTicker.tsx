@@ -121,16 +121,16 @@ const QUOTES: Quote[] = [
     quote: "Money makes money. And the money that money makes, makes money.",
   },
   {
-    firstName: "Benjamin",
-    lastName: "Franklin",
-    title: "Founding Father",
-    quote: "A penny saved is a penny earned.",
-  },
-  {
     firstName: "Warren",
     lastName: "Buffett",
     title: "Berkshire Hathaway Letter, 2016",
     quote: "The massive fees levied by 'helpers' would leave clients worse off than if they simply invested in an unmanaged low-cost index fund.",
+  },
+  {
+    firstName: "Benjamin",
+    lastName: "Franklin",
+    title: "Founding Father",
+    quote: "A penny saved is a penny earned.",
   },
   {
     firstName: "William F.",

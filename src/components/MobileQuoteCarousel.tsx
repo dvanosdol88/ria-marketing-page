@@ -52,7 +52,7 @@ const PORTRAIT_OFFSET: Record<string, number> = {
   'Malkiel': 10,
   'Munger': 10,
   'Franklin': 10,
-  'Sharpe': -10,
+  'Sharpe': 10,
 };
 
 // ============================================================================
