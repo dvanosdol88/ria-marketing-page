@@ -14,13 +14,17 @@ import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
 import {
+  HomeCalculatorExperience,
+  type CalculatorSliderNodes,
+} from "@/components/HomeCalculatorExperience";
+import {
   HomeCalculatorTheme,
   HomeMarketingVariantId,
   homeMarketingVariants,
 } from "@/config/homeMarketingVariants";
 
 // ============================================================================
-// PILL SLIDER — Value-in-pill thumb with color-coded track
+// PILL SLIDER - Value-in-pill thumb with color-coded track
 // ============================================================================
 
 const TIME_HORIZON_VALUES = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25, 30];
@@ -63,7 +67,7 @@ interface PillSliderProps {
   min?: number;
   max?: number;
   step?: number;
-  // Array mode — overrides min/max/step when provided
+  // Array mode - overrides min/max/step when provided
   values?: number[];
   majorSteps?: Set<number>;
 }
@@ -168,7 +172,7 @@ function PillSlider({
           className="absolute left-0 h-1 rounded-full transition-[width] duration-75"
           style={{ width: `${pct}%`, backgroundColor: trackColor }}
         />
-        {/* Native range input — enlarged invisible thumb for better grab area */}
+        {/* Native range input - enlarged invisible thumb for better grab area */}
         <input
           type="range"
           min={inputMin}
@@ -182,7 +186,7 @@ function PillSlider({
           className="pill-slider-input absolute inset-x-0 z-20 h-12 w-full cursor-grab opacity-0 active:cursor-grabbing"
           aria-label={label}
         />
-        {/* Visual pill thumb — glows + scales on grab */}
+        {/* Visual pill thumb - glows + scales on grab */}
         <div
           className="pointer-events-none absolute z-10 flex h-9 items-center justify-center rounded-full px-3.5 transition-all duration-150"
           style={{
@@ -368,6 +372,223 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
       ? Math.min(100, Math.max(0, (projection.savings / projection.finalValueWithoutFees) * 100))
       : 0;
 
+  const annualFlatFee = 100 * 12;
+  const annualAumFeeEstimate = state.portfolioValue * (totalAnnualFeePercent / 100);
+
+  const collapseControl = (
+    <button
+      type="button"
+      onClick={() => setSlidersExpanded((prev) => !prev)}
+      className={`inline-flex min-h-8 items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-0 ${calculatorTheme.collapseButtonClassName}`}
+      aria-expanded={slidersExpanded}
+    >
+      {slidersExpanded ? "Collapse" : "Expand"}
+      {slidersExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+    </button>
+  );
+
+  const shareAction = (
+    <button
+      type="button"
+      onClick={shareResult}
+      className={`inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg transition-colors sm:w-auto ${calculatorTheme.shareButtonClassName}`}
+      aria-label="Share your result"
+    >
+      <ShareIcon className="h-4 w-4" />
+      {shareButtonLabel}
+    </button>
+  );
+
+  const disclosure = (
+    <p className={`mt-3 text-xs leading-snug ${calculatorTheme.disclaimerClassName}`}>
+      Use of this calculator does not establish an advisory relationship with
+      Smarter Way Wealth, LLC.
+    </p>
+  );
+
+  const helperNotes = (
+    <>
+      <p className={`text-center text-xs ${calculatorTheme.helperTextClassName}`}>
+        Compares our $100/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
+        <Link href="/our-math" className={calculatorTheme.linkClassName}>
+          For finance nerds
+        </Link>
+      </p>
+      <div className={`mx-auto mt-4 max-w-2xl space-y-2 text-center text-xs leading-snug ${calculatorTheme.helperTextClassName}`}>
+        <p>
+          Savings calculations are hypothetical illustrations based on
+          assumptions you provide. Actual results will vary. This is not a
+          guarantee of performance or savings.
+        </p>
+        <p>
+          The annual growth rate above is an assumption you control, not a
+          forecast or recommendation. Smarter Way Wealth does not guarantee the
+          accuracy of third-party data.
+        </p>
+      </div>
+    </>
+  );
+
+  const calculatorSliders: CalculatorSliderNodes = {
+    advisoryFee: (
+      <PillSlider
+        label="Advisory fee"
+        value={state.annualFeePercent}
+        onChange={(v) => setState((prev) => ({ ...prev, annualFeePercent: v }))}
+        format={(v) => `${v.toFixed(2)}%`}
+        variant="destructive"
+        theme={calculatorTheme.slider}
+        min={0}
+        max={3}
+        step={0.05}
+        labelAction={
+          !showMutualFundExpenses ? (
+            <button
+              type="button"
+              onClick={() => setShowMutualFundExpenses(true)}
+              className={`text-[11px] font-semibold tracking-wide transition-colors ${calculatorTheme.slider.addButtonClassName}`}
+            >
+              + add mutual fund expenses
+            </button>
+          ) : undefined
+        }
+      />
+    ),
+    mutualFundExpenses: showMutualFundExpenses ? (
+      <div className="mt-4">
+        <PillSlider
+          label="Mutual fund expenses"
+          value={state.mutualFundExpensePercent}
+          onChange={(v) => setState((prev) => ({ ...prev, mutualFundExpensePercent: v }))}
+          format={(v) => `${v.toFixed(2)}%`}
+          variant="destructive"
+          theme={calculatorTheme.slider}
+          pillColorOverride={marketingVariantId === "fiduciary-upgrade" ? "#FB7185" : "#7F1D1D"}
+          min={0}
+          max={3}
+          step={0.05}
+          labelAction={
+            <button
+              type="button"
+              onClick={() => {
+                setShowMutualFundExpenses(false);
+                setState((prev) => ({ ...prev, mutualFundExpensePercent: 0 }));
+              }}
+              className={`text-[11px] font-semibold tracking-wide transition-colors ${calculatorTheme.slider.removeButtonClassName}`}
+            >
+              remove
+            </button>
+          }
+        />
+      </div>
+    ) : null,
+    portfolio: (
+      <PillSlider
+        label="Portfolio value"
+        value={state.portfolioValue}
+        onChange={(v) => setState((prev) => ({ ...prev, portfolioValue: v }))}
+        format={(v) => formatCurrency(v)}
+        variant="accumulation"
+        theme={calculatorTheme.slider}
+        min={300000}
+        max={5000000}
+        step={50000}
+      />
+    ),
+    growth: (
+      <PillSlider
+        label="Annual growth"
+        value={state.annualGrowthPercent}
+        onChange={(v) => setState((prev) => ({ ...prev, annualGrowthPercent: v }))}
+        format={(v) => `${v.toFixed(1)}%`}
+        variant="accumulation"
+        theme={calculatorTheme.slider}
+        min={4}
+        max={12}
+        step={0.5}
+      />
+    ),
+    years: (
+      <PillSlider
+        label="Time horizon"
+        value={state.years}
+        onChange={(v) => setState((prev) => ({ ...prev, years: v }))}
+        format={(v) => `${v} yrs`}
+        variant="accumulation"
+        theme={calculatorTheme.slider}
+        values={TIME_HORIZON_VALUES}
+        majorSteps={TIME_HORIZON_MAJOR}
+      />
+    ),
+  };
+
+  const renderChart = (className: string) => (
+    <div className={`relative w-full ${className} ${calculatorTheme.chartFrameClassName}`}>
+      {chartReady ? (
+        <ProFeeChart
+          data={projection.series}
+          finalLost={projection.savings}
+          finalValueWithoutFees={projection.finalValueWithoutFees}
+          finalValueWithFees={projection.finalValueWithFees}
+          showSummary={false}
+          activeScenario={activeCard}
+          portfolioValue={state.portfolioValue}
+          years={state.years}
+          annualGrowthPercent={state.annualGrowthPercent}
+          annualFeePercent={state.annualFeePercent}
+          mutualFundExpensePercent={state.mutualFundExpensePercent}
+          chartTheme={calculatorTheme.chart}
+        />
+      ) : (
+        <div className={`flex h-full flex-col justify-between p-5 sm:p-8 ${calculatorTheme.chartFrameClassName}`}>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className={`text-xs font-bold uppercase tracking-[0.18em] ${calculatorTheme.chart.mutedTextClassName}`}>
+                Calculator result
+              </p>
+              <p className={`mt-3 text-3xl font-semibold tracking-normal sm:text-5xl ${calculatorTheme.chart.strongTextClassName}`}>
+                {formatCurrency(projection.savings)}
+              </p>
+              <p className={`mt-2 text-sm ${calculatorTheme.chart.mutedTextClassName}`}>
+                Projected wealth difference over {state.years} years.
+              </p>
+            </div>
+            <div className="shrink-0 text-right">
+              <p className="text-2xl font-bold text-red-700">{percentLost.toFixed(1)}%</p>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-red-700">lost</p>
+            </div>
+          </div>
+          <div className="space-y-3">
+            <div className="h-3 w-full rounded-full bg-slate-100 dark:bg-slate-800">
+              <div className="h-3 rounded-full bg-[#007A2F]" style={{ width: "82%" }} />
+            </div>
+            <div className="h-3 w-full rounded-full bg-red-100 dark:bg-red-950/40">
+              <div className="h-3 rounded-full bg-red-500" style={{ width: `${Math.max(8, Math.min(88, percentLost * 4))}%` }} />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+            <div>
+              <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{formatCurrency(state.portfolioValue)}</p>
+              <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Starting value</p>
+            </div>
+            <div>
+              <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{state.annualGrowthPercent.toFixed(1)}%</p>
+              <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Growth</p>
+            </div>
+            <div>
+              <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{state.years} yrs</p>
+              <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Time</p>
+            </div>
+            <div>
+              <p className="font-semibold text-red-700">{totalAnnualFeePercent.toFixed(2)}%</p>
+              <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Fee load</p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <>
       <HomeMarketingHero
@@ -457,236 +678,38 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
       >
         <div className={`pointer-events-none absolute inset-0 ${calculatorTheme.backdropClassName}`} />
 
-        <div className="section-shell relative z-10 pt-10 text-center sm:pt-14">
-          <p className={`text-sm font-bold uppercase tracking-[0.18em] ${calculatorTheme.eyebrowClassName}`}>Interactive calculator</p>
-          <h2 className={`mx-auto mt-3 max-w-4xl text-3xl font-semibold tracking-normal sm:text-5xl ${calculatorTheme.titleClassName}`}>
-            What would you do with{" "}
-            <span className={`whitespace-nowrap ${calculatorTheme.amountClassName}`}>
-              <Odometer value={projection.savings} prefix="$" duration={1000} className="align-baseline" />
-            </span>
-            ?
-          </h2>
-          <p className={`mx-auto mt-3 max-w-2xl text-base leading-7 sm:text-lg ${calculatorTheme.bodyClassName}`}>
-            Change the fee, portfolio value, growth assumption, and time horizon. The chart updates immediately.
-          </p>
-          <div className="mt-5 flex justify-center">
-            <button
-              type="button"
-              onClick={shareResult}
-              className={`inline-flex min-h-10 items-center gap-2 rounded-lg transition-colors ${calculatorTheme.shareButtonClassName}`}
-              aria-label="Share your result"
-            >
-              <ShareIcon className="h-4 w-4" />
-              {shareButtonLabel}
-            </button>
-          </div>
-          <p className={`mx-auto mt-3 max-w-xl text-center text-xs leading-snug ${calculatorTheme.disclaimerClassName}`}>
-            Use of this calculator does not establish an advisory relationship
-            with Smarter Way Wealth, LLC.
-          </p>
-        </div>
+        <HomeCalculatorExperience
+          layout={marketingVariant.layout}
+          theme={calculatorTheme}
+          savings={projection.savings}
+          percentLost={percentLost}
+          finalValueWithoutFees={projection.finalValueWithoutFees}
+          finalValueWithFees={projection.finalValueWithFees}
+          portfolioValue={state.portfolioValue}
+          years={state.years}
+          annualGrowthPercent={state.annualGrowthPercent}
+          annualFeePercent={state.annualFeePercent}
+          mutualFundExpensePercent={state.mutualFundExpensePercent}
+          totalAnnualFeePercent={totalAnnualFeePercent}
+          totalAssetBasedFees={projection.totalFees}
+          totalFlatFees={projection.totalFlatFees}
+          annualAumFeeEstimate={annualAumFeeEstimate}
+          annualFlatFee={annualFlatFee}
+          shareAction={shareAction}
+          disclosure={disclosure}
+          helperNotes={helperNotes}
+          collapseControl={collapseControl}
+          slidersExpanded={slidersExpanded}
+          sliders={calculatorSliders}
+          renderChart={renderChart}
+          activeScenario={activeCard}
+          onHighlightScenario={handleCardTap}
+        />
 
-        <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-20 pt-8 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 sm:gap-8">
-            <ScrollReveal className={calculatorTheme.frameClassName}>
-              <div className={`relative h-[320px] w-full sm:h-[420px] lg:h-[470px] ${calculatorTheme.chartFrameClassName}`}>
-                {chartReady ? (
-                  <ProFeeChart
-                    data={projection.series}
-                    finalLost={projection.savings}
-                    finalValueWithoutFees={projection.finalValueWithoutFees}
-                    finalValueWithFees={projection.finalValueWithFees}
-                    showSummary={false}
-                    activeScenario={activeCard}
-                    portfolioValue={state.portfolioValue}
-                    years={state.years}
-                    annualGrowthPercent={state.annualGrowthPercent}
-                    annualFeePercent={state.annualFeePercent}
-                    mutualFundExpensePercent={state.mutualFundExpensePercent}
-                    chartTheme={calculatorTheme.chart}
-                  />
-                ) : (
-                  <div className={`flex h-full flex-col justify-between p-5 sm:p-8 ${calculatorTheme.chartFrameClassName}`}>
-                    <div className="flex items-start justify-between gap-4">
-                      <div>
-                        <p className={`text-xs font-bold uppercase tracking-[0.18em] ${calculatorTheme.chart.mutedTextClassName}`}>
-                          Calculator result
-                        </p>
-                        <p className={`mt-3 text-3xl font-semibold tracking-normal sm:text-5xl ${calculatorTheme.chart.strongTextClassName}`}>
-                          {formatCurrency(projection.savings)}
-                        </p>
-                        <p className={`mt-2 text-sm ${calculatorTheme.chart.mutedTextClassName}`}>
-                          Projected wealth difference over {state.years} years.
-                        </p>
-                      </div>
-                      <div className="shrink-0 text-right">
-                        <p className="text-2xl font-bold text-red-700">{percentLost.toFixed(1)}%</p>
-                        <p className="text-xs font-bold uppercase tracking-[0.16em] text-red-700">lost</p>
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="h-3 w-full rounded-full bg-slate-100 dark:bg-slate-800">
-                        <div className="h-3 rounded-full bg-[#007A2F]" style={{ width: "82%" }} />
-                      </div>
-                      <div className="h-3 w-full rounded-full bg-red-100 dark:bg-red-950/40">
-                        <div className="h-3 rounded-full bg-red-500" style={{ width: `${Math.max(8, Math.min(88, percentLost * 4))}%` }} />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
-                      <div>
-                        <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{formatCurrency(state.portfolioValue)}</p>
-                        <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Starting value</p>
-                      </div>
-                      <div>
-                        <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{state.annualGrowthPercent.toFixed(1)}%</p>
-                        <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Growth</p>
-                      </div>
-                      <div>
-                        <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{state.years} yrs</p>
-                        <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Time</p>
-                      </div>
-                      <div>
-                        <p className="font-semibold text-red-700">{totalAnnualFeePercent.toFixed(2)}%</p>
-                        <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Fee load</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className={calculatorTheme.controlsClassName}>
-                <div className="mb-3 flex items-center justify-end">
-                  <button
-                    type="button"
-                    onClick={() => setSlidersExpanded((prev) => !prev)}
-                    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-0 ${calculatorTheme.collapseButtonClassName}`}
-                    aria-expanded={slidersExpanded}
-                  >
-                    {slidersExpanded ? "Collapse all sliders" : "Expand all sliders"}
-                    {slidersExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
-                  </button>
-                </div>
-                {slidersExpanded && (
-                <>
-                <div className="grid grid-cols-1 gap-x-8 gap-y-5 min-[480px]:grid-cols-2 lg:grid-cols-3">
-                  {/* Advisory Fee — destructive, always full-width top row */}
-                  <div className="col-span-full">
-                    <PillSlider
-                      label="Advisory fee"
-                      value={state.annualFeePercent}
-                      onChange={(v) => setState((prev) => ({ ...prev, annualFeePercent: v }))}
-                      format={(v) => `${v.toFixed(2)}%`}
-                      variant="destructive"
-                      theme={calculatorTheme.slider}
-                      min={0}
-                      max={3}
-                      step={0.05}
-                      labelAction={
-                        !showMutualFundExpenses ? (
-                          <button
-                            type="button"
-                            onClick={() => setShowMutualFundExpenses(true)}
-                            className={`text-[11px] font-semibold tracking-wide transition-colors ${calculatorTheme.slider.addButtonClassName}`}
-                          >
-                            + add mutual fund expenses
-                          </button>
-                        ) : undefined
-                      }
-                    />
-                  </div>
-                  {showMutualFundExpenses && (
-                    <div className="col-span-full">
-                      <PillSlider
-                        label="Mutual fund expenses"
-                        value={state.mutualFundExpensePercent}
-                        onChange={(v) => setState((prev) => ({ ...prev, mutualFundExpensePercent: v }))}
-                        format={(v) => `${v.toFixed(2)}%`}
-                        variant="destructive"
-                        theme={calculatorTheme.slider}
-                        pillColorOverride={marketingVariantId === "fiduciary-upgrade" ? "#FB7185" : "#7F1D1D"}
-                        min={0}
-                        max={3}
-                        step={0.05}
-                        labelAction={
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setShowMutualFundExpenses(false);
-                              setState((prev) => ({ ...prev, mutualFundExpensePercent: 0 }));
-                            }}
-                            className={`text-[11px] font-semibold tracking-wide transition-colors ${calculatorTheme.slider.removeButtonClassName}`}
-                          >
-                            remove
-                          </button>
-                        }
-                      />
-                    </div>
-                  )}
-                  {/* Portfolio Value — accumulation */}
-                  <div className="min-[480px]:col-span-2 lg:col-span-1">
-                    <PillSlider
-                      label="Portfolio value"
-                      value={state.portfolioValue}
-                      onChange={(v) => setState((prev) => ({ ...prev, portfolioValue: v }))}
-                      format={(v) => formatCurrency(v)}
-                      variant="accumulation"
-                      theme={calculatorTheme.slider}
-                      min={300000}
-                      max={5000000}
-                      step={50000}
-                    />
-                  </div>
-                  {/* Annual Growth — accumulation, 0.5% snaps */}
-                  <PillSlider
-                    label="Annual growth"
-                    value={state.annualGrowthPercent}
-                    onChange={(v) => setState((prev) => ({ ...prev, annualGrowthPercent: v }))}
-                    format={(v) => `${v.toFixed(1)}%`}
-                    variant="accumulation"
-                    theme={calculatorTheme.slider}
-                    min={4}
-                    max={12}
-                    step={0.5}
-                  />
-                  {/* Time Horizon — accumulation, custom array with major step haptics */}
-                  <PillSlider
-                    label="Time horizon"
-                    value={state.years}
-                    onChange={(v) => setState((prev) => ({ ...prev, years: v }))}
-                    format={(v) => `${v} yrs`}
-                    variant="accumulation"
-                    theme={calculatorTheme.slider}
-                    values={TIME_HORIZON_VALUES}
-                    majorSteps={TIME_HORIZON_MAJOR}
-                  />
-                </div>
-                <p className={`mt-5 text-center text-xs ${calculatorTheme.helperTextClassName}`}>
-                  Compares our $100/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
-                  <Link href="/our-math" className={calculatorTheme.linkClassName}>
-                    For finance nerds
-                  </Link>
-                </p>
-                <div className={`mx-auto mt-4 max-w-2xl space-y-2 text-center text-xs leading-snug ${calculatorTheme.helperTextClassName}`}>
-                  <p>
-                    Savings calculations are hypothetical illustrations based on
-                    assumptions you provide. Actual results will vary. This is
-                    not a guarantee of performance or savings.
-                  </p>
-                  <p>
-                    The annual growth rate above is an assumption you control,
-                    not a forecast or recommendation. Smarter Way Wealth does
-                    not guarantee the accuracy of third-party data.
-                  </p>
-                </div>
-                </>
-                )}
-              </div>
-            </ScrollReveal>
-
-            <ScrollReveal delay={0.1} className="mx-auto w-full max-w-3xl">
-              <Quiz />
-            </ScrollReveal>
-          </div>
+        <div className="section-shell relative z-10 -mt-12 pb-20">
+          <ScrollReveal delay={0.1} className="mx-auto w-full max-w-3xl">
+            <Quiz />
+          </ScrollReveal>
         </div>
       </section>
 
