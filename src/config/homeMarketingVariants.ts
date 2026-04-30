@@ -216,7 +216,7 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
     id: "fiduciary-upgrade",
     label: "Advisor-led",
     layout: "advisor",
-    eyebrow: "Fiduciary advice without the AUM meter running.",
+    eyebrow: "Fiduciary advice without the fee drag.",
     headline: "Upgrade the advice,",
     highlight: "not the fee.",
     body:
@@ -224,7 +224,7 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
     primaryCta: "Compare my fee",
     secondaryCta: "Share this projection",
     resultLabel: "Estimated wealth kept with the flat-fee model",
-    proofPoints: ["CFA Charterholder", "CFP Practitioner", "$100/month flat fee"],
+    proofPoints: ["20 years experience", "CFA Charterholder", "CFP Practitioner"],
     image: {
       src: "/DVO Head Shot picture.jpg",
       alt: "David J. Van Osdol",

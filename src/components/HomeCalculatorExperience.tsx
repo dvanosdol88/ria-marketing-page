@@ -508,11 +508,8 @@ function AdvisorCalculatorExperience(props: HomeCalculatorExperienceProps) {
     <div className="section-shell relative z-10 pb-20 pt-10 sm:pt-14">
       <div className="grid gap-5 text-left lg:grid-cols-[minmax(0,0.9fr)_minmax(320px,0.55fr)] lg:items-end">
         <div>
-          <p className={`text-sm font-bold uppercase tracking-[0.18em] ${theme.eyebrowClassName}`}>
-            Planning console
-          </p>
-          <h2 className={`mt-3 max-w-3xl text-3xl font-semibold tracking-normal sm:text-5xl ${theme.titleClassName}`}>
-            Stress-test the advice fee before it compounds.
+          <h2 className={`max-w-3xl text-3xl font-semibold tracking-normal sm:text-5xl ${theme.titleClassName}`}>
+            See how much you could save
           </h2>
           <p className={`mt-3 max-w-2xl text-base leading-7 sm:text-lg ${theme.bodyClassName}`}>
             Compare outcomes like a planning review: assumptions on the right, fee drag on the chart, ending values up front.

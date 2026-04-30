@@ -118,6 +118,7 @@ function MiniTextInput({
   max,
   min,
   onValueChange,
+  prefix,
   suffix,
   useGrouping = false,
   value,
@@ -127,13 +128,14 @@ function MiniTextInput({
   max: number;
   min: number;
   onValueChange: (value: number) => void;
+  prefix?: string;
   suffix?: string;
   useGrouping?: boolean;
   value: number;
 }) {
   const [draft, setDraft] = useState(() => formatMiniNumber(value, decimals, useGrouping));
   const [isFocused, setIsFocused] = useState(false);
-  const inputWidth = `${Math.min(13, Math.max(suffix ? 8 : 4.5, draft.length + (suffix ? 4 : 1)))}ch`;
+  const inputWidth = `${Math.min(16, Math.max(prefix ? 14 : suffix ? 8 : 4.5, draft.length + (prefix ? 5 : suffix ? 4 : 1)))}ch`;
 
   useEffect(() => {
     if (!isFocused) {
@@ -177,12 +179,19 @@ function MiniTextInput({
             commitDraft(nextValue, false);
           }}
           onFocus={() => setIsFocused(true)}
-          className={`h-7 w-full rounded-[3px] border border-white/10 bg-white/[0.035] px-2 ${
+          className={`box-border h-7 rounded-[3px] border border-white/10 bg-white/[0.035] px-2 ${
+            prefix ? "pl-5" : ""
+          } ${
             suffix ? "pr-5" : ""
           } text-right text-[12px] font-medium tabular-nums text-white/65 outline-none transition focus:border-emerald-200/35 focus:bg-white/[0.08] focus:text-white`}
           style={{ width: inputWidth }}
           aria-label={label}
         />
+        {prefix && (
+          <span className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-[12px] text-emerald-50/35">
+            {prefix}
+          </span>
+        )}
         {suffix && (
           <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-[12px] text-emerald-50/35">
             {suffix}
@@ -228,6 +237,7 @@ function AdvisorMiniCalculator({
             label="Portfolio"
             min={300000}
             max={5000000}
+            prefix="$"
             value={portfolioValue}
             useGrouping
             onValueChange={(value) => onCalculatorChange({ portfolioValue: value })}
