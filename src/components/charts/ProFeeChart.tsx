@@ -15,6 +15,7 @@ import {
 } from "recharts";
 import { formatCurrency } from "@/lib/format";
 import { motion } from "framer-motion";
+import type { CalculatorChartTheme } from "@/config/homeMarketingVariants";
 
 type ChartDataPoint = {
   year: number;
@@ -35,6 +36,7 @@ type ProFeeChartProps = {
   annualGrowthPercent?: number;
   annualFeePercent?: number;
   mutualFundExpensePercent?: number;
+  chartTheme?: CalculatorChartTheme;
 };
 
 function formatYAxisCurrency(value: number): string {
@@ -55,7 +57,7 @@ function formatYAxisCurrency(value: number): string {
   return `$${Math.round(value).toLocaleString("en-US")}`;
 }
 
-const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
+const CustomHUDTooltip = ({ active, payload, label, isDark = false, chartTheme }: any) => {
   if (!active || !payload || payload.length < 2) {
     return null;
   }
@@ -64,18 +66,23 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
   const withFees = payload[1].value;
   const lostAmount = withoutFees - withFees;
 
-  const smarterColor = isDark ? "#E2E8F0" : "#0F172A";
+  const smarterColor = chartTheme?.smarterStroke ?? (isDark ? "#E2E8F0" : "#0F172A");
+  const panelClassName = chartTheme
+    ? `${chartTheme.panelBorderClassName} ${chartTheme.panelBgClassName}`
+    : isDark
+      ? "border-slate-700/60 bg-slate-900/30"
+      : "border-slate-200/60 bg-white/30";
+  const mutedClassName = chartTheme?.mutedTextClassName ?? (isDark ? "text-slate-400" : "text-slate-500");
+  const strongClassName = chartTheme?.strongTextClassName ?? (isDark ? "text-slate-400" : "text-slate-500");
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.1 }}
-      className={`inline-block rounded-lg border px-2 py-1.5 shadow-lg backdrop-blur-sm ${
-        isDark ? "border-slate-700/60 bg-slate-900/30" : "border-slate-200/60 bg-white/30"
-      }`}
+      className={`inline-block rounded-lg border px-2 py-1.5 shadow-lg backdrop-blur-sm ${panelClassName}`}
     >
-      <p className={`mb-0.5 text-[10px] font-semibold uppercase tracking-wider ${isDark ? "text-slate-400" : "text-slate-500"}`}>
+      <p className={`mb-0.5 text-[10px] font-semibold uppercase tracking-wider ${mutedClassName}`}>
         Year {label}
       </p>
 
@@ -96,11 +103,11 @@ const CustomHUDTooltip = ({ active, payload, label, isDark = false }: any) => {
           <p className="text-base font-bold tabular-nums text-[#B91C1C]">-{formatCurrency(lostAmount)}</p>
         </div>
 
-        <div className={`border-t pt-1 ${isDark ? "border-slate-700" : "border-slate-100"}`}>
-          <div className={`flex items-center justify-between text-[10px] ${isDark ? "text-slate-400" : "text-slate-500"}`}>
+        <div className={`border-t pt-1 ${chartTheme?.panelBorderClassName ?? (isDark ? "border-slate-700" : "border-slate-100")}`}>
+          <div className={`flex items-center justify-between text-[10px] ${mutedClassName}`}>
             <span>Traditional Asset-Based Fee</span>
           </div>
-          <p className={`text-base font-bold tabular-nums ${isDark ? "text-slate-400" : "text-slate-500"}`}>
+          <p className={`text-base font-bold tabular-nums ${strongClassName}`}>
             {formatCurrency(withFees)}
           </p>
         </div>
@@ -200,6 +207,7 @@ function LostToFeesDonut({
   finalLost,
   finalValueWithoutFees,
   finalValueWithFees,
+  chartTheme,
 }: {
   percentLost: number;
   isMobile: boolean;
@@ -212,6 +220,7 @@ function LostToFeesDonut({
   finalLost?: number;
   finalValueWithoutFees?: number;
   finalValueWithFees?: number;
+  chartTheme?: CalculatorChartTheme;
 }) {
   const chartSize = isMobile ? 77 : 130;
   const innerRadius = isMobile ? 22 : 42;
@@ -224,18 +233,24 @@ function LostToFeesDonut({
   const totalFee = (annualFeePercent ?? 0) + (mutualFundExpensePercent ?? 0);
 
   return (
-    <div className="pointer-events-none absolute left-6 top-6 z-20 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white/80 p-4 backdrop-blur-sm dark:border-slate-700/50 dark:bg-slate-900/80 sm:left-[40px] sm:top-6 sm:flex-row sm:items-center sm:gap-8">
+    <div
+      className={`pointer-events-none absolute left-6 top-6 z-20 flex flex-col gap-4 rounded-2xl border p-4 backdrop-blur-sm sm:left-[40px] sm:top-6 sm:flex-row sm:items-center sm:gap-8 ${
+        chartTheme
+          ? `${chartTheme.panelBorderClassName} ${chartTheme.panelBgClassName}`
+          : "border-slate-200 bg-white/80 dark:border-slate-700/50 dark:bg-slate-900/80"
+      }`}
+    >
       <div className="flex flex-col items-center gap-3">
         <div className="relative" style={{ height: chartSize, width: chartSize }}>
           <PieChart width={chartSize} height={chartSize}>
             <defs>
               <linearGradient id="donutLostGradient" x1="0" y1="0" x2="0" y2={chartSize} gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor="#f87171" />
-                <stop offset="100%" stopColor="#7f1d1d" />
+                <stop offset="0%" stopColor={chartTheme?.lostStart ?? "#f87171"} />
+                <stop offset="100%" stopColor={chartTheme?.lostEnd ?? "#7f1d1d"} />
               </linearGradient>
               <linearGradient id="donutKeptGradient" x1="0" y1="0" x2="0" y2={chartSize} gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stopColor={isDarkMode ? "#cbd5e1" : "#475569"} />
-                <stop offset="100%" stopColor={isDarkMode ? "#020617" : "#0F172A"} />
+                <stop offset="0%" stopColor={chartTheme?.keptStart ?? (isDarkMode ? "#cbd5e1" : "#475569")} />
+                <stop offset="100%" stopColor={chartTheme?.keptEnd ?? (isDarkMode ? "#020617" : "#0F172A")} />
               </linearGradient>
             </defs>
             <Pie
@@ -267,14 +282,14 @@ function LostToFeesDonut({
 
         {/* Variables Key — Below Donut */}
         {!isMobile && (
-          <div className="grid grid-cols-[min-content_auto] items-baseline gap-x-2 gap-y-0.5 text-[10px] font-medium leading-tight text-slate-600 dark:text-slate-400">
-            <span className="font-bold tabular-nums text-slate-900 dark:text-slate-200">{formatCurrency(portfolioValue ?? 0)}</span>
+          <div className={`grid grid-cols-[min-content_auto] items-baseline gap-x-2 gap-y-0.5 text-[10px] font-medium leading-tight ${chartTheme?.mutedTextClassName ?? "text-slate-600 dark:text-slate-400"}`}>
+            <span className={`font-bold tabular-nums ${chartTheme?.strongTextClassName ?? "text-slate-900 dark:text-slate-200"}`}>{formatCurrency(portfolioValue ?? 0)}</span>
             <span className="opacity-70 whitespace-nowrap">Beginning Value</span>
             
-            <span className="font-bold tabular-nums text-slate-900 dark:text-slate-200">{annualGrowthPercent}%</span>
+            <span className={`font-bold tabular-nums ${chartTheme?.strongTextClassName ?? "text-slate-900 dark:text-slate-200"}`}>{annualGrowthPercent}%</span>
             <span className="opacity-70 whitespace-nowrap">Growth</span>
             
-            <span className="font-bold tabular-nums text-slate-900 dark:text-slate-200">{years} yrs</span>
+            <span className={`font-bold tabular-nums ${chartTheme?.strongTextClassName ?? "text-slate-900 dark:text-slate-200"}`}>{years} yrs</span>
             <span className="opacity-70 whitespace-nowrap">Time</span>
           </div>
         )}
@@ -282,27 +297,30 @@ function LostToFeesDonut({
 
       {/* Results Summary — Right of Donut */}
       {!isMobile && (
-        <div className="flex flex-col text-sm leading-tight text-slate-900 dark:text-slate-100 md:text-base">
+        <div className={`flex flex-col text-sm leading-tight md:text-base ${chartTheme?.strongTextClassName ?? "text-slate-900 dark:text-slate-100"}`}>
           <div className="grid grid-cols-[auto_min-content] items-end gap-x-8 gap-y-1">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Ending Value ($100/mo flat fee)</span>
+            <span className={`text-xs font-semibold uppercase tracking-wider ${chartTheme?.mutedTextClassName ?? "text-slate-500 dark:text-slate-400"}`}>Ending Value ($100/mo flat fee)</span>
             <span className="text-right text-lg font-bold tabular-nums text-[#00A540]">{formatCurrency(finalValueWithoutFees ?? 0)}</span>
             
-            <span className="text-xs text-slate-500 dark:text-slate-400">Lost to Advisory & Fund Fees</span>
+            <span className={`text-xs ${chartTheme?.mutedTextClassName ?? "text-slate-500 dark:text-slate-400"}`}>Lost to Advisory & Fund Fees</span>
             <div className="flex items-center justify-end gap-1 text-[#B91C1C]">
               <span className="font-bold">-</span>
               <span className="text-right font-bold tabular-nums">{formatCurrency(finalLost ?? 0)}</span>
             </div>
           </div>
           
-          <div className="my-2 h-px w-full bg-slate-300 dark:bg-slate-600" />
+          <div
+            className="my-2 h-px w-full bg-slate-300 dark:bg-slate-600"
+            style={chartTheme ? { backgroundColor: chartTheme.grid } : undefined}
+          />
           
           <div className="grid grid-cols-[auto_min-content] items-end gap-x-8">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Traditional Ending Value</span>
-            <span className="text-right text-lg font-bold tabular-nums text-slate-900 dark:text-slate-100">{formatCurrency(finalValueWithFees ?? 0)}</span>
+            <span className={`text-xs font-semibold uppercase tracking-wider ${chartTheme?.mutedTextClassName ?? "text-slate-500 dark:text-slate-400"}`}>Traditional Ending Value</span>
+            <span className={`text-right text-lg font-bold tabular-nums ${chartTheme?.strongTextClassName ?? "text-slate-900 dark:text-slate-100"}`}>{formatCurrency(finalValueWithFees ?? 0)}</span>
           </div>
 
-          <div className="mt-3 flex items-center gap-2 border-t border-dashed border-slate-200 pt-2 dark:border-slate-700">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Fee Load:</span>
+          <div className={`mt-3 flex items-center gap-2 border-t border-dashed pt-2 ${chartTheme?.panelBorderClassName ?? "border-slate-200 dark:border-slate-700"}`}>
+            <span className={`text-[10px] font-bold uppercase tracking-widest ${chartTheme?.mutedTextClassName ?? "text-slate-400"}`}>Fee Load:</span>
             <span className="text-[10px] font-bold text-[#B91C1C]">{totalFee.toFixed(2)}% Annualized</span>
           </div>
         </div>
@@ -323,6 +341,7 @@ export function ProFeeChart({
   annualGrowthPercent,
   annualFeePercent,
   mutualFundExpensePercent,
+  chartTheme,
 }: ProFeeChartProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -346,8 +365,25 @@ export function ProFeeChart({
   }, []);
 
   const palette = useMemo(
-    () =>
-      isDarkMode
+    () => {
+      if (chartTheme) {
+        return {
+          smarterStroke: chartTheme.smarterStroke,
+          hatchColor: chartTheme.lostEnd,
+          traditionalStroke: chartTheme.traditionalStroke,
+          traditionalArea: chartTheme.traditionalArea,
+          grid: chartTheme.grid,
+          xTick: chartTheme.xTick,
+          yTick: chartTheme.yTick,
+          cursor: chartTheme.cursor,
+          chartBg: chartTheme.chartBg,
+          lostStart: chartTheme.lostStart,
+          lostEnd: chartTheme.lostEnd,
+          lostFillEnd: chartTheme.lostFillEnd,
+        };
+      }
+
+      return isDarkMode
         ? {
             smarterStroke: "#E2E8F0",
             hatchColor: "#FCA5A5",
@@ -358,6 +394,9 @@ export function ProFeeChart({
             yTick: "#94A3B8",
             cursor: "#64748B",
             chartBg: "#0F172A",
+            lostStart: "#ef4444",
+            lostEnd: "#7f1d1d",
+            lostFillEnd: "#fee2e2",
           }
         : {
             smarterStroke: "#0F172A",
@@ -369,8 +408,12 @@ export function ProFeeChart({
             yTick: "#6B7280",
             cursor: "#E5E7EB",
             chartBg: "#FFFFFF",
-          },
-    [isDarkMode]
+            lostStart: "#ef4444",
+            lostEnd: "#7f1d1d",
+            lostFillEnd: "#fee2e2",
+          };
+    },
+    [chartTheme, isDarkMode]
   );
 
   const smarterOpacity = activeScenario === "traditional" ? 0.3 : 1;
@@ -378,7 +421,10 @@ export function ProFeeChart({
   const percentLost = finalValueWithoutFees > 0 ? Math.min(100, Math.max(0, (finalLost / finalValueWithoutFees) * 100)) : 0;
 
   return (
-    <div className="relative flex h-full w-full flex-col overflow-hidden rounded-t-2xl bg-white dark:bg-slate-900">
+    <div
+      className="relative flex h-full w-full flex-col overflow-hidden rounded-t-2xl"
+      style={{ backgroundColor: palette.chartBg }}
+    >
       <LostToFeesDonut
         percentLost={percentLost}
         isMobile={isMobile}
@@ -391,6 +437,7 @@ export function ProFeeChart({
         finalLost={finalLost}
         finalValueWithoutFees={finalValueWithoutFees}
         finalValueWithFees={finalValueWithFees}
+        chartTheme={chartTheme}
       />
 
       {showSummary && (
@@ -446,8 +493,8 @@ export function ProFeeChart({
           >
             <defs>
               <linearGradient id="redGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#ef4444" stopOpacity={0.9} />
-                <stop offset="100%" stopColor="#fee2e2" stopOpacity={0.2} />
+                <stop offset="0%" stopColor={palette.lostStart} stopOpacity={0.9} />
+                <stop offset="100%" stopColor={palette.lostFillEnd} stopOpacity={0.25} />
               </linearGradient>
 
               <linearGradient id="blackGradient" x1="0" y1="0" x2="0" y2="1">
@@ -478,7 +525,7 @@ export function ProFeeChart({
 
             {!isMobile && (
               <Tooltip
-                content={<CustomHUDTooltip isDark={isDarkMode} />}
+                content={<CustomHUDTooltip isDark={chartTheme?.mode === "dark" || isDarkMode} chartTheme={chartTheme} />}
                 cursor={
                   <FeeDragCursor
                     cursorColor={palette.cursor}

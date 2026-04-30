@@ -14,6 +14,7 @@ import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
 import {
+  HomeCalculatorTheme,
   HomeMarketingVariantId,
   homeMarketingVariants,
 } from "@/config/homeMarketingVariants";
@@ -21,11 +22,6 @@ import {
 // ============================================================================
 // PILL SLIDER — Value-in-pill thumb with color-coded track
 // ============================================================================
-
-const DESTRUCTIVE_COLOR = "#991B1B";
-const DESTRUCTIVE_TRACK = "#FECACA";
-const ACCUMULATION_COLOR = "#4B5563";
-const ACCUMULATION_TRACK = "#D1D5DB";
 
 const TIME_HORIZON_VALUES = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25, 30];
 const TIME_HORIZON_MAJOR = new Set([15, 20, 25, 30]);
@@ -62,6 +58,7 @@ interface PillSliderProps {
   variant: "destructive" | "accumulation";
   labelAction?: ReactNode;
   pillColorOverride?: string;
+  theme: HomeCalculatorTheme["slider"];
   // Standard mode (min/max/step)
   min?: number;
   max?: number;
@@ -79,6 +76,7 @@ function PillSlider({
   variant,
   labelAction,
   pillColorOverride,
+  theme,
   min,
   max,
   step,
@@ -113,9 +111,9 @@ function PillSlider({
   // Displayed value (resolved from array if needed)
   const displayValue = isArrayMode ? values![arrayIdx] : value;
 
-  const basePillColor = variant === "destructive" ? DESTRUCTIVE_COLOR : ACCUMULATION_COLOR;
+  const basePillColor = variant === "destructive" ? theme.destructiveColor : theme.accumulationColor;
   const pillColor = pillColorOverride ?? basePillColor;
-  const trackColor = variant === "destructive" ? DESTRUCTIVE_TRACK : ACCUMULATION_TRACK;
+  const trackColor = variant === "destructive" ? theme.destructiveTrack : theme.accumulationTrack;
 
   const precision = useMemo(() => {
     if (isArrayMode || !step) return 0;
@@ -157,14 +155,14 @@ function PillSlider({
   return (
     <div>
       <div className="mb-0 flex items-center justify-between gap-3">
-        <p className="text-[13px] font-semibold uppercase tracking-wider text-neutral-600 dark:text-slate-300">
+        <p className={`text-[13px] font-semibold uppercase tracking-wider ${theme.labelClassName}`}>
           {label}
         </p>
         {labelAction}
       </div>
       <div className="relative flex h-12 items-center">
         {/* Track background */}
-        <div className="absolute inset-x-0 h-1 rounded-full bg-gray-200 dark:bg-slate-700" />
+        <div className={`absolute inset-x-0 h-1 rounded-full ${theme.trackClassName}`} />
         {/* Track fill */}
         <div
           className="absolute left-0 h-1 rounded-full transition-[width] duration-75"
@@ -348,9 +346,8 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
     return () => observer.disconnect();
   }, []);
 
-  const heroPromptColor = isDarkMode ? "#D9E4F5" : homeCalculatorConfig.hero.promptColor;
-  const heroSavingsColor = isDarkMode ? "#34D399" : homeCalculatorConfig.hero.savingsColor;
   const marketingVariant = homeMarketingVariants[marketingVariantId];
+  const calculatorTheme = marketingVariant.calculator;
 
   const quoteSectionStyle = isDarkMode
     ? {
@@ -456,34 +453,34 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
       <section
         id="calculator"
         ref={calculatorRef}
-        className="relative w-full scroll-mt-24 overflow-hidden bg-[#EEF0F5] dark:bg-slate-950"
+        className={`relative w-full scroll-mt-24 overflow-hidden ${calculatorTheme.sectionClassName}`}
       >
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 top-[35%] bg-gradient-to-b from-transparent via-[rgba(233,238,255,0.6)] to-transparent dark:via-[rgba(15,23,42,0.5)]" />
+        <div className={`pointer-events-none absolute inset-0 ${calculatorTheme.backdropClassName}`} />
 
         <div className="section-shell relative z-10 pt-10 text-center sm:pt-14">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#00682B]">Interactive calculator</p>
-          <h2 className="mx-auto mt-3 max-w-4xl text-3xl font-semibold tracking-normal sm:text-5xl" style={{ color: heroPromptColor }}>
+          <p className={`text-sm font-bold uppercase tracking-[0.18em] ${calculatorTheme.eyebrowClassName}`}>Interactive calculator</p>
+          <h2 className={`mx-auto mt-3 max-w-4xl text-3xl font-semibold tracking-normal sm:text-5xl ${calculatorTheme.titleClassName}`}>
             What would you do with{" "}
-            <span className="whitespace-nowrap" style={{ color: heroSavingsColor }}>
+            <span className={`whitespace-nowrap ${calculatorTheme.amountClassName}`}>
               <Odometer value={projection.savings} prefix="$" duration={1000} className="align-baseline" />
             </span>
             ?
           </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-700 dark:text-slate-300 sm:text-lg">
+          <p className={`mx-auto mt-3 max-w-2xl text-base leading-7 sm:text-lg ${calculatorTheme.bodyClassName}`}>
             Change the fee, portfolio value, growth assumption, and time horizon. The chart updates immediately.
           </p>
           <div className="mt-5 flex justify-center">
             <button
               type="button"
               onClick={shareResult}
-              className="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+              className={`inline-flex min-h-10 items-center gap-2 rounded-lg transition-colors ${calculatorTheme.shareButtonClassName}`}
               aria-label="Share your result"
             >
               <ShareIcon className="h-4 w-4" />
               {shareButtonLabel}
             </button>
           </div>
-          <p className="mx-auto mt-3 max-w-xl text-center text-xs leading-snug text-neutral-500 dark:text-slate-400">
+          <p className={`mx-auto mt-3 max-w-xl text-center text-xs leading-snug ${calculatorTheme.disclaimerClassName}`}>
             Use of this calculator does not establish an advisory relationship
             with Smarter Way Wealth, LLC.
           </p>
@@ -491,8 +488,8 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
 
         <div className="relative z-10 mx-auto w-full max-w-5xl px-4 pb-20 pt-8 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:gap-8">
-            <ScrollReveal className="card overflow-hidden bg-white shadow-xl ring-1 ring-black/5 dark:bg-slate-900 dark:ring-slate-700/70">
-              <div className="relative h-[390px] w-full sm:h-[450px] lg:h-[550px]">
+            <ScrollReveal className={calculatorTheme.frameClassName}>
+              <div className={`relative h-[320px] w-full sm:h-[420px] lg:h-[470px] ${calculatorTheme.chartFrameClassName}`}>
                 {chartReady ? (
                   <ProFeeChart
                     data={projection.series}
@@ -506,18 +503,19 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
                     annualGrowthPercent={state.annualGrowthPercent}
                     annualFeePercent={state.annualFeePercent}
                     mutualFundExpensePercent={state.mutualFundExpensePercent}
+                    chartTheme={calculatorTheme.chart}
                   />
                 ) : (
-                  <div className="flex h-full flex-col justify-between bg-white p-5 dark:bg-slate-900 sm:p-8">
+                  <div className={`flex h-full flex-col justify-between p-5 sm:p-8 ${calculatorTheme.chartFrameClassName}`}>
                     <div className="flex items-start justify-between gap-4">
                       <div>
-                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                        <p className={`text-xs font-bold uppercase tracking-[0.18em] ${calculatorTheme.chart.mutedTextClassName}`}>
                           Calculator result
                         </p>
-                        <p className="mt-3 text-3xl font-semibold tracking-normal text-slate-950 dark:text-white sm:text-5xl">
+                        <p className={`mt-3 text-3xl font-semibold tracking-normal sm:text-5xl ${calculatorTheme.chart.strongTextClassName}`}>
                           {formatCurrency(projection.savings)}
                         </p>
-                        <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                        <p className={`mt-2 text-sm ${calculatorTheme.chart.mutedTextClassName}`}>
                           Projected wealth difference over {state.years} years.
                         </p>
                       </div>
@@ -536,32 +534,32 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
                     </div>
                     <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
                       <div>
-                        <p className="font-semibold text-slate-950 dark:text-white">{formatCurrency(state.portfolioValue)}</p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Starting value</p>
+                        <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{formatCurrency(state.portfolioValue)}</p>
+                        <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Starting value</p>
                       </div>
                       <div>
-                        <p className="font-semibold text-slate-950 dark:text-white">{state.annualGrowthPercent.toFixed(1)}%</p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Growth</p>
+                        <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{state.annualGrowthPercent.toFixed(1)}%</p>
+                        <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Growth</p>
                       </div>
                       <div>
-                        <p className="font-semibold text-slate-950 dark:text-white">{state.years} yrs</p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Time</p>
+                        <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{state.years} yrs</p>
+                        <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Time</p>
                       </div>
                       <div>
                         <p className="font-semibold text-red-700">{totalAnnualFeePercent.toFixed(2)}%</p>
-                        <p className="text-xs text-slate-500 dark:text-slate-400">Fee load</p>
+                        <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Fee load</p>
                       </div>
                     </div>
                   </div>
                 )}
               </div>
 
-              <div className="border-t border-gray-100 bg-white px-4 pb-4 pt-2 dark:border-slate-700 dark:bg-slate-900 sm:px-6 sm:pb-6 sm:pt-3 lg:px-8 lg:pb-8 lg:pt-4">
+              <div className={calculatorTheme.controlsClassName}>
                 <div className="mb-3 flex items-center justify-end">
                   <button
                     type="button"
                     onClick={() => setSlidersExpanded((prev) => !prev)}
-                    className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500 transition-colors hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-0 dark:text-slate-400 dark:hover:bg-slate-800/60"
+                    className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider transition-colors focus-visible:outline-none focus-visible:ring-0 ${calculatorTheme.collapseButtonClassName}`}
                     aria-expanded={slidersExpanded}
                   >
                     {slidersExpanded ? "Collapse all sliders" : "Expand all sliders"}
@@ -579,6 +577,7 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
                       onChange={(v) => setState((prev) => ({ ...prev, annualFeePercent: v }))}
                       format={(v) => `${v.toFixed(2)}%`}
                       variant="destructive"
+                      theme={calculatorTheme.slider}
                       min={0}
                       max={3}
                       step={0.05}
@@ -587,7 +586,7 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
                           <button
                             type="button"
                             onClick={() => setShowMutualFundExpenses(true)}
-                            className="text-[11px] font-semibold tracking-wide text-[#4C7AB6] transition-colors hover:text-[#3C6393]"
+                            className={`text-[11px] font-semibold tracking-wide transition-colors ${calculatorTheme.slider.addButtonClassName}`}
                           >
                             + add mutual fund expenses
                           </button>
@@ -603,7 +602,8 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
                         onChange={(v) => setState((prev) => ({ ...prev, mutualFundExpensePercent: v }))}
                         format={(v) => `${v.toFixed(2)}%`}
                         variant="destructive"
-                        pillColorOverride="#7F1D1D"
+                        theme={calculatorTheme.slider}
+                        pillColorOverride={marketingVariantId === "fiduciary-upgrade" ? "#FB7185" : "#7F1D1D"}
                         min={0}
                         max={3}
                         step={0.05}
@@ -614,7 +614,7 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
                               setShowMutualFundExpenses(false);
                               setState((prev) => ({ ...prev, mutualFundExpensePercent: 0 }));
                             }}
-                            className="text-[11px] font-semibold tracking-wide text-slate-500 transition-colors hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+                            className={`text-[11px] font-semibold tracking-wide transition-colors ${calculatorTheme.slider.removeButtonClassName}`}
                           >
                             remove
                           </button>
@@ -630,6 +630,7 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
                       onChange={(v) => setState((prev) => ({ ...prev, portfolioValue: v }))}
                       format={(v) => formatCurrency(v)}
                       variant="accumulation"
+                      theme={calculatorTheme.slider}
                       min={300000}
                       max={5000000}
                       step={50000}
@@ -642,6 +643,7 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
                     onChange={(v) => setState((prev) => ({ ...prev, annualGrowthPercent: v }))}
                     format={(v) => `${v.toFixed(1)}%`}
                     variant="accumulation"
+                    theme={calculatorTheme.slider}
                     min={4}
                     max={12}
                     step={0.5}
@@ -653,17 +655,18 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
                     onChange={(v) => setState((prev) => ({ ...prev, years: v }))}
                     format={(v) => `${v} yrs`}
                     variant="accumulation"
+                    theme={calculatorTheme.slider}
                     values={TIME_HORIZON_VALUES}
                     majorSteps={TIME_HORIZON_MAJOR}
                   />
                 </div>
-                <p className="mt-5 text-center text-xs text-gray-400 dark:text-slate-400">
+                <p className={`mt-5 text-center text-xs ${calculatorTheme.helperTextClassName}`}>
                   Compares our $100/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
-                  <Link href="/our-math" className="underline transition-colors hover:text-brand-600">
+                  <Link href="/our-math" className={calculatorTheme.linkClassName}>
                     For finance nerds
                   </Link>
                 </p>
-                <div className="mx-auto mt-4 max-w-2xl space-y-2 text-center text-xs leading-snug text-neutral-500 dark:text-slate-400">
+                <div className={`mx-auto mt-4 max-w-2xl space-y-2 text-center text-xs leading-snug ${calculatorTheme.helperTextClassName}`}>
                   <p>
                     Savings calculations are hypothetical illustrations based on
                     assumptions you provide. Actual results will vary. This is
