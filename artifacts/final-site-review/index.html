@@ -1,0 +1,1210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Final Site Review Cockpit</title>
+  <style>
+    :root {
+      --ink: #151816;
+      --muted: #68716b;
+      --line: #dbe3dc;
+      --paper: #f8faf7;
+      --panel: #ffffff;
+      --green: #00a540;
+      --dark: #0f2418;
+      --amber: #a15c00;
+      --blue: #245a86;
+      --red: #a7342d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    header {
+      padding: 48px clamp(20px, 5vw, 72px) 28px;
+      background: linear-gradient(135deg, #ffffff 0%, #edf5ef 100%);
+      border-bottom: 1px solid var(--line);
+    }
+    header h1 {
+      margin: 0;
+      max-width: 960px;
+      font-size: clamp(2.1rem, 5vw, 4.8rem);
+      line-height: 0.95;
+      letter-spacing: 0;
+    }
+    header p {
+      max-width: 820px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-top: 30px;
+      max-width: 900px;
+    }
+    .stat {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.74);
+      padding: 14px 16px;
+    }
+    .stat strong {
+      display: block;
+      font-size: 1.7rem;
+      line-height: 1;
+    }
+    .stat span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    main {
+      padding: 28px clamp(20px, 5vw, 72px) 72px;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    nav a {
+      color: var(--dark);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 8px 11px;
+      font-size: 0.88rem;
+    }
+    .section-title {
+      margin: 44px 0 16px;
+      font-size: 1.55rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 22px;
+    }
+    .page-card, .variant-card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 18px;
+      box-shadow: 0 18px 40px rgba(15, 36, 24, 0.07);
+    }
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .site, .role, .meta-row, h4 {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .card-head h3, .variant-card h3 {
+      margin: 4px 0 4px;
+      font-size: 1.35rem;
+      letter-spacing: 0;
+    }
+    .decision {
+      white-space: nowrap;
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 6px 8px;
+      border: 1px solid currentColor;
+    }
+    .done { color: var(--green); }
+    .not-done { color: var(--amber); }
+    .cut { color: var(--red); }
+    .internal-only { color: var(--blue); }
+    .meta-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 9px 0;
+      margin: 14px 0;
+    }
+    .shots {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 120px;
+      gap: 12px;
+      align-items: stretch;
+      margin: 16px 0;
+    }
+    .shots a {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+    .shots span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .shots img {
+      display: block;
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      object-position: top center;
+      border: 1px solid var(--line);
+      background: #f2f4f2;
+    }
+    .shots a:nth-child(2) img {
+      height: 220px;
+    }
+    section {
+      margin-top: 14px;
+    }
+    section p, .variant-card p {
+      margin: 6px 0 0;
+      color: #263029;
+    }
+    ul {
+      margin: 7px 0 0;
+      padding-left: 18px;
+      color: #263029;
+    }
+    li + li { margin-top: 4px; }
+    .split-copy {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .variant-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+    }
+    footer {
+      margin-top: 44px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    @media (max-width: 720px) {
+      .grid, .split-copy { grid-template-columns: 1fr; }
+      .shots { grid-template-columns: 1fr; }
+      .shots a:nth-child(2) img { height: 360px; }
+      .meta-row { display: block; }
+      .meta-row span { display: block; }
+      .meta-row span + span { margin-top: 4px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Final Website Decision Cockpit</h1>
+    <p>Review board for deciding what is done, not done, internal only, or cut across Smarter Way Wealth and You Are Paying Too Much. Generated from live production screenshots and the historical variant catalog.</p>
+    <div class="stats">
+      <div class="stat"><strong>21</strong><span>review cards</span></div>
+      <div class="stat"><strong>10</strong><span>not done</span></div>
+      <div class="stat"><strong>3</strong><span>done</span></div>
+      <div class="stat"><strong>8</strong><span>internal only</span></div>
+    </div>
+  </header>
+  <main>
+    <nav>
+      <a href="#1-Smarter-Way-Wealth-trust-hub">1. Smarter Way Wealth trust hub</a><a href="#2-Entry-and-campaign-variants">2. Entry and campaign variants</a><a href="#3-Core-funnel-pages">3. Core funnel pages</a><a href="#4-Proof-and-support-pages">4. Proof and support pages</a><a href="#5-Internal-and-dev-pages">5. Internal and dev pages</a>
+      <a href="#historical-variants">Historical variants</a>
+    </nav>
+    
+          <h2 class="section-title" id="1-Smarter-Way-Wealth-trust-hub">1. Smarter Way Wealth trust hub</h2>
+          <div class="grid">
+            
+    <article class="page-card" id="sww-home">
+      <div class="card-head">
+        <div>
+          <p class="site">Smarter Way Wealth</p>
+          <h3>/</h3>
+          <p class="role">Corporate trust hub home</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>1. Smarter Way Wealth trust hub</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/sww-home-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/sww-home-desktop.jpg" alt="Smarter Way Wealth / desktop screenshot">
+        </a>
+        <a href="screenshots/sww-home-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/sww-home-mobile.jpg" alt="Smarter Way Wealth / mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live placeholder; firm identity present but not yet a designed trust hub.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Redesign as the firm legitimacy hub: standard, advisor identity, who it serves, why the model exists, and clear handoff into the fee-calculator funnel.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Create section-level visual concepts before implementation.</li><li>Use serious trust-building language, not generic About Us framing.</li><li>Link clearly to youarepayingtoomuch.com as the calculator/proof experience.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>D:\smarter-way-wealth\RIA-sample-home-pages.txt reference list</li><li>Prior origin-story spine: qualified to give better advice, but not free to give it</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="sww-privacy">
+      <div class="card-head">
+        <div>
+          <p class="site">Smarter Way Wealth</p>
+          <h3>/privacy</h3>
+          <p class="role">Corporate privacy policy</p>
+        </div>
+        <span class="decision done">DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>1. Smarter Way Wealth trust hub</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/sww-privacy-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/sww-privacy-desktop.jpg" alt="Smarter Way Wealth /privacy desktop screenshot">
+        </a>
+        <a href="screenshots/sww-privacy-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/sww-privacy-mobile.jpg" alt="Smarter Way Wealth /privacy mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live legal/privacy support page.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Keep as the privacy baseline, then re-check only if launch forms, analytics, scheduling, or lead capture are added.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Confirm compliance owner signs off before public launch.</li><li>Update the last-updated date only when practices change.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>Current Smarter Way Wealth source page</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="sww-footer-disclosures">
+      <div class="card-head">
+        <div>
+          <p class="site">Smarter Way Wealth</p>
+          <h3>/</h3>
+          <p class="role">Corporate footer and disclosure component</p>
+        </div>
+        <span class="decision done">DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>1. Smarter Way Wealth trust hub</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/sww-footer-disclosures-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/sww-footer-disclosures-desktop.jpg" alt="Smarter Way Wealth / desktop screenshot">
+        </a>
+        <a href="screenshots/sww-footer-disclosures-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/sww-footer-disclosures-mobile.jpg" alt="Smarter Way Wealth / mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live disclosure footer with CRD, IAPD, educational-use, and risk language.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Keep the short disclosure model and mirror any approved text changes into the fee-calculator repo footer.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Verify the IAPD link and CRD number during launch review.</li><li>Use this as the disclosure style baseline for both websites.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>D:\smarter-way-wealth\src\components\ComplianceFooter.js</li></ul>
+        </div>
+      </section>
+    </article>
+  
+          </div>
+        
+          <h2 class="section-title" id="2-Entry-and-campaign-variants">2. Entry and campaign variants</h2>
+          <div class="grid">
+            
+    <article class="page-card" id="yattm-home">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/</h3>
+          <p class="role">Calculator-first entry page</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>2. Entry and campaign variants</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-home-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-home-desktop.jpg" alt="You Are Paying Too Much / desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-home-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-home-mobile.jpg" alt="You Are Paying Too Much / mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live calculator-first page.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Keep the calculator as the first interaction, then make the next-step path unmistakable: Upgrade, Improve, Save, or firm trust hub.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Decide whether the calculator should stay stark or gain a stronger brand/trust frame.</li><li>Compare against historical /v2 three-pillar structure.</li><li>Ensure the first viewport reads cleanly on mobile without odometer text artifacts.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>current /</li><li>historical /v2</li><li>src/config/homeMarketingVariants.ts</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-home-direct-mail">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/?variant=direct-mail</h3>
+          <p class="role">Direct-mail campaign variant check</p>
+        </div>
+        <span class="decision internal-only">INTERNAL ONLY</span>
+      </div>
+      <div class="meta-row">
+        <span>2. Entry and campaign variants</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-home-direct-mail-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-home-direct-mail-desktop.jpg" alt="You Are Paying Too Much /?variant=direct-mail desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-home-direct-mail-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-home-direct-mail-mobile.jpg" alt="You Are Paying Too Much /?variant=direct-mail mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live URL returns 200, but production currently renders the same home page rather than local branch variant copy.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Treat as a campaign/test input until the variant system is intentionally shipped.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>If retained, verify the variant copy appears on production after deployment.</li><li>Use only for QR/direct mail review, not as a main-page decision.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>src/config/homeMarketingVariants.ts: direct-mail</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-home-fee-receipt">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/?variant=fee-receipt</h3>
+          <p class="role">Fee-receipt campaign variant check</p>
+        </div>
+        <span class="decision internal-only">INTERNAL ONLY</span>
+      </div>
+      <div class="meta-row">
+        <span>2. Entry and campaign variants</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-home-fee-receipt-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-home-fee-receipt-desktop.jpg" alt="You Are Paying Too Much /?variant=fee-receipt desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-home-fee-receipt-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-home-fee-receipt-mobile.jpg" alt="You Are Paying Too Much /?variant=fee-receipt mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live URL returns 200, but production currently renders the same home page rather than local branch variant copy.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Keep as a possible ad or follow-up funnel angle, not a primary homepage direction.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Decide whether fee-receipt language is too transactional for the brand.</li><li>If retained, ship behind a deliberate campaign URL.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>src/config/homeMarketingVariants.ts: fee-receipt</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-home-fiduciary-upgrade">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/?variant=fiduciary-upgrade</h3>
+          <p class="role">Fiduciary-upgrade campaign variant check</p>
+        </div>
+        <span class="decision internal-only">INTERNAL ONLY</span>
+      </div>
+      <div class="meta-row">
+        <span>2. Entry and campaign variants</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-home-fiduciary-upgrade-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-home-fiduciary-upgrade-desktop.jpg" alt="You Are Paying Too Much /?variant=fiduciary-upgrade desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-home-fiduciary-upgrade-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-home-fiduciary-upgrade-mobile.jpg" alt="You Are Paying Too Much /?variant=fiduciary-upgrade mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live URL returns 200, but production currently renders the same home page rather than local branch variant copy.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Use this as a bridge between calculator proof and /upgrade-your-advice if the tone stays direct and not combative.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Compare against the final /upgrade-your-advice positioning.</li><li>Avoid duplicating the same fiduciary proof in too many places.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>src/config/homeMarketingVariants.ts: fiduciary-upgrade</li></ul>
+        </div>
+      </section>
+    </article>
+  
+          </div>
+        
+          <h2 class="section-title" id="3-Core-funnel-pages">3. Core funnel pages</h2>
+          <div class="grid">
+            
+    <article class="page-card" id="yattm-upgrade">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/upgrade-your-advice</h3>
+          <p class="role">Core funnel page: why upgrade the advice</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>3. Core funnel pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-upgrade-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-upgrade-desktop.jpg" alt="You Are Paying Too Much /upgrade-your-advice desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-upgrade-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-upgrade-mobile.jpg" alt="You Are Paying Too Much /upgrade-your-advice mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live consolidated page.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Curate into one final argument: keep your custodian, upgrade the advice, verify the credentials, and understand the fiduciary standard.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Choose the strongest hero from current route vs upgrade1/2 story vs v0-cgpt custodian framing.</li><li>Keep only the best credential proof and source citations.</li><li>Use data visuals sparingly so the page does not become a catalog.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>upgrade10</li><li>upgrade8</li><li>upgrade5</li><li>upgrade-your-advice-v0-cgpt</li><li>upgrade3</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-improve">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/improve-your-tools</h3>
+          <p class="role">Core funnel page: planning tools and better information</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>3. Core funnel pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-improve-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-improve-desktop.jpg" alt="You Are Paying Too Much /improve-your-tools desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-improve-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-improve-mobile.jpg" alt="You Are Paying Too Much /improve-your-tools mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live route with canonical animated header and tool sections.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Keep the animated header, then sharpen the page around planning clarity and decision quality rather than a generic software showcase.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Review improveToolsPageConfig versions 1-3 for strongest order and copy.</li><li>Decide whether RightCapital screenshots need updated crops or explanatory context.</li><li>Make the CTA connect naturally to calculator state or scheduling.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>AnimatedHeader.tsx</li><li>improveToolsPageConfig versions 1-3</li><li>improve-your-tools-v0 catalog notes</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-save">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/save</h3>
+          <p class="role">Core funnel page: fee proof and savings math</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>3. Core funnel pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-save-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-save-desktop.jpg" alt="You Are Paying Too Much /save desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-save-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-save-mobile.jpg" alt="You Are Paying Too Much /save mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live fee projection chart and savings visualization.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Make /save the final proof page. Pull only the best fee simulator, fee wedge, and control-matrix ideas from old variants.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Decide whether the current chart is enough or needs the preserved simulator.</li><li>Merge the control-matrix idea if it makes the page more decision-oriented.</li><li>Avoid repeating every academic quote from old variants.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>save3</li><li>save2</li><li>save1</li><li>docs/save-snippets</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-save-a-ton">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/save-a-ton</h3>
+          <p class="role">Potential campaign/support page</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>3. Core funnel pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-save-a-ton-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-save-a-ton-desktop.jpg" alt="You Are Paying Too Much /save-a-ton desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-save-a-ton-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-save-a-ton-mobile.jpg" alt="You Are Paying Too Much /save-a-ton mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live placeholder-style page.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Either give this a distinct campaign job or cut/redirect it into /save. The phrase is memorable but may be too casual for the final trust system.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Decide whether the route name belongs in the public nav.</li><li>If cut, redirect to /save and remove it from final navigation.</li><li>If kept, make it a focused campaign page rather than a duplicate proof page.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>save1/save2/save3 catalog family</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-meaning">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/meaning</h3>
+          <p class="role">Purpose and advisor-standard page</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>3. Core funnel pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-meaning-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-meaning-desktop.jpg" alt="You Are Paying Too Much /meaning desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-meaning-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-meaning-mobile.jpg" alt="You Are Paying Too Much /meaning mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live consolidated Task vs Purpose route.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Cut this down to one memorable idea. Keep the point that the job is helping people, then remove repetition and anything that feels motivational instead of trustworthy.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Choose Engine/Pilot vs strikethrough task-vs-purpose as the primary visual idea.</li><li>Keep it connected to firm story and advisor standard.</li><li>Make sure it does not compete with Smarter Way Wealth's trust-hub story.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>meaning1</li><li>upgrade10</li><li>upgrade9</li><li>current /meaning</li></ul>
+        </div>
+      </section>
+    </article>
+  
+          </div>
+        
+          <h2 class="section-title" id="4-Proof-and-support-pages">4. Proof and support pages</h2>
+          <div class="grid">
+            
+    <article class="page-card" id="yattm-how-it-works">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/how-it-works</h3>
+          <p class="role">Proof/support: calculator mechanics</p>
+        </div>
+        <span class="decision internal-only">INTERNAL ONLY</span>
+      </div>
+      <div class="meta-row">
+        <span>4. Proof and support pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-how-it-works-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-how-it-works-desktop.jpg" alt="You Are Paying Too Much /how-it-works desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-how-it-works-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-how-it-works-mobile.jpg" alt="You Are Paying Too Much /how-it-works mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live technical math and URL parameter page.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Keep for internal QA or convert into a client-safe method page. In its current form it reads like implementation documentation.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Decide whether clients need this route in nav.</li><li>If public, rewrite as plain-English methodology and link to /our-math.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>current /how-it-works</li><li>new-route-cgpt process copy catalog notes</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-substitution">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/how-it-works/substitution</h3>
+          <p class="role">Proof/support: portfolio substitution demo</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>4. Proof and support pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-substitution-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-substitution-desktop.jpg" alt="You Are Paying Too Much /how-it-works/substitution desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-substitution-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-substitution-mobile.jpg" alt="You Are Paying Too Much /how-it-works/substitution mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live interactive portfolio architecture demo.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Promote only if it supports the final story. Otherwise keep as proof/demo material outside the main funnel.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Decide whether this belongs in final navigation.</li><li>If public, add plain-English framing and compliance-safe caveats.</li><li>If internal, label it clearly in the cockpit and remove public links.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>how-it-works/substitution catalog star candidate</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-faq">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/faq</h3>
+          <p class="role">Proof/support: objection handling</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>4. Proof and support pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-faq-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-faq-desktop.jpg" alt="You Are Paying Too Much /faq desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-faq-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-faq-mobile.jpg" alt="You Are Paying Too Much /faq mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live FAQ route.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Build the FAQ from real final-page objections after the core pages are chosen.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Draft questions from final funnel pages, not from generic RIA templates.</li><li>Include custodian, fees, fiduciary, credentials, planning tools, and disclosure boundaries.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>upgrade8 FAQ structured data</li><li>new-route-cgpt FAQ copy</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-our-math">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/our-math</h3>
+          <p class="role">Proof/support: assumptions and math disclosure</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>4. Proof and support pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-our-math-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-our-math-desktop.jpg" alt="You Are Paying Too Much /our-math desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-our-math-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-our-math-mobile.jpg" alt="You Are Paying Too Much /our-math mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live methodology support page.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Use as the durable assumptions/disclosures companion for the calculator, then link to it wherever the calculator appears.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Verify assumptions match the current calculator implementation.</li><li>Make the page scannable enough for skeptical prospects.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>current /our-math</li><li>Save/Upgrade fee-chart variants</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-privacy">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/privacy</h3>
+          <p class="role">Privacy and disclosure support</p>
+        </div>
+        <span class="decision done">DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>4. Proof and support pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-privacy-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-privacy-desktop.jpg" alt="You Are Paying Too Much /privacy desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-privacy-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-privacy-mobile.jpg" alt="You Are Paying Too Much /privacy mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live privacy route.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Keep as support page, then re-check once final contact forms, analytics, or scheduling flows are chosen.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Confirm footer links point here consistently.</li><li>Align with Smarter Way Wealth privacy language if the sites share data flows.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>current /privacy</li></ul>
+        </div>
+      </section>
+    </article>
+  
+          </div>
+        
+          <h2 class="section-title" id="5-Internal-and-dev-pages">5. Internal and dev pages</h2>
+          <div class="grid">
+            
+    <article class="page-card" id="yattm-gallery">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/gallery</h3>
+          <p class="role">Internal visual triage tool</p>
+        </div>
+        <span class="decision internal-only">INTERNAL ONLY</span>
+      </div>
+      <div class="meta-row">
+        <span>5. Internal and dev pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-gallery-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-gallery-desktop.jpg" alt="You Are Paying Too Much /gallery desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-gallery-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-gallery-mobile.jpg" alt="You Are Paying Too Much /gallery mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live/dev gallery route.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Keep out of final public navigation. Replace its role with this final decision cockpit for page-level decisions.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Confirm no public nav link sends prospects here.</li><li>Use only as a dev aid if still useful.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>current /gallery</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-mobile-calculator">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/mobile-calculator</h3>
+          <p class="role">Internal/mobile calculator test surface</p>
+        </div>
+        <span class="decision internal-only">INTERNAL ONLY</span>
+      </div>
+      <div class="meta-row">
+        <span>5. Internal and dev pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-mobile-calculator-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-mobile-calculator-desktop.jpg" alt="You Are Paying Too Much /mobile-calculator desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-mobile-calculator-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-mobile-calculator-mobile.jpg" alt="You Are Paying Too Much /mobile-calculator mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live route.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Keep only if it is a QA surface. The final mobile calculator should be the production home experience.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Audit public links.</li><li>Fold any useful behavior into / before launch decisions are finalized.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>current /mobile-calculator</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-experiment">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/experiment</h3>
+          <p class="role">Internal experiment surface</p>
+        </div>
+        <span class="decision internal-only">INTERNAL ONLY</span>
+      </div>
+      <div class="meta-row">
+        <span>5. Internal and dev pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-experiment-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-experiment-desktop.jpg" alt="You Are Paying Too Much /experiment desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-experiment-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-experiment-mobile.jpg" alt="You Are Paying Too Much /experiment mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live experiment route.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Keep out of final public navigation. Promote only after it has a clear prospect-facing job.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Decide whether any visual ideas belong in the final home page.</li><li>Remove or hide public links if present.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>current /experiment</li></ul>
+        </div>
+      </section>
+    </article>
+  
+    <article class="page-card" id="yattm-calendar">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/components/calendar</h3>
+          <p class="role">Internal component preview</p>
+        </div>
+        <span class="decision internal-only">INTERNAL ONLY</span>
+      </div>
+      <div class="meta-row">
+        <span>5. Internal and dev pages</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-calendar-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-calendar-desktop.jpg" alt="You Are Paying Too Much /components/calendar desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-calendar-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-calendar-mobile.jpg" alt="You Are Paying Too Much /components/calendar mobile screenshot">
+        </a>
+      </div>
+      <section>
+        <h4>Current status</h4>
+        <p>Live component preview route.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Keep as internal preview only unless scheduling becomes part of the final public funnel.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Decide whether the final CTA uses embedded scheduling, a contact path, or external scheduling.</li><li>Remove from public nav if exposed.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>current /components/calendar</li></ul>
+        </div>
+      </section>
+    </article>
+  
+          </div>
+        
+    <h2 class="section-title" id="historical-variants">Historical Variant Finalists</h2>
+    <div class="variant-grid">
+      
+    <article class="variant-card">
+      <h3>Upgrade Your Advice</h3>
+      <p>Keep the current route, then curate it into one sharper final page using the custodian message, source rigor, and the most useful visuals.</p>
+      <h4>Finalists</h4>
+      <ul><li>upgrade10: most polished task-vs-purpose framing</li><li>upgrade8: strongest fiduciary education and FAQ structure</li><li>upgrade5: best data visualizations</li><li>upgrade-your-advice-v0-cgpt: strongest keep-your-custodian message</li><li>upgrade3: strongest source/citation base</li></ul>
+      <h4>Duplicates summarized</h4>
+      <p>upgrade4 duplicates upgrade3. upgrade1/upgrade2 are useful personal-story foundations but not standalone finalists.</p>
+    </article>
+  
+    <article class="variant-card">
+      <h3>Save</h3>
+      <p>Build one final /save proof page and either cut or redirect /save-a-ton unless that phrase becomes a campaign-specific page.</p>
+      <h4>Finalists</h4>
+      <ul><li>save3: most complete interactive fee education</li><li>save2: strongest arithmetic diagram and quote-card style</li><li>save1: cleanest control-matrix concept</li><li>docs/save-snippets: preserved simulator, fee wedge, and control matrix references</li></ul>
+      <h4>Duplicates summarized</h4>
+      <p>save1/save2/save3 overlap heavily on fee arithmetic, quotes, and charts.</p>
+    </article>
+  
+    <article class="variant-card">
+      <h3>Improve Your Tools</h3>
+      <p>Keep the current route, tighten the first viewport, and make the RightCapital/tool proof feel like a serious planning workflow rather than a software tour.</p>
+      <h4>Finalists</h4>
+      <ul><li>AnimatedHeader.tsx: canonical animated header with brand green</li><li>improveToolsPageConfig versions 1-3: recoverable content order and hero copy variants</li><li>improve-your-tools-v0: prior full-page structure referenced in the catalog</li></ul>
+      <h4>Duplicates summarized</h4>
+      <p>The improve variants mostly share structure and differ in copy/order. The current route already carries the canonical header.</p>
+    </article>
+  
+    <article class="variant-card">
+      <h3>Meaning / Purpose</h3>
+      <p>Keep one purpose page only. Use the Engine/Pilot idea if it supports trust, and remove anything that sounds like generic motivational copy.</p>
+      <h4>Finalists</h4>
+      <ul><li>meaning1: best Engine vs Pilot visual</li><li>upgrade10: most polished strikethrough task-vs-purpose version</li><li>upgrade9: useful but less polished task-vs-purpose copy</li><li>current /meaning: consolidated live route</li></ul>
+      <h4>Duplicates summarized</h4>
+      <p>Jensen/task-vs-purpose material appears in four places and now needs curation, not more accumulation.</p>
+    </article>
+  
+    <article class="variant-card">
+      <h3>Home</h3>
+      <p>Make / the decision engine: calculator first, then a concise route into Upgrade, Improve, Save, and the Smarter Way Wealth trust hub.</p>
+      <h4>Finalists</h4>
+      <ul><li>current /: calculator-first landing page</li><li>branch homeMarketingVariants: direct-mail, fee-receipt, fiduciary-upgrade</li><li>historical /v2: Equation of Value, Three Pillars, Philosophy</li></ul>
+      <h4>Duplicates summarized</h4>
+      <p>The current production URL query variants return the same live page today; the differentiated variant copy exists on the local branch.</p>
+    </article>
+  
+    </div>
+    <footer>
+      Generated 2026-05-07T22:01:04.867Z. Source data: docs/final-site-review/pages.json.
+    </footer>
+  </main>
+</body>
+</html>

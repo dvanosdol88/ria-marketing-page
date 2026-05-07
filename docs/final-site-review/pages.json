@@ -1,0 +1,833 @@
+{
+  "generatedAt": "2026-05-07T22:01:04.867Z",
+  "viewports": {
+    "desktop": {
+      "width": 1440,
+      "height": 1100
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844
+    }
+  },
+  "pages": [
+    {
+      "id": "sww-home",
+      "site": "Smarter Way Wealth",
+      "baseUrl": "https://smarterwaywealth.com",
+      "route": "/",
+      "repo": "D:\\smarter-way-wealth",
+      "pageRole": "Corporate trust hub home",
+      "reviewGroup": "1. Smarter Way Wealth trust hub",
+      "currentStatus": "Live placeholder; firm identity present but not yet a designed trust hub.",
+      "decision": "NOT DONE",
+      "recommendation": "Redesign as the firm legitimacy hub: standard, advisor identity, who it serves, why the model exists, and clear handoff into the fee-calculator funnel.",
+      "nextActions": [
+        "Create section-level visual concepts before implementation.",
+        "Use serious trust-building language, not generic About Us framing.",
+        "Link clearly to youarepayingtoomuch.com as the calculator/proof experience."
+      ],
+      "variantSources": [
+        "D:\\smarter-way-wealth\\RIA-sample-home-pages.txt reference list",
+        "Prior origin-story spine: qualified to give better advice, but not free to give it"
+      ],
+      "url": "https://smarterwaywealth.com/",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://smarterwaywealth.com/"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/sww-home-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/sww-home-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "sww-privacy",
+      "site": "Smarter Way Wealth",
+      "baseUrl": "https://smarterwaywealth.com",
+      "route": "/privacy",
+      "repo": "D:\\smarter-way-wealth",
+      "pageRole": "Corporate privacy policy",
+      "reviewGroup": "1. Smarter Way Wealth trust hub",
+      "currentStatus": "Live legal/privacy support page.",
+      "decision": "DONE",
+      "recommendation": "Keep as the privacy baseline, then re-check only if launch forms, analytics, scheduling, or lead capture are added.",
+      "nextActions": [
+        "Confirm compliance owner signs off before public launch.",
+        "Update the last-updated date only when practices change."
+      ],
+      "variantSources": [
+        "Current Smarter Way Wealth source page"
+      ],
+      "url": "https://smarterwaywealth.com/privacy",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://smarterwaywealth.com/privacy"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/sww-privacy-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/sww-privacy-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "sww-footer-disclosures",
+      "site": "Smarter Way Wealth",
+      "baseUrl": "https://smarterwaywealth.com",
+      "route": "/",
+      "repo": "D:\\smarter-way-wealth",
+      "pageRole": "Corporate footer and disclosure component",
+      "reviewGroup": "1. Smarter Way Wealth trust hub",
+      "currentStatus": "Live disclosure footer with CRD, IAPD, educational-use, and risk language.",
+      "decision": "DONE",
+      "screenshotTarget": "footer",
+      "recommendation": "Keep the short disclosure model and mirror any approved text changes into the fee-calculator repo footer.",
+      "nextActions": [
+        "Verify the IAPD link and CRD number during launch review.",
+        "Use this as the disclosure style baseline for both websites."
+      ],
+      "variantSources": [
+        "D:\\smarter-way-wealth\\src\\components\\ComplianceFooter.js"
+      ],
+      "url": "https://smarterwaywealth.com/",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://smarterwaywealth.com/"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/sww-footer-disclosures-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/sww-footer-disclosures-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-home",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Calculator-first entry page",
+      "reviewGroup": "2. Entry and campaign variants",
+      "currentStatus": "Live calculator-first page.",
+      "decision": "NOT DONE",
+      "recommendation": "Keep the calculator as the first interaction, then make the next-step path unmistakable: Upgrade, Improve, Save, or firm trust hub.",
+      "nextActions": [
+        "Decide whether the calculator should stay stark or gain a stronger brand/trust frame.",
+        "Compare against historical /v2 three-pillar structure.",
+        "Ensure the first viewport reads cleanly on mobile without odometer text artifacts."
+      ],
+      "variantSources": [
+        "current /",
+        "historical /v2",
+        "src/config/homeMarketingVariants.ts"
+      ],
+      "url": "https://youarepayingtoomuch.com/",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-home-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-home-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-home-direct-mail",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/?variant=direct-mail",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Direct-mail campaign variant check",
+      "reviewGroup": "2. Entry and campaign variants",
+      "currentStatus": "Live URL returns 200, but production currently renders the same home page rather than local branch variant copy.",
+      "decision": "INTERNAL ONLY",
+      "recommendation": "Treat as a campaign/test input until the variant system is intentionally shipped.",
+      "nextActions": [
+        "If retained, verify the variant copy appears on production after deployment.",
+        "Use only for QR/direct mail review, not as a main-page decision."
+      ],
+      "variantSources": [
+        "src/config/homeMarketingVariants.ts: direct-mail"
+      ],
+      "url": "https://youarepayingtoomuch.com/?variant=direct-mail",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/?variant=direct-mail"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-home-direct-mail-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-home-direct-mail-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-home-fee-receipt",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/?variant=fee-receipt",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Fee-receipt campaign variant check",
+      "reviewGroup": "2. Entry and campaign variants",
+      "currentStatus": "Live URL returns 200, but production currently renders the same home page rather than local branch variant copy.",
+      "decision": "INTERNAL ONLY",
+      "recommendation": "Keep as a possible ad or follow-up funnel angle, not a primary homepage direction.",
+      "nextActions": [
+        "Decide whether fee-receipt language is too transactional for the brand.",
+        "If retained, ship behind a deliberate campaign URL."
+      ],
+      "variantSources": [
+        "src/config/homeMarketingVariants.ts: fee-receipt"
+      ],
+      "url": "https://youarepayingtoomuch.com/?variant=fee-receipt",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/?variant=fee-receipt"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-home-fee-receipt-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-home-fee-receipt-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-home-fiduciary-upgrade",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/?variant=fiduciary-upgrade",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Fiduciary-upgrade campaign variant check",
+      "reviewGroup": "2. Entry and campaign variants",
+      "currentStatus": "Live URL returns 200, but production currently renders the same home page rather than local branch variant copy.",
+      "decision": "INTERNAL ONLY",
+      "recommendation": "Use this as a bridge between calculator proof and /upgrade-your-advice if the tone stays direct and not combative.",
+      "nextActions": [
+        "Compare against the final /upgrade-your-advice positioning.",
+        "Avoid duplicating the same fiduciary proof in too many places."
+      ],
+      "variantSources": [
+        "src/config/homeMarketingVariants.ts: fiduciary-upgrade"
+      ],
+      "url": "https://youarepayingtoomuch.com/?variant=fiduciary-upgrade",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/?variant=fiduciary-upgrade"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-home-fiduciary-upgrade-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-home-fiduciary-upgrade-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-upgrade",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/upgrade-your-advice",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Core funnel page: why upgrade the advice",
+      "reviewGroup": "3. Core funnel pages",
+      "currentStatus": "Live consolidated page.",
+      "decision": "NOT DONE",
+      "recommendation": "Curate into one final argument: keep your custodian, upgrade the advice, verify the credentials, and understand the fiduciary standard.",
+      "nextActions": [
+        "Choose the strongest hero from current route vs upgrade1/2 story vs v0-cgpt custodian framing.",
+        "Keep only the best credential proof and source citations.",
+        "Use data visuals sparingly so the page does not become a catalog."
+      ],
+      "variantSources": [
+        "upgrade10",
+        "upgrade8",
+        "upgrade5",
+        "upgrade-your-advice-v0-cgpt",
+        "upgrade3"
+      ],
+      "url": "https://youarepayingtoomuch.com/upgrade-your-advice",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/upgrade-your-advice"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-upgrade-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-upgrade-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-improve",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/improve-your-tools",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Core funnel page: planning tools and better information",
+      "reviewGroup": "3. Core funnel pages",
+      "currentStatus": "Live route with canonical animated header and tool sections.",
+      "decision": "NOT DONE",
+      "recommendation": "Keep the animated header, then sharpen the page around planning clarity and decision quality rather than a generic software showcase.",
+      "nextActions": [
+        "Review improveToolsPageConfig versions 1-3 for strongest order and copy.",
+        "Decide whether RightCapital screenshots need updated crops or explanatory context.",
+        "Make the CTA connect naturally to calculator state or scheduling."
+      ],
+      "variantSources": [
+        "AnimatedHeader.tsx",
+        "improveToolsPageConfig versions 1-3",
+        "improve-your-tools-v0 catalog notes"
+      ],
+      "url": "https://youarepayingtoomuch.com/improve-your-tools",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/improve-your-tools"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-improve-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-improve-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-save",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/save",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Core funnel page: fee proof and savings math",
+      "reviewGroup": "3. Core funnel pages",
+      "currentStatus": "Live fee projection chart and savings visualization.",
+      "decision": "NOT DONE",
+      "recommendation": "Make /save the final proof page. Pull only the best fee simulator, fee wedge, and control-matrix ideas from old variants.",
+      "nextActions": [
+        "Decide whether the current chart is enough or needs the preserved simulator.",
+        "Merge the control-matrix idea if it makes the page more decision-oriented.",
+        "Avoid repeating every academic quote from old variants."
+      ],
+      "variantSources": [
+        "save3",
+        "save2",
+        "save1",
+        "docs/save-snippets"
+      ],
+      "url": "https://youarepayingtoomuch.com/save",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/save"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-save-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-save-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-save-a-ton",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/save-a-ton",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Potential campaign/support page",
+      "reviewGroup": "3. Core funnel pages",
+      "currentStatus": "Live placeholder-style page.",
+      "decision": "NOT DONE",
+      "recommendation": "Either give this a distinct campaign job or cut/redirect it into /save. The phrase is memorable but may be too casual for the final trust system.",
+      "nextActions": [
+        "Decide whether the route name belongs in the public nav.",
+        "If cut, redirect to /save and remove it from final navigation.",
+        "If kept, make it a focused campaign page rather than a duplicate proof page."
+      ],
+      "variantSources": [
+        "save1/save2/save3 catalog family"
+      ],
+      "url": "https://youarepayingtoomuch.com/save-a-ton",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/save-a-ton"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-save-a-ton-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-save-a-ton-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-meaning",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/meaning",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Purpose and advisor-standard page",
+      "reviewGroup": "3. Core funnel pages",
+      "currentStatus": "Live consolidated Task vs Purpose route.",
+      "decision": "NOT DONE",
+      "recommendation": "Cut this down to one memorable idea. Keep the point that the job is helping people, then remove repetition and anything that feels motivational instead of trustworthy.",
+      "nextActions": [
+        "Choose Engine/Pilot vs strikethrough task-vs-purpose as the primary visual idea.",
+        "Keep it connected to firm story and advisor standard.",
+        "Make sure it does not compete with Smarter Way Wealth's trust-hub story."
+      ],
+      "variantSources": [
+        "meaning1",
+        "upgrade10",
+        "upgrade9",
+        "current /meaning"
+      ],
+      "url": "https://youarepayingtoomuch.com/meaning",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/meaning"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-meaning-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-meaning-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-how-it-works",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/how-it-works",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Proof/support: calculator mechanics",
+      "reviewGroup": "4. Proof and support pages",
+      "currentStatus": "Live technical math and URL parameter page.",
+      "decision": "INTERNAL ONLY",
+      "recommendation": "Keep for internal QA or convert into a client-safe method page. In its current form it reads like implementation documentation.",
+      "nextActions": [
+        "Decide whether clients need this route in nav.",
+        "If public, rewrite as plain-English methodology and link to /our-math."
+      ],
+      "variantSources": [
+        "current /how-it-works",
+        "new-route-cgpt process copy catalog notes"
+      ],
+      "url": "https://youarepayingtoomuch.com/how-it-works",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/how-it-works"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-how-it-works-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-how-it-works-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-substitution",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/how-it-works/substitution",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Proof/support: portfolio substitution demo",
+      "reviewGroup": "4. Proof and support pages",
+      "currentStatus": "Live interactive portfolio architecture demo.",
+      "decision": "NOT DONE",
+      "recommendation": "Promote only if it supports the final story. Otherwise keep as proof/demo material outside the main funnel.",
+      "nextActions": [
+        "Decide whether this belongs in final navigation.",
+        "If public, add plain-English framing and compliance-safe caveats.",
+        "If internal, label it clearly in the cockpit and remove public links."
+      ],
+      "variantSources": [
+        "how-it-works/substitution catalog star candidate"
+      ],
+      "url": "https://youarepayingtoomuch.com/how-it-works/substitution",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/how-it-works/substitution"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-substitution-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-substitution-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-faq",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/faq",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Proof/support: objection handling",
+      "reviewGroup": "4. Proof and support pages",
+      "currentStatus": "Live FAQ route.",
+      "decision": "NOT DONE",
+      "recommendation": "Build the FAQ from real final-page objections after the core pages are chosen.",
+      "nextActions": [
+        "Draft questions from final funnel pages, not from generic RIA templates.",
+        "Include custodian, fees, fiduciary, credentials, planning tools, and disclosure boundaries."
+      ],
+      "variantSources": [
+        "upgrade8 FAQ structured data",
+        "new-route-cgpt FAQ copy"
+      ],
+      "url": "https://youarepayingtoomuch.com/faq",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/faq"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-faq-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-faq-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-our-math",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/our-math",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Proof/support: assumptions and math disclosure",
+      "reviewGroup": "4. Proof and support pages",
+      "currentStatus": "Live methodology support page.",
+      "decision": "NOT DONE",
+      "recommendation": "Use as the durable assumptions/disclosures companion for the calculator, then link to it wherever the calculator appears.",
+      "nextActions": [
+        "Verify assumptions match the current calculator implementation.",
+        "Make the page scannable enough for skeptical prospects."
+      ],
+      "variantSources": [
+        "current /our-math",
+        "Save/Upgrade fee-chart variants"
+      ],
+      "url": "https://youarepayingtoomuch.com/our-math",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/our-math"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-our-math-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-our-math-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-privacy",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/privacy",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Privacy and disclosure support",
+      "reviewGroup": "4. Proof and support pages",
+      "currentStatus": "Live privacy route.",
+      "decision": "DONE",
+      "recommendation": "Keep as support page, then re-check once final contact forms, analytics, or scheduling flows are chosen.",
+      "nextActions": [
+        "Confirm footer links point here consistently.",
+        "Align with Smarter Way Wealth privacy language if the sites share data flows."
+      ],
+      "variantSources": [
+        "current /privacy"
+      ],
+      "url": "https://youarepayingtoomuch.com/privacy",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/privacy"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-privacy-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-privacy-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-gallery",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/gallery",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Internal visual triage tool",
+      "reviewGroup": "5. Internal and dev pages",
+      "currentStatus": "Live/dev gallery route.",
+      "decision": "INTERNAL ONLY",
+      "recommendation": "Keep out of final public navigation. Replace its role with this final decision cockpit for page-level decisions.",
+      "nextActions": [
+        "Confirm no public nav link sends prospects here.",
+        "Use only as a dev aid if still useful."
+      ],
+      "variantSources": [
+        "current /gallery"
+      ],
+      "url": "https://youarepayingtoomuch.com/gallery",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/gallery"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-gallery-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-gallery-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-mobile-calculator",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/mobile-calculator",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Internal/mobile calculator test surface",
+      "reviewGroup": "5. Internal and dev pages",
+      "currentStatus": "Live route.",
+      "decision": "INTERNAL ONLY",
+      "recommendation": "Keep only if it is a QA surface. The final mobile calculator should be the production home experience.",
+      "nextActions": [
+        "Audit public links.",
+        "Fold any useful behavior into / before launch decisions are finalized."
+      ],
+      "variantSources": [
+        "current /mobile-calculator"
+      ],
+      "url": "https://youarepayingtoomuch.com/mobile-calculator",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/mobile-calculator"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-mobile-calculator-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-mobile-calculator-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-experiment",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/experiment",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Internal experiment surface",
+      "reviewGroup": "5. Internal and dev pages",
+      "currentStatus": "Live experiment route.",
+      "decision": "INTERNAL ONLY",
+      "recommendation": "Keep out of final public navigation. Promote only after it has a clear prospect-facing job.",
+      "nextActions": [
+        "Decide whether any visual ideas belong in the final home page.",
+        "Remove or hide public links if present."
+      ],
+      "variantSources": [
+        "current /experiment"
+      ],
+      "url": "https://youarepayingtoomuch.com/experiment",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/experiment"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-experiment-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-experiment-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-calendar",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "https://youarepayingtoomuch.com",
+      "route": "/components/calendar",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Internal component preview",
+      "reviewGroup": "5. Internal and dev pages",
+      "currentStatus": "Live component preview route.",
+      "decision": "INTERNAL ONLY",
+      "recommendation": "Keep as internal preview only unless scheduling becomes part of the final public funnel.",
+      "nextActions": [
+        "Decide whether the final CTA uses embedded scheduling, a contact path, or external scheduling.",
+        "Remove from public nav if exposed."
+      ],
+      "variantSources": [
+        "current /components/calendar"
+      ],
+      "url": "https://youarepayingtoomuch.com/components/calendar",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "https://youarepayingtoomuch.com/components/calendar"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-calendar-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-calendar-mobile.jpg"
+        }
+      }
+    }
+  ],
+  "variantFamilies": [
+    {
+      "family": "Upgrade Your Advice",
+      "finalists": [
+        "upgrade10: most polished task-vs-purpose framing",
+        "upgrade8: strongest fiduciary education and FAQ structure",
+        "upgrade5: best data visualizations",
+        "upgrade-your-advice-v0-cgpt: strongest keep-your-custodian message",
+        "upgrade3: strongest source/citation base"
+      ],
+      "duplicatesSummarized": "upgrade4 duplicates upgrade3. upgrade1/upgrade2 are useful personal-story foundations but not standalone finalists.",
+      "recommendation": "Keep the current route, then curate it into one sharper final page using the custodian message, source rigor, and the most useful visuals."
+    },
+    {
+      "family": "Save",
+      "finalists": [
+        "save3: most complete interactive fee education",
+        "save2: strongest arithmetic diagram and quote-card style",
+        "save1: cleanest control-matrix concept",
+        "docs/save-snippets: preserved simulator, fee wedge, and control matrix references"
+      ],
+      "duplicatesSummarized": "save1/save2/save3 overlap heavily on fee arithmetic, quotes, and charts.",
+      "recommendation": "Build one final /save proof page and either cut or redirect /save-a-ton unless that phrase becomes a campaign-specific page."
+    },
+    {
+      "family": "Improve Your Tools",
+      "finalists": [
+        "AnimatedHeader.tsx: canonical animated header with brand green",
+        "improveToolsPageConfig versions 1-3: recoverable content order and hero copy variants",
+        "improve-your-tools-v0: prior full-page structure referenced in the catalog"
+      ],
+      "duplicatesSummarized": "The improve variants mostly share structure and differ in copy/order. The current route already carries the canonical header.",
+      "recommendation": "Keep the current route, tighten the first viewport, and make the RightCapital/tool proof feel like a serious planning workflow rather than a software tour."
+    },
+    {
+      "family": "Meaning / Purpose",
+      "finalists": [
+        "meaning1: best Engine vs Pilot visual",
+        "upgrade10: most polished strikethrough task-vs-purpose version",
+        "upgrade9: useful but less polished task-vs-purpose copy",
+        "current /meaning: consolidated live route"
+      ],
+      "duplicatesSummarized": "Jensen/task-vs-purpose material appears in four places and now needs curation, not more accumulation.",
+      "recommendation": "Keep one purpose page only. Use the Engine/Pilot idea if it supports trust, and remove anything that sounds like generic motivational copy."
+    },
+    {
+      "family": "Home",
+      "finalists": [
+        "current /: calculator-first landing page",
+        "branch homeMarketingVariants: direct-mail, fee-receipt, fiduciary-upgrade",
+        "historical /v2: Equation of Value, Three Pillars, Philosophy"
+      ],
+      "duplicatesSummarized": "The current production URL query variants return the same live page today; the differentiated variant copy exists on the local branch.",
+      "recommendation": "Make / the decision engine: calculator first, then a concise route into Upgrade, Improve, Save, and the Smarter Way Wealth trust hub."
+    }
+  ]
+}
