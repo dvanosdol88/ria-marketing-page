@@ -1,9 +1,13 @@
-export type HomeMarketingVariantId = "direct-mail" | "fee-receipt" | "fiduciary-upgrade";
+export type HomeMarketingVariantId = "direct-mail" | "fee-receipt" | "fiduciary-upgrade" | "final-home";
+
+export type HomeHeroLayout = "photo" | "receipt" | "advisor";
+export type HomeCalculatorLayout = HomeHeroLayout | "final-c";
 
 export type HomeMarketingVariant = {
   id: HomeMarketingVariantId;
   label: string;
-  layout: "photo" | "receipt" | "advisor";
+  layout: HomeHeroLayout;
+  calculatorLayout?: HomeCalculatorLayout;
   eyebrow: string;
   headline: string;
   highlight: string;
@@ -75,6 +79,7 @@ export const homeMarketingVariantOrder: HomeMarketingVariantId[] = [
   "direct-mail",
   "fee-receipt",
   "fiduciary-upgrade",
+  "final-home",
 ];
 
 export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketingVariant> = {
@@ -279,6 +284,74 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
         lostFillEnd: "rgba(127,29,29,0.18)",
         keptStart: "#A7F3D0",
         keptEnd: "#064E3B",
+      },
+    },
+  },
+  "final-home": {
+    id: "final-home",
+    label: "Final home candidate",
+    layout: "advisor",
+    calculatorLayout: "final-c",
+    eyebrow: "Fiduciary advice without the fee drag.",
+    headline: "Upgrade the advice,",
+    highlight: "not the fee.",
+    body:
+      "David J. Van Osdol, CFA, CFP built Smarter Way Wealth for investors who want serious planning, better tools, and a flat monthly fee.",
+    primaryCta: "Compare my fee",
+    secondaryCta: "Share this projection",
+    resultLabel: "Estimated wealth kept with the flat-fee model",
+    proofPoints: ["20 years experience", "CFA Charterholder", "CFP Practitioner"],
+    image: {
+      src: "/DVO Head Shot picture.jpg",
+      alt: "David J. Van Osdol",
+      position: "right center",
+    },
+    calculator: {
+      sectionClassName: "bg-[#F4F7F8] text-slate-950",
+      backdropClassName: "bg-[#F4F7F8]",
+      eyebrowClassName: "text-[#00682B]",
+      titleClassName: "text-[#062B43]",
+      amountClassName: "text-[#108843]",
+      bodyClassName: "text-slate-700",
+      shareButtonClassName:
+        "border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-800 shadow-sm hover:bg-slate-50",
+      disclaimerClassName: "text-slate-500",
+      frameClassName:
+        "overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]",
+      chartFrameClassName: "bg-white",
+      controlsClassName: "border-t border-[#DFE6EE] bg-white px-4 pb-4 pt-2 sm:px-6 sm:pb-6 sm:pt-3 lg:px-8 lg:pb-8 lg:pt-4",
+      collapseButtonClassName: "text-slate-500 hover:bg-slate-50",
+      helperTextClassName: "text-slate-500",
+      linkClassName: "text-brand-700 underline transition-colors hover:text-brand-800",
+      slider: {
+        labelClassName: "text-[#213B56]",
+        trackClassName: "bg-[#DCE4EB]",
+        destructiveColor: "#108843",
+        destructiveTrack: "#B7E3C5",
+        accumulationColor: "#064B84",
+        accumulationTrack: "#B8D2E8",
+        addButtonClassName: "text-[#064B84] hover:text-[#063F75]",
+        removeButtonClassName: "text-slate-500 hover:text-slate-700",
+      },
+      chart: {
+        mode: "light",
+        chartBg: "#FFFFFF",
+        panelBgClassName: "border-[#DFE6EE] bg-white",
+        panelBorderClassName: "border-[#DFE6EE]",
+        mutedTextClassName: "text-[#52657A]",
+        strongTextClassName: "text-[#10233A]",
+        smarterStroke: "#064B84",
+        traditionalStroke: "#108843",
+        traditionalArea: "#B7E3C5",
+        grid: "#DCE4EB",
+        xTick: "#52657A",
+        yTick: "#52657A",
+        cursor: "#DCE4EB",
+        lostStart: "#108843",
+        lostEnd: "#108843",
+        lostFillEnd: "#DFF4E7",
+        keptStart: "#064B84",
+        keptEnd: "#064B84",
       },
     },
   },

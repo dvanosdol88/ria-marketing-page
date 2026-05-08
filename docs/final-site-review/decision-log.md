@@ -1,6 +1,6 @@
 # Final Site Review Decision Log
 
-Generated: 2026-05-07T22:01:04.867Z
+Generated: 2026-05-08T16:17:40.798Z
 
 This is the working source of truth for deciding final public pages across You Are Paying Too Much and Smarter Way Wealth.
 
@@ -25,6 +25,7 @@ Structured page data: [pages.json](./pages.json)
 | You Are Paying Too Much | `/?variant=direct-mail` | Direct-mail campaign variant check | INTERNAL ONLY | 200 | Treat as a campaign/test input until the variant system is intentionally shipped. |
 | You Are Paying Too Much | `/?variant=fee-receipt` | Fee-receipt campaign variant check | INTERNAL ONLY | 200 | Keep as a possible ad or follow-up funnel angle, not a primary homepage direction. |
 | You Are Paying Too Much | `/?variant=fiduciary-upgrade` | Fiduciary-upgrade campaign variant check | INTERNAL ONLY | 200 | Use this as a bridge between calculator proof and /upgrade-your-advice if the tone stays direct and not combative. |
+| You Are Paying Too Much | `/?variant=final-home` | Proposed final home: advisor hero plus final calculator | NOT DONE | 200 | Use this as the current home-page finalist for review: advisor-led trust above the fold, then a clean calculator comparison immediately below. |
 | You Are Paying Too Much | `/upgrade-your-advice` | Core funnel page: why upgrade the advice | NOT DONE | 200 | Curate into one final argument: keep your custodian, upgrade the advice, verify the credentials, and understand the fiduciary standard. |
 | You Are Paying Too Much | `/improve-your-tools` | Core funnel page: planning tools and better information | NOT DONE | 200 | Keep the animated header, then sharpen the page around planning clarity and decision quality rather than a generic software showcase. |
 | You Are Paying Too Much | `/save` | Core funnel page: fee proof and savings math | NOT DONE | 200 | Make /save the final proof page. Pull only the best fee simulator, fee wedge, and control-matrix ideas from old variants. |
@@ -97,6 +98,7 @@ Recommendation: Make / the decision engine: calculator first, then a concise rou
 Finalists:
 - current /: calculator-first landing page
 - branch homeMarketingVariants: direct-mail, fee-receipt, fiduciary-upgrade
+- final-home: fiduciary-upgrade hero combined with fee-calculator-final-c calculator shape
 - historical /v2: Equation of Value, Three Pillars, Philosophy
 
 Duplicates summarized: The current production URL query variants return the same live page today; the differentiated variant copy exists on the local branch.
@@ -137,6 +139,12 @@ Duplicates summarized: The current production URL query variants return the same
 
 - Desktop: [screenshots/yattm-home-fiduciary-upgrade-desktop.jpg](../../artifacts/final-site-review/screenshots/yattm-home-fiduciary-upgrade-desktop.jpg)
 - Mobile: [screenshots/yattm-home-fiduciary-upgrade-mobile.jpg](../../artifacts/final-site-review/screenshots/yattm-home-fiduciary-upgrade-mobile.jpg)
+
+### You Are Paying Too Much - /?variant=final-home
+
+- Desktop: [screenshots/yattm-home-final-home-desktop.jpg](../../artifacts/final-site-review/screenshots/yattm-home-final-home-desktop.jpg)
+- Mobile: [screenshots/yattm-home-final-home-mobile.jpg](../../artifacts/final-site-review/screenshots/yattm-home-final-home-mobile.jpg)
+- Reference: [Final-C calculator reference](../../artifacts/final-site-review/screenshots/fee-calculator-final-c-reference.png)
 
 ### You Are Paying Too Much - /upgrade-your-advice
 

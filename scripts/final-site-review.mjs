@@ -81,6 +81,7 @@ const variantFamilies = [
     finalists: [
       "current /: calculator-first landing page",
       "branch homeMarketingVariants: direct-mail, fee-receipt, fiduciary-upgrade",
+      "final-home: fiduciary-upgrade hero combined with fee-calculator-final-c calculator shape",
       "historical /v2: Equation of Value, Three Pillars, Philosophy",
     ],
     duplicatesSummarized:
@@ -229,6 +230,37 @@ const pages = [
       "Avoid duplicating the same fiduciary proof in too many places.",
     ],
     variantSources: ["src/config/homeMarketingVariants.ts: fiduciary-upgrade"],
+  },
+  {
+    id: "yattm-home-final-home",
+    site: "You Are Paying Too Much",
+    baseUrl: "http://localhost:3000",
+    route: "/?variant=final-home",
+    repo: "D:\\ria-marketing-page",
+    pageRole: "Proposed final home: advisor hero plus final calculator",
+    reviewGroup: "2. Entry and campaign variants",
+    currentStatus:
+      "Local branch-only finalist combining the fiduciary-upgrade first viewport with the final-C fee calculator shape.",
+    decision: STATUS.NOT_DONE,
+    recommendation:
+      "Use this as the current home-page finalist for review: advisor-led trust above the fold, then a clean calculator comparison immediately below.",
+    nextActions: [
+      "Inspect desktop and mobile locally before marking DONE.",
+      "Decide whether to promote final-home into the root route or keep it as a named review variant.",
+      "Keep older query variants archived unless a campaign needs one.",
+    ],
+    referenceImages: [
+      {
+        label: "Final-C calculator reference",
+        path: "screenshots/fee-calculator-final-c-reference.png",
+      },
+    ],
+    variantSources: [
+      "http://localhost:3000/?variant=fiduciary-upgrade above-the-fold reference",
+      "C:\\Users\\user2\\Documents\\Codex\\2026-05-01\\build-web-apps-plugin-build-web\\output\\playwright\\fee-calculator-final-c-desktop-full.png",
+      "codex://threads/019de458-de2a-77c3-af43-a63881f1d26c",
+      "C:\\Users\\user2\\Documents\\Codex\\2026-05-01\\build-web-apps-plugin-build-web\\docs\\superpowers\\specs",
+    ],
   },
   {
     id: "yattm-upgrade",
@@ -660,6 +692,10 @@ function makeDecisionLog(data) {
       "",
       `- Desktop: [${page.screenshots.desktop.path}](${markdownRelScreenshot(page, "desktop")})`,
       `- Mobile: [${page.screenshots.mobile.path}](${markdownRelScreenshot(page, "mobile")})`,
+      ...(page.referenceImages ?? []).map(
+        (reference) =>
+          `- Reference: [${reference.label}](../../artifacts/final-site-review/${reference.path})`,
+      ),
       "",
     ]),
   ];
@@ -675,8 +711,34 @@ function htmlEscape(value) {
     .replaceAll('"', "&quot;");
 }
 
+const stripTrailingWhitespace = (value) => value.replace(/[ \t]+$/gm, "");
+
 function renderList(items) {
   return `<ul>${items.map((item) => `<li>${htmlEscape(item)}</li>`).join("")}</ul>`;
+}
+
+function renderReferenceImages(page) {
+  if (!page.referenceImages?.length) {
+    return "";
+  }
+
+  const images = page.referenceImages
+    .map(
+      (reference) => `
+        <a href="${htmlEscape(reference.path)}">
+          <span>${htmlEscape(reference.label)}</span>
+          <img src="${htmlEscape(reference.path)}" alt="${htmlEscape(reference.label)}">
+        </a>`,
+    )
+    .join("");
+
+  return `
+      <section>
+        <h4>Reference screenshots</h4>
+        <div class="refs">
+${images}
+        </div>
+      </section>`;
 }
 
 function renderPageCard(page) {
@@ -708,6 +770,7 @@ function renderPageCard(page) {
           <img src="${htmlEscape(page.screenshots.mobile.path)}" alt="${htmlEscape(page.site)} ${htmlEscape(page.route)} mobile screenshot">
         </a>
       </div>
+${renderReferenceImages(page)}
       <section>
         <h4>Current status</h4>
         <p>${htmlEscape(page.currentStatus)}</p>
@@ -927,6 +990,33 @@ function makeCockpit(data) {
     .shots a:nth-child(2) img {
       height: 220px;
     }
+    .refs {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .refs a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .refs span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .refs img {
+      display: block;
+      width: 100%;
+      max-height: 260px;
+      object-fit: contain;
+      object-position: top center;
+      border: 1px solid var(--line);
+      background: #f2f4f2;
+    }
     section {
       margin-top: 14px;
     }
@@ -1022,8 +1112,8 @@ async function main() {
     path.join(DOC_ROOT, "pages.json"),
     `${JSON.stringify(data, null, 2)}\n`,
   );
-  await writeFile(path.join(DOC_ROOT, "decision-log.md"), makeDecisionLog(data));
-  await writeFile(path.join(REVIEW_ROOT, "index.html"), makeCockpit(data));
+  await writeFile(path.join(DOC_ROOT, "decision-log.md"), stripTrailingWhitespace(makeDecisionLog(data)));
+  await writeFile(path.join(REVIEW_ROOT, "index.html"), stripTrailingWhitespace(makeCockpit(data)));
 
   const failures = enrichedPages.filter((page) => !page.liveCheck.ok);
   const screenshotFailures = enrichedPages.flatMap((page) =>

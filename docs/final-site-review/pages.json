@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-07T22:01:04.867Z",
+  "generatedAt": "2026-05-08T16:17:40.798Z",
   "viewports": {
     "desktop": {
       "width": 1440,
@@ -259,6 +259,51 @@
         "mobile": {
           "ok": true,
           "path": "screenshots/yattm-home-fiduciary-upgrade-mobile.jpg"
+        }
+      }
+    },
+    {
+      "id": "yattm-home-final-home",
+      "site": "You Are Paying Too Much",
+      "baseUrl": "http://localhost:3000",
+      "route": "/?variant=final-home",
+      "repo": "D:\\ria-marketing-page",
+      "pageRole": "Proposed final home: advisor hero plus final calculator",
+      "reviewGroup": "2. Entry and campaign variants",
+      "currentStatus": "Local branch-only finalist combining the fiduciary-upgrade first viewport with the final-C fee calculator shape.",
+      "decision": "NOT DONE",
+      "recommendation": "Use this as the current home-page finalist for review: advisor-led trust above the fold, then a clean calculator comparison immediately below.",
+      "nextActions": [
+        "Inspect desktop and mobile locally before marking DONE.",
+        "Decide whether to promote final-home into the root route or keep it as a named review variant.",
+        "Keep older query variants archived unless a campaign needs one."
+      ],
+      "referenceImages": [
+        {
+          "label": "Final-C calculator reference",
+          "path": "screenshots/fee-calculator-final-c-reference.png"
+        }
+      ],
+      "variantSources": [
+        "http://localhost:3000/?variant=fiduciary-upgrade above-the-fold reference",
+        "C:\\Users\\user2\\Documents\\Codex\\2026-05-01\\build-web-apps-plugin-build-web\\output\\playwright\\fee-calculator-final-c-desktop-full.png",
+        "codex://threads/019de458-de2a-77c3-af43-a63881f1d26c",
+        "C:\\Users\\user2\\Documents\\Codex\\2026-05-01\\build-web-apps-plugin-build-web\\docs\\superpowers\\specs"
+      ],
+      "url": "http://localhost:3000/?variant=final-home",
+      "liveCheck": {
+        "ok": true,
+        "httpStatus": 200,
+        "finalUrl": "http://localhost:3000/?variant=final-home"
+      },
+      "screenshots": {
+        "desktop": {
+          "ok": true,
+          "path": "screenshots/yattm-home-final-home-desktop.jpg"
+        },
+        "mobile": {
+          "ok": true,
+          "path": "screenshots/yattm-home-final-home-mobile.jpg"
         }
       }
     },
@@ -824,6 +869,7 @@
       "finalists": [
         "current /: calculator-first landing page",
         "branch homeMarketingVariants: direct-mail, fee-receipt, fiduciary-upgrade",
+        "final-home: fiduciary-upgrade hero combined with fee-calculator-final-c calculator shape",
         "historical /v2: Equation of Value, Three Pillars, Philosophy"
       ],
       "duplicatesSummarized": "The current production URL query variants return the same live page today; the differentiated variant copy exists on the local branch.",

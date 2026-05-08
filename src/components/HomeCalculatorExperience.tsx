@@ -3,8 +3,10 @@
 import type { ReactNode } from "react";
 import {
   Clock3,
+  Coins,
   DollarSign,
   Percent,
+  PieChart,
   ReceiptText,
   ScanLine,
   ShieldCheck,
@@ -14,8 +16,9 @@ import {
 import { formatCurrency } from "@/lib/format";
 import type {
   HomeCalculatorTheme,
-  HomeMarketingVariant,
+  HomeCalculatorLayout,
 } from "@/config/homeMarketingVariants";
+import type { ProjectionYear } from "@/lib/feeProjection";
 import { Odometer } from "@/components/Odometer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 
@@ -29,9 +32,17 @@ export type CalculatorSliderNodes = {
   years: ReactNode;
 };
 
+export type CalculatorSimpleControlNodes = {
+  advisoryFee: ReactNode;
+  growth: ReactNode;
+  portfolio: ReactNode;
+  years: ReactNode;
+};
+
 type HomeCalculatorExperienceProps = {
-  layout: HomeMarketingVariant["layout"];
+  layout: HomeCalculatorLayout;
   theme: HomeCalculatorTheme;
+  series: ProjectionYear[];
   savings: number;
   percentLost: number;
   finalValueWithoutFees: number;
@@ -52,10 +63,20 @@ type HomeCalculatorExperienceProps = {
   collapseControl: ReactNode;
   slidersExpanded: boolean;
   sliders: CalculatorSliderNodes;
+  simpleControls: CalculatorSimpleControlNodes;
   renderChart: (className: string) => ReactNode;
   activeScenario: Scenario | null;
   onHighlightScenario: (scenario: Scenario) => void;
 };
+
+function formatCompactCurrency(value: number) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    notation: "compact",
+    maximumFractionDigits: value >= 1000000 ? 2 : 0,
+  }).format(value);
+}
 
 function ScenarioButton({
   activeScenario,
@@ -486,6 +507,268 @@ function FeeReceiptCalculatorExperience(props: HomeCalculatorExperienceProps) {
   );
 }
 
+function FinalHomeStatCard({
+  accentClassName,
+  label,
+  ribbon,
+  tone,
+  value,
+}: {
+  accentClassName: string;
+  label: string;
+  ribbon: string;
+  tone: "blue" | "green";
+  value: string;
+}) {
+  return (
+    <article className="min-h-[160px] overflow-hidden rounded-md border border-[#DFE6EE] bg-white text-center">
+      <div
+        className={`flex min-h-[38px] items-center justify-center px-4 py-2 text-sm font-bold text-white ${
+          tone === "blue" ? "bg-[#064B84]" : "bg-[#108843]"
+        }`}
+      >
+        {ribbon}
+      </div>
+      <p className="mt-5 text-base font-medium text-[#294561]">{label}</p>
+      <strong className={`mt-2 block text-[clamp(2.1rem,4.7vw,3.35rem)] font-bold leading-none ${accentClassName}`}>
+        {value}
+      </strong>
+      <div className="mx-auto mt-4 w-[min(330px,72%)] border-t border-[#C8D2DC]" />
+      <p className="mt-3 text-sm text-[#42556C]">
+        {tone === "blue" ? "Your money, working for you." : "Fees reduce your future."}
+      </p>
+    </article>
+  );
+}
+
+function FinalHomeLineChart({
+  annualFeePercent,
+  finalValueWithFees,
+  finalValueWithoutFees,
+  series,
+  years,
+}: {
+  annualFeePercent: number;
+  finalValueWithFees: number;
+  finalValueWithoutFees: number;
+  series: ProjectionYear[];
+  years: number;
+}) {
+  const width = 1040;
+  const height = 310;
+  const pad = { top: 28, right: 148, bottom: 44, left: 82 };
+  const plotWidth = width - pad.left - pad.right;
+  const plotHeight = height - pad.top - pad.bottom;
+  const maxYear = Math.max(1, years, ...series.map((row) => row.year));
+  const maxValue = Math.max(finalValueWithoutFees, finalValueWithFees, ...series.map((row) => row.withoutFees));
+  const minValue =
+    Math.min(series[0]?.withoutFees ?? finalValueWithFees, ...series.map((row) => row.withFees)) * 0.92;
+  const valueRange = Math.max(1, maxValue - minValue);
+
+  const point = (row: ProjectionYear, key: "withoutFees" | "withFees") => {
+    const x = pad.left + (row.year / maxYear) * plotWidth;
+    const y = pad.top + (1 - (row[key] - minValue) / valueRange) * plotHeight;
+    return [x, y] as const;
+  };
+
+  const pathFor = (key: "withoutFees" | "withFees") =>
+    series
+      .map((row, index) => {
+        const [x, y] = point(row, key);
+        return `${index === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`;
+      })
+      .join(" ");
+
+  const yTicks = [0, 0.25, 0.5, 0.75, 1].map((ratio) => {
+    const value = minValue + valueRange * ratio;
+    const y = pad.top + (1 - ratio) * plotHeight;
+    return { value, y };
+  });
+
+  const ending = series[series.length - 1];
+  const [flatEndX, flatEndY] = point(ending, "withoutFees");
+  const [aumEndX, aumEndY] = point(ending, "withFees");
+
+  return (
+    <svg
+      className="block h-full min-h-[300px] w-full overflow-visible"
+      viewBox={`0 0 ${width} ${height}`}
+      role="img"
+      aria-label="Line chart comparing portfolio value under a flat fee and an asset-based fee"
+    >
+      {yTicks.map((tick) => (
+        <g key={tick.y}>
+          <line
+            x1={pad.left}
+            x2={width - pad.right}
+            y1={tick.y}
+            y2={tick.y}
+            stroke="#DCE4EB"
+            strokeWidth="1"
+          />
+          <text
+            x={pad.left - 16}
+            y={tick.y + 5}
+            textAnchor="end"
+            fill="#52657A"
+            fontSize="14"
+            fontWeight="600"
+          >
+            {formatCompactCurrency(tick.value)}
+          </text>
+        </g>
+      ))}
+
+      <path d={pathFor("withoutFees")} fill="none" stroke="#064B84" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d={pathFor("withFees")} fill="none" stroke="#108843" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+
+      <circle cx={flatEndX} cy={flatEndY} r="6" fill="#064B84" stroke="#FFFFFF" strokeWidth="3" />
+      <circle cx={aumEndX} cy={aumEndY} r="6" fill="#108843" stroke="#FFFFFF" strokeWidth="3" />
+
+      <text x={flatEndX + 14} y={flatEndY - 10} fill="#064B84" fontSize="17" fontWeight="760">
+        {formatCurrency(finalValueWithoutFees)}
+      </text>
+      <text x={aumEndX + 14} y={aumEndY + 18} fill="#108843" fontSize="17" fontWeight="760">
+        {formatCurrency(finalValueWithFees)}
+      </text>
+
+      <text x={pad.left} y={height - 12} textAnchor="middle" fill="#52657A" fontSize="14" fontWeight="600">
+        0
+      </text>
+      <text x={width - pad.right} y={height - 12} textAnchor="middle" fill="#52657A" fontSize="14" fontWeight="600">
+        {maxYear}
+      </text>
+      <text x={width / 2} y={height - 12} textAnchor="middle" fill="#52657A" fontSize="15" fontWeight="700">
+        Years
+      </text>
+      <title>{`Flat fee ${formatCurrency(finalValueWithoutFees)} versus asset-based fee ${formatCurrency(finalValueWithFees)} at ${annualFeePercent.toFixed(2)}%.`}</title>
+    </svg>
+  );
+}
+
+function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
+  const {
+    annualFeePercent,
+    finalValueWithFees,
+    finalValueWithoutFees,
+    percentLost,
+    series,
+    simpleControls,
+    savings,
+    totalAssetBasedFees,
+    years,
+  } = props;
+
+  return (
+    <div className="section-shell relative z-10 pb-16 pt-10 sm:pt-12">
+      <ScrollReveal className="mx-auto max-w-[1380px] overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]">
+        <header className="grid min-h-[132px] items-center gap-6 bg-[#062B43] px-6 py-6 text-white sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.42fr)]">
+          <div>
+            <h2 className="text-[clamp(2.15rem,3.6vw,3.85rem)] font-bold leading-none tracking-normal">
+              Fee Drag Calculator
+            </h2>
+            <p className="mt-3 text-base text-white/90 sm:text-lg">Keep more of what you earn.</p>
+          </div>
+          <div className="text-left lg:text-center">
+            <p className="text-sm font-bold text-white/85">Your potential savings</p>
+            <p className="mt-1 text-[clamp(2.45rem,5vw,4.5rem)] font-extrabold leading-none tracking-normal text-[#6FCF76]">
+              <Odometer value={savings} prefix="$" duration={1000} />
+            </p>
+            <p className="mt-1 text-sm font-bold text-white">over {years} years</p>
+          </div>
+        </header>
+
+        <section className="relative grid gap-5 px-4 pt-5 sm:px-7 md:grid-cols-2 md:gap-8" aria-label="Ending value comparison">
+          <FinalHomeStatCard
+            ribbon="Flat monthly fee ($100/mo)"
+            label="Flat-fee ending value"
+            value={formatCurrency(finalValueWithoutFees)}
+            tone="blue"
+            accentClassName="text-[#064B84]"
+          />
+          <div className="absolute left-1/2 top-[92px] z-10 hidden h-14 w-14 -translate-x-1/2 place-items-center rounded-full bg-[#062B43] text-base font-extrabold text-white shadow-[0_12px_28px_rgba(6,43,67,0.22)] md:grid">
+            VS
+          </div>
+          <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#062B43] text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(6,43,67,0.18)] md:hidden">
+            VS
+          </div>
+          <FinalHomeStatCard
+            ribbon={`With asset-based fees (${annualFeePercent.toFixed(2)}%)`}
+            label="With-fee ending value"
+            value={formatCurrency(finalValueWithFees)}
+            tone="green"
+            accentClassName="text-[#108843]"
+          />
+        </section>
+
+        <section className="mx-4 mt-4 rounded-md border border-[#DFE6EE] bg-white px-4 py-4 sm:mx-7 sm:px-6" aria-label="Portfolio value over time">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <h3 className="text-base font-bold tracking-normal text-slate-950">Portfolio value over time</h3>
+            <div className="flex flex-wrap gap-4 text-xs font-semibold text-[#41556C]">
+              <span className="inline-flex items-center gap-2">
+                <span className="h-[3px] w-4 rounded-full bg-[#064B84]" />
+                Flat fee
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <span className="h-[3px] w-4 rounded-full bg-[#108843]" />
+                With asset-based fee ({annualFeePercent.toFixed(2)}%)
+              </span>
+            </div>
+          </div>
+          <div className="mt-2 h-[330px] sm:h-[390px]">
+            <FinalHomeLineChart
+              annualFeePercent={annualFeePercent}
+              finalValueWithFees={finalValueWithFees}
+              finalValueWithoutFees={finalValueWithoutFees}
+              series={series}
+              years={years}
+            />
+          </div>
+        </section>
+
+        <section className="mx-4 mt-4 grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white sm:mx-7 md:grid-cols-2 xl:grid-cols-4" aria-label="Calculator inputs">
+          <div className="border-b border-[#DFE6EE] p-4 md:border-r xl:border-b-0">{simpleControls.portfolio}</div>
+          <div className="border-b border-[#DFE6EE] p-4 xl:border-b-0 xl:border-r">{simpleControls.years}</div>
+          <div className="border-b border-[#DFE6EE] p-4 md:border-r md:border-b-0">{simpleControls.growth}</div>
+          <div className="p-4">{simpleControls.advisoryFee}</div>
+        </section>
+
+        <section className="mx-4 mt-4 grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white sm:mx-7 md:grid-cols-2" aria-label="Fee summary">
+          <article className="flex min-h-[88px] items-center justify-center gap-5 border-b border-[#DFE6EE] p-5 md:border-b-0 md:border-r">
+            <Coins className="h-12 w-12 text-[#062B43]" strokeWidth={1.8} />
+            <div>
+              <p className="text-sm text-[#41556C]">Fees paid</p>
+              <p className="mt-1 text-[clamp(1.8rem,3vw,2.45rem)] font-bold leading-none text-[#108843]">
+                {formatCurrency(totalAssetBasedFees)}
+              </p>
+            </div>
+          </article>
+          <article className="flex min-h-[88px] items-center justify-center gap-5 p-5">
+            <PieChart className="h-12 w-12 text-[#062B43]" strokeWidth={1.8} />
+            <div>
+              <p className="text-sm text-[#41556C]">Wealth lost</p>
+              <p className="mt-1 text-[clamp(1.8rem,3vw,2.45rem)] font-bold leading-none text-[#108843]">
+                {percentLost.toFixed(1)}%
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <a
+          href="/how-it-works"
+          className="mx-4 mt-4 flex min-h-[46px] items-center justify-center rounded-md bg-[#108843] px-4 text-center text-base font-bold !text-white no-underline transition hover:bg-[#0B7639] sm:mx-7"
+        >
+          See how a flat-fee approach can help you keep more.
+        </a>
+        <p className="px-4 pb-5 pt-4 text-center text-xs leading-relaxed text-[#667587] sm:px-7">
+          This calculator is for illustrative purposes only and does not represent actual performance.
+          Values are nominal and before taxes.
+        </p>
+      </ScrollReveal>
+    </div>
+  );
+}
+
 function AdvisorCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const {
     activeScenario,
@@ -590,6 +873,10 @@ function AdvisorCalculatorExperience(props: HomeCalculatorExperienceProps) {
 }
 
 export function HomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
+  if (props.layout === "final-c") {
+    return <FinalHomeCalculatorExperience {...props} />;
+  }
+
   if (props.layout === "receipt") {
     return <FeeReceiptCalculatorExperience {...props} />;
   }

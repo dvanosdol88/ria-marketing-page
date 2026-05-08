@@ -15,6 +15,7 @@ import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
 import {
   HomeCalculatorExperience,
+  type CalculatorSimpleControlNodes,
   type CalculatorSliderNodes,
 } from "@/components/HomeCalculatorExperience";
 import {
@@ -70,6 +71,73 @@ interface PillSliderProps {
   // Array mode - overrides min/max/step when provided
   values?: number[];
   majorSteps?: Set<number>;
+}
+
+interface SimpleRangeControlProps {
+  accentColor?: string;
+  boundsFormatter: (value: number) => string;
+  formatter: (value: number) => string;
+  label: string;
+  max: number;
+  min: number;
+  onChange: (value: number) => void;
+  step: number;
+  value: number;
+}
+
+function SimpleRangeControl({
+  accentColor = "#064B84",
+  boundsFormatter,
+  formatter,
+  label,
+  max,
+  min,
+  onChange,
+  step,
+  value,
+}: SimpleRangeControlProps) {
+  const precision = useMemo(() => {
+    const decimalPart = step.toString().split(".")[1];
+    return decimalPart ? decimalPart.length : 0;
+  }, [step]);
+
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const raw = Number.parseFloat(event.target.value);
+      if (Number.isNaN(raw)) return;
+      const snapped = Number((Math.round(raw / step) * step).toFixed(precision));
+      const clamped = Math.min(max, Math.max(min, snapped));
+      onChange(clamped);
+    },
+    [max, min, onChange, precision, step]
+  );
+
+  return (
+    <label className="grid gap-3" htmlFor={`final-${label.toLowerCase().replaceAll(" ", "-")}`}>
+      <span className="grid gap-2">
+        <span className="text-[13px] font-bold leading-none text-[#213B56]">{label}</span>
+        <span className="min-h-[34px] rounded border border-[#DFE6EE] bg-[#FBFCFD] px-3 py-2 text-base font-bold leading-none text-[#10233A] tabular-nums">
+          {formatter(value)}
+        </span>
+      </span>
+      <input
+        id={`final-${label.toLowerCase().replaceAll(" ", "-")}`}
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={handleChange}
+        className="h-2 w-full cursor-pointer"
+        style={{ accentColor }}
+        aria-label={label}
+      />
+      <span className="flex items-center justify-between gap-4 text-xs text-[#5E6F80]">
+        <span>{boundsFormatter(min)}</span>
+        <span>{boundsFormatter(max)}</span>
+      </span>
+    </label>
+  );
 }
 
 function PillSlider({
@@ -460,7 +528,7 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
           format={(v) => `${v.toFixed(2)}%`}
           variant="destructive"
           theme={calculatorTheme.slider}
-          pillColorOverride={marketingVariantId === "fiduciary-upgrade" ? "#FB7185" : "#7F1D1D"}
+          pillColorOverride={marketingVariant.layout === "advisor" ? "#FB7185" : "#7F1D1D"}
           min={0}
           max={3}
           step={0.05}
@@ -487,7 +555,7 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
         format={(v) => formatCurrency(v)}
         variant="accumulation"
         theme={calculatorTheme.slider}
-        min={300000}
+        min={250000}
         max={5000000}
         step={50000}
       />
@@ -515,6 +583,58 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
         theme={calculatorTheme.slider}
         values={TIME_HORIZON_VALUES}
         majorSteps={TIME_HORIZON_MAJOR}
+      />
+    ),
+  };
+
+  const simpleControls: CalculatorSimpleControlNodes = {
+    portfolio: (
+      <SimpleRangeControl
+        label="Portfolio value"
+        value={state.portfolioValue}
+        onChange={(value) => setState((prev) => ({ ...prev, portfolioValue: value }))}
+        formatter={(value) => formatCurrency(value)}
+        boundsFormatter={(value) => formatCurrency(value)}
+        min={250000}
+        max={5000000}
+        step={25000}
+      />
+    ),
+    years: (
+      <SimpleRangeControl
+        label="Years"
+        value={state.years}
+        onChange={(value) => setState((prev) => ({ ...prev, years: Math.round(value) }))}
+        formatter={(value) => `${Math.round(value)}`}
+        boundsFormatter={(value) => `${Math.round(value)}`}
+        min={1}
+        max={40}
+        step={1}
+      />
+    ),
+    growth: (
+      <SimpleRangeControl
+        label="Annualized growth"
+        value={state.annualGrowthPercent}
+        onChange={(value) => setState((prev) => ({ ...prev, annualGrowthPercent: value }))}
+        formatter={(value) => `${value.toFixed(2)}%`}
+        boundsFormatter={(value) => `${value.toFixed(2)}%`}
+        min={0}
+        max={12}
+        step={0.25}
+      />
+    ),
+    advisoryFee: (
+      <SimpleRangeControl
+        accentColor="#108843"
+        label="Asset-based fee"
+        value={state.annualFeePercent}
+        onChange={(value) => setState((prev) => ({ ...prev, annualFeePercent: value }))}
+        formatter={(value) => `${value.toFixed(2)}%`}
+        boundsFormatter={(value) => `${value.toFixed(2)}%`}
+        min={0.25}
+        max={2.5}
+        step={0.05}
       />
     ),
   };
@@ -680,8 +800,9 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
         <div className={`pointer-events-none absolute inset-0 ${calculatorTheme.backdropClassName}`} />
 
         <HomeCalculatorExperience
-          layout={marketingVariant.layout}
+          layout={marketingVariant.calculatorLayout ?? marketingVariant.layout}
           theme={calculatorTheme}
+          series={projection.series}
           savings={projection.savings}
           percentLost={percentLost}
           finalValueWithoutFees={projection.finalValueWithoutFees}
@@ -702,6 +823,7 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
           collapseControl={collapseControl}
           slidersExpanded={slidersExpanded}
           sliders={calculatorSliders}
+          simpleControls={simpleControls}
           renderChart={renderChart}
           activeScenario={activeCard}
           onHighlightScenario={handleCardTap}

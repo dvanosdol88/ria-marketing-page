@@ -252,7 +252,7 @@ function AdvisorMiniCalculator({
         <div className="space-y-2 border-t border-white/10 pt-3">
           <MiniTextInput
             label="Portfolio"
-            min={300000}
+            min={250000}
             max={5000000}
             prefix="$"
             value={portfolioValue}

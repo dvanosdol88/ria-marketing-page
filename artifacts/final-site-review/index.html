@@ -170,6 +170,33 @@
     .shots a:nth-child(2) img {
       height: 220px;
     }
+    .refs {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .refs a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .refs span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .refs img {
+      display: block;
+      width: 100%;
+      max-height: 260px;
+      object-fit: contain;
+      object-position: top center;
+      border: 1px solid var(--line);
+      background: #f2f4f2;
+    }
     section {
       margin-top: 14px;
     }
@@ -213,8 +240,8 @@
     <h1>Final Website Decision Cockpit</h1>
     <p>Review board for deciding what is done, not done, internal only, or cut across Smarter Way Wealth and You Are Paying Too Much. Generated from live production screenshots and the historical variant catalog.</p>
     <div class="stats">
-      <div class="stat"><strong>21</strong><span>review cards</span></div>
-      <div class="stat"><strong>10</strong><span>not done</span></div>
+      <div class="stat"><strong>22</strong><span>review cards</span></div>
+      <div class="stat"><strong>11</strong><span>not done</span></div>
       <div class="stat"><strong>3</strong><span>done</span></div>
       <div class="stat"><strong>8</strong><span>internal only</span></div>
     </div>
@@ -224,10 +251,10 @@
       <a href="#1-Smarter-Way-Wealth-trust-hub">1. Smarter Way Wealth trust hub</a><a href="#2-Entry-and-campaign-variants">2. Entry and campaign variants</a><a href="#3-Core-funnel-pages">3. Core funnel pages</a><a href="#4-Proof-and-support-pages">4. Proof and support pages</a><a href="#5-Internal-and-dev-pages">5. Internal and dev pages</a>
       <a href="#historical-variants">Historical variants</a>
     </nav>
-    
+
           <h2 class="section-title" id="1-Smarter-Way-Wealth-trust-hub">1. Smarter Way Wealth trust hub</h2>
           <div class="grid">
-            
+
     <article class="page-card" id="sww-home">
       <div class="card-head">
         <div>
@@ -251,6 +278,7 @@
           <img src="screenshots/sww-home-mobile.jpg" alt="Smarter Way Wealth / mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live placeholder; firm identity present but not yet a designed trust hub.</p>
@@ -270,7 +298,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="sww-privacy">
       <div class="card-head">
         <div>
@@ -294,6 +322,7 @@
           <img src="screenshots/sww-privacy-mobile.jpg" alt="Smarter Way Wealth /privacy mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live legal/privacy support page.</p>
@@ -313,7 +342,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="sww-footer-disclosures">
       <div class="card-head">
         <div>
@@ -337,6 +366,7 @@
           <img src="screenshots/sww-footer-disclosures-mobile.jpg" alt="Smarter Way Wealth / mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live disclosure footer with CRD, IAPD, educational-use, and risk language.</p>
@@ -356,12 +386,12 @@
         </div>
       </section>
     </article>
-  
+
           </div>
-        
+
           <h2 class="section-title" id="2-Entry-and-campaign-variants">2. Entry and campaign variants</h2>
           <div class="grid">
-            
+
     <article class="page-card" id="yattm-home">
       <div class="card-head">
         <div>
@@ -385,6 +415,7 @@
           <img src="screenshots/yattm-home-mobile.jpg" alt="You Are Paying Too Much / mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live calculator-first page.</p>
@@ -404,7 +435,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-home-direct-mail">
       <div class="card-head">
         <div>
@@ -428,6 +459,7 @@
           <img src="screenshots/yattm-home-direct-mail-mobile.jpg" alt="You Are Paying Too Much /?variant=direct-mail mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live URL returns 200, but production currently renders the same home page rather than local branch variant copy.</p>
@@ -447,7 +479,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-home-fee-receipt">
       <div class="card-head">
         <div>
@@ -471,6 +503,7 @@
           <img src="screenshots/yattm-home-fee-receipt-mobile.jpg" alt="You Are Paying Too Much /?variant=fee-receipt mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live URL returns 200, but production currently renders the same home page rather than local branch variant copy.</p>
@@ -490,7 +523,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-home-fiduciary-upgrade">
       <div class="card-head">
         <div>
@@ -514,6 +547,7 @@
           <img src="screenshots/yattm-home-fiduciary-upgrade-mobile.jpg" alt="You Are Paying Too Much /?variant=fiduciary-upgrade mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live URL returns 200, but production currently renders the same home page rather than local branch variant copy.</p>
@@ -533,12 +567,66 @@
         </div>
       </section>
     </article>
-  
+
+    <article class="page-card" id="yattm-home-final-home">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/?variant=final-home</h3>
+          <p class="role">Proposed final home: advisor hero plus final calculator</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>2. Entry and campaign variants</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-home-final-home-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-home-final-home-desktop.jpg" alt="You Are Paying Too Much /?variant=final-home desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-home-final-home-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-home-final-home-mobile.jpg" alt="You Are Paying Too Much /?variant=final-home mobile screenshot">
+        </a>
+      </div>
+
+      <section>
+        <h4>Reference screenshots</h4>
+        <div class="refs">
+
+        <a href="screenshots/fee-calculator-final-c-reference.png">
+          <span>Final-C calculator reference</span>
+          <img src="screenshots/fee-calculator-final-c-reference.png" alt="Final-C calculator reference">
+        </a>
+        </div>
+      </section>
+      <section>
+        <h4>Current status</h4>
+        <p>Local branch-only finalist combining the fiduciary-upgrade first viewport with the final-C fee calculator shape.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Use this as the current home-page finalist for review: advisor-led trust above the fold, then a clean calculator comparison immediately below.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Inspect desktop and mobile locally before marking DONE.</li><li>Decide whether to promote final-home into the root route or keep it as a named review variant.</li><li>Keep older query variants archived unless a campaign needs one.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>http://localhost:3000/?variant=fiduciary-upgrade above-the-fold reference</li><li>C:\Users\user2\Documents\Codex\2026-05-01\build-web-apps-plugin-build-web\output\playwright\fee-calculator-final-c-desktop-full.png</li><li>codex://threads/019de458-de2a-77c3-af43-a63881f1d26c</li><li>C:\Users\user2\Documents\Codex\2026-05-01\build-web-apps-plugin-build-web\docs\superpowers\specs</li></ul>
+        </div>
+      </section>
+    </article>
+
           </div>
-        
+
           <h2 class="section-title" id="3-Core-funnel-pages">3. Core funnel pages</h2>
           <div class="grid">
-            
+
     <article class="page-card" id="yattm-upgrade">
       <div class="card-head">
         <div>
@@ -562,6 +650,7 @@
           <img src="screenshots/yattm-upgrade-mobile.jpg" alt="You Are Paying Too Much /upgrade-your-advice mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live consolidated page.</p>
@@ -581,7 +670,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-improve">
       <div class="card-head">
         <div>
@@ -605,6 +694,7 @@
           <img src="screenshots/yattm-improve-mobile.jpg" alt="You Are Paying Too Much /improve-your-tools mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live route with canonical animated header and tool sections.</p>
@@ -624,7 +714,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-save">
       <div class="card-head">
         <div>
@@ -648,6 +738,7 @@
           <img src="screenshots/yattm-save-mobile.jpg" alt="You Are Paying Too Much /save mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live fee projection chart and savings visualization.</p>
@@ -667,7 +758,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-save-a-ton">
       <div class="card-head">
         <div>
@@ -691,6 +782,7 @@
           <img src="screenshots/yattm-save-a-ton-mobile.jpg" alt="You Are Paying Too Much /save-a-ton mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live placeholder-style page.</p>
@@ -710,7 +802,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-meaning">
       <div class="card-head">
         <div>
@@ -734,6 +826,7 @@
           <img src="screenshots/yattm-meaning-mobile.jpg" alt="You Are Paying Too Much /meaning mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live consolidated Task vs Purpose route.</p>
@@ -753,12 +846,12 @@
         </div>
       </section>
     </article>
-  
+
           </div>
-        
+
           <h2 class="section-title" id="4-Proof-and-support-pages">4. Proof and support pages</h2>
           <div class="grid">
-            
+
     <article class="page-card" id="yattm-how-it-works">
       <div class="card-head">
         <div>
@@ -782,6 +875,7 @@
           <img src="screenshots/yattm-how-it-works-mobile.jpg" alt="You Are Paying Too Much /how-it-works mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live technical math and URL parameter page.</p>
@@ -801,7 +895,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-substitution">
       <div class="card-head">
         <div>
@@ -825,6 +919,7 @@
           <img src="screenshots/yattm-substitution-mobile.jpg" alt="You Are Paying Too Much /how-it-works/substitution mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live interactive portfolio architecture demo.</p>
@@ -844,7 +939,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-faq">
       <div class="card-head">
         <div>
@@ -868,6 +963,7 @@
           <img src="screenshots/yattm-faq-mobile.jpg" alt="You Are Paying Too Much /faq mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live FAQ route.</p>
@@ -887,7 +983,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-our-math">
       <div class="card-head">
         <div>
@@ -911,6 +1007,7 @@
           <img src="screenshots/yattm-our-math-mobile.jpg" alt="You Are Paying Too Much /our-math mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live methodology support page.</p>
@@ -930,7 +1027,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-privacy">
       <div class="card-head">
         <div>
@@ -954,6 +1051,7 @@
           <img src="screenshots/yattm-privacy-mobile.jpg" alt="You Are Paying Too Much /privacy mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live privacy route.</p>
@@ -973,12 +1071,12 @@
         </div>
       </section>
     </article>
-  
+
           </div>
-        
+
           <h2 class="section-title" id="5-Internal-and-dev-pages">5. Internal and dev pages</h2>
           <div class="grid">
-            
+
     <article class="page-card" id="yattm-gallery">
       <div class="card-head">
         <div>
@@ -1002,6 +1100,7 @@
           <img src="screenshots/yattm-gallery-mobile.jpg" alt="You Are Paying Too Much /gallery mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live/dev gallery route.</p>
@@ -1021,7 +1120,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-mobile-calculator">
       <div class="card-head">
         <div>
@@ -1045,6 +1144,7 @@
           <img src="screenshots/yattm-mobile-calculator-mobile.jpg" alt="You Are Paying Too Much /mobile-calculator mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live route.</p>
@@ -1064,7 +1164,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-experiment">
       <div class="card-head">
         <div>
@@ -1088,6 +1188,7 @@
           <img src="screenshots/yattm-experiment-mobile.jpg" alt="You Are Paying Too Much /experiment mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live experiment route.</p>
@@ -1107,7 +1208,7 @@
         </div>
       </section>
     </article>
-  
+
     <article class="page-card" id="yattm-calendar">
       <div class="card-head">
         <div>
@@ -1131,6 +1232,7 @@
           <img src="screenshots/yattm-calendar-mobile.jpg" alt="You Are Paying Too Much /components/calendar mobile screenshot">
         </a>
       </div>
+
       <section>
         <h4>Current status</h4>
         <p>Live component preview route.</p>
@@ -1150,12 +1252,12 @@
         </div>
       </section>
     </article>
-  
+
           </div>
-        
+
     <h2 class="section-title" id="historical-variants">Historical Variant Finalists</h2>
     <div class="variant-grid">
-      
+
     <article class="variant-card">
       <h3>Upgrade Your Advice</h3>
       <p>Keep the current route, then curate it into one sharper final page using the custodian message, source rigor, and the most useful visuals.</p>
@@ -1164,7 +1266,7 @@
       <h4>Duplicates summarized</h4>
       <p>upgrade4 duplicates upgrade3. upgrade1/upgrade2 are useful personal-story foundations but not standalone finalists.</p>
     </article>
-  
+
     <article class="variant-card">
       <h3>Save</h3>
       <p>Build one final /save proof page and either cut or redirect /save-a-ton unless that phrase becomes a campaign-specific page.</p>
@@ -1173,7 +1275,7 @@
       <h4>Duplicates summarized</h4>
       <p>save1/save2/save3 overlap heavily on fee arithmetic, quotes, and charts.</p>
     </article>
-  
+
     <article class="variant-card">
       <h3>Improve Your Tools</h3>
       <p>Keep the current route, tighten the first viewport, and make the RightCapital/tool proof feel like a serious planning workflow rather than a software tour.</p>
@@ -1182,7 +1284,7 @@
       <h4>Duplicates summarized</h4>
       <p>The improve variants mostly share structure and differ in copy/order. The current route already carries the canonical header.</p>
     </article>
-  
+
     <article class="variant-card">
       <h3>Meaning / Purpose</h3>
       <p>Keep one purpose page only. Use the Engine/Pilot idea if it supports trust, and remove anything that sounds like generic motivational copy.</p>
@@ -1191,19 +1293,19 @@
       <h4>Duplicates summarized</h4>
       <p>Jensen/task-vs-purpose material appears in four places and now needs curation, not more accumulation.</p>
     </article>
-  
+
     <article class="variant-card">
       <h3>Home</h3>
       <p>Make / the decision engine: calculator first, then a concise route into Upgrade, Improve, Save, and the Smarter Way Wealth trust hub.</p>
       <h4>Finalists</h4>
-      <ul><li>current /: calculator-first landing page</li><li>branch homeMarketingVariants: direct-mail, fee-receipt, fiduciary-upgrade</li><li>historical /v2: Equation of Value, Three Pillars, Philosophy</li></ul>
+      <ul><li>current /: calculator-first landing page</li><li>branch homeMarketingVariants: direct-mail, fee-receipt, fiduciary-upgrade</li><li>final-home: fiduciary-upgrade hero combined with fee-calculator-final-c calculator shape</li><li>historical /v2: Equation of Value, Three Pillars, Philosophy</li></ul>
       <h4>Duplicates summarized</h4>
       <p>The current production URL query variants return the same live page today; the differentiated variant copy exists on the local branch.</p>
     </article>
-  
+
     </div>
     <footer>
-      Generated 2026-05-07T22:01:04.867Z. Source data: docs/final-site-review/pages.json.
+      Generated 2026-05-08T16:17:40.798Z. Source data: docs/final-site-review/pages.json.
     </footer>
   </main>
 </body>
