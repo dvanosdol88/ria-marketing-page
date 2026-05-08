@@ -79,7 +79,8 @@ const variantFamilies = [
   {
     family: "Home",
     finalists: [
-      "current /: calculator-first landing page",
+      "current local /: final-C calculator-first landing page",
+      "top banner finalists: founder-proof, qr-bridge, advisor-standard",
       "branch homeMarketingVariants: direct-mail, fee-receipt, fiduciary-upgrade",
       "final-home: fiduciary-upgrade hero combined with fee-calculator-final-c calculator shape",
       "historical /v2: Equation of Value, Three Pillars, Philosophy",
@@ -95,22 +96,24 @@ const pages = [
   {
     id: "sww-home",
     site: "Smarter Way Wealth",
-    baseUrl: "https://smarterwaywealth.com",
+    baseUrl: "http://localhost:3001",
     route: "/",
     repo: "D:\\smarter-way-wealth",
     pageRole: "Corporate trust hub home",
     reviewGroup: "1. Smarter Way Wealth trust hub",
-    currentStatus: "Live placeholder; firm identity present but not yet a designed trust hub.",
+    currentStatus:
+      "Local branch proposed trust hub using the advisor-led final-home direction from the fee-calculator review.",
     decision: STATUS.NOT_DONE,
     recommendation:
-      "Redesign as the firm legitimacy hub: standard, advisor identity, who it serves, why the model exists, and clear handoff into the fee-calculator funnel.",
+      "Use as the firm landing page after the calculator: advisor identity, fiduciary standard, flat monthly fee, and clear path back to the fee calculator.",
     nextActions: [
-      "Create section-level visual concepts before implementation.",
-      "Use serious trust-building language, not generic About Us framing.",
+      "Review desktop and mobile before marking DONE.",
+      "Keep noindex until David approves the public launch.",
       "Link clearly to youarepayingtoomuch.com as the calculator/proof experience.",
     ],
     variantSources: [
-      "D:\\smarter-way-wealth\\RIA-sample-home-pages.txt reference list",
+      "http://localhost:3000/?variant=final-home",
+      "D:\\smarter-way-wealth\\src\\app\\page.js",
       "Prior origin-story spine: qualified to give better advice, but not free to give it",
     ],
   },
@@ -154,25 +157,82 @@ const pages = [
   {
     id: "yattm-home",
     site: "You Are Paying Too Much",
-    baseUrl: "https://youarepayingtoomuch.com",
+    baseUrl: "http://localhost:3000",
     route: "/",
     repo: "D:\\ria-marketing-page",
-    pageRole: "Calculator-first entry page",
+    pageRole: "Proposed QR root: calculator-first with founder banner",
     reviewGroup: "2. Entry and campaign variants",
-    currentStatus: "Live calculator-first page.",
+    currentStatus: "Local branch proposed root: final-C calculator first, founder-proof banner above it.",
     decision: STATUS.NOT_DONE,
     recommendation:
-      "Keep the calculator as the first interaction, then make the next-step path unmistakable: Upgrade, Improve, Save, or firm trust hub.",
+      "Use this as the default QR-code destination unless another banner variant wins the final review.",
     nextActions: [
-      "Decide whether the calculator should stay stark or gain a stronger brand/trust frame.",
-      "Compare against historical /v2 three-pillar structure.",
-      "Ensure the first viewport reads cleanly on mobile without odometer text artifacts.",
+      "Pick the top banner treatment.",
+      "Confirm the calculator CTA should continue to Smarter Way Wealth.",
+      "Verify mobile first viewport keeps the banner and calculator relationship clear.",
     ],
     variantSources: [
-      "current /",
-      "historical /v2",
-      "src/config/homeMarketingVariants.ts",
+      "local /",
+      "src/config/homeTopBanners.ts: founder-proof",
+      "src/config/homeMarketingVariants.ts: final-home calculatorLayout",
     ],
+  },
+  {
+    id: "yattm-home-banner-founder-proof",
+    site: "You Are Paying Too Much",
+    baseUrl: "http://localhost:3000",
+    route: "/?banner=founder-proof",
+    repo: "D:\\ria-marketing-page",
+    pageRole: "Banner finalist: founder proof",
+    reviewGroup: "2. Entry and campaign variants",
+    currentStatus:
+      "Local branch-only banner finalist using David portrait, credentials, flat-fee model, and Smarter Way Wealth handoff.",
+    decision: STATUS.NOT_DONE,
+    recommendation:
+      "Recommended default because it gives the calculator immediate human/trust context without burying the tool.",
+    nextActions: [
+      "Review against QR bridge and advisor standard variants.",
+      "If chosen, promote as the default banner and mark the other banners INTERNAL ONLY.",
+    ],
+    variantSources: ["src/config/homeTopBanners.ts: founder-proof"],
+  },
+  {
+    id: "yattm-home-banner-qr-bridge",
+    site: "You Are Paying Too Much",
+    baseUrl: "http://localhost:3000",
+    route: "/?banner=qr-bridge",
+    repo: "D:\\ria-marketing-page",
+    pageRole: "Banner finalist: QR bridge",
+    reviewGroup: "2. Entry and campaign variants",
+    currentStatus:
+      "Local branch-only banner finalist that directly acknowledges the QR-code/mailer handoff before the calculator.",
+    decision: STATUS.NOT_DONE,
+    recommendation:
+      "Use if the mailer context needs to be explicit at the top of the page.",
+    nextActions: [
+      "Compare with the founder-proof banner for trust and visual polish.",
+      "Confirm whether QR language should remain visible after non-mailer traffic arrives.",
+    ],
+    variantSources: ["src/config/homeTopBanners.ts: qr-bridge"],
+  },
+  {
+    id: "yattm-home-banner-advisor-standard",
+    site: "You Are Paying Too Much",
+    baseUrl: "http://localhost:3000",
+    route: "/?banner=advisor-standard",
+    repo: "D:\\ria-marketing-page",
+    pageRole: "Banner finalist: advisor standard",
+    reviewGroup: "2. Entry and campaign variants",
+    currentStatus:
+      "Local branch-only banner finalist focused on credentialed fiduciary standards rather than campaign language.",
+    decision: STATUS.NOT_DONE,
+    recommendation:
+      "Use if the final homepage needs the quietest, most professional trust signal.",
+    nextActions: [
+      "Review against founder-proof for warmth and clarity.",
+      "Confirm whether this tone belongs on You Are Paying Too Much or should live mainly on Smarter Way Wealth.",
+    ],
+    variantSources: ["src/config/homeTopBanners.ts: advisor-standard"],
   },
   {
     id: "yattm-home-direct-mail",

@@ -240,8 +240,8 @@
     <h1>Final Website Decision Cockpit</h1>
     <p>Review board for deciding what is done, not done, internal only, or cut across Smarter Way Wealth and You Are Paying Too Much. Generated from live production screenshots and the historical variant catalog.</p>
     <div class="stats">
-      <div class="stat"><strong>22</strong><span>review cards</span></div>
-      <div class="stat"><strong>11</strong><span>not done</span></div>
+      <div class="stat"><strong>25</strong><span>review cards</span></div>
+      <div class="stat"><strong>14</strong><span>not done</span></div>
       <div class="stat"><strong>3</strong><span>done</span></div>
       <div class="stat"><strong>8</strong><span>internal only</span></div>
     </div>
@@ -281,20 +281,20 @@
 
       <section>
         <h4>Current status</h4>
-        <p>Live placeholder; firm identity present but not yet a designed trust hub.</p>
+        <p>Local branch proposed trust hub using the advisor-led final-home direction from the fee-calculator review.</p>
       </section>
       <section>
         <h4>Recommendation</h4>
-        <p>Redesign as the firm legitimacy hub: standard, advisor identity, who it serves, why the model exists, and clear handoff into the fee-calculator funnel.</p>
+        <p>Use as the firm landing page after the calculator: advisor identity, fiduciary standard, flat monthly fee, and clear path back to the fee calculator.</p>
       </section>
       <section class="split-copy">
         <div>
           <h4>Next actions</h4>
-          <ul><li>Create section-level visual concepts before implementation.</li><li>Use serious trust-building language, not generic About Us framing.</li><li>Link clearly to youarepayingtoomuch.com as the calculator/proof experience.</li></ul>
+          <ul><li>Review desktop and mobile before marking DONE.</li><li>Keep noindex until David approves the public launch.</li><li>Link clearly to youarepayingtoomuch.com as the calculator/proof experience.</li></ul>
         </div>
         <div>
           <h4>Variant sources</h4>
-          <ul><li>D:\smarter-way-wealth\RIA-sample-home-pages.txt reference list</li><li>Prior origin-story spine: qualified to give better advice, but not free to give it</li></ul>
+          <ul><li>http://localhost:3000/?variant=final-home</li><li>D:\smarter-way-wealth\src\app\page.js</li><li>Prior origin-story spine: qualified to give better advice, but not free to give it</li></ul>
         </div>
       </section>
     </article>
@@ -397,7 +397,7 @@
         <div>
           <p class="site">You Are Paying Too Much</p>
           <h3>/</h3>
-          <p class="role">Calculator-first entry page</p>
+          <p class="role">Proposed QR root: calculator-first with founder banner</p>
         </div>
         <span class="decision not-done">NOT DONE</span>
       </div>
@@ -418,20 +418,152 @@
 
       <section>
         <h4>Current status</h4>
-        <p>Live calculator-first page.</p>
+        <p>Local branch proposed root: final-C calculator first, founder-proof banner above it.</p>
       </section>
       <section>
         <h4>Recommendation</h4>
-        <p>Keep the calculator as the first interaction, then make the next-step path unmistakable: Upgrade, Improve, Save, or firm trust hub.</p>
+        <p>Use this as the default QR-code destination unless another banner variant wins the final review.</p>
       </section>
       <section class="split-copy">
         <div>
           <h4>Next actions</h4>
-          <ul><li>Decide whether the calculator should stay stark or gain a stronger brand/trust frame.</li><li>Compare against historical /v2 three-pillar structure.</li><li>Ensure the first viewport reads cleanly on mobile without odometer text artifacts.</li></ul>
+          <ul><li>Pick the top banner treatment.</li><li>Confirm the calculator CTA should continue to Smarter Way Wealth.</li><li>Verify mobile first viewport keeps the banner and calculator relationship clear.</li></ul>
         </div>
         <div>
           <h4>Variant sources</h4>
-          <ul><li>current /</li><li>historical /v2</li><li>src/config/homeMarketingVariants.ts</li></ul>
+          <ul><li>local /</li><li>src/config/homeTopBanners.ts: founder-proof</li><li>src/config/homeMarketingVariants.ts: final-home calculatorLayout</li></ul>
+        </div>
+      </section>
+    </article>
+
+    <article class="page-card" id="yattm-home-banner-founder-proof">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/?banner=founder-proof</h3>
+          <p class="role">Banner finalist: founder proof</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>2. Entry and campaign variants</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-home-banner-founder-proof-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-home-banner-founder-proof-desktop.jpg" alt="You Are Paying Too Much /?banner=founder-proof desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-home-banner-founder-proof-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-home-banner-founder-proof-mobile.jpg" alt="You Are Paying Too Much /?banner=founder-proof mobile screenshot">
+        </a>
+      </div>
+
+      <section>
+        <h4>Current status</h4>
+        <p>Local branch-only banner finalist using David portrait, credentials, flat-fee model, and Smarter Way Wealth handoff.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Recommended default because it gives the calculator immediate human/trust context without burying the tool.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Review against QR bridge and advisor standard variants.</li><li>If chosen, promote as the default banner and mark the other banners INTERNAL ONLY.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>src/config/homeTopBanners.ts: founder-proof</li></ul>
+        </div>
+      </section>
+    </article>
+
+    <article class="page-card" id="yattm-home-banner-qr-bridge">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/?banner=qr-bridge</h3>
+          <p class="role">Banner finalist: QR bridge</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>2. Entry and campaign variants</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-home-banner-qr-bridge-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-home-banner-qr-bridge-desktop.jpg" alt="You Are Paying Too Much /?banner=qr-bridge desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-home-banner-qr-bridge-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-home-banner-qr-bridge-mobile.jpg" alt="You Are Paying Too Much /?banner=qr-bridge mobile screenshot">
+        </a>
+      </div>
+
+      <section>
+        <h4>Current status</h4>
+        <p>Local branch-only banner finalist that directly acknowledges the QR-code/mailer handoff before the calculator.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Use if the mailer context needs to be explicit at the top of the page.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Compare with the founder-proof banner for trust and visual polish.</li><li>Confirm whether QR language should remain visible after non-mailer traffic arrives.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>src/config/homeTopBanners.ts: qr-bridge</li></ul>
+        </div>
+      </section>
+    </article>
+
+    <article class="page-card" id="yattm-home-banner-advisor-standard">
+      <div class="card-head">
+        <div>
+          <p class="site">You Are Paying Too Much</p>
+          <h3>/?banner=advisor-standard</h3>
+          <p class="role">Banner finalist: advisor standard</p>
+        </div>
+        <span class="decision not-done">NOT DONE</span>
+      </div>
+      <div class="meta-row">
+        <span>2. Entry and campaign variants</span>
+        <span>Live: 200 OK</span>
+      </div>
+      <div class="shots">
+        <a href="screenshots/yattm-home-banner-advisor-standard-desktop.jpg">
+          <span>Desktop</span>
+          <img src="screenshots/yattm-home-banner-advisor-standard-desktop.jpg" alt="You Are Paying Too Much /?banner=advisor-standard desktop screenshot">
+        </a>
+        <a href="screenshots/yattm-home-banner-advisor-standard-mobile.jpg">
+          <span>Mobile</span>
+          <img src="screenshots/yattm-home-banner-advisor-standard-mobile.jpg" alt="You Are Paying Too Much /?banner=advisor-standard mobile screenshot">
+        </a>
+      </div>
+
+      <section>
+        <h4>Current status</h4>
+        <p>Local branch-only banner finalist focused on credentialed fiduciary standards rather than campaign language.</p>
+      </section>
+      <section>
+        <h4>Recommendation</h4>
+        <p>Use if the final homepage needs the quietest, most professional trust signal.</p>
+      </section>
+      <section class="split-copy">
+        <div>
+          <h4>Next actions</h4>
+          <ul><li>Review against founder-proof for warmth and clarity.</li><li>Confirm whether this tone belongs on You Are Paying Too Much or should live mainly on Smarter Way Wealth.</li></ul>
+        </div>
+        <div>
+          <h4>Variant sources</h4>
+          <ul><li>src/config/homeTopBanners.ts: advisor-standard</li></ul>
         </div>
       </section>
     </article>
@@ -1298,14 +1430,14 @@
       <h3>Home</h3>
       <p>Make / the decision engine: calculator first, then a concise route into Upgrade, Improve, Save, and the Smarter Way Wealth trust hub.</p>
       <h4>Finalists</h4>
-      <ul><li>current /: calculator-first landing page</li><li>branch homeMarketingVariants: direct-mail, fee-receipt, fiduciary-upgrade</li><li>final-home: fiduciary-upgrade hero combined with fee-calculator-final-c calculator shape</li><li>historical /v2: Equation of Value, Three Pillars, Philosophy</li></ul>
+      <ul><li>current local /: final-C calculator-first landing page</li><li>top banner finalists: founder-proof, qr-bridge, advisor-standard</li><li>branch homeMarketingVariants: direct-mail, fee-receipt, fiduciary-upgrade</li><li>final-home: fiduciary-upgrade hero combined with fee-calculator-final-c calculator shape</li><li>historical /v2: Equation of Value, Three Pillars, Philosophy</li></ul>
       <h4>Duplicates summarized</h4>
       <p>The current production URL query variants return the same live page today; the differentiated variant copy exists on the local branch.</p>
     </article>
 
     </div>
     <footer>
-      Generated 2026-05-08T16:17:40.798Z. Source data: docs/final-site-review/pages.json.
+      Generated 2026-05-08T17:23:07.591Z. Source data: docs/final-site-review/pages.json.
     </footer>
   </main>
 </body>

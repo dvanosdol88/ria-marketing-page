@@ -1,6 +1,6 @@
 # Final Site Review Decision Log
 
-Generated: 2026-05-08T16:17:40.798Z
+Generated: 2026-05-08T17:23:07.591Z
 
 This is the working source of truth for deciding final public pages across You Are Paying Too Much and Smarter Way Wealth.
 
@@ -18,10 +18,13 @@ Structured page data: [pages.json](./pages.json)
 
 | Site | Route | Role | Decision | Live | Recommendation |
 |---|---:|---|---|---:|---|
-| Smarter Way Wealth | `/` | Corporate trust hub home | NOT DONE | 200 | Redesign as the firm legitimacy hub: standard, advisor identity, who it serves, why the model exists, and clear handoff into the fee-calculator funnel. |
+| Smarter Way Wealth | `/` | Corporate trust hub home | NOT DONE | 200 | Use as the firm landing page after the calculator: advisor identity, fiduciary standard, flat monthly fee, and clear path back to the fee calculator. |
 | Smarter Way Wealth | `/privacy` | Corporate privacy policy | DONE | 200 | Keep as the privacy baseline, then re-check only if launch forms, analytics, scheduling, or lead capture are added. |
 | Smarter Way Wealth | `/` | Corporate footer and disclosure component | DONE | 200 | Keep the short disclosure model and mirror any approved text changes into the fee-calculator repo footer. |
-| You Are Paying Too Much | `/` | Calculator-first entry page | NOT DONE | 200 | Keep the calculator as the first interaction, then make the next-step path unmistakable: Upgrade, Improve, Save, or firm trust hub. |
+| You Are Paying Too Much | `/` | Proposed QR root: calculator-first with founder banner | NOT DONE | 200 | Use this as the default QR-code destination unless another banner variant wins the final review. |
+| You Are Paying Too Much | `/?banner=founder-proof` | Banner finalist: founder proof | NOT DONE | 200 | Recommended default because it gives the calculator immediate human/trust context without burying the tool. |
+| You Are Paying Too Much | `/?banner=qr-bridge` | Banner finalist: QR bridge | NOT DONE | 200 | Use if the mailer context needs to be explicit at the top of the page. |
+| You Are Paying Too Much | `/?banner=advisor-standard` | Banner finalist: advisor standard | NOT DONE | 200 | Use if the final homepage needs the quietest, most professional trust signal. |
 | You Are Paying Too Much | `/?variant=direct-mail` | Direct-mail campaign variant check | INTERNAL ONLY | 200 | Treat as a campaign/test input until the variant system is intentionally shipped. |
 | You Are Paying Too Much | `/?variant=fee-receipt` | Fee-receipt campaign variant check | INTERNAL ONLY | 200 | Keep as a possible ad or follow-up funnel angle, not a primary homepage direction. |
 | You Are Paying Too Much | `/?variant=fiduciary-upgrade` | Fiduciary-upgrade campaign variant check | INTERNAL ONLY | 200 | Use this as a bridge between calculator proof and /upgrade-your-advice if the tone stays direct and not combative. |
@@ -96,7 +99,8 @@ Duplicates summarized: Jensen/task-vs-purpose material appears in four places an
 Recommendation: Make / the decision engine: calculator first, then a concise route into Upgrade, Improve, Save, and the Smarter Way Wealth trust hub.
 
 Finalists:
-- current /: calculator-first landing page
+- current local /: final-C calculator-first landing page
+- top banner finalists: founder-proof, qr-bridge, advisor-standard
 - branch homeMarketingVariants: direct-mail, fee-receipt, fiduciary-upgrade
 - final-home: fiduciary-upgrade hero combined with fee-calculator-final-c calculator shape
 - historical /v2: Equation of Value, Three Pillars, Philosophy
@@ -124,6 +128,21 @@ Duplicates summarized: The current production URL query variants return the same
 
 - Desktop: [screenshots/yattm-home-desktop.jpg](../../artifacts/final-site-review/screenshots/yattm-home-desktop.jpg)
 - Mobile: [screenshots/yattm-home-mobile.jpg](../../artifacts/final-site-review/screenshots/yattm-home-mobile.jpg)
+
+### You Are Paying Too Much - /?banner=founder-proof
+
+- Desktop: [screenshots/yattm-home-banner-founder-proof-desktop.jpg](../../artifacts/final-site-review/screenshots/yattm-home-banner-founder-proof-desktop.jpg)
+- Mobile: [screenshots/yattm-home-banner-founder-proof-mobile.jpg](../../artifacts/final-site-review/screenshots/yattm-home-banner-founder-proof-mobile.jpg)
+
+### You Are Paying Too Much - /?banner=qr-bridge
+
+- Desktop: [screenshots/yattm-home-banner-qr-bridge-desktop.jpg](../../artifacts/final-site-review/screenshots/yattm-home-banner-qr-bridge-desktop.jpg)
+- Mobile: [screenshots/yattm-home-banner-qr-bridge-mobile.jpg](../../artifacts/final-site-review/screenshots/yattm-home-banner-qr-bridge-mobile.jpg)
+
+### You Are Paying Too Much - /?banner=advisor-standard
+
+- Desktop: [screenshots/yattm-home-banner-advisor-standard-desktop.jpg](../../artifacts/final-site-review/screenshots/yattm-home-banner-advisor-standard-desktop.jpg)
+- Mobile: [screenshots/yattm-home-banner-advisor-standard-mobile.jpg](../../artifacts/final-site-review/screenshots/yattm-home-banner-advisor-standard-mobile.jpg)
 
 ### You Are Paying Too Much - /?variant=direct-mail
 

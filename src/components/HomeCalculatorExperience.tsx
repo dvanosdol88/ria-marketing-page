@@ -653,6 +653,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     finalValueWithoutFees,
     percentLost,
     series,
+    shareAction,
     simpleControls,
     savings,
     totalAssetBasedFees,
@@ -754,12 +755,17 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           </article>
         </section>
 
-        <a
-          href="/how-it-works"
-          className="mx-4 mt-4 flex min-h-[46px] items-center justify-center rounded-md bg-[#108843] px-4 text-center text-base font-bold !text-white no-underline transition hover:bg-[#0B7639] sm:mx-7"
-        >
-          See how a flat-fee approach can help you keep more.
-        </a>
+        <div className="mx-4 mt-4 grid gap-3 sm:mx-7 sm:grid-cols-[minmax(0,1fr)_auto]">
+          <a
+            href="https://smarterwaywealth.com/"
+            className="flex min-h-[46px] items-center justify-center rounded-md bg-[#108843] px-4 text-center text-base font-bold !text-white no-underline transition hover:bg-[#0B7639]"
+          >
+            Continue to Smarter Way Wealth.
+          </a>
+          <div className="flex min-h-[46px] items-stretch justify-center">
+            {shareAction}
+          </div>
+        </div>
         <p className="px-4 pb-5 pt-4 text-center text-xs leading-relaxed text-[#667587] sm:px-7">
           This calculator is for illustrative purposes only and does not represent actual performance.
           Values are nominal and before taxes.

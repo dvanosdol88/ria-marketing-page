@@ -13,6 +13,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
+import { HomeTopBanner } from "@/components/HomeTopBanner";
 import {
   HomeCalculatorExperience,
   type CalculatorSimpleControlNodes,
@@ -23,6 +24,7 @@ import {
   HomeMarketingVariantId,
   homeMarketingVariants,
 } from "@/config/homeMarketingVariants";
+import type { HomeTopBannerId } from "@/config/homeTopBanners";
 
 // ============================================================================
 // PILL SLIDER - Value-in-pill thumb with color-coded track
@@ -53,6 +55,8 @@ type Props = {
   initialState: CalculatorState;
   searchParams: Record<string, string | string[] | undefined>;
   marketingVariantId: HomeMarketingVariantId;
+  experienceMode?: "marketing" | "calculator-first";
+  bannerId?: HomeTopBannerId;
 };
 
 interface PillSliderProps {
@@ -288,7 +292,13 @@ function normalizeSearchParams(searchParams: Record<string, string | string[] | 
   return params;
 }
 
-export function CostAnalysisCalculator({ initialState, searchParams, marketingVariantId }: Props) {
+export function CostAnalysisCalculator({
+  bannerId = "founder-proof",
+  experienceMode = "marketing",
+  initialState,
+  searchParams,
+  marketingVariantId,
+}: Props) {
   const mergedState = useMemo(
     () => ({
       ...DEFAULT_STATE,
@@ -420,6 +430,7 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
 
   const marketingVariant = homeMarketingVariants[marketingVariantId];
   const calculatorTheme = marketingVariant.calculator;
+  const isCalculatorFirst = experienceMode === "calculator-first";
 
   const quoteSectionStyle = isDarkMode
     ? {
@@ -708,89 +719,95 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
 
   return (
     <>
-      <HomeMarketingHero
-        variant={marketingVariant}
-        savings={projection.savings}
-        portfolioValue={state.portfolioValue}
-        years={state.years}
-        annualGrowthPercent={state.annualGrowthPercent}
-        annualFeePercent={state.annualFeePercent}
-        mutualFundExpensePercent={state.mutualFundExpensePercent}
-        onCalculatorChange={(patch) => setState((prev) => ({ ...prev, ...patch }))}
-        onShare={shareResult}
-        shareButtonLabel={shareButtonLabel}
-      />
+      {!isCalculatorFirst && (
+        <HomeMarketingHero
+          variant={marketingVariant}
+          savings={projection.savings}
+          portfolioValue={state.portfolioValue}
+          years={state.years}
+          annualGrowthPercent={state.annualGrowthPercent}
+          annualFeePercent={state.annualFeePercent}
+          mutualFundExpensePercent={state.mutualFundExpensePercent}
+          onCalculatorChange={(patch) => setState((prev) => ({ ...prev, ...patch }))}
+          onShare={shareResult}
+          shareButtonLabel={shareButtonLabel}
+        />
+      )}
 
       {/* Mobile Sticky Fee Bar */}
-      <div
-        className={`fixed left-0 right-0 top-[58px] z-40 bg-white/95 backdrop-blur-sm transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu dark:bg-slate-900/90 md:hidden ${
-          showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
-        }`}
-      >
-        <div className="flex h-12 items-center justify-center px-4">
-          <div 
-            className="flex items-center gap-2 rounded-full px-4 py-1.5 shadow-sm"
-            style={{
-              backgroundColor: isDarkMode
-                ? homeCalculatorConfig.cards.lostToFeesDarkBg
-                : homeCalculatorConfig.cards.lostToFeesBg,
-              color: homeCalculatorConfig.cards.lostToFeesText
-            }}
-          >
-            <Odometer value={projection.savings} prefix="$" duration={1000} className="text-lg font-bold" />
-            <span className="text-xs font-bold uppercase tracking-wider">
-              lost to asset-based fees!
-            </span>
+      {!isCalculatorFirst && (
+        <div
+          className={`fixed left-0 right-0 top-[58px] z-40 bg-white/95 backdrop-blur-sm transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu dark:bg-slate-900/90 md:hidden ${
+            showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
+          }`}
+        >
+          <div className="flex h-12 items-center justify-center px-4">
+            <div
+              className="flex items-center gap-2 rounded-full px-4 py-1.5 shadow-sm"
+              style={{
+                backgroundColor: isDarkMode
+                  ? homeCalculatorConfig.cards.lostToFeesDarkBg
+                  : homeCalculatorConfig.cards.lostToFeesBg,
+                color: homeCalculatorConfig.cards.lostToFeesText
+              }}
+            >
+              <Odometer value={projection.savings} prefix="$" duration={1000} className="text-lg font-bold" />
+              <span className="text-xs font-bold uppercase tracking-wider">
+                lost to asset-based fees!
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Desktop Sticky Fee Bar */}
-      <div
-        className={`fixed left-0 right-0 top-[52px] z-40 hidden bg-white/95 backdrop-blur-sm transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu md:block ${
-          showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
-        }`}
-      >
-        <div className="mx-auto flex h-11 max-w-5xl items-center justify-center gap-6 px-4 text-sm font-medium">
-          <div className="flex items-center gap-2">
-            <span className="text-gray-500 dark:text-slate-400">SMARTER Way ($100/mo):</span>
-            <Odometer
-              value={projection.finalValueWithoutFees}
-              prefix="$"
-              duration={800}
-              className="font-bold text-[#00A540]"
-            />
-          </div>
-          
-          <div 
-            className="flex items-center gap-2 rounded-lg px-3 py-1 shadow-sm"
-            style={{
-              backgroundColor: isDarkMode
-                ? homeCalculatorConfig.cards.lostToFeesDarkBg
-                : homeCalculatorConfig.cards.lostToFeesBg,
-              color: homeCalculatorConfig.cards.lostToFeesText
-            }}
-          >
-            <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">Lost to Fees:</span>
-            <Odometer
-              value={projection.savings}
-              prefix="-$"
-              duration={800}
-              className="font-bold"
-            />
-          </div>
+      {!isCalculatorFirst && (
+        <div
+          className={`fixed left-0 right-0 top-[52px] z-40 hidden bg-white/95 backdrop-blur-sm transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu md:block ${
+            showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
+          }`}
+        >
+          <div className="mx-auto flex h-11 max-w-5xl items-center justify-center gap-6 px-4 text-sm font-medium">
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500 dark:text-slate-400">SMARTER Way ($100/mo):</span>
+              <Odometer
+                value={projection.finalValueWithoutFees}
+                prefix="$"
+                duration={800}
+                className="font-bold text-[#00A540]"
+              />
+            </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-gray-500 dark:text-slate-400">AUM Advisor:</span>
-            <Odometer
-              value={projection.finalValueWithFees}
-              prefix="$"
-              duration={800}
-              className="font-bold text-gray-900 dark:text-slate-100"
-            />
+            <div
+              className="flex items-center gap-2 rounded-lg px-3 py-1 shadow-sm"
+              style={{
+                backgroundColor: isDarkMode
+                  ? homeCalculatorConfig.cards.lostToFeesDarkBg
+                  : homeCalculatorConfig.cards.lostToFeesBg,
+                color: homeCalculatorConfig.cards.lostToFeesText
+              }}
+            >
+              <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">Lost to Fees:</span>
+              <Odometer
+                value={projection.savings}
+                prefix="-$"
+                duration={800}
+                className="font-bold"
+              />
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500 dark:text-slate-400">AUM Advisor:</span>
+              <Odometer
+                value={projection.finalValueWithFees}
+                prefix="$"
+                duration={800}
+                className="font-bold text-gray-900 dark:text-slate-100"
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <section
         id="calculator"
@@ -798,6 +815,14 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
         className={`relative w-full scroll-mt-24 overflow-hidden ${calculatorTheme.sectionClassName}`}
       >
         <div className={`pointer-events-none absolute inset-0 ${calculatorTheme.backdropClassName}`} />
+
+        {isCalculatorFirst && (
+          <HomeTopBanner
+            bannerId={bannerId}
+            savings={projection.savings}
+            years={state.years}
+          />
+        )}
 
         <HomeCalculatorExperience
           layout={marketingVariant.calculatorLayout ?? marketingVariant.layout}
@@ -829,22 +854,26 @@ export function CostAnalysisCalculator({ initialState, searchParams, marketingVa
           onHighlightScenario={handleCardTap}
         />
 
-        <div className="section-shell relative z-10 -mt-12 pb-20">
-          <ScrollReveal delay={0.1} className="mx-auto w-full max-w-3xl">
-            <Quiz />
-          </ScrollReveal>
-        </div>
+        {!isCalculatorFirst && (
+          <div className="section-shell relative z-10 -mt-12 pb-20">
+            <ScrollReveal delay={0.1} className="mx-auto w-full max-w-3xl">
+              <Quiz />
+            </ScrollReveal>
+          </div>
+        )}
       </section>
 
-      <section
-        className="relative w-full overflow-hidden py-12 sm:py-16"
-        style={quoteSectionStyle}
-      >
-        <QuoteTickerWithPortraits
-          label={homeCalculatorConfig.quoteTicker.label}
-          subLabel={homeCalculatorConfig.quoteTicker.subLabel}
-        />
-      </section>
+      {!isCalculatorFirst && (
+        <section
+          className="relative w-full overflow-hidden py-12 sm:py-16"
+          style={quoteSectionStyle}
+        >
+          <QuoteTickerWithPortraits
+            label={homeCalculatorConfig.quoteTicker.label}
+            subLabel={homeCalculatorConfig.quoteTicker.subLabel}
+          />
+        </section>
+      )}
     </>
   );
 }

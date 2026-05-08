@@ -21,6 +21,15 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-08 - Final domain split review: calculator-first root and banner finalists
+**Agent:** Codex | **Surface:** marketing/review | **Duration:** 1 session
+- changed: `/` now uses the final-C calculator-first experience by default when no `variant` query is present.
+- added: `src/config/homeTopBanners.ts` and `src/components/HomeTopBanner.tsx` with three reviewable banner options: `?banner=founder-proof`, `?banner=qr-bridge`, and `?banner=advisor-standard`.
+- preserved: historical home variants remain available behind `?variant=direct-mail`, `?variant=fee-receipt`, `?variant=fiduciary-upgrade`, and `?variant=final-home`.
+- changed: the final-C calculator CTA now routes to `https://smarterwaywealth.com/` as the trust-hub next step.
+- cockpit: added the banner finalists and local Smarter Way Wealth trust-hub page to the final-site-review inventory.
+- not deployed: review branch only until David picks the final banner and approves production.
+
 ### 2026-04-30 — Home marketing variants for QR-code traffic
 **Agent:** Codex | **Surface:** marketing | **Duration:** 1 session
 - changed: `src/app/page.tsx` now awaits Next 16 `searchParams` and selects a home variant from `?variant=...`; default is `direct-mail`.
