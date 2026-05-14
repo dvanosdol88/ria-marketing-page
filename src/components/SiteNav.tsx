@@ -150,7 +150,7 @@ export function SiteNav() {
 
           {/* ── Desktop Layout ── */}
           <div className={`hidden items-center justify-between md:flex transition-all duration-1000 ${easingClass} transform-gpu ${
-            collapsed ? "h-[52px]" : "h-[104px]"
+            collapsed ? "h-[52px]" : "h-[84px]"
           }`}>
             {/* Desktop logo — tiered implementation */}
             <Link
@@ -159,8 +159,8 @@ export function SiteNav() {
               aria-label="Smarter Way Wealth home"
             >
               <Logo 
-                heightClass={collapsed ? "h-8" : "h-20"} 
-                fontSizeBase={collapsed ? "1.2rem" : "2.4rem"}
+                heightClass={collapsed ? "h-7" : "h-16"}
+                fontSizeBase={collapsed ? "1rem" : "1.9rem"}
               />
             </Link>
 

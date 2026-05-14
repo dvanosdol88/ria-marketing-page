@@ -344,7 +344,7 @@ function SavingsLeadHero({
           What would you do with{" "}
           <span className="text-[#007A2F] tabular-nums">{formatCurrency(savings)}</span>?
         </h1>
-        <div className="mt-4 flex items-center justify-center gap-3 text-sm font-bold">
+        <div className="mt-2 flex items-center justify-center gap-3 text-sm font-bold opacity-70 transition-opacity hover:opacity-100">
           <a
             href="#quick-poll"
             className="text-[#007A2F] underline underline-offset-4 transition hover:text-[#00682B]"
@@ -365,9 +365,6 @@ function SavingsLeadHero({
         {introBlock}
         <p className="mt-11 text-xl leading-7 text-slate-900 sm:mt-14 sm:text-2xl">
           See how much you can save.
-        </p>
-        <p className="mx-auto mt-4 max-w-3xl text-xs leading-5 text-[#52657A]">
-          Illustrative calculator only. Not investment advice or an advisory relationship.
         </p>
       </div>
     </section>

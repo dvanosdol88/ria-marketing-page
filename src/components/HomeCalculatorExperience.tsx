@@ -711,6 +711,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const {
     annualFeePercent,
     annualGrowthPercent,
+    disclosure,
     finalValueWithFees,
     finalValueWithoutFees,
     percentLost,
@@ -785,6 +786,9 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             </span>
           </span>
         </div>
+      </div>
+      <div className="mx-auto mb-4 max-w-3xl text-center [&_p]:mt-0">
+        {disclosure}
       </div>
       <ScrollReveal className="mx-auto max-w-[1380px] overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]">
         <header className="flex flex-col gap-4 border-b border-[#DFE6EE] bg-white/65 px-6 py-5 text-[#062B43] backdrop-blur sm:px-10 md:flex-row md:items-end md:justify-between">
