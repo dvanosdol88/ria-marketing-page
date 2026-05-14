@@ -69,15 +69,6 @@ type HomeCalculatorExperienceProps = {
   onHighlightScenario: (scenario: Scenario) => void;
 };
 
-function formatCompactCurrency(value: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    notation: "compact",
-    maximumFractionDigits: value >= 1000000 ? 2 : 0,
-  }).format(value);
-}
-
 function ScenarioButton({
   activeScenario,
   label,
@@ -534,176 +525,56 @@ function FinalHomeStatCard({
   );
 }
 
-function FinalHomeLineChart({
+function FinalHomeSavingsGapBar({
   annualFeePercent,
-  feeGapActive,
+  emphasized,
   finalValueWithFees,
   finalValueWithoutFees,
   savings,
-  series,
-  years,
 }: {
   annualFeePercent: number;
-  feeGapActive: boolean;
+  emphasized: boolean;
   finalValueWithFees: number;
   finalValueWithoutFees: number;
   savings: number;
-  series: ProjectionYear[];
-  years: number;
 }) {
-  const width = 1040;
-  const height = 310;
-  const pad = { top: 28, right: 148, bottom: 44, left: 82 };
-  const plotWidth = width - pad.left - pad.right;
-  const plotHeight = height - pad.top - pad.bottom;
-  const maxYear = Math.max(1, years, ...series.map((row) => row.year));
-  const maxValue = Math.max(finalValueWithoutFees, finalValueWithFees, ...series.map((row) => row.withoutFees));
-  const minValue =
-    Math.min(series[0]?.withoutFees ?? finalValueWithFees, ...series.map((row) => row.withFees)) * 0.92;
-  const valueRange = Math.max(1, maxValue - minValue);
-
-  const point = (row: ProjectionYear, key: "withoutFees" | "withFees") => {
-    const x = pad.left + (row.year / maxYear) * plotWidth;
-    const y = pad.top + (1 - (row[key] - minValue) / valueRange) * plotHeight;
-    return [x, y] as const;
-  };
-
-  const pathFor = (key: "withoutFees" | "withFees") =>
-    series
-      .map((row, index) => {
-        const [x, y] = point(row, key);
-        return `${index === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`;
-      })
-      .join(" ");
-
-  const gapAreaPath =
-    series
-      .map((row, index) => {
-        const [x, y] = point(row, "withoutFees");
-        return `${index === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`;
-      })
-      .join(" ") +
-    " " +
-    [...series]
-      .reverse()
-      .map((row) => {
-        const [x, y] = point(row, "withFees");
-        return `L ${x.toFixed(2)} ${y.toFixed(2)}`;
-      })
-      .join(" ") +
-    " Z";
-
-  const yTicks = [0, 0.25, 0.5, 0.75, 1].map((ratio) => {
-    const value = minValue + valueRange * ratio;
-    const y = pad.top + (1 - ratio) * plotHeight;
-    return { value, y };
-  });
-
-  const ending = series[series.length - 1];
-  const [flatEndX, flatEndY] = point(ending, "withoutFees");
-  const [aumEndX, aumEndY] = point(ending, "withFees");
-  const feeGapLabelWidth = 254;
-  const feeGapLabelX = Math.min(
-    Math.max(flatEndX - feeGapLabelWidth - 18, pad.left + 8),
-    width - pad.right - feeGapLabelWidth - 4,
-  );
-  const feeGapLabelY = Math.min((flatEndY + aumEndY) / 2 - 30, flatEndY - 18);
+  const safeTotal = Math.max(finalValueWithoutFees, 1);
+  const keepPercent = Math.max(0, Math.min(100, (finalValueWithFees / safeTotal) * 100));
+  const lostPercent = Math.max(0, Math.min(100, 100 - keepPercent));
+  const showKeepLabel = keepPercent >= 14;
+  const showLostLabel = lostPercent >= 10;
 
   return (
-    <svg
-      className="block h-full min-h-[240px] w-full overflow-visible"
-      viewBox={`0 0 ${width} ${height}`}
+    <div
+      className="w-full"
       role="img"
-      aria-label="Line chart comparing portfolio value under a flat fee and an asset-based fee"
+      aria-label={`After ${annualFeePercent.toFixed(2)}% asset-based fees, you keep ${formatCurrency(finalValueWithFees)} and lose ${formatCurrency(savings)} of a ${formatCurrency(finalValueWithoutFees)} projection.`}
     >
-      {yTicks.map((tick) => (
-        <g key={tick.y}>
-          <line
-            x1={pad.left}
-            x2={width - pad.right}
-            y1={tick.y}
-            y2={tick.y}
-            stroke="#DCE4EB"
-            strokeWidth="1"
-          />
-          <text
-            x={pad.left - 16}
-            y={tick.y + 5}
-            textAnchor="end"
-            fill="#52657A"
-            fontSize="14"
-            fontWeight="600"
-          >
-            {formatCompactCurrency(tick.value)}
-          </text>
-        </g>
-      ))}
-
-      <path
-        d={gapAreaPath}
-        fill="#D92D20"
-        opacity={feeGapActive ? "0.18" : "0"}
-        className="transition-opacity duration-300"
-      />
-      <path d={pathFor("withFees")} fill="none" stroke="#064B84" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={pathFor("withoutFees")} fill="none" stroke="#108843" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
-
-      <line
-        x1={flatEndX}
-        x2={flatEndX}
-        y1={flatEndY}
-        y2={aumEndY}
-        stroke="#D92D20"
-        strokeDasharray="5 5"
-        strokeWidth="2"
-        opacity={feeGapActive ? "1" : "0"}
-        className="transition-opacity duration-300"
-      />
-      <g
-        opacity={feeGapActive ? "1" : "0"}
-        className="transition-opacity duration-300"
-      >
-        <rect
-          x={feeGapLabelX}
-          y={feeGapLabelY}
-          width={feeGapLabelWidth}
-          height="42"
-          rx="21"
-          fill="#D92D20"
-        />
-        <text
-          x={feeGapLabelX + feeGapLabelWidth / 2}
-          y={feeGapLabelY + 26}
-          textAnchor="middle"
-          fill="#FFFFFF"
-          fontSize="15"
-          fontWeight="800"
+      <div className="flex h-16 w-full overflow-hidden rounded-md border border-[#DFE6EE] bg-[#F3F5F8] sm:h-20">
+        <div
+          className="flex items-center justify-start bg-[#108843] px-3 text-white transition-[width] duration-500 ease-out sm:px-4"
+          style={{ width: `${keepPercent}%` }}
         >
-          {formatCurrency(savings)} lost to fees
-        </text>
-      </g>
-
-      <circle cx={aumEndX} cy={aumEndY} r="6" fill="#064B84" stroke="#FFFFFF" strokeWidth="3" />
-      <circle cx={flatEndX} cy={flatEndY} r="6" fill="#108843" stroke="#FFFFFF" strokeWidth="3" />
-
-      <text x={flatEndX + 14} y={flatEndY - 10} fill="#108843" fontSize="17" fontWeight="760">
-        {formatCurrency(finalValueWithoutFees)}
-      </text>
-      <text x={aumEndX + 14} y={aumEndY + 18} fill="#064B84" fontSize="17" fontWeight="760">
-        {formatCurrency(finalValueWithFees)}
-      </text>
-
-      <text x={pad.left} y={height - 12} textAnchor="middle" fill="#52657A" fontSize="14" fontWeight="600">
-        0
-      </text>
-      <text x={width - pad.right} y={height - 12} textAnchor="middle" fill="#52657A" fontSize="14" fontWeight="600">
-        {maxYear}
-      </text>
-      <text x={width / 2} y={height - 12} textAnchor="middle" fill="#52657A" fontSize="15" fontWeight="700">
-        Years
-      </text>
-      <title>{`Asset-based fee ${formatCurrency(finalValueWithFees)} versus flat fee ${formatCurrency(finalValueWithoutFees)} at ${annualFeePercent.toFixed(2)}%.`}</title>
-    </svg>
+          {showKeepLabel && (
+            <span className="text-xs font-bold uppercase tracking-[0.12em] sm:text-sm">
+              You keep {keepPercent.toFixed(0)}%
+            </span>
+          )}
+        </div>
+        <div
+          className={`flex items-center justify-end bg-[#D92D20] px-3 text-white transition-[width,box-shadow] duration-500 ease-out sm:px-4 ${
+            emphasized ? "shadow-[inset_0_0_0_3px_rgba(255,255,255,0.55)]" : ""
+          }`}
+          style={{ width: `${lostPercent}%` }}
+        >
+          {showLostLabel && (
+            <span className="text-xs font-bold uppercase tracking-[0.12em] sm:text-sm">
+              Lost {lostPercent.toFixed(0)}%
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -716,7 +587,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     finalValueWithoutFees,
     percentLost,
     portfolioValue,
-    series,
     shareAction,
     simpleControls,
     savings,
@@ -839,30 +709,54 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           />
         </section>
 
-        <section className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-4 py-3 sm:mx-7 sm:px-5" aria-label="Portfolio value over time">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
-            <h3 className="text-base font-bold tracking-normal text-slate-950">Portfolio value over time</h3>
-            <div className="flex flex-wrap gap-3 text-xs font-semibold text-[#41556C]">
-              <span className="inline-flex items-center gap-2">
-                <span className="h-[3px] w-4 rounded-full bg-[#064B84]" />
-                With asset-based fee ({annualFeePercent.toFixed(2)}%)
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="h-[3px] w-4 rounded-full bg-[#108843]" />
-                Flat fee
-              </span>
-            </div>
+        <section
+          className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-4 py-5 sm:mx-7 sm:px-6 sm:py-6"
+          aria-label="Where your portfolio goes"
+        >
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+            <h3 className="text-lg font-bold tracking-normal text-slate-950 sm:text-xl">
+              Where your {formatCurrency(finalValueWithoutFees)} goes
+            </h3>
+            <p className="text-xs font-semibold text-[#52657A] sm:text-sm">
+              After {years} years at {annualFeePercent.toFixed(2)}% vs $100/mo flat
+            </p>
           </div>
-          <div className="mt-1 h-[255px] sm:h-[305px]">
-            <FinalHomeLineChart
+
+          <div className="mt-4">
+            <FinalHomeSavingsGapBar
               annualFeePercent={annualFeePercent}
-              feeGapActive={feeGapActive}
+              emphasized={feeGapActive}
               finalValueWithFees={finalValueWithFees}
               finalValueWithoutFees={finalValueWithoutFees}
               savings={savings}
-              series={series}
-              years={years}
             />
+          </div>
+
+          <div className="mt-5 grid grid-cols-2 gap-4 sm:gap-8">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="h-3 w-3 rounded-sm bg-[#108843]" aria-hidden="true" />
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#41556C] sm:text-xs">
+                  You keep
+                </p>
+              </div>
+              <p className="mt-1 text-[clamp(1.6rem,4.2vw,2.6rem)] font-bold leading-none tabular-nums text-[#108843]">
+                {formatCurrency(finalValueWithFees)}
+              </p>
+              <p className="mt-1 text-xs text-[#667587] sm:text-sm">After-fee portfolio value</p>
+            </div>
+            <div className="text-right">
+              <div className="flex items-center justify-end gap-2">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#41556C] sm:text-xs">
+                  Lost to the {annualFeePercent.toFixed(2)}% fee
+                </p>
+                <span className="h-3 w-3 rounded-sm bg-[#D92D20]" aria-hidden="true" />
+              </div>
+              <p className="mt-1 text-[clamp(1.6rem,4.2vw,2.6rem)] font-bold leading-none tabular-nums text-[#D92D20]">
+                {formatCurrency(savings)}
+              </p>
+              <p className="mt-1 text-xs text-[#667587] sm:text-sm">Fees + lost compounding</p>
+            </div>
           </div>
         </section>
 
