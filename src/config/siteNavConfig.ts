@@ -8,9 +8,9 @@ export interface SiteNavLink {
 }
 
 export const siteNavLinks: SiteNavLink[] = [
-  { label: "Home", href: "/" },
-  { label: "Upgrade Your Advice", href: "/upgrade-your-advice" },
-  { label: "Improve Your Tools", href: "/improve-your-tools" },
-  { label: "Save a Ton", href: "/save-a-ton" },
-  { label: "How It Works", href: "/how-it-works" },
+  { label: "Save", href: "/" },
+  { label: "Upgrade", href: "/upgrade-your-advice" },
+  { label: "Improve", href: "/improve-your-tools" },
+  { label: "How?", href: "/how-it-works" },
+  { label: "FAQ", href: "/faq" },
 ];

@@ -19,6 +19,9 @@ type HomeMarketingHeroProps = {
   onCalculatorChange: (patch: Partial<CalculatorState>) => void;
   onShare: () => void;
   shareButtonLabel: string;
+  centerProofPoints?: boolean;
+  showAdvisorCalculator?: boolean;
+  showCtas?: boolean;
 };
 
 function HeroBackdrop({ variant }: { variant: HomeMarketingVariant }) {
@@ -294,6 +297,28 @@ function AdvisorMiniCalculator({
   );
 }
 
+function AdvisorFeeCard() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.16, duration: 0.55, ease: "easeOut" }}
+      className="mr-0 w-[300px] max-w-full rounded-md border border-emerald-200/20 bg-white/[0.07] p-7 text-white shadow-[0_24px_70px_rgba(0,0,0,0.2)] backdrop-blur-sm"
+    >
+      <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-200/80">
+        Flat-fee advisory model
+      </p>
+      <p className="mt-6 text-[clamp(2.5rem,4.6vw,4.8rem)] font-semibold leading-none tracking-normal text-white">
+        $100/mo.
+      </p>
+      <p className="mt-2 text-lg font-bold text-emerald-100">flat monthly fee</p>
+      <div className="mt-7 border-t border-white/12 pt-4 text-sm leading-6 text-emerald-50/70">
+        No asset-based advisory fee.
+      </div>
+    </motion.div>
+  );
+}
+
 export function HomeMarketingHero({
   variant,
   savings,
@@ -305,12 +330,21 @@ export function HomeMarketingHero({
   onCalculatorChange,
   onShare,
   shareButtonLabel,
+  centerProofPoints = false,
+  showAdvisorCalculator = true,
+  showCtas = true,
 }: HomeMarketingHeroProps) {
   const isDarkHero = variant.layout === "advisor";
   const isPhotoHero = variant.layout === "photo";
   const textColor = isDarkHero ? "text-white" : "text-slate-950";
   const mutedColor = isDarkHero ? "text-emerald-50/80" : "text-slate-700";
   const eyebrowColor = isDarkHero ? "text-emerald-200" : isPhotoHero ? "text-[#00682B]" : "text-red-700";
+  const proofPoints = variant.proofPoints.map((point) => (
+    <div key={point} className={`flex items-center gap-2 ${centerProofPoints ? "justify-center" : ""}`}>
+      <CheckCircle2 className={`shrink-0 ${centerProofPoints ? "h-5 w-5" : "h-4 w-4"} ${isDarkHero ? "text-emerald-300" : "text-[#007A2F]"}`} />
+      <span>{point}</span>
+    </div>
+  ));
 
   return (
     <section className="relative w-full overflow-hidden">
@@ -328,45 +362,38 @@ export function HomeMarketingHero({
           </h1>
           <p className={`mt-5 max-w-xl text-base leading-6 sm:text-xl sm:leading-7 ${mutedColor}`}>{variant.body}</p>
 
-          <div className="mt-7 flex flex-col gap-3 min-[420px]:flex-row">
-            <a
-              href="#calculator"
-              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-[#007A2F] px-5 text-sm font-bold !text-white no-underline shadow-lg shadow-emerald-900/15 transition hover:bg-[#00682B] hover:!text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00A540]"
-            >
-              <Calculator className="h-4 w-4" />
-              {variant.primaryCta}
-              <ArrowDown className="h-4 w-4" />
-            </a>
-            <button
-              type="button"
-              onClick={onShare}
-              className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border px-5 text-sm font-bold transition ${
-                isDarkHero
-                  ? "border-white/25 bg-white/10 text-white hover:bg-white/20"
-                  : "border-slate-300 bg-white/80 text-slate-800 hover:bg-white"
-              }`}
-            >
-              <Share2 className="h-4 w-4" />
-              {shareButtonLabel === "Share your result" ? variant.secondaryCta : shareButtonLabel}
-            </button>
-          </div>
-
-          <div className={`mt-6 grid gap-1.5 text-sm sm:grid-cols-3 ${isDarkHero ? "text-emerald-50/90" : "text-slate-700"}`}>
-            {variant.proofPoints.map((point) => (
-              <div key={point} className="flex items-center gap-2">
-                <CheckCircle2 className={`h-4 w-4 shrink-0 ${isDarkHero ? "text-emerald-300" : "text-[#007A2F]"}`} />
-                <span>{point}</span>
-              </div>
-            ))}
-          </div>
-
-          {isDarkHero && (
-            <p className="mt-4 text-2xl font-bold tracking-normal text-white">
-              $100/mo. flat monthly fee
-            </p>
+          {showCtas && (
+            <div className="mt-7 flex flex-col gap-3 min-[420px]:flex-row">
+              <a
+                href="#calculator"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-[#007A2F] px-5 text-sm font-bold !text-white no-underline shadow-lg shadow-emerald-900/15 transition hover:bg-[#00682B] hover:!text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00A540]"
+              >
+                <Calculator className="h-4 w-4" />
+                {variant.primaryCta}
+                <ArrowDown className="h-4 w-4" />
+              </a>
+              <button
+                type="button"
+                onClick={onShare}
+                className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border px-5 text-sm font-bold transition ${
+                  isDarkHero
+                    ? "border-white/25 bg-white/10 text-white hover:bg-white/20"
+                    : "border-slate-300 bg-white/80 text-slate-800 hover:bg-white"
+                }`}
+              >
+                <Share2 className="h-4 w-4" />
+                {shareButtonLabel === "Share your result" ? variant.secondaryCta : shareButtonLabel}
+              </button>
+            </div>
           )}
 
-          {isDarkHero && (
+          {!centerProofPoints && (
+            <div className={`mt-6 grid gap-1.5 text-sm sm:grid-cols-3 ${isDarkHero ? "text-emerald-50/90" : "text-slate-700"}`}>
+              {proofPoints}
+            </div>
+          )}
+
+          {isDarkHero && showAdvisorCalculator && (
             <AdvisorMiniCalculator
               annualFeePercent={annualFeePercent}
               annualGrowthPercent={annualGrowthPercent}
@@ -383,7 +410,7 @@ export function HomeMarketingHero({
         <div className="relative hidden min-h-[420px] items-start justify-end self-start pt-5 md:flex lg:pt-8">
           {variant.layout === "receipt" ? (
             <ReceiptVisual savings={savings} portfolioValue={portfolioValue} years={years} />
-          ) : isDarkHero ? (
+          ) : isDarkHero && showAdvisorCalculator ? (
             <AdvisorMiniCalculator
               annualFeePercent={annualFeePercent}
               annualGrowthPercent={annualGrowthPercent}
@@ -394,6 +421,8 @@ export function HomeMarketingHero({
               savings={savings}
               years={years}
             />
+          ) : isDarkHero ? (
+            <AdvisorFeeCard />
           ) : (
             <motion.div
               initial={{ opacity: 0, y: 18 }}
@@ -414,6 +443,11 @@ export function HomeMarketingHero({
             </motion.div>
           )}
         </div>
+        {centerProofPoints && (
+          <div className={`mx-auto grid w-full max-w-5xl gap-4 text-base font-semibold sm:grid-cols-3 md:col-span-2 md:text-[1.32rem] ${isDarkHero ? "text-emerald-50/95" : "text-slate-700"}`}>
+            {proofPoints}
+          </div>
+        )}
       </div>
     </section>
   );

@@ -7,8 +7,8 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { siteNavLinks } from "@/config/siteNavConfig";
 
-const COLLAPSE_SCROLL_Y = 132;
-const EXPAND_SCROLL_Y = 82;
+const COLLAPSE_SCROLL_Y = 158;
+const EXPAND_SCROLL_Y = 104;
 
 /**
  * Site-wide navigation bar — "Authority" style with collapsing behavior.
@@ -69,9 +69,7 @@ export function SiteNav() {
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
   /* Easing: overshoot ease-out when collapsing, gentler ease-out when expanding */
-  const easingClass = collapsed
-    ? "ease-[cubic-bezier(0.22,1,0.36,1)]"
-    : "ease-[cubic-bezier(0.33,1,0.68,1)]";
+  const easingClass = "ease-[cubic-bezier(0.19,1,0.22,1)]";
 
   /* ── Tiered Logo Component ── */
   const Logo = ({ 
@@ -83,20 +81,20 @@ export function SiteNav() {
     isCentered?: boolean,
     fontSizeBase?: string
   }) => (
-    <div className={`flex items-end gap-2 sm:gap-3 transition-all duration-800 ${easingClass} transform-gpu ${isCentered ? "justify-center" : "justify-start"}`}>
+    <div className={`flex items-end gap-2 sm:gap-3 transition-all duration-1000 ${easingClass} transform-gpu ${isCentered ? "justify-center" : "justify-start"}`}>
       <img
         src="/brand/logo-icon.svg"
         alt="Smarter Way Wealth"
-        className={`w-auto transition-all duration-800 ${easingClass} transform-gpu ${heightClass}`}
+        className={`w-auto transition-all duration-1000 ${easingClass} transform-gpu ${heightClass}`}
       />
       <div
-        className={`flex flex-col items-start leading-[1.1] transition-all duration-800 ${easingClass} transform-gpu font-logo`}
+        className={`flex flex-col items-start leading-[1.1] transition-all duration-1000 ${easingClass} transform-gpu font-logo`}
         style={{ fontSize: fontSizeBase }}
       >
-        <span className={`block font-bold uppercase text-[#4A4A4A] tracking-[0.166em] transition-all duration-800 ${easingClass}`}>
+        <span className={`block font-bold uppercase text-[#4A4A4A] tracking-[0.166em] transition-all duration-1000 ${easingClass}`}>
           Smarter
         </span>
-        <span className={`hidden md:block font-medium uppercase text-[#007A2F] tracking-[0.222em] transition-all duration-800 ${easingClass}`} style={{ fontSize: '0.5em' }}>
+        <span className={`hidden md:block font-medium uppercase text-[#007A2F] tracking-[0.222em] transition-all duration-1000 ${easingClass}`} style={{ fontSize: '0.5em' }}>
           Way Wealth
         </span>
       </div>
@@ -107,7 +105,7 @@ export function SiteNav() {
     <>
       {/* ── Sticky Header Bar ── */}
       <header
-        className={`sticky top-0 z-50 transition-all duration-800 ${easingClass} transform-gpu will-change-[height,background-color,backdrop-filter,box-shadow] ${
+        className={`sticky top-0 z-50 transition-all duration-1000 ${easingClass} transform-gpu will-change-[height,background-color,backdrop-filter,box-shadow] ${
           collapsed
             ? "bg-white/90 backdrop-blur-md shadow-sm supports-[backdrop-filter]:bg-white/85"
             : "bg-white"
@@ -119,9 +117,9 @@ export function SiteNav() {
           .site-nav a:hover { text-decoration: none; }
         `}</style>
 
-        <div className="site-nav mx-auto max-w-[1200px] px-4 sm:px-6 transition-all duration-800">
+        <div className="site-nav mx-auto max-w-[1200px] px-4 transition-all duration-1000 sm:px-6">
           {/* ── Mobile Layout ── */}
-          <div className={`flex items-center justify-between md:hidden transition-all duration-800 ${easingClass} transform-gpu ${
+          <div className={`flex items-center justify-between md:hidden transition-all duration-1000 ${easingClass} transform-gpu ${
             collapsed ? "h-[58px]" : "h-[77px]"
           }`}>
             <button
@@ -151,7 +149,7 @@ export function SiteNav() {
           </div>
 
           {/* ── Desktop Layout ── */}
-          <div className={`hidden items-center justify-between md:flex transition-all duration-800 ${easingClass} transform-gpu ${
+          <div className={`hidden items-center justify-between md:flex transition-all duration-1000 ${easingClass} transform-gpu ${
             collapsed ? "h-[52px]" : "h-[104px]"
           }`}>
             {/* Desktop logo — tiered implementation */}

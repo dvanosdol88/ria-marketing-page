@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Clock3,
   Coins,
@@ -509,48 +509,45 @@ function FeeReceiptCalculatorExperience(props: HomeCalculatorExperienceProps) {
 
 function FinalHomeStatCard({
   accentClassName,
-  label,
   ribbon,
   tone,
   value,
 }: {
   accentClassName: string;
-  label: string;
   ribbon: string;
   tone: "blue" | "green";
   value: string;
 }) {
   return (
-    <article className="min-h-[160px] overflow-hidden rounded-md border border-[#DFE6EE] bg-white text-center">
+    <article className="min-h-[126px] overflow-hidden rounded-md border border-[#DFE6EE] bg-white text-center">
       <div
-        className={`flex min-h-[38px] items-center justify-center px-4 py-2 text-sm font-bold text-white ${
+        className={`flex min-h-[34px] items-center justify-center px-4 py-1.5 text-[13px] font-bold text-white ${
           tone === "blue" ? "bg-[#064B84]" : "bg-[#108843]"
         }`}
       >
         {ribbon}
       </div>
-      <p className="mt-5 text-base font-medium text-[#294561]">{label}</p>
-      <strong className={`mt-2 block text-[clamp(2.1rem,4.7vw,3.35rem)] font-bold leading-none ${accentClassName}`}>
+      <strong className={`mt-6 block text-[clamp(2rem,4.2vw,3.05rem)] font-bold leading-none ${accentClassName}`}>
         {value}
       </strong>
-      <div className="mx-auto mt-4 w-[min(330px,72%)] border-t border-[#C8D2DC]" />
-      <p className="mt-3 text-sm text-[#42556C]">
-        {tone === "blue" ? "Your money, working for you." : "Fees reduce your future."}
-      </p>
     </article>
   );
 }
 
 function FinalHomeLineChart({
   annualFeePercent,
+  feeGapActive,
   finalValueWithFees,
   finalValueWithoutFees,
+  savings,
   series,
   years,
 }: {
   annualFeePercent: number;
+  feeGapActive: boolean;
   finalValueWithFees: number;
   finalValueWithoutFees: number;
+  savings: number;
   series: ProjectionYear[];
   years: number;
 }) {
@@ -579,6 +576,23 @@ function FinalHomeLineChart({
       })
       .join(" ");
 
+  const gapAreaPath =
+    series
+      .map((row, index) => {
+        const [x, y] = point(row, "withoutFees");
+        return `${index === 0 ? "M" : "L"} ${x.toFixed(2)} ${y.toFixed(2)}`;
+      })
+      .join(" ") +
+    " " +
+    [...series]
+      .reverse()
+      .map((row) => {
+        const [x, y] = point(row, "withFees");
+        return `L ${x.toFixed(2)} ${y.toFixed(2)}`;
+      })
+      .join(" ") +
+    " Z";
+
   const yTicks = [0, 0.25, 0.5, 0.75, 1].map((ratio) => {
     const value = minValue + valueRange * ratio;
     const y = pad.top + (1 - ratio) * plotHeight;
@@ -588,10 +602,16 @@ function FinalHomeLineChart({
   const ending = series[series.length - 1];
   const [flatEndX, flatEndY] = point(ending, "withoutFees");
   const [aumEndX, aumEndY] = point(ending, "withFees");
+  const feeGapLabelWidth = 254;
+  const feeGapLabelX = Math.min(
+    Math.max(flatEndX - feeGapLabelWidth - 18, pad.left + 8),
+    width - pad.right - feeGapLabelWidth - 4,
+  );
+  const feeGapLabelY = Math.min((flatEndY + aumEndY) / 2 - 30, flatEndY - 18);
 
   return (
     <svg
-      className="block h-full min-h-[300px] w-full overflow-visible"
+      className="block h-full min-h-[240px] w-full overflow-visible"
       viewBox={`0 0 ${width} ${height}`}
       role="img"
       aria-label="Line chart comparing portfolio value under a flat fee and an asset-based fee"
@@ -619,16 +639,57 @@ function FinalHomeLineChart({
         </g>
       ))}
 
-      <path d={pathFor("withoutFees")} fill="none" stroke="#064B84" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={pathFor("withFees")} fill="none" stroke="#108843" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d={gapAreaPath}
+        fill="#D92D20"
+        opacity={feeGapActive ? "0.18" : "0"}
+        className="transition-opacity duration-300"
+      />
+      <path d={pathFor("withFees")} fill="none" stroke="#064B84" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d={pathFor("withoutFees")} fill="none" stroke="#108843" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
 
-      <circle cx={flatEndX} cy={flatEndY} r="6" fill="#064B84" stroke="#FFFFFF" strokeWidth="3" />
-      <circle cx={aumEndX} cy={aumEndY} r="6" fill="#108843" stroke="#FFFFFF" strokeWidth="3" />
+      <line
+        x1={flatEndX}
+        x2={flatEndX}
+        y1={flatEndY}
+        y2={aumEndY}
+        stroke="#D92D20"
+        strokeDasharray="5 5"
+        strokeWidth="2"
+        opacity={feeGapActive ? "1" : "0"}
+        className="transition-opacity duration-300"
+      />
+      <g
+        opacity={feeGapActive ? "1" : "0"}
+        className="transition-opacity duration-300"
+      >
+        <rect
+          x={feeGapLabelX}
+          y={feeGapLabelY}
+          width={feeGapLabelWidth}
+          height="42"
+          rx="21"
+          fill="#D92D20"
+        />
+        <text
+          x={feeGapLabelX + feeGapLabelWidth / 2}
+          y={feeGapLabelY + 26}
+          textAnchor="middle"
+          fill="#FFFFFF"
+          fontSize="15"
+          fontWeight="800"
+        >
+          {formatCurrency(savings)} lost to fees
+        </text>
+      </g>
 
-      <text x={flatEndX + 14} y={flatEndY - 10} fill="#064B84" fontSize="17" fontWeight="760">
+      <circle cx={aumEndX} cy={aumEndY} r="6" fill="#064B84" stroke="#FFFFFF" strokeWidth="3" />
+      <circle cx={flatEndX} cy={flatEndY} r="6" fill="#108843" stroke="#FFFFFF" strokeWidth="3" />
+
+      <text x={flatEndX + 14} y={flatEndY - 10} fill="#108843" fontSize="17" fontWeight="760">
         {formatCurrency(finalValueWithoutFees)}
       </text>
-      <text x={aumEndX + 14} y={aumEndY + 18} fill="#108843" fontSize="17" fontWeight="760">
+      <text x={aumEndX + 14} y={aumEndY + 18} fill="#064B84" fontSize="17" fontWeight="760">
         {formatCurrency(finalValueWithFees)}
       </text>
 
@@ -641,7 +702,7 @@ function FinalHomeLineChart({
       <text x={width / 2} y={height - 12} textAnchor="middle" fill="#52657A" fontSize="15" fontWeight="700">
         Years
       </text>
-      <title>{`Flat fee ${formatCurrency(finalValueWithoutFees)} versus asset-based fee ${formatCurrency(finalValueWithFees)} at ${annualFeePercent.toFixed(2)}%.`}</title>
+      <title>{`Asset-based fee ${formatCurrency(finalValueWithFees)} versus flat fee ${formatCurrency(finalValueWithoutFees)} at ${annualFeePercent.toFixed(2)}%.`}</title>
     </svg>
   );
 }
@@ -649,9 +710,11 @@ function FinalHomeLineChart({
 function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const {
     annualFeePercent,
+    annualGrowthPercent,
     finalValueWithFees,
     finalValueWithoutFees,
     percentLost,
+    portfolioValue,
     series,
     shareAction,
     simpleControls,
@@ -659,68 +722,140 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     totalAssetBasedFees,
     years,
   } = props;
+  const calculatorRef = useRef<HTMLDivElement | null>(null);
+  const [feeGapActive, setFeeGapActive] = useState(false);
+  const [showStickyResult, setShowStickyResult] = useState(false);
+  const smarterWayParams = new URLSearchParams({
+    source: "youarepayingtoomuch",
+    savings: Math.round(savings).toString(),
+    portfolio: Math.round(portfolioValue).toString(),
+    years: years.toString(),
+    fee: annualFeePercent.toFixed(2),
+    growth: annualGrowthPercent.toFixed(2),
+  });
+  const smarterWayHref = `https://smarterwaywealth.com/?${smarterWayParams.toString()}`;
+
+  useEffect(() => {
+    const updateStickyResult = () => {
+      const calculator = calculatorRef.current;
+
+      if (!calculator) {
+        return;
+      }
+
+      const rect = calculator.getBoundingClientRect();
+      const navOffset = window.innerWidth >= 768 ? 56 : 62;
+      const nextVisible = rect.top <= navOffset && rect.bottom > navOffset + 220;
+
+      setShowStickyResult((current) => (current === nextVisible ? current : nextVisible));
+    };
+
+    updateStickyResult();
+    window.addEventListener("scroll", updateStickyResult, { passive: true });
+    window.addEventListener("resize", updateStickyResult);
+
+    return () => {
+      window.removeEventListener("scroll", updateStickyResult);
+      window.removeEventListener("resize", updateStickyResult);
+    };
+  }, []);
 
   return (
-    <div className="section-shell relative z-10 pb-16 pt-10 sm:pt-12">
+    <div ref={calculatorRef} className="section-shell relative z-10 pb-16 pt-10 sm:pt-12">
+      <div
+        aria-hidden={!showStickyResult}
+        className={`fixed inset-x-0 top-[58px] z-40 border-b border-[#D5E0EA] bg-white/95 px-4 py-2 shadow-[0_12px_34px_rgba(17,33,52,0.12)] backdrop-blur transition duration-300 md:top-[52px] ${
+          showStickyResult ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-4 opacity-0"
+        }`}
+      >
+        <div className="mx-auto flex max-w-[1380px] items-center justify-between gap-3 text-sm font-bold text-[#062B43]">
+          <span className="inline-flex shrink-0 items-baseline gap-2">
+            <span className="text-[11px] uppercase tracking-[0.14em] text-[#52657A] sm:text-xs">Savings</span>
+            <span className="text-lg leading-none text-[#108843] sm:text-2xl">{formatCurrency(savings)}</span>
+          </span>
+          <span className="flex min-w-0 flex-wrap items-center justify-end gap-1.5 text-[11px] text-[#41556C] sm:gap-2 sm:text-xs">
+            <span className="rounded-full border border-[#D5E0EA] bg-[#F7FAFC] px-2 py-0.5 sm:px-3 sm:py-1">
+              {years}<span className="hidden sm:inline"> years</span><span className="sm:hidden"> yrs</span>
+            </span>
+            <span className="rounded-full border border-[#D5E0EA] bg-[#F7FAFC] px-2 py-0.5 sm:px-3 sm:py-1">
+              {annualFeePercent.toFixed(2)}%<span className="hidden sm:inline"> asset-based</span> fee
+            </span>
+            <span className="rounded-full border border-[#BFE3CC] bg-[#F2FBF5] px-2 py-0.5 text-[#108843] sm:px-3 sm:py-1">
+              $100/mo<span className="hidden sm:inline"> flat fee</span>
+            </span>
+          </span>
+        </div>
+      </div>
       <ScrollReveal className="mx-auto max-w-[1380px] overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]">
-        <header className="grid min-h-[132px] items-center gap-6 bg-[#062B43] px-6 py-6 text-white sm:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(300px,0.42fr)]">
+        <header className="flex flex-col gap-4 border-b border-[#DFE6EE] bg-white/65 px-6 py-5 text-[#062B43] backdrop-blur sm:px-10 md:flex-row md:items-end md:justify-between">
           <div>
-            <h2 className="text-[clamp(2.15rem,3.6vw,3.85rem)] font-bold leading-none tracking-normal">
+            <h2 className="text-[clamp(2rem,3.25vw,3.35rem)] font-bold leading-none tracking-normal">
               Fee Drag Calculator
             </h2>
-            <p className="mt-3 text-base text-white/90 sm:text-lg">Keep more of what you earn.</p>
+            <p className="mt-3 text-base text-[#42556C] sm:text-lg">Keep more of what you earn.</p>
           </div>
-          <div className="text-left lg:text-center">
-            <p className="text-sm font-bold text-white/85">Your potential savings</p>
-            <p className="mt-1 text-[clamp(2.45rem,5vw,4.5rem)] font-extrabold leading-none tracking-normal text-[#6FCF76]">
-              <Odometer value={savings} prefix="$" duration={1000} />
-            </p>
-            <p className="mt-1 text-sm font-bold text-white">over {years} years</p>
+          <div className="max-w-[360px] border-l-2 border-[#108843] pl-4 text-sm font-semibold leading-relaxed text-[#41556C]">
+            Adjust the assumptions below. The comparison, chart, and summary update instantly.
           </div>
         </header>
 
         <section className="relative grid gap-5 px-4 pt-5 sm:px-7 md:grid-cols-2 md:gap-8" aria-label="Ending value comparison">
           <FinalHomeStatCard
-            ribbon="Flat monthly fee ($100/mo)"
-            label="Flat-fee ending value"
-            value={formatCurrency(finalValueWithoutFees)}
+            ribbon={`With asset-based fees (${annualFeePercent.toFixed(2)}%)`}
+            value={formatCurrency(finalValueWithFees)}
             tone="blue"
             accentClassName="text-[#064B84]"
           />
-          <div className="absolute left-1/2 top-[92px] z-10 hidden h-14 w-14 -translate-x-1/2 place-items-center rounded-full bg-[#062B43] text-base font-extrabold text-white shadow-[0_12px_28px_rgba(6,43,67,0.22)] md:grid">
+          <button
+            type="button"
+            onMouseEnter={() => setFeeGapActive(true)}
+            onMouseLeave={() => setFeeGapActive(false)}
+            onFocus={() => setFeeGapActive(true)}
+            onBlur={() => setFeeGapActive(false)}
+            onClick={() => setFeeGapActive(true)}
+            className="absolute left-1/2 top-[88px] z-10 hidden h-14 w-14 -translate-x-1/2 place-items-center rounded-full bg-[#062B43] text-base font-extrabold text-white shadow-[0_12px_28px_rgba(6,43,67,0.22)] transition hover:scale-105 hover:bg-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D92D20] md:grid"
+            aria-label="Show fee gap on chart"
+          >
             VS
-          </div>
-          <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#062B43] text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(6,43,67,0.18)] md:hidden">
+          </button>
+          <button
+            type="button"
+            onClick={() => setFeeGapActive((prev) => !prev)}
+            className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#062B43] text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(6,43,67,0.18)] md:hidden"
+            aria-label="Show fee gap on chart"
+            aria-pressed={feeGapActive}
+          >
             VS
-          </div>
+          </button>
           <FinalHomeStatCard
-            ribbon={`With asset-based fees (${annualFeePercent.toFixed(2)}%)`}
-            label="With-fee ending value"
-            value={formatCurrency(finalValueWithFees)}
+            ribbon="Flat monthly fee ($100/mo)"
+            value={formatCurrency(finalValueWithoutFees)}
             tone="green"
             accentClassName="text-[#108843]"
           />
         </section>
 
-        <section className="mx-4 mt-4 rounded-md border border-[#DFE6EE] bg-white px-4 py-4 sm:mx-7 sm:px-6" aria-label="Portfolio value over time">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <section className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-4 py-3 sm:mx-7 sm:px-5" aria-label="Portfolio value over time">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
             <h3 className="text-base font-bold tracking-normal text-slate-950">Portfolio value over time</h3>
-            <div className="flex flex-wrap gap-4 text-xs font-semibold text-[#41556C]">
+            <div className="flex flex-wrap gap-3 text-xs font-semibold text-[#41556C]">
               <span className="inline-flex items-center gap-2">
                 <span className="h-[3px] w-4 rounded-full bg-[#064B84]" />
-                Flat fee
+                With asset-based fee ({annualFeePercent.toFixed(2)}%)
               </span>
               <span className="inline-flex items-center gap-2">
                 <span className="h-[3px] w-4 rounded-full bg-[#108843]" />
-                With asset-based fee ({annualFeePercent.toFixed(2)}%)
+                Flat fee
               </span>
             </div>
           </div>
-          <div className="mt-2 h-[330px] sm:h-[390px]">
+          <div className="mt-1 h-[255px] sm:h-[305px]">
             <FinalHomeLineChart
               annualFeePercent={annualFeePercent}
+              feeGapActive={feeGapActive}
               finalValueWithFees={finalValueWithFees}
               finalValueWithoutFees={finalValueWithoutFees}
+              savings={savings}
               series={series}
               years={years}
             />
@@ -757,7 +892,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
 
         <div className="mx-4 mt-4 grid gap-3 sm:mx-7 sm:grid-cols-[minmax(0,1fr)_auto]">
           <a
-            href="https://smarterwaywealth.com/"
+            href={smarterWayHref}
             className="flex min-h-[46px] items-center justify-center rounded-md bg-[#108843] px-4 text-center text-base font-bold !text-white no-underline transition hover:bg-[#0B7639]"
           >
             Continue to Smarter Way Wealth.

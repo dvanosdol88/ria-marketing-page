@@ -26,6 +26,8 @@ import {
 } from "@/config/homeMarketingVariants";
 import type { HomeTopBannerId } from "@/config/homeTopBanners";
 
+type IntroStyle = "rule" | "panel" | "quote";
+
 // ============================================================================
 // PILL SLIDER - Value-in-pill thumb with color-coded track
 // ============================================================================
@@ -55,7 +57,7 @@ type Props = {
   initialState: CalculatorState;
   searchParams: Record<string, string | string[] | undefined>;
   marketingVariantId: HomeMarketingVariantId;
-  experienceMode?: "marketing" | "calculator-first";
+  experienceMode?: "marketing" | "calculator-first" | "savings-calculator-upgrade";
   bannerId?: HomeTopBannerId;
 };
 
@@ -292,6 +294,86 @@ function normalizeSearchParams(searchParams: Record<string, string | string[] | 
   return params;
 }
 
+function SavingsLeadHero({
+  introStyle,
+  onShare,
+  savings,
+  shareButtonLabel,
+}: {
+  introStyle: IntroStyle;
+  onShare: () => void;
+  savings: number;
+  shareButtonLabel: string;
+}) {
+  const statement = (
+    <>
+      Smarter Way Wealth delivers{" "}
+      <span className="text-[#007A2F]">personal, real human fiduciary advice and planning</span>
+      {" "}at a fraction of the cost.
+    </>
+  );
+  const introBlock =
+    introStyle === "panel" ? (
+      <div className="mx-auto mt-10 max-w-4xl border-[8px] border-[#108843] px-5 py-8 shadow-[0_18px_48px_rgba(15,35,55,0.08)] sm:mt-12 sm:px-10 sm:py-10">
+        <p className="mx-auto max-w-3xl text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
+          {statement}
+        </p>
+      </div>
+    ) : introStyle === "quote" ? (
+      <div className="mx-auto mt-10 max-w-4xl px-3 py-8 sm:mt-12 sm:py-10">
+        <div className="mx-auto max-w-3xl border-l-[6px] border-[#108843] pl-6 text-left">
+          <p className="text-[clamp(1.45rem,2.9vw,2.45rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
+            {statement}
+          </p>
+        </div>
+      </div>
+    ) : (
+      <div className="mx-auto mt-10 max-w-4xl py-7 sm:mt-12 sm:py-9">
+        <div className="mx-auto h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
+        <p className="mx-auto mt-7 max-w-3xl text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
+          {statement}
+        </p>
+        <div className="mx-auto mt-7 h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
+      </div>
+    );
+
+  return (
+    <section className="w-full bg-[#EEF0F5] px-4 py-7 text-center text-[#10233A] sm:py-8">
+      <div className="mx-auto max-w-6xl">
+        <h1 className="text-[clamp(2.25rem,4.8vw,4rem)] font-semibold leading-[1.06] tracking-normal">
+          What would you do with{" "}
+          <span className="text-[#007A2F] tabular-nums">{formatCurrency(savings)}</span>?
+        </h1>
+        <div className="mt-4 flex items-center justify-center gap-3 text-sm font-bold">
+          <a
+            href="#quick-poll"
+            className="text-[#007A2F] underline underline-offset-4 transition hover:text-[#00682B]"
+          >
+            Show poll
+          </a>
+          <span className="text-slate-300" aria-hidden="true">/</span>
+          <button
+            type="button"
+            onClick={onShare}
+            className="inline-flex items-center justify-center gap-1.5 text-slate-700 underline decoration-slate-300 underline-offset-4 transition hover:text-slate-950 hover:decoration-slate-500"
+            aria-label="Share your result"
+          >
+            <Share2 className="h-3.5 w-3.5" />
+            {shareButtonLabel === "Share your result" ? "Share result" : shareButtonLabel}
+          </button>
+        </div>
+        {introBlock}
+        <p className="mt-11 text-xl leading-7 text-slate-900 sm:mt-14 sm:text-2xl">
+          See how much you can save.
+        </p>
+        <p className="mx-auto mt-4 max-w-3xl text-xs leading-5 text-[#52657A]">
+          Illustrative calculator only. Not investment advice or an advisory relationship.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 export function CostAnalysisCalculator({
   bannerId = "founder-proof",
   experienceMode = "marketing",
@@ -331,6 +413,10 @@ export function CostAnalysisCalculator({
   );
 
   const paramsFromServer = useMemo(() => normalizeSearchParams(searchParams), [searchParams]);
+  const introStyle = useMemo<IntroStyle>(() => {
+    const intro = paramsFromServer.get("intro");
+    return intro === "rule" || intro === "quote" ? intro : "panel";
+  }, [paramsFromServer]);
 
   const shareUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
@@ -429,8 +515,11 @@ export function CostAnalysisCalculator({
   }, []);
 
   const marketingVariant = homeMarketingVariants[marketingVariantId];
+  const advisorVariant = homeMarketingVariants["final-home"];
   const calculatorTheme = marketingVariant.calculator;
   const isCalculatorFirst = experienceMode === "calculator-first";
+  const isSavingsCalculatorUpgrade = experienceMode === "savings-calculator-upgrade";
+  const usesOpeningMarketingHero = experienceMode === "marketing";
 
   const quoteSectionStyle = isDarkMode
     ? {
@@ -477,8 +566,7 @@ export function CostAnalysisCalculator({
 
   const disclosure = (
     <p className={`mt-3 text-xs leading-snug ${calculatorTheme.disclaimerClassName}`}>
-      Use of this calculator does not establish an advisory relationship with
-      Smarter Way Wealth, LLC.
+      Illustrative calculator only. Not investment advice or an advisory relationship.
     </p>
   );
 
@@ -719,7 +807,16 @@ export function CostAnalysisCalculator({
 
   return (
     <>
-      {!isCalculatorFirst && (
+      {isSavingsCalculatorUpgrade && (
+        <SavingsLeadHero
+          introStyle={introStyle}
+          savings={projection.savings}
+          onShare={shareResult}
+          shareButtonLabel={shareButtonLabel}
+        />
+      )}
+
+      {usesOpeningMarketingHero && (
         <HomeMarketingHero
           variant={marketingVariant}
           savings={projection.savings}
@@ -735,7 +832,7 @@ export function CostAnalysisCalculator({
       )}
 
       {/* Mobile Sticky Fee Bar */}
-      {!isCalculatorFirst && (
+      {usesOpeningMarketingHero && (
         <div
           className={`fixed left-0 right-0 top-[58px] z-40 bg-white/95 backdrop-blur-sm transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu dark:bg-slate-900/90 md:hidden ${
             showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
@@ -761,7 +858,7 @@ export function CostAnalysisCalculator({
       )}
 
       {/* Desktop Sticky Fee Bar */}
-      {!isCalculatorFirst && (
+      {usesOpeningMarketingHero && (
         <div
           className={`fixed left-0 right-0 top-[52px] z-40 hidden bg-white/95 backdrop-blur-sm transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu md:block ${
             showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
@@ -854,8 +951,8 @@ export function CostAnalysisCalculator({
           onHighlightScenario={handleCardTap}
         />
 
-        {!isCalculatorFirst && (
-          <div className="section-shell relative z-10 -mt-12 pb-20">
+        {usesOpeningMarketingHero && (
+          <div id="quick-poll" className="section-shell relative z-10 -mt-12 pb-20">
             <ScrollReveal delay={0.1} className="mx-auto w-full max-w-3xl">
               <Quiz />
             </ScrollReveal>
@@ -863,7 +960,38 @@ export function CostAnalysisCalculator({
         )}
       </section>
 
-      {!isCalculatorFirst && (
+      {isSavingsCalculatorUpgrade && (
+        <HomeMarketingHero
+          variant={advisorVariant}
+          savings={projection.savings}
+          portfolioValue={state.portfolioValue}
+          years={state.years}
+          annualGrowthPercent={state.annualGrowthPercent}
+          annualFeePercent={state.annualFeePercent}
+          mutualFundExpensePercent={state.mutualFundExpensePercent}
+          onCalculatorChange={(patch) => setState((prev) => ({ ...prev, ...patch }))}
+          onShare={shareResult}
+          shareButtonLabel={shareButtonLabel}
+          centerProofPoints
+          showAdvisorCalculator={false}
+          showCtas={false}
+        />
+      )}
+
+      {isSavingsCalculatorUpgrade && (
+        <section
+          id="quick-poll"
+          className="relative w-full overflow-hidden bg-[#EEF0F5] py-12 sm:py-16"
+        >
+          <div className="section-shell">
+            <ScrollReveal delay={0.1} className="mx-auto w-full max-w-3xl">
+              <Quiz />
+            </ScrollReveal>
+          </div>
+        </section>
+      )}
+
+      {usesOpeningMarketingHero && (
         <section
           className="relative w-full overflow-hidden py-12 sm:py-16"
           style={quoteSectionStyle}

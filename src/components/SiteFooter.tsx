@@ -26,8 +26,8 @@ export function SiteFooter() {
                 />
               </Link>
               <p className="text-sm leading-relaxed text-neutral-500">
-                Advisory services are for illustrative purposes only. Chart
-                projections are hypothetical and not a guarantee of future returns.
+                Calculator projections are hypothetical and for illustrative purposes only.
+                They are not a guarantee of future returns.
               </p>
             </div>
 

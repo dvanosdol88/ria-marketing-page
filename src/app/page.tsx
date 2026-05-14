@@ -33,6 +33,21 @@ export default async function Home({
     ? getHomeMarketingVariantId(resolvedSearchParams.variant)
     : "final-home";
   const bannerId = getHomeTopBannerId(resolvedSearchParams.banner);
+  const sequence = Array.isArray(resolvedSearchParams.sequence)
+    ? resolvedSearchParams.sequence[0]
+    : resolvedSearchParams.sequence;
+  const mode = Array.isArray(resolvedSearchParams.mode)
+    ? resolvedSearchParams.mode[0]
+    : resolvedSearchParams.mode;
+  let experienceMode: "marketing" | "calculator-first" | "savings-calculator-upgrade";
+
+  if (mode === "calculator-first") {
+    experienceMode = "calculator-first";
+  } else if (sequence === "savings-calculator-upgrade" || !hasExplicitVariant) {
+    experienceMode = "savings-calculator-upgrade";
+  } else {
+    experienceMode = "marketing";
+  }
 
   return (
     <main className="flex flex-col pb-16">
@@ -40,7 +55,7 @@ export default async function Home({
         initialState={calculatorState}
         searchParams={resolvedSearchParams}
         marketingVariantId={marketingVariantId}
-        experienceMode={hasExplicitVariant ? "marketing" : "calculator-first"}
+        experienceMode={experienceMode}
         bannerId={bannerId}
       />
     </main>
