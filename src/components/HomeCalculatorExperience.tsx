@@ -634,7 +634,7 @@ function FinalHomeLineChart({
           />
           <text
             x={pad.left + 4}
-            y={tick.ratio === 1 ? tick.y + 14 : tick.y - 6}
+            y={tick.ratio === 1 || tick.ratio === 0 ? tick.y + 14 : tick.y - 6}
             textAnchor="start"
             fill="#52657A"
             fontSize="13"
