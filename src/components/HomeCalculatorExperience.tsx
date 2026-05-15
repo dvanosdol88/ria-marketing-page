@@ -517,7 +517,7 @@ function FinalHomeStatCard({
   value: string;
 }) {
   return (
-    <article className="min-h-[126px] overflow-hidden rounded-md border border-[#DFE6EE] bg-white text-center">
+    <article className="min-h-[104px] overflow-hidden rounded-md border border-[#DFE6EE] bg-white text-center">
       <div
         className={`flex min-h-[34px] items-center justify-center px-4 py-1.5 text-[13px] font-bold text-white ${
           tone === "blue" ? "bg-[#064B84]" : "bg-[#108843]"
@@ -525,7 +525,7 @@ function FinalHomeStatCard({
       >
         {ribbon}
       </div>
-      <strong className={`mt-6 block text-[clamp(2rem,4.2vw,3.05rem)] font-bold leading-none ${accentClassName}`}>
+      <strong className={`mt-4 block text-[clamp(2rem,4.2vw,3.05rem)] font-bold leading-none ${accentClassName}`}>
         {value}
       </strong>
     </article>
@@ -929,13 +929,12 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
               Compare your <span className="font-semibold text-[#064B84]">asset-based fees</span> with a flat <span className="font-semibold text-[#108843]">$100/month</span>.
             </p>
           </div>
-          <div className="shrink-0 border-l-2 border-[#108843] pl-4 text-xl font-extrabold uppercase leading-tight tracking-tight text-[#108843] sm:text-2xl">
-            <span className="block">Avoid</span>
-            <span className="block">Fee Drag!</span>
+          <div className="shrink-0 whitespace-nowrap border-l-2 border-[#108843] pl-4 text-base font-semibold uppercase leading-tight tracking-tight text-[#108843] sm:text-xl">
+            Avoid Fee Drag!
           </div>
         </header>
 
-        <section className="relative grid gap-5 px-4 pt-5 sm:px-7 md:grid-cols-2 md:gap-8" aria-label="Ending value comparison">
+        <section className="relative grid gap-3 px-4 pt-3 sm:px-7 md:grid-cols-2 md:gap-8" aria-label="Ending value comparison">
           <FinalHomeStatCard
             ribbon={`With asset-based fees (${annualFeePercent.toFixed(2)}%)`}
             value={formatCurrencyFloored(finalValueWithFees)}
@@ -949,7 +948,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             onFocus={() => setFeeGapActive(true)}
             onBlur={() => setFeeGapActive(false)}
             onClick={() => setFeeGapActive(true)}
-            className="vs-pulse-halo absolute left-1/2 top-[88px] z-10 hidden h-14 w-14 -translate-x-1/2 place-items-center rounded-full bg-[#062B43] text-base font-extrabold text-white transition hover:scale-105 hover:bg-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D92D20] md:grid"
+            className="vs-pulse-halo absolute left-1/2 top-[72px] z-10 hidden h-14 w-14 -translate-x-1/2 place-items-center rounded-full bg-[#062B43] text-base font-extrabold text-white transition hover:scale-105 hover:bg-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D92D20] md:grid"
             aria-label="Show fee gap on chart"
           >
             VS
