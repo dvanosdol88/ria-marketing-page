@@ -771,41 +771,45 @@ function ComparisonBars({
       className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-3 py-3 sm:mx-7 sm:px-4 sm:py-4"
       aria-label="Asset-based vs flat fee ending value comparison"
     >
-      {/* Stacked thick bars, abutting with no gap. Top: asset-based (blue).
-         Bottom: flat fee (green) with red overlay on the differential when VS is active.
-         Per-bar labels removed — the stat cards above already display these numbers. */}
+      {/* Stacked thick bars, abutting with no gap.
+         Top: asset-based (blue) — when VS active, the missing-from-100% tail
+              fills with red and shows the percent-lost label, since that gap
+              IS the magnitude lost to fees.
+         Bottom: flat fee (green) — always solid full-width.
+         Per-bar labels removed; the stat cards above already display these numbers. */}
       <div
         className="overflow-hidden rounded-md"
         role="img"
         aria-label={`Asset-based fee ending value ${formatCurrencyFloored(finalValueWithFees)} versus flat $100/month fee ending value ${formatCurrencyFloored(finalValueWithoutFees)}, a ${percentLost.toFixed(1)} percent gap.`}
       >
-        {/* Blue bar — asset-based ending value, width proportional to flat-fee value */}
-        <div className="h-7 w-full bg-[#F0F4F8] sm:h-8">
-          <div
-            className="h-full bg-[#064B84] transition-[width] duration-500 ease-out"
-            style={{ width: `${blueWidthPct}%` }}
-          />
-        </div>
-        {/* Green bar — flat-fee ending value (always 100%) with red overlay on the differential */}
+        {/* Blue bar — asset-based ending value. Red tail + % label fade in with VS. */}
         <div className="relative h-7 w-full bg-[#F0F4F8] sm:h-8">
           <div
-            className="absolute inset-y-0 left-0 bg-[#108843] transition-[width] duration-500 ease-out"
-            style={{ width: "100%" }}
+            className="absolute inset-y-0 left-0 bg-[#064B84] transition-[width] duration-500 ease-out"
+            style={{ width: `${blueWidthPct}%` }}
           />
           <div
-            className={`absolute inset-y-0 bg-[#D92D20] transition-opacity duration-300 ease-out ${
+            className={`absolute inset-y-0 flex items-center justify-center bg-[#D92D20] transition-opacity duration-300 ease-out ${
               feeGapActive ? "opacity-100" : "opacity-0"
             }`}
             style={{
               left: `${blueWidthPct}%`,
               width: `${redWidthPct}%`,
             }}
-            aria-hidden="true"
-          />
+            aria-hidden={!feeGapActive}
+          >
+            <span className="text-xs font-extrabold leading-none text-white sm:text-sm">
+              {percentLost.toFixed(1)}%
+            </span>
+          </div>
         </div>
+        {/* Green bar — flat-fee ending value, always solid full-width. */}
+        <div className="h-7 w-full bg-[#108843] sm:h-8" />
       </div>
 
-      {/* Caption — fades in with the red differential overlay */}
+      {/* Caption — fades in with the red differential overlay. The percent
+         figure lives inside the red bar itself now, so the caption focuses
+         on the absolute-dollar message. */}
       <p
         className={`mt-3 text-center text-xs transition-opacity duration-300 ease-out sm:text-sm ${
           feeGapActive ? "opacity-100" : "opacity-0"
@@ -816,7 +820,7 @@ function ComparisonBars({
           {formatCurrencyFloored(savings)}
         </span>
         <span className="font-semibold text-[#41556C]">
-          {" "}more wealth (<span className="font-extrabold text-[#D92D20]">{percentLost.toFixed(1)}%</span>) with the flat fee
+          {" "}more wealth with the flat fee
         </span>
       </p>
     </section>

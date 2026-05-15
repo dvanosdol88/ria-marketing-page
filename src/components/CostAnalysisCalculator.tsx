@@ -366,11 +366,11 @@ function SavingsLeadHero({
   );
   const introBlock =
     introStyle === "panel" ? (
-      <div className="mx-auto mt-10 max-w-4xl border-[8px] border-[#108843] px-5 pb-5 pt-8 shadow-[0_18px_48px_rgba(15,35,55,0.08)] sm:mt-12 sm:px-10 sm:pb-6 sm:pt-10">
+      <div className="mx-auto mt-10 max-w-4xl border-[8px] border-[#108843] px-5 py-8 shadow-[0_18px_48px_rgba(15,35,55,0.08)] sm:mt-12 sm:px-10 sm:py-10">
         <p className="mx-auto max-w-3xl text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
           {statement}
         </p>
-        <p className="mx-auto mt-2 max-w-3xl text-center font-semibold tracking-normal text-[#007A2F] text-xl sm:mt-3 sm:text-2xl">
+        <p className="mx-auto mt-8 max-w-3xl text-center font-semibold tracking-normal text-[#007A2F] text-xl sm:mt-10 sm:text-2xl">
           David Van Osdol, CFA, CFP
         </p>
       </div>
