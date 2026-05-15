@@ -370,6 +370,9 @@ function SavingsLeadHero({
         <p className="mx-auto max-w-3xl text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
           {statement}
         </p>
+        <p className="mx-auto mt-6 max-w-3xl text-right text-base font-semibold tracking-normal text-[#10233A] sm:mt-8 sm:text-lg">
+          &mdash; David Van Osdol, CFA, CFP
+        </p>
       </div>
     ) : introStyle === "quote" ? (
       <div className="mx-auto mt-10 max-w-4xl px-3 py-8 sm:mt-12 sm:py-10">
