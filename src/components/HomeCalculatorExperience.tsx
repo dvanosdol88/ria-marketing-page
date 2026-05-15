@@ -3,17 +3,15 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Clock3,
-  Coins,
   DollarSign,
   Percent,
-  PieChart,
   ReceiptText,
   ScanLine,
   ShieldCheck,
   SlidersHorizontal,
   TrendingUp,
 } from "lucide-react";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatCurrencyFloored } from "@/lib/format";
 import type {
   HomeCalculatorTheme,
   HomeCalculatorLayout,
@@ -713,7 +711,7 @@ function FinalHomeLineChart({
             fontSize="15"
             fontWeight="800"
           >
-            {formatCurrency(savings)} lost to fees
+            {formatCurrencyFloored(savings)} lost to fees
           </text>
         </g>
 
@@ -735,6 +733,110 @@ function FinalHomeLineChart({
   );
 }
 
+/**
+ * Two parallel proportional bars under the line chart that surface the
+ * same two ending values shown in the big stat cards above. The flat-fee
+ * (green) bar always renders at 100% width — it's the larger value — and
+ * the asset-based (blue) bar renders at its proportional share of that
+ * total. When the VS button is engaged (`feeGapActive`), a red overlay
+ * fades in on top of the green bar covering only the differential
+ * region, plus a caption appears with the dollar/percentage gap.
+ *
+ * No new state — `feeGapActive` is shared with the line chart so a
+ * single VS press animates both visuals in unison.
+ */
+function ComparisonBars({
+  finalValueWithFees,
+  finalValueWithoutFees,
+  savings,
+  percentLost,
+  annualFeePercent,
+  feeGapActive,
+}: {
+  finalValueWithFees: number;
+  finalValueWithoutFees: number;
+  savings: number;
+  percentLost: number;
+  annualFeePercent: number;
+  feeGapActive: boolean;
+}) {
+  // The flat-fee value is always >= the asset-based value, so we
+  // normalize the bar widths against finalValueWithoutFees.
+  const denominator = Math.max(finalValueWithoutFees, 1);
+  const blueWidthPct = Math.max(0, Math.min(100, (finalValueWithFees / denominator) * 100));
+  const redWidthPct = Math.max(0, Math.min(100, 100 - blueWidthPct));
+
+  // Bars use the same px-1.5 sm:px-2 outer padding as the chart card
+  // above so they visually align edge-to-edge with the line chart.
+  return (
+    <section
+      className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-3 py-3 sm:mx-7 sm:px-4 sm:py-4"
+      aria-label="Asset-based vs flat fee ending value comparison"
+    >
+      <div className="space-y-3">
+        {/* Blue bar — asset-based ending value */}
+        <div>
+          <div className="mb-1 flex items-baseline justify-between gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] sm:text-xs">
+            <span className="text-[#064B84]">
+              With asset-based fees ({annualFeePercent.toFixed(2)}%)
+            </span>
+            <span className="text-sm font-bold normal-case tracking-normal text-[#064B84] sm:text-base">
+              {formatCurrencyFloored(finalValueWithFees)}
+            </span>
+          </div>
+          <div className="h-3.5 w-full overflow-hidden rounded-full bg-[#F0F4F8] sm:h-4">
+            <div
+              className="h-full rounded-full bg-[#064B84] transition-[width] duration-500 ease-out"
+              style={{ width: `${blueWidthPct}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Green bar — flat-fee ending value (always 100%) with red overlay on the differential when VS active */}
+        <div>
+          <div className="mb-1 flex items-baseline justify-between gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] sm:text-xs">
+            <span className="text-[#108843]">Flat $100/month fee</span>
+            <span className="text-sm font-bold normal-case tracking-normal text-[#108843] sm:text-base">
+              {formatCurrencyFloored(finalValueWithoutFees)}
+            </span>
+          </div>
+          <div className="relative h-3.5 w-full overflow-hidden rounded-full bg-[#F0F4F8] sm:h-4">
+            <div
+              className="absolute inset-y-0 left-0 rounded-full bg-[#108843] transition-[width] duration-500 ease-out"
+              style={{ width: "100%" }}
+            />
+            <div
+              className={`absolute inset-y-0 rounded-r-full bg-[#D92D20] transition-opacity duration-300 ease-out ${
+                feeGapActive ? "opacity-100" : "opacity-0"
+              }`}
+              style={{
+                left: `${blueWidthPct}%`,
+                width: `${redWidthPct}%`,
+              }}
+              aria-hidden="true"
+            />
+          </div>
+        </div>
+
+        {/* Caption — fades in with the red differential overlay */}
+        <p
+          className={`text-center text-xs font-bold transition-opacity duration-300 ease-out sm:text-sm ${
+            feeGapActive ? "opacity-100" : "opacity-0"
+          }`}
+          aria-hidden={!feeGapActive}
+        >
+          <span className="text-[#D92D20]">
+            {formatCurrencyFloored(savings)}
+          </span>
+          <span className="text-[#41556C]">
+            {" "}more wealth ({percentLost.toFixed(1)}%) with the flat fee
+          </span>
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const {
     annualFeePercent,
@@ -748,7 +850,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     shareAction,
     simpleControls,
     savings,
-    totalAssetBasedFees,
     years,
   } = props;
   const calculatorRef = useRef<HTMLDivElement | null>(null);
@@ -762,7 +863,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     fee: annualFeePercent.toFixed(2),
     growth: annualGrowthPercent.toFixed(2),
   });
-  const smarterWayHref = `https://smarterwaywealth.com/?${smarterWayParams.toString()}`;
+  const smarterWayHref = `https://smarterwaywealth.com/save?${smarterWayParams.toString()}`;
 
   useEffect(() => {
     const updateStickyResult = () => {
@@ -800,7 +901,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         <div className="mx-auto flex max-w-[1380px] items-center justify-between gap-3 text-sm font-bold text-[#062B43]">
           <span className="inline-flex shrink-0 items-baseline gap-2">
             <span className="text-[11px] uppercase tracking-[0.14em] text-[#52657A] sm:text-xs">Savings</span>
-            <span className="text-lg leading-none text-[#108843] sm:text-2xl">{formatCurrency(savings)}</span>
+            <span className="text-lg leading-none text-[#108843] sm:text-2xl">{formatCurrencyFloored(savings)}</span>
           </span>
           <span className="flex min-w-0 flex-wrap items-center justify-end gap-1.5 text-[11px] text-[#41556C] sm:gap-2 sm:text-xs">
             <span className="rounded-full border border-[#D5E0EA] bg-[#F7FAFC] px-2 py-0.5 sm:px-3 sm:py-1">
@@ -837,7 +938,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         <section className="relative grid gap-5 px-4 pt-5 sm:px-7 md:grid-cols-2 md:gap-8" aria-label="Ending value comparison">
           <FinalHomeStatCard
             ribbon={`With asset-based fees (${annualFeePercent.toFixed(2)}%)`}
-            value={formatCurrency(finalValueWithFees)}
+            value={formatCurrencyFloored(finalValueWithFees)}
             tone="blue"
             accentClassName="text-[#064B84]"
           />
@@ -864,7 +965,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           </button>
           <FinalHomeStatCard
             ribbon="Flat monthly fee ($100/mo)"
-            value={formatCurrency(finalValueWithoutFees)}
+            value={formatCurrencyFloored(finalValueWithoutFees)}
             tone="green"
             accentClassName="text-[#108843]"
           />
@@ -884,6 +985,15 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           </div>
         </section>
 
+        <ComparisonBars
+          finalValueWithFees={finalValueWithFees}
+          finalValueWithoutFees={finalValueWithoutFees}
+          savings={savings}
+          percentLost={percentLost}
+          annualFeePercent={annualFeePercent}
+          feeGapActive={feeGapActive}
+        />
+
         <section className="mx-4 mt-4 grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white sm:mx-7 md:grid-cols-2 xl:grid-cols-4" aria-label="Calculator inputs">
           <div className="border-b border-[#DFE6EE] p-4 md:border-r xl:border-b-0">{simpleControls.portfolio}</div>
           <div className="border-b border-[#DFE6EE] p-4 xl:border-b-0 xl:border-r">{simpleControls.years}</div>
@@ -891,33 +1001,12 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <div className="p-4">{simpleControls.advisoryFee}</div>
         </section>
 
-        <section className="mx-4 mt-4 grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white sm:mx-7 md:grid-cols-2" aria-label="Fee summary">
-          <article className="flex min-h-[88px] items-center justify-center gap-5 border-b border-[#DFE6EE] p-5 md:border-b-0 md:border-r">
-            <Coins className="h-12 w-12 text-[#062B43]" strokeWidth={1.8} />
-            <div>
-              <p className="text-sm text-[#41556C]">Fees paid</p>
-              <p className="mt-1 text-[clamp(1.8rem,3vw,2.45rem)] font-bold leading-none text-[#108843]">
-                {formatCurrency(totalAssetBasedFees)}
-              </p>
-            </div>
-          </article>
-          <article className="flex min-h-[88px] items-center justify-center gap-5 p-5">
-            <PieChart className="h-12 w-12 text-[#062B43]" strokeWidth={1.8} />
-            <div>
-              <p className="text-sm text-[#41556C]">Wealth lost</p>
-              <p className="mt-1 text-[clamp(1.8rem,3vw,2.45rem)] font-bold leading-none text-[#108843]">
-                {percentLost.toFixed(1)}%
-              </p>
-            </div>
-          </article>
-        </section>
-
         <div className="mx-4 mt-4 grid gap-3 sm:mx-7 sm:grid-cols-[minmax(0,1fr)_auto]">
           <a
             href={smarterWayHref}
             className="flex min-h-[46px] items-center justify-center rounded-md bg-[#108843] px-4 text-center text-base font-bold !text-white no-underline transition hover:bg-[#0B7639]"
           >
-            Continue to Smarter Way Wealth.
+            See more on YOUR savings at smarterwaywealth.com/save
           </a>
           <div className="flex min-h-[46px] items-stretch justify-center">
             {shareAction}

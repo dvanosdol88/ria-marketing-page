@@ -5,7 +5,7 @@ import { Check, ChevronDown, ChevronUp, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, DEFAULT_STATE, buildQueryFromState } from "@/lib/calculatorState";
-import { formatCurrency } from "@/lib/format";
+import { formatCurrency, formatCurrencyFloored } from "@/lib/format";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { Quiz } from "./Quiz";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
@@ -174,7 +174,7 @@ function SimpleRangeControl({
               event.currentTarget.blur();
             }
           }}
-          className="min-h-[34px] w-[48%] min-w-[110px] max-w-[200px] rounded border border-[#DFE6EE] bg-[#FBFCFD] px-3 py-2 text-right text-base font-bold leading-none text-[#10233A] tabular-nums focus:border-[#108843] focus:outline-none focus:ring-2 focus:ring-[#108843]/30"
+          className="min-h-[34px] flex-1 min-w-[96px] max-w-[200px] rounded border border-[#DFE6EE] bg-[#FBFCFD] px-3 py-2 text-right text-base font-bold leading-none text-[#10233A] tabular-nums focus:border-[#108843] focus:outline-none focus:ring-2 focus:ring-[#108843]/30"
           aria-label={`${label} value`}
         />
       </div>
@@ -394,7 +394,7 @@ function SavingsLeadHero({
       <div className="mx-auto max-w-6xl">
         <h1 className="text-[clamp(2.25rem,4.8vw,4rem)] font-semibold leading-[1.06] tracking-normal">
           What would you do with{" "}
-          <span className="text-[#007A2F] tabular-nums">{formatCurrency(savings)}</span>?
+          <span className="text-[#007A2F] tabular-nums">{formatCurrencyFloored(savings)}</span>?
         </h1>
         <div className="mt-2 flex items-center justify-center gap-3 text-sm font-bold opacity-70 transition-opacity hover:opacity-100">
           <a
@@ -484,9 +484,9 @@ export function CostAnalysisCalculator({
         `Total annual fee load: ${totalAnnualFeePercent.toFixed(2)}%`,
         `Annual growth: ${state.annualGrowthPercent.toFixed(1)}%`,
         `Time horizon: ${state.years} years`,
-        `Smarter Way Wealth value: ${formatCurrency(projection.finalValueWithoutFees)}`,
-        `Traditional asset-based fee value: ${formatCurrency(projection.finalValueWithFees)}`,
-        `Lost to asset-based fees: -${formatCurrency(projection.savings)}`,
+        `Smarter Way Wealth value: ${formatCurrencyFloored(projection.finalValueWithoutFees)}`,
+        `Traditional asset-based fee value: ${formatCurrencyFloored(projection.finalValueWithFees)}`,
+        `Lost to asset-based fees: -${formatCurrencyFloored(projection.savings)}`,
       ].join("\n"),
     [projection.finalValueWithFees, projection.finalValueWithoutFees, projection.savings, state, totalAnnualFeePercent]
   );
@@ -812,7 +812,7 @@ export function CostAnalysisCalculator({
                 Calculator result
               </p>
               <p className={`mt-3 text-3xl font-semibold tracking-normal sm:text-5xl ${calculatorTheme.chart.strongTextClassName}`}>
-                {formatCurrency(projection.savings)}
+                {formatCurrencyFloored(projection.savings)}
               </p>
               <p className={`mt-2 text-sm ${calculatorTheme.chart.mutedTextClassName}`}>
                 Projected wealth difference over {state.years} years.
@@ -897,7 +897,7 @@ export function CostAnalysisCalculator({
                 color: homeCalculatorConfig.cards.lostToFeesText
               }}
             >
-              <Odometer value={projection.savings} prefix="$" duration={1000} className="text-lg font-bold" />
+              <Odometer value={Math.floor(projection.savings / 1000) * 1000} prefix="$" duration={1000} className="text-lg font-bold" />
               <span className="text-xs font-bold uppercase tracking-wider">
                 lost to asset-based fees!
               </span>
@@ -917,7 +917,7 @@ export function CostAnalysisCalculator({
             <div className="flex items-center gap-2">
               <span className="text-gray-500 dark:text-slate-400">SMARTER Way ($100/mo):</span>
               <Odometer
-                value={projection.finalValueWithoutFees}
+                value={Math.floor(projection.finalValueWithoutFees / 1000) * 1000}
                 prefix="$"
                 duration={800}
                 className="font-bold text-[#00A540]"
@@ -935,7 +935,7 @@ export function CostAnalysisCalculator({
             >
               <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">Lost to Fees:</span>
               <Odometer
-                value={projection.savings}
+                value={Math.floor(projection.savings / 1000) * 1000}
                 prefix="-$"
                 duration={800}
                 className="font-bold"
@@ -945,7 +945,7 @@ export function CostAnalysisCalculator({
             <div className="flex items-center gap-2">
               <span className="text-gray-500 dark:text-slate-400">AUM Advisor:</span>
               <Odometer
-                value={projection.finalValueWithFees}
+                value={Math.floor(projection.finalValueWithFees / 1000) * 1000}
                 prefix="$"
                 duration={800}
                 className="font-bold text-gray-900 dark:text-slate-100"
