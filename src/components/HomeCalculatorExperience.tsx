@@ -782,12 +782,17 @@ function ComparisonBars({
         role="img"
         aria-label={`Asset-based fee ending value ${formatCurrencyFloored(finalValueWithFees)} versus flat $100/month fee ending value ${formatCurrencyFloored(finalValueWithoutFees)}, a ${percentLost.toFixed(1)} percent gap.`}
       >
-        {/* Blue bar — asset-based ending value. Red tail + % label fade in with VS. */}
-        <div className="relative h-7 w-full bg-[#F0F4F8] sm:h-8">
+        {/* Blue bar — asset-based ending value. White dollar label sits at the
+           right edge of the blue fill. Red tail + % label fade in with VS. */}
+        <div className="relative h-9 w-full bg-[#F0F4F8] sm:h-10">
           <div
-            className="absolute inset-y-0 left-0 bg-[#064B84] transition-[width] duration-500 ease-out"
+            className="absolute inset-y-0 left-0 flex items-center justify-end bg-[#064B84] pr-3 transition-[width] duration-500 ease-out sm:pr-4"
             style={{ width: `${blueWidthPct}%` }}
-          />
+          >
+            <span className="text-xs font-extrabold leading-none text-white tabular-nums sm:text-sm">
+              {formatCurrencyFloored(finalValueWithFees)}
+            </span>
+          </div>
           <div
             className={`absolute inset-y-0 flex items-center justify-center bg-[#D92D20] transition-opacity duration-300 ease-out ${
               feeGapActive ? "opacity-100" : "opacity-0"
@@ -803,8 +808,13 @@ function ComparisonBars({
             </span>
           </div>
         </div>
-        {/* Green bar — flat-fee ending value, always solid full-width. */}
-        <div className="h-7 w-full bg-[#108843] sm:h-8" />
+        {/* Green bar — flat-fee ending value, always solid full-width.
+           White dollar label sits at the right edge of the green fill. */}
+        <div className="flex h-9 w-full items-center justify-end bg-[#108843] pr-3 sm:h-10 sm:pr-4">
+          <span className="text-xs font-extrabold leading-none text-white tabular-nums sm:text-sm">
+            {formatCurrencyFloored(finalValueWithoutFees)}
+          </span>
+        </div>
       </div>
 
       {/* Caption — fades in with the red differential overlay. The percent
