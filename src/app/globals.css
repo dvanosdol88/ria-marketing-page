@@ -150,3 +150,32 @@ a:hover {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* VS button — pulsating red halo signals the hover/tap-to-highlight affordance */
+@keyframes vs-halo-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 3px rgba(217, 45, 32, 0.55),
+      0 0 12px 4px rgba(217, 45, 32, 0.35),
+      0 12px 28px rgba(6, 43, 67, 0.22);
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px rgba(217, 45, 32, 0.85),
+      0 0 22px 8px rgba(217, 45, 32, 0.55),
+      0 12px 28px rgba(6, 43, 67, 0.22);
+  }
+}
+
+.vs-pulse-halo {
+  animation: vs-halo-pulse 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vs-pulse-halo {
+    animation: none;
+    box-shadow:
+      0 0 0 3px rgba(217, 45, 32, 0.55),
+      0 12px 28px rgba(6, 43, 67, 0.22);
+  }
+}

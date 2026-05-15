@@ -107,42 +107,94 @@ function SimpleRangeControl({
     return decimalPart ? decimalPart.length : 0;
   }, [step]);
 
-  const handleChange = useCallback(
+  const clampAndSnap = useCallback(
+    (raw: number) => {
+      const snapped = Number((Math.round(raw / step) * step).toFixed(precision));
+      return Math.min(max, Math.max(min, snapped));
+    },
+    [max, min, precision, step]
+  );
+
+  const handleRangeChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const raw = Number.parseFloat(event.target.value);
       if (Number.isNaN(raw)) return;
-      const snapped = Number((Math.round(raw / step) * step).toFixed(precision));
-      const clamped = Math.min(max, Math.max(min, snapped));
-      onChange(clamped);
+      onChange(clampAndSnap(raw));
     },
-    [max, min, onChange, precision, step]
+    [clampAndSnap, onChange]
   );
 
+  const slug = label.toLowerCase().replaceAll(" ", "-");
+  const sliderId = `final-${slug}`;
+  const inputId = `final-${slug}-input`;
+
+  // Editable text shadow of the slider's value. Null = show formatted value
+  // derived from props; a string = the user is editing.
+  const [draft, setDraft] = useState<string | null>(null);
+  const displayValue = draft ?? formatter(value);
+
+  const commitDraft = useCallback(() => {
+    if (draft === null) return;
+    // Strip $, %, commas, spaces — keep digits, decimal point, minus.
+    const cleaned = draft.replace(/[^0-9.\-]/g, "");
+    const numeric = Number.parseFloat(cleaned);
+    if (Number.isFinite(numeric)) {
+      onChange(clampAndSnap(numeric));
+    }
+    setDraft(null);
+  }, [clampAndSnap, draft, onChange]);
+
   return (
-    <label className="grid gap-3" htmlFor={`final-${label.toLowerCase().replaceAll(" ", "-")}`}>
-      <span className="grid gap-2">
-        <span className="text-[13px] font-bold leading-none text-[#213B56]">{label}</span>
-        <span className="min-h-[34px] rounded border border-[#DFE6EE] bg-[#FBFCFD] px-3 py-2 text-base font-bold leading-none text-[#10233A] tabular-nums">
-          {formatter(value)}
-        </span>
-      </span>
+    <div className="grid gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+        <label htmlFor={inputId} className="text-[13px] font-bold leading-none text-[#213B56]">
+          {label}
+        </label>
+        <input
+          id={inputId}
+          type="text"
+          inputMode="decimal"
+          autoComplete="off"
+          spellCheck={false}
+          value={displayValue}
+          onChange={(event) => setDraft(event.target.value)}
+          onFocus={(event) => {
+            setDraft(formatter(value));
+            // Defer so the value is in the DOM before selection.
+            requestAnimationFrame(() => event.target.select());
+          }}
+          onBlur={commitDraft}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              event.currentTarget.blur();
+            } else if (event.key === "Escape") {
+              event.preventDefault();
+              setDraft(null);
+              event.currentTarget.blur();
+            }
+          }}
+          className="min-h-[34px] w-[48%] min-w-[110px] max-w-[200px] rounded border border-[#DFE6EE] bg-[#FBFCFD] px-3 py-2 text-right text-base font-bold leading-none text-[#10233A] tabular-nums focus:border-[#108843] focus:outline-none focus:ring-2 focus:ring-[#108843]/30"
+          aria-label={`${label} value`}
+        />
+      </div>
       <input
-        id={`final-${label.toLowerCase().replaceAll(" ", "-")}`}
+        id={sliderId}
         type="range"
         min={min}
         max={max}
         step={step}
         value={value}
-        onChange={handleChange}
+        onChange={handleRangeChange}
         className="h-2 w-full cursor-pointer"
         style={{ accentColor }}
-        aria-label={label}
+        aria-label={`${label} slider`}
       />
       <span className="flex items-center justify-between gap-4 text-xs text-[#5E6F80]">
         <span>{boundsFormatter(min)}</span>
         <span>{boundsFormatter(max)}</span>
       </span>
-    </label>
+    </div>
   );
 }
 

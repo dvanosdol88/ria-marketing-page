@@ -21,6 +21,16 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-15 — Mobile calculator polish: compact chart, editable inputs, VS halo
+**Agent:** Claude (Opus 4.7) | **Surface:** marketing | **Duration:** 1 session
+- changed: `src/components/HomeCalculatorExperience.tsx` (`FinalHomeLineChart` chart padding reduced from `{top:28,right:148,bottom:44,left:82}` to `{top:28,right:28,bottom:44,left:20}`; Y-axis tick labels moved INSIDE the plot, anchored start, sitting just above each gridline — topmost tick sits below its gridline to avoid clipping; removed the two right-side endpoint dollar `<text>` labels; legend now stacks each ending value beneath its label in the matching brand colour `#064B84` / `#108843`).
+- changed: `src/components/HomeCalculatorExperience.tsx` (both VS buttons — desktop absolute-positioned and mobile centered — now use the new `vs-pulse-halo` class to signal the hover/tap-to-highlight affordance for the red fee-gap reveal on the chart).
+- changed: `src/components/CostAnalysisCalculator.tsx` (`SimpleRangeControl` refactored: row 1 is now label-left + editable `<input>`-right on the same axis instead of stacked; the value box is a real text input with `inputMode="decimal"` so iOS/Android surface the number keypad on tap; value parsing strips `$`, `,`, `%`, and whitespace; Enter blurs to commit, Escape reverts; range slider sits on row 2, min/max bounds on row 3; precision/clamp/snap logic extracted into a shared `clampAndSnap` callback consumed by both the range and text paths).
+- changed: `src/app/globals.css` (added `@keyframes vs-halo-pulse` and `.vs-pulse-halo`; respects `prefers-reduced-motion`).
+- verified locally: `npx tsc --noEmit` clean; `npm run lint` clean except 3 pre-existing `<img>` warnings (SiteNav.tsx and how-it-works/substitution/page.tsx); `npm run build` failed only on environment issues unrelated to this change (sandbox can't fetch DM Sans/Inter from Google Fonts via Turbopack's font loader, plus pre-existing tokens import warning). Vercel CI is the authoritative build.
+- pushed: directly to `main` per user instruction.
+- followups for next session: consider unifying the calculator-input row so the editable value sits flush right at the same vertical baseline as the label across all four inputs even when label text wraps on very narrow viewports; consider switching the editable input from text-with-inputMode to a fully numeric mode if formatting parity becomes painful on iOS auto-correct.
+
 ### 2026-05-08 - Final domain split review: calculator-first root and banner finalists
 **Agent:** Codex | **Surface:** marketing/review | **Duration:** 1 session
 - changed: `/` now uses the final-C calculator-first experience by default when no `variant` query is present.

@@ -553,7 +553,10 @@ function FinalHomeLineChart({
 }) {
   const width = 1040;
   const height = 310;
-  const pad = { top: 28, right: 148, bottom: 44, left: 82 };
+  // Tight horizontal padding: Y-tick labels live INSIDE the plot (above each
+  // gridline), and the line endpoint dollar amounts have moved out to the
+  // chart legend, so neither side needs a wide gutter.
+  const pad = { top: 28, right: 28, bottom: 44, left: 20 };
   const plotWidth = width - pad.left - pad.right;
   const plotHeight = height - pad.top - pad.bottom;
   const maxYear = Math.max(1, years, ...series.map((row) => row.year));
@@ -593,10 +596,13 @@ function FinalHomeLineChart({
       .join(" ") +
     " Z";
 
+  // Top tick is the gridline that runs across the highest value; we render
+  // labels ABOVE each line, so the topmost label needs the y inset to keep
+  // it from clipping the chart's top edge.
   const yTicks = [0, 0.25, 0.5, 0.75, 1].map((ratio) => {
     const value = minValue + valueRange * ratio;
     const y = pad.top + (1 - ratio) * plotHeight;
-    return { value, y };
+    return { value, y, ratio };
   });
 
   const ending = series[series.length - 1];
@@ -627,11 +633,11 @@ function FinalHomeLineChart({
             strokeWidth="1"
           />
           <text
-            x={pad.left - 16}
-            y={tick.y + 5}
-            textAnchor="end"
+            x={pad.left + 4}
+            y={tick.ratio === 1 ? tick.y + 14 : tick.y - 6}
+            textAnchor="start"
             fill="#52657A"
-            fontSize="14"
+            fontSize="13"
             fontWeight="600"
           >
             {formatCompactCurrency(tick.value)}
@@ -685,13 +691,6 @@ function FinalHomeLineChart({
 
       <circle cx={aumEndX} cy={aumEndY} r="6" fill="#064B84" stroke="#FFFFFF" strokeWidth="3" />
       <circle cx={flatEndX} cy={flatEndY} r="6" fill="#108843" stroke="#FFFFFF" strokeWidth="3" />
-
-      <text x={flatEndX + 14} y={flatEndY - 10} fill="#108843" fontSize="17" fontWeight="760">
-        {formatCurrency(finalValueWithoutFees)}
-      </text>
-      <text x={aumEndX + 14} y={aumEndY + 18} fill="#064B84" fontSize="17" fontWeight="760">
-        {formatCurrency(finalValueWithFees)}
-      </text>
 
       <text x={pad.left} y={height - 12} textAnchor="middle" fill="#52657A" fontSize="14" fontWeight="600">
         0
@@ -817,7 +816,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             onFocus={() => setFeeGapActive(true)}
             onBlur={() => setFeeGapActive(false)}
             onClick={() => setFeeGapActive(true)}
-            className="absolute left-1/2 top-[88px] z-10 hidden h-14 w-14 -translate-x-1/2 place-items-center rounded-full bg-[#062B43] text-base font-extrabold text-white shadow-[0_12px_28px_rgba(6,43,67,0.22)] transition hover:scale-105 hover:bg-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D92D20] md:grid"
+            className="vs-pulse-halo absolute left-1/2 top-[88px] z-10 hidden h-14 w-14 -translate-x-1/2 place-items-center rounded-full bg-[#062B43] text-base font-extrabold text-white transition hover:scale-105 hover:bg-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D92D20] md:grid"
             aria-label="Show fee gap on chart"
           >
             VS
@@ -825,7 +824,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <button
             type="button"
             onClick={() => setFeeGapActive((prev) => !prev)}
-            className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#062B43] text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(6,43,67,0.18)] md:hidden"
+            className="vs-pulse-halo mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#062B43] text-sm font-extrabold text-white md:hidden"
             aria-label="Show fee gap on chart"
             aria-pressed={feeGapActive}
           >
@@ -840,17 +839,27 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         </section>
 
         <section className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-4 py-3 sm:mx-7 sm:px-5" aria-label="Portfolio value over time">
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <h3 className="text-base font-bold tracking-normal text-slate-950">Portfolio value over time</h3>
-            <div className="flex flex-wrap gap-3 text-xs font-semibold text-[#41556C]">
-              <span className="inline-flex items-center gap-2">
-                <span className="h-[3px] w-4 rounded-full bg-[#064B84]" />
-                With asset-based fee ({annualFeePercent.toFixed(2)}%)
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span className="h-[3px] w-4 rounded-full bg-[#108843]" />
-                Flat fee
-              </span>
+            <div className="flex flex-wrap gap-x-6 gap-y-3 text-xs font-semibold">
+              <div className="flex flex-col gap-1">
+                <span className="inline-flex items-center gap-2 text-[#41556C]">
+                  <span className="h-[3px] w-4 rounded-full bg-[#064B84]" />
+                  With asset-based fee ({annualFeePercent.toFixed(2)}%)
+                </span>
+                <span className="pl-6 text-[15px] font-bold leading-none tabular-nums text-[#064B84]">
+                  {formatCurrency(finalValueWithFees)}
+                </span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="inline-flex items-center gap-2 text-[#41556C]">
+                  <span className="h-[3px] w-4 rounded-full bg-[#108843]" />
+                  Flat fee
+                </span>
+                <span className="pl-6 text-[15px] font-bold leading-none tabular-nums text-[#108843]">
+                  {formatCurrency(finalValueWithoutFees)}
+                </span>
+              </div>
             </div>
           </div>
           <div className="mt-1 h-[255px] sm:h-[305px]">
