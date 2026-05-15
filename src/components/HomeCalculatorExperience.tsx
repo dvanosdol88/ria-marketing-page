@@ -551,14 +551,41 @@ function FinalHomeLineChart({
   series: ProjectionYear[];
   years: number;
 }) {
-  const width = 1040;
-  const height = 310;
-  // Tight horizontal padding: Y-tick labels live INSIDE the plot (above each
-  // gridline), and the line endpoint dollar amounts have moved out to the
-  // chart legend, so neither side needs a wide gutter.
-  const pad = { top: 28, right: 28, bottom: 44, left: 20 };
-  const plotWidth = width - pad.left - pad.right;
-  const plotHeight = height - pad.top - pad.bottom;
+  // Measured-pixel rendering: a ResizeObserver tracks the container's actual
+  // width/height and we redraw the SVG against those live dimensions every
+  // time the layout changes (viewport resize, slider edit reflow, etc.).
+  // This is what lets the chart fill the card edge-to-edge on every device
+  // instead of being letterboxed inside a fixed viewBox.
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  // Sensible defaults keep SSR-rendered SVG and first client paint matching
+  // — the ResizeObserver overwrites these on mount within one frame.
+  const [size, setSize] = useState<{ w: number; h: number }>({ w: 1040, h: 305 });
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    if (rect.width > 40 && rect.height > 40) {
+      setSize({ w: rect.width, h: rect.height });
+    }
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      const { width, height } = entry.contentRect;
+      if (width > 40 && height > 40) {
+        setSize({ w: width, h: height });
+      }
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const { w: width, h: height } = size;
+  // Tight padding: Y-tick labels live inside the plot, x-axis labels live in
+  // the bottom strip, and there is no right-side endpoint annotation anymore.
+  const pad = { top: 12, right: 10, bottom: 30, left: 10 };
+  const plotWidth = Math.max(1, width - pad.left - pad.right);
+  const plotHeight = Math.max(1, height - pad.top - pad.bottom);
   const maxYear = Math.max(1, years, ...series.map((row) => row.year));
   const maxValue = Math.max(finalValueWithoutFees, finalValueWithFees, ...series.map((row) => row.withoutFees));
   const minValue =
@@ -596,9 +623,6 @@ function FinalHomeLineChart({
       .join(" ") +
     " Z";
 
-  // Top tick is the gridline that runs across the highest value; we render
-  // labels ABOVE each line, so the topmost label needs the y inset to keep
-  // it from clipping the chart's top edge.
   const yTicks = [0, 0.25, 0.5, 0.75, 1].map((ratio) => {
     const value = minValue + valueRange * ratio;
     const y = pad.top + (1 - ratio) * plotHeight;
@@ -608,101 +632,106 @@ function FinalHomeLineChart({
   const ending = series[series.length - 1];
   const [flatEndX, flatEndY] = point(ending, "withoutFees");
   const [aumEndX, aumEndY] = point(ending, "withFees");
-  const feeGapLabelWidth = 254;
+  // Savings pill — clamped to keep it inside the plot at narrow widths.
+  const desiredPillWidth = 254;
+  const feeGapLabelWidth = Math.min(desiredPillWidth, Math.max(140, plotWidth - 16));
   const feeGapLabelX = Math.min(
     Math.max(flatEndX - feeGapLabelWidth - 18, pad.left + 8),
-    width - pad.right - feeGapLabelWidth - 4,
+    pad.left + plotWidth - feeGapLabelWidth - 4,
   );
   const feeGapLabelY = Math.min((flatEndY + aumEndY) / 2 - 30, flatEndY - 18);
 
   return (
-    <svg
-      className="block h-full min-h-[240px] w-full overflow-visible"
-      viewBox={`0 0 ${width} ${height}`}
-      role="img"
-      aria-label="Line chart comparing portfolio value under a flat fee and an asset-based fee"
-    >
-      {yTicks.map((tick) => (
-        <g key={tick.y}>
-          <line
-            x1={pad.left}
-            x2={width - pad.right}
-            y1={tick.y}
-            y2={tick.y}
-            stroke="#DCE4EB"
-            strokeWidth="1"
+    <div ref={containerRef} className="block h-full w-full">
+      <svg
+        className="block overflow-visible"
+        width={width}
+        height={height}
+        role="img"
+        aria-label="Line chart comparing portfolio value under a flat fee and an asset-based fee"
+      >
+        {yTicks.map((tick) => (
+          <g key={tick.y}>
+            <line
+              x1={pad.left}
+              x2={width - pad.right}
+              y1={tick.y}
+              y2={tick.y}
+              stroke="#DCE4EB"
+              strokeWidth="1"
+            />
+            <text
+              x={pad.left + 4}
+              y={tick.ratio === 1 || tick.ratio === 0 ? tick.y + 14 : tick.y - 6}
+              textAnchor="start"
+              fill="#52657A"
+              fontSize="13"
+              fontWeight="600"
+            >
+              {formatCompactCurrency(tick.value)}
+            </text>
+          </g>
+        ))}
+
+        <path
+          d={gapAreaPath}
+          fill="#D92D20"
+          opacity={feeGapActive ? "0.18" : "0"}
+          className="transition-opacity duration-300"
+        />
+        <path d={pathFor("withFees")} fill="none" stroke="#064B84" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d={pathFor("withoutFees")} fill="none" stroke="#108843" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+
+        <line
+          x1={flatEndX}
+          x2={flatEndX}
+          y1={flatEndY}
+          y2={aumEndY}
+          stroke="#D92D20"
+          strokeDasharray="5 5"
+          strokeWidth="2"
+          opacity={feeGapActive ? "1" : "0"}
+          className="transition-opacity duration-300"
+        />
+        <g
+          opacity={feeGapActive ? "1" : "0"}
+          className="transition-opacity duration-300"
+        >
+          <rect
+            x={feeGapLabelX}
+            y={feeGapLabelY}
+            width={feeGapLabelWidth}
+            height="42"
+            rx="21"
+            fill="#D92D20"
           />
           <text
-            x={pad.left + 4}
-            y={tick.ratio === 1 || tick.ratio === 0 ? tick.y + 14 : tick.y - 6}
-            textAnchor="start"
-            fill="#52657A"
-            fontSize="13"
-            fontWeight="600"
+            x={feeGapLabelX + feeGapLabelWidth / 2}
+            y={feeGapLabelY + 26}
+            textAnchor="middle"
+            fill="#FFFFFF"
+            fontSize="15"
+            fontWeight="800"
           >
-            {formatCompactCurrency(tick.value)}
+            {formatCurrency(savings)} lost to fees
           </text>
         </g>
-      ))}
 
-      <path
-        d={gapAreaPath}
-        fill="#D92D20"
-        opacity={feeGapActive ? "0.18" : "0"}
-        className="transition-opacity duration-300"
-      />
-      <path d={pathFor("withFees")} fill="none" stroke="#064B84" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d={pathFor("withoutFees")} fill="none" stroke="#108843" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx={aumEndX} cy={aumEndY} r="6" fill="#064B84" stroke="#FFFFFF" strokeWidth="3" />
+        <circle cx={flatEndX} cy={flatEndY} r="6" fill="#108843" stroke="#FFFFFF" strokeWidth="3" />
 
-      <line
-        x1={flatEndX}
-        x2={flatEndX}
-        y1={flatEndY}
-        y2={aumEndY}
-        stroke="#D92D20"
-        strokeDasharray="5 5"
-        strokeWidth="2"
-        opacity={feeGapActive ? "1" : "0"}
-        className="transition-opacity duration-300"
-      />
-      <g
-        opacity={feeGapActive ? "1" : "0"}
-        className="transition-opacity duration-300"
-      >
-        <rect
-          x={feeGapLabelX}
-          y={feeGapLabelY}
-          width={feeGapLabelWidth}
-          height="42"
-          rx="21"
-          fill="#D92D20"
-        />
-        <text
-          x={feeGapLabelX + feeGapLabelWidth / 2}
-          y={feeGapLabelY + 26}
-          textAnchor="middle"
-          fill="#FFFFFF"
-          fontSize="15"
-          fontWeight="800"
-        >
-          {formatCurrency(savings)} lost to fees
+        <text x={pad.left} y={height - 8} textAnchor="middle" fill="#52657A" fontSize="14" fontWeight="600">
+          0
         </text>
-      </g>
-
-      <circle cx={aumEndX} cy={aumEndY} r="6" fill="#064B84" stroke="#FFFFFF" strokeWidth="3" />
-      <circle cx={flatEndX} cy={flatEndY} r="6" fill="#108843" stroke="#FFFFFF" strokeWidth="3" />
-
-      <text x={pad.left} y={height - 12} textAnchor="middle" fill="#52657A" fontSize="14" fontWeight="600">
-        0
-      </text>
-      <text x={width - pad.right} y={height - 12} textAnchor="middle" fill="#52657A" fontSize="14" fontWeight="600">
-        {maxYear}
-      </text>
-      <text x={width / 2} y={height - 12} textAnchor="middle" fill="#52657A" fontSize="15" fontWeight="700">
-        Years
-      </text>
-      <title>{`Asset-based fee ${formatCurrency(finalValueWithFees)} versus flat fee ${formatCurrency(finalValueWithoutFees)} at ${annualFeePercent.toFixed(2)}%.`}</title>
-    </svg>
+        <text x={width - pad.right} y={height - 8} textAnchor="middle" fill="#52657A" fontSize="14" fontWeight="600">
+          {maxYear}
+        </text>
+        <text x={width / 2} y={height - 8} textAnchor="middle" fill="#52657A" fontSize="15" fontWeight="700">
+          Years
+        </text>
+        <title>{`Asset-based fee ${formatCurrency(finalValueWithFees)} versus flat fee ${formatCurrency(finalValueWithoutFees)} at ${annualFeePercent.toFixed(2)}%.`}</title>
+      </svg>
+    </div>
   );
 }
 
@@ -790,15 +819,18 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         {disclosure}
       </div>
       <ScrollReveal className="mx-auto max-w-[1380px] overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]">
-        <header className="flex flex-col gap-4 border-b border-[#DFE6EE] bg-white/65 px-6 py-5 text-[#062B43] backdrop-blur sm:px-10 md:flex-row md:items-end md:justify-between">
+        <header className="flex flex-col gap-3 border-b border-[#DFE6EE] bg-white/65 px-6 py-4 text-[#062B43] backdrop-blur sm:px-10 md:flex-row md:items-center md:justify-between">
           <div>
-            <h2 className="text-[clamp(2rem,3.25vw,3.35rem)] font-bold leading-none tracking-normal">
-              Fee Drag Calculator
+            <h2 className="text-[clamp(1.5rem,2.25vw,2.35rem)] font-bold leading-tight tracking-normal">
+              Your portfolio value over time
             </h2>
-            <p className="mt-3 text-base text-[#42556C] sm:text-lg">Keep more of what you earn.</p>
+            <p className="mt-2 text-base text-[#42556C] sm:text-lg">
+              Compare your <span className="font-semibold text-[#064B84]">asset-based fees</span> with a flat <span className="font-semibold text-[#108843]">$100/month</span>.
+            </p>
           </div>
-          <div className="max-w-[360px] border-l-2 border-[#108843] pl-4 text-sm font-semibold leading-relaxed text-[#41556C]">
-            Adjust the assumptions below. The comparison, chart, and summary update instantly.
+          <div className="shrink-0 border-l-2 border-[#108843] pl-4 text-xl font-extrabold uppercase leading-tight tracking-tight text-[#108843] sm:text-2xl">
+            <span className="block">Avoid</span>
+            <span className="block">Fee Drag!</span>
           </div>
         </header>
 
@@ -838,31 +870,8 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           />
         </section>
 
-        <section className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-4 py-3 sm:mx-7 sm:px-5" aria-label="Portfolio value over time">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <h3 className="text-base font-bold tracking-normal text-slate-950">Portfolio value over time</h3>
-            <div className="flex flex-wrap gap-x-6 gap-y-3 text-xs font-semibold">
-              <div className="flex flex-col gap-1">
-                <span className="inline-flex items-center gap-2 text-[#41556C]">
-                  <span className="h-[3px] w-4 rounded-full bg-[#064B84]" />
-                  With asset-based fee ({annualFeePercent.toFixed(2)}%)
-                </span>
-                <span className="pl-6 text-[15px] font-bold leading-none tabular-nums text-[#064B84]">
-                  {formatCurrency(finalValueWithFees)}
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="inline-flex items-center gap-2 text-[#41556C]">
-                  <span className="h-[3px] w-4 rounded-full bg-[#108843]" />
-                  Flat fee
-                </span>
-                <span className="pl-6 text-[15px] font-bold leading-none tabular-nums text-[#108843]">
-                  {formatCurrency(finalValueWithoutFees)}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="mt-1 h-[255px] sm:h-[305px]">
+        <section className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-1.5 py-2 sm:mx-7 sm:px-2" aria-label="Portfolio value over time">
+          <div className="h-[255px] w-full sm:h-[305px]">
             <FinalHomeLineChart
               annualFeePercent={annualFeePercent}
               feeGapActive={feeGapActive}
