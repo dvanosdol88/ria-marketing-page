@@ -631,13 +631,13 @@ function FinalHomeLineChart({
   const [flatEndX, flatEndY] = point(ending, "withoutFees");
   const [aumEndX, aumEndY] = point(ending, "withFees");
   // Savings pill — clamped to keep it inside the plot at narrow widths.
-  const desiredPillWidth = 254;
-  const feeGapLabelWidth = Math.min(desiredPillWidth, Math.max(140, plotWidth - 16));
+  const desiredPillWidth = 229;
+  const feeGapLabelWidth = Math.min(desiredPillWidth, Math.max(126, plotWidth - 16));
   const feeGapLabelX = Math.min(
     Math.max(flatEndX - feeGapLabelWidth - 18, pad.left + 8),
     pad.left + plotWidth - feeGapLabelWidth - 4,
   );
-  const feeGapLabelY = Math.min((flatEndY + aumEndY) / 2 - 30, flatEndY - 18);
+  const feeGapLabelY = Math.min((flatEndY + aumEndY) / 2 - 27, flatEndY - 16);
 
   return (
     <div ref={containerRef} className="block h-full w-full">
@@ -699,16 +699,16 @@ function FinalHomeLineChart({
             x={feeGapLabelX}
             y={feeGapLabelY}
             width={feeGapLabelWidth}
-            height="42"
-            rx="21"
+            height="38"
+            rx="19"
             fill="#D92D20"
           />
           <text
             x={feeGapLabelX + feeGapLabelWidth / 2}
-            y={feeGapLabelY + 26}
+            y={feeGapLabelY + 24}
             textAnchor="middle"
             fill="#FFFFFF"
-            fontSize="15"
+            fontSize="13.5"
             fontWeight="800"
           >
             {formatCurrencyFloored(savings)} lost to fees
@@ -750,14 +750,12 @@ function ComparisonBars({
   finalValueWithoutFees,
   savings,
   percentLost,
-  annualFeePercent,
   feeGapActive,
 }: {
   finalValueWithFees: number;
   finalValueWithoutFees: number;
   savings: number;
   percentLost: number;
-  annualFeePercent: number;
   feeGapActive: boolean;
 }) {
   // The flat-fee value is always >= the asset-based value, so we
@@ -773,66 +771,54 @@ function ComparisonBars({
       className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-3 py-3 sm:mx-7 sm:px-4 sm:py-4"
       aria-label="Asset-based vs flat fee ending value comparison"
     >
-      <div className="space-y-3">
-        {/* Blue bar — asset-based ending value */}
-        <div>
-          <div className="mb-1 flex items-baseline justify-between gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] sm:text-xs">
-            <span className="text-[#064B84]">
-              With asset-based fees ({annualFeePercent.toFixed(2)}%)
-            </span>
-            <span className="text-sm font-bold normal-case tracking-normal text-[#064B84] sm:text-base">
-              {formatCurrencyFloored(finalValueWithFees)}
-            </span>
-          </div>
-          <div className="h-3.5 w-full overflow-hidden rounded-full bg-[#F0F4F8] sm:h-4">
-            <div
-              className="h-full rounded-full bg-[#064B84] transition-[width] duration-500 ease-out"
-              style={{ width: `${blueWidthPct}%` }}
-            />
-          </div>
+      {/* Stacked thick bars, abutting with no gap. Top: asset-based (blue).
+         Bottom: flat fee (green) with red overlay on the differential when VS is active.
+         Per-bar labels removed — the stat cards above already display these numbers. */}
+      <div
+        className="overflow-hidden rounded-md"
+        role="img"
+        aria-label={`Asset-based fee ending value ${formatCurrencyFloored(finalValueWithFees)} versus flat $100/month fee ending value ${formatCurrencyFloored(finalValueWithoutFees)}, a ${percentLost.toFixed(1)} percent gap.`}
+      >
+        {/* Blue bar — asset-based ending value, width proportional to flat-fee value */}
+        <div className="h-7 w-full bg-[#F0F4F8] sm:h-8">
+          <div
+            className="h-full bg-[#064B84] transition-[width] duration-500 ease-out"
+            style={{ width: `${blueWidthPct}%` }}
+          />
         </div>
-
-        {/* Green bar — flat-fee ending value (always 100%) with red overlay on the differential when VS active */}
-        <div>
-          <div className="mb-1 flex items-baseline justify-between gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] sm:text-xs">
-            <span className="text-[#108843]">Flat $100/month fee</span>
-            <span className="text-sm font-bold normal-case tracking-normal text-[#108843] sm:text-base">
-              {formatCurrencyFloored(finalValueWithoutFees)}
-            </span>
-          </div>
-          <div className="relative h-3.5 w-full overflow-hidden rounded-full bg-[#F0F4F8] sm:h-4">
-            <div
-              className="absolute inset-y-0 left-0 rounded-full bg-[#108843] transition-[width] duration-500 ease-out"
-              style={{ width: "100%" }}
-            />
-            <div
-              className={`absolute inset-y-0 rounded-r-full bg-[#D92D20] transition-opacity duration-300 ease-out ${
-                feeGapActive ? "opacity-100" : "opacity-0"
-              }`}
-              style={{
-                left: `${blueWidthPct}%`,
-                width: `${redWidthPct}%`,
-              }}
-              aria-hidden="true"
-            />
-          </div>
+        {/* Green bar — flat-fee ending value (always 100%) with red overlay on the differential */}
+        <div className="relative h-7 w-full bg-[#F0F4F8] sm:h-8">
+          <div
+            className="absolute inset-y-0 left-0 bg-[#108843] transition-[width] duration-500 ease-out"
+            style={{ width: "100%" }}
+          />
+          <div
+            className={`absolute inset-y-0 bg-[#D92D20] transition-opacity duration-300 ease-out ${
+              feeGapActive ? "opacity-100" : "opacity-0"
+            }`}
+            style={{
+              left: `${blueWidthPct}%`,
+              width: `${redWidthPct}%`,
+            }}
+            aria-hidden="true"
+          />
         </div>
-
-        {/* Caption — fades in with the red differential overlay */}
-        <p
-          className={`text-center text-xs font-bold transition-opacity duration-300 ease-out sm:text-sm ${
-            feeGapActive ? "opacity-100" : "opacity-0"
-          }`}
-          aria-hidden={!feeGapActive}
-        >
-          <span className="text-[#D92D20]">
-            {formatCurrencyFloored(savings)}
-          </span>
-          <span className="text-[#41556C]">
-            {" "}more wealth ({percentLost.toFixed(1)}%) with the flat fee
-          </span>
-        </p>
       </div>
+
+      {/* Caption — fades in with the red differential overlay */}
+      <p
+        className={`mt-3 text-center text-xs transition-opacity duration-300 ease-out sm:text-sm ${
+          feeGapActive ? "opacity-100" : "opacity-0"
+        }`}
+        aria-hidden={!feeGapActive}
+      >
+        <span className="font-bold text-[#D92D20]">
+          {formatCurrencyFloored(savings)}
+        </span>
+        <span className="font-semibold text-[#41556C]">
+          {" "}more wealth (<span className="font-extrabold text-[#D92D20]">{percentLost.toFixed(1)}%</span>) with the flat fee
+        </span>
+      </p>
     </section>
   );
 }
@@ -989,7 +975,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           finalValueWithoutFees={finalValueWithoutFees}
           savings={savings}
           percentLost={percentLost}
-          annualFeePercent={annualFeePercent}
           feeGapActive={feeGapActive}
         />
 
