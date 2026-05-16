@@ -36,7 +36,7 @@ export const homeTopBanners: Record<HomeTopBannerId, HomeTopBanner> = {
     ctaHref: "https://smarterwaywealth.com/",
     statLabel: "Flat monthly fee",
     statValue: "$100/mo",
-    proofPoints: ["CFA Charterholder", "CFP Practitioner"],
+    proofPoints: ["CFA Charterholder", "CFP Practitioner", "20+ years experience"],
     tone: "founder",
   },
   "qr-bridge": {

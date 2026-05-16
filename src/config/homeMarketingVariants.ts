@@ -229,7 +229,7 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
     primaryCta: "Compare my fee",
     secondaryCta: "Share this projection",
     resultLabel: "Estimated wealth kept with the flat-fee model",
-    proofPoints: ["CFA Charterholder", "CFP Practitioner"],
+    proofPoints: ["20+ years experience", "CFA Charterholder", "CFP Practitioner"],
     image: {
       src: "/DVO Head Shot picture.jpg",
       alt: "David J. Van Osdol",
@@ -300,7 +300,7 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
     primaryCta: "Compare my fee",
     secondaryCta: "Share this projection",
     resultLabel: "Estimated wealth kept with the flat-fee model",
-    proofPoints: ["CFA Charterholder", "CFP Practitioner"],
+    proofPoints: ["20+ years experience", "CFA Charterholder", "CFP Practitioner"],
     image: {
       src: "/DVO Head Shot picture.jpg",
       alt: "David J. Van Osdol",
