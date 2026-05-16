@@ -15,6 +15,7 @@ Tracked items for youarepayingtoomuch.com. One-liner per item with enough contex
 
 ## Content & Pages
 
+- [ ] **Decide on default hero at unparameterized root.** `youarepayingtoomuch.com/` currently renders the "savings-calculator-upgrade" experience ("What would you do with $788,000?" hero). Campaign URLs like `?variant=fiduciary-upgrade` and `?variant=final-home` render the "Upgrade the advice, not the fee" portrait hero. Direct-mail QR codes presumably carry the variant param, so the question only affects organic root traffic. Loop in RIA Chief on riabuilder.dvo88.com for input. **Target check-in: Monday 2026-05-18 10:00 AM CT.** (Originally planned as an iOS reminder for that time; reminder tool was unresponsive during the 2026-05-16 session, so logging here as the durable record.) *(added 2026-05-16)*
 - [ ] Continue pillar consolidation: `/upgrade-your-advice` consolidation is complete. Apply same pattern to remaining pillars (`/save-a-ton`, `/improve-your-tools`, `/meaning`, `/how-it-works`). *(added 2025-02-11)*
 - [ ] Gallery page: verify all route thumbnails render correctly after cleanup of deleted-route entries and removed sections. *(added 2025-02-11)*
 
