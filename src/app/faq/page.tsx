@@ -1,53 +1,51 @@
 "use client";
 
 import Link from "next/link";
+import { FaqAccordion } from "@/components/FaqAccordion";
 import { ScrollReveal } from "@/components/ScrollReveal";
 
 export default function FAQPage() {
   return (
     <main className="flex flex-col gap-12 pb-16">
-      {/* Hero Section */}
+      {/* Hero */}
       <ScrollReveal>
         <header className="section-shell pt-12">
           <p className="text-xs font-semibold uppercase tracking-tightish text-brand-600">
             FAQ
           </p>
           <h1 className="mt-3 text-4xl font-semibold text-neutral-900 sm:text-5xl">
-            Frequently Asked Questions
+            Frequently asked questions
           </h1>
-          <p className="mt-4 text-lg text-neutral-600 sm:text-xl">
-            {/* TODO: Add hero description */}
-            Placeholder for FAQ introduction.
+          <p className="mt-4 max-w-2xl text-lg text-neutral-600 sm:text-xl">
+            The questions clients ask before signing on. Search to jump
+            straight to the one on your mind, or tap any question to
+            expand the answer.
           </p>
         </header>
       </ScrollReveal>
 
-      {/* FAQ Items - Add your Q&A components here */}
-      <ScrollReveal delay={0.2}>
+      {/* Searchable accordion */}
+      <ScrollReveal delay={0.15}>
         <section className="section-shell">
-          <div className="card p-8 text-center">
-            <p className="text-neutral-500">
-              FAQ items will be added here. Each question/answer pair wrapped in ScrollReveal.
-            </p>
-          </div>
+          <FaqAccordion />
         </section>
       </ScrollReveal>
 
-      {/* Navigation */}
-      <ScrollReveal delay={0.4}>
+      {/* Footer nav */}
+      <ScrollReveal delay={0.3}>
         <section className="section-shell">
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/"
               className="rounded-full bg-neutral-200 px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-300"
             >
-              ← Back to Home
+              ← Back to home
             </Link>
             <Link
               href="/how-it-works"
               className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700"
             >
-              How It Works →
+              How it works →
             </Link>
           </div>
         </section>
