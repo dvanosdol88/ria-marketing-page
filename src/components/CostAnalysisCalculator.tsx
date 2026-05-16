@@ -371,7 +371,8 @@ function SavingsLeadHero({
           {statement}
         </p>
         <p className="mx-auto mt-8 max-w-3xl text-center font-semibold tracking-normal text-[#007A2F] text-2xl sm:mt-10 sm:text-3xl">
-          David Van Osdol, CFA, CFP
+          <span className="block">David Van Osdol</span>
+          <span className="block">CFA, CFP</span>
         </p>
       </div>
     ) : introStyle === "quote" ? (
