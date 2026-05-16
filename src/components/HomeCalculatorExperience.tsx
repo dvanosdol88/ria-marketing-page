@@ -705,10 +705,10 @@ function FinalHomeLineChart({
           />
           <text
             x={feeGapLabelX + feeGapLabelWidth / 2}
-            y={feeGapLabelY + 24}
+            y={feeGapLabelY + 26}
             textAnchor="middle"
             fill="#FFFFFF"
-            fontSize="13.5"
+            fontSize="19"
             fontWeight="800"
           >
             {formatCurrencyFloored(savings)} lost to fees
@@ -803,7 +803,7 @@ function ComparisonBars({
             }}
             aria-hidden={!feeGapActive}
           >
-            <span className="text-xs font-extrabold leading-none text-white sm:text-sm">
+            <span className="text-lg font-extrabold leading-none text-white sm:text-2xl">
               {percentLost.toFixed(1)}%
             </span>
           </div>
@@ -817,9 +817,8 @@ function ComparisonBars({
         </div>
       </div>
 
-      {/* Caption — fades in with the red differential overlay. The percent
-         figure lives inside the red bar itself now, so the caption focuses
-         on the absolute-dollar message. */}
+      {/* Caption — fades in with the red differential overlay. Reframes the
+         gap as a percentage of wealth surrendered to asset-based fees. */}
       <p
         className={`mt-3 text-center text-xs transition-opacity duration-300 ease-out sm:text-sm ${
           feeGapActive ? "opacity-100" : "opacity-0"
@@ -827,10 +826,10 @@ function ComparisonBars({
         aria-hidden={!feeGapActive}
       >
         <span className="font-bold text-[#D92D20]">
-          {formatCurrencyFloored(savings)}
+          {percentLost.toFixed(1)}%
         </span>
         <span className="font-semibold text-[#41556C]">
-          {" "}more wealth with the flat fee
+          {" "}of wealth lost to asset-based fees
         </span>
       </p>
     </section>
