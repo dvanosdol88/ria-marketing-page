@@ -47,7 +47,7 @@ function HeroBackdrop({ variant }: { variant: HomeMarketingVariant }) {
           fill
           priority
           sizes="100vw"
-          className={`object-cover ${isAdvisor ? "opacity-60" : "opacity-100"}`}
+          className={`object-cover ${isAdvisor ? "opacity-75" : "opacity-100"}`}
           style={{ objectPosition: variant.image.position }}
         />
       )}

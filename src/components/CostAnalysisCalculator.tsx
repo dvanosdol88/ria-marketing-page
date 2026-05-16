@@ -370,7 +370,7 @@ function SavingsLeadHero({
         <p className="mx-auto max-w-3xl text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
           {statement}
         </p>
-        <p className="mx-auto mt-8 max-w-3xl text-center font-semibold tracking-normal text-[#007A2F] text-xl sm:mt-10 sm:text-2xl">
+        <p className="mx-auto mt-8 max-w-3xl text-center font-semibold tracking-normal text-[#007A2F] text-2xl sm:mt-10 sm:text-3xl">
           David Van Osdol, CFA, CFP
         </p>
       </div>
@@ -419,7 +419,7 @@ function SavingsLeadHero({
         </div>
         {introBlock}
         <p className="mt-11 text-xl leading-7 text-slate-900 sm:mt-14 sm:text-2xl">
-          See how much <strong>YOU</strong> can save.
+          See how much <strong>you</strong> can save.
         </p>
       </div>
     </section>

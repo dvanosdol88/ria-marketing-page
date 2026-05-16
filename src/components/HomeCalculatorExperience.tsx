@@ -820,7 +820,7 @@ function ComparisonBars({
       {/* Caption — fades in with the red differential overlay. Reframes the
          gap as a percentage of wealth surrendered to asset-based fees. */}
       <p
-        className={`mt-3 text-center text-xs transition-opacity duration-300 ease-out sm:text-sm ${
+        className={`mt-3 text-center text-base transition-opacity duration-300 ease-out sm:text-lg ${
           feeGapActive ? "opacity-100" : "opacity-0"
         }`}
         aria-hidden={!feeGapActive}
@@ -935,7 +935,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
 
         <section className="relative grid gap-3 px-4 pt-3 sm:px-7 md:grid-cols-2 md:gap-8" aria-label="Ending value comparison">
           <FinalHomeStatCard
-            ribbon={`With asset-based fees (${annualFeePercent.toFixed(2)}%)`}
+            ribbon={`Paying asset-based fees (${annualFeePercent.toFixed(2)}%)`}
             value={formatCurrencyFloored(finalValueWithFees)}
             tone="blue"
             accentClassName="text-[#064B84]"
@@ -962,7 +962,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             VS
           </button>
           <FinalHomeStatCard
-            ribbon="Flat monthly fee ($100/mo)"
+            ribbon="Paying flat monthly fee ($100/mo)"
             value={formatCurrencyFloored(finalValueWithoutFees)}
             tone="green"
             accentClassName="text-[#108843]"
