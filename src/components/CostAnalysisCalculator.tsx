@@ -145,7 +145,7 @@ function SimpleRangeControl({
   }, [clampAndSnap, draft, onChange]);
 
   return (
-    <div className="grid gap-3">
+    <div className="grid gap-2">
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
         <label htmlFor={inputId} className="text-[13px] font-bold leading-none text-[#213B56]">
           {label}
@@ -174,7 +174,7 @@ function SimpleRangeControl({
               event.currentTarget.blur();
             }
           }}
-          className="min-h-[34px] flex-1 min-w-[96px] max-w-[200px] rounded border border-[#DFE6EE] bg-[#FBFCFD] px-3 py-2 text-right text-base font-bold leading-none text-[#10233A] tabular-nums focus:border-[#108843] focus:outline-none focus:ring-2 focus:ring-[#108843]/30"
+          className="min-h-[30px] flex-1 min-w-[96px] max-w-[200px] rounded border border-[#DFE6EE] bg-[#FBFCFD] px-3 py-1.5 text-right text-base font-bold leading-none text-[#10233A] tabular-nums focus:border-[#108843] focus:outline-none focus:ring-2 focus:ring-[#108843]/30"
           aria-label={`${label} value`}
         />
       </div>
@@ -419,7 +419,7 @@ function SavingsLeadHero({
         </div>
         {introBlock}
         <p className="mt-11 text-xl leading-7 text-slate-900 sm:mt-14 sm:text-2xl">
-          See how much you can save.
+          See how much <strong>YOU</strong> can save.
         </p>
       </div>
     </section>
