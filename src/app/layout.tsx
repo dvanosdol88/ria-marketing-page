@@ -4,18 +4,25 @@ import "./globals.css";
 import { inter, dmSans } from "./fonts";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { JsonLd } from "@/components/JsonLd";
+import { absoluteUrl, advisoryFirmName, siteName, siteUrl } from "@/config/siteMetadata";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://youarepayingtoomuch.com"),
-  title: "Upgrade. Improve. Save.",
-  description: "Landing calculator and proof for advisory fees.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Upgrade. Improve. Save.",
+    template: "%s | You Are Paying Too Much",
+  },
+  description:
+    "Compare traditional advisory fees with Smarter Way Wealth's $100/month flat-fee model.",
   manifest: "/site.webmanifest",
   openGraph: {
     title: "Upgrade. Improve. Save.",
-    description: "Landing calculator and proof for advisory fees.",
+    description:
+      "Compare traditional advisory fees with Smarter Way Wealth's $100/month flat-fee model.",
     type: "website",
-    url: "https://youarepayingtoomuch.com",
-    siteName: "Smarter Way Wealth",
+    url: siteUrl,
+    siteName,
     images: [
       {
         url: "/brand/logo-800.png",
@@ -28,7 +35,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Upgrade. Improve. Save.",
-    description: "Landing calculator and proof for advisory fees.",
+    description:
+      "Compare traditional advisory fees with Smarter Way Wealth's $100/month flat-fee model.",
     images: ["/brand/logo-800.png"],
   },
   icons: {
@@ -53,6 +61,28 @@ export const viewport: Viewport = {
   themeColor: "#00A540",
 };
 
+const siteStructuredData = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": `${siteUrl}/#organization`,
+    name: advisoryFirmName,
+    url: siteUrl,
+    logo: absoluteUrl("/brand/logo-800.png"),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteUrl}/#website`,
+    name: siteName,
+    url: siteUrl,
+    publisher: {
+      "@id": `${siteUrl}/#organization`,
+    },
+    inLanguage: "en-US",
+  },
+];
+
 export default function RootLayout({
   children,
 }: {
@@ -62,6 +92,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${dmSans.variable} bg-[#EEF0F5] text-neutral-900`}>
         <ViewTransitions>
+          <JsonLd data={siteStructuredData} />
           <SiteNav />
           <div className="min-h-screen">{children}</div>
           <SiteFooter />

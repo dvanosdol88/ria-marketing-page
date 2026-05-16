@@ -1,12 +1,42 @@
-"use client";
-
 import Link from "next/link";
 import { FaqAccordion } from "@/components/FaqAccordion";
+import { JsonLd } from "@/components/JsonLd";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { faqItems } from "@/data/faq";
+import { absoluteUrl, siteUrl } from "@/config/siteMetadata";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Frequently Asked Questions",
+  description:
+    "Answers about Smarter Way Wealth, the $100/month flat-fee model, advisor credentials, custody, AI use, and service scope.",
+  alternates: {
+    canonical: "/faq",
+  },
+};
+
+const faqStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${absoluteUrl("/faq")}#faq`,
+  url: absoluteUrl("/faq"),
+  isPartOf: {
+    "@id": `${siteUrl}/#website`,
+  },
+  mainEntity: faqItems.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  })),
+};
 
 export default function FAQPage() {
   return (
     <main className="flex flex-col gap-12 pb-16">
+      <JsonLd data={faqStructuredData} />
       {/* Hero */}
       <ScrollReveal>
         <header className="section-shell pt-12">

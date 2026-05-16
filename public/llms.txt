@@ -1,0 +1,31 @@
+# You Are Paying Too Much
+
+Advisory fee calculator and educational site for comparing traditional asset-based advisory fees with Smarter Way Wealth's $100/month flat-fee model.
+
+## High-quality pages
+
+- [Advisory Fee Calculator](https://youarepayingtoomuch.com/) - Interactive calculator with URL parameters for portfolio value, years, growth rate, advisory fee, and mutual fund expenses.
+- [Calculator JSON API](https://youarepayingtoomuch.com/api/calculator) - Machine-readable projection endpoint using the same query parameters as the calculator.
+- [Our Math](https://youarepayingtoomuch.com/our-math) - Formulas, assumptions, limitations, and a worked example for the fee comparison.
+- [How It Works](https://youarepayingtoomuch.com/how-it-works) - Explanation of reusable query links and the shared projection engine.
+- [Upgrade Your Advice](https://youarepayingtoomuch.com/upgrade-your-advice) - Overview of the fiduciary advice, planning, and flat-fee value proposition.
+- [Improve Your Tools](https://youarepayingtoomuch.com/improve-your-tools) - Planning-tool examples for cash flow, taxes, retirement, and scenario analysis.
+- [Save Proof](https://youarepayingtoomuch.com/save) - Deeper savings proof driven by the same calculator assumptions.
+- [FAQ](https://youarepayingtoomuch.com/faq) - Common questions about the flat-fee model, advisor credentials, custody, AI use, and service scope.
+- [Privacy and Disclosures](https://youarepayingtoomuch.com/privacy) - Privacy practices and important calculator limitations.
+
+## Calculator query parameters
+
+- `portfolio`: starting portfolio value in dollars.
+- `years`: projection horizon in years.
+- `growth`: gross annual growth assumption, as a whole percent.
+- `fee`: annual advisory fee, as a whole percent.
+- `mfe`: mutual fund expense ratio, as a whole percent.
+
+Example: `https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&mfe=0`
+
+## Notes for agents
+
+- Critical calculator state is encoded in the URL and can be replayed on `/`, `/save`, `/how-it-works`, and `/api/calculator`.
+- Calculator outputs are illustrative only and are not financial advice.
+- Smarter Way Wealth is the advisory firm referenced by this lead-generation site.
