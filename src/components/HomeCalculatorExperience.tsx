@@ -525,7 +525,7 @@ function FinalHomeStatCard({
       >
         {ribbon}
       </div>
-      <strong className={`mt-4 block text-[clamp(2rem,4.2vw,3.05rem)] font-bold leading-none ${accentClassName}`}>
+      <strong className={`mt-4 block text-[clamp(1.6rem,3.5vw,2.5rem)] font-bold leading-none ${accentClassName}`}>
         {value}
       </strong>
     </article>
@@ -771,6 +771,23 @@ function ComparisonBars({
       className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-3 py-3 sm:mx-7 sm:px-4 sm:py-4"
       aria-label="Asset-based vs flat fee ending value comparison"
     >
+      {/* Caption sits directly above the bars and fades in with the red
+         differential overlay. Reframes the gap as a percentage of wealth
+         surrendered to asset-based fees. */}
+      <p
+        className={`mb-1.5 text-center text-base leading-tight transition-opacity duration-300 ease-out sm:text-lg ${
+          feeGapActive ? "opacity-100" : "opacity-0"
+        }`}
+        aria-hidden={!feeGapActive}
+      >
+        <span className="font-bold text-[#D92D20]">
+          {percentLost.toFixed(1)}%
+        </span>
+        <span className="font-semibold text-[#41556C]">
+          {" "}of wealth lost to asset-based fees
+        </span>
+      </p>
+
       {/* Stacked thick bars, abutting with no gap.
          Top: asset-based (blue) — when VS active, the missing-from-100% tail
               fills with red and shows the percent-lost label, since that gap
@@ -816,22 +833,6 @@ function ComparisonBars({
           </span>
         </div>
       </div>
-
-      {/* Caption — fades in with the red differential overlay. Reframes the
-         gap as a percentage of wealth surrendered to asset-based fees. */}
-      <p
-        className={`mt-3 text-center text-base transition-opacity duration-300 ease-out sm:text-lg ${
-          feeGapActive ? "opacity-100" : "opacity-0"
-        }`}
-        aria-hidden={!feeGapActive}
-      >
-        <span className="font-bold text-[#D92D20]">
-          {percentLost.toFixed(1)}%
-        </span>
-        <span className="font-semibold text-[#41556C]">
-          {" "}of wealth lost to asset-based fees
-        </span>
-      </p>
     </section>
   );
 }
@@ -919,16 +920,16 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         {disclosure}
       </div>
       <ScrollReveal className="mx-auto max-w-[1380px] overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]">
-        <header className="flex flex-col gap-3 border-b border-[#DFE6EE] bg-white/65 px-6 py-4 text-[#062B43] backdrop-blur sm:px-10 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h2 className="text-[clamp(1.5rem,2.25vw,2.35rem)] font-bold leading-tight tracking-normal">
+        <header className="relative flex flex-col gap-3 border-b border-[#DFE6EE] bg-white/65 px-6 py-4 text-[#062B43] backdrop-blur sm:px-10">
+          <div className="text-center">
+            <h2 className="text-[clamp(1.75rem,2.6vw,2.75rem)] font-bold leading-tight tracking-normal">
               Your portfolio value over time
             </h2>
-            <p className="mt-2 text-base text-[#42556C] sm:text-lg">
+            <p className="mt-2 text-lg text-[#42556C] sm:text-xl">
               Compare your <span className="font-semibold text-[#064B84]">asset-based fees</span> with a flat <span className="font-semibold text-[#108843]">$100/month</span>.
             </p>
           </div>
-          <div className="shrink-0 whitespace-nowrap border-l-2 border-[#108843] pl-4 text-base font-semibold uppercase leading-tight tracking-tight text-[#108843] sm:text-xl">
+          <div className="shrink-0 self-center whitespace-nowrap border-l-2 border-[#108843] pl-4 text-base font-semibold uppercase leading-tight tracking-tight text-[#108843] sm:text-xl lg:absolute lg:right-10 lg:top-1/2 lg:-translate-y-1/2 lg:self-auto">
             Avoid Fee Drag!
           </div>
         </header>
