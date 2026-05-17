@@ -7,9 +7,11 @@ on:
   pull_request_review:
     types:
       - 'submitted'
-  pull_request:
-    types:
-      - 'opened'
+  # NOTE: `pull_request: opened` is intentionally disabled. The Gemini CLI's
+  # workspace-trust check refuses to run on a freshly checked-out PR even with
+  # `GEMINI_CLI_TRUST_WORKSPACE=true` set in the step env, so the auto-review
+  # was producing a guaranteed red ❌ "review / review" on every PR. To
+  # request a Gemini review on a specific PR, comment `@gemini-cli /review`.
   issues:
     types:
       - 'opened'
