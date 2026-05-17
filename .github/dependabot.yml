@@ -1,0 +1,30 @@
+# Dependabot configuration
+#
+# This repo's documented dependency-update strategy is Renovate
+# (see `renovate.json` at the repo root and `docs/DEPENDENCY_STRATEGY.md`).
+#
+# We keep this file so Dependabot version-update PRs do NOT compete with
+# Renovate. Renovate's `vulnerabilityAlerts` block handles security PRs in
+# Renovate's voice, so we also want Dependabot to stay out of those.
+#
+# To fully silence Dependabot:
+#   1. (this file) cap open PRs per ecosystem at 0 — stops version updates.
+#   2. (repo Settings → Code security → "Dependabot security updates")
+#      turn that toggle OFF so security advisories also flow through Renovate.
+#
+# Dependabot security ALERTS (notifications in the Security tab) can stay on;
+# they don't generate PRs by themselves.
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 0
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 0

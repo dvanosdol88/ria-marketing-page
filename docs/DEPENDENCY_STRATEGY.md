@@ -6,6 +6,17 @@ We have transitioned from a high-maintenance, manual dependency update process t
 
 Instead of reviewing dozens of individual Pull Requests weekly, we utilize a centralized **Dependency Dashboard** and automated grouping rules. This shift prioritizes developer velocity without sacrificing security or stability.
 
+### One bot, not two
+
+Renovate is the **only** PR-creating dependency bot for this repo:
+
+- **Version updates** — Renovate, configured by `renovate.json`.
+- **Security updates** — Renovate, via the `vulnerabilityAlerts` block in `renovate.json`.
+- **Dependabot version-update PRs** — disabled via `.github/dependabot.yml` (open-PRs-per-ecosystem capped at 0).
+- **Dependabot security-update PRs** — should be turned off in repo Settings → Code security so security advisories flow through Renovate only. (Notifications/alerts in the Security tab can stay on.)
+
+If you ever see a `dependabot/*` PR appear, that's a configuration drift — close it and check the settings above.
+
 ## 2. What We Implemented & Why
 
 | Feature | Implementation | Reasoning |
