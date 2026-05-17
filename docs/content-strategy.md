@@ -1,5 +1,34 @@
 # Two-Site Content Strategy: smarterwaywealth.com + youarepayingtoomuch.com
 
+> ## About this document — one of three model outputs (canon)
+>
+> This file captures **one of three responses** to the same content-strategy
+> prompt. The identical prompt was given to three different models, and each
+> produced its own version of this document. The three should be read **in
+> totality** — not in isolation — before any final editorial or architectural
+> decisions are made.
+>
+> **Status:** draft input, not approved policy.
+>
+> **Author of this version:** Claude (Anthropic), via Claude Code.
+>
+> **Reviewer of record:** David Van Osdol. No section of this document
+> becomes canon for either site until David has compared all three model
+> outputs and made an explicit, written decision about which recommendations
+> to adopt, which to merge, and which to discard. Once that decision is
+> recorded, this disclaimer should be updated (or replaced with a pointer to
+> the decision record) rather than removed silently.
+>
+> **How to use this file in the meantime:** treat its recommendations as
+> options to weigh against the other two model outputs. Do not cite this
+> document alone as authority. Do not paste copy from it into production
+> pages without David's sign-off.
+>
+> This "one of three" framing is itself canon — preserve it on any future
+> edit until the consolidated decision exists.
+
+---
+
 This document defines how content is split between the two sites, what each
 page should say, and the editorial and compliance guardrails to apply. It is
 intended for use by a copywriter, designer, or developer working on either
