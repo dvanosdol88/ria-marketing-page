@@ -171,11 +171,33 @@ a:hover {
   animation: vs-halo-pulse 1.6s ease-in-out infinite;
 }
 
+@keyframes fee-gap-wave-sweep {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(260%);
+  }
+}
+
+.fee-gap-wave,
+.fee-gap-bar-wave {
+  animation: fee-gap-wave-sweep 1.45s ease-in-out 1;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .vs-pulse-halo {
     animation: none;
     box-shadow:
       0 0 0 3px rgba(217, 45, 32, 0.55),
       0 12px 28px rgba(6, 43, 67, 0.22);
+  }
+
+  .fee-gap-wave,
+  .fee-gap-bar-wave {
+    animation: none;
+    opacity: 0;
   }
 }

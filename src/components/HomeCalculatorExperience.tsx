@@ -17,7 +17,7 @@ import type {
   HomeCalculatorLayout,
 } from "@/config/homeMarketingVariants";
 import type { ProjectionYear } from "@/lib/feeProjection";
-import { Odometer } from "@/components/Odometer";
+import { Odometer, RollingCurrencyOdometer } from "@/components/Odometer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 
 type Scenario = "smarter" | "traditional";
@@ -514,7 +514,7 @@ function FinalHomeStatCard({
   accentClassName: string;
   ribbon: string;
   tone: "blue" | "green";
-  value: string;
+  value: ReactNode;
 }) {
   return (
     <article className="min-h-[104px] overflow-hidden rounded-md border border-[#DFE6EE] bg-white text-center">
@@ -535,6 +535,7 @@ function FinalHomeStatCard({
 function FinalHomeLineChart({
   annualFeePercent,
   chartActive,
+  chartHintActive,
   chartPinned,
   finalValueWithFees,
   finalValueWithoutFees,
@@ -547,6 +548,7 @@ function FinalHomeLineChart({
 }: {
   annualFeePercent: number;
   chartActive: boolean;
+  chartHintActive: boolean;
   chartPinned: boolean;
   finalValueWithFees: number;
   finalValueWithoutFees: number;
@@ -646,6 +648,7 @@ function FinalHomeLineChart({
     pad.left + plotWidth - feeGapLabelWidth - 4,
   );
   const feeGapLabelY = Math.min((flatEndY + aumEndY) / 2 - 26, flatEndY - 16);
+  const chartHintOnly = chartHintActive && !chartActive;
 
   return (
     <div ref={containerRef} className="block h-full w-full">
@@ -656,6 +659,16 @@ function FinalHomeLineChart({
         role="img"
         aria-label="Line chart comparing portfolio value under a flat fee and an asset-based fee"
       >
+        <defs>
+          <clipPath id="final-home-line-gap-hint-clip">
+            <path d={gapAreaPath} />
+          </clipPath>
+          <linearGradient id="final-home-line-gap-hint-wave" x1="0%" x2="100%" y1="0%" y2="0%">
+            <stop offset="0%" stopColor="#D92D20" stopOpacity="0" />
+            <stop offset="48%" stopColor="#D92D20" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#D92D20" stopOpacity="0" />
+          </linearGradient>
+        </defs>
         {yTicks.map((tick) => (
           <g key={tick.y}>
             <line
@@ -679,6 +692,23 @@ function FinalHomeLineChart({
           </g>
         ))}
 
+        {chartHintOnly ? (
+          <g
+            clipPath="url(#final-home-line-gap-hint-clip)"
+            className="pointer-events-none"
+            aria-hidden="true"
+          >
+            <path d={gapAreaPath} fill="#D92D20" opacity="0.07" />
+            <rect
+              className="fee-gap-wave"
+              x={pad.left - plotWidth}
+              y={pad.top}
+              width={plotWidth * 0.8}
+              height={plotHeight}
+              fill="url(#final-home-line-gap-hint-wave)"
+            />
+          </g>
+        ) : null}
         <path
           d={gapAreaPath}
           fill="#D92D20"
@@ -796,6 +826,7 @@ function ComparisonBars({
   savings,
   percentLost,
   barActive,
+  barHintActive,
   barPinned,
   onGapEnter,
   onGapLeave,
@@ -806,6 +837,7 @@ function ComparisonBars({
   savings: number;
   percentLost: number;
   barActive: boolean;
+  barHintActive: boolean;
   barPinned: boolean;
   onGapEnter: () => void;
   onGapLeave: () => void;
@@ -816,6 +848,7 @@ function ComparisonBars({
   const denominator = Math.max(finalValueWithoutFees, 1);
   const blueWidthPct = Math.max(0, Math.min(100, (finalValueWithFees / denominator) * 100));
   const redWidthPct = Math.max(0, Math.min(100, 100 - blueWidthPct));
+  const barHintOnly = barHintActive && !barActive;
 
   // Bars use the same px-1.5 sm:px-2 outer padding as the chart card
   // above so they visually align edge-to-edge with the line chart.
@@ -863,6 +896,25 @@ function ComparisonBars({
               {formatCurrencyFloored(finalValueWithFees)}
             </span>
           </div>
+          {barHintOnly ? (
+            <div
+              className="pointer-events-none absolute inset-y-0 overflow-hidden"
+              style={{
+                left: `${blueWidthPct}%`,
+                width: `${redWidthPct}%`,
+                backgroundColor: "rgba(217, 45, 32, 0.08)",
+              }}
+              aria-hidden="true"
+            >
+              <span
+                className="fee-gap-bar-wave absolute inset-y-0 left-0 w-2/3"
+                style={{
+                  background:
+                    "linear-gradient(90deg, rgba(217,45,32,0) 0%, rgba(217,45,32,0.28) 48%, rgba(217,45,32,0) 100%)",
+                }}
+              />
+            </div>
+          ) : null}
           <div
             className={`absolute inset-y-0 flex items-center justify-center bg-[#D92D20] transition-opacity duration-300 ease-out ${
               barActive ? "opacity-100" : "opacity-0"
@@ -925,8 +977,16 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const [barPinned, setBarPinned] = useState(false);
   const [hoverChart, setHoverChart] = useState(false);
   const [hoverBar, setHoverBar] = useState(false);
+  const [gapHintActive, setGapHintActive] = useState(false);
+  const visualizationRef = useRef<HTMLDivElement | null>(null);
+  const gapHintHasPlayedRef = useRef(false);
   const vsActive = chartPinned && barPinned;
+  const cancelGapHint = () => {
+    gapHintHasPlayedRef.current = true;
+    setGapHintActive(false);
+  };
   const toggleAllGaps = () => {
+    cancelGapHint();
     const nextPinned = !vsActive;
     setChartPinned(nextPinned);
     setBarPinned(nextPinned);
@@ -934,15 +994,18 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     setHoverBar(false);
   };
   const toggleChartGap = () => {
+    cancelGapHint();
     setChartPinned((prev) => !prev);
     setHoverChart(false);
   };
   const toggleBarGap = () => {
+    cancelGapHint();
     setBarPinned((prev) => !prev);
     setHoverBar(false);
   };
   const chartActive = chartPinned || hoverChart;
   const barActive = barPinned || hoverBar;
+  const gapHintVisible = gapHintActive && !chartPinned && !barPinned;
   const smarterWayParams = new URLSearchParams({
     source: "youarepayingtoomuch",
     savings: Math.round(savings).toString(),
@@ -952,6 +1015,42 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     growth: annualGrowthPercent.toFixed(2),
   });
   const smarterWayHref = `https://smarterwaywealth.com/save?${smarterWayParams.toString()}`;
+
+  useEffect(() => {
+    if (gapHintHasPlayedRef.current || chartPinned || barPinned) return;
+
+    const element = visualizationRef.current;
+    if (!element) return;
+
+    let timeoutId: number | null = null;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting || gapHintHasPlayedRef.current || chartPinned || barPinned) return;
+
+        gapHintHasPlayedRef.current = true;
+        setGapHintActive(true);
+        timeoutId = window.setTimeout(() => setGapHintActive(false), prefersReducedMotion ? 900 : 1700);
+        observer.disconnect();
+      },
+      { threshold: 0.35 }
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+      if (timeoutId !== null) {
+        window.clearTimeout(timeoutId);
+      }
+    };
+  }, [barPinned, chartPinned]);
+
+  useEffect(() => {
+    if ((chartPinned || barPinned) && gapHintActive) {
+      setGapHintActive(false);
+    }
+  }, [barPinned, chartPinned, gapHintActive]);
 
   return (
     <div className="section-shell relative z-10 pb-16 pt-10 sm:pt-12">
@@ -977,7 +1076,14 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         <section className="relative grid gap-3 px-4 pt-3 sm:px-7 md:grid-cols-2 md:gap-8" aria-label="Ending value comparison">
           <FinalHomeStatCard
             ribbon={`Paying asset-based fees (${annualFeePercent.toFixed(2)}%)`}
-            value={formatCurrencyFloored(finalValueWithFees)}
+            value={
+              <RollingCurrencyOdometer
+                value={finalValueWithFees}
+                formatter={formatCurrencyFloored}
+                duration={650}
+                debounceMs={180}
+              />
+            }
             tone="blue"
             accentClassName="text-[#064B84]"
           />
@@ -1005,7 +1111,14 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           </button>
           <FinalHomeStatCard
             ribbon="Paying flat monthly fee ($100/mo)"
-            value={formatCurrencyFloored(finalValueWithoutFees)}
+            value={
+              <RollingCurrencyOdometer
+                value={finalValueWithoutFees}
+                formatter={formatCurrencyFloored}
+                duration={650}
+                debounceMs={180}
+              />
+            }
             tone="green"
             accentClassName="text-[#108843]"
           />
@@ -1021,38 +1134,42 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <div className="p-3">{simpleControls.years}</div>
         </section>
 
-        <section
-          className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-1.5 py-2 sm:mx-7 sm:px-2"
-          aria-label="Portfolio value over time"
-        >
-          <div className="h-[255px] w-full sm:h-[305px]">
-            <FinalHomeLineChart
-              annualFeePercent={annualFeePercent}
-              chartActive={chartActive}
-              chartPinned={chartPinned}
-              finalValueWithFees={finalValueWithFees}
-              finalValueWithoutFees={finalValueWithoutFees}
-              savings={savings}
-              series={series}
-              years={years}
-              onGapEnter={() => setHoverChart(true)}
-              onGapLeave={() => setHoverChart(false)}
-              onGapToggle={toggleChartGap}
-            />
-          </div>
-        </section>
+        <div ref={visualizationRef}>
+          <section
+            className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-1.5 py-2 sm:mx-7 sm:px-2"
+            aria-label="Portfolio value over time"
+          >
+            <div className="h-[255px] w-full sm:h-[305px]">
+              <FinalHomeLineChart
+                annualFeePercent={annualFeePercent}
+                chartActive={chartActive}
+                chartHintActive={gapHintVisible}
+                chartPinned={chartPinned}
+                finalValueWithFees={finalValueWithFees}
+                finalValueWithoutFees={finalValueWithoutFees}
+                savings={savings}
+                series={series}
+                years={years}
+                onGapEnter={() => setHoverChart(true)}
+                onGapLeave={() => setHoverChart(false)}
+                onGapToggle={toggleChartGap}
+              />
+            </div>
+          </section>
 
-        <ComparisonBars
-          finalValueWithFees={finalValueWithFees}
-          finalValueWithoutFees={finalValueWithoutFees}
-          savings={savings}
-          percentLost={percentLost}
-          barActive={barActive}
-          barPinned={barPinned}
-          onGapEnter={() => setHoverBar(true)}
-          onGapLeave={() => setHoverBar(false)}
-          onGapToggle={toggleBarGap}
-        />
+          <ComparisonBars
+            finalValueWithFees={finalValueWithFees}
+            finalValueWithoutFees={finalValueWithoutFees}
+            savings={savings}
+            percentLost={percentLost}
+            barActive={barActive}
+            barHintActive={gapHintVisible}
+            barPinned={barPinned}
+            onGapEnter={() => setHoverBar(true)}
+            onGapLeave={() => setHoverBar(false)}
+            onGapToggle={toggleBarGap}
+          />
+        </div>
 
         <div className="mx-4 mt-4 grid gap-3 sm:mx-7 sm:grid-cols-[minmax(0,1fr)_auto]">
           <a
