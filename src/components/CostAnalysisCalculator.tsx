@@ -25,6 +25,7 @@ import {
   homeMarketingVariants,
 } from "@/config/homeMarketingVariants";
 import type { HomeTopBannerId } from "@/config/homeTopBanners";
+import { useSavingsBar } from "@/components/SavingsBarContext";
 
 type IntroStyle = "rule" | "panel" | "quote";
 
@@ -33,25 +34,6 @@ type IntroStyle = "rule" | "panel" | "quote";
 // ============================================================================
 
 const TIME_HORIZON_VALUES = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25, 30];
-const TIME_HORIZON_MAJOR = new Set([15, 20, 25, 30]);
-
-function tryLightHaptic() {
-  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
-    navigator.vibrate(5);
-  }
-}
-
-function tryMediumHaptic() {
-  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
-    navigator.vibrate(15);
-  }
-}
-
-function tryGrabHaptic() {
-  if (typeof navigator !== "undefined" && "vibrate" in navigator) {
-    navigator.vibrate(20);
-  }
-}
 
 type Props = {
   initialState: CalculatorState;
@@ -76,7 +58,6 @@ interface PillSliderProps {
   step?: number;
   // Array mode - overrides min/max/step when provided
   values?: number[];
-  majorSteps?: Set<number>;
 }
 
 interface SimpleRangeControlProps {
@@ -211,7 +192,6 @@ function PillSlider({
   max,
   step,
   values,
-  majorSteps,
 }: PillSliderProps) {
   const isArrayMode = !!values;
 
@@ -260,11 +240,6 @@ function PillSlider({
         const clamped = Math.min(values!.length - 1, Math.max(0, newIdx));
         if (clamped !== lastRef.current) {
           const newVal = values![clamped];
-          if (majorSteps?.has(newVal)) {
-            tryMediumHaptic();
-          } else {
-            tryLightHaptic();
-          }
           lastRef.current = clamped;
           onChange(newVal);
         }
@@ -272,14 +247,11 @@ function PillSlider({
         const s = step ?? 1;
         const snapped = Number((Math.round(raw / s) * s).toFixed(precision));
         const clamped = Math.min(max ?? 100, Math.max(min ?? 0, snapped));
-        if (Math.round(clamped / s) !== Math.round((lastRef.current as number) / s)) {
-          tryLightHaptic();
-        }
         lastRef.current = clamped;
         onChange(clamped);
       }
     },
-    [isArrayMode, values, majorSteps, min, max, step, precision, onChange]
+    [isArrayMode, values, min, max, step, precision, onChange]
   );
 
   return (
@@ -298,7 +270,7 @@ function PillSlider({
           className="absolute left-0 h-1 rounded-full transition-[width] duration-75"
           style={{ width: `${pct}%`, backgroundColor: trackColor }}
         />
-        {/* Native range input - enlarged invisible thumb for better grab area */}
+        {/* Native range input - 48px hit zone (exceeds 44px HIG min). */}
         <input
           type="range"
           min={inputMin}
@@ -306,22 +278,24 @@ function PillSlider({
           step={inputStep}
           value={inputValue}
           onChange={handleChange}
-          onPointerDown={() => { setIsActive(true); tryGrabHaptic(); }}
+          onPointerDown={(e) => {
+            if (e.pointerType === "touch") setIsActive(true);
+          }}
           onPointerUp={() => setIsActive(false)}
           onPointerCancel={() => setIsActive(false)}
+          onPointerLeave={() => setIsActive(false)}
           className="pill-slider-input absolute inset-x-0 z-20 h-12 w-full cursor-grab opacity-0 active:cursor-grabbing"
           aria-label={label}
         />
-        {/* Visual pill thumb - glows + scales on grab */}
+        {/* Visual pill thumb - translucent blue halo on touch only; no scaling. */}
         <div
-          className="pointer-events-none absolute z-10 flex h-9 items-center justify-center rounded-full px-3.5 transition-all duration-150"
+          className="pointer-events-none absolute z-10 flex h-9 items-center justify-center rounded-full px-3.5 transition-[box-shadow] duration-150"
           style={{
             left: `${pct}%`,
-            transform: `translateX(-${pct}%)${isActive ? " scale(1.08)" : ""}`,
+            transform: `translateX(-${pct}%)`,
             backgroundColor: pillColor,
-            filter: isActive ? "brightness(0.85)" : undefined,
             boxShadow: isActive
-              ? `0 0 0 4px ${pillColor}40, 0 0 20px ${pillColor}50`
+              ? "0 0 0 8px rgba(59,130,246,0.22), 0 0 0 14px rgba(59,130,246,0.10), 0 2px 12px rgba(0,0,0,0.2)"
               : "0 2px 12px rgba(0,0,0,0.2)",
           }}
         >
@@ -464,6 +438,18 @@ export function CostAnalysisCalculator({
       }),
     [state.annualGrowthPercent, state.portfolioValue, state.years, totalAnnualFeePercent]
   );
+
+  const { setData: setSavingsBarData } = useSavingsBar();
+  useEffect(() => {
+    setSavingsBarData({
+      savings: projection.savings,
+      years: state.years,
+      annualFeePercent: state.annualFeePercent,
+    });
+  }, [projection.savings, state.years, state.annualFeePercent, setSavingsBarData]);
+  useEffect(() => {
+    return () => setSavingsBarData(null);
+  }, [setSavingsBarData]);
 
   const paramsFromServer = useMemo(() => normalizeSearchParams(searchParams), [searchParams]);
   const introStyle = useMemo<IntroStyle>(() => {
@@ -734,7 +720,6 @@ export function CostAnalysisCalculator({
         variant="accumulation"
         theme={calculatorTheme.slider}
         values={TIME_HORIZON_VALUES}
-        majorSteps={TIME_HORIZON_MAJOR}
       />
     ),
   };
