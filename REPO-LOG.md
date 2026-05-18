@@ -5,21 +5,42 @@
 
 ## Current Capabilities
 
-Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepayingtoomuch.com via Vercel.
+Lead-gen and review workspace for the You Are Paying Too Much fee-calculator funnel at https://youarepayingtoomuch.com, supporting Smarter Way Wealth's flat-fee fiduciary positioning.
 
-- Home fee-savings calculator (`CostAnalysisCalculator` + `ProFeeChart`): pill-slider inputs (advisory fee, mutual fund expenses, portfolio value, annual growth, time horizon), live odometer of "lost to asset-based fees", URL-shareable state via `buildQueryFromState`, share-to-clipboard, sticky fee bar (mobile + desktop), interactive Quiz, scrolling QuoteTicker.
-- Three inline regulatory disclosures around the home calculator: hypothetical-illustration caveat, advisory-relationship disclaimer, growth-rate-is-an-assumption + third-party data caveat.
-- Site-wide `SiteFooter` (logo + marketing disclaimer + Disclosures/ADV/Privacy links wired to `/privacy#disclosures`, IAPD URL, `/privacy`) followed by `ComplianceFooter` (CRD identification, IAPD link, educational/risk text, Privacy link, contact, last-updated date, copyright).
-- `/privacy` page with CT Data Privacy Act-aware notice, canonical disclosures, and a `#disclosures` anchor target.
-- Secondary surfaces: `/our-math`, `/faq`, `/how-it-works`, `/how-it-works/substitution`, `/save`, `/save-a-ton`, `/gallery`, `/improve-your-tools`, `/upgrade-your-advice`, `/meaning`, `/experiment`, `/mobile-calculator` (carries advisory-relationship disclosure near heading), `/components/calendar`. API routes for quiz vote.
-- OpenGraph + Twitter Card metadata defaults set in root layout.
-- Sentry error tracking wired (`@sentry/nextjs`), Renovate dep-update bot active.
+- Production site remains the fee-impact calculator/visualization funnel with `CostAnalysisCalculator`, `ProFeeChart`, URL-shareable assumptions, share-to-clipboard behavior, sticky fee bar, quiz/poll surfaces, and quote/social-proof sections.
+- Current review branch includes home marketing variants for QR-code traffic: direct-mail, fee-receipt, and fiduciary-upgrade framing, with the same projection math and share behavior preserved.
+- Regulatory/compliance surface remains active: inline calculator disclosures, `SiteFooter`, `ComplianceFooter`, `/privacy#disclosures`, IAPD links, contact links, and CT privacy language.
+- Secondary surfaces include `/our-math`, `/faq`, `/how-it-works`, `/how-it-works/substitution`, `/save`, `/save-a-ton`, `/gallery`, `/improve-your-tools`, `/upgrade-your-advice`, `/meaning`, `/experiment`, `/mobile-calculator`, and `/components/calendar`.
+- Smarter Way Wealth is now the separate production trust hub at https://smarterwaywealth.com; this repo remains the calculator/campaign destination and still needs its final root/banner decision before production changes ship.
+- OpenGraph + Twitter Card metadata defaults, Sentry error tracking, and Renovate dependency updates are wired.
 - Stack: Next.js, React 19, TypeScript, Tailwind, Recharts. Build: `next build`. Lint: `eslint . --ext .js,.jsx,.ts,.tsx`. No test framework configured.
-- Project canon in `CLAUDE.md`: project description + per-page agent-readiness checklist (treats AI agents as primary audience for this lead-gen site).
+- Project canon in `CLAUDE.md`: project description + per-page agent-readiness checklist treating AI agents as a primary audience for this lead-gen site.
 
 ---
 
 ## Sessions
+
+### 2026-05-18 - 1% Blues campaign QR landing route
+**Agent:** Codex | **Surface:** direct mail / calculator funnel | **Duration:** 1 session
+- changed: added a reusable campaign preset for the "1% Blues" mailer with the direct-mail home variant and mailer math defaults: $1,000,000 portfolio, 20 years, 8% growth, 1% advisory fee, 0% mutual fund expenses, and $100/month flat-fee comparison.
+- added: clean campaign landing route `/1-percent-blues`, backed by the same calculator and URL-state resolver as the root page.
+- documented: campaign QR target, explicit-state fallback URL, preset assumptions, and mailer math hook in `docs/campaigns/one-percent-blues.md`.
+
+### 2026-05-08 - Cross-site final split and Smarter Way Wealth production push
+**Agent:** Codex | **Surface:** marketing | **Duration:** 1 long session
+- changed: finalized the domain split direction: Smarter Way Wealth owns the advisor-led trust hub; You Are Paying Too Much remains the calculator-first QR-mailer destination.
+- shipped sibling repo: `D:\smarter-way-wealth` now serves the advisor-led trust hub with David's image, flat-fee fiduciary positioning, IAPD verification, and preserved `noindex`.
+- verified production: https://smarterwaywealth.com returned `200` with the new "Upgrade the advice" hero, David's name, correct title, preserved `noindex`, working image/logo assets, and `/privacy` returning `200`.
+- preserved WIP: active `D:\ria-marketing-page` review branch and local artifacts were left in place; no calculator production deployment happened from this repo.
+- deployed: https://smarterwaywealth.com production verified; https://youarepayingtoomuch.com not deployed for the final root/banner changes in this wrap-up.
+- next: choose the final top banner for https://youarepayingtoomuch.com, clean or intentionally ignore local review artifacts, then merge/deploy the calculator-first root when approved.
+
+### 2026-04-30 - Marketing ad disclosure reference for RIA Chief
+**Agent:** Codex | **Surface:** compliance/docs | **Duration:** 1 short session
+- added: `docs/marketing-ad-disclosure-reference-for-ria-chief.md` as an internal RIA Chief handoff covering radio, Meta/Facebook/social, and Google ad disclosure considerations for short educational fee-impact videos.
+- includes: SEC Marketing Rule references, hypothetical-performance/calculator framing, FTC endorsement caveats, Google and Meta platform-policy notes, universal short disclosure, full landing-page disclosure, channel-specific scripts/captions, and a RIA Chief review checklist.
+- not legal advice: flagged for firm-specific registration/status verification and compliance counsel review before publication.
+- verification: docs-only change; checked file placement and repo status. No runtime test needed.
 
 ### 2026-04-30 — Home marketing variants for QR-code traffic
 **Agent:** Codex | **Surface:** marketing | **Duration:** 1 session
