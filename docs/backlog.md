@@ -41,6 +41,10 @@ Tracked items for youarepayingtoomuch.com. One-liner per item with enough contex
 - [ ] Logo refinement: continue Venn diagram concept exploration with dollar sign symbols and text arrangements around "The SMARTER way to wealth" tagline. *(added 2025-02-11)*
 - [ ] Confirm design token coverage: ensure `src/styles/tokens.ts` covers all brand colors, typography, and spacing values used across production pages. *(added 2025-02-11)*
 
+## Declined / Won't Do
+
+- [ ] **Scrollable/zoomable year-window on the fee-projection chart.** User idea: let visitors pan a sub-window of years (e.g. 0–5 or 15–20) so the Y-axis auto-rescales and the fee differential reads larger at any horizon. Prototyped with a Recharts `<Brush>` in #133 against `ProFeeChart` (which powers the default `direct-mail` variant). Discovered the screenshot the user wanted to enhance was actually the `final-home` (`final-c` layout) variant, whose chart is a hand-rolled inline SVG in `HomeCalculatorExperience.tsx` around line 644 — not Recharts — so the Brush approach doesn't transfer. Implementing for the inline SVG would require building a custom drag/window UI (~half-day). **Decision (2026-05-17): not worth the time, skipping for now.** PR #133 closed without merge. *(added 2026-05-17)*
+
 ---
 
 *Format guidelines: Keep items as one-liners with enough context to act on. Add date when item is created. Check off and move to a "## Done" section at the bottom when completed rather than deleting.*
