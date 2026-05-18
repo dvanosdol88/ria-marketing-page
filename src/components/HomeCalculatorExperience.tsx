@@ -540,6 +540,9 @@ function FinalHomeLineChart({
   savings,
   series,
   years,
+  onGapEnter,
+  onGapLeave,
+  onGapTap,
 }: {
   annualFeePercent: number;
   chartActive: boolean;
@@ -548,6 +551,9 @@ function FinalHomeLineChart({
   savings: number;
   series: ProjectionYear[];
   years: number;
+  onGapEnter: () => void;
+  onGapLeave: () => void;
+  onGapTap: () => void;
 }) {
   // Measured-pixel rendering: a ResizeObserver tracks the container's actual
   // width/height and we redraw the SVG against those live dimensions every
@@ -631,13 +637,13 @@ function FinalHomeLineChart({
   const [flatEndX, flatEndY] = point(ending, "withoutFees");
   const [aumEndX, aumEndY] = point(ending, "withFees");
   // Savings pill — clamped to keep it inside the plot at narrow widths.
-  const desiredPillWidth = 229;
-  const feeGapLabelWidth = Math.min(desiredPillWidth, Math.max(126, plotWidth - 16));
+  const desiredPillWidth = 217;
+  const feeGapLabelWidth = Math.min(desiredPillWidth, Math.max(120, plotWidth - 16));
   const feeGapLabelX = Math.min(
     Math.max(flatEndX - feeGapLabelWidth - 18, pad.left + 8),
     pad.left + plotWidth - feeGapLabelWidth - 4,
   );
-  const feeGapLabelY = Math.min((flatEndY + aumEndY) / 2 - 27, flatEndY - 16);
+  const feeGapLabelY = Math.min((flatEndY + aumEndY) / 2 - 26, flatEndY - 16);
 
   return (
     <div ref={containerRef} className="block h-full w-full">
@@ -699,21 +705,33 @@ function FinalHomeLineChart({
             x={feeGapLabelX}
             y={feeGapLabelY}
             width={feeGapLabelWidth}
-            height="38"
-            rx="19"
+            height="36"
+            rx="18"
             fill="#D92D20"
           />
           <text
             x={feeGapLabelX + feeGapLabelWidth / 2}
-            y={feeGapLabelY + 26}
+            y={feeGapLabelY + 25}
             textAnchor="middle"
             fill="#FFFFFF"
-            fontSize="19"
+            fontSize="18"
             fontWeight="800"
           >
             {formatCurrencyFloored(savings)} lost to fees
           </text>
         </g>
+
+        {/* Invisible hit path traced over the differential wedge.
+           Listens for hover/touch so overlays activate only when the user
+           is over the gap between the two lines, not anywhere on the chart. */}
+        <path
+          d={gapAreaPath}
+          fill="transparent"
+          style={{ pointerEvents: "all", cursor: "pointer" }}
+          onMouseEnter={onGapEnter}
+          onMouseLeave={onGapLeave}
+          onTouchStart={onGapTap}
+        />
 
         <circle cx={aumEndX} cy={aumEndY} r="6" fill="#064B84" stroke="#FFFFFF" strokeWidth="3" />
         <circle cx={flatEndX} cy={flatEndY} r="6" fill="#108843" stroke="#FFFFFF" strokeWidth="3" />
@@ -912,8 +930,8 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     <div ref={calculatorRef} className="section-shell relative z-10 pb-16 pt-10 sm:pt-12">
       <div
         aria-hidden={!showStickyResult}
-        className={`fixed inset-x-0 top-[58px] z-40 border-b border-[#D5E0EA] bg-white/95 px-4 py-2 shadow-[0_12px_34px_rgba(17,33,52,0.12)] backdrop-blur transition duration-300 md:top-[52px] ${
-          showStickyResult ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-4 opacity-0"
+        className={`fixed inset-x-0 top-[58px] z-40 border-b border-[#D5E0EA] bg-white/95 px-4 py-2 shadow-[0_12px_34px_rgba(17,33,52,0.12)] backdrop-blur transition-all duration-500 ease-out md:top-[52px] ${
+          showStickyResult ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-3 opacity-0"
         }`}
       >
         <div className="mx-auto flex max-w-[1380px] items-center justify-between gap-3 text-sm font-bold text-[#062B43]">
@@ -992,9 +1010,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         <section
           className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-1.5 py-2 sm:mx-7 sm:px-2"
           aria-label="Portfolio value over time"
-          onMouseEnter={() => setHoverChart(true)}
-          onMouseLeave={() => setHoverChart(false)}
-          onTouchStart={tapHoldChart}
         >
           <div className="h-[255px] w-full sm:h-[305px]">
             <FinalHomeLineChart
@@ -1005,6 +1020,9 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
               savings={savings}
               series={series}
               years={years}
+              onGapEnter={() => setHoverChart(true)}
+              onGapLeave={() => setHoverChart(false)}
+              onGapTap={tapHoldChart}
             />
           </div>
         </section>
