@@ -867,7 +867,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     savings,
     years,
   } = props;
-  const calculatorRef = useRef<HTMLDivElement | null>(null);
   const [pinned, setPinned] = useState(false);
   const [hoverChart, setHoverChart] = useState(false);
   const [hoverBar, setHoverBar] = useState(false);
@@ -890,7 +889,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   }, []);
   const chartActive = pinned || hoverChart;
   const barActive = pinned || hoverBar;
-  const [showStickyResult, setShowStickyResult] = useState(false);
   const smarterWayParams = new URLSearchParams({
     source: "youarepayingtoomuch",
     savings: Math.round(savings).toString(),
@@ -901,60 +899,12 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   });
   const smarterWayHref = `https://smarterwaywealth.com/save?${smarterWayParams.toString()}`;
 
-  useEffect(() => {
-    const updateStickyResult = () => {
-      const calculator = calculatorRef.current;
-
-      if (!calculator) {
-        return;
-      }
-
-      const rect = calculator.getBoundingClientRect();
-      const navOffset = window.innerWidth >= 768 ? 56 : 62;
-      const nextVisible = rect.top <= navOffset && rect.bottom > navOffset + 220;
-
-      setShowStickyResult((current) => (current === nextVisible ? current : nextVisible));
-    };
-
-    updateStickyResult();
-    window.addEventListener("scroll", updateStickyResult, { passive: true });
-    window.addEventListener("resize", updateStickyResult);
-
-    return () => {
-      window.removeEventListener("scroll", updateStickyResult);
-      window.removeEventListener("resize", updateStickyResult);
-    };
-  }, []);
-
   return (
-    <div ref={calculatorRef} className="section-shell relative z-10 pb-16 pt-10 sm:pt-12">
-      <div
-        aria-hidden={!showStickyResult}
-        className={`fixed inset-x-0 top-[58px] z-40 border-b border-[#D5E0EA] bg-white/95 px-4 py-2 shadow-[0_12px_34px_rgba(17,33,52,0.12)] backdrop-blur transition-all duration-500 ease-out md:top-[52px] ${
-          showStickyResult ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-3 opacity-0"
-        }`}
-      >
-        <div className="mx-auto flex max-w-[1380px] items-center justify-between gap-3 text-sm font-bold text-[#062B43]">
-          <span className="inline-flex shrink-0 items-baseline gap-2">
-            <span className="text-[11px] uppercase tracking-[0.14em] text-[#52657A] sm:text-xs">Savings</span>
-            <span className="text-lg leading-none text-[#108843] sm:text-2xl">{formatCurrencyFloored(savings)}</span>
-          </span>
-          <span className="flex min-w-0 flex-wrap items-center justify-end gap-1.5 text-[11px] text-[#41556C] sm:gap-2 sm:text-xs">
-            <span className="rounded-full border border-[#D5E0EA] bg-[#F7FAFC] px-2 py-0.5 sm:px-3 sm:py-1">
-              {years}<span className="hidden sm:inline"> years</span><span className="sm:hidden"> yrs</span>
-            </span>
-            <span className="rounded-full border border-[#D5E0EA] bg-[#F7FAFC] px-2 py-0.5 sm:px-3 sm:py-1">
-              {annualFeePercent.toFixed(2)}%<span className="hidden sm:inline"> asset-based</span> fee
-            </span>
-            <span className="rounded-full border border-[#BFE3CC] bg-[#F2FBF5] px-2 py-0.5 text-[#108843] sm:px-3 sm:py-1">
-              $100/mo<span className="hidden sm:inline"> flat fee</span>
-            </span>
-          </span>
-        </div>
-      </div>
+    <div className="section-shell relative z-10 pb-16 pt-10 sm:pt-12">
       <div className="mx-auto mb-4 max-w-3xl text-center [&_p]:mt-0">
         {disclosure}
       </div>
+      <div id="savings-section">
       <ScrollReveal className="mx-auto max-w-[1380px] overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]">
         <header className="relative flex flex-col gap-3 border-b border-[#DFE6EE] bg-white/65 px-6 py-4 text-[#062B43] backdrop-blur sm:px-10">
           <div className="text-center">
@@ -1064,6 +1014,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           Values are nominal and before taxes.
         </p>
       </ScrollReveal>
+      </div>
     </div>
   );
 }
