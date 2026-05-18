@@ -173,18 +173,46 @@ a:hover {
 
 @keyframes fee-gap-wave-sweep {
   0% {
-    transform: translateX(0);
+    opacity: 0;
+    transform: translateX(-8%);
+  }
+  18% {
+    opacity: 0.85;
+  }
+  72% {
+    opacity: 0.85;
   }
   100% {
+    opacity: 0;
     transform: translateX(260%);
   }
 }
 
+@keyframes fee-gap-hint-fade {
+  0% {
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  74% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.fee-gap-hint-layer {
+  animation: fee-gap-hint-fade 3s ease-in-out 1;
+}
+
 .fee-gap-wave,
 .fee-gap-bar-wave {
-  animation: fee-gap-wave-sweep 2.2s ease-in-out 1;
+  animation: fee-gap-wave-sweep 2.85s cubic-bezier(0.22, 0.61, 0.36, 1) 1;
   transform-box: fill-box;
   transform-origin: center;
+  will-change: opacity, transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -199,5 +227,9 @@ a:hover {
   .fee-gap-bar-wave {
     animation: none;
     opacity: 0;
+  }
+
+  .fee-gap-hint-layer {
+    animation: none;
   }
 }

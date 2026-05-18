@@ -38,8 +38,9 @@ export type CalculatorSimpleControlNodes = {
 };
 
 const FEE_GAP_HINT_INITIAL_DELAY_MS = 1200;
-const FEE_GAP_HINT_VISIBLE_MS = 2400;
+const FEE_GAP_HINT_VISIBLE_MS = 3000;
 const FEE_GAP_HINT_REDUCED_VISIBLE_MS = 1400;
+const FEE_GAP_HINT_BAR_DELAY_MS = 450;
 const FEE_GAP_HINT_REPEAT_MS = 10000;
 const FEE_GAP_HINT_MAX_PLAYS = 5;
 
@@ -701,7 +702,7 @@ function FinalHomeLineChart({
         {chartHintOnly ? (
           <g
             clipPath="url(#final-home-line-gap-hint-clip)"
-            className="pointer-events-none"
+            className="fee-gap-hint-layer pointer-events-none"
             aria-hidden="true"
           >
             <path d={gapAreaPath} fill="#D92D20" opacity="0.07" />
@@ -904,7 +905,7 @@ function ComparisonBars({
           </div>
           {barHintOnly ? (
             <div
-              className="pointer-events-none absolute inset-y-0 overflow-hidden"
+              className="fee-gap-hint-layer pointer-events-none absolute inset-y-0 overflow-hidden"
               style={{
                 left: `${blueWidthPct}%`,
                 width: `${redWidthPct}%`,
@@ -983,7 +984,8 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const [barPinned, setBarPinned] = useState(false);
   const [hoverChart, setHoverChart] = useState(false);
   const [hoverBar, setHoverBar] = useState(false);
-  const [gapHintActive, setGapHintActive] = useState(false);
+  const [chartGapHintActive, setChartGapHintActive] = useState(false);
+  const [barGapHintActive, setBarGapHintActive] = useState(false);
   const visualizationRef = useRef<HTMLDivElement | null>(null);
   const gapHintCancelledRef = useRef(false);
   const gapHintPlayCountRef = useRef(0);
@@ -996,7 +998,8 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const cancelGapHint = () => {
     gapHintCancelledRef.current = true;
     clearGapHintTimers();
-    setGapHintActive(false);
+    setChartGapHintActive(false);
+    setBarGapHintActive(false);
   };
   const toggleAllGaps = () => {
     cancelGapHint();
@@ -1018,7 +1021,8 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   };
   const chartActive = chartPinned || hoverChart;
   const barActive = barPinned || hoverBar;
-  const gapHintVisible = gapHintActive && !chartPinned && !barPinned;
+  const chartGapHintVisible = chartGapHintActive && !chartPinned && !barPinned;
+  const barGapHintVisible = barGapHintActive && !chartPinned && !barPinned;
   const smarterWayParams = new URLSearchParams({
     source: "youarepayingtoomuch",
     savings: Math.round(savings).toString(),
@@ -1037,7 +1041,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const visibleMs = prefersReducedMotion ? FEE_GAP_HINT_REDUCED_VISIBLE_MS : FEE_GAP_HINT_VISIBLE_MS;
-    const repeatDelayMs = Math.max(0, FEE_GAP_HINT_REPEAT_MS - visibleMs);
+    const barDelayMs = prefersReducedMotion ? 0 : FEE_GAP_HINT_BAR_DELAY_MS;
 
     const queueTimeout = (callback: () => void, delay: number) => {
       const timeoutId = window.setTimeout(callback, delay);
@@ -1055,10 +1059,23 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
       }
 
       gapHintPlayCountRef.current += 1;
-      setGapHintActive(true);
+      setChartGapHintActive(true);
 
       queueTimeout(() => {
-        setGapHintActive(false);
+        setBarGapHintActive(true);
+      }, barDelayMs);
+
+      queueTimeout(() => {
+        setChartGapHintActive(false);
+      }, visibleMs);
+
+      queueTimeout(() => {
+        setBarGapHintActive(false);
+      }, visibleMs + barDelayMs);
+
+      queueTimeout(() => {
+        setChartGapHintActive(false);
+        setBarGapHintActive(false);
 
         if (
           gapHintCancelledRef.current ||
@@ -1069,8 +1086,8 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           return;
         }
 
-        queueTimeout(playHint, repeatDelayMs);
-      }, visibleMs);
+        playHint();
+      }, FEE_GAP_HINT_REPEAT_MS);
     };
 
     const observer = new IntersectionObserver(
@@ -1092,10 +1109,11 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   }, [barPinned, chartPinned]);
 
   useEffect(() => {
-    if ((chartPinned || barPinned) && gapHintActive) {
-      setGapHintActive(false);
+    if ((chartPinned || barPinned) && (chartGapHintActive || barGapHintActive)) {
+      setChartGapHintActive(false);
+      setBarGapHintActive(false);
     }
-  }, [barPinned, chartPinned, gapHintActive]);
+  }, [barGapHintActive, barPinned, chartGapHintActive, chartPinned]);
 
   return (
     <div className="section-shell relative z-10 pb-16 pt-10 sm:pt-12">
@@ -1188,7 +1206,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
               <FinalHomeLineChart
                 annualFeePercent={annualFeePercent}
                 chartActive={chartActive}
-                chartHintActive={gapHintVisible}
+                chartHintActive={chartGapHintVisible}
                 chartPinned={chartPinned}
                 finalValueWithFees={finalValueWithFees}
                 finalValueWithoutFees={finalValueWithoutFees}
@@ -1208,7 +1226,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             savings={savings}
             percentLost={percentLost}
             barActive={barActive}
-            barHintActive={gapHintVisible}
+            barHintActive={barGapHintVisible}
             barPinned={barPinned}
             onGapEnter={() => setHoverBar(true)}
             onGapLeave={() => setHoverBar(false)}
