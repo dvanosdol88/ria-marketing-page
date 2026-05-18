@@ -21,6 +21,12 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-18 - Upgrade Your Advice lightweight bento rebuild
+**Agent:** Codex | **Surface:** marketing/secondary pages | **Duration:** 1 session
+- changed: `src/app/upgrade-your-advice/page.tsx` was rebuilt from a long chart/funnel-heavy explainer into a lightweight story page aligned with the post-calculator journey: a short hero, bold left-rail "Upgrade Your Advice" section, David headshot/name/title proof box, expandable credential/fiduciary/model bento boxes, then a matching "Improve Your Tools" section with expandable planning boxes.
+- changed: the credential bento now keeps visitors on-page with native `<details>` expansion for CFA/CFP, fiduciary standard, flat-fee model, cash-flow planning, Roth conversions, Social Security/Medicare, and tax-aware portfolio strategy. CTAs point back to the calculator and forward to `https://smarterwaywealth.com/`, with `/improve-your-tools` preserved as the deeper local tools page.
+- verified locally: `npx tsc --noEmit` clean; `npx eslint . --ext .js,.jsx,.ts,.tsx` clean except the same 3 pre-existing `<img>` warnings; Playwright desktop/mobile checks confirmed 7 expandable cards, closed and open states, CTA contrast, no horizontal overflow from the new route, and zero console errors.
+
 ### 2026-05-18 - Home calculator motion hints and rolling ending values
 **Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
 - changed: `src/components/HomeCalculatorExperience.tsx` adds a one-time, observer-triggered fee-gap hint for the final home calculator visualization. The line chart and comparison bars now briefly show subtle red hint waves when the visualization enters view, while pinned/hovered VS, line-gap, and bar-gap toggle behavior remains separate and unchanged.
