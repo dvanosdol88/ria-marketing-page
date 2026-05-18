@@ -16,6 +16,17 @@ export function fmtPct(x: number) {
 // Backward-compatible aliases for existing imports elsewhere in repo.
 export const formatCurrency = fmtMoney;
 
+export function formatCompactCurrency(value: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    notation: "compact",
+    maximumFractionDigits: value >= 1000000 ? 2 : 0,
+  })
+    .format(value || 0)
+    .replace("K", "k");
+}
+
 /**
  * Display helper: floor the value down to the nearest $1,000 before
  * formatting. Used for projection numbers on the marketing calculator

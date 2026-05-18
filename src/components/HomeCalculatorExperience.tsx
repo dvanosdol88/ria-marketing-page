@@ -998,10 +998,10 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           onGapTap={tapHoldBar}
         />
 
-        <section className="mx-4 mt-4 grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white sm:mx-7 md:grid-cols-2 xl:grid-cols-4" aria-label="Calculator inputs">
-          <div className="border-b border-[#DFE6EE] p-3 md:border-r xl:border-b-0">{simpleControls.portfolio}</div>
-          <div className="border-b border-[#DFE6EE] p-3 xl:border-b-0 xl:border-r">{simpleControls.years}</div>
-          <div className="border-b border-[#DFE6EE] p-3 md:border-r md:border-b-0">{simpleControls.growth}</div>
+        <section className="mx-4 mt-4 grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white sm:mx-7" aria-label="Calculator inputs">
+          <div className="border-b border-[#DFE6EE] p-3">{simpleControls.portfolio}</div>
+          <div className="border-b border-[#DFE6EE] p-3">{simpleControls.years}</div>
+          <div className="border-b border-[#DFE6EE] p-3">{simpleControls.growth}</div>
           <div className="p-3">{simpleControls.advisoryFee}</div>
         </section>
 

@@ -5,7 +5,7 @@ import { Check, ChevronDown, ChevronUp, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, DEFAULT_STATE, buildQueryFromState } from "@/lib/calculatorState";
-import { formatCurrency, formatCurrencyFloored } from "@/lib/format";
+import { formatCompactCurrency, formatCurrency, formatCurrencyFloored } from "@/lib/format";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { Quiz } from "./Quiz";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
@@ -61,7 +61,6 @@ interface PillSliderProps {
 }
 
 interface SimpleRangeControlProps {
-  accentColor?: string;
   boundsFormatter: (value: number) => string;
   formatter: (value: number) => string;
   label: string;
@@ -73,7 +72,6 @@ interface SimpleRangeControlProps {
 }
 
 function SimpleRangeControl({
-  accentColor = "#064B84",
   boundsFormatter,
   formatter,
   label,
@@ -96,17 +94,7 @@ function SimpleRangeControl({
     [max, min, precision, step]
   );
 
-  const handleRangeChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = Number.parseFloat(event.target.value);
-      if (Number.isNaN(raw)) return;
-      onChange(clampAndSnap(raw));
-    },
-    [clampAndSnap, onChange]
-  );
-
   const slug = label.toLowerCase().replaceAll(" ", "-");
-  const sliderId = `final-${slug}`;
   const inputId = `final-${slug}-input`;
 
   // Editable text shadow of the slider's value. Null = show formatted value
@@ -126,60 +114,43 @@ function SimpleRangeControl({
   }, [clampAndSnap, draft, onChange]);
 
   return (
-    <div className="grid gap-2">
-      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+    <div className="flex items-center justify-between gap-3">
+      <div className="min-w-0">
         <label htmlFor={inputId} className="text-[13px] font-bold leading-none text-[#213B56]">
-          {label}
+          {label}{" "}
+          <span className="ml-1.5 whitespace-nowrap text-[12px] font-semibold text-[#5E6F80]">
+            ({boundsFormatter(min)}{"\u2013"}{boundsFormatter(max)})
+          </span>
         </label>
-        <input
-          id={inputId}
-          type="text"
-          inputMode="decimal"
-          autoComplete="off"
-          spellCheck={false}
-          value={displayValue}
-          onChange={(event) => setDraft(event.target.value)}
-          onFocus={(event) => {
-            setDraft(formatter(value));
-            // Defer so the value is in the DOM before selection.
-            requestAnimationFrame(() => event.target.select());
-          }}
-          onBlur={commitDraft}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
-              event.preventDefault();
-              event.currentTarget.blur();
-            } else if (event.key === "Escape") {
-              event.preventDefault();
-              setDraft(null);
-              event.currentTarget.blur();
-            }
-          }}
-          className="min-h-[30px] flex-1 min-w-[96px] max-w-[200px] rounded border border-[#DFE6EE] bg-[#FBFCFD] px-3 py-1.5 text-right text-base font-bold leading-none text-[#10233A] tabular-nums focus:border-[#108843] focus:outline-none focus:ring-2 focus:ring-[#108843]/30"
-          aria-label={`${label} value`}
-        />
       </div>
       <input
-        id={sliderId}
-        type="range"
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={handleRangeChange}
-        className="calc-slider w-full"
-        style={{
-          ["--calc-slider-accent" as string]: accentColor,
-          ["--calc-slider-value" as string]: `${
-            max > min ? Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100)) : 0
-          }%`,
-        } as React.CSSProperties}
-        aria-label={`${label} slider`}
+        id={inputId}
+        type="text"
+        inputMode="decimal"
+        autoComplete="off"
+        spellCheck={false}
+        value={displayValue}
+        onChange={(event) => setDraft(event.target.value)}
+        onFocus={(event) => {
+          setDraft(formatter(value));
+          // Defer so the value is in the DOM before selection.
+          requestAnimationFrame(() => event.target.select());
+        }}
+        onBlur={commitDraft}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            event.currentTarget.blur();
+          } else if (event.key === "Escape") {
+            event.preventDefault();
+            setDraft(null);
+            event.currentTarget.blur();
+          }
+        }}
+        className="min-h-[30px] min-w-[60px] shrink-0 rounded border border-[#DFE6EE] bg-[#FBFCFD] px-2.5 py-1.5 text-right text-base font-bold leading-none text-[#10233A] tabular-nums focus:border-[#108843] focus:outline-none focus:ring-2 focus:ring-[#108843]/30"
+        style={{ width: `${Math.max(5, displayValue.length + 1)}ch` }}
+        aria-label={`${label} value`}
       />
-      <span className="flex items-center justify-between gap-4 text-xs text-[#5E6F80]">
-        <span>{boundsFormatter(min)}</span>
-        <span>{boundsFormatter(max)}</span>
-      </span>
     </div>
   );
 }
@@ -736,7 +707,7 @@ export function CostAnalysisCalculator({
         value={state.portfolioValue}
         onChange={(value) => setState((prev) => ({ ...prev, portfolioValue: value }))}
         formatter={(value) => formatCurrency(value)}
-        boundsFormatter={(value) => formatCurrency(value)}
+        boundsFormatter={(value) => formatCompactCurrency(value)}
         min={250000}
         max={5000000}
         step={25000}
@@ -760,7 +731,7 @@ export function CostAnalysisCalculator({
         value={state.annualGrowthPercent}
         onChange={(value) => setState((prev) => ({ ...prev, annualGrowthPercent: value }))}
         formatter={(value) => `${value.toFixed(2)}%`}
-        boundsFormatter={(value) => `${value.toFixed(2)}%`}
+        boundsFormatter={(value) => `${Math.round(value)}%`}
         min={0}
         max={12}
         step={0.25}
