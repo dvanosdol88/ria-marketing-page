@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { formatCurrencyFloored } from "@/lib/format";
 import { useSavingsBar, type SavingsBarData } from "@/components/SavingsBarContext";
@@ -30,19 +30,37 @@ export function ProgressiveStickyBar() {
   const pathname = usePathname();
   const { data: savingsData } = useSavingsBar();
 
-  /* Bar is hidden until SiteNav has collapsed (same scroll threshold + hysteresis SiteNav uses).
-     This guarantees the bar never overlaps the hero / page-top content. */
+  /* Bar visibility + savings-section detection via a single scroll/resize handler.
+     Same pattern the previous in-component sticky bar used (proven across desktop +
+     mobile + iOS Safari). IntersectionObserver was producing inconsistent results
+     on real mobile devices, so we switched back to direct getBoundingClientRect. */
   const [scrolledPastTop, setScrolledPastTop] = useState(false);
   const [inSavingsSection, setInSavingsSection] = useState(false);
-  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
+    setInSavingsSection(false);
+
     let ticking = false;
 
     const update = () => {
+      ticking = false;
+
       const y = window.scrollY;
       setScrolledPastTop((prev) => (prev ? y > EXPAND_SCROLL_Y : y > COLLAPSE_SCROLL_Y));
-      ticking = false;
+
+      if (pathname !== "/") return;
+      const target = document.getElementById("savings-section");
+      if (!target) {
+        setInSavingsSection(false);
+        return;
+      }
+      const rect = target.getBoundingClientRect();
+      /* "Engaged" = the savings-section top has scrolled up past the nav/bar area
+         AND its bottom is still meaningfully below it. Mirrors the old bar's
+         logic so behavior is consistent with what shipped before. */
+      const navOffset = 92; // collapsed SiteNav (52) + progressive bar height (40)
+      const isEngaged = rect.top <= navOffset && rect.bottom > navOffset + 80;
+      setInSavingsSection(isEngaged);
     };
 
     const onScroll = () => {
@@ -53,31 +71,11 @@ export function ProgressiveStickyBar() {
 
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  /* Tight savings-section detection: observe a marker element that lives INSIDE the
-     calculator card, not the whole #calculator section (which on the home page wraps
-     even the hero headline and would intersect from scroll=0). */
-  useEffect(() => {
-    observerRef.current?.disconnect();
-    setInSavingsSection(false);
-
-    if (pathname !== "/") return;
-
-    const target = document.getElementById("savings-section");
-    if (!target) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setInSavingsSection(entry.isIntersecting && entry.intersectionRatio > 0);
-      },
-      { threshold: [0, 0.1] }
-    );
-    observer.observe(target);
-    observerRef.current = observer;
-
-    return () => observer.disconnect();
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [pathname]);
 
   const routeLabel = getRouteLabel(pathname);
