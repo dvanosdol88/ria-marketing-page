@@ -968,6 +968,16 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         </section>
 
         <section
+          className="mx-4 mt-3 grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white sm:mx-7 md:grid-cols-2"
+          aria-label="Calculator assumptions"
+        >
+          <div className="border-b border-[#DFE6EE] p-3 md:border-r">{simpleControls.portfolio}</div>
+          <div className="border-b border-[#DFE6EE] p-3">{simpleControls.years}</div>
+          <div className="border-b border-[#DFE6EE] p-3 md:border-b-0 md:border-r">{simpleControls.growth}</div>
+          <div className="p-3">{simpleControls.advisoryFee}</div>
+        </section>
+
+        <section
           className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-1.5 py-2 sm:mx-7 sm:px-2"
           aria-label="Portfolio value over time"
         >
@@ -997,13 +1007,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           onGapLeave={() => setHoverBar(false)}
           onGapTap={tapHoldBar}
         />
-
-        <section className="mx-4 mt-4 grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white sm:mx-7" aria-label="Calculator inputs">
-          <div className="border-b border-[#DFE6EE] p-3">{simpleControls.portfolio}</div>
-          <div className="border-b border-[#DFE6EE] p-3">{simpleControls.years}</div>
-          <div className="border-b border-[#DFE6EE] p-3">{simpleControls.growth}</div>
-          <div className="p-3">{simpleControls.advisoryFee}</div>
-        </section>
 
         <div className="mx-4 mt-4 grid gap-3 sm:mx-7 sm:grid-cols-[minmax(0,1fr)_auto]">
           <a
