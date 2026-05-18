@@ -168,7 +168,12 @@ function SimpleRangeControl({
         value={value}
         onChange={handleRangeChange}
         className="calc-slider w-full"
-        style={{ ["--calc-slider-accent" as string]: accentColor } as React.CSSProperties}
+        style={{
+          ["--calc-slider-accent" as string]: accentColor,
+          ["--calc-slider-value" as string]: `${
+            max > min ? Math.max(0, Math.min(100, ((value - min) / (max - min)) * 100)) : 0
+          }%`,
+        } as React.CSSProperties}
         aria-label={`${label} slider`}
       />
       <span className="flex items-center justify-between gap-4 text-xs text-[#5E6F80]">
