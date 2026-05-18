@@ -766,12 +766,18 @@ function ComparisonBars({
   savings,
   percentLost,
   barActive,
+  onGapEnter,
+  onGapLeave,
+  onGapTap,
 }: {
   finalValueWithFees: number;
   finalValueWithoutFees: number;
   savings: number;
   percentLost: number;
   barActive: boolean;
+  onGapEnter: () => void;
+  onGapLeave: () => void;
+  onGapTap: () => void;
 }) {
   // The flat-fee value is always >= the asset-based value, so we
   // normalize the bar widths against finalValueWithoutFees.
@@ -832,8 +838,12 @@ function ComparisonBars({
             style={{
               left: `${blueWidthPct}%`,
               width: `${redWidthPct}%`,
+              cursor: "pointer",
             }}
             aria-hidden={!barActive}
+            onMouseEnter={onGapEnter}
+            onMouseLeave={onGapLeave}
+            onTouchStart={onGapTap}
           >
             <span className="text-lg font-extrabold leading-none text-white sm:text-2xl">
               {percentLost.toFixed(1)}%
@@ -977,19 +987,16 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           </div>
         </section>
 
-        <div
-          onMouseEnter={() => setHoverBar(true)}
-          onMouseLeave={() => setHoverBar(false)}
-          onTouchStart={tapHoldBar}
-        >
-          <ComparisonBars
-            finalValueWithFees={finalValueWithFees}
-            finalValueWithoutFees={finalValueWithoutFees}
-            savings={savings}
-            percentLost={percentLost}
-            barActive={barActive}
-          />
-        </div>
+        <ComparisonBars
+          finalValueWithFees={finalValueWithFees}
+          finalValueWithoutFees={finalValueWithoutFees}
+          savings={savings}
+          percentLost={percentLost}
+          barActive={barActive}
+          onGapEnter={() => setHoverBar(true)}
+          onGapLeave={() => setHoverBar(false)}
+          onGapTap={tapHoldBar}
+        />
 
         <section className="mx-4 mt-4 grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white sm:mx-7 md:grid-cols-2 xl:grid-cols-4" aria-label="Calculator inputs">
           <div className="border-b border-[#DFE6EE] p-3 md:border-r xl:border-b-0">{simpleControls.portfolio}</div>

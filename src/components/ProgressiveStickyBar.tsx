@@ -88,23 +88,28 @@ export function ProgressiveStickyBar() {
     return { kind: "brand", text: "Smarter Way Wealth" };
   })();
 
+  /* Per product: only show the bar when it has the rich-chip "Savings" content.
+     The brand / route-name fallbacks are kept in the label model for future use
+     (in case some surface wants them later) but are not rendered as visible bars. */
+  const visible = scrolledPastTop && label.kind === "savings";
+
   return (
     <>
-      {/* Desktop: tucks under collapsed SiteNav (52px). Hidden until scrolledPastTop. */}
+      {/* Desktop: tucks under collapsed SiteNav (52px). */}
       <div
         className={`pointer-events-none fixed inset-x-0 top-[52px] z-40 hidden h-10 transition-opacity duration-300 ease-out md:block ${
-          scrolledPastTop ? "opacity-100" : "opacity-0"
+          visible ? "opacity-100" : "opacity-0"
         }`}
-        aria-hidden={!scrolledPastTop}
+        aria-hidden={!visible}
       >
         <BarInner label={label} />
       </div>
-      {/* Mobile: tucks under collapsed SiteNav (58px). Hidden until scrolledPastTop. */}
+      {/* Mobile: tucks under collapsed SiteNav (58px). */}
       <div
         className={`pointer-events-none fixed inset-x-0 top-[58px] z-40 h-10 transition-opacity duration-300 ease-out md:hidden ${
-          scrolledPastTop ? "opacity-100" : "opacity-0"
+          visible ? "opacity-100" : "opacity-0"
         }`}
-        aria-hidden={!scrolledPastTop}
+        aria-hidden={!visible}
       >
         <BarInner label={label} />
       </div>

@@ -167,8 +167,8 @@ function SimpleRangeControl({
         step={step}
         value={value}
         onChange={handleRangeChange}
-        className="h-2 w-full cursor-pointer"
-        style={{ accentColor }}
+        className="calc-slider w-full"
+        style={{ ["--calc-slider-accent" as string]: accentColor } as React.CSSProperties}
         aria-label={`${label} slider`}
       />
       <span className="flex items-center justify-between gap-4 text-xs text-[#5E6F80]">
@@ -763,7 +763,6 @@ export function CostAnalysisCalculator({
     ),
     advisoryFee: (
       <SimpleRangeControl
-        accentColor="#108843"
         label="Asset-based fee"
         value={state.annualFeePercent}
         onChange={(value) => setState((prev) => ({ ...prev, annualFeePercent: value }))}
