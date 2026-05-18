@@ -21,6 +21,15 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-18 - Home calculator motion hints and rolling ending values
+**Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
+- changed: `src/components/HomeCalculatorExperience.tsx` adds a one-time, observer-triggered fee-gap hint for the final home calculator visualization. The line chart and comparison bars now briefly show subtle red hint waves when the visualization enters view, while pinned/hovered VS, line-gap, and bar-gap toggle behavior remains separate and unchanged.
+- changed: `src/components/Odometer.tsx` adds `RollingCurrencyOdometer` for the two large ending-value cards, with `180ms` debounce, `650ms` digit roll, `formatCurrencyFloored` formatting, stable digit columns, and screen-reader-only final value text.
+- changed: `src/app/globals.css` adds the fee-gap wave animation and reduced-motion fallback; reduced motion keeps the static faint hint while suppressing movement.
+- reviewed: Superpowers-style spec review found and rechecked a wave timing issue; code-quality review found and rechecked the odometer accessibility fix. Both review gates passed after fixes.
+- verified locally: `npx tsc --noEmit` clean; `npx eslint . --ext .js,.jsx,.ts,.tsx` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning; Playwright desktop/mobile checks confirmed layout order, hint waves attach and clear, no range inputs, value updates, VS/line/bar toggles, reduced-motion no-animation, and no console errors beyond local dev HMR info.
+- deployed: pushed directly to `main` in commit `183ac9c`; production Playwright desktop/mobile checks passed at `https://youarepayingtoomuch.com/?codex_prod_motion=1779138943060` with zero console errors.
+
 ### 2026-05-18 - Home calculator steppers and fee-gap toggles
 **Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
 - changed: `src/components/CostAnalysisCalculator.tsx` adds custom +/- steppers to the four home calculator assumption inputs, preserves editable text commit behavior, uses min-relative snapping, and updates increments to Portfolio `$100k`, Asset-based fee `0.10%`, Growth `0.25%`, Years `1`.
