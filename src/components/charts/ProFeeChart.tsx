@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Area,
   AreaChart,
-  Brush,
   CartesianGrid,
   Cell,
   Pie,
@@ -489,7 +488,7 @@ export function ProFeeChart({
               top: isMobile ? 10 : 20,
               right: isMobile ? 20 : 5,
               left: isMobile ? 12 : 5,
-              bottom: isMobile ? 0 : 24,
+              bottom: 0,
             }}
           >
             <defs>
@@ -588,17 +587,6 @@ export function ProFeeChart({
                 strokeWidth: 2,
               }}
             />
-
-            {!isMobile && data.length > 2 && (
-              <Brush
-                dataKey="year"
-                height={20}
-                stroke={palette.grid}
-                fill={palette.chartBg}
-                travellerWidth={10}
-                tickFormatter={(value: number) => `Yr ${value}`}
-              />
-            )}
           </AreaChart>
         </ResponsiveContainer>
       </div>

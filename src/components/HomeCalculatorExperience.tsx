@@ -534,7 +534,7 @@ function FinalHomeStatCard({
 
 function FinalHomeLineChart({
   annualFeePercent,
-  feeGapActive,
+  chartActive,
   finalValueWithFees,
   finalValueWithoutFees,
   savings,
@@ -542,7 +542,7 @@ function FinalHomeLineChart({
   years,
 }: {
   annualFeePercent: number;
-  feeGapActive: boolean;
+  chartActive: boolean;
   finalValueWithFees: number;
   finalValueWithoutFees: number;
   savings: number;
@@ -674,7 +674,7 @@ function FinalHomeLineChart({
         <path
           d={gapAreaPath}
           fill="#D92D20"
-          opacity={feeGapActive ? "0.18" : "0"}
+          opacity={chartActive ? "0.18" : "0"}
           className="transition-opacity duration-300"
         />
         <path d={pathFor("withFees")} fill="none" stroke="#064B84" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
@@ -688,11 +688,11 @@ function FinalHomeLineChart({
           stroke="#D92D20"
           strokeDasharray="5 5"
           strokeWidth="2"
-          opacity={feeGapActive ? "1" : "0"}
+          opacity={chartActive ? "1" : "0"}
           className="transition-opacity duration-300"
         />
         <g
-          opacity={feeGapActive ? "1" : "0"}
+          opacity={chartActive ? "1" : "0"}
           className="transition-opacity duration-300"
         >
           <rect
@@ -738,25 +738,22 @@ function FinalHomeLineChart({
  * same two ending values shown in the big stat cards above. The flat-fee
  * (green) bar always renders at 100% width — it's the larger value — and
  * the asset-based (blue) bar renders at its proportional share of that
- * total. When the VS button is engaged (`feeGapActive`), a red overlay
- * fades in on top of the green bar covering only the differential
+ * total. When `barActive` is true (hover, mobile tap, or VS pin), a red
+ * overlay fades in on top of the green bar covering only the differential
  * region, plus a caption appears with the dollar/percentage gap.
- *
- * No new state — `feeGapActive` is shared with the line chart so a
- * single VS press animates both visuals in unison.
  */
 function ComparisonBars({
   finalValueWithFees,
   finalValueWithoutFees,
   savings,
   percentLost,
-  feeGapActive,
+  barActive,
 }: {
   finalValueWithFees: number;
   finalValueWithoutFees: number;
   savings: number;
   percentLost: number;
-  feeGapActive: boolean;
+  barActive: boolean;
 }) {
   // The flat-fee value is always >= the asset-based value, so we
   // normalize the bar widths against finalValueWithoutFees.
@@ -776,9 +773,9 @@ function ComparisonBars({
          surrendered to asset-based fees. */}
       <p
         className={`mb-1.5 text-center text-base leading-tight transition-opacity duration-300 ease-out sm:text-lg ${
-          feeGapActive ? "opacity-100" : "opacity-0"
+          barActive ? "opacity-100" : "opacity-0"
         }`}
-        aria-hidden={!feeGapActive}
+        aria-hidden={!barActive}
       >
         <span className="font-bold text-[#D92D20]">
           {percentLost.toFixed(1)}%
@@ -812,13 +809,13 @@ function ComparisonBars({
           </div>
           <div
             className={`absolute inset-y-0 flex items-center justify-center bg-[#D92D20] transition-opacity duration-300 ease-out ${
-              feeGapActive ? "opacity-100" : "opacity-0"
+              barActive ? "opacity-100" : "opacity-0"
             }`}
             style={{
               left: `${blueWidthPct}%`,
               width: `${redWidthPct}%`,
             }}
-            aria-hidden={!feeGapActive}
+            aria-hidden={!barActive}
           >
             <span className="text-lg font-extrabold leading-none text-white sm:text-2xl">
               {percentLost.toFixed(1)}%
@@ -853,7 +850,28 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     years,
   } = props;
   const calculatorRef = useRef<HTMLDivElement | null>(null);
-  const [feeGapActive, setFeeGapActive] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const [hoverChart, setHoverChart] = useState(false);
+  const [hoverBar, setHoverBar] = useState(false);
+  const chartFadeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const barFadeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const TOUCH_FADE_MS = 2000;
+  const tapHoldChart = () => {
+    if (chartFadeRef.current) clearTimeout(chartFadeRef.current);
+    setHoverChart(true);
+    chartFadeRef.current = setTimeout(() => setHoverChart(false), TOUCH_FADE_MS);
+  };
+  const tapHoldBar = () => {
+    if (barFadeRef.current) clearTimeout(barFadeRef.current);
+    setHoverBar(true);
+    barFadeRef.current = setTimeout(() => setHoverBar(false), TOUCH_FADE_MS);
+  };
+  useEffect(() => () => {
+    if (chartFadeRef.current) clearTimeout(chartFadeRef.current);
+    if (barFadeRef.current) clearTimeout(barFadeRef.current);
+  }, []);
+  const chartActive = pinned || hoverChart;
+  const barActive = pinned || hoverBar;
   const [showStickyResult, setShowStickyResult] = useState(false);
   const smarterWayParams = new URLSearchParams({
     source: "youarepayingtoomuch",
@@ -943,22 +961,23 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           />
           <button
             type="button"
-            onMouseEnter={() => setFeeGapActive(true)}
-            onMouseLeave={() => setFeeGapActive(false)}
-            onFocus={() => setFeeGapActive(true)}
-            onBlur={() => setFeeGapActive(false)}
-            onClick={() => setFeeGapActive(true)}
-            className="vs-pulse-halo absolute left-1/2 top-[72px] z-10 hidden h-14 w-14 -translate-x-1/2 place-items-center rounded-full bg-[#062B43] text-base font-extrabold text-white transition hover:scale-105 hover:bg-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D92D20] md:grid"
-            aria-label="Show fee gap on chart"
+            onClick={() => setPinned((prev) => !prev)}
+            className={`absolute left-1/2 top-[72px] z-10 hidden h-14 w-14 -translate-x-1/2 place-items-center rounded-full text-base font-extrabold text-white transition hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D92D20] md:grid ${
+              pinned ? "bg-[#D92D20] hover:bg-[#B91C1C]" : "vs-pulse-halo bg-[#062B43] hover:bg-[#0B3756]"
+            }`}
+            aria-label={pinned ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
+            aria-pressed={pinned}
           >
             VS
           </button>
           <button
             type="button"
-            onClick={() => setFeeGapActive((prev) => !prev)}
-            className="vs-pulse-halo mx-auto grid h-12 w-12 place-items-center rounded-full bg-[#062B43] text-sm font-extrabold text-white md:hidden"
-            aria-label="Show fee gap on chart"
-            aria-pressed={feeGapActive}
+            onClick={() => setPinned((prev) => !prev)}
+            className={`mx-auto grid h-12 w-12 place-items-center rounded-full text-sm font-extrabold text-white md:hidden ${
+              pinned ? "bg-[#D92D20]" : "vs-pulse-halo bg-[#062B43]"
+            }`}
+            aria-label={pinned ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
+            aria-pressed={pinned}
           >
             VS
           </button>
@@ -970,11 +989,17 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           />
         </section>
 
-        <section className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-1.5 py-2 sm:mx-7 sm:px-2" aria-label="Portfolio value over time">
+        <section
+          className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-1.5 py-2 sm:mx-7 sm:px-2"
+          aria-label="Portfolio value over time"
+          onMouseEnter={() => setHoverChart(true)}
+          onMouseLeave={() => setHoverChart(false)}
+          onTouchStart={tapHoldChart}
+        >
           <div className="h-[255px] w-full sm:h-[305px]">
             <FinalHomeLineChart
               annualFeePercent={annualFeePercent}
-              feeGapActive={feeGapActive}
+              chartActive={chartActive}
               finalValueWithFees={finalValueWithFees}
               finalValueWithoutFees={finalValueWithoutFees}
               savings={savings}
@@ -984,13 +1009,19 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           </div>
         </section>
 
-        <ComparisonBars
-          finalValueWithFees={finalValueWithFees}
-          finalValueWithoutFees={finalValueWithoutFees}
-          savings={savings}
-          percentLost={percentLost}
-          feeGapActive={feeGapActive}
-        />
+        <div
+          onMouseEnter={() => setHoverBar(true)}
+          onMouseLeave={() => setHoverBar(false)}
+          onTouchStart={tapHoldBar}
+        >
+          <ComparisonBars
+            finalValueWithFees={finalValueWithFees}
+            finalValueWithoutFees={finalValueWithoutFees}
+            savings={savings}
+            percentLost={percentLost}
+            barActive={barActive}
+          />
+        </div>
 
         <section className="mx-4 mt-4 grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white sm:mx-7 md:grid-cols-2 xl:grid-cols-4" aria-label="Calculator inputs">
           <div className="border-b border-[#DFE6EE] p-3 md:border-r xl:border-b-0">{simpleControls.portfolio}</div>
