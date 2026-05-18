@@ -1,0 +1,42 @@
+﻿{
+    "campaign":  "one-percent-blues",
+    "label":  "1% Blues",
+    "mailer":  "1% Blues EDDM mailer",
+    "cleanPrintUrl":  "https://youarepayingtoomuch.com/1-percent-blues",
+    "explicitStateUrl":  "https://youarepayingtoomuch.com/1-percent-blues?portfolio=1000000\u0026years=20\u0026growth=8\u0026fee=1\u0026mfe=0",
+    "route":  "/1-percent-blues",
+    "variant":  "direct-mail",
+    "assumptions":  {
+                        "portfolio":  1000000,
+                        "years":  20,
+                        "annualGrowthPercent":  8,
+                        "annualFeePercent":  1,
+                        "mutualFundExpensePercent":  0,
+                        "flatFeeMonthly":  100
+                    },
+    "outputs":  {
+                    "flatFeeEndingValue":  4604057,
+                    "assetBasedFeeEndingValue":  3815751,
+                    "estimatedFeeDrag":  788306,
+                    "percentLost":  17.1,
+                    "totalFlatFeesPaid":  24000,
+                    "totalAumFeesPaidApprox":  422058
+                },
+    "brandAssets":  [
+                        "smarter-way-wealth-logo.svg",
+                        "smarter-way-wealth-logo-800.png",
+                        "smarter-way-wealth-logo-icon.svg"
+                    ],
+    "qrAssets":  [
+                     "qr-1-percent-blues.png",
+                     "qr-1-percent-blues.svg",
+                     "qr-lockup-1-percent-blues.svg",
+                     "qr-lockup-1-percent-blues.png"
+                 ],
+    "screenshots":  [
+                        "landing-desktop-1440.png",
+                        "landing-mobile-390.png",
+                        "calculator-desktop-1440.png",
+                        "calculator-mobile-390.png"
+                    ]
+}
