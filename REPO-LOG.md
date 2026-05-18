@@ -27,7 +27,7 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - changed: `src/components/HomeCalculatorExperience.tsx` keeps the assumptions deck between the ending values and chart, reorders controls to Portfolio value, fee, growth, years, and splits the fee-gap reveal into VS master toggle plus independent line-chart and bar-chart pins.
 - changed: growth assumptions now clamp to `3%` minimum in the home controls, hero mini-calculator, and URL parser; visible bounds now show `Annualized growth (3%-12%)`.
 - verified locally: `npx tsc --noEmit` clean; `npx eslint . --ext .js,.jsx,.ts,.tsx` clean except 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning; Playwright desktop/mobile checks confirmed order, 2x2 vs stacked layout, no range inputs, visible percent values, steppers, state updates, and VS/line/bar toggles.
-- deployment: pushed directly to `main`; Vercel production verification pending in this session.
+- deployed: pushed directly to `main` in commit `8896c48`; Vercel deployment `dpl_7xf6yZ4reJk8csgmkJFuKdENfKnd` READY and aliased to `youarepayingtoomuch.com`; production Playwright desktop/mobile checks passed with the same calculator assertions and zero console errors.
 
 ### 2026-05-16 (pt 2) — FAQ page: searchable accordion at /faq
 **Agent:** Claude (Opus 4.7) | **Surface:** marketing | **Duration:** continuation of same-day session
