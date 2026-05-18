@@ -182,7 +182,7 @@ a:hover {
 
 .fee-gap-wave,
 .fee-gap-bar-wave {
-  animation: fee-gap-wave-sweep 1.45s ease-in-out 1;
+  animation: fee-gap-wave-sweep 2.2s ease-in-out 1;
   transform-box: fill-box;
   transform-origin: center;
 }

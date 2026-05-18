@@ -37,6 +37,12 @@ export type CalculatorSimpleControlNodes = {
   years: ReactNode;
 };
 
+const FEE_GAP_HINT_INITIAL_DELAY_MS = 1200;
+const FEE_GAP_HINT_VISIBLE_MS = 2400;
+const FEE_GAP_HINT_REDUCED_VISIBLE_MS = 1400;
+const FEE_GAP_HINT_REPEAT_MS = 10000;
+const FEE_GAP_HINT_MAX_PLAYS = 5;
+
 type HomeCalculatorExperienceProps = {
   layout: HomeCalculatorLayout;
   theme: HomeCalculatorTheme;
@@ -979,10 +985,17 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const [hoverBar, setHoverBar] = useState(false);
   const [gapHintActive, setGapHintActive] = useState(false);
   const visualizationRef = useRef<HTMLDivElement | null>(null);
-  const gapHintHasPlayedRef = useRef(false);
+  const gapHintCancelledRef = useRef(false);
+  const gapHintPlayCountRef = useRef(0);
+  const gapHintTimeoutsRef = useRef<number[]>([]);
   const vsActive = chartPinned && barPinned;
+  const clearGapHintTimers = () => {
+    gapHintTimeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    gapHintTimeoutsRef.current = [];
+  };
   const cancelGapHint = () => {
-    gapHintHasPlayedRef.current = true;
+    gapHintCancelledRef.current = true;
+    clearGapHintTimers();
     setGapHintActive(false);
   };
   const toggleAllGaps = () => {
@@ -1017,20 +1030,54 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const smarterWayHref = `https://smarterwaywealth.com/save?${smarterWayParams.toString()}`;
 
   useEffect(() => {
-    if (gapHintHasPlayedRef.current || chartPinned || barPinned) return;
+    if (gapHintCancelledRef.current || chartPinned || barPinned) return;
 
     const element = visualizationRef.current;
     if (!element) return;
 
-    let timeoutId: number | null = null;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const visibleMs = prefersReducedMotion ? FEE_GAP_HINT_REDUCED_VISIBLE_MS : FEE_GAP_HINT_VISIBLE_MS;
+    const repeatDelayMs = Math.max(0, FEE_GAP_HINT_REPEAT_MS - visibleMs);
+
+    const queueTimeout = (callback: () => void, delay: number) => {
+      const timeoutId = window.setTimeout(callback, delay);
+      gapHintTimeoutsRef.current.push(timeoutId);
+    };
+
+    const playHint = () => {
+      if (
+        gapHintCancelledRef.current ||
+        chartPinned ||
+        barPinned ||
+        gapHintPlayCountRef.current >= FEE_GAP_HINT_MAX_PLAYS
+      ) {
+        return;
+      }
+
+      gapHintPlayCountRef.current += 1;
+      setGapHintActive(true);
+
+      queueTimeout(() => {
+        setGapHintActive(false);
+
+        if (
+          gapHintCancelledRef.current ||
+          chartPinned ||
+          barPinned ||
+          gapHintPlayCountRef.current >= FEE_GAP_HINT_MAX_PLAYS
+        ) {
+          return;
+        }
+
+        queueTimeout(playHint, repeatDelayMs);
+      }, visibleMs);
+    };
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry?.isIntersecting || gapHintHasPlayedRef.current || chartPinned || barPinned) return;
+        if (!entry?.isIntersecting || gapHintCancelledRef.current || chartPinned || barPinned) return;
 
-        gapHintHasPlayedRef.current = true;
-        setGapHintActive(true);
-        timeoutId = window.setTimeout(() => setGapHintActive(false), prefersReducedMotion ? 900 : 1700);
+        queueTimeout(playHint, FEE_GAP_HINT_INITIAL_DELAY_MS);
         observer.disconnect();
       },
       { threshold: 0.35 }
@@ -1040,9 +1087,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
 
     return () => {
       observer.disconnect();
-      if (timeoutId !== null) {
-        window.clearTimeout(timeoutId);
-      }
+      clearGapHintTimers();
     };
   }, [barPinned, chartPinned]);
 
