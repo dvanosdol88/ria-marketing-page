@@ -278,8 +278,8 @@ function AdvisorMiniCalculator({
           <MiniTextInput
             decimals={1}
             label="Growth"
-            min={0}
-            max={20}
+            min={3}
+            max={12}
             suffix="%"
             value={annualGrowthPercent}
             onValueChange={(value) => onCalculatorChange({ annualGrowthPercent: value })}

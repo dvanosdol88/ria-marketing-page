@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Check, ChevronDown, ChevronUp, Share2 } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, DEFAULT_STATE, buildQueryFromState } from "@/lib/calculatorState";
@@ -82,13 +82,13 @@ function SimpleRangeControl({
   value,
 }: SimpleRangeControlProps) {
   const precision = useMemo(() => {
-    const decimalPart = step.toString().split(".")[1];
-    return decimalPart ? decimalPart.length : 0;
-  }, [step]);
+    const decimalPlaces = (number: number) => number.toString().split(".")[1]?.length ?? 0;
+    return Math.max(decimalPlaces(min), decimalPlaces(max), decimalPlaces(step));
+  }, [max, min, step]);
 
   const clampAndSnap = useCallback(
     (raw: number) => {
-      const snapped = Number((Math.round(raw / step) * step).toFixed(precision));
+      const snapped = Number((min + Math.round((raw - min) / step) * step).toFixed(precision));
       return Math.min(max, Math.max(min, snapped));
     },
     [max, min, precision, step]
@@ -97,21 +97,40 @@ function SimpleRangeControl({
   const slug = label.toLowerCase().replaceAll(" ", "-");
   const inputId = `final-${slug}-input`;
 
-  // Editable text shadow of the slider's value. Null = show formatted value
+  // Editable text shadow of the current value. Null = show formatted value
   // derived from props; a string = the user is editing.
   const [draft, setDraft] = useState<string | null>(null);
   const displayValue = draft ?? formatter(value);
-
-  const commitDraft = useCallback(() => {
-    if (draft === null) return;
-    // Strip $, %, commas, spaces — keep digits, decimal point, minus.
-    const cleaned = draft.replace(/[^0-9.\-]/g, "");
+  const parseTextValue = useCallback((text: string) => {
+    const cleaned = text.replace(/[^0-9.\-]/g, "");
     const numeric = Number.parseFloat(cleaned);
-    if (Number.isFinite(numeric)) {
+    return Number.isFinite(numeric) ? numeric : null;
+  }, []);
+  const parseDraft = useCallback(() => (draft === null ? null : parseTextValue(draft)), [draft, parseTextValue]);
+
+  const commitDraft = useCallback((currentText?: string) => {
+    const text = currentText ?? draft;
+    if (text === null) return;
+    // Strip $, %, commas, spaces — keep digits, decimal point, minus.
+    const numeric = parseTextValue(text);
+    if (numeric !== null) {
       onChange(clampAndSnap(numeric));
     }
     setDraft(null);
-  }, [clampAndSnap, draft, onChange]);
+  }, [clampAndSnap, draft, onChange, parseTextValue]);
+
+  const stepValue = useCallback(
+    (delta: number) => {
+      const numeric = parseDraft();
+      const baseValue = numeric === null ? value : clampAndSnap(numeric);
+      setDraft(null);
+      onChange(clampAndSnap(baseValue + delta));
+    },
+    [clampAndSnap, onChange, parseDraft, value]
+  );
+
+  const canDecrease = value > min;
+  const canIncrease = value < max;
 
   return (
     <div className="flex items-center justify-between gap-3">
@@ -123,34 +142,57 @@ function SimpleRangeControl({
           </span>
         </label>
       </div>
-      <input
-        id={inputId}
-        type="text"
-        inputMode="decimal"
-        autoComplete="off"
-        spellCheck={false}
-        value={displayValue}
-        onChange={(event) => setDraft(event.target.value)}
-        onFocus={(event) => {
-          setDraft(formatter(value));
-          // Defer so the value is in the DOM before selection.
-          requestAnimationFrame(() => event.target.select());
-        }}
-        onBlur={commitDraft}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
-            event.preventDefault();
-            event.currentTarget.blur();
-          } else if (event.key === "Escape") {
-            event.preventDefault();
-            setDraft(null);
-            event.currentTarget.blur();
-          }
-        }}
-        className="min-h-[30px] min-w-[60px] shrink-0 rounded border border-[#DFE6EE] bg-[#FBFCFD] px-2.5 py-1.5 text-right text-base font-bold leading-none text-[#10233A] tabular-nums focus:border-[#108843] focus:outline-none focus:ring-2 focus:ring-[#108843]/30"
-        style={{ width: `${Math.max(5, displayValue.length + 1)}ch` }}
-        aria-label={`${label} value`}
-      />
+      <div className="flex shrink-0 items-stretch overflow-hidden rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30">
+        <button
+          type="button"
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={() => stepValue(-step)}
+          disabled={!canDecrease}
+          className="grid h-[34px] w-8 place-items-center border-r border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
+          aria-label={`Decrease ${label}`}
+        >
+          <Minus aria-hidden="true" size={14} strokeWidth={2.5} />
+        </button>
+        <input
+          id={inputId}
+          type="text"
+          inputMode="decimal"
+          autoComplete="off"
+          spellCheck={false}
+          value={displayValue}
+          onChange={(event) => setDraft(event.target.value)}
+          onFocus={(event) => {
+            setDraft(formatter(value));
+            // Defer so the value is in the DOM before selection.
+            requestAnimationFrame(() => event.target.select());
+          }}
+          onBlur={(event) => commitDraft(event.currentTarget.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              commitDraft(event.currentTarget.value);
+              event.currentTarget.blur();
+            } else if (event.key === "Escape") {
+              event.preventDefault();
+              setDraft(null);
+              event.currentTarget.blur();
+            }
+          }}
+          className="h-[34px] min-w-[74px] max-w-[150px] border-0 bg-transparent px-2.5 text-right text-base font-bold leading-none text-[#10233A] tabular-nums outline-none"
+          style={{ width: `${Math.max(7, displayValue.length + 3)}ch` }}
+          aria-label={`${label} value`}
+        />
+        <button
+          type="button"
+          onMouseDown={(event) => event.preventDefault()}
+          onClick={() => stepValue(step)}
+          disabled={!canIncrease}
+          className="grid h-[34px] w-8 place-items-center border-l border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
+          aria-label={`Increase ${label}`}
+        >
+          <Plus aria-hidden="true" size={14} strokeWidth={2.5} />
+        </button>
+      </div>
     </div>
   );
 }
@@ -710,7 +752,7 @@ export function CostAnalysisCalculator({
         boundsFormatter={(value) => formatCompactCurrency(value)}
         min={250000}
         max={5000000}
-        step={25000}
+        step={100000}
       />
     ),
     years: (
@@ -732,7 +774,7 @@ export function CostAnalysisCalculator({
         onChange={(value) => setState((prev) => ({ ...prev, annualGrowthPercent: value }))}
         formatter={(value) => `${value.toFixed(2)}%`}
         boundsFormatter={(value) => `${Math.round(value)}%`}
-        min={0}
+        min={3}
         max={12}
         step={0.25}
       />
@@ -746,7 +788,7 @@ export function CostAnalysisCalculator({
         boundsFormatter={(value) => `${value.toFixed(2)}%`}
         min={0.25}
         max={2.5}
-        step={0.05}
+        step={0.1}
       />
     ),
   };

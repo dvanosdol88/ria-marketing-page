@@ -21,6 +21,14 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-18 - Home calculator steppers and fee-gap toggles
+**Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
+- changed: `src/components/CostAnalysisCalculator.tsx` adds custom +/- steppers to the four home calculator assumption inputs, preserves editable text commit behavior, uses min-relative snapping, and updates increments to Portfolio `$100k`, Asset-based fee `0.10%`, Growth `0.25%`, Years `1`.
+- changed: `src/components/HomeCalculatorExperience.tsx` keeps the assumptions deck between the ending values and chart, reorders controls to Portfolio value, fee, growth, years, and splits the fee-gap reveal into VS master toggle plus independent line-chart and bar-chart pins.
+- changed: growth assumptions now clamp to `3%` minimum in the home controls, hero mini-calculator, and URL parser; visible bounds now show `Annualized growth (3%-12%)`.
+- verified locally: `npx tsc --noEmit` clean; `npx eslint . --ext .js,.jsx,.ts,.tsx` clean except 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning; Playwright desktop/mobile checks confirmed order, 2x2 vs stacked layout, no range inputs, visible percent values, steppers, state updates, and VS/line/bar toggles.
+- deployment: pushed directly to `main`; Vercel production verification pending in this session.
+
 ### 2026-05-16 (pt 2) — FAQ page: searchable accordion at /faq
 **Agent:** Claude (Opus 4.7) | **Surface:** marketing | **Duration:** continuation of same-day session
 - added: `src/data/faq.ts` — pure-string FAQ data, paragraph-break-separated answers, 14 items matching David's handwritten list. The file is intentionally plain TS (no JSX) so it can be dropped straight into `D:\smarter-way-wealth\` without changing imports. All answers are first drafts; items that make specific business-mechanics claims are flagged inline with `[REVIEW]` for David to confirm before public launch: contract terms (#3), custody arrangement (#4), service scope (#6), solo-vs-team staffing (#8), trade-execution workflow (#9), state(s) of IAR registration (#11), and AI tool stack disclosure (#13).

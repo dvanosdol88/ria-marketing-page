@@ -33,7 +33,7 @@ export function parseCalculatorState(searchParams: URLSearchParams): CalculatorS
   return {
     portfolioValue: parseNumber(searchParams.get("portfolio"), DEFAULT_STATE.portfolioValue, 250000, 10000000),
     years: parseInteger(searchParams.get("years"), DEFAULT_STATE.years, 1, 40),
-    annualGrowthPercent: parseNumber(searchParams.get("growth"), DEFAULT_STATE.annualGrowthPercent, 0, 20),
+    annualGrowthPercent: parseNumber(searchParams.get("growth"), DEFAULT_STATE.annualGrowthPercent, 3, 12),
     annualFeePercent: parseNumber(searchParams.get("fee"), DEFAULT_STATE.annualFeePercent, 0, 3),
     mutualFundExpensePercent: parseNumber(searchParams.get("mfe"), DEFAULT_STATE.mutualFundExpensePercent, 0, 3),
   };

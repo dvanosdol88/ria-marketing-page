@@ -535,6 +535,7 @@ function FinalHomeStatCard({
 function FinalHomeLineChart({
   annualFeePercent,
   chartActive,
+  chartPinned,
   finalValueWithFees,
   finalValueWithoutFees,
   savings,
@@ -542,10 +543,11 @@ function FinalHomeLineChart({
   years,
   onGapEnter,
   onGapLeave,
-  onGapTap,
+  onGapToggle,
 }: {
   annualFeePercent: number;
   chartActive: boolean;
+  chartPinned: boolean;
   finalValueWithFees: number;
   finalValueWithoutFees: number;
   savings: number;
@@ -553,7 +555,7 @@ function FinalHomeLineChart({
   years: number;
   onGapEnter: () => void;
   onGapLeave: () => void;
-  onGapTap: () => void;
+  onGapToggle: () => void;
 }) {
   // Measured-pixel rendering: a ResizeObserver tracks the container's actual
   // width/height and we redraw the SVG against those live dimensions every
@@ -700,6 +702,22 @@ function FinalHomeLineChart({
         <g
           opacity={chartActive ? "1" : "0"}
           className="transition-opacity duration-300"
+          data-gap-toggle="line"
+          role="button"
+          tabIndex={chartActive ? 0 : -1}
+          aria-label={chartPinned ? "Hide line chart fee gap" : "Show line chart fee gap"}
+          aria-pressed={chartPinned}
+          style={{ cursor: chartActive ? "pointer" : "default", pointerEvents: chartActive ? "all" : "none" }}
+          onPointerDown={(event) => {
+            event.preventDefault();
+            onGapToggle();
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              onGapToggle();
+            }
+          }}
         >
           <rect
             x={feeGapLabelX}
@@ -722,15 +740,27 @@ function FinalHomeLineChart({
         </g>
 
         {/* Invisible hit path traced over the differential wedge.
-           Listens for hover/touch so overlays activate only when the user
-           is over the gap between the two lines, not anywhere on the chart. */}
+           Hover previews the gap; click/tap pins it independently of VS. */}
         <path
           d={gapAreaPath}
           fill="transparent"
           style={{ pointerEvents: "all", cursor: "pointer" }}
+          role="button"
+          tabIndex={0}
+          aria-label={chartPinned ? "Hide line chart fee gap" : "Show line chart fee gap"}
+          aria-pressed={chartPinned}
           onMouseEnter={onGapEnter}
           onMouseLeave={onGapLeave}
-          onTouchStart={onGapTap}
+          onPointerDown={(event) => {
+            event.preventDefault();
+            onGapToggle();
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              onGapToggle();
+            }
+          }}
         />
 
         <circle cx={aumEndX} cy={aumEndY} r="6" fill="#064B84" stroke="#FFFFFF" strokeWidth="3" />
@@ -766,18 +796,20 @@ function ComparisonBars({
   savings,
   percentLost,
   barActive,
+  barPinned,
   onGapEnter,
   onGapLeave,
-  onGapTap,
+  onGapToggle,
 }: {
   finalValueWithFees: number;
   finalValueWithoutFees: number;
   savings: number;
   percentLost: number;
   barActive: boolean;
+  barPinned: boolean;
   onGapEnter: () => void;
   onGapLeave: () => void;
-  onGapTap: () => void;
+  onGapToggle: () => void;
 }) {
   // The flat-fee value is always >= the asset-based value, so we
   // normalize the bar widths against finalValueWithoutFees.
@@ -840,10 +872,22 @@ function ComparisonBars({
               width: `${redWidthPct}%`,
               cursor: "pointer",
             }}
-            aria-hidden={!barActive}
+            role="button"
+            tabIndex={0}
+            aria-label={barPinned ? "Hide bar chart fee gap" : "Show bar chart fee gap"}
+            aria-pressed={barPinned}
             onMouseEnter={onGapEnter}
             onMouseLeave={onGapLeave}
-            onTouchStart={onGapTap}
+            onPointerDown={(event) => {
+              event.preventDefault();
+              onGapToggle();
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onGapToggle();
+              }
+            }}
           >
             <span className="text-lg font-extrabold leading-none text-white sm:text-2xl">
               {percentLost.toFixed(1)}%
@@ -877,28 +921,28 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     savings,
     years,
   } = props;
-  const [pinned, setPinned] = useState(false);
+  const [chartPinned, setChartPinned] = useState(false);
+  const [barPinned, setBarPinned] = useState(false);
   const [hoverChart, setHoverChart] = useState(false);
   const [hoverBar, setHoverBar] = useState(false);
-  const chartFadeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const barFadeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const TOUCH_FADE_MS = 2000;
-  const tapHoldChart = () => {
-    if (chartFadeRef.current) clearTimeout(chartFadeRef.current);
-    setHoverChart(true);
-    chartFadeRef.current = setTimeout(() => setHoverChart(false), TOUCH_FADE_MS);
+  const vsActive = chartPinned && barPinned;
+  const toggleAllGaps = () => {
+    const nextPinned = !vsActive;
+    setChartPinned(nextPinned);
+    setBarPinned(nextPinned);
+    setHoverChart(false);
+    setHoverBar(false);
   };
-  const tapHoldBar = () => {
-    if (barFadeRef.current) clearTimeout(barFadeRef.current);
-    setHoverBar(true);
-    barFadeRef.current = setTimeout(() => setHoverBar(false), TOUCH_FADE_MS);
+  const toggleChartGap = () => {
+    setChartPinned((prev) => !prev);
+    setHoverChart(false);
   };
-  useEffect(() => () => {
-    if (chartFadeRef.current) clearTimeout(chartFadeRef.current);
-    if (barFadeRef.current) clearTimeout(barFadeRef.current);
-  }, []);
-  const chartActive = pinned || hoverChart;
-  const barActive = pinned || hoverBar;
+  const toggleBarGap = () => {
+    setBarPinned((prev) => !prev);
+    setHoverBar(false);
+  };
+  const chartActive = chartPinned || hoverChart;
+  const barActive = barPinned || hoverBar;
   const smarterWayParams = new URLSearchParams({
     source: "youarepayingtoomuch",
     savings: Math.round(savings).toString(),
@@ -939,23 +983,23 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           />
           <button
             type="button"
-            onClick={() => setPinned((prev) => !prev)}
+            onClick={toggleAllGaps}
             className={`absolute left-1/2 top-[72px] z-10 hidden h-14 w-14 -translate-x-1/2 place-items-center rounded-full text-base font-extrabold text-white transition hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D92D20] md:grid ${
-              pinned ? "bg-[#D92D20] hover:bg-[#B91C1C]" : "vs-pulse-halo bg-[#062B43] hover:bg-[#0B3756]"
+              vsActive ? "bg-[#D92D20] hover:bg-[#B91C1C]" : "vs-pulse-halo bg-[#062B43] hover:bg-[#0B3756]"
             }`}
-            aria-label={pinned ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
-            aria-pressed={pinned}
+            aria-label={vsActive ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
+            aria-pressed={vsActive}
           >
             VS
           </button>
           <button
             type="button"
-            onClick={() => setPinned((prev) => !prev)}
+            onClick={toggleAllGaps}
             className={`mx-auto grid h-12 w-12 place-items-center rounded-full text-sm font-extrabold text-white md:hidden ${
-              pinned ? "bg-[#D92D20]" : "vs-pulse-halo bg-[#062B43]"
+              vsActive ? "bg-[#D92D20]" : "vs-pulse-halo bg-[#062B43]"
             }`}
-            aria-label={pinned ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
-            aria-pressed={pinned}
+            aria-label={vsActive ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
+            aria-pressed={vsActive}
           >
             VS
           </button>
@@ -972,9 +1016,9 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           aria-label="Calculator assumptions"
         >
           <div className="border-b border-[#DFE6EE] p-3 md:border-r">{simpleControls.portfolio}</div>
-          <div className="border-b border-[#DFE6EE] p-3">{simpleControls.years}</div>
+          <div className="border-b border-[#DFE6EE] p-3">{simpleControls.advisoryFee}</div>
           <div className="border-b border-[#DFE6EE] p-3 md:border-b-0 md:border-r">{simpleControls.growth}</div>
-          <div className="p-3">{simpleControls.advisoryFee}</div>
+          <div className="p-3">{simpleControls.years}</div>
         </section>
 
         <section
@@ -985,6 +1029,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             <FinalHomeLineChart
               annualFeePercent={annualFeePercent}
               chartActive={chartActive}
+              chartPinned={chartPinned}
               finalValueWithFees={finalValueWithFees}
               finalValueWithoutFees={finalValueWithoutFees}
               savings={savings}
@@ -992,7 +1037,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
               years={years}
               onGapEnter={() => setHoverChart(true)}
               onGapLeave={() => setHoverChart(false)}
-              onGapTap={tapHoldChart}
+              onGapToggle={toggleChartGap}
             />
           </div>
         </section>
@@ -1003,9 +1048,10 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           savings={savings}
           percentLost={percentLost}
           barActive={barActive}
+          barPinned={barPinned}
           onGapEnter={() => setHoverBar(true)}
           onGapLeave={() => setHoverBar(false)}
-          onGapTap={tapHoldBar}
+          onGapToggle={toggleBarGap}
         />
 
         <div className="mx-4 mt-4 grid gap-3 sm:mx-7 sm:grid-cols-[minmax(0,1fr)_auto]">
