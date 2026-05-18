@@ -138,6 +138,13 @@ a:hover {
   background: transparent;
   outline: none;
   cursor: pointer;
+  /* Critical for iOS Safari: prevent the browser from claiming the touch as a
+     scroll/pan gesture. Without this, the slider's native drag handler races
+     against vertical-scroll detection and drops out mid-drag ("hit or miss"). */
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .calc-slider::-webkit-slider-runnable-track {
