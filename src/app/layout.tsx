@@ -4,8 +4,6 @@ import "./globals.css";
 import { inter, dmSans } from "./fonts";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
-import { ProgressiveStickyBar } from "@/components/ProgressiveStickyBar";
-import { SavingsBarProvider } from "@/components/SavingsBarContext";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://youarepayingtoomuch.com"),
@@ -64,12 +62,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${dmSans.variable} bg-[#EEF0F5] text-neutral-900`}>
         <ViewTransitions>
-          <SavingsBarProvider>
-            <SiteNav />
-            <ProgressiveStickyBar />
-            <div className="min-h-screen">{children}</div>
-            <SiteFooter />
-          </SavingsBarProvider>
+          <SiteNav />
+          <div className="min-h-screen">{children}</div>
+          <SiteFooter />
         </ViewTransitions>
       </body>
     </html>
