@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
@@ -126,6 +126,92 @@ const toolCards: ProofCard[] = [
   },
 ];
 
+const proofSectionProgressItems = [
+  { id: "upgrade-your-advice", label: "Upgrade" },
+  { id: "improve-your-tools", label: "Improve" },
+];
+
+function ProofSectionProgressCue() {
+  const [activeSection, setActiveSection] = useState<string>("");
+
+  useEffect(() => {
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+
+      const triggerY = 116;
+      const nextActive =
+        proofSectionProgressItems.find(({ id }) => {
+          const element = document.getElementById(id);
+          if (!element) return false;
+          const rect = element.getBoundingClientRect();
+          return rect.top <= triggerY && rect.bottom > triggerY;
+        })?.id ?? "";
+
+      setActiveSection(nextActive);
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    window.addEventListener("hashchange", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("hashchange", onScroll);
+    };
+  }, []);
+
+  const activeIndex = proofSectionProgressItems.findIndex((item) => item.id === activeSection);
+  const progressWidth =
+    activeIndex >= 0 ? `${((activeIndex + 1) / proofSectionProgressItems.length) * 100}%` : "0%";
+
+  return (
+    <div
+      className={`fixed inset-x-0 top-[58px] z-40 border-y border-[#D5E0EA] bg-white/95 px-3 py-2 shadow-[0_10px_28px_rgba(17,33,52,0.10)] backdrop-blur transition-all duration-300 ease-out md:hidden ${
+        activeSection ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
+      }`}
+      aria-hidden={!activeSection}
+    >
+      <div className="mx-auto max-w-md">
+        <div className="flex items-center gap-2">
+          {proofSectionProgressItems.map((item, index) => {
+            const isActive = item.id === activeSection;
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className={`flex min-h-8 flex-1 items-center justify-center rounded-full px-3 text-xs font-extrabold no-underline transition-[background-color,color,font-weight] duration-300 ${
+                  isActive
+                    ? "bg-[#108843] !text-white"
+                    : "bg-[#EEF3F7] !text-[#41556C] hover:bg-[#E1EAF1] hover:!text-[#213B56]"
+                }`}
+                aria-current={isActive ? "location" : undefined}
+              >
+                <span className="mr-1.5 text-[10px] opacity-70">{index + 1}</span>
+                {item.label}
+              </a>
+            );
+          })}
+        </div>
+        <div className="mt-2 h-1 overflow-hidden rounded-full bg-[#E1EAF1]">
+          <div
+            className="h-full rounded-full bg-[#108843] transition-[width] duration-500 ease-out"
+            style={{ width: progressWidth }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SectionRail({ words }: { words: string[] }) {
   return (
     <div className="lg:sticky lg:top-28">
@@ -185,7 +271,7 @@ function ProofBento({ cards }: { cards: ProofCard[] }) {
   const [openCards, setOpenCards] = useState<Record<string, boolean>>({});
 
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="grid gap-4 md:grid-cols-2 md:items-start">
       {cards.map((card, index) => {
         const isOpen = !!openCards[card.title];
         const panelId = `proof-${card.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
@@ -196,7 +282,7 @@ function ProofBento({ cards }: { cards: ProofCard[] }) {
             layout
             transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
             className={[
-              "rounded-md border bg-white p-5 shadow-sm transition-colors duration-300",
+              "self-start rounded-md border bg-white p-5 shadow-sm transition-colors duration-300",
               index === 0 ? "md:col-span-2" : "",
               isOpen ? "border-[#108843] bg-[#F7FCF9]" : "border-[#D5DEE8]",
             ].join(" ")}
@@ -306,6 +392,7 @@ function StorySection({
 export function AdvisorProofSections() {
   return (
     <div className="bg-[#EEF0F5] text-slate-900">
+      <ProofSectionProgressCue />
       <StorySection id="upgrade-your-advice" rail={["Upgrade", "Your", "Advice"]}>
         <div className="space-y-5">
           <AdvisorCard />
