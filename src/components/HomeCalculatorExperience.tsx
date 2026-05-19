@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import {
   Clock3,
   DollarSign,
@@ -142,6 +142,89 @@ function MiniStat({
       </p>
       <p className="mt-1 text-lg font-semibold tabular-nums sm:text-2xl">{value}</p>
     </div>
+  );
+}
+
+function EditableHeaderField({
+  ariaLabel,
+  className = "",
+  inputClassName = "",
+  onChange,
+  value,
+}: {
+  ariaLabel: string;
+  className?: string;
+  inputClassName?: string;
+  onChange: (value: string) => void;
+  value: string;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(value);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (!editing) {
+      setDraft(value);
+    }
+  }, [editing, value]);
+
+  useEffect(() => {
+    if (editing) {
+      inputRef.current?.focus();
+      inputRef.current?.select();
+    }
+  }, [editing]);
+
+  const commit = () => {
+    const nextValue = draft.trim();
+    if (nextValue) {
+      onChange(nextValue);
+    } else {
+      setDraft(value);
+    }
+    setEditing(false);
+  };
+
+  const cancel = () => {
+    setDraft(value);
+    setEditing(false);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      commit();
+    }
+    if (event.key === "Escape") {
+      event.preventDefault();
+      cancel();
+    }
+  };
+
+  if (editing) {
+    return (
+      <input
+        ref={inputRef}
+        aria-label={ariaLabel}
+        value={draft}
+        onChange={(event) => setDraft(event.target.value)}
+        onBlur={commit}
+        onKeyDown={handleKeyDown}
+        className={`inline-block min-w-[5ch] max-w-full rounded-sm border border-[#9AA8B6] bg-white px-1 text-center outline-none ring-2 ring-[#108843]/15 ${inputClassName || className}`}
+        style={{ width: `${Math.max(draft.length + 1, 6)}ch` }}
+      />
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      aria-label={`Edit ${ariaLabel}`}
+      onClick={() => setEditing(true)}
+      className={`inline border-0 border-b border-[#AEB8C3] bg-transparent p-0 text-inherit decoration-transparent transition hover:border-[#667587] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843] ${className}`}
+    >
+      {value}
+    </button>
   );
 }
 
@@ -990,6 +1073,13 @@ function SeeOurMathBento({
   years: number;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const finalGap = Math.max(savings, 0);
+  const directFeeGap = Math.min(Math.max(totalAssetBasedFees - totalFlatFees, 0), finalGap);
+  const compoundingGap = Math.max(finalGap - directFeeGap, 0);
+  const directFeeShare = finalGap > 0 ? (directFeeGap / finalGap) * 100 : 0;
+  const compoundingShare = finalGap > 0 ? (compoundingGap / finalGap) * 100 : 0;
+  const feeBarWidth = `${Math.min(Math.max(directFeeShare, 0), 100)}%`;
+  const compoundingBarWidth = `${Math.min(Math.max(compoundingShare, 0), 100)}%`;
 
   return (
     <section className="min-w-0 overflow-hidden rounded-md border border-[#C9D8E4] bg-[#F8FBFC] p-4 shadow-[0_12px_26px_rgba(17,33,52,0.08)] sm:p-5">
@@ -1005,6 +1095,39 @@ function SeeOurMathBento({
                 {formatCurrency(savings)} projected gap
               </p>
             </div>
+          </div>
+
+          <div className="mt-4 rounded-md border border-[#DDE7EF] bg-white p-3">
+            <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-[#667587]">
+              Gap breakdown
+            </p>
+            <div className="mt-3 space-y-3">
+              <div>
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="text-sm font-bold text-[#10233A]">Actual fee gap</span>
+                  <span className="text-sm font-extrabold tabular-nums text-[#D92D20]">
+                    {formatCurrency(directFeeGap)} · {directFeeShare.toFixed(0)}%
+                  </span>
+                </div>
+                <div className="mt-1 h-2 overflow-hidden rounded-full bg-[#EDF2F7]">
+                  <div className="h-full rounded-full bg-[#D92D20]" style={{ width: feeBarWidth }} />
+                </div>
+              </div>
+              <div>
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="text-sm font-bold text-[#10233A]">Lost compounding</span>
+                  <span className="text-sm font-extrabold tabular-nums text-[#064B84]">
+                    {formatCurrency(compoundingGap)} · {compoundingShare.toFixed(0)}%
+                  </span>
+                </div>
+                <div className="mt-1 h-2 overflow-hidden rounded-full bg-[#EDF2F7]">
+                  <div className="h-full rounded-full bg-[#064B84]" style={{ width: compoundingBarWidth }} />
+                </div>
+              </div>
+            </div>
+            <p className="mt-3 text-xs leading-5 text-[#52657A]">
+              Fees paid is the extra asset-based fee bill above the flat-fee bill. Lost compounding is the rest of the ending-value gap.
+            </p>
           </div>
 
           <dl className="mt-4 grid grid-cols-2 gap-2 text-xs">
@@ -1032,13 +1155,13 @@ function SeeOurMathBento({
             className="mt-4 inline-flex min-h-10 w-full items-center justify-center rounded-md border border-[#C9D8E4] bg-white px-4 text-center text-sm font-extrabold text-[#064B84] transition hover:bg-[#EEF5FA] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843] lg:hidden"
             aria-expanded={expanded}
           >
-            {expanded ? "Hide year-by-year table" : "Open year-by-year table"}
+            {expanded ? "Hide details" : "Show details"}
           </button>
         </div>
 
         <div className={expanded ? "min-w-0" : "hidden min-w-0 lg:block"}>
           <div className="max-h-[320px] w-full overflow-auto rounded-md border border-[#D5E1EB] bg-white">
-            <table className="w-full min-w-[720px] border-collapse text-left text-xs">
+            <table className="w-full min-w-[920px] border-collapse text-left text-xs">
               <caption className="sr-only">Year-by-year fee comparison table</caption>
               <thead className="sticky top-0 z-10 bg-[#EEF5FA] text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#4B6075]">
                 <tr>
@@ -1046,6 +1169,8 @@ function SeeOurMathBento({
                   <th scope="col" className="px-3 py-2">Flat-fee value</th>
                   <th scope="col" className="px-3 py-2">Asset-fee value</th>
                   <th scope="col" className="px-3 py-2">Gap</th>
+                  <th scope="col" className="px-3 py-2">Fee part</th>
+                  <th scope="col" className="px-3 py-2">Compounding part</th>
                   <th scope="col" className="px-3 py-2">AUM fees paid</th>
                   <th scope="col" className="px-3 py-2">Cumulative AUM fees</th>
                 </tr>
@@ -1053,6 +1178,9 @@ function SeeOurMathBento({
               <tbody className="divide-y divide-[#E2EAF1] text-[#10233A]">
                 {series.map((row) => {
                   const gap = row.withoutFees - row.withFees;
+                  const flatFeesThroughYear = years > 0 ? totalFlatFees * (row.year / years) : 0;
+                  const feePart = Math.min(Math.max(row.cumulativeFees - flatFeesThroughYear, 0), Math.max(gap, 0));
+                  const compoundingPart = Math.max(gap - feePart, 0);
                   return (
                     <tr key={row.year} className="odd:bg-white even:bg-[#FAFCFD]">
                       <th scope="row" className="px-3 py-2 font-bold tabular-nums text-[#4B6075]">
@@ -1061,6 +1189,8 @@ function SeeOurMathBento({
                       <td className="px-3 py-2 font-semibold tabular-nums text-[#108843]">{formatCurrency(row.withoutFees)}</td>
                       <td className="px-3 py-2 font-semibold tabular-nums text-[#064B84]">{formatCurrency(row.withFees)}</td>
                       <td className="px-3 py-2 font-semibold tabular-nums text-[#D92D20]">{formatCurrency(gap)}</td>
+                      <td className="px-3 py-2 tabular-nums">{formatCurrency(feePart)}</td>
+                      <td className="px-3 py-2 tabular-nums">{formatCurrency(compoundingPart)}</td>
                       <td className="px-3 py-2 tabular-nums">{formatCurrency(row.annualFeesPaid)}</td>
                       <td className="px-3 py-2 tabular-nums">{formatCurrency(row.cumulativeFees)}</td>
                     </tr>
@@ -1118,7 +1248,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     percentLost,
     portfolioValue,
     series,
-    shareAction,
     simpleControls,
     savings,
     totalAnnualFeePercent,
@@ -1132,6 +1261,9 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const [hoverBar, setHoverBar] = useState(false);
   const [chartGapHintActive, setChartGapHintActive] = useState(false);
   const [barGapHintActive, setBarGapHintActive] = useState(false);
+  const [chartTitleLead, setChartTitleLead] = useState("Your portfolio value");
+  const [chartTitleTail, setChartTitleTail] = useState("over time");
+  const [feePhrase, setFeePhrase] = useState("asset-based fees");
   const visualizationRef = useRef<HTMLDivElement | null>(null);
   const gapHintCancelledRef = useRef(false);
   const gapHintPlayCountRef = useRef(0);
@@ -1261,10 +1393,31 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         <header className="relative flex flex-col gap-3 border-b border-[#DFE6EE] bg-white/65 px-6 py-4 text-[#062B43] backdrop-blur sm:px-10">
           <div className="text-center">
             <h2 className="text-[clamp(1.75rem,2.6vw,2.75rem)] font-bold leading-tight tracking-normal">
-              Your portfolio value over time
+              <EditableHeaderField
+                ariaLabel="chart title lead"
+                value={chartTitleLead}
+                onChange={setChartTitleLead}
+                className="font-bold"
+                inputClassName="font-bold leading-tight text-[#062B43]"
+              />{" "}
+              <EditableHeaderField
+                ariaLabel="chart title ending"
+                value={chartTitleTail}
+                onChange={setChartTitleTail}
+                className="font-bold"
+                inputClassName="font-bold leading-tight text-[#062B43]"
+              />
             </h2>
             <p className="mt-2 text-lg text-[#42556C] sm:text-xl">
-              Compare your <span className="font-semibold text-[#064B84]">asset-based fees</span> with a flat <span className="font-semibold text-[#108843]">$100/month</span>.
+              Compare your{" "}
+              <EditableHeaderField
+                ariaLabel="fee comparison phrase"
+                value={feePhrase}
+                onChange={setFeePhrase}
+                className="font-semibold text-[#064B84]"
+                inputClassName="font-semibold text-[#064B84]"
+              />{" "}
+              with a flat <span className="font-semibold text-[#108843]">$100/month</span>.
             </p>
           </div>
           <div className="shrink-0 self-center whitespace-nowrap border-l-2 border-[#108843] pl-4 text-base font-semibold uppercase leading-tight tracking-tight text-[#108843] sm:text-xl lg:absolute lg:right-10 lg:top-1/2 lg:-translate-y-1/2 lg:self-auto">
@@ -1378,7 +1531,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           />
         </div>
 
-        <div className="mx-4 mt-4 grid gap-3 sm:mx-7 lg:grid-cols-[minmax(0,1fr)_auto]">
+        <div className="mx-4 mt-4 sm:mx-7">
           <SeeOurMathBento
             annualFlatFee={annualFlatFee}
             annualGrowthPercent={annualGrowthPercent}
@@ -1390,9 +1543,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             totalFlatFees={totalFlatFees}
             years={years}
           />
-          <div className="flex min-h-[46px] items-start justify-center">
-            {shareAction}
-          </div>
         </div>
         <p className="px-4 pb-5 pt-4 text-center text-xs leading-relaxed text-[#667587] sm:px-7">
           This calculator is for illustrative purposes only and does not represent actual performance.

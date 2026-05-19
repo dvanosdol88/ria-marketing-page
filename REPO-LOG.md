@@ -21,6 +21,13 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-19 - Editable chart header and gap breakdown bento
+**Agent:** Codex | **Surface:** marketing/calculator + fit CTA divider | **Duration:** 1 session
+- changed: `src/components/HomeCalculatorExperience.tsx` makes the final calculator chart header inline-editable for "Your portfolio value", "over time", and "asset-based fees"; blur/Enter commits, Escape cancels the current draft, and blank edits revert without changing calculator math.
+- changed: the existing "See our math" bento now shows a gap breakdown for extra direct fees versus lost compounding, including dollars, percent share, bars, explanatory copy, and year-by-year detail columns.
+- changed: `src/components/AdvisorProofSections.tsx` and `src/app/globals.css` make the fit CTA divider more subtle with a translucent light treatment and dark text/button styling.
+- verified locally: `npx tsc --noEmit` clean; `npm run lint` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning; Playwright desktop/mobile smoke confirmed editable header commit/Escape behavior, gap breakdown rendering, subtle CTA computed styles, screenshots, and zero console/page errors.
+
 ### 2026-05-19 - Fit CTA and proof-section polish
 **Agent:** Codex | **Surface:** marketing/calculator + advisor proof sections | **Duration:** 1 session
 - changed: added a shared fit CTA config and repeated semi-transparent green CTA dividers after the calculator, after Upgrade Your Advice, and after Improve Your Tools. Primary CTA text is "See if you are a good fit for David and Smarter Way Wealth" and links to `https://smarterwaywealth.com/`.

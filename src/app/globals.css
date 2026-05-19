@@ -203,11 +203,11 @@ a:hover {
 
 .fit-cta-band {
   background:
-    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.22), transparent 28%),
-    radial-gradient(circle at 82% 0%, rgba(183, 227, 197, 0.32), transparent 30%),
-    linear-gradient(115deg, #062417 0%, #0b6f35 36%, #108843 58%, #064b2c 100%);
-  background-size: 100% 100%, 100% 100%, 220% 220%;
-  animation: fit-cta-gradient-drift 8s ease-in-out infinite;
+    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.72), transparent 28%),
+    radial-gradient(circle at 82% 0%, rgba(16, 136, 67, 0.12), transparent 32%),
+    linear-gradient(115deg, rgba(248, 251, 252, 0.82) 0%, rgba(228, 246, 235, 0.52) 52%, rgba(255, 255, 255, 0.76) 100%);
+  border-bottom: 1px solid rgba(16, 35, 58, 0.1);
+  border-top: 1px solid rgba(16, 35, 58, 0.08);
 }
 
 .fit-cta-band::before {
@@ -216,8 +216,8 @@ a:hover {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(16, 35, 58, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 35, 58, 0.03) 1px, transparent 1px);
   background-size: 18px 18px;
   mask-image: linear-gradient(90deg, transparent, black 18%, black 82%, transparent);
 }
@@ -225,9 +225,8 @@ a:hover {
 .fit-cta-action {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(100deg, #075c2d 0%, #108843 42%, #0fbf5a 70%, #064b2c 100%);
-  background-size: 220% 220%;
-  animation: fit-cta-gradient-drift 6s ease-in-out infinite;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid rgba(16, 35, 58, 0.16);
 }
 
 .fit-cta-action::after {
@@ -236,7 +235,7 @@ a:hover {
   inset: -30% auto -30% 0;
   pointer-events: none;
   width: 46%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.34), transparent);
+  background: linear-gradient(90deg, transparent, rgba(16, 35, 58, 0.1), transparent);
   animation: fit-cta-sheen 4.8s ease-in-out infinite;
 }
 

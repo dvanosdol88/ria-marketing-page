@@ -150,28 +150,40 @@ export function FitCtaDivider({
 }) {
   return (
     <section className="w-full py-6 sm:py-8">
-      <div className="fit-cta-band relative overflow-hidden">
+      <div
+        className="fit-cta-band relative overflow-hidden"
+        style={{
+          background:
+            "radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.72), transparent 28%), radial-gradient(circle at 82% 0%, rgba(16, 136, 67, 0.12), transparent 32%), linear-gradient(115deg, rgba(248, 251, 252, 0.82) 0%, rgba(228, 246, 235, 0.52) 52%, rgba(255, 255, 255, 0.76) 100%)",
+          borderBottom: "1px solid rgba(16, 35, 58, 0.1)",
+          borderTop: "1px solid rgba(16, 35, 58, 0.08)",
+        }}
+      >
         <div className="section-shell relative z-10 flex flex-col gap-5 py-7">
           <div className="max-w-4xl">
-            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-emerald-100">
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#10233A]/70">
               {eyebrow}
             </p>
-            <h2 className="mt-2 max-w-3xl text-3xl font-black tracking-tight text-white sm:text-4xl">
+            <h2 className="mt-2 max-w-3xl text-3xl font-black tracking-tight text-[#10233A] sm:text-4xl">
               {lead}
             </h2>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-emerald-50/90 sm:text-base">
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-[#10233A]/75 sm:text-base">
               {support}
             </p>
           </div>
           <div className="flex flex-col items-stretch gap-3">
             <a
               href={fitCta.href}
-              className="fit-cta-action inline-flex min-h-14 w-full items-center justify-center rounded-md px-5 py-3 text-center text-base font-extrabold !text-white no-underline shadow-[0_16px_36px_rgba(6,36,23,0.26)] transition hover:!text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/80 sm:text-lg"
+              className="fit-cta-action inline-flex min-h-14 w-full items-center justify-center rounded-md px-5 py-3 text-center text-base font-extrabold !text-[#10233A] no-underline shadow-[0_12px_28px_rgba(6,36,23,0.10)] transition hover:!text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10233A]/60 sm:text-lg"
+              style={{
+                background: "rgba(255, 255, 255, 0.58)",
+                border: "1px solid rgba(16, 35, 58, 0.16)",
+              }}
             >
               {fitCta.label}
             </a>
             {secondary ? (
-              <div className="text-center text-sm font-bold text-emerald-50/90 lg:text-right">{secondary}</div>
+              <div className="text-center text-sm font-bold text-[#10233A]/70 lg:text-right">{secondary}</div>
             ) : null}
           </div>
         </div>
