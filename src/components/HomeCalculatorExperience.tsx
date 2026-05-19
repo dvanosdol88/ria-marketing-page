@@ -4,11 +4,13 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Clock3,
   DollarSign,
+  ExternalLink,
   Percent,
   ReceiptText,
   ScanLine,
   ShieldCheck,
   SlidersHorizontal,
+  Table2,
   TrendingUp,
 } from "lucide-react";
 import { formatCurrency, formatCurrencyFloored } from "@/lib/format";
@@ -966,17 +968,162 @@ function ComparisonBars({
   );
 }
 
+function SeeOurMathBento({
+  annualFlatFee,
+  annualGrowthPercent,
+  portfolioValue,
+  savings,
+  series,
+  totalAnnualFeePercent,
+  totalAssetBasedFees,
+  totalFlatFees,
+  years,
+}: {
+  annualFlatFee: number;
+  annualGrowthPercent: number;
+  portfolioValue: number;
+  savings: number;
+  series: ProjectionYear[];
+  totalAnnualFeePercent: number;
+  totalAssetBasedFees: number;
+  totalFlatFees: number;
+  years: number;
+}) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <section className="min-w-0 overflow-hidden rounded-md border border-[#C9D8E4] bg-[#F8FBFC] p-4 shadow-[0_12px_26px_rgba(17,33,52,0.08)] sm:p-5">
+      <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:items-start">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 text-[#108843]">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-[#E4F6EB]">
+              <Table2 className="h-4 w-4" strokeWidth={2.3} />
+            </span>
+            <div>
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.18em]">See our math</p>
+              <p className="mt-0.5 text-sm font-bold text-[#062B43]">
+                {formatCurrency(savings)} projected gap
+              </p>
+            </div>
+          </div>
+
+          <dl className="mt-4 grid grid-cols-2 gap-2 text-xs">
+            <div className="rounded-md border border-[#DDE7EF] bg-white px-3 py-2">
+              <dt className="font-bold uppercase tracking-[0.14em] text-[#667587]">Portfolio</dt>
+              <dd className="mt-1 font-semibold tabular-nums text-[#10233A]">{formatCurrency(portfolioValue)}</dd>
+            </div>
+            <div className="rounded-md border border-[#DDE7EF] bg-white px-3 py-2">
+              <dt className="font-bold uppercase tracking-[0.14em] text-[#667587]">Growth</dt>
+              <dd className="mt-1 font-semibold tabular-nums text-[#10233A]">{annualGrowthPercent.toFixed(1)}%</dd>
+            </div>
+            <div className="rounded-md border border-[#DDE7EF] bg-white px-3 py-2">
+              <dt className="font-bold uppercase tracking-[0.14em] text-[#667587]">Fee load</dt>
+              <dd className="mt-1 font-semibold tabular-nums text-[#10233A]">{totalAnnualFeePercent.toFixed(2)}%</dd>
+            </div>
+            <div className="rounded-md border border-[#DDE7EF] bg-white px-3 py-2">
+              <dt className="font-bold uppercase tracking-[0.14em] text-[#667587]">Flat fee</dt>
+              <dd className="mt-1 font-semibold tabular-nums text-[#10233A]">{formatCurrency(annualFlatFee)}/yr</dd>
+            </div>
+          </dl>
+
+          <button
+            type="button"
+            onClick={() => setExpanded((prev) => !prev)}
+            className="mt-4 inline-flex min-h-10 w-full items-center justify-center rounded-md border border-[#C9D8E4] bg-white px-4 text-center text-sm font-extrabold text-[#064B84] transition hover:bg-[#EEF5FA] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843] lg:hidden"
+            aria-expanded={expanded}
+          >
+            {expanded ? "Hide year-by-year table" : "Open year-by-year table"}
+          </button>
+        </div>
+
+        <div className={expanded ? "min-w-0" : "hidden min-w-0 lg:block"}>
+          <div className="max-h-[320px] w-full overflow-auto rounded-md border border-[#D5E1EB] bg-white">
+            <table className="w-full min-w-[720px] border-collapse text-left text-xs">
+              <caption className="sr-only">Year-by-year fee comparison table</caption>
+              <thead className="sticky top-0 z-10 bg-[#EEF5FA] text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#4B6075]">
+                <tr>
+                  <th scope="col" className="px-3 py-2">Year</th>
+                  <th scope="col" className="px-3 py-2">Flat-fee value</th>
+                  <th scope="col" className="px-3 py-2">Asset-fee value</th>
+                  <th scope="col" className="px-3 py-2">Gap</th>
+                  <th scope="col" className="px-3 py-2">AUM fees paid</th>
+                  <th scope="col" className="px-3 py-2">Cumulative AUM fees</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#E2EAF1] text-[#10233A]">
+                {series.map((row) => {
+                  const gap = row.withoutFees - row.withFees;
+                  return (
+                    <tr key={row.year} className="odd:bg-white even:bg-[#FAFCFD]">
+                      <th scope="row" className="px-3 py-2 font-bold tabular-nums text-[#4B6075]">
+                        {row.year}
+                      </th>
+                      <td className="px-3 py-2 font-semibold tabular-nums text-[#108843]">{formatCurrency(row.withoutFees)}</td>
+                      <td className="px-3 py-2 font-semibold tabular-nums text-[#064B84]">{formatCurrency(row.withFees)}</td>
+                      <td className="px-3 py-2 font-semibold tabular-nums text-[#D92D20]">{formatCurrency(gap)}</td>
+                      <td className="px-3 py-2 tabular-nums">{formatCurrency(row.annualFeesPaid)}</td>
+                      <td className="px-3 py-2 tabular-nums">{formatCurrency(row.cumulativeFees)}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-3 grid gap-2 text-xs leading-5 text-[#52657A] sm:grid-cols-3">
+            <p className="rounded-md bg-white px-3 py-2 ring-1 ring-[#DDE7EF]">
+              Total asset-based fees modeled: <strong className="text-[#10233A]">{formatCurrency(totalAssetBasedFees)}</strong>.
+            </p>
+            <p className="rounded-md bg-white px-3 py-2 ring-1 ring-[#DDE7EF]">
+              Total flat fees modeled: <strong className="text-[#10233A]">{formatCurrency(totalFlatFees)}</strong>.
+            </p>
+            <p className="rounded-md bg-white px-3 py-2 ring-1 ring-[#DDE7EF]">
+              Horizon: <strong className="text-[#10233A]">{years} years</strong>, compounded monthly.
+            </p>
+          </div>
+
+          <div className="mt-3 space-y-2 text-xs leading-5 text-[#667587]">
+            <p>
+              Disclosures: This calculator is for illustrative and educational purposes only. It is not investment advice,
+              an advisory relationship, a forecast, or a guarantee of performance or savings. Actual results will vary.
+            </p>
+            <p>
+              The model assumes a constant annual growth rate, monthly compounding, a traditional asset-based fee applied
+              monthly, and Smarter Way Wealth&apos;s flat {formatCurrency(annualFlatFee / 12)}/month fee. Values are nominal,
+              before taxes, and exclude inflation, trading costs, bid/ask spreads, cash flows, market volatility, and
+              other expenses unless entered above.
+            </p>
+            <a
+              href={fitCta.href}
+              className="inline-flex items-center gap-1 font-extrabold text-[#108843] underline underline-offset-4 hover:text-[#0A6E35]"
+            >
+              Learn about Smarter Way Wealth
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const {
     annualFeePercent,
+    annualFlatFee,
+    annualGrowthPercent,
     disclosure,
     finalValueWithFees,
     finalValueWithoutFees,
     percentLost,
+    portfolioValue,
     series,
     shareAction,
     simpleControls,
     savings,
+    totalAnnualFeePercent,
+    totalAssetBasedFees,
+    totalFlatFees,
     years,
   } = props;
   const [chartPinned, setChartPinned] = useState(false);
@@ -1231,14 +1378,19 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           />
         </div>
 
-        <div className="mx-4 mt-4 grid gap-3 sm:mx-7 sm:grid-cols-[minmax(0,1fr)_auto]">
-          <a
-            href={fitCta.href}
-            className="flex min-h-[46px] items-center justify-center rounded-md bg-[#108843] px-4 text-center text-base font-bold !text-white no-underline transition hover:bg-[#0B7639]"
-          >
-            {fitCta.label}
-          </a>
-          <div className="flex min-h-[46px] items-stretch justify-center">
+        <div className="mx-4 mt-4 grid gap-3 sm:mx-7 lg:grid-cols-[minmax(0,1fr)_auto]">
+          <SeeOurMathBento
+            annualFlatFee={annualFlatFee}
+            annualGrowthPercent={annualGrowthPercent}
+            portfolioValue={portfolioValue}
+            savings={savings}
+            series={series}
+            totalAnnualFeePercent={totalAnnualFeePercent}
+            totalAssetBasedFees={totalAssetBasedFees}
+            totalFlatFees={totalFlatFees}
+            years={years}
+          />
+          <div className="flex min-h-[46px] items-start justify-center">
             {shareAction}
           </div>
         </div>

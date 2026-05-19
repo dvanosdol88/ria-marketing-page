@@ -1,5 +1,9 @@
 import { CostAnalysisCalculator } from "@/components/CostAnalysisCalculator";
-import { CalculatorState, parseCalculatorState } from "@/lib/calculatorState";
+import type { Metadata } from "next";
+import type { CalculatorState } from "@/lib/calculatorState";
+import { buildQueryFromState, parseCalculatorState } from "@/lib/calculatorState";
+import { buildFeeProjection } from "@/lib/feeProjection";
+import { formatCurrency } from "@/lib/format";
 import { getHomeMarketingVariantId } from "@/config/homeMarketingVariants";
 import { getHomeTopBannerId } from "@/config/homeTopBanners";
 
@@ -15,6 +19,53 @@ function normalizeSearchParams(searchParams: HomeSearchParams) {
     }
   });
   return params;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<HomeSearchParams>;
+}): Promise<Metadata> {
+  const resolvedSearchParams = await searchParams;
+  const params = normalizeSearchParams(resolvedSearchParams);
+  const calculatorState = parseCalculatorState(params);
+  const totalAnnualFeePercent =
+    calculatorState.annualFeePercent + calculatorState.mutualFundExpensePercent;
+  const projection = buildFeeProjection({
+    initialInvestment: calculatorState.portfolioValue,
+    years: calculatorState.years,
+    annualFeePercent: totalAnnualFeePercent,
+    annualGrowthPercent: calculatorState.annualGrowthPercent,
+  });
+  const query = buildQueryFromState(calculatorState, params);
+  const image = `/api/og?${query}`;
+  const savings = formatCurrency(projection.savings);
+  const title = `${savings} projected fee savings`;
+  const description = `A Smarter Way Wealth fee projection for ${formatCurrency(calculatorState.portfolioValue)} over ${calculatorState.years} years.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `/?${query}`,
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: `${savings} projected fee savings with Smarter Way Wealth`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
+  };
 }
 
 export default async function Home({

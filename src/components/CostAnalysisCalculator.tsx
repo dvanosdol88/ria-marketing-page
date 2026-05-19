@@ -483,10 +483,21 @@ export function CostAnalysisCalculator({
     return `${base}?${query}`;
   }, [paramsFromServer, state]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const query = buildQueryFromState(state, paramsFromServer);
+    const nextUrl = `${window.location.pathname}?${query}${window.location.hash}`;
+    const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (currentUrl !== nextUrl) {
+      window.history.replaceState(window.history.state, "", nextUrl);
+    }
+  }, [paramsFromServer, state]);
+
   const shareSummary = useMemo(
     () =>
       [
         "Smarter Way Wealth projection",
+        `Potential savings: ${formatCurrencyFloored(projection.savings)}`,
         `Portfolio value: ${formatCurrency(state.portfolioValue)}`,
         `Advisory fee: ${state.annualFeePercent.toFixed(2)}%`,
         `Mutual fund expenses: ${state.mutualFundExpensePercent.toFixed(2)}%`,
@@ -528,7 +539,9 @@ export function CostAnalysisCalculator({
       if (error instanceof Error && error.name === "AbortError") {
         return;
       }
-      console.error("Unable to share", error);
+      if (!(error instanceof Error && error.name === "NotAllowedError")) {
+        console.error("Unable to share", error);
+      }
     }
 
     setShareFeedback("error");
@@ -545,7 +558,10 @@ export function CostAnalysisCalculator({
 
   useEffect(() => {
     if (shareFeedback === "idle") return;
-    const timeout = window.setTimeout(() => setShareFeedback("idle"), 2200);
+    const timeout = window.setTimeout(
+      () => setShareFeedback("idle"),
+      shareFeedback === "error" ? 12000 : 2200
+    );
     return () => window.clearTimeout(timeout);
   }, [shareFeedback]);
 
@@ -610,15 +626,26 @@ export function CostAnalysisCalculator({
   );
 
   const shareAction = (
-    <button
-      type="button"
-      onClick={shareResult}
-      className={`inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg transition-colors sm:w-auto ${calculatorTheme.shareButtonClassName}`}
-      aria-label="Share your result"
-    >
-      <ShareIcon className="h-4 w-4" />
-      {shareButtonLabel}
-    </button>
+    <div className="flex w-full max-w-sm flex-col items-stretch gap-2 sm:max-w-xs">
+      <button
+        type="button"
+        onClick={shareResult}
+        className={`inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg transition-colors ${calculatorTheme.shareButtonClassName}`}
+        aria-label="Share your result"
+      >
+        <ShareIcon className="h-4 w-4" />
+        {shareButtonLabel}
+      </button>
+      {shareFeedback === "error" && shareUrl ? (
+        <input
+          readOnly
+          aria-label="Shareable result link"
+          value={shareUrl}
+          onFocus={(event) => event.currentTarget.select()}
+          className="h-10 w-full rounded-md border border-[#C9D8E4] bg-white px-3 text-xs font-semibold text-[#213B56] shadow-sm outline-none focus:border-[#108843] focus:ring-2 focus:ring-[#108843]/20"
+        />
+      ) : null}
+    </div>
   );
 
   const disclosure = (
@@ -1022,7 +1049,7 @@ export function CostAnalysisCalculator({
       {isSavingsCalculatorUpgrade && (
         <FitCtaDivider
           eyebrow="Your next step"
-          lead="You have seen the fee gap. Now see whether the advice model fits."
+          lead="See if you are a good fit"
         />
       )}
 

@@ -175,6 +175,71 @@ a:hover {
   animation: vs-halo-pulse 1.6s ease-in-out infinite;
 }
 
+@keyframes fit-cta-gradient-drift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes fit-cta-sheen {
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.65;
+  }
+  52% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(140%) skewX(-18deg);
+    opacity: 0;
+  }
+}
+
+.fit-cta-band {
+  background:
+    radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.22), transparent 28%),
+    radial-gradient(circle at 82% 0%, rgba(183, 227, 197, 0.32), transparent 30%),
+    linear-gradient(115deg, #062417 0%, #0b6f35 36%, #108843 58%, #064b2c 100%);
+  background-size: 100% 100%, 100% 100%, 220% 220%;
+  animation: fit-cta-gradient-drift 8s ease-in-out infinite;
+}
+
+.fit-cta-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(90deg, transparent, black 18%, black 82%, transparent);
+}
+
+.fit-cta-action {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(100deg, #075c2d 0%, #108843 42%, #0fbf5a 70%, #064b2c 100%);
+  background-size: 220% 220%;
+  animation: fit-cta-gradient-drift 6s ease-in-out infinite;
+}
+
+.fit-cta-action::after {
+  content: "";
+  position: absolute;
+  inset: -30% auto -30% 0;
+  pointer-events: none;
+  width: 46%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.34), transparent);
+  animation: fit-cta-sheen 4.8s ease-in-out infinite;
+}
+
 @keyframes fee-gap-wave-sweep {
   0% {
     opacity: 0;
@@ -229,6 +294,12 @@ a:hover {
     box-shadow:
       0 0 0 3px rgba(217, 45, 32, 0.55),
       0 12px 28px rgba(6, 43, 67, 0.22);
+  }
+
+  .fit-cta-band,
+  .fit-cta-action,
+  .fit-cta-action::after {
+    animation: none;
   }
 
   .fee-gap-wave,
