@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { CostAnalysisCalculator } from "@/components/CostAnalysisCalculator";
-import { CalculatorState, parseCalculatorState } from "@/lib/calculatorState";
+import {
+  CalculatorState,
+  buildQueryFromState,
+  parseCalculatorState,
+} from "@/lib/calculatorState";
+import { RIA_MONTHLY_FEE, buildFeeProjection } from "@/lib/feeProjection";
+import { formatCurrencyFloored } from "@/lib/format";
 import { getHomeMarketingVariantId } from "@/config/homeMarketingVariants";
 import { getHomeTopBannerId } from "@/config/homeTopBanners";
 
@@ -15,6 +22,57 @@ function normalizeSearchParams(searchParams: HomeSearchParams) {
     }
   });
   return params;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<HomeSearchParams>;
+}): Promise<Metadata> {
+  const resolved = await searchParams;
+  const params = normalizeSearchParams(resolved);
+  const state = parseCalculatorState(params);
+  const totalFeePercent = state.annualFeePercent + state.mutualFundExpensePercent;
+  const projection = buildFeeProjection({
+    initialInvestment: state.portfolioValue,
+    annualFeePercent: totalFeePercent,
+    annualGrowthPercent: state.annualGrowthPercent,
+    years: state.years,
+  });
+
+  const formattedSavings = formatCurrencyFloored(projection.savings);
+  const formattedPortfolio = formatCurrencyFloored(state.portfolioValue);
+  const calcQuery = buildQueryFromState(state);
+  const ogImagePath = `/api/og?${calcQuery}`;
+  const canonicalPath = `/?${calcQuery}`;
+  const title = `You'd keep ${formattedSavings} more · over ${state.years} years`;
+  const description = `${formattedPortfolio} starting · ${state.annualFeePercent.toFixed(2)}% advisor fee · ${state.annualGrowthPercent.toFixed(1)}% growth, vs. our $${RIA_MONTHLY_FEE}/mo flat fee.`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: canonicalPath,
+      siteName: "Smarter Way Wealth",
+      images: [
+        {
+          url: ogImagePath,
+          width: 1200,
+          height: 630,
+          alt: `You'd keep ${formattedSavings} more over ${state.years} years`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImagePath],
+    },
+  };
 }
 
 export default async function Home({
