@@ -10,7 +10,7 @@ import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { Quiz } from "./Quiz";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { AdvisorProofSections } from "@/components/AdvisorProofSections";
+import { AdvisorProofSections, FitCtaDivider } from "@/components/AdvisorProofSections";
 import { AssumptionsBento } from "@/components/AssumptionsBento";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
@@ -1021,6 +1021,13 @@ export function CostAnalysisCalculator({
           </div>
         )}
       </section>
+
+      {isSavingsCalculatorUpgrade && (
+        <FitCtaDivider
+          eyebrow="Your next step"
+          lead="You have seen the fee gap. Now see whether the advice model fits."
+        />
+      )}
 
       {isSavingsCalculatorUpgrade && (
         <AdvisorProofSections />

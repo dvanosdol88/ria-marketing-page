@@ -21,6 +21,13 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-19 - Fit CTA and proof-section polish
+**Agent:** Codex | **Surface:** marketing/calculator + advisor proof sections | **Duration:** 1 session
+- changed: added a shared fit CTA config and repeated semi-transparent green CTA dividers after the calculator, after Upgrade Your Advice, and after Improve Your Tools. Primary CTA text is "See if you are a good fit for David and Smarter Way Wealth" and links to `https://smarterwaywealth.com/`.
+- changed: removed bottom two-site architecture copy from the proof journey and replaced it with client-facing fit/planning copy; kept the local tools page as a quieter secondary text link.
+- changed: proof-section rail spacing and scroll offsets now keep the oversized section text below the sticky nav on anchor jumps; proof cards have softer border/shadow styling and crisper credential logo alignment.
+- changed: the main mobile calculator ending-value cards now render static final currency values on small screens while preserving the rolling digit animation on larger screens.
+
 ### 2026-05-19 - Quiz savings share and Stripe-style proof expansion
 **Agent:** Codex | **Surface:** marketing/calculator + advisor proof sections | **Duration:** 1 session
 - changed: `src/components/Quiz.tsx` now receives the live calculator savings value when rendered from `CostAnalysisCalculator`, updates the prompt to "What would you do with your $X?", and turns the post-vote share affordance into a real share/copy button. The quiz keeps a standalone fallback share path for legacy or unpropped renders.

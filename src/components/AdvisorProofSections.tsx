@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Maximize2, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { fitCta } from "@/config/fitCtaConfig";
 
 type ProofCard = {
   title: string;
@@ -136,6 +137,49 @@ function getProofCardId(card: ProofCard) {
   return card.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
+export function FitCtaDivider({
+  eyebrow = "Next step",
+  lead = "Ready to see whether this planning model fits your household?",
+  support = "Bring your calculator result into a fuller conversation about goals, tax strategy, investment fit, and whether a flat monthly planning relationship makes sense.",
+  secondary,
+}: {
+  eyebrow?: string;
+  lead?: string;
+  support?: string;
+  secondary?: React.ReactNode;
+}) {
+  return (
+    <section className="px-4 py-6 sm:px-6 sm:py-8">
+      <div className="mx-auto max-w-6xl overflow-hidden rounded-lg border border-[#B9E5C8] bg-[#DFF7EA]/75 shadow-[0_18px_55px_rgba(16,136,67,0.14)] backdrop-blur">
+        <div className="grid gap-5 px-5 py-6 sm:px-7 lg:grid-cols-[1fr_auto] lg:items-center lg:px-8 lg:py-7">
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
+              {eyebrow}
+            </p>
+            <h2 className="mt-2 max-w-3xl text-2xl font-black tracking-tight text-[#062417] sm:text-3xl">
+              {lead}
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-[#31506D] sm:text-base">
+              {support}
+            </p>
+          </div>
+          <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center lg:flex-col lg:items-stretch">
+            <a
+              href={fitCta.href}
+              className="inline-flex min-h-12 items-center justify-center rounded-md bg-[#062417] px-5 py-3 text-center text-sm font-extrabold !text-white no-underline shadow-[0_12px_28px_rgba(6,36,23,0.22)] transition hover:bg-[#0A6E35] hover:!text-white"
+            >
+              {fitCta.label}
+            </a>
+            {secondary ? (
+              <div className="text-center text-sm font-bold text-[#31506D] lg:text-right">{secondary}</div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ProofSectionProgressCue() {
   const [activeSection, setActiveSection] = useState<string>("");
 
@@ -219,8 +263,8 @@ function ProofSectionProgressCue() {
 
 function SectionRail({ words }: { words: string[] }) {
   return (
-    <div className="lg:sticky lg:top-28">
-      <p className="text-[3.25rem] font-black leading-[0.9] tracking-tight text-[#062417] sm:text-[4.5rem] lg:text-[5rem]">
+    <div className="lg:sticky lg:top-36">
+      <p className="text-[3.25rem] font-black leading-[0.9] tracking-tight text-[#062417] sm:text-[4.5rem] lg:text-[4.75rem] xl:text-[5rem]">
         {words.map((word) => (
           <span key={word} className="block">
             {word}
@@ -420,10 +464,10 @@ function ProofBento({ cards }: { cards: ProofCard[] }) {
           return (
             <motion.article
               key={card.title}
-              whileHover={{ y: -4, scale: 1.006 }}
+              whileHover={{ y: -3, scale: 1.004 }}
               transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
               className={[
-                "self-start rounded-md border border-[#D5DEE8] bg-white p-5 shadow-sm transition-colors duration-300",
+                "self-start rounded-lg border border-[#D8E2EA] bg-white p-6 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)]",
                 index === 0 ? "md:col-span-2" : "",
               ].join(" ")}
             >
@@ -452,9 +496,9 @@ function ProofBento({ cards }: { cards: ProofCard[] }) {
                   </div>
                 ) : null}
                 {card.logos ? (
-                  <div className="ml-auto flex shrink-0 items-center gap-4 sm:gap-5" aria-hidden="true">
+                  <div className="ml-auto flex shrink-0 items-center gap-5 sm:gap-6" aria-hidden="true">
                     {card.logos.map((logo) => (
-                      <span key={logo.src} className="relative block h-16 w-16 sm:h-20 sm:w-20">
+                      <span key={logo.src} className="relative block h-[72px] w-[72px] sm:h-20 sm:w-20">
                         <Image
                           src={logo.src}
                           alt=""
@@ -495,7 +539,7 @@ function StorySection({
   children: React.ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-28 border-t border-[#DDE5EC] px-4 py-14 sm:px-6 sm:py-18 lg:py-24">
+    <section id={id} className="scroll-mt-40 border-t border-[#DDE5EC] px-4 py-16 sm:px-6 sm:py-20 lg:scroll-mt-36 lg:py-24">
       <ScrollReveal className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[340px_1fr] lg:gap-14">
         <SectionRail words={rail} />
         <div>{children}</div>
@@ -515,31 +559,30 @@ export function AdvisorProofSections() {
         </div>
       </StorySection>
 
+      <FitCtaDivider
+        eyebrow="Advisor fit"
+        lead="The right advice model should feel clear before you hire anyone."
+      />
+
       <StorySection id="improve-your-tools" rail={["Improve", "Your", "Tools"]}>
         <ProofBento cards={toolCards} />
-        <div className="mt-7 border-t border-[#CBD8E4] pt-6">
-          <p className="text-lg font-black tracking-tight text-[#062417]">
-            The full planning experience lives at Smarter Way Wealth.
-          </p>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
-            YouArePayingTooMuch.com should stay fast and focused. SmarterWayWealth.com can carry the deeper service pages, consultation flow, and planning examples.
-          </p>
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <a
-              href="https://smarterwaywealth.com/"
-              className="inline-flex items-center justify-center rounded-md bg-[#108843] px-5 py-3 text-sm font-extrabold !text-white no-underline transition hover:bg-[#0A6E35] hover:!text-white"
-            >
-              Continue to Smarter Way Wealth
-            </a>
+      </StorySection>
+
+      <FitCtaDivider
+        eyebrow="Planning fit"
+        lead="Ready to turn the fee result into a real planning conversation?"
+        support="Smarter Way Wealth is built for households that want credentialed planning, better tools, and a fee model that does not grow just because the portfolio grows."
+        secondary={
+          <>
             <Link
               href="/improve-your-tools"
-              className="inline-flex items-center justify-center rounded-md border border-[#CBD8E4] px-5 py-3 text-sm font-extrabold !text-[#213B56] no-underline transition hover:bg-[#F6FAFC] hover:!text-[#213B56]"
+              className="!text-[#31506D] underline decoration-[#8BBE9E] underline-offset-4 transition hover:!text-[#062417]"
             >
               View the tools page
             </Link>
-          </div>
-        </div>
-      </StorySection>
+          </>
+        }
+      />
 
       <section className="px-4 pb-16 sm:px-6">
         <div className="mx-auto max-w-6xl border-t border-[#D5DEE8] pt-8">
