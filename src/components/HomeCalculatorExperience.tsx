@@ -19,6 +19,7 @@ import type {
 import type { ProjectionYear } from "@/lib/feeProjection";
 import { Odometer, RollingCurrencyOdometer } from "@/components/Odometer";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { fitCta } from "@/config/fitCtaConfig";
 
 type Scenario = "smarter" | "traditional";
 
@@ -968,12 +969,10 @@ function ComparisonBars({
 function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const {
     annualFeePercent,
-    annualGrowthPercent,
     disclosure,
     finalValueWithFees,
     finalValueWithoutFees,
     percentLost,
-    portfolioValue,
     series,
     shareAction,
     simpleControls,
@@ -1023,16 +1022,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const barActive = barPinned || hoverBar;
   const chartGapHintVisible = chartGapHintActive && !chartPinned && !barPinned;
   const barGapHintVisible = barGapHintActive && !chartPinned && !barPinned;
-  const smarterWayParams = new URLSearchParams({
-    source: "youarepayingtoomuch",
-    savings: Math.round(savings).toString(),
-    portfolio: Math.round(portfolioValue).toString(),
-    years: years.toString(),
-    fee: annualFeePercent.toFixed(2),
-    growth: annualGrowthPercent.toFixed(2),
-  });
-  const smarterWayHref = `https://smarterwaywealth.com/save?${smarterWayParams.toString()}`;
-
   useEffect(() => {
     if (gapHintCancelledRef.current || chartPinned || barPinned) return;
 
@@ -1140,12 +1129,16 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <FinalHomeStatCard
             ribbon={`Paying asset-based fees (${annualFeePercent.toFixed(2)}%)`}
             value={
-              <RollingCurrencyOdometer
-                value={finalValueWithFees}
-                formatter={formatCurrencyFloored}
-                duration={650}
-                debounceMs={180}
-              />
+              <>
+                <span className="sm:hidden">{formatCurrencyFloored(finalValueWithFees)}</span>
+                <RollingCurrencyOdometer
+                  value={finalValueWithFees}
+                  formatter={formatCurrencyFloored}
+                  duration={650}
+                  debounceMs={180}
+                  className="hidden sm:inline"
+                />
+              </>
             }
             tone="blue"
             accentClassName="text-[#064B84]"
@@ -1175,12 +1168,16 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <FinalHomeStatCard
             ribbon="Paying flat monthly fee ($100/mo)"
             value={
-              <RollingCurrencyOdometer
-                value={finalValueWithoutFees}
-                formatter={formatCurrencyFloored}
-                duration={650}
-                debounceMs={180}
-              />
+              <>
+                <span className="sm:hidden">{formatCurrencyFloored(finalValueWithoutFees)}</span>
+                <RollingCurrencyOdometer
+                  value={finalValueWithoutFees}
+                  formatter={formatCurrencyFloored}
+                  duration={650}
+                  debounceMs={180}
+                  className="hidden sm:inline"
+                />
+              </>
             }
             tone="green"
             accentClassName="text-[#108843]"
@@ -1236,10 +1233,10 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
 
         <div className="mx-4 mt-4 grid gap-3 sm:mx-7 sm:grid-cols-[minmax(0,1fr)_auto]">
           <a
-            href={smarterWayHref}
+            href={fitCta.href}
             className="flex min-h-[46px] items-center justify-center rounded-md bg-[#108843] px-4 text-center text-base font-bold !text-white no-underline transition hover:bg-[#0B7639]"
           >
-            See more on YOUR savings at smarterwaywealth.com/save
+            {fitCta.label}
           </a>
           <div className="flex min-h-[46px] items-stretch justify-center">
             {shareAction}
