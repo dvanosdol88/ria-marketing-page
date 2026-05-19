@@ -10,6 +10,7 @@ import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { Quiz } from "./Quiz";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { AdvisorProofSections } from "@/components/AdvisorProofSections";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
@@ -572,7 +573,6 @@ export function CostAnalysisCalculator({
   }, []);
 
   const marketingVariant = homeMarketingVariants[marketingVariantId];
-  const advisorVariant = homeMarketingVariants["final-home"];
   const calculatorTheme = marketingVariant.calculator;
   const isCalculatorFirst = experienceMode === "calculator-first";
   const isSavingsCalculatorUpgrade = experienceMode === "savings-calculator-upgrade";
@@ -1016,21 +1016,7 @@ export function CostAnalysisCalculator({
       </section>
 
       {isSavingsCalculatorUpgrade && (
-        <HomeMarketingHero
-          variant={advisorVariant}
-          savings={projection.savings}
-          portfolioValue={state.portfolioValue}
-          years={state.years}
-          annualGrowthPercent={state.annualGrowthPercent}
-          annualFeePercent={state.annualFeePercent}
-          mutualFundExpensePercent={state.mutualFundExpensePercent}
-          onCalculatorChange={(patch) => setState((prev) => ({ ...prev, ...patch }))}
-          onShare={shareResult}
-          shareButtonLabel={shareButtonLabel}
-          centerProofPoints
-          showAdvisorCalculator={false}
-          showCtas={false}
-        />
+        <AdvisorProofSections />
       )}
 
       {isSavingsCalculatorUpgrade && (

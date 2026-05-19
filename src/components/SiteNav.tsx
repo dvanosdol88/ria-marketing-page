@@ -29,6 +29,7 @@ export function SiteNav() {
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("calculator");
 
   /* Track scroll to toggle collapsed state */
   useEffect(() => {
@@ -65,8 +66,71 @@ export function SiteNav() {
     return () => { document.body.style.overflow = ""; };
   }, [drawerOpen]);
 
+  /* On the homepage, make nav state follow the section currently in view. */
+  useEffect(() => {
+    if (pathname !== "/") {
+      setActiveSection("");
+      return;
+    }
+
+    const sectionIds = siteNavLinks
+      .map((link) => link.sectionId)
+      .filter((sectionId): sectionId is string => !!sectionId);
+    let ticking = false;
+
+    const updateActiveSection = () => {
+      ticking = false;
+
+      const navOffset = collapsed ? 140 : 170;
+      let current = "calculator";
+
+      sectionIds.forEach((sectionId) => {
+        const element = document.getElementById(sectionId);
+        if (!element) return;
+
+        const rect = element.getBoundingClientRect();
+        if (rect.top <= navOffset && rect.bottom > navOffset) {
+          current = sectionId;
+        }
+      });
+
+      setActiveSection(current);
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(updateActiveSection);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    window.addEventListener("hashchange", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("hashchange", onScroll);
+    };
+  }, [collapsed, pathname]);
+
   const toggleDrawer = useCallback(() => setDrawerOpen((p) => !p), []);
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
+
+  const isLinkActive = useCallback(
+    (link: (typeof siteNavLinks)[number]) => {
+      if (pathname === "/" && link.sectionId) {
+        return activeSection === link.sectionId;
+      }
+
+      if (link.activePaths?.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
+        return true;
+      }
+
+      return pathname === link.href || (link.href !== "/" && !link.href.includes("#") && pathname.startsWith(link.href));
+    },
+    [activeSection, pathname]
+  );
 
   /* ── Tiered Logo Component ── */
   const Logo = ({ 
@@ -163,24 +227,24 @@ export function SiteNav() {
 
             <nav className="flex items-center gap-1">
               {siteNavLinks.map((link) => {
-                const isActive =
-                  pathname === link.href ||
-                  (link.href !== "/" && pathname.startsWith(link.href));
+                const isActive = isLinkActive(link);
 
                 return (
                   <Link
                     key={link.href}
                     href={link.href as any}
-                    className={`relative px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                    className={`relative px-3 py-2 text-sm rounded-md transition-[color,font-weight] duration-300 ease-out ${
                       isActive
-                        ? "text-[#007A2F]"
+                        ? "font-extrabold text-[#007A2F]"
                         : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50"
                     }`}
                   >
                     {link.label}
-                    {isActive && (
-                      <span className="absolute inset-x-2 -bottom-[1px] h-[2px] rounded-full bg-[#007A2F]" />
-                    )}
+                    <span
+                      className={`absolute inset-x-2 -bottom-[1px] h-[2px] origin-left rounded-full bg-[#007A2F] transition-transform duration-300 ease-out ${
+                        isActive ? "scale-x-100" : "scale-x-0"
+                      }`}
+                    />
                   </Link>
                 );
               })}
@@ -233,24 +297,19 @@ export function SiteNav() {
         {/* Links */}
         <div className="flex-1 overflow-y-auto px-2 py-3">
           {siteNavLinks.map((link) => {
-            const isActive =
-              pathname === link.href ||
-              (link.href !== "/" && pathname.startsWith(link.href));
+            const isActive = isLinkActive(link);
 
             return (
               <Link
                 key={link.href}
                 href={link.href as any}
                 onClick={closeDrawer}
-                className={`flex items-center gap-3 rounded-lg px-3 py-3.5 text-base font-medium transition-colors ${
+                className={`flex items-center gap-3 rounded-lg px-3 py-3.5 text-base underline-offset-8 transition-[color,font-weight,text-decoration-color] duration-300 ${
                   isActive
-                    ? "bg-[#007A2F]/8 text-[#007A2F]"
+                    ? "font-extrabold text-[#007A2F] underline decoration-[#007A2F]"
                     : "text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900"
                 }`}
               >
-                {isActive && (
-                  <span className="h-2 w-2 shrink-0 rounded-full bg-[#007A2F]" />
-                )}
                 {link.label}
               </Link>
             );
