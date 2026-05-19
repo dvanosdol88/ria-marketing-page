@@ -1009,7 +1009,11 @@ export function CostAnalysisCalculator({
         {usesOpeningMarketingHero && (
           <div id="quick-poll" className="section-shell relative z-10 -mt-12 pb-20">
             <ScrollReveal delay={0.1} className="mx-auto w-full max-w-3xl">
-              <Quiz />
+              <Quiz
+                savings={projection.savings}
+                onShare={shareResult}
+                shareButtonLabel={shareButtonLabel}
+              />
             </ScrollReveal>
           </div>
         )}
@@ -1026,7 +1030,11 @@ export function CostAnalysisCalculator({
         >
           <div className="section-shell">
             <ScrollReveal delay={0.1} className="mx-auto w-full max-w-3xl">
-              <Quiz />
+              <Quiz
+                savings={projection.savings}
+                onShare={shareResult}
+                shareButtonLabel={shareButtonLabel}
+              />
             </ScrollReveal>
           </div>
         </section>

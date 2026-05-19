@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Loader2, Share2 } from "lucide-react";
+import { Check, Loader2, Share2 } from "lucide-react";
+import { formatCurrencyFloored } from "@/lib/format";
 
 interface QuizOption {
   id: string;
@@ -48,12 +49,19 @@ async function fetchVoteCounts(): Promise<Record<string, number>> {
   return data.counts || {};
 }
 
-export function Quiz() {
+type QuizProps = {
+  savings?: number;
+  onShare?: () => void;
+  shareButtonLabel?: string;
+};
+
+export function Quiz({ savings = 0, onShare, shareButtonLabel }: QuizProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isSubmittingOption, setIsSubmittingOption] = useState<string | null>(null);
   const [voteCounts, setVoteCounts] = useState<Record<string, number>>({});
   const [error, setError] = useState<string | null>(null);
+  const [fallbackShareFeedback, setFallbackShareFeedback] = useState<"idle" | "success" | "error">("idle");
 
   const loadCounts = useCallback(async () => {
     try {
@@ -69,6 +77,17 @@ export function Quiz() {
   }, [loadCounts]);
 
   const hasVoted = selectedOption !== null;
+  const formattedSavings = formatCurrencyFloored(savings);
+  const hasSavingsValue = savings > 0;
+  const effectiveShareLabel =
+    shareButtonLabel ??
+    (fallbackShareFeedback === "success"
+      ? "Copied"
+      : fallbackShareFeedback === "error"
+        ? "Sharing unavailable"
+        : "Share your result");
+  const shareCopy = effectiveShareLabel === "Share your result" ? "Share result" : effectiveShareLabel;
+  const ShareIcon = effectiveShareLabel === "Copied" ? Check : Share2;
 
   const percentages = useMemo(() => {
     const map: Record<string, number> = {};
@@ -113,6 +132,40 @@ export function Quiz() {
     }
   };
 
+  const handleShare = async () => {
+    if (onShare) {
+      onShare();
+      return;
+    }
+
+    if (typeof window === "undefined" || typeof navigator === "undefined") return;
+
+    const shareText = hasSavingsValue
+      ? `My Smarter Way Wealth calculator result: ${formattedSavings}\n${window.location.href}`
+      : window.location.href;
+
+    try {
+      if (typeof navigator.share === "function") {
+        await navigator.share({
+          title: "Smarter Way Wealth projection",
+          text: shareText,
+        });
+      } else {
+        await navigator.clipboard.writeText(shareText);
+      }
+      setFallbackShareFeedback("success");
+    } catch (shareError) {
+      if (shareError instanceof Error && shareError.name === "AbortError") return;
+      setFallbackShareFeedback("error");
+    }
+  };
+
+  useEffect(() => {
+    if (fallbackShareFeedback === "idle") return;
+    const timeout = window.setTimeout(() => setFallbackShareFeedback("idle"), 2200);
+    return () => window.clearTimeout(timeout);
+  }, [fallbackShareFeedback]);
+
   if (!isExpanded) {
     return (
       <div className="text-center">
@@ -132,7 +185,9 @@ export function Quiz() {
       <div className="mb-4 flex items-start justify-between gap-4">
         <div>
           <h3 className="text-lg font-semibold text-neutral-900">Quick poll</h3>
-          <p className="mt-1 text-sm text-neutral-600">What would you do with your savings?</p>
+          <p className="mt-1 text-sm text-neutral-600">
+            What would you do with {hasSavingsValue ? `your ${formattedSavings}` : "your savings"}?
+          </p>
         </div>
 
         <button
@@ -194,9 +249,17 @@ export function Quiz() {
       {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
 
       {hasVoted && (
-        <div className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-700">
-          Thanks for voting!
-          <Share2 className="h-4 w-4" />
+        <div className="mt-4 flex flex-wrap items-center gap-3 text-sm font-semibold text-brand-700">
+          <span>Thanks for voting!</span>
+          <button
+            type="button"
+            onClick={() => void handleShare()}
+            className="inline-flex min-h-8 items-center gap-1.5 rounded-full border border-brand-200 bg-white/75 px-3 py-1 text-sm font-bold text-brand-700 transition hover:border-brand-300 hover:bg-white hover:text-brand-800"
+            aria-label={hasSavingsValue ? `Share your ${formattedSavings} result` : "Share your result"}
+          >
+            <ShareIcon className="h-4 w-4" />
+            {shareCopy}
+          </button>
         </div>
       )}
     </section>

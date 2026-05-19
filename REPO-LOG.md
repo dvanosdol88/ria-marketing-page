@@ -21,6 +21,12 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-19 - Quiz savings share and Stripe-style proof expansion
+**Agent:** Codex | **Surface:** marketing/calculator + advisor proof sections | **Duration:** 1 session
+- changed: `src/components/Quiz.tsx` now receives the live calculator savings value when rendered from `CostAnalysisCalculator`, updates the prompt to "What would you do with your $X?", and turns the post-vote share affordance into a real share/copy button. The quiz keeps a standalone fallback share path for legacy or unpropped renders.
+- changed: `src/components/AdvisorProofSections.tsx` replaced inline proof-card expansion with a Stripe-inspired top-right expand control and a single dialog-style detail panel with smoother entrance/exit animation, explicit close button, Escape/backdrop close, and stable side-by-side card heights while open.
+- verified locally: `npx tsc --noEmit` clean; `npm run lint` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning; Playwright desktop/mobile checks confirmed the poll shows the calculated `$788,000`, mocked vote share writes a result URL with savings, proof dialogs open/close, and adjacent card heights do not stretch during expansion.
+
 ### 2026-05-18 - Upgrade Your Advice lightweight bento rebuild
 **Agent:** Codex | **Surface:** marketing/secondary pages | **Duration:** 1 session
 - changed: `src/app/upgrade-your-advice/page.tsx` was rebuilt from a long chart/funnel-heavy explainer into a lightweight story page aligned with the post-calculator journey: a short hero, bold left-rail "Upgrade Your Advice" section, David headshot/name/title proof box, expandable credential/fiduciary/model bento boxes, then a matching "Improve Your Tools" section with expandable planning boxes.
