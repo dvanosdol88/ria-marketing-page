@@ -21,6 +21,14 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-20 - See our math modal bento and CTA polish
+**Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
+- changed: `src/components/HomeCalculatorExperience.tsx` turns `See our math` into a stable compact bento card with the same `Maximize2`/`X` expand control style used by the other bento cards. The full fee breakdown, year table, assumptions, disclosures, and Smarter Way Wealth link now open in a portaled modal overlay instead of expanding inline and pushing the page down.
+- changed: the math modal supports close button, Escape, and backdrop click; the overlay is portaled to `document.body` so it sits above the sticky header and transformed calculator section.
+- changed: `src/components/AdvisorProofSections.tsx` narrows the final CTA divider's inner content and changes the CTA from a full-width pale strip to a brand-blue `#064B84` button with white text.
+- verified locally: `npx tsc --noEmit` clean; `npm run lint` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning. Playwright local checks confirmed the bento expand control, modal open without inline layout push, Escape close, backdrop close, mobile dialog scrollability, blue/white CTA computed styles, and zero console errors.
+- deployed: pending branch land and production verification.
+
 ### 2026-05-20 - Final-home header default-state polish
 **Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
 - changed: `src/components/HomeCalculatorExperience.tsx` restores the final-home chart header's default centered title to "Your Portfolio Value over Time" and restores the default fee subheader to "Compare your asset-based fees with a flat $100/month." Clicking the title or fee phrase reveals the live numeric header inputs.

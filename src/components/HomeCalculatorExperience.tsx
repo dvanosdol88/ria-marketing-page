@@ -5,6 +5,7 @@ import {
   Clock3,
   DollarSign,
   ExternalLink,
+  Maximize2,
   Percent,
   ReceiptText,
   ScanLine,
@@ -12,7 +13,10 @@ import {
   SlidersHorizontal,
   Table2,
   TrendingUp,
+  X,
 } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { createPortal } from "react-dom";
 import { formatCurrency, formatCurrencyFloored } from "@/lib/format";
 import type {
   HomeCalculatorTheme,
@@ -1094,6 +1098,39 @@ function ComparisonBars({
   );
 }
 
+function MathExpandButton({
+  isOpen,
+  onClick,
+}: {
+  isOpen?: boolean;
+  onClick: () => void;
+}) {
+  const Icon = isOpen ? X : Maximize2;
+
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      whileHover={{ scale: 1.08 }}
+      whileTap={{ scale: 0.96 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#EAF7EF] text-[#108843] transition-colors duration-300 hover:bg-[#D8F0E0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#108843]/35"
+      aria-label={isOpen ? "Close See our math" : "Expand See our math"}
+      aria-expanded={Boolean(isOpen)}
+      aria-controls="see-our-math-details"
+    >
+      <motion.span
+        aria-hidden="true"
+        animate={{ rotate: isOpen ? 90 : 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="grid place-items-center"
+      >
+        <Icon className="h-[18px] w-[18px]" strokeWidth={2.25} />
+      </motion.span>
+    </motion.button>
+  );
+}
+
 function SeeOurMathBento({
   annualFlatFee,
   annualGrowthPercent,
@@ -1116,6 +1153,8 @@ function SeeOurMathBento({
   years: number;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const dialogBackdropRef = useRef<HTMLDivElement | null>(null);
+  const expandedRef = useRef(expanded);
   const finalGap = Math.max(savings, 0);
   const directFeeGap = Math.min(Math.max(totalAssetBasedFees - totalFlatFees, 0), finalGap);
   const compoundingGap = Math.max(finalGap - directFeeGap, 0);
@@ -1124,28 +1163,117 @@ function SeeOurMathBento({
   const feeBarWidth = `${Math.min(Math.max(directFeeShare, 0), 100)}%`;
   const compoundingBarWidth = `${Math.min(Math.max(compoundingShare, 0), 100)}%`;
 
-  if (!expanded) {
-    return (
-      <section className="min-w-0 overflow-hidden rounded-md border border-[#C9D8E4] bg-[#F8FBFC] shadow-[0_12px_26px_rgba(17,33,52,0.08)]">
-        <button
-          type="button"
-          onClick={() => setExpanded(true)}
-          className="flex min-h-12 w-full items-center justify-center px-4 text-center text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#108843] transition hover:bg-[#EEF5FA] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843]"
-          aria-expanded={false}
-          aria-controls="see-our-math-details"
-        >
-          See our math
-        </button>
-      </section>
-    );
-  }
+  expandedRef.current = expanded;
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && expandedRef.current) {
+        setExpanded(false);
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown, true);
+    return () => document.removeEventListener("keydown", onKeyDown, true);
+  }, []);
+
+  useEffect(() => {
+    if (!expanded) return;
+
+    requestAnimationFrame(() => {
+      dialogBackdropRef.current?.focus();
+    });
+  }, [expanded]);
 
   return (
-    <section
-      id="see-our-math-details"
-      className="min-w-0 overflow-hidden rounded-md border border-[#C9D8E4] bg-[#F8FBFC] p-4 shadow-[0_12px_26px_rgba(17,33,52,0.08)] sm:p-5"
-    >
-      <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:items-start">
+    <>
+      <motion.section
+        whileHover={{ y: -3, scale: 1.004 }}
+        transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
+        className="min-w-0 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
+              See our math
+            </p>
+            <h3 className="mt-2 text-xl font-black tracking-tight text-[#062417] sm:text-2xl">
+              {formatCurrency(savings)} projected gap
+            </h3>
+            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
+              Open the year-by-year assumptions, fee totals, and the split between actual fee drag and lost compounding.
+            </p>
+          </div>
+          <MathExpandButton onClick={() => setExpanded(true)} />
+        </div>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <div className="rounded-md border border-[#E0E8F0] bg-[#F8FBFC] p-3">
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#667587]">Fee part</span>
+              <span className="text-sm font-extrabold tabular-nums text-[#D92D20]">
+                {directFeeShare.toFixed(0)}%
+              </span>
+            </div>
+            <p className="mt-1 text-lg font-black tabular-nums text-[#10233A]">
+              {formatCurrency(directFeeGap)}
+            </p>
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#E7EEF5]">
+              <div className="h-full rounded-full bg-[#D92D20]" style={{ width: feeBarWidth }} />
+            </div>
+          </div>
+          <div className="rounded-md border border-[#E0E8F0] bg-[#F8FBFC] p-3">
+            <div className="flex items-baseline justify-between gap-3">
+              <span className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#667587]">Compounding</span>
+              <span className="text-sm font-extrabold tabular-nums text-[#064B84]">
+                {compoundingShare.toFixed(0)}%
+              </span>
+            </div>
+            <p className="mt-1 text-lg font-black tabular-nums text-[#10233A]">
+              {formatCurrency(compoundingGap)}
+            </p>
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#E7EEF5]">
+              <div className="h-full rounded-full bg-[#064B84]" style={{ width: compoundingBarWidth }} />
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      {typeof document !== "undefined"
+        ? createPortal(
+            <AnimatePresence>
+              {expanded ? (
+                <motion.div
+            ref={dialogBackdropRef}
+            tabIndex={-1}
+            className="fixed inset-0 z-[80] flex items-start justify-center overflow-y-auto bg-[#10233A]/18 px-4 py-10 backdrop-blur-sm sm:px-6 sm:py-16"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
+            onClick={() => setExpanded(false)}
+            onKeyDownCapture={(event) => {
+              if (event.key === "Escape") {
+                setExpanded(false);
+              }
+            }}
+          >
+            <motion.article
+              id="see-our-math-details"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="see-our-math-title"
+              className="relative w-full max-w-6xl overflow-hidden rounded-lg border border-[#D5DEE8] bg-[#F8FBFC] p-4 shadow-[0_24px_80px_rgba(17,33,52,0.24)] sm:p-6 lg:p-8"
+              initial={{ y: 18, scale: 0.97 }}
+              animate={{ y: 0, scale: 1 }}
+              exit={{ y: 12, scale: 0.98 }}
+              transition={{ duration: 0.72, ease: [0.165, 0.84, 0.44, 1] }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
+                <MathExpandButton isOpen onClick={() => setExpanded(false)} />
+              </div>
+
+      <div className="grid min-w-0 gap-4 pr-12 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:items-start lg:pr-14">
         <div className="min-w-0">
           <div className="flex items-center gap-2 text-[#108843]">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-[#E4F6EB]">
@@ -1153,9 +1281,9 @@ function SeeOurMathBento({
             </span>
             <div>
               <p className="text-[11px] font-extrabold uppercase tracking-[0.18em]">See our math</p>
-              <p className="mt-0.5 text-sm font-bold text-[#062B43]">
+              <h3 id="see-our-math-title" className="mt-0.5 text-sm font-bold text-[#062B43]">
                 {formatCurrency(savings)} projected gap
-              </p>
+              </h3>
             </div>
           </div>
 
@@ -1211,15 +1339,6 @@ function SeeOurMathBento({
             </div>
           </dl>
 
-          <button
-            type="button"
-            onClick={() => setExpanded((prev) => !prev)}
-            className="mt-4 inline-flex min-h-10 w-full items-center justify-center rounded-md border border-[#C9D8E4] bg-white px-4 text-center text-sm font-extrabold text-[#064B84] transition hover:bg-[#EEF5FA] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843]"
-            aria-expanded={expanded}
-            aria-controls="see-our-math-details"
-          >
-            {expanded ? "Hide details" : "Show details"}
-          </button>
         </div>
 
         <div className="min-w-0">
@@ -1295,8 +1414,15 @@ function SeeOurMathBento({
             </a>
           </div>
         </div>
-      </div>
-    </section>
+              </div>
+                </motion.article>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>,
+            document.body,
+          )
+        : null}
+    </>
   );
 }
 

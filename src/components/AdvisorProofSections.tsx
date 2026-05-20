@@ -159,7 +159,7 @@ export function FitCtaDivider({
           borderTop: "1px solid rgba(16, 35, 58, 0.08)",
         }}
       >
-        <div className="section-shell relative z-10 flex flex-col gap-5 py-7">
+        <div className="relative z-10 mx-auto flex max-w-5xl flex-col gap-5 px-4 py-7 sm:px-6 lg:px-8">
           <div className="max-w-4xl">
             <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#10233A]/70">
               {eyebrow}
@@ -171,13 +171,13 @@ export function FitCtaDivider({
               {support}
             </p>
           </div>
-          <div className="flex flex-col items-stretch gap-3">
+          <div className="flex flex-col items-start gap-3">
             <a
               href={fitCta.href}
-              className="fit-cta-action inline-flex min-h-14 w-full items-center justify-center rounded-md px-5 py-3 text-center text-base font-extrabold !text-[#10233A] no-underline shadow-[0_12px_28px_rgba(6,36,23,0.10)] transition hover:!text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10233A]/60 sm:text-lg"
+              className="fit-cta-action inline-flex min-h-14 w-full items-center justify-center rounded-md px-5 py-3 text-center text-base font-extrabold !text-white no-underline shadow-[0_12px_28px_rgba(6,36,23,0.14)] transition hover:!text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10233A]/60 sm:w-auto sm:px-8 sm:text-lg"
               style={{
-                background: "rgba(255, 255, 255, 0.58)",
-                border: "1px solid rgba(16, 35, 58, 0.16)",
+                background: "#064B84",
+                border: "1px solid rgba(6, 75, 132, 0.92)",
               }}
             >
               {fitCta.label}
