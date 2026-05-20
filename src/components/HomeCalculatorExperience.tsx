@@ -233,7 +233,7 @@ function FinalHeaderNumberInput({
 
   return (
     <span
-      className={`inline-flex max-w-full items-baseline justify-center border-b border-[#AEB8C3] text-inherit transition focus-within:border-[#108843] focus-within:outline focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-[#108843] hover:border-[#667587] ${className}`}
+      className={`inline-flex max-w-full items-baseline justify-center border-b border-[#D7E0E8] text-inherit transition focus-within:border-[#108843] focus-within:outline focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-[#108843] hover:border-[#AEB8C3] ${className}`}
     >
       {prefix && <span aria-hidden="true">{prefix}</span>}
       <input
@@ -1497,11 +1497,11 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
                   className="font-[inherit] leading-[inherit] text-[#062B43] outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843]"
                   aria-label="Edit portfolio value and time horizon"
                 >
-                  <span className="underline decoration-[#D92D20] decoration-4 underline-offset-[0.22em]">
+                  <span className="underline decoration-[#D7E0E8] decoration-1 underline-offset-[0.22em]">
                     Your Portfolio Value
                   </span>{" "}
                   <span>over</span>{" "}
-                  <span className="underline decoration-[#D92D20] decoration-4 underline-offset-[0.22em]">
+                  <span className="underline decoration-[#D7E0E8] decoration-1 underline-offset-[0.22em]">
                     Time
                   </span>
                 </button>

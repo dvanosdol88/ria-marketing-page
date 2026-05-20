@@ -428,10 +428,6 @@ export function CostAnalysisCalculator({
   marketingVariantId,
 }: Props) {
   const paramsFromServer = useMemo(() => normalizeSearchParams(searchParams), [searchParams]);
-  const hasAssumptionParams = useMemo(
-    () => ["portfolio", "years", "growth", "fee", "mfe"].some((key) => paramsFromServer.has(key)),
-    [paramsFromServer]
-  );
   const mergedState = useMemo(
     () => ({
       ...DEFAULT_STATE,
@@ -441,7 +437,7 @@ export function CostAnalysisCalculator({
   );
 
   const [state, setState] = useState<CalculatorState>(mergedState);
-  const [assumptionsCustomized, setAssumptionsCustomized] = useState(hasAssumptionParams);
+  const [assumptionsCustomized, setAssumptionsCustomized] = useState(false);
   const [activeCard, setActiveCard] = useState<"smarter" | "traditional" | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [shareFeedback, setShareFeedback] = useState<"idle" | "success" | "error">("idle");
