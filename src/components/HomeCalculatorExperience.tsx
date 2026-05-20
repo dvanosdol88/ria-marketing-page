@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Clock3,
   DollarSign,
@@ -40,6 +40,13 @@ export type CalculatorSimpleControlNodes = {
   years: ReactNode;
 };
 
+type CalculatorAssumptionPatch = {
+  annualFeePercent?: number;
+  annualGrowthPercent?: number;
+  portfolioValue?: number;
+  years?: number;
+};
+
 const FEE_GAP_HINT_INITIAL_DELAY_MS = 1200;
 const FEE_GAP_HINT_VISIBLE_MS = 3000;
 const FEE_GAP_HINT_REDUCED_VISIBLE_MS = 1400;
@@ -75,6 +82,7 @@ type HomeCalculatorExperienceProps = {
   renderChart: (className: string) => ReactNode;
   activeScenario: Scenario | null;
   onHighlightScenario: (scenario: Scenario) => void;
+  onAssumptionChange: (patch: CalculatorAssumptionPatch) => void;
 };
 
 function formatCompactCurrency(value: number) {
@@ -145,86 +153,120 @@ function MiniStat({
   );
 }
 
-function EditableHeaderField({
+function formatHeaderInputValue(value: number, decimals: number, useGrouping: boolean) {
+  return new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: decimals,
+    minimumFractionDigits: decimals,
+    useGrouping,
+  }).format(value);
+}
+
+function parseHeaderInputValue(value: string) {
+  const parsed = Number.parseFloat(value.replace(/[^0-9.\-]/g, ""));
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function clampHeaderInputValue(value: number, min: number, max: number, decimals: number) {
+  const clamped = Math.min(max, Math.max(min, value));
+  const multiplier = 10 ** decimals;
+  return Math.round(clamped * multiplier) / multiplier;
+}
+
+function FinalHeaderNumberInput({
   ariaLabel,
   className = "",
-  inputClassName = "",
+  decimals,
+  inputMode,
+  max,
+  min,
   onChange,
+  prefix,
+  suffix,
+  useGrouping = false,
   value,
 }: {
   ariaLabel: string;
   className?: string;
-  inputClassName?: string;
-  onChange: (value: string) => void;
-  value: string;
+  decimals: number;
+  inputMode: "decimal" | "numeric";
+  max: number;
+  min: number;
+  onChange: (value: number) => void;
+  prefix?: string;
+  suffix?: string;
+  useGrouping?: boolean;
+  value: number;
 }) {
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState(value);
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [focused, setFocused] = useState(false);
+  const [draft, setDraft] = useState(() => formatHeaderInputValue(value, decimals, useGrouping));
 
   useEffect(() => {
-    if (!editing) {
-      setDraft(value);
+    if (!focused) {
+      setDraft(formatHeaderInputValue(value, decimals, useGrouping));
     }
-  }, [editing, value]);
+  }, [decimals, focused, useGrouping, value]);
 
-  useEffect(() => {
-    if (editing) {
-      inputRef.current?.focus();
-      inputRef.current?.select();
-    }
-  }, [editing]);
+  const normalize = (raw: number) => clampHeaderInputValue(raw, min, max, decimals);
 
-  const commit = () => {
-    const nextValue = draft.trim();
-    if (nextValue) {
-      onChange(nextValue);
-    } else {
-      setDraft(value);
+  const commitDraft = (text: string) => {
+    const parsed = parseHeaderInputValue(text);
+    if (parsed === null) {
+      setDraft(formatHeaderInputValue(value, decimals, useGrouping));
+      return;
     }
-    setEditing(false);
+
+    const nextValue = normalize(parsed);
+    onChange(nextValue);
+    setDraft(formatHeaderInputValue(nextValue, decimals, useGrouping));
   };
 
-  const cancel = () => {
-    setDraft(value);
-    setEditing(false);
-  };
-
-  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      commit();
-    }
-    if (event.key === "Escape") {
-      event.preventDefault();
-      cancel();
+  const handleDraftChange = (nextDraft: string) => {
+    setDraft(nextDraft);
+    const parsed = parseHeaderInputValue(nextDraft);
+    if (parsed !== null && parsed >= min && parsed <= max) {
+      onChange(normalize(parsed));
     }
   };
 
-  if (editing) {
-    return (
-      <input
-        ref={inputRef}
-        aria-label={ariaLabel}
-        value={draft}
-        onChange={(event) => setDraft(event.target.value)}
-        onBlur={commit}
-        onKeyDown={handleKeyDown}
-        className={`inline-block min-w-[5ch] max-w-full rounded-sm border border-[#9AA8B6] bg-white px-1 text-center outline-none ring-2 ring-[#108843]/15 ${inputClassName || className}`}
-        style={{ width: `${Math.max(draft.length + 1, 6)}ch` }}
-      />
-    );
-  }
+  const inputWidth = `${Math.min(14, Math.max(3.5, draft.length + 0.5))}ch`;
 
   return (
-    <button
-      type="button"
-      aria-label={`Edit ${ariaLabel}`}
-      onClick={() => setEditing(true)}
-      className={`inline border-0 border-b border-[#AEB8C3] bg-transparent p-0 text-inherit decoration-transparent transition hover:border-[#667587] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843] ${className}`}
+    <span
+      className={`inline-flex max-w-full items-baseline justify-center border-b border-[#AEB8C3] text-inherit transition focus-within:border-[#108843] focus-within:outline focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-[#108843] hover:border-[#667587] ${className}`}
     >
-      {value}
-    </button>
+      {prefix && <span aria-hidden="true">{prefix}</span>}
+      <input
+        aria-label={ariaLabel}
+        type="text"
+        inputMode={inputMode}
+        autoComplete="off"
+        spellCheck={false}
+        value={draft}
+        onBlur={(event) => {
+          setFocused(false);
+          commitDraft(event.currentTarget.value);
+        }}
+        onChange={(event) => handleDraftChange(event.target.value)}
+        onFocus={(event) => {
+          setFocused(true);
+          requestAnimationFrame(() => event.target.select());
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            commitDraft(event.currentTarget.value);
+            event.currentTarget.blur();
+          } else if (event.key === "Escape") {
+            event.preventDefault();
+            setDraft(formatHeaderInputValue(value, decimals, useGrouping));
+            event.currentTarget.blur();
+          }
+        }}
+        className="min-w-0 border-0 bg-transparent p-0 text-center font-[inherit] leading-[inherit] text-inherit outline-none tabular-nums"
+        style={{ width: inputWidth }}
+      />
+      {suffix && <span aria-hidden="true">{suffix}</span>}
+    </span>
   );
 }
 
@@ -1081,8 +1123,27 @@ function SeeOurMathBento({
   const feeBarWidth = `${Math.min(Math.max(directFeeShare, 0), 100)}%`;
   const compoundingBarWidth = `${Math.min(Math.max(compoundingShare, 0), 100)}%`;
 
+  if (!expanded) {
+    return (
+      <section className="min-w-0 overflow-hidden rounded-md border border-[#C9D8E4] bg-[#F8FBFC] shadow-[0_12px_26px_rgba(17,33,52,0.08)]">
+        <button
+          type="button"
+          onClick={() => setExpanded(true)}
+          className="flex min-h-12 w-full items-center justify-center px-4 text-center text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#108843] transition hover:bg-[#EEF5FA] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843]"
+          aria-expanded={false}
+          aria-controls="see-our-math-details"
+        >
+          See our math
+        </button>
+      </section>
+    );
+  }
+
   return (
-    <section className="min-w-0 overflow-hidden rounded-md border border-[#C9D8E4] bg-[#F8FBFC] p-4 shadow-[0_12px_26px_rgba(17,33,52,0.08)] sm:p-5">
+    <section
+      id="see-our-math-details"
+      className="min-w-0 overflow-hidden rounded-md border border-[#C9D8E4] bg-[#F8FBFC] p-4 shadow-[0_12px_26px_rgba(17,33,52,0.08)] sm:p-5"
+    >
       <div className="grid min-w-0 gap-4 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:items-start">
         <div className="min-w-0">
           <div className="flex items-center gap-2 text-[#108843]">
@@ -1152,14 +1213,15 @@ function SeeOurMathBento({
           <button
             type="button"
             onClick={() => setExpanded((prev) => !prev)}
-            className="mt-4 inline-flex min-h-10 w-full items-center justify-center rounded-md border border-[#C9D8E4] bg-white px-4 text-center text-sm font-extrabold text-[#064B84] transition hover:bg-[#EEF5FA] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843] lg:hidden"
+            className="mt-4 inline-flex min-h-10 w-full items-center justify-center rounded-md border border-[#C9D8E4] bg-white px-4 text-center text-sm font-extrabold text-[#064B84] transition hover:bg-[#EEF5FA] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843]"
             aria-expanded={expanded}
+            aria-controls="see-our-math-details"
           >
             {expanded ? "Hide details" : "Show details"}
           </button>
         </div>
 
-        <div className={expanded ? "min-w-0" : "hidden min-w-0 lg:block"}>
+        <div className="min-w-0">
           <div className="max-h-[320px] w-full overflow-auto rounded-md border border-[#D5E1EB] bg-white">
             <table className="w-full min-w-[920px] border-collapse text-left text-xs">
               <caption className="sr-only">Year-by-year fee comparison table</caption>
@@ -1245,6 +1307,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     disclosure,
     finalValueWithFees,
     finalValueWithoutFees,
+    onAssumptionChange,
     percentLost,
     portfolioValue,
     series,
@@ -1261,9 +1324,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const [hoverBar, setHoverBar] = useState(false);
   const [chartGapHintActive, setChartGapHintActive] = useState(false);
   const [barGapHintActive, setBarGapHintActive] = useState(false);
-  const [chartTitleLead, setChartTitleLead] = useState("Your portfolio value");
-  const [chartTitleTail, setChartTitleTail] = useState("over time");
-  const [feePhrase, setFeePhrase] = useState("asset-based fees");
   const visualizationRef = useRef<HTMLDivElement | null>(null);
   const gapHintCancelledRef = useRef(false);
   const gapHintPlayCountRef = useRef(0);
@@ -1391,37 +1451,63 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
       <div id="savings-section">
       <ScrollReveal className="mx-auto max-w-[1380px] overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]">
         <header className="relative flex flex-col gap-3 border-b border-[#DFE6EE] bg-white/65 px-6 py-4 text-[#062B43] backdrop-blur sm:px-10">
-          <div className="text-center">
+          <div className="text-center lg:pr-72">
             <h2 className="text-[clamp(1.75rem,2.6vw,2.75rem)] font-bold leading-tight tracking-normal">
-              <EditableHeaderField
-                ariaLabel="chart title lead"
-                value={chartTitleLead}
-                onChange={setChartTitleLead}
-                className="font-bold"
-                inputClassName="font-bold leading-tight text-[#062B43]"
+              Your portfolio value:{" "}
+              <FinalHeaderNumberInput
+                ariaLabel="Portfolio value"
+                value={portfolioValue}
+                onChange={(value) => onAssumptionChange({ portfolioValue: value })}
+                prefix="$"
+                decimals={0}
+                inputMode="numeric"
+                min={250000}
+                max={5000000}
+                useGrouping
+                className="font-bold text-[#062B43]"
               />{" "}
-              <EditableHeaderField
-                ariaLabel="chart title ending"
-                value={chartTitleTail}
-                onChange={setChartTitleTail}
-                className="font-bold"
-                inputClassName="font-bold leading-tight text-[#062B43]"
+              <span>over</span>{" "}
+              <FinalHeaderNumberInput
+                ariaLabel="Time horizon in years"
+                value={years}
+                onChange={(value) => onAssumptionChange({ years: Math.round(value) })}
+                suffix=" years"
+                decimals={0}
+                inputMode="numeric"
+                min={1}
+                max={40}
+                className="font-bold text-[#062B43]"
               />
             </h2>
             <p className="mt-2 text-lg text-[#42556C] sm:text-xl">
-              Compare your{" "}
-              <EditableHeaderField
-                ariaLabel="fee comparison phrase"
-                value={feePhrase}
-                onChange={setFeePhrase}
+              Compare your asset-based fee:{" "}
+              <FinalHeaderNumberInput
+                ariaLabel="Asset-based fee percentage"
+                value={annualFeePercent}
+                onChange={(value) => onAssumptionChange({ annualFeePercent: value })}
+                suffix="%"
+                decimals={2}
+                inputMode="decimal"
+                min={0.25}
+                max={2.5}
                 className="font-semibold text-[#064B84]"
-                inputClassName="font-semibold text-[#064B84]"
               />{" "}
               with a flat <span className="font-semibold text-[#108843]">$100/month</span>.
             </p>
           </div>
-          <div className="shrink-0 self-center whitespace-nowrap border-l-2 border-[#108843] pl-4 text-base font-semibold uppercase leading-tight tracking-tight text-[#108843] sm:text-xl lg:absolute lg:right-10 lg:top-1/2 lg:-translate-y-1/2 lg:self-auto">
-            Avoid Fee Drag!
+          <div className="shrink-0 self-center whitespace-nowrap border-l-2 border-[#108843] pl-4 text-base font-semibold uppercase leading-tight tracking-tight text-[#108843] sm:text-xl lg:absolute lg:right-10 lg:top-[70%] lg:-translate-y-1/2 lg:self-auto">
+            <span>Annual Growth: </span>
+            <FinalHeaderNumberInput
+              ariaLabel="Annual growth percentage"
+              value={annualGrowthPercent}
+              onChange={(value) => onAssumptionChange({ annualGrowthPercent: value })}
+              suffix="%"
+              decimals={1}
+              inputMode="decimal"
+              min={3}
+              max={12}
+              className="text-[#108843]"
+            />
           </div>
         </header>
 

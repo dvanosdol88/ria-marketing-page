@@ -21,6 +21,14 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-20 - Interactive final-home chart header inputs
+**Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
+- changed: `src/components/HomeCalculatorExperience.tsx` replaces the final-home chart header's editable text labels with real numeric inputs bound to portfolio value, asset-based fee, annual growth, and years. The header now reads as an explicit input sentence, keeps `over` plain text, keeps the time value underlined, shows `%` for fee and growth, and preserves the green right-side Annual Growth callout.
+- changed: `src/components/CostAnalysisCalculator.tsx` passes calculator-state patch updates into the final-home experience so header edits update the chart, ending values, lower control grid, URL state, and math bento immediately.
+- changed: the `See our math` bento now starts collapsed on desktop and mobile with only `See our math` visible; opening it reveals the existing breakdown, year table, assumptions, and disclosures.
+- verified locally: `npx tsc --noEmit` clean; `npm run lint` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning. Playwright on local dev confirmed desktop/mobile header input modes, synchronized lower controls, URL updates, visible percent suffixes, non-underlined `over`, underlined time value, collapsed/expanded math bento behavior, and no current-page console errors.
+- not yet deployed: pending commit, push, Vercel deployment, and production verification.
+
 ### 2026-05-19 - Editable chart header and gap breakdown bento
 **Agent:** Codex | **Surface:** marketing/calculator + fit CTA divider | **Duration:** 1 session
 - changed: `src/components/HomeCalculatorExperience.tsx` makes the final calculator chart header inline-editable for "Your portfolio value", "over time", and "asset-based fees"; blur/Enter commits, Escape cancels the current draft, and blank edits revert without changing calculator math.

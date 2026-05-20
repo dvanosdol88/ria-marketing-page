@@ -1031,6 +1031,7 @@ export function CostAnalysisCalculator({
           renderChart={renderChart}
           activeScenario={activeCard}
           onHighlightScenario={handleCardTap}
+          onAssumptionChange={(patch) => setState((prev) => ({ ...prev, ...patch }))}
         />
 
         {usesOpeningMarketingHero && (
