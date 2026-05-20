@@ -266,7 +266,10 @@ function FinalHeaderNumberInput({
     if (!autoFocus) return;
 
     const frameId = window.requestAnimationFrame(() => {
+      const scrollX = window.scrollX;
+      const scrollY = window.scrollY;
       inputRef.current?.focus({ preventScroll: true });
+      window.requestAnimationFrame(() => window.scrollTo(scrollX, scrollY));
     });
 
     return () => window.cancelAnimationFrame(frameId);
@@ -1518,9 +1521,15 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const activateHeaderField = (field: EditableHeaderField) => {
     const scrollX = window.scrollX;
     const scrollY = window.scrollY;
+    const restoreScroll = () => window.scrollTo(scrollX, scrollY);
+
     setActiveHeaderField(field);
     setHeaderInputsVisible(true);
-    window.requestAnimationFrame(() => window.scrollTo(scrollX, scrollY));
+    window.requestAnimationFrame(() => {
+      restoreScroll();
+      window.requestAnimationFrame(restoreScroll);
+    });
+    window.setTimeout(restoreScroll, 80);
   };
   const updateAssumption = (patch: CalculatorAssumptionPatch) => {
     setHeaderInputsVisible(true);
