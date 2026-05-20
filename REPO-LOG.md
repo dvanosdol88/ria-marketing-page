@@ -21,6 +21,13 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-20 - Mobile editable header affordance
+**Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
+- changed: `src/components/HomeCalculatorExperience.tsx` adds a reusable editable-header trigger treatment with mobile-only pencil icons for `Your Portfolio Value`, `Time`, and `your asset-based fee`, plus a stronger mobile underline/tap target while keeping the desktop headline treatment restrained.
+- changed: the inline header autofocus now preserves scroll during the read-state-to-input swap so tapping an editable header field on mobile does not move the focused input out of view.
+- verified locally: `npx tsc --noEmit` clean; `npm run lint` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning. Playwright mobile checks confirmed the three edit triggers render one pencil icon each, tapping portfolio switches to the focused `Portfolio value` input, and the calculator header remains visible.
+- deployed: pushed directly to `main` in commits `df9dc78`, `790693d`, and `0b34918`; Vercel deployment `dpl_EEBTsUprWmDfXSi8mRwHcnNH6awH` READY and aliased to `youarepayingtoomuch.com`. Production Playwright mobile check passed at `https://youarepayingtoomuch.com/?variant=final-home&codex_prod_header_affordance=1779304058`, with zero console errors.
+
 ### 2026-05-20 - Collapsed math bento and right-side fit CTA
 **Agent:** Codex | **Surface:** marketing/calculator + fit CTA divider | **Duration:** 1 session
 - changed: `src/components/HomeCalculatorExperience.tsx` now keeps the collapsed `See our math` bento visually limited to the `See our math` label and the expand icon; the projected-gap breakdown remains inside the modal.
