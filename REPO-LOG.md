@@ -27,7 +27,7 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - changed: the customized header state now renders as a centered value sentence such as `$1,000,000 over 20 years`, keeps `over` plain, keeps the numeric fields underlined, and stacks the green `Annual Growth` callout label above its percentage input.
 - changed: `src/components/CostAnalysisCalculator.tsx` tracks when assumptions have been provided from the URL or changed by the user so the header can distinguish the default copy state from the customized input state while preserving live calculator updates.
 - verified locally: `npx tsc --noEmit` clean; `npm run lint` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning. Playwright local desktop/mobile checks confirmed default and customized header states, input keyboard modes, no mobile horizontal overflow, collapsed `See our math`, and zero console errors in the scripted smoke.
-- deployed: pending.
+- deployed: pushed directly to `main` in commit `a8db91e`; Vercel deployment `dpl_9DmnAemd5MSSkEo4W7agFh3TpKSm` READY and aliased to `youarepayingtoomuch.com`. Production Playwright desktop/mobile checks confirmed the restored default title/subheader, customized input state, keyboard modes, stacked Annual Growth callout, collapsed `See our math`, no horizontal overflow, and zero console errors.
 
 ### 2026-05-20 - Interactive final-home chart header inputs
 **Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
