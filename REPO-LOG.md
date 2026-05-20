@@ -27,7 +27,7 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - changed: `src/components/CostAnalysisCalculator.tsx` passes calculator-state patch updates into the final-home experience so header edits update the chart, ending values, lower control grid, URL state, and math bento immediately.
 - changed: the `See our math` bento now starts collapsed on desktop and mobile with only `See our math` visible; opening it reveals the existing breakdown, year table, assumptions, and disclosures.
 - verified locally: `npx tsc --noEmit` clean; `npm run lint` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning. Playwright on local dev confirmed desktop/mobile header input modes, synchronized lower controls, URL updates, visible percent suffixes, non-underlined `over`, underlined time value, collapsed/expanded math bento behavior, and no current-page console errors.
-- not yet deployed: pending commit, push, Vercel deployment, and production verification.
+- deployed: pushed directly to `main` in commit `5774f09`; Vercel deployment `dpl_7Kc2ZYACCRtJcReSpnjrUXr3o469` READY and aliased to `youarepayingtoomuch.com`. Production Playwright desktop/mobile checks confirmed header inputs, synchronized lower controls and URL state, collapsed/expanded math bento behavior, and zero console errors.
 
 ### 2026-05-19 - Editable chart header and gap breakdown bento
 **Agent:** Codex | **Surface:** marketing/calculator + fit CTA divider | **Duration:** 1 session
