@@ -1516,8 +1516,11 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const headerSwapInitial = prefersReducedMotion ? false : { opacity: 0, y: 5 };
   const headerSwapExit = prefersReducedMotion ? undefined : { opacity: 0, y: -5 };
   const activateHeaderField = (field: EditableHeaderField) => {
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
     setActiveHeaderField(field);
     setHeaderInputsVisible(true);
+    window.requestAnimationFrame(() => window.scrollTo(scrollX, scrollY));
   };
   const updateAssumption = (patch: CalculatorAssumptionPatch) => {
     setHeaderInputsVisible(true);
