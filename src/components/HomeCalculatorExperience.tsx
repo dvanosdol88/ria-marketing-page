@@ -6,6 +6,7 @@ import {
   DollarSign,
   ExternalLink,
   Maximize2,
+  PencilLine,
   Percent,
   ReceiptText,
   ScanLine,
@@ -179,6 +180,36 @@ function clampHeaderInputValue(value: number, min: number, max: number, decimals
   return Math.round(clamped * multiplier) / multiplier;
 }
 
+function EditableHeaderButton({
+  ariaLabel,
+  children,
+  className = "",
+  iconClassName = "",
+  onClick,
+}: {
+  ariaLabel: string;
+  children: ReactNode;
+  className?: string;
+  iconClassName?: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`-mx-1 inline-flex items-center gap-1 rounded-md px-1 py-0.5 font-[inherit] leading-[inherit] underline decoration-[#AEB8C3] decoration-2 underline-offset-[0.2em] outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843] sm:mx-0 sm:px-0 sm:py-0 sm:decoration-[#D7E0E8] sm:decoration-1 ${className}`}
+      aria-label={ariaLabel}
+    >
+      <span>{children}</span>
+      <PencilLine
+        aria-hidden="true"
+        className={`h-[0.62em] w-[0.62em] shrink-0 text-[#108843] sm:hidden ${iconClassName}`}
+        strokeWidth={2.4}
+      />
+    </button>
+  );
+}
+
 function FinalHeaderNumberInput({
   ariaLabel,
   autoFocus = false,
@@ -235,7 +266,7 @@ function FinalHeaderNumberInput({
     if (!autoFocus) return;
 
     const frameId = window.requestAnimationFrame(() => {
-      inputRef.current?.focus();
+      inputRef.current?.focus({ preventScroll: true });
     });
 
     return () => window.cancelAnimationFrame(frameId);
@@ -1678,23 +1709,21 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
                     transition={headerSwapTransition}
                     className="inline-flex flex-wrap items-baseline justify-center gap-x-2 gap-y-1"
                   >
-                    <button
-                      type="button"
+                    <EditableHeaderButton
                       onClick={() => activateHeaderField("portfolio")}
-                      className="font-[inherit] leading-[inherit] text-[#062B43] underline decoration-[#D7E0E8] decoration-1 underline-offset-[0.22em] outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843]"
-                      aria-label="Edit portfolio value"
+                      className="text-[#062B43]"
+                      ariaLabel="Edit portfolio value"
                     >
                       Your Portfolio Value
-                    </button>
+                    </EditableHeaderButton>
                     <span>over</span>
-                    <button
-                      type="button"
+                    <EditableHeaderButton
                       onClick={() => activateHeaderField("years")}
-                      className="font-[inherit] leading-[inherit] text-[#062B43] underline decoration-[#D7E0E8] decoration-1 underline-offset-[0.22em] outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843]"
-                      aria-label="Edit time horizon"
+                      className="text-[#062B43]"
+                      ariaLabel="Edit time horizon"
                     >
                       Time
-                    </button>
+                    </EditableHeaderButton>
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -1742,13 +1771,14 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
                     className="inline-flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-1"
                   >
                     <span>Compare</span>
-                    <button
-                      type="button"
+                    <EditableHeaderButton
                       onClick={() => activateHeaderField("fee")}
-                      className="font-semibold text-[#064B84] underline decoration-[#064B84] decoration-2 underline-offset-4 outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843]"
+                      className="font-semibold text-[#064B84] decoration-[#064B84] sm:decoration-2"
+                      ariaLabel="Edit asset-based fee percentage"
+                      iconClassName="h-[0.7em] w-[0.7em]"
                     >
                       your asset-based fee
-                    </button>
+                    </EditableHeaderButton>
                     <span>with a flat <span className="font-semibold text-[#108843]">$100/month</span>.</span>
                   </motion.span>
                 )}
