@@ -27,7 +27,7 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - changed: the math modal supports close button, Escape, and backdrop click; the overlay is portaled to `document.body` so it sits above the sticky header and transformed calculator section.
 - changed: `src/components/AdvisorProofSections.tsx` narrows the final CTA divider's inner content and changes the CTA from a full-width pale strip to a brand-blue `#064B84` button with white text.
 - verified locally: `npx tsc --noEmit` clean; `npm run lint` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning. Playwright local checks confirmed the bento expand control, modal open without inline layout push, Escape close, backdrop close, mobile dialog scrollability, blue/white CTA computed styles, and zero console errors.
-- deployed: pending branch land and production verification.
+- deployed: pushed to `main` in commit `67049a7`; production Playwright checks passed at `https://youarepayingtoomuch.com/?variant=final-home&codex_prod_bento=1779293862758_2` and `https://youarepayingtoomuch.com/?codex_prod_cta=1779293871160_2`, confirming the modal bento behavior, mobile dialog, blue/white CTA styling, and zero console errors.
 
 ### 2026-05-20 - Final-home header default-state polish
 **Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
