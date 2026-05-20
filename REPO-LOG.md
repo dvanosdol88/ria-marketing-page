@@ -21,6 +21,14 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-20 - Final-home header default-state polish
+**Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
+- changed: `src/components/HomeCalculatorExperience.tsx` restores the final-home chart header's default centered title to "Your Portfolio Value over Time" and restores the default fee subheader to "Compare your asset-based fees with a flat $100/month." Clicking the title or fee phrase reveals the live numeric header inputs.
+- changed: the customized header state now renders as a centered value sentence such as `$1,000,000 over 20 years`, keeps `over` plain, keeps the numeric fields underlined, and stacks the green `Annual Growth` callout label above its percentage input.
+- changed: `src/components/CostAnalysisCalculator.tsx` tracks when assumptions have been provided from the URL or changed by the user so the header can distinguish the default copy state from the customized input state while preserving live calculator updates.
+- verified locally: `npx tsc --noEmit` clean; `npm run lint` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning. Playwright local desktop/mobile checks confirmed default and customized header states, input keyboard modes, no mobile horizontal overflow, collapsed `See our math`, and zero console errors in the scripted smoke.
+- deployed: pending.
+
 ### 2026-05-20 - Interactive final-home chart header inputs
 **Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
 - changed: `src/components/HomeCalculatorExperience.tsx` replaces the final-home chart header's editable text labels with real numeric inputs bound to portfolio value, asset-based fee, annual growth, and years. The header now reads as an explicit input sentence, keeps `over` plain text, keeps the time value underlined, shows `%` for fee and growth, and preserves the green right-side Annual Growth callout.

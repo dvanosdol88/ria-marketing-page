@@ -81,6 +81,7 @@ type HomeCalculatorExperienceProps = {
   simpleControls: CalculatorSimpleControlNodes;
   renderChart: (className: string) => ReactNode;
   activeScenario: Scenario | null;
+  assumptionsCustomized: boolean;
   onHighlightScenario: (scenario: Scenario) => void;
   onAssumptionChange: (patch: CalculatorAssumptionPatch) => void;
 };
@@ -1304,6 +1305,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     annualFeePercent,
     annualFlatFee,
     annualGrowthPercent,
+    assumptionsCustomized,
     disclosure,
     finalValueWithFees,
     finalValueWithoutFees,
@@ -1324,11 +1326,17 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const [hoverBar, setHoverBar] = useState(false);
   const [chartGapHintActive, setChartGapHintActive] = useState(false);
   const [barGapHintActive, setBarGapHintActive] = useState(false);
+  const [headerInputsVisible, setHeaderInputsVisible] = useState(assumptionsCustomized);
   const visualizationRef = useRef<HTMLDivElement | null>(null);
   const gapHintCancelledRef = useRef(false);
   const gapHintPlayCountRef = useRef(0);
   const gapHintTimeoutsRef = useRef<number[]>([]);
   const vsActive = chartPinned && barPinned;
+  const showHeaderInputs = headerInputsVisible || assumptionsCustomized;
+  const updateAssumption = (patch: CalculatorAssumptionPatch) => {
+    setHeaderInputsVisible(true);
+    onAssumptionChange(patch);
+  };
   const clearGapHintTimers = () => {
     gapHintTimeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
     gapHintTimeoutsRef.current = [];
@@ -1450,57 +1458,90 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
       </div>
       <div id="savings-section">
       <ScrollReveal className="mx-auto max-w-[1380px] overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]">
-        <header className="relative flex flex-col gap-3 border-b border-[#DFE6EE] bg-white/65 px-6 py-4 text-[#062B43] backdrop-blur sm:px-10">
-          <div className="text-center lg:pr-72">
+        <header className="border-b border-[#DFE6EE] bg-white/65 px-6 py-4 text-[#062B43] backdrop-blur sm:px-10">
+          <div className="grid items-center gap-3 lg:grid-cols-[11rem_minmax(0,1fr)_11rem]">
+            <div className="hidden lg:block" aria-hidden="true" />
+          <div className="text-center">
             <h2 className="text-[clamp(1.75rem,2.6vw,2.75rem)] font-bold leading-tight tracking-normal">
-              Your portfolio value:{" "}
-              <FinalHeaderNumberInput
-                ariaLabel="Portfolio value"
-                value={portfolioValue}
-                onChange={(value) => onAssumptionChange({ portfolioValue: value })}
-                prefix="$"
-                decimals={0}
-                inputMode="numeric"
-                min={250000}
-                max={5000000}
-                useGrouping
-                className="font-bold text-[#062B43]"
-              />{" "}
-              <span>over</span>{" "}
-              <FinalHeaderNumberInput
-                ariaLabel="Time horizon in years"
-                value={years}
-                onChange={(value) => onAssumptionChange({ years: Math.round(value) })}
-                suffix=" years"
-                decimals={0}
-                inputMode="numeric"
-                min={1}
-                max={40}
-                className="font-bold text-[#062B43]"
-              />
+              {showHeaderInputs ? (
+                <>
+                  <FinalHeaderNumberInput
+                    ariaLabel="Portfolio value"
+                    value={portfolioValue}
+                    onChange={(value) => updateAssumption({ portfolioValue: value })}
+                    prefix="$"
+                    decimals={0}
+                    inputMode="numeric"
+                    min={250000}
+                    max={5000000}
+                    useGrouping
+                    className="font-bold text-[#062B43]"
+                  />{" "}
+                  <span>over</span>{" "}
+                  <FinalHeaderNumberInput
+                    ariaLabel="Time horizon in years"
+                    value={years}
+                    onChange={(value) => updateAssumption({ years: Math.round(value) })}
+                    suffix=" years"
+                    decimals={0}
+                    inputMode="numeric"
+                    min={1}
+                    max={40}
+                    className="font-bold text-[#062B43]"
+                  />
+                </>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setHeaderInputsVisible(true)}
+                  className="font-[inherit] leading-[inherit] text-[#062B43] outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843]"
+                  aria-label="Edit portfolio value and time horizon"
+                >
+                  <span className="underline decoration-[#D92D20] decoration-4 underline-offset-[0.22em]">
+                    Your Portfolio Value
+                  </span>{" "}
+                  <span>over</span>{" "}
+                  <span className="underline decoration-[#D92D20] decoration-4 underline-offset-[0.22em]">
+                    Time
+                  </span>
+                </button>
+              )}
             </h2>
             <p className="mt-2 text-lg text-[#42556C] sm:text-xl">
-              Compare your asset-based fee:{" "}
-              <FinalHeaderNumberInput
-                ariaLabel="Asset-based fee percentage"
-                value={annualFeePercent}
-                onChange={(value) => onAssumptionChange({ annualFeePercent: value })}
-                suffix="%"
-                decimals={2}
-                inputMode="decimal"
-                min={0.25}
-                max={2.5}
-                className="font-semibold text-[#064B84]"
-              />{" "}
+              Compare your{" "}
+              {showHeaderInputs ? (
+                <>
+                  asset-based fee:{" "}
+                  <FinalHeaderNumberInput
+                    ariaLabel="Asset-based fee percentage"
+                    value={annualFeePercent}
+                    onChange={(value) => updateAssumption({ annualFeePercent: value })}
+                    suffix="%"
+                    decimals={2}
+                    inputMode="decimal"
+                    min={0.25}
+                    max={2.5}
+                    className="font-semibold text-[#064B84]"
+                  />{" "}
+                </>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setHeaderInputsVisible(true)}
+                  className="font-semibold text-[#064B84] underline decoration-[#064B84] decoration-2 underline-offset-4 outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843]"
+                >
+                  asset-based fees
+                </button>
+              )}{" "}
               with a flat <span className="font-semibold text-[#108843]">$100/month</span>.
             </p>
           </div>
-          <div className="shrink-0 self-center whitespace-nowrap border-l-2 border-[#108843] pl-4 text-base font-semibold uppercase leading-tight tracking-tight text-[#108843] sm:text-xl lg:absolute lg:right-10 lg:top-[70%] lg:-translate-y-1/2 lg:self-auto">
-            <span>Annual Growth: </span>
+          <div className="mx-auto flex shrink-0 flex-col items-center justify-center border-l-2 border-[#108843] pl-4 text-center text-sm font-semibold uppercase leading-tight tracking-tight text-[#108843] sm:text-base lg:mx-0 lg:items-start lg:text-left">
+            <span>Annual Growth</span>
             <FinalHeaderNumberInput
               ariaLabel="Annual growth percentage"
               value={annualGrowthPercent}
-              onChange={(value) => onAssumptionChange({ annualGrowthPercent: value })}
+              onChange={(value) => updateAssumption({ annualGrowthPercent: value })}
               suffix="%"
               decimals={1}
               inputMode="decimal"
@@ -1508,6 +1549,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
               max={12}
               className="text-[#108843]"
             />
+          </div>
           </div>
         </header>
 

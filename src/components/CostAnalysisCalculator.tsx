@@ -427,6 +427,11 @@ export function CostAnalysisCalculator({
   searchParams,
   marketingVariantId,
 }: Props) {
+  const paramsFromServer = useMemo(() => normalizeSearchParams(searchParams), [searchParams]);
+  const hasAssumptionParams = useMemo(
+    () => ["portfolio", "years", "growth", "fee", "mfe"].some((key) => paramsFromServer.has(key)),
+    [paramsFromServer]
+  );
   const mergedState = useMemo(
     () => ({
       ...DEFAULT_STATE,
@@ -436,6 +441,7 @@ export function CostAnalysisCalculator({
   );
 
   const [state, setState] = useState<CalculatorState>(mergedState);
+  const [assumptionsCustomized, setAssumptionsCustomized] = useState(hasAssumptionParams);
   const [activeCard, setActiveCard] = useState<"smarter" | "traditional" | null>(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [shareFeedback, setShareFeedback] = useState<"idle" | "success" | "error">("idle");
@@ -444,6 +450,10 @@ export function CostAnalysisCalculator({
     mergedState.mutualFundExpensePercent > 0
   );
   const [chartReady, setChartReady] = useState(false);
+  const updateCalculatorState = useCallback((patch: Partial<CalculatorState>) => {
+    setAssumptionsCustomized(true);
+    setState((prev) => ({ ...prev, ...patch }));
+  }, []);
 
   const totalAnnualFeePercent = state.annualFeePercent + state.mutualFundExpensePercent;
 
@@ -470,7 +480,6 @@ export function CostAnalysisCalculator({
     return () => setSavingsBarData(null);
   }, [setSavingsBarData]);
 
-  const paramsFromServer = useMemo(() => normalizeSearchParams(searchParams), [searchParams]);
   const introStyle = useMemo<IntroStyle>(() => {
     const intro = paramsFromServer.get("intro");
     return intro === "rule" || intro === "quote" ? intro : "panel";
@@ -682,7 +691,7 @@ export function CostAnalysisCalculator({
       <PillSlider
         label="Advisory fee"
         value={state.annualFeePercent}
-        onChange={(v) => setState((prev) => ({ ...prev, annualFeePercent: v }))}
+        onChange={(v) => updateCalculatorState({ annualFeePercent: v })}
         format={(v) => `${v.toFixed(2)}%`}
         variant="destructive"
         theme={calculatorTheme.slider}
@@ -707,7 +716,7 @@ export function CostAnalysisCalculator({
         <PillSlider
           label="Mutual fund expenses"
           value={state.mutualFundExpensePercent}
-          onChange={(v) => setState((prev) => ({ ...prev, mutualFundExpensePercent: v }))}
+          onChange={(v) => updateCalculatorState({ mutualFundExpensePercent: v })}
           format={(v) => `${v.toFixed(2)}%`}
           variant="destructive"
           theme={calculatorTheme.slider}
@@ -720,7 +729,7 @@ export function CostAnalysisCalculator({
               type="button"
               onClick={() => {
                 setShowMutualFundExpenses(false);
-                setState((prev) => ({ ...prev, mutualFundExpensePercent: 0 }));
+                updateCalculatorState({ mutualFundExpensePercent: 0 });
               }}
               className={`text-[11px] font-semibold tracking-wide transition-colors ${calculatorTheme.slider.removeButtonClassName}`}
             >
@@ -734,7 +743,7 @@ export function CostAnalysisCalculator({
       <PillSlider
         label="Portfolio value"
         value={state.portfolioValue}
-        onChange={(v) => setState((prev) => ({ ...prev, portfolioValue: v }))}
+        onChange={(v) => updateCalculatorState({ portfolioValue: v })}
         format={(v) => formatCurrency(v)}
         variant="accumulation"
         theme={calculatorTheme.slider}
@@ -747,7 +756,7 @@ export function CostAnalysisCalculator({
       <PillSlider
         label="Annual growth"
         value={state.annualGrowthPercent}
-        onChange={(v) => setState((prev) => ({ ...prev, annualGrowthPercent: v }))}
+        onChange={(v) => updateCalculatorState({ annualGrowthPercent: v })}
         format={(v) => `${v.toFixed(1)}%`}
         variant="accumulation"
         theme={calculatorTheme.slider}
@@ -760,7 +769,7 @@ export function CostAnalysisCalculator({
       <PillSlider
         label="Time horizon"
         value={state.years}
-        onChange={(v) => setState((prev) => ({ ...prev, years: v }))}
+        onChange={(v) => updateCalculatorState({ years: v })}
         format={(v) => `${v} yrs`}
         variant="accumulation"
         theme={calculatorTheme.slider}
@@ -774,7 +783,7 @@ export function CostAnalysisCalculator({
       <SimpleRangeControl
         label="Portfolio value"
         value={state.portfolioValue}
-        onChange={(value) => setState((prev) => ({ ...prev, portfolioValue: value }))}
+        onChange={(value) => updateCalculatorState({ portfolioValue: value })}
         formatter={(value) => formatCurrency(value)}
         boundsFormatter={(value) => formatCompactCurrency(value)}
         min={250000}
@@ -786,7 +795,7 @@ export function CostAnalysisCalculator({
       <SimpleRangeControl
         label="Years"
         value={state.years}
-        onChange={(value) => setState((prev) => ({ ...prev, years: Math.round(value) }))}
+        onChange={(value) => updateCalculatorState({ years: Math.round(value) })}
         formatter={(value) => `${Math.round(value)}`}
         boundsFormatter={(value) => `${Math.round(value)}`}
         min={1}
@@ -798,7 +807,7 @@ export function CostAnalysisCalculator({
       <SimpleRangeControl
         label="Annualized growth"
         value={state.annualGrowthPercent}
-        onChange={(value) => setState((prev) => ({ ...prev, annualGrowthPercent: value }))}
+        onChange={(value) => updateCalculatorState({ annualGrowthPercent: value })}
         formatter={(value) => `${value.toFixed(2)}%`}
         boundsFormatter={(value) => `${Math.round(value)}%`}
         min={3}
@@ -810,7 +819,7 @@ export function CostAnalysisCalculator({
       <SimpleRangeControl
         label="Asset-based fee"
         value={state.annualFeePercent}
-        onChange={(value) => setState((prev) => ({ ...prev, annualFeePercent: value }))}
+        onChange={(value) => updateCalculatorState({ annualFeePercent: value })}
         formatter={(value) => `${value.toFixed(2)}%`}
         boundsFormatter={(value) => `${value.toFixed(2)}%`}
         min={0.25}
@@ -907,7 +916,7 @@ export function CostAnalysisCalculator({
           annualGrowthPercent={state.annualGrowthPercent}
           annualFeePercent={state.annualFeePercent}
           mutualFundExpensePercent={state.mutualFundExpensePercent}
-          onCalculatorChange={(patch) => setState((prev) => ({ ...prev, ...patch }))}
+          onCalculatorChange={(patch) => updateCalculatorState(patch)}
           onShare={shareResult}
           shareButtonLabel={shareButtonLabel}
         />
@@ -1030,8 +1039,9 @@ export function CostAnalysisCalculator({
           simpleControls={simpleControls}
           renderChart={renderChart}
           activeScenario={activeCard}
+          assumptionsCustomized={assumptionsCustomized}
           onHighlightScenario={handleCardTap}
-          onAssumptionChange={(patch) => setState((prev) => ({ ...prev, ...patch }))}
+          onAssumptionChange={(patch) => updateCalculatorState(patch)}
         />
 
         {usesOpeningMarketingHero && (
