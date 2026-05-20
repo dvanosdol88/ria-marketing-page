@@ -938,6 +938,13 @@ function FinalHomeLineChart({
             <stop offset="48%" stopColor="#D92D20" stopOpacity="0.2" />
             <stop offset="100%" stopColor="#D92D20" stopOpacity="0" />
           </linearGradient>
+          {/* Cross-hatch deficit fill — red 45° 2.5px stroke at 3px tile (double density), grey -45° 2px stroke at 6px tile */}
+          <pattern id="deficit-hatch-red" patternUnits="userSpaceOnUse" width="3" height="3" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="3" stroke="#A6342A" strokeWidth="2.5" strokeOpacity="0.55" />
+          </pattern>
+          <pattern id="deficit-hatch-grey" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(-45)">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="#52657A" strokeWidth="2" strokeOpacity="0.5" />
+          </pattern>
         </defs>
         {yTicks.map((tick) => (
           <g key={tick.y}>
@@ -979,12 +986,10 @@ function FinalHomeLineChart({
             />
           </g>
         ) : null}
-        <path
-          d={gapAreaPath}
-          fill="#C9A8A3"
-          opacity={chartActive ? "0.4" : "0"}
-          className="transition-opacity duration-300"
-        />
+        <g opacity={chartActive ? "1" : "0"} className="transition-opacity duration-300">
+          <path d={gapAreaPath} fill="url(#deficit-hatch-red)" />
+          <path d={gapAreaPath} fill="url(#deficit-hatch-grey)" />
+        </g>
         <path d={pathFor("withFees")} fill="none" stroke="#064B84" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
         <path d={pathFor("withoutFees")} fill="none" stroke="#108843" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
         <g
@@ -1184,7 +1189,7 @@ function ComparisonBars({
             </div>
           ) : null}
           <div
-            className={`absolute inset-y-0 flex items-center justify-center bg-[#D92D20] transition-opacity duration-300 ease-out ${
+            className={`absolute inset-y-0 flex items-center justify-center overflow-hidden transition-opacity duration-300 ease-out ${
               barActive ? "opacity-100" : "opacity-0"
             }`}
             style={{
@@ -1209,7 +1214,24 @@ function ComparisonBars({
               }
             }}
           >
-            <span className="text-lg font-extrabold leading-none text-white sm:text-2xl">
+            <svg
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 h-full w-full"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <pattern id="bar-deficit-hatch-red" patternUnits="userSpaceOnUse" width="3" height="3" patternTransform="rotate(45)">
+                  <line x1="0" y1="0" x2="0" y2="3" stroke="#A6342A" strokeWidth="2.5" strokeOpacity="0.55" />
+                </pattern>
+                <pattern id="bar-deficit-hatch-grey" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(-45)">
+                  <line x1="0" y1="0" x2="0" y2="6" stroke="#52657A" strokeWidth="2" strokeOpacity="0.5" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="#FFFFFF" />
+              <rect width="100%" height="100%" fill="url(#bar-deficit-hatch-red)" />
+              <rect width="100%" height="100%" fill="url(#bar-deficit-hatch-grey)" />
+            </svg>
+            <span className="relative text-lg font-extrabold leading-none text-[#062B43] sm:text-2xl">
               {percentLost.toFixed(1)}%
             </span>
           </div>
@@ -1961,24 +1983,52 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <button
             type="button"
             onClick={toggleAllGaps}
-            className={`absolute left-1/2 top-[72px] z-10 hidden -translate-x-1/2 rounded-md px-3 py-2 text-base font-extrabold text-white transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8C5751] hover:scale-[1.03] md:block ${
-              vsActive ? "bg-[#A87B75] hover:bg-[#8C5751]" : "bg-[#8C5751] hover:bg-[#73453F]"
-            }`}
+            className="absolute bottom-0 left-1/2 top-3 z-10 hidden aspect-square -translate-x-1/2 items-center justify-center overflow-hidden rounded-md border border-[#DFE6EE] bg-white transition-transform duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] hover:scale-[1.03] md:flex"
             aria-label={vsActive ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
             aria-pressed={vsActive}
           >
-            VS
+            <svg
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 h-full w-full"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <pattern id="vs-hatch-red" patternUnits="userSpaceOnUse" width="3" height="3" patternTransform="rotate(45)">
+                  <line x1="0" y1="0" x2="0" y2="3" stroke="#A6342A" strokeWidth="2.5" strokeOpacity="0.55" />
+                </pattern>
+                <pattern id="vs-hatch-grey" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(-45)">
+                  <line x1="0" y1="0" x2="0" y2="6" stroke="#52657A" strokeWidth="2" strokeOpacity="0.5" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#vs-hatch-red)" />
+              <rect width="100%" height="100%" fill="url(#vs-hatch-grey)" />
+            </svg>
+            <span className="relative text-lg font-extrabold tracking-tight text-[#062B43]">VS</span>
           </button>
           <button
             type="button"
             onClick={toggleAllGaps}
-            className={`mx-auto rounded-md px-3 py-2 text-sm font-extrabold text-white transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8C5751] hover:scale-[1.03] md:hidden ${
-              vsActive ? "bg-[#A87B75] hover:bg-[#8C5751]" : "bg-[#8C5751] hover:bg-[#73453F]"
-            }`}
+            className="relative mx-auto flex h-14 w-14 items-center justify-center overflow-hidden rounded-md border border-[#DFE6EE] bg-white transition-transform duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] hover:scale-[1.03] md:hidden"
             aria-label={vsActive ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
             aria-pressed={vsActive}
           >
-            VS
+            <svg
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 h-full w-full"
+              preserveAspectRatio="none"
+            >
+              <defs>
+                <pattern id="vs-hatch-red-m" patternUnits="userSpaceOnUse" width="3" height="3" patternTransform="rotate(45)">
+                  <line x1="0" y1="0" x2="0" y2="3" stroke="#A6342A" strokeWidth="2.5" strokeOpacity="0.55" />
+                </pattern>
+                <pattern id="vs-hatch-grey-m" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(-45)">
+                  <line x1="0" y1="0" x2="0" y2="6" stroke="#52657A" strokeWidth="2" strokeOpacity="0.5" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#vs-hatch-red-m)" />
+              <rect width="100%" height="100%" fill="url(#vs-hatch-grey-m)" />
+            </svg>
+            <span className="relative text-sm font-extrabold tracking-tight text-[#062B43]">VS</span>
           </button>
           <FinalHomeStatCard
             ribbon="Paying flat monthly fee ($100/mo)"
