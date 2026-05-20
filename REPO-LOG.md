@@ -21,6 +21,12 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-20 - Collapsed math bento and right-side fit CTA
+**Agent:** Codex | **Surface:** marketing/calculator + fit CTA divider | **Duration:** 1 session
+- changed: `src/components/HomeCalculatorExperience.tsx` now keeps the collapsed `See our math` bento visually limited to the `See our math` label and the expand icon; the projected-gap breakdown remains inside the modal.
+- changed: `src/components/AdvisorProofSections.tsx` moves the fit CTA button into a right-side desktop column beside the `Your next step` copy while preserving the stacked mobile layout.
+- verified locally: isolated Chromium screenshots before/after, scripted browser assertion confirmed collapsed math text is exactly `SEE OUR MATH`, the modal still opens, the CTA button sits to the right of the heading on desktop, and zero console errors. `npx tsc --noEmit` clean; `npm run lint` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind/Turbopack warning.
+
 ### 2026-05-20 - See our math modal bento and CTA polish
 **Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
 - changed: `src/components/HomeCalculatorExperience.tsx` turns `See our math` into a stable compact bento card with the same `Maximize2`/`X` expand control style used by the other bento cards. The full fee breakdown, year table, assumptions, disclosures, and Smarter Way Wealth link now open in a portaled modal overlay instead of expanding inline and pushing the page down.

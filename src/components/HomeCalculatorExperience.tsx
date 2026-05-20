@@ -1246,50 +1246,13 @@ function SeeOurMathBento({
         transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
         className="min-w-0 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
       >
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
+            <h3 className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
               See our math
-            </p>
-            <h3 className="mt-2 text-xl font-black tracking-tight text-[#062417] sm:text-2xl">
-              {formatCurrency(savings)} projected gap
             </h3>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">
-              Open the year-by-year assumptions, fee totals, and the split between actual fee drag and lost compounding.
-            </p>
           </div>
           <MathExpandButton onClick={() => setExpanded(true)} />
-        </div>
-
-        <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-md border border-[#E0E8F0] bg-[#F8FBFC] p-3">
-            <div className="flex items-baseline justify-between gap-3">
-              <span className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#667587]">Fee part</span>
-              <span className="text-sm font-extrabold tabular-nums text-[#D92D20]">
-                {directFeeShare.toFixed(0)}%
-              </span>
-            </div>
-            <p className="mt-1 text-lg font-black tabular-nums text-[#10233A]">
-              {formatCurrency(directFeeGap)}
-            </p>
-            <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#E7EEF5]">
-              <div className="h-full rounded-full bg-[#D92D20]" style={{ width: feeBarWidth }} />
-            </div>
-          </div>
-          <div className="rounded-md border border-[#E0E8F0] bg-[#F8FBFC] p-3">
-            <div className="flex items-baseline justify-between gap-3">
-              <span className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#667587]">Compounding</span>
-              <span className="text-sm font-extrabold tabular-nums text-[#064B84]">
-                {compoundingShare.toFixed(0)}%
-              </span>
-            </div>
-            <p className="mt-1 text-lg font-black tabular-nums text-[#10233A]">
-              {formatCurrency(compoundingGap)}
-            </p>
-            <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#E7EEF5]">
-              <div className="h-full rounded-full bg-[#064B84]" style={{ width: compoundingBarWidth }} />
-            </div>
-          </div>
         </div>
       </motion.section>
 
