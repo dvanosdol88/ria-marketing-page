@@ -1962,7 +1962,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         </AnimatePresence>
         </div>
 
-        <section className="relative grid gap-3 px-4 pt-3 sm:px-7 md:grid-cols-2 md:gap-8" aria-label="Ending value comparison">
+        <section className="grid gap-2 px-4 pt-3 sm:px-7 md:grid-cols-[1fr_auto_1fr]" aria-label="Ending value comparison">
           <FinalHomeStatCard
             ribbon={`Paying asset-based fees (${annualFeePercent.toFixed(2)}%)`}
             value={
@@ -1983,7 +1983,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <button
             type="button"
             onClick={toggleAllGaps}
-            className="absolute bottom-0 left-1/2 top-3 z-10 hidden aspect-square -translate-x-1/2 items-center justify-center overflow-hidden rounded-md border border-[#DFE6EE] bg-white transition-transform duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] hover:scale-[1.03] md:flex"
+            className="relative mx-auto flex h-14 w-14 items-center justify-center overflow-hidden rounded-md border border-[#DFE6EE] bg-white transition-transform duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] hover:scale-[1.03] md:mx-0 md:h-auto md:w-auto md:self-stretch md:aspect-square"
             aria-label={vsActive ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
             aria-pressed={vsActive}
           >
@@ -2003,32 +2003,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
               <rect width="100%" height="100%" fill="url(#vs-hatch-red)" />
               <rect width="100%" height="100%" fill="url(#vs-hatch-grey)" />
             </svg>
-            <span className="relative text-lg font-extrabold tracking-tight text-[#062B43]">VS</span>
-          </button>
-          <button
-            type="button"
-            onClick={toggleAllGaps}
-            className="relative mx-auto flex h-14 w-14 items-center justify-center overflow-hidden rounded-md border border-[#DFE6EE] bg-white transition-transform duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] hover:scale-[1.03] md:hidden"
-            aria-label={vsActive ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
-            aria-pressed={vsActive}
-          >
-            <svg
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-0 h-full w-full"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <pattern id="vs-hatch-red-m" patternUnits="userSpaceOnUse" width="3" height="3" patternTransform="rotate(45)">
-                  <line x1="0" y1="0" x2="0" y2="3" stroke="#A6342A" strokeWidth="2.5" strokeOpacity="0.55" />
-                </pattern>
-                <pattern id="vs-hatch-grey-m" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(-45)">
-                  <line x1="0" y1="0" x2="0" y2="6" stroke="#52657A" strokeWidth="2" strokeOpacity="0.5" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#vs-hatch-red-m)" />
-              <rect width="100%" height="100%" fill="url(#vs-hatch-grey-m)" />
-            </svg>
-            <span className="relative text-sm font-extrabold tracking-tight text-[#062B43]">VS</span>
+            <span className="relative text-sm font-extrabold tracking-tight text-[#062B43] md:text-lg">VS</span>
           </button>
           <FinalHomeStatCard
             ribbon="Paying flat monthly fee ($100/mo)"

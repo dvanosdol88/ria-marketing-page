@@ -1,6 +1,7 @@
 "use client";
 
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { Check, ChevronDown, ChevronUp, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
@@ -350,6 +351,7 @@ function SavingsLeadHero({
   savings: number;
   shareButtonLabel: string;
 }) {
+  const reducedMotion = useReducedMotion();
   const statement = (
     <>
       Smarter Way Wealth delivers{" "}
@@ -357,9 +359,9 @@ function SavingsLeadHero({
       {" "}at a fraction of the cost.
     </>
   );
-  const introBlock =
+  const introContent =
     introStyle === "panel" ? (
-      <div className="mx-auto mt-10 max-w-4xl border-y-2 border-[#108843] px-5 py-8 sm:mt-12 sm:px-10 sm:py-10">
+      <div className="mx-auto max-w-4xl border-y-2 border-[#108843] px-5 py-8 sm:px-10 sm:py-10">
         <p className="mx-auto max-w-3xl text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
           {statement}
         </p>
@@ -369,7 +371,7 @@ function SavingsLeadHero({
         </p>
       </div>
     ) : introStyle === "quote" ? (
-      <div className="mx-auto mt-10 max-w-4xl px-3 py-8 sm:mt-12 sm:py-10">
+      <div className="mx-auto max-w-4xl px-3 py-8 sm:py-10">
         <div className="mx-auto max-w-3xl border-l-[6px] border-[#108843] pl-6 text-left">
           <p className="text-[clamp(1.45rem,2.9vw,2.45rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
             {statement}
@@ -377,7 +379,7 @@ function SavingsLeadHero({
         </div>
       </div>
     ) : (
-      <div className="mx-auto mt-10 max-w-4xl py-7 sm:mt-12 sm:py-9">
+      <div className="mx-auto max-w-4xl py-7 sm:py-9">
         <div className="mx-auto h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
         <p className="mx-auto mt-7 max-w-3xl text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
           {statement}
@@ -385,9 +387,19 @@ function SavingsLeadHero({
         <div className="mx-auto mt-7 h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
       </div>
     );
+  const introBlock = (
+    <motion.div
+      className="mt-14 sm:mt-20"
+      initial={reducedMotion ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut", delay: 0.25 }}
+    >
+      {introContent}
+    </motion.div>
+  );
 
   return (
-    <section className="w-full bg-[#EEF0F5] px-4 py-7 text-center text-[#10233A] sm:py-8">
+    <section className="w-full bg-[#EEF0F5] px-4 pt-12 pb-7 text-center text-[#10233A] sm:pt-16 sm:pb-8">
       <div className="mx-auto max-w-6xl">
         <h1 className="text-[clamp(2.25rem,4.8vw,4rem)] font-semibold leading-[1.06] tracking-normal">
           What would you do with{" "}
@@ -412,7 +424,7 @@ function SavingsLeadHero({
           </button>
         </div>
         {introBlock}
-        <p className="mt-11 text-xl leading-7 text-slate-900 sm:mt-14 sm:text-2xl">
+        <p className="mt-16 text-xl leading-7 text-slate-900 sm:mt-24 sm:text-2xl">
           See how much <strong>you</strong> can save.
         </p>
       </div>
