@@ -15,7 +15,7 @@ import {
   TrendingUp,
   X,
 } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { formatCurrency, formatCurrencyFloored } from "@/lib/format";
 import type {
@@ -50,6 +50,8 @@ type CalculatorAssumptionPatch = {
   portfolioValue?: number;
   years?: number;
 };
+
+type EditableHeaderField = "portfolio" | "years" | "fee";
 
 const FEE_GAP_HINT_INITIAL_DELAY_MS = 1200;
 const FEE_GAP_HINT_VISIBLE_MS = 3000;
@@ -179,37 +181,65 @@ function clampHeaderInputValue(value: number, min: number, max: number, decimals
 
 function FinalHeaderNumberInput({
   ariaLabel,
+  autoFocus = false,
+  blankOnFocus = false,
   className = "",
   decimals,
   inputMode,
   max,
+  maxWidthCh = 14,
   min,
+  minWidthCh,
   onChange,
+  onInteractionEnd,
+  placeholder = "_",
   prefix,
   suffix,
+  suffixClassName = "",
   useGrouping = false,
   value,
 }: {
   ariaLabel: string;
+  autoFocus?: boolean;
+  blankOnFocus?: boolean;
   className?: string;
   decimals: number;
   inputMode: "decimal" | "numeric";
   max: number;
+  maxWidthCh?: number;
   min: number;
+  minWidthCh?: number;
   onChange: (value: number) => void;
+  onInteractionEnd?: () => void;
+  placeholder?: string;
   prefix?: string;
   suffix?: string;
+  suffixClassName?: string;
   useGrouping?: boolean;
   value: number;
 }) {
+  const prefersReducedMotion = useReducedMotion();
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [focused, setFocused] = useState(false);
-  const [draft, setDraft] = useState(() => formatHeaderInputValue(value, decimals, useGrouping));
+  const [draft, setDraft] = useState(() =>
+    blankOnFocus ? "" : formatHeaderInputValue(value, decimals, useGrouping)
+  );
 
   useEffect(() => {
-    if (!focused) {
+    if (!focused && !blankOnFocus) {
       setDraft(formatHeaderInputValue(value, decimals, useGrouping));
     }
-  }, [decimals, focused, useGrouping, value]);
+  }, [blankOnFocus, decimals, focused, useGrouping, value]);
+
+  useEffect(() => {
+    if (!autoFocus) return;
+
+    const frameId = window.requestAnimationFrame(() => {
+      inputRef.current?.focus();
+    });
+
+    return () => window.cancelAnimationFrame(frameId);
+  }, [autoFocus]);
 
   const normalize = (raw: number) => clampHeaderInputValue(raw, min, max, decimals);
 
@@ -233,44 +263,69 @@ function FinalHeaderNumberInput({
     }
   };
 
-  const inputWidth = `${Math.min(14, Math.max(3.5, draft.length + 0.5))}ch`;
+  const visualLength = draft.length > 0 ? draft.length : placeholder.length;
+  const resolvedMinWidth = minWidthCh ?? placeholder.length;
+  const widthBuffer = draft.length > 0 ? 0.08 : 0.2;
+  const inputWidth = `${Math.min(maxWidthCh, Math.max(resolvedMinWidth, visualLength + widthBuffer))}ch`;
+  const inputTextAlign = prefix ? "left" : suffix ? "right" : "center";
+  const widthTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.22 };
 
   return (
     <span
-      className={`inline-flex max-w-full items-baseline justify-center border-b border-[#D7E0E8] text-inherit transition focus-within:border-[#108843] focus-within:outline focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-[#108843] hover:border-[#AEB8C3] ${className}`}
+      className={`inline-flex max-w-full items-baseline justify-center text-inherit ${className}`}
     >
       {prefix && <span aria-hidden="true">{prefix}</span>}
-      <input
-        aria-label={ariaLabel}
-        type="text"
-        inputMode={inputMode}
-        autoComplete="off"
-        spellCheck={false}
-        value={draft}
-        onBlur={(event) => {
-          setFocused(false);
-          commitDraft(event.currentTarget.value);
-        }}
-        onChange={(event) => handleDraftChange(event.target.value)}
-        onFocus={(event) => {
-          setFocused(true);
-          requestAnimationFrame(() => event.target.select());
-        }}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
-            event.preventDefault();
+      <motion.span
+        layout
+        transition={widthTransition}
+        className="inline-flex items-baseline justify-center border-b border-[#D7E0E8] transition-colors duration-200 focus-within:border-[#108843] focus-within:outline focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-[#108843] hover:border-[#AEB8C3]"
+      >
+        <input
+          ref={inputRef}
+          aria-label={ariaLabel}
+          type="text"
+          inputMode={inputMode}
+          autoComplete="off"
+          spellCheck={false}
+          placeholder={placeholder}
+          value={draft}
+          onBlur={(event) => {
+            setFocused(false);
             commitDraft(event.currentTarget.value);
-            event.currentTarget.blur();
-          } else if (event.key === "Escape") {
-            event.preventDefault();
-            setDraft(formatHeaderInputValue(value, decimals, useGrouping));
-            event.currentTarget.blur();
-          }
-        }}
-        className="min-w-0 border-0 bg-transparent p-0 text-center font-[inherit] leading-[inherit] text-inherit outline-none tabular-nums"
-        style={{ width: inputWidth }}
-      />
-      {suffix && <span aria-hidden="true">{suffix}</span>}
+            onInteractionEnd?.();
+          }}
+          onChange={(event) => handleDraftChange(event.target.value)}
+          onFocus={(event) => {
+            setFocused(true);
+            if (blankOnFocus) {
+              setDraft("");
+              return;
+            }
+
+            requestAnimationFrame(() => event.target.select());
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              commitDraft(event.currentTarget.value);
+              event.currentTarget.blur();
+            } else if (event.key === "Escape") {
+              event.preventDefault();
+              setDraft(formatHeaderInputValue(value, decimals, useGrouping));
+              event.currentTarget.blur();
+            }
+          }}
+          className="min-w-0 border-0 bg-transparent p-0 text-center font-[inherit] leading-[inherit] text-inherit outline-none transition-[width] duration-200 placeholder:text-current placeholder:opacity-70 motion-reduce:transition-none tabular-nums"
+          style={{ textAlign: inputTextAlign, width: inputWidth }}
+        />
+      </motion.span>
+      {suffix && (
+        <span aria-hidden="true" className={suffixClassName}>
+          {suffix}
+        </span>
+      )}
     </span>
   );
 }
@@ -1453,16 +1508,28 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const [chartGapHintActive, setChartGapHintActive] = useState(false);
   const [barGapHintActive, setBarGapHintActive] = useState(false);
   const [headerInputsVisible, setHeaderInputsVisible] = useState(assumptionsCustomized);
+  const [activeHeaderField, setActiveHeaderField] = useState<EditableHeaderField | null>(null);
   const visualizationRef = useRef<HTMLDivElement | null>(null);
   const gapHintCancelledRef = useRef(false);
   const gapHintPlayCountRef = useRef(0);
   const gapHintTimeoutsRef = useRef<number[]>([]);
+  const prefersReducedMotion = useReducedMotion();
   const vsActive = chartPinned && barPinned;
   const showHeaderInputs = headerInputsVisible || assumptionsCustomized;
+  const headerSwapTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.24 };
+  const headerSwapInitial = prefersReducedMotion ? false : { opacity: 0, y: 5 };
+  const headerSwapExit = prefersReducedMotion ? undefined : { opacity: 0, y: -5 };
+  const activateHeaderField = (field: EditableHeaderField) => {
+    setActiveHeaderField(field);
+    setHeaderInputsVisible(true);
+  };
   const updateAssumption = (patch: CalculatorAssumptionPatch) => {
     setHeaderInputsVisible(true);
     onAssumptionChange(patch);
   };
+  const clearActiveHeaderField = () => setActiveHeaderField(null);
   const clearGapHintTimers = () => {
     gapHintTimeoutsRef.current.forEach((timeoutId) => window.clearTimeout(timeoutId));
     gapHintTimeoutsRef.current = [];
@@ -1589,77 +1656,140 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             <div className="hidden lg:block" aria-hidden="true" />
           <div className="text-center">
             <h2 className="text-[clamp(1.75rem,2.6vw,2.75rem)] font-bold leading-tight tracking-normal">
-              {showHeaderInputs ? (
-                <>
-                  <FinalHeaderNumberInput
-                    ariaLabel="Portfolio value"
-                    value={portfolioValue}
-                    onChange={(value) => updateAssumption({ portfolioValue: value })}
-                    prefix="$"
-                    decimals={0}
-                    inputMode="numeric"
-                    min={250000}
-                    max={5000000}
-                    useGrouping
-                    className="font-bold text-[#062B43]"
-                  />{" "}
-                  <span>over</span>{" "}
-                  <FinalHeaderNumberInput
-                    ariaLabel="Time horizon in years"
-                    value={years}
-                    onChange={(value) => updateAssumption({ years: Math.round(value) })}
-                    suffix=" years"
-                    decimals={0}
-                    inputMode="numeric"
-                    min={1}
-                    max={40}
-                    className="font-bold text-[#062B43]"
-                  />
-                </>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setHeaderInputsVisible(true)}
-                  className="font-[inherit] leading-[inherit] text-[#062B43] outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843]"
-                  aria-label="Edit portfolio value and time horizon"
-                >
-                  <span className="underline decoration-[#D7E0E8] decoration-1 underline-offset-[0.22em]">
-                    Your Portfolio Value
-                  </span>{" "}
-                  <span>over</span>{" "}
-                  <span className="underline decoration-[#D7E0E8] decoration-1 underline-offset-[0.22em]">
-                    Time
-                  </span>
-                </button>
-              )}
+              <AnimatePresence mode="wait" initial={false}>
+                {showHeaderInputs ? (
+                  <motion.span
+                    key="header-inputs"
+                    layout
+                    initial={headerSwapInitial}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={headerSwapExit}
+                    transition={headerSwapTransition}
+                    className="inline-flex flex-wrap items-baseline justify-center gap-x-2 gap-y-1"
+                  >
+                    <FinalHeaderNumberInput
+                      ariaLabel="Portfolio value"
+                      value={portfolioValue}
+                      onChange={(value) => updateAssumption({ portfolioValue: value })}
+                      onInteractionEnd={clearActiveHeaderField}
+                      prefix="$"
+                      placeholder="__"
+                      blankOnFocus={activeHeaderField === "portfolio"}
+                      autoFocus={activeHeaderField === "portfolio"}
+                      decimals={0}
+                      inputMode="numeric"
+                      min={250000}
+                      max={5000000}
+                      minWidthCh={2}
+                      maxWidthCh={11}
+                      useGrouping
+                      className="font-bold text-[#062B43]"
+                    />
+                    <span>over</span>
+                    <FinalHeaderNumberInput
+                      ariaLabel="Time horizon in years"
+                      value={years}
+                      onChange={(value) => updateAssumption({ years: Math.round(value) })}
+                      onInteractionEnd={clearActiveHeaderField}
+                      suffix="years"
+                      suffixClassName="ml-[0.12em]"
+                      placeholder="_"
+                      blankOnFocus={activeHeaderField === "years"}
+                      autoFocus={activeHeaderField === "years"}
+                      decimals={0}
+                      inputMode="numeric"
+                      min={1}
+                      max={40}
+                      minWidthCh={1}
+                      maxWidthCh={2.5}
+                      className="font-bold text-[#062B43]"
+                    />
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="header-read"
+                    layout
+                    initial={headerSwapInitial}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={headerSwapExit}
+                    transition={headerSwapTransition}
+                    className="inline-flex flex-wrap items-baseline justify-center gap-x-2 gap-y-1"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => activateHeaderField("portfolio")}
+                      className="font-[inherit] leading-[inherit] text-[#062B43] underline decoration-[#D7E0E8] decoration-1 underline-offset-[0.22em] outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843]"
+                      aria-label="Edit portfolio value"
+                    >
+                      Your Portfolio Value
+                    </button>
+                    <span>over</span>
+                    <button
+                      type="button"
+                      onClick={() => activateHeaderField("years")}
+                      className="font-[inherit] leading-[inherit] text-[#062B43] underline decoration-[#D7E0E8] decoration-1 underline-offset-[0.22em] outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843]"
+                      aria-label="Edit time horizon"
+                    >
+                      Time
+                    </button>
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </h2>
             <p className="mt-2 text-lg text-[#42556C] sm:text-xl">
-              Compare your{" "}
-              {showHeaderInputs ? (
-                <>
-                  asset-based fee:{" "}
-                  <FinalHeaderNumberInput
-                    ariaLabel="Asset-based fee percentage"
-                    value={annualFeePercent}
-                    onChange={(value) => updateAssumption({ annualFeePercent: value })}
-                    suffix="%"
-                    decimals={2}
-                    inputMode="decimal"
-                    min={0.25}
-                    max={2.5}
-                    className="font-semibold text-[#064B84]"
-                  />{" "}
-                </>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => setHeaderInputsVisible(true)}
-                  className="font-semibold text-[#064B84] underline decoration-[#064B84] decoration-2 underline-offset-4 outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843]"
-                >
-                  asset-based fees
-                </button>
-              )}{" "}
-              with a flat <span className="font-semibold text-[#108843]">$100/month</span>.
+              <AnimatePresence mode="wait" initial={false}>
+                {showHeaderInputs ? (
+                  <motion.span
+                    key="fee-input"
+                    layout
+                    initial={headerSwapInitial}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={headerSwapExit}
+                    transition={headerSwapTransition}
+                    className="inline-flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-1"
+                  >
+                    <span>Compare your</span>
+                    <FinalHeaderNumberInput
+                      ariaLabel="Asset-based fee percentage"
+                      value={annualFeePercent}
+                      onChange={(value) => updateAssumption({ annualFeePercent: value })}
+                      onInteractionEnd={clearActiveHeaderField}
+                      suffix="%"
+                      placeholder="_"
+                      blankOnFocus={activeHeaderField === "fee"}
+                      autoFocus={activeHeaderField === "fee"}
+                      decimals={2}
+                      inputMode="decimal"
+                      min={0.25}
+                      max={2.5}
+                      minWidthCh={1}
+                      maxWidthCh={4.5}
+                      className="font-semibold text-[#064B84]"
+                    />
+                    <span>fee with a flat <span className="font-semibold text-[#108843]">$100/month</span>.</span>
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="fee-read"
+                    layout
+                    initial={headerSwapInitial}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={headerSwapExit}
+                    transition={headerSwapTransition}
+                    className="inline-flex flex-wrap items-baseline justify-center gap-x-1.5 gap-y-1"
+                  >
+                    <span>Compare</span>
+                    <button
+                      type="button"
+                      onClick={() => activateHeaderField("fee")}
+                      className="font-semibold text-[#064B84] underline decoration-[#064B84] decoration-2 underline-offset-4 outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843]"
+                    >
+                      your asset-based fee
+                    </button>
+                    <span>with a flat <span className="font-semibold text-[#108843]">$100/month</span>.</span>
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </p>
           </div>
           <div className="mx-auto flex shrink-0 flex-col items-center justify-center border-l-2 border-[#108843] pl-4 text-center text-sm font-semibold uppercase leading-tight tracking-tight text-[#108843] sm:text-base lg:mx-0 lg:items-start lg:text-left">
