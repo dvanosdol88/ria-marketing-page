@@ -102,6 +102,40 @@ function formatCompactCurrency(value: number) {
   }).format(value);
 }
 
+// Animates a numeric value from 0 → `target` over `durationMs` whenever `active`
+// flips from false → true. Live `target` changes while active update the
+// displayed value on the next render without restarting the animation.
+function useCountUp(target: number, durationMs: number, active: boolean): number {
+  const [value, setValue] = useState(active ? target : 0);
+  const targetRef = useRef(target);
+
+  useEffect(() => {
+    targetRef.current = target;
+  }, [target]);
+
+  useEffect(() => {
+    if (!active) {
+      setValue(0);
+      return;
+    }
+    let raf = 0;
+    let startTime: number | null = null;
+    const startValue = 0;
+    const tick = (now: number) => {
+      if (startTime === null) startTime = now;
+      const elapsed = now - startTime;
+      const t = Math.min(1, elapsed / durationMs);
+      const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+      setValue(Math.round(startValue + (targetRef.current - startValue) * eased));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [active, durationMs]);
+
+  return active ? value : 0;
+}
+
 function ScenarioButton({
   activeScenario,
   label,
@@ -870,14 +904,21 @@ function FinalHomeLineChart({
   const [flatEndX, flatEndY] = point(ending, "withoutFees");
   const [aumEndX, aumEndY] = point(ending, "withFees");
   // Savings pill — clamped to keep it inside the plot at narrow widths.
+  // Pill is taller (58px) now to accommodate a primary amount + "over N years" subtitle.
   const desiredPillWidth = 217;
+  const pillHeight = 58;
   const feeGapLabelWidth = Math.min(desiredPillWidth, Math.max(120, plotWidth - 16));
   const feeGapLabelX = Math.min(
     Math.max(flatEndX - feeGapLabelWidth - 18, pad.left + 8),
     pad.left + plotWidth - feeGapLabelWidth - 4,
   );
-  const feeGapLabelY = Math.min((flatEndY + aumEndY) / 2 - 26, flatEndY - 16);
+  const feeGapLabelY = Math.max(
+    pad.top + 4,
+    Math.min((flatEndY + aumEndY) / 2 - pillHeight / 2, flatEndY - pillHeight + 4),
+  );
   const chartHintOnly = chartHintActive && !chartActive;
+  const animatedSavings = useCountUp(savings, 800, chartActive);
+  const yearsLabel = `over ${years} ${years === 1 ? "year" : "years"}`;
 
   return (
     <div ref={containerRef} className="block h-full w-full">
@@ -940,24 +981,12 @@ function FinalHomeLineChart({
         ) : null}
         <path
           d={gapAreaPath}
-          fill="#D92D20"
-          opacity={chartActive ? "0.18" : "0"}
+          fill="#C9A8A3"
+          opacity={chartActive ? "0.4" : "0"}
           className="transition-opacity duration-300"
         />
         <path d={pathFor("withFees")} fill="none" stroke="#064B84" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
         <path d={pathFor("withoutFees")} fill="none" stroke="#108843" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
-
-        <line
-          x1={flatEndX}
-          x2={flatEndX}
-          y1={flatEndY}
-          y2={aumEndY}
-          stroke="#D92D20"
-          strokeDasharray="5 5"
-          strokeWidth="2"
-          opacity={chartActive ? "1" : "0"}
-          className="transition-opacity duration-300"
-        />
         <g
           opacity={chartActive ? "1" : "0"}
           className="transition-opacity duration-300"
@@ -982,19 +1011,29 @@ function FinalHomeLineChart({
             x={feeGapLabelX}
             y={feeGapLabelY}
             width={feeGapLabelWidth}
-            height="36"
-            rx="18"
-            fill="#D92D20"
+            height={pillHeight}
+            rx="10"
+            fill="#8C5751"
           />
           <text
             x={feeGapLabelX + feeGapLabelWidth / 2}
-            y={feeGapLabelY + 25}
+            y={feeGapLabelY + 24}
             textAnchor="middle"
             fill="#FFFFFF"
             fontSize="18"
             fontWeight="800"
           >
-            {formatCurrencyFloored(savings)} lost to fees
+            {formatCurrencyFloored(animatedSavings)} lost to fees
+          </text>
+          <text
+            x={feeGapLabelX + feeGapLabelWidth / 2}
+            y={feeGapLabelY + 44}
+            textAnchor="middle"
+            fill="rgba(255,255,255,0.85)"
+            fontSize="12"
+            fontWeight="400"
+          >
+            {yearsLabel}
           </text>
         </g>
 
@@ -1506,6 +1545,10 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const [barGapHintActive, setBarGapHintActive] = useState(false);
   const [headerInputsVisible, setHeaderInputsVisible] = useState(assumptionsCustomized);
   const [activeHeaderField, setActiveHeaderField] = useState<EditableHeaderField | null>(null);
+  // Two-tab swap in the title-bar slot: "header" shows the title/subtitle/growth
+  // pill (default); "inputs" shows the 2×2 assumptions grid. Exactly one view
+  // is always visible — clicking the active tab is a no-op.
+  const [activeView, setActiveView] = useState<"header" | "inputs">("header");
   const visualizationRef = useRef<HTMLDivElement | null>(null);
   const gapHintCancelledRef = useRef(false);
   const gapHintPlayCountRef = useRef(0);
@@ -1655,8 +1698,65 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
       <div className="mx-auto mb-4 max-w-3xl text-center [&_p]:mt-0">
         {disclosure}
       </div>
-      <div id="savings-section">
-      <ScrollReveal className="mx-auto max-w-[1380px] overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]">
+      <div id="savings-section" className="mx-auto max-w-[1380px]">
+      <div className="flex gap-1.5 px-1 pb-2" role="tablist" aria-label="Calculator view">
+        <button
+          type="button"
+          role="tab"
+          id="calc-tab-inputs"
+          aria-controls="calc-view-slot"
+          aria-selected={activeView === "inputs"}
+          tabIndex={activeView === "inputs" ? 0 : -1}
+          onClick={() => setActiveView("inputs")}
+          className={`grid h-7 w-7 place-items-center rounded-md border transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] ${
+            activeView === "inputs"
+              ? "border-[#064B84] bg-[#064B84] text-white"
+              : "border-[#064B84] bg-white text-[#064B84] hover:bg-[#EAF1F8]"
+          }`}
+          aria-label="Show calculator inputs"
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="4" y="3" width="16" height="18" rx="2" />
+            <rect x="7" y="6" width="10" height="3" />
+            <circle cx="8" cy="13" r="0.5" /><circle cx="12" cy="13" r="0.5" /><circle cx="16" cy="13" r="0.5" />
+            <circle cx="8" cy="17" r="0.5" /><circle cx="12" cy="17" r="0.5" /><circle cx="16" cy="17" r="0.5" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="calc-tab-header"
+          aria-controls="calc-view-slot"
+          aria-selected={activeView === "header"}
+          tabIndex={activeView === "header" ? 0 : -1}
+          onClick={() => setActiveView("header")}
+          className={`grid h-7 w-7 place-items-center rounded-md border transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] ${
+            activeView === "header"
+              ? "border-[#064B84] bg-[#064B84] text-white"
+              : "border-[#064B84] bg-white text-[#064B84] hover:bg-[#EAF1F8]"
+          }`}
+          aria-label="Show calculator title and growth rate"
+        >
+          <svg width="20" height="16" viewBox="0 0 28 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M2 16 L5 4 L8 16 M3 12 H7" />
+            <path d="M11 4 V16 H14.5 a3 3 0 0 0 0 -6 H11 M11 10 H14 a3 3 0 0 1 0 6" />
+            <path d="M26 6 a4 4 0 1 0 0 8" />
+          </svg>
+        </button>
+      </div>
+      <ScrollReveal className="overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]">
+        <div id="calc-view-slot">
+        <AnimatePresence mode="wait" initial={false}>
+        {activeView === "header" ? (
+        <motion.div
+          key="view-header"
+          role="tabpanel"
+          aria-labelledby="calc-tab-header"
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.25, ease: "easeInOut" }}
+        >
         <header className="border-b border-[#DFE6EE] bg-white/65 px-6 py-4 text-[#062B43] backdrop-blur sm:px-10">
           <div className="grid items-center gap-3 lg:grid-cols-[11rem_minmax(0,1fr)_11rem]">
             <div className="hidden lg:block" aria-hidden="true" />
@@ -1813,6 +1913,32 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           </div>
           </div>
         </header>
+        </motion.div>
+        ) : (
+        <motion.div
+          key="view-inputs"
+          role="tabpanel"
+          aria-labelledby="calc-tab-inputs"
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.25, ease: "easeInOut" }}
+        >
+        <section
+          className="grid overflow-hidden border-b border-[#DFE6EE] bg-white px-4 py-3 sm:px-7"
+          aria-label="Calculator assumptions"
+        >
+          <div className="grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white md:grid-cols-2">
+            <div className="border-b border-[#DFE6EE] p-3 md:border-r">{simpleControls.portfolio}</div>
+            <div className="border-b border-[#DFE6EE] p-3">{simpleControls.advisoryFee}</div>
+            <div className="border-b border-[#DFE6EE] p-3 md:border-b-0 md:border-r">{simpleControls.growth}</div>
+            <div className="p-3">{simpleControls.years}</div>
+          </div>
+        </section>
+        </motion.div>
+        )}
+        </AnimatePresence>
+        </div>
 
         <section className="relative grid gap-3 px-4 pt-3 sm:px-7 md:grid-cols-2 md:gap-8" aria-label="Ending value comparison">
           <FinalHomeStatCard
@@ -1835,8 +1961,8 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <button
             type="button"
             onClick={toggleAllGaps}
-            className={`absolute left-1/2 top-[72px] z-10 hidden h-14 w-14 -translate-x-1/2 place-items-center rounded-full text-base font-extrabold text-white transition hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D92D20] md:grid ${
-              vsActive ? "bg-[#D92D20] hover:bg-[#B91C1C]" : "vs-pulse-halo bg-[#062B43] hover:bg-[#0B3756]"
+            className={`absolute left-1/2 top-[72px] z-10 hidden -translate-x-1/2 rounded-md px-3 py-2 text-base font-extrabold text-white transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8C5751] hover:scale-[1.03] md:block ${
+              vsActive ? "bg-[#A87B75] hover:bg-[#8C5751]" : "bg-[#8C5751] hover:bg-[#73453F]"
             }`}
             aria-label={vsActive ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
             aria-pressed={vsActive}
@@ -1846,8 +1972,8 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <button
             type="button"
             onClick={toggleAllGaps}
-            className={`mx-auto grid h-12 w-12 place-items-center rounded-full text-sm font-extrabold text-white md:hidden ${
-              vsActive ? "bg-[#D92D20]" : "vs-pulse-halo bg-[#062B43]"
+            className={`mx-auto rounded-md px-3 py-2 text-sm font-extrabold text-white transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8C5751] hover:scale-[1.03] md:hidden ${
+              vsActive ? "bg-[#A87B75] hover:bg-[#8C5751]" : "bg-[#8C5751] hover:bg-[#73453F]"
             }`}
             aria-label={vsActive ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
             aria-pressed={vsActive}
@@ -1871,16 +1997,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             tone="green"
             accentClassName="text-[#108843]"
           />
-        </section>
-
-        <section
-          className="mx-4 mt-3 grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white sm:mx-7 md:grid-cols-2"
-          aria-label="Calculator assumptions"
-        >
-          <div className="border-b border-[#DFE6EE] p-3 md:border-r">{simpleControls.portfolio}</div>
-          <div className="border-b border-[#DFE6EE] p-3">{simpleControls.advisoryFee}</div>
-          <div className="border-b border-[#DFE6EE] p-3 md:border-b-0 md:border-r">{simpleControls.growth}</div>
-          <div className="p-3">{simpleControls.years}</div>
         </section>
 
         <div ref={visualizationRef}>
