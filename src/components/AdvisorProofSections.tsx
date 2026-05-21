@@ -143,9 +143,9 @@ export function FitCtaDivider({
   support = "Bring your calculator result into a fuller conversation about goals, tax strategy, investment fit, and whether a flat monthly planning relationship makes sense.",
   secondary,
 }: {
-  eyebrow?: string;
-  lead?: string;
-  support?: string;
+  eyebrow?: React.ReactNode;
+  lead?: React.ReactNode;
+  support?: React.ReactNode;
   secondary?: React.ReactNode;
 }) {
   return (
@@ -582,8 +582,9 @@ export function AdvisorProofSections() {
       </StorySection>
 
       <FitCtaDivider
-        eyebrow="Advisor fit"
-        lead="The right advice model should feel clear before you hire anyone."
+        eyebrow="Convenient"
+        lead={<>We meet <em>when</em> you can.</>}
+        support="Our hours include on Saturday per month, and rotating Tuesday evenings."
       />
 
       <StorySection id="improve-your-tools" rail={["Improve", "Your", "Tools"]}>
