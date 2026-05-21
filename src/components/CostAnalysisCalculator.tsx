@@ -343,9 +343,11 @@ function normalizeSearchParams(searchParams: Record<string, string | string[] | 
 function SavingsLeadHero({
   introStyle,
   savings,
+  disclosure,
 }: {
   introStyle: IntroStyle;
   savings: number;
+  disclosure?: ReactNode;
 }) {
   const reducedMotion = useReducedMotion();
   const statement = (
@@ -397,7 +399,7 @@ function SavingsLeadHero({
   );
 
   return (
-    <section className="w-full bg-[#EEF0F5] pb-7 text-center text-[#10233A] sm:pb-8">
+    <section className="w-full bg-[#EEF0F5] pb-4 text-center text-[#10233A] sm:pb-5">
       <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-12 pb-16 sm:pt-16 sm:pb-20">
         <div
           aria-hidden="true"
@@ -417,6 +419,11 @@ function SavingsLeadHero({
         <p className="mt-16 text-xl leading-7 text-slate-900 sm:mt-24 sm:text-2xl">
           See how much <strong>you</strong> can save.
         </p>
+        {disclosure ? (
+          <div className="mx-auto mt-12 max-w-3xl text-center [&_p]:mt-0">
+            {disclosure}
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -900,6 +907,7 @@ export function CostAnalysisCalculator({
         <SavingsLeadHero
           introStyle={introStyle}
           savings={projection.savings}
+          disclosure={disclosure}
         />
       )}
 
@@ -996,9 +1004,15 @@ export function CostAnalysisCalculator({
       <section
         id="calculator"
         ref={calculatorRef}
-        className={`relative w-full scroll-mt-24 overflow-hidden ${calculatorTheme.sectionClassName}`}
+        className={`relative w-full scroll-mt-24 overflow-hidden ${
+          isSavingsCalculatorUpgrade ? "bg-[#EEF0F5] text-slate-950" : calculatorTheme.sectionClassName
+        }`}
       >
-        <div className={`pointer-events-none absolute inset-0 ${calculatorTheme.backdropClassName}`} />
+        <div
+          className={`pointer-events-none absolute inset-0 ${
+            isSavingsCalculatorUpgrade ? "bg-[#EEF0F5]" : calculatorTheme.backdropClassName
+          }`}
+        />
 
         {isCalculatorFirst && (
           <HomeTopBanner
@@ -1027,7 +1041,7 @@ export function CostAnalysisCalculator({
           annualAumFeeEstimate={annualAumFeeEstimate}
           annualFlatFee={annualFlatFee}
           shareAction={shareAction}
-          disclosure={disclosure}
+          disclosure={isSavingsCalculatorUpgrade ? null : disclosure}
           helperNotes={helperNotes}
           collapseControl={collapseControl}
           slidersExpanded={slidersExpanded}

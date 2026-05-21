@@ -1748,12 +1748,18 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   }, [barGapHintActive, barPinned, chartGapHintActive, chartPinned]);
 
   return (
-    <div className="section-shell relative z-10 pb-16 pt-10 sm:pt-12">
-      <div className="mx-auto mb-4 max-w-3xl text-center [&_p]:mt-0">
-        {disclosure}
-      </div>
+    <div className="section-shell relative z-10 pb-16 pt-5 sm:pt-6">
+      {disclosure ? (
+        <div className="mx-auto mb-4 max-w-3xl text-center [&_p]:mt-0">
+          {disclosure}
+        </div>
+      ) : null}
       <div id="savings-section" className="mx-auto max-w-[1380px]">
-      <div className="flex gap-1.5 px-1 pb-2" role="tablist" aria-label="Calculator view">
+      <div
+        className="mb-3 inline-flex rounded-md border border-[#C9D8E4] bg-white/80 p-1 shadow-[0_8px_22px_rgba(17,33,52,0.07)] backdrop-blur"
+        role="tablist"
+        aria-label="Calculator view"
+      >
         <button
           type="button"
           role="tab"
@@ -1762,19 +1768,15 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           aria-selected={activeView === "inputs"}
           tabIndex={activeView === "inputs" ? 0 : -1}
           onClick={() => setActiveView("inputs")}
-          className={`grid h-7 w-7 place-items-center rounded-md border transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] ${
+          className={`inline-flex h-8 items-center justify-center gap-1.5 rounded px-2.5 text-xs font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:min-w-24 ${
             activeView === "inputs"
-              ? "border-[#064B84] bg-[#064B84] text-white"
-              : "border-[#064B84] bg-white text-[#064B84] hover:bg-[#EAF1F8]"
+              ? "bg-[#064B84] text-white shadow-[0_2px_8px_rgba(6,75,132,0.22)]"
+              : "text-[#52657A] hover:bg-[#EAF1F8] hover:text-[#064B84]"
           }`}
           aria-label="Show calculator inputs"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <rect x="4" y="3" width="16" height="18" rx="2" />
-            <rect x="7" y="6" width="10" height="3" />
-            <circle cx="8" cy="13" r="0.5" /><circle cx="12" cy="13" r="0.5" /><circle cx="16" cy="13" r="0.5" />
-            <circle cx="8" cy="17" r="0.5" /><circle cx="12" cy="17" r="0.5" /><circle cx="16" cy="17" r="0.5" />
-          </svg>
+          <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
+          <span className="hidden sm:inline">Inputs</span>
         </button>
         <button
           type="button"
@@ -1784,18 +1786,15 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           aria-selected={activeView === "header"}
           tabIndex={activeView === "header" ? 0 : -1}
           onClick={() => setActiveView("header")}
-          className={`grid h-7 w-7 place-items-center rounded-md border transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] ${
+          className={`inline-flex h-8 items-center justify-center gap-1.5 rounded px-2.5 text-xs font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:min-w-24 ${
             activeView === "header"
-              ? "border-[#064B84] bg-[#064B84] text-white"
-              : "border-[#064B84] bg-white text-[#064B84] hover:bg-[#EAF1F8]"
+              ? "bg-[#064B84] text-white shadow-[0_2px_8px_rgba(6,75,132,0.22)]"
+              : "text-[#52657A] hover:bg-[#EAF1F8] hover:text-[#064B84]"
           }`}
           aria-label="Show calculator title and growth rate"
         >
-          <svg width="20" height="16" viewBox="0 0 28 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M2 16 L5 4 L8 16 M3 12 H7" />
-            <path d="M11 4 V16 H14.5 a3 3 0 0 0 0 -6 H11 M11 10 H14 a3 3 0 0 1 0 6" />
-            <path d="M26 6 a4 4 0 1 0 0 8" />
-          </svg>
+          <PencilLine className="h-4 w-4" aria-hidden="true" />
+          <span className="hidden sm:inline">Header</span>
         </button>
       </div>
       <ScrollReveal className="overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]">
