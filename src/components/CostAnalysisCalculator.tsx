@@ -357,8 +357,8 @@ function SavingsLeadHero({
   );
   const introContent =
     introStyle === "panel" ? (
-      <div className="mx-auto max-w-4xl px-5 py-8 sm:px-10 sm:py-10">
-        <div className="mx-auto h-px w-[min(620px,88%)] bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
+      <div className="relative mx-auto max-w-4xl px-5 py-8 sm:px-10 sm:py-10">
+        <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
         <p className="mx-auto max-w-3xl text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
           {statement}
         </p>
@@ -366,7 +366,7 @@ function SavingsLeadHero({
           <span className="whitespace-nowrap">David Van Osdol,</span>{" "}
           <span className="whitespace-nowrap">CFA, CFP</span>
         </p>
-        <div className="mx-auto mt-8 h-px w-[min(620px,88%)] bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
+        <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
       </div>
     ) : introStyle === "quote" ? (
       <div className="mx-auto max-w-4xl px-3 py-8 sm:py-10">
