@@ -1077,7 +1077,7 @@ export function CostAnalysisCalculator({
       {isSavingsCalculatorUpgrade && (
         <FitCtaDivider
           eyebrow="Hassle-free"
-          lead={<>We work <em>where</em> you are.</>}
+          lead={<>We work <span className="text-[#007A2F]">where</span> you are.</>}
           support="Schwab? Fidelity? Morgan Stanley? No need to transfer assets and open new accounts. We can advise you even if you have assets at several custodians."
         />
       )}

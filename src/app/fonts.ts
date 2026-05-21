@@ -1,4 +1,4 @@
-import { Inter, DM_Sans } from "next/font/google";
+import { Inter, DM_Sans, DM_Serif_Display } from "next/font/google";
 
 export const inter = Inter({
   subsets: ["latin"],
@@ -9,5 +9,13 @@ export const inter = Inter({
 export const dmSans = DM_Sans({
   subsets: ["latin"],
   variable: "--font-logo",
+  display: "swap",
+});
+
+export const dmSerifDisplay = DM_Serif_Display({
+  weight: ["400"],
+  style: ["italic"],
+  subsets: ["latin"],
+  variable: "--font-serif",
   display: "swap",
 });

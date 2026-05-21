@@ -583,7 +583,7 @@ export function AdvisorProofSections() {
 
       <FitCtaDivider
         eyebrow="Convenient"
-        lead={<>We meet <em>when</em> you can.</>}
+        lead={<>We meet <em style={{ fontFamily: "var(--font-serif)", fontStyle: "italic" }}>when</em> you can.</>}
         support="Our hours include one Saturday per month, plus rotating Tuesday evenings."
       />
 
