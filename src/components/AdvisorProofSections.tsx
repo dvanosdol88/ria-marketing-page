@@ -447,6 +447,15 @@ function ProofDetailDialog({
             </ul>
           </div>
         </div>
+        <div className="mt-8 border-t border-[#D5DEE8] pt-5">
+          <Link
+            href={fitCta.href}
+            className="inline-flex items-center gap-2 rounded-md bg-[#064B84] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_26px_rgba(6,75,132,0.2)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#053E6D] hover:shadow-[0_16px_32px_rgba(6,75,132,0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84]"
+          >
+            <span>See if you are a good fit</span>
+            <span aria-hidden="true">-&gt;</span>
+          </Link>
+        </div>
       </motion.article>
     </motion.div>
   );

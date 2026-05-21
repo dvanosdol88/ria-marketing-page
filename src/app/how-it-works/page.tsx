@@ -37,25 +37,20 @@ export default function HowItWorksPage({
     <main className="flex flex-col gap-12 pb-16">
       <header className="section-shell pt-12">
         <p className="text-xs font-semibold uppercase tracking-tightish text-brand-600">How it works</p>
-        <h1 className="mt-3 text-4xl font-semibold text-neutral-900 sm:text-5xl">Transparent math, reusable links</h1>
         <p className="mt-4 text-lg text-neutral-600 sm:text-xl">
-          We run the same projection logic you saw on the landing calculator. The numbers below reuse your query parameters so
-          you can link prospects directly here.
+          I use technology and AI so that I can spend my time where it is most important: working with clients.
         </p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            href={{ pathname: "/", query: linkQuery }}
-            className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
-          >
-            Back to calculator
-          </Link>
-          <Link
-            href={{ pathname: "/save", query: linkQuery }}
-            className="rounded-full bg-neutral-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-neutral-800"
-          >
-            See deeper proof
-          </Link>
-        </div>
+        <p className="mt-4 text-lg text-neutral-600 sm:text-xl">
+          We use published asset allocation models from companies like Fidelity, Schwab, Goldman Sachs, Morgan Stanley,
+          and Vanguard, and tweak those based on your risk tolerance. Then we choose low-cost or even zero-cost ETFs or
+          mutual funds, and you make the trades (don&apos;t worry, we make it very simple!).
+        </p>
+        <Link
+          href={{ pathname: "/how-it-works/substitution", query: linkQuery }}
+          className="mt-5 inline-flex text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 transition-colors hover:text-brand-800"
+        >
+          Learn more about how this works -&gt;
+        </Link>
       </header>
 
       <section className="section-shell grid gap-6 lg:grid-cols-3">

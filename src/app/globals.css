@@ -251,8 +251,29 @@ a:hover {
   }
 }
 
+@keyframes fee-gap-view-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 8px 18px rgba(16, 35, 58, 0.16),
+      0 0 0 0 rgba(217, 45, 32, 0),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  }
+
+  50% {
+    box-shadow:
+      0 10px 22px rgba(16, 35, 58, 0.15),
+      0 0 0 5px rgba(217, 45, 32, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  }
+}
+
 .fee-gap-hint-layer {
   animation: fee-gap-hint-fade 3s ease-in-out 1;
+}
+
+.fee-gap-view-pulse {
+  animation: fee-gap-view-pulse 2.4s ease-in-out infinite;
 }
 
 .fee-gap-wave,
@@ -280,7 +301,8 @@ a:hover {
     opacity: 0;
   }
 
-  .fee-gap-hint-layer {
+  .fee-gap-hint-layer,
+  .fee-gap-view-pulse {
     animation: none;
   }
 }

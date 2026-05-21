@@ -365,7 +365,7 @@ function SavingsLeadHero({
         <p className="mx-auto max-w-3xl text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
           {statement}
         </p>
-        <p className="mx-auto mt-6 max-w-3xl text-center text-sm font-semibold uppercase tracking-[0.18em] text-[#007A2F] sm:mt-7 sm:text-base">
+        <p className="mx-auto mt-6 max-w-3xl text-center text-lg font-semibold leading-[1.14] tracking-normal text-[#10233A] sm:mt-7 sm:text-xl">
           <span className="whitespace-nowrap">David Van Osdol,</span>{" "}
           <span className="whitespace-nowrap">CFA, CFP</span>
         </p>
