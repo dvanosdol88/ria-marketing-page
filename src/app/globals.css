@@ -184,22 +184,10 @@ a:hover {
 .fit-cta-band {
   background:
     radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.72), transparent 28%),
-    radial-gradient(circle at 82% 0%, rgba(16, 136, 67, 0.12), transparent 32%),
-    linear-gradient(115deg, rgba(248, 251, 252, 0.82) 0%, rgba(228, 246, 235, 0.52) 52%, rgba(255, 255, 255, 0.76) 100%);
+    radial-gradient(circle at 82% 0%, rgba(6, 75, 132, 0.12), transparent 32%),
+    linear-gradient(115deg, rgba(248, 251, 252, 0.82) 0%, rgba(228, 236, 246, 0.52) 52%, rgba(255, 255, 255, 0.76) 100%);
   border-bottom: 1px solid rgba(16, 35, 58, 0.1);
   border-top: 1px solid rgba(16, 35, 58, 0.08);
-}
-
-.fit-cta-band::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(16, 35, 58, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(16, 35, 58, 0.03) 1px, transparent 1px);
-  background-size: 18px 18px;
-  mask-image: linear-gradient(90deg, transparent, black 18%, black 82%, transparent);
 }
 
 .fit-cta-action {

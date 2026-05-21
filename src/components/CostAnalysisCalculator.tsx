@@ -1070,7 +1070,8 @@ export function CostAnalysisCalculator({
       {isSavingsCalculatorUpgrade && (
         <FitCtaDivider
           eyebrow="Your next step"
-          lead="See if you are a good fit"
+          lead="We meet you where you are."
+          support="Schwab? Fidelity? Morgan Stanley? No need to transfer assets and open new accounts."
         />
       )}
 

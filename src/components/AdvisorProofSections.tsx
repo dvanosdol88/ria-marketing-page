@@ -149,17 +149,17 @@ export function FitCtaDivider({
   secondary?: React.ReactNode;
 }) {
   return (
-    <section className="w-full py-6 sm:py-8">
+    <section className="w-full py-3 sm:py-4">
       <div
         className="fit-cta-band relative overflow-hidden"
         style={{
           background:
-            "radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.72), transparent 28%), radial-gradient(circle at 82% 0%, rgba(16, 136, 67, 0.12), transparent 32%), linear-gradient(115deg, rgba(248, 251, 252, 0.82) 0%, rgba(228, 246, 235, 0.52) 52%, rgba(255, 255, 255, 0.76) 100%)",
+            "radial-gradient(circle at 18% 16%, rgba(255, 255, 255, 0.72), transparent 28%), radial-gradient(circle at 82% 0%, rgba(6, 75, 132, 0.12), transparent 32%), linear-gradient(115deg, rgba(248, 251, 252, 0.82) 0%, rgba(228, 236, 246, 0.52) 52%, rgba(255, 255, 255, 0.76) 100%)",
           borderBottom: "1px solid rgba(16, 35, 58, 0.1)",
           borderTop: "1px solid rgba(16, 35, 58, 0.08)",
         }}
       >
-        <div className="relative z-10 mx-auto grid max-w-5xl gap-5 px-4 py-7 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] lg:items-center lg:gap-8 lg:px-8">
+        <div className="relative z-10 mx-auto grid max-w-5xl gap-4 px-4 py-4 sm:px-6 lg:grid-cols-[minmax(0,1fr)_minmax(280px,360px)] lg:items-center lg:gap-8 lg:px-8 lg:py-5">
           <div className="max-w-3xl">
             <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#10233A]/70">
               {eyebrow}
@@ -174,10 +174,11 @@ export function FitCtaDivider({
           <div className="flex flex-col items-start gap-3 lg:items-stretch">
             <a
               href={fitCta.href}
-              className="fit-cta-action inline-flex min-h-14 w-full items-center justify-center rounded-md px-5 py-3 text-center text-base font-extrabold !text-white no-underline shadow-[0_12px_28px_rgba(6,36,23,0.14)] transition hover:!text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10233A]/60 sm:w-auto sm:px-8 sm:text-lg lg:w-full"
+              className="fit-cta-action inline-flex min-h-14 w-full items-center justify-center rounded-md px-5 py-3 text-center text-base font-extrabold !text-white !no-underline shadow-[0_12px_28px_rgba(6,36,23,0.14)] transition-transform duration-200 ease-out hover:!text-white hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(6,36,23,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10233A]/60 sm:w-auto sm:px-8 sm:text-lg lg:w-full"
               style={{
                 background: "#064B84",
                 border: "1px solid rgba(6, 75, 132, 0.92)",
+                textDecoration: "none",
               }}
             >
               {fitCta.label}
@@ -276,7 +277,7 @@ function ProofSectionProgressCue() {
 function SectionRail({ words }: { words: string[] }) {
   return (
     <div className="lg:sticky lg:top-36">
-      <p className="text-[3.25rem] font-black leading-[0.9] tracking-tight text-[#062417] sm:text-[4.5rem] lg:text-[4.75rem] xl:text-[5rem]">
+      <p className="text-[3.25rem] font-extrabold leading-[0.9] tracking-tight text-[#062417] sm:text-[4.5rem] lg:text-[4.75rem] xl:text-[5rem]">
         {words.map((word) => (
           <span key={word} className="block">
             {word}
