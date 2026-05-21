@@ -342,14 +342,10 @@ function normalizeSearchParams(searchParams: Record<string, string | string[] | 
 
 function SavingsLeadHero({
   introStyle,
-  onShare,
   savings,
-  shareButtonLabel,
 }: {
   introStyle: IntroStyle;
-  onShare: () => void;
   savings: number;
-  shareButtonLabel: string;
 }) {
   const reducedMotion = useReducedMotion();
   const statement = (
@@ -399,30 +395,22 @@ function SavingsLeadHero({
   );
 
   return (
-    <section className="w-full bg-[#EEF0F5] px-4 pt-12 pb-7 text-center text-[#10233A] sm:pt-16 sm:pb-8">
-      <div className="mx-auto max-w-6xl">
-        <h1 className="text-[clamp(2.25rem,4.8vw,4rem)] font-semibold leading-[1.06] tracking-normal">
-          <span className="block">What would you do with</span>
-          <span className="block text-[#007A2F] tabular-nums">{formatCurrencyFloored(savings)}</span>
-        </h1>
-        <div className="mt-2 flex items-center justify-center gap-3 text-sm font-bold opacity-70 transition-opacity hover:opacity-100">
-          <a
-            href="#quick-poll"
-            className="text-[#007A2F] underline underline-offset-4 transition hover:text-[#00682B]"
-          >
-            Show poll
-          </a>
-          <span className="text-slate-300" aria-hidden="true">/</span>
-          <button
-            type="button"
-            onClick={onShare}
-            className="inline-flex items-center justify-center gap-1.5 text-slate-700 underline decoration-slate-300 underline-offset-4 transition hover:text-slate-950 hover:decoration-slate-500"
-            aria-label="Share your result"
-          >
-            <Share2 className="h-3.5 w-3.5" />
-            {shareButtonLabel === "Share your result" ? "Share result" : shareButtonLabel}
-          </button>
+    <section className="w-full bg-[#EEF0F5] pb-7 text-center text-[#10233A] sm:pb-8">
+      <div className="relative isolate overflow-hidden bg-[#E7EAF0] px-4 pt-12 pb-16 sm:pt-16 sm:pb-20">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 select-none text-[10rem] font-black leading-none text-white sm:text-[14rem]"
+        >
+          ?
         </div>
+        <div className="relative z-10 mx-auto max-w-6xl">
+          <h1 className="text-[clamp(2.25rem,4.8vw,4rem)] font-semibold leading-[1.06] tracking-normal">
+            <span className="block">What would you do with</span>
+            <span className="block text-[#007A2F] tabular-nums">{formatCurrencyFloored(savings)}</span>
+          </h1>
+        </div>
+      </div>
+      <div className="mx-auto max-w-6xl px-4">
         {introBlock}
         <p className="mt-16 text-xl leading-7 text-slate-900 sm:mt-24 sm:text-2xl">
           See how much <strong>you</strong> can save.
@@ -910,8 +898,6 @@ export function CostAnalysisCalculator({
         <SavingsLeadHero
           introStyle={introStyle}
           savings={projection.savings}
-          onShare={shareResult}
-          shareButtonLabel={shareButtonLabel}
         />
       )}
 
