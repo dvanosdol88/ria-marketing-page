@@ -357,7 +357,8 @@ function SavingsLeadHero({
   );
   const introContent =
     introStyle === "panel" ? (
-      <div className="mx-auto max-w-4xl border-y-2 border-[#108843] px-5 py-8 sm:px-10 sm:py-10">
+      <div className="mx-auto max-w-4xl px-5 py-8 sm:px-10 sm:py-10">
+        <div className="mx-auto h-px w-[min(620px,88%)] bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
         <p className="mx-auto max-w-3xl text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
           {statement}
         </p>
@@ -365,6 +366,7 @@ function SavingsLeadHero({
           <span className="whitespace-nowrap">David Van Osdol,</span>{" "}
           <span className="whitespace-nowrap">CFA, CFP</span>
         </p>
+        <div className="mx-auto mt-8 h-px w-[min(620px,88%)] bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
       </div>
     ) : introStyle === "quote" ? (
       <div className="mx-auto max-w-4xl px-3 py-8 sm:py-10">
@@ -396,7 +398,7 @@ function SavingsLeadHero({
 
   return (
     <section className="w-full bg-[#EEF0F5] pb-7 text-center text-[#10233A] sm:pb-8">
-      <div className="relative isolate overflow-hidden bg-[#E7EAF0] px-4 pt-12 pb-16 sm:pt-16 sm:pb-20">
+      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-12 pb-16 sm:pt-16 sm:pb-20">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.12] select-none text-[11rem] font-bold leading-none text-white sm:text-[15rem]"
