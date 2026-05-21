@@ -903,19 +903,37 @@ function FinalHomeLineChart({
   const ending = series[series.length - 1];
   const [flatEndX, flatEndY] = point(ending, "withoutFees");
   const [aumEndX, aumEndY] = point(ending, "withFees");
+  const yForValue = (value: number) => pad.top + (1 - (value - minValue) / valueRange) * plotHeight;
+  const valueAtYear = (targetYear: number, key: "withoutFees" | "withFees") => {
+    const nextIndex = series.findIndex((row) => row.year >= targetYear);
+    if (nextIndex <= 0) return series[0]?.[key] ?? 0;
+    const previous = series[nextIndex - 1];
+    const next = series[nextIndex];
+    if (!next) return previous[key];
+    const span = Math.max(1, next.year - previous.year);
+    const progress = (targetYear - previous.year) / span;
+    return previous[key] + (next[key] - previous[key]) * progress;
+  };
   // Savings pill — clamped to keep it inside the plot at narrow widths.
   // Pill is taller (58px) now to accommodate a primary amount + "over N years" subtitle.
   const desiredPillWidth = 217;
   const pillHeight = 58;
   const feeGapLabelWidth = Math.min(desiredPillWidth, Math.max(120, plotWidth - 16));
-  const feeGapLabelX = Math.min(
-    Math.max(flatEndX - feeGapLabelWidth - 18, pad.left + 8),
-    pad.left + plotWidth - feeGapLabelWidth - 4,
+  const feeGapLabelX = pad.left + (plotWidth - feeGapLabelWidth) / 2;
+  const feeGapConnectorTargetX = Math.min(
+    pad.left + plotWidth - 8,
+    Math.max(feeGapLabelX + feeGapLabelWidth + 18, pad.left + plotWidth * 0.82),
   );
+  const feeGapConnectorYear = ((feeGapConnectorTargetX - pad.left) / plotWidth) * maxYear;
+  const feeGapConnectorY =
+    (yForValue(valueAtYear(feeGapConnectorYear, "withoutFees")) +
+      yForValue(valueAtYear(feeGapConnectorYear, "withFees"))) /
+    2;
   const feeGapLabelY = Math.max(
     pad.top + 4,
-    Math.min((flatEndY + aumEndY) / 2 - pillHeight / 2, flatEndY - pillHeight + 4),
+    Math.min(feeGapConnectorY - pillHeight / 2, height - pad.bottom - pillHeight - 4),
   );
+  const feeGapConnectorLineY = feeGapLabelY + pillHeight / 2;
   const chartHintOnly = chartHintActive && !chartActive;
   const animatedSavings = useCountUp(savings, 800, chartActive);
   const yearsLabel = `over ${years} ${years === 1 ? "year" : "years"}`;
@@ -1004,6 +1022,16 @@ function FinalHomeLineChart({
             }
           }}
         >
+          <line
+            x1={feeGapLabelX + feeGapLabelWidth}
+            x2={feeGapConnectorTargetX}
+            y1={feeGapConnectorLineY}
+            y2={feeGapConnectorLineY}
+            stroke="#10233A"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            opacity="0.85"
+          />
           <rect
             x={feeGapLabelX}
             y={feeGapLabelY}
