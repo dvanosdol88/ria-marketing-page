@@ -858,9 +858,15 @@ function FinalHomeLineChart({
   const plotWidth = Math.max(1, width - pad.left - pad.right);
   const plotHeight = Math.max(1, height - pad.top - pad.bottom);
   const maxYear = Math.max(1, years, ...series.map((row) => row.year));
-  const maxValue = Math.max(finalValueWithoutFees, finalValueWithFees, ...series.map((row) => row.withoutFees));
-  const minValue =
-    Math.min(series[0]?.withoutFees ?? finalValueWithFees, ...series.map((row) => row.withFees)) * 0.92;
+  const actualMaxValue = Math.max(finalValueWithoutFees, finalValueWithFees, ...series.map((row) => row.withoutFees));
+  const rawTickStep = actualMaxValue / 5;
+  const tickExponent = Math.floor(Math.log10(Math.max(1, rawTickStep)));
+  const tickMagnitude = 10 ** tickExponent;
+  const tickBase = rawTickStep / tickMagnitude;
+  const yTickStep =
+    (tickBase <= 1 ? 1 : tickBase <= 2 ? 2 : tickBase <= 5 ? 5 : 10) * tickMagnitude;
+  const maxValue = yTickStep * Math.ceil(actualMaxValue / yTickStep);
+  const minValue = 0;
   const valueRange = Math.max(1, maxValue - minValue);
 
   const point = (row: ProjectionYear, key: "withoutFees" | "withFees") => {
@@ -894,8 +900,9 @@ function FinalHomeLineChart({
       .join(" ") +
     " Z";
 
-  const yTicks = [0, 0.25, 0.5, 0.75, 1].map((ratio) => {
-    const value = minValue + valueRange * ratio;
+  const yTicks = Array.from({ length: Math.round(maxValue / yTickStep) }, (_, index) => {
+    const value = yTickStep * (index + 1);
+    const ratio = value / maxValue;
     const y = pad.top + (1 - ratio) * plotHeight;
     return { value, y, ratio };
   });
@@ -930,7 +937,7 @@ function FinalHomeLineChart({
   );
   const feeGapConnectorLineY = feeGapLabelY + pillHeight / 2;
   const feeGapConnectorStartX = feeGapLabelX + feeGapLabelWidth;
-  const feeGapConnectorMaxLength = Math.min(44, Math.max(26, plotWidth * 0.08));
+  const feeGapConnectorMaxLength = Math.min(72, Math.max(42, plotWidth * 0.12));
   const feeGapConnectorMinLength = Math.min(24, feeGapConnectorMaxLength);
   const feeGapConnectorFallbackX = Math.min(pad.left + plotWidth - 8, feeGapConnectorStartX + feeGapConnectorMaxLength);
   const feeGapConnectorTargetX =
@@ -946,12 +953,13 @@ function FinalHomeLineChart({
         const lowerY = Math.max(flatY, aumY);
         return { targetX, upperY, lowerY };
       })
-      .find(
+      .filter(
         ({ targetX, upperY, lowerY }) =>
           targetX >= feeGapConnectorStartX + feeGapConnectorMinLength &&
           feeGapConnectorLineY >= upperY + 3 &&
           feeGapConnectorLineY <= lowerY - 3,
-      )?.targetX ?? feeGapConnectorFallbackX;
+      )
+      .at(-1)?.targetX ?? feeGapConnectorFallbackX;
   const chartHintOnly = chartHintActive && !chartActive;
   const animatedSavings = useCountUp(savings, 800, chartActive);
   const yearsLabel = `over ${years} ${years === 1 ? "year" : "years"}`;
