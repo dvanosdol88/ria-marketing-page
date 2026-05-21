@@ -414,7 +414,7 @@ function SavingsLeadHero({
           className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.12] select-none text-[13rem] font-bold leading-none text-transparent sm:text-[18rem]"
           style={{
             fontFamily: '"Satoshi", var(--font-sans), sans-serif',
-            WebkitTextStroke: "1px rgba(16, 35, 58, 0.15)",
+            WebkitTextStroke: "1px rgba(16, 35, 58, 0.35)",
           }}
         >
           ?
