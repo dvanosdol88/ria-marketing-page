@@ -412,6 +412,7 @@ function SavingsLeadHero({
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.12] select-none text-[13rem] font-bold leading-none text-white sm:text-[18rem]"
+          style={{ fontFamily: '"Satoshi", var(--font-sans), sans-serif' }}
         >
           ?
         </div>
