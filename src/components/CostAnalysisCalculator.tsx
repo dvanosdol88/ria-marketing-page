@@ -411,7 +411,7 @@ function SavingsLeadHero({
       <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-12 pb-16 sm:pt-16 sm:pb-20">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.12] select-none text-[13rem] font-bold leading-none text-transparent sm:text-[18rem]"
+          className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.12] select-none text-[13rem] font-bold leading-none text-white sm:text-[18rem]"
           style={{
             fontFamily: '"Satoshi", var(--font-sans), sans-serif',
             WebkitTextStroke: "1px rgba(16, 35, 58, 0.35)",
