@@ -919,21 +919,36 @@ function FinalHomeLineChart({
   const desiredPillWidth = 217;
   const pillHeight = 58;
   const feeGapLabelWidth = Math.min(desiredPillWidth, Math.max(120, plotWidth - 16));
-  const feeGapLabelX = pad.left + (plotWidth - feeGapLabelWidth) / 2;
-  const feeGapConnectorTargetX = Math.min(
-    pad.left + plotWidth - 8,
-    Math.max(feeGapLabelX + feeGapLabelWidth + 18, pad.left + plotWidth * 0.82),
+  const feeGapLabelRightOffset = Math.min(56, plotWidth * 0.1);
+  const feeGapLabelX = Math.min(
+    pad.left + plotWidth - feeGapLabelWidth - 8,
+    pad.left + (plotWidth - feeGapLabelWidth) / 2 + feeGapLabelRightOffset,
   );
-  const feeGapConnectorYear = ((feeGapConnectorTargetX - pad.left) / plotWidth) * maxYear;
-  const feeGapConnectorY =
-    (yForValue(valueAtYear(feeGapConnectorYear, "withoutFees")) +
-      yForValue(valueAtYear(feeGapConnectorYear, "withFees"))) /
-    2;
   const feeGapLabelY = Math.max(
     pad.top + 4,
-    Math.min(feeGapConnectorY - pillHeight / 2, height - pad.bottom - pillHeight - 4),
+    Math.min(pad.top + 24, height - pad.bottom - pillHeight - 4),
   );
   const feeGapConnectorLineY = feeGapLabelY + pillHeight / 2;
+  const feeGapConnectorFallbackX = Math.min(
+    pad.left + plotWidth - 8,
+    Math.max(feeGapLabelX + feeGapLabelWidth + 18, pad.left + plotWidth * 0.88),
+  );
+  const feeGapConnectorTargetX =
+    Array.from({ length: 81 }, (_, index) => maxYear - (maxYear * index) / 80)
+      .map((targetYear) => {
+        const targetX = pad.left + (targetYear / maxYear) * plotWidth;
+        const flatY = yForValue(valueAtYear(targetYear, "withoutFees"));
+        const aumY = yForValue(valueAtYear(targetYear, "withFees"));
+        const upperY = Math.min(flatY, aumY);
+        const lowerY = Math.max(flatY, aumY);
+        return { targetX, upperY, lowerY };
+      })
+      .find(
+        ({ targetX, upperY, lowerY }) =>
+          targetX >= feeGapLabelX + feeGapLabelWidth + 16 &&
+          feeGapConnectorLineY >= upperY + 3 &&
+          feeGapConnectorLineY <= lowerY - 3,
+      )?.targetX ?? feeGapConnectorFallbackX;
   const chartHintOnly = chartHintActive && !chartActive;
   const animatedSavings = useCountUp(savings, 800, chartActive);
   const yearsLabel = `over ${years} ${years === 1 ? "year" : "years"}`;
