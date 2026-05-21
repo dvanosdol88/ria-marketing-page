@@ -402,8 +402,8 @@ function SavingsLeadHero({
     <section className="w-full bg-[#EEF0F5] px-4 pt-12 pb-7 text-center text-[#10233A] sm:pt-16 sm:pb-8">
       <div className="mx-auto max-w-6xl">
         <h1 className="text-[clamp(2.25rem,4.8vw,4rem)] font-semibold leading-[1.06] tracking-normal">
-          What would you do with{" "}
-          <span className="text-[#007A2F] tabular-nums">{formatCurrencyFloored(savings)}</span>?
+          <span className="block">What would you do with</span>
+          <span className="block text-[#007A2F] tabular-nums">{formatCurrencyFloored(savings)}</span>
         </h1>
         <div className="mt-2 flex items-center justify-center gap-3 text-sm font-bold opacity-70 transition-opacity hover:opacity-100">
           <a
