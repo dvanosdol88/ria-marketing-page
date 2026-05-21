@@ -929,12 +929,15 @@ function FinalHomeLineChart({
     Math.min(pad.top + 24, height - pad.bottom - pillHeight - 4),
   );
   const feeGapConnectorLineY = feeGapLabelY + pillHeight / 2;
-  const feeGapConnectorFallbackX = Math.min(
-    pad.left + plotWidth - 8,
-    Math.max(feeGapLabelX + feeGapLabelWidth + 18, pad.left + plotWidth * 0.88),
-  );
+  const feeGapConnectorStartX = feeGapLabelX + feeGapLabelWidth;
+  const feeGapConnectorMaxLength = Math.min(44, Math.max(26, plotWidth * 0.08));
+  const feeGapConnectorMinLength = Math.min(24, feeGapConnectorMaxLength);
+  const feeGapConnectorFallbackX = Math.min(pad.left + plotWidth - 8, feeGapConnectorStartX + feeGapConnectorMaxLength);
   const feeGapConnectorTargetX =
-    Array.from({ length: 81 }, (_, index) => maxYear - (maxYear * index) / 80)
+    Array.from({ length: 25 }, (_, index) => {
+      const targetX = feeGapConnectorStartX + (feeGapConnectorMaxLength * index) / 24;
+      return ((targetX - pad.left) / plotWidth) * maxYear;
+    })
       .map((targetYear) => {
         const targetX = pad.left + (targetYear / maxYear) * plotWidth;
         const flatY = yForValue(valueAtYear(targetYear, "withoutFees"));
@@ -945,7 +948,7 @@ function FinalHomeLineChart({
       })
       .find(
         ({ targetX, upperY, lowerY }) =>
-          targetX >= feeGapLabelX + feeGapLabelWidth + 16 &&
+          targetX >= feeGapConnectorStartX + feeGapConnectorMinLength &&
           feeGapConnectorLineY >= upperY + 3 &&
           feeGapConnectorLineY <= lowerY - 3,
       )?.targetX ?? feeGapConnectorFallbackX;
