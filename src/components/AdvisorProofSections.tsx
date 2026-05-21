@@ -13,6 +13,10 @@ type ProofCard = {
   eyebrow: string;
   summary: string;
   details: string[];
+  detailLink?: {
+    href: string;
+    label: string;
+  };
   stat?: string;
   statLabel?: string;
   logos?: {
@@ -44,6 +48,10 @@ const adviceCards: ProofCard[] = [
       "CFP professionals are trained to connect investments to real-life planning: retirement, taxes, estate, insurance, cash flow, and family tradeoffs.",
       "David's experience includes Morgan Stanley Smith Barney and Fidelity, plus the perspective that comes from seeing what large-firm advice can and cannot deliver.",
     ],
+    detailLink: {
+      href: "https://smarterwaywealth.com/",
+      label: "Learn more about CFA and CFP at smarterwaywealth.com",
+    },
   },
   {
     eyebrow: "Standard",
@@ -446,17 +454,27 @@ function ProofDetailDialog({
                 </li>
               ))}
             </ul>
+            {card.detailLink ? (
+              <Link
+                href={card.detailLink.href}
+                className="mt-6 inline-flex text-sm font-extrabold leading-6 !text-[#108843] underline decoration-[#8BBE9E] decoration-2 underline-offset-4 transition hover:!text-[#062417]"
+              >
+                {card.detailLink.label}
+              </Link>
+            ) : null}
           </div>
         </div>
-        <div className="mt-8 border-t border-[#D5DEE8] pt-5">
-          <Link
-            href={fitCta.href}
-            className="inline-flex items-center gap-2 rounded-md bg-[#064B84] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_26px_rgba(6,75,132,0.2)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#053E6D] hover:shadow-[0_16px_32px_rgba(6,75,132,0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84]"
-          >
-            <span>See if you are a good fit</span>
-            <span aria-hidden="true">-&gt;</span>
-          </Link>
-        </div>
+        {!card.detailLink ? (
+          <div className="mt-8 border-t border-[#D5DEE8] pt-5">
+            <Link
+              href={fitCta.href}
+              className="inline-flex items-center gap-2 rounded-md bg-[#064B84] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_26px_rgba(6,75,132,0.2)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#053E6D] hover:shadow-[0_16px_32px_rgba(6,75,132,0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84]"
+            >
+              <span>See if you are a good fit</span>
+              <span aria-hidden="true">-&gt;</span>
+            </Link>
+          </div>
+        ) : null}
       </motion.article>
     </motion.div>
   );
