@@ -66,7 +66,7 @@ interface SimpleRangeControlProps {
   boundsFormatter: (value: number) => string;
   formatter: (value: number) => string;
   label: string;
-  labelNote?: string;
+  labelAsterisk?: boolean;
   max: number;
   min: number;
   onChange: (value: number) => void;
@@ -78,7 +78,7 @@ function SimpleRangeControl({
   boundsFormatter,
   formatter,
   label,
-  labelNote,
+  labelAsterisk,
   max,
   min,
   onChange,
@@ -142,14 +142,11 @@ function SimpleRangeControl({
         <label htmlFor={inputId} className="block text-[13px] font-bold leading-tight text-[#213B56]">
           <span>
             {label}
-            {labelNote ? "*" : ""}{" "}
+            {labelAsterisk ? "*" : ""}{" "}
             <span className="ml-1.5 whitespace-nowrap text-[12px] font-semibold text-[#5E6F80]">
               ({boundsFormatter(min)}{"\u2013"}{boundsFormatter(max)})
             </span>
           </span>
-          {labelNote ? (
-            <span className="mt-1 block text-[13px] font-bold leading-tight text-[#213B56]">{labelNote}</span>
-          ) : null}
         </label>
       </div>
       <div className="flex shrink-0 items-stretch overflow-hidden rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30">
@@ -832,7 +829,7 @@ export function CostAnalysisCalculator({
     advisoryFee: (
       <SimpleRangeControl
         label="Asset-based fee"
-        labelNote="*average. Fees may vary (decrease) over time."
+        labelAsterisk
         value={state.annualFeePercent}
         onChange={(value) => updateCalculatorState({ annualFeePercent: value })}
         formatter={(value) => `${value.toFixed(2)}%`}

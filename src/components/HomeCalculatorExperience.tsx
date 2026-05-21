@@ -2051,6 +2051,12 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           />
         </section>
 
+        <p className="mx-4 mt-3 rounded-md border border-[#D7E0E8] bg-[#F8FAFC] px-3 py-2 text-[12px] font-semibold leading-relaxed text-[#42556C] sm:mx-7 sm:text-[13px]">
+          <span className="text-[#213B56]">Asset-based fee*</span> is modeled as an average over the selected time period.
+          It may start above the selected average and decrease as the portfolio grows. This calculator is illustrative
+          only and should not be relied on for a precise cost analysis.
+        </p>
+
         <div ref={visualizationRef}>
           <section
             className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-1.5 py-2 sm:mx-7 sm:px-2"
