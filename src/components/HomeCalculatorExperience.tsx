@@ -1263,7 +1263,7 @@ function ComparisonBars({
               }
             }}
           >
-            <span className="relative text-lg font-extrabold leading-none text-white sm:text-2xl">
+            <span className="relative text-base font-extrabold leading-none text-white sm:text-xl">
               {percentLost.toFixed(1)}%
             </span>
           </div>
