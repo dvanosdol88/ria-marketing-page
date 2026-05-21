@@ -416,10 +416,14 @@ function SavingsLeadHero({
         >
           ?
         </div>
-        <div className="relative z-10 mx-auto max-w-6xl">
+        <div className="relative mx-auto max-w-6xl">
           <h1 className="text-[clamp(2.25rem,4.8vw,4rem)] font-semibold leading-[1.06] tracking-normal">
-            <span className="block">What would you do with</span>
-            <span className="block text-[#007A2F] tabular-nums">{formatCurrencyFloored(savings)}</span>
+            <span className="block">
+              <span className="relative z-10">What </span>
+              <span className="relative" style={{ zIndex: -1 }}>would</span>
+              <span className="relative z-10"> you do with</span>
+            </span>
+            <span className="relative z-10 block text-[#007A2F] tabular-nums">{formatCurrencyFloored(savings)}</span>
           </h1>
         </div>
       </div>
