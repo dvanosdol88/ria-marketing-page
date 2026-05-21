@@ -399,7 +399,7 @@ function SavingsLeadHero({
       <div className="relative isolate overflow-hidden bg-[#E7EAF0] px-4 pt-12 pb-16 sm:pt-16 sm:pb-20">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 select-none text-[10rem] font-black leading-none text-white sm:text-[14rem]"
+          className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.12] select-none text-[11rem] font-bold leading-none text-white sm:text-[15rem]"
         >
           ?
         </div>
