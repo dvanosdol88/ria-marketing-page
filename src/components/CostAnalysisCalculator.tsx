@@ -505,8 +505,33 @@ export function CostAnalysisCalculator({
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const query = buildQueryFromState(state, paramsFromServer);
-    const nextUrl = `${window.location.pathname}?${query}${window.location.hash}`;
+
+    const isDefaultState =
+      state.portfolioValue === DEFAULT_STATE.portfolioValue &&
+      state.years === DEFAULT_STATE.years &&
+      state.annualGrowthPercent === DEFAULT_STATE.annualGrowthPercent &&
+      state.annualFeePercent === DEFAULT_STATE.annualFeePercent &&
+      state.mutualFundExpensePercent === DEFAULT_STATE.mutualFundExpensePercent;
+
+    let query: string;
+    if (isDefaultState) {
+      // Default state on a fresh visit (e.g. mailed QR code) should not pollute
+      // the address bar. Strip the calculator's own params but preserve any
+      // unrelated query strings the server passed in (utm_*, variant, etc.).
+      const params = new URLSearchParams(paramsFromServer ? paramsFromServer.toString() : undefined);
+      params.delete("portfolio");
+      params.delete("years");
+      params.delete("growth");
+      params.delete("fee");
+      params.delete("mfe");
+      query = params.toString();
+    } else {
+      query = buildQueryFromState(state, paramsFromServer);
+    }
+
+    const nextUrl = query
+      ? `${window.location.pathname}?${query}${window.location.hash}`
+      : `${window.location.pathname}${window.location.hash}`;
     const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     if (currentUrl !== nextUrl) {
       window.history.replaceState(window.history.state, "", nextUrl);
