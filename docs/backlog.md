@@ -40,6 +40,7 @@ Tracked items for youarepayingtoomuch.com. One-liner per item with enough contex
 
 - [ ] Logo refinement: continue Venn diagram concept exploration with dollar sign symbols and text arrangements around "The SMARTER way to wealth" tagline. *(added 2025-02-11)*
 - [ ] Confirm design token coverage: ensure `src/styles/tokens.ts` covers all brand colors, typography, and spacing values used across production pages. *(added 2025-02-11)*
+- [ ] **Hero `?` watermark vs. small-mobile heading collision.** The Satoshi `?` is `text-[13rem]` on mobile and the heading sits at `clamp(2.25rem, 4.8vw, 4rem)`. On 320–375px viewports the `?` can crowd the right edge and feel oversized relative to the 36–48px heading. Options surfaced during a session: (A) drop the mobile `?` to ~`11rem`; (B) keep size but tighten section horizontal padding to give the `?` more breathing room. Decide which after eyeballing on a real phone. Code: `src/components/CostAnalysisCalculator.tsx` ~line 406. *(added 2026-05-22)*
 
 ## Declined / Won't Do
 
