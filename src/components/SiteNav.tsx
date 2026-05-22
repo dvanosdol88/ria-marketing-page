@@ -226,17 +226,24 @@ export function SiteNav() {
             </Link>
 
             <nav className="flex items-center gap-1">
-              {siteNavLinks.map((link) => {
+              {siteNavLinks.map((link, idx) => {
                 const isActive = isLinkActive(link);
+                const isSecondary = link.tier === "secondary";
+                const isFirstSecondary =
+                  isSecondary && siteNavLinks[idx - 1]?.tier !== "secondary";
 
                 return (
                   <Link
                     key={link.href}
                     href={link.href as any}
                     className={`relative px-3 py-2 text-sm rounded-md transition-[color,font-weight] duration-300 ease-out ${
+                      isFirstSecondary ? "ml-4" : ""
+                    } ${
                       isActive
                         ? "font-extrabold text-[#007A2F]"
-                        : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50"
+                        : isSecondary
+                          ? "text-neutral-400 hover:text-neutral-700 hover:bg-neutral-50"
+                          : "text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50"
                     }`}
                   >
                     {link.label}
@@ -296,8 +303,11 @@ export function SiteNav() {
 
         {/* Links */}
         <div className="flex-1 overflow-y-auto px-2 py-3">
-          {siteNavLinks.map((link) => {
+          {siteNavLinks.map((link, idx) => {
             const isActive = isLinkActive(link);
+            const isSecondary = link.tier === "secondary";
+            const isFirstSecondary =
+              isSecondary && siteNavLinks[idx - 1]?.tier !== "secondary";
 
             return (
               <Link
@@ -305,9 +315,13 @@ export function SiteNav() {
                 href={link.href as any}
                 onClick={closeDrawer}
                 className={`flex items-center gap-3 rounded-lg px-3 py-3.5 text-base underline-offset-8 transition-[color,font-weight,text-decoration-color] duration-300 ${
+                  isFirstSecondary ? "mt-3 border-t border-neutral-100 pt-4" : ""
+                } ${
                   isActive
                     ? "font-extrabold text-[#007A2F] underline decoration-[#007A2F]"
-                    : "text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900"
+                    : isSecondary
+                      ? "text-neutral-400 hover:bg-neutral-50 hover:text-neutral-700"
+                      : "text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900"
                 }`}
               >
                 {link.label}
