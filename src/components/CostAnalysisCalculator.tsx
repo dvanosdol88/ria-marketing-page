@@ -405,10 +405,10 @@ function SavingsLeadHero({
 
   return (
     <section className="w-full bg-[#EEF0F5] pb-4 text-center text-[#10233A] sm:pb-5">
-      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-12 pb-16 sm:pt-16 sm:pb-20">
+      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-16 pb-16 sm:pt-20 sm:pb-20">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.12] select-none text-[13rem] font-bold leading-none text-white sm:text-[18rem]"
+          className="pointer-events-none absolute left-1/2 top-[61%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.12] select-none text-[13.5rem] font-bold leading-none text-white sm:text-[18.75rem]"
           style={{ fontFamily: '"Satoshi", var(--font-sans), sans-serif' }}
         >
           ?
