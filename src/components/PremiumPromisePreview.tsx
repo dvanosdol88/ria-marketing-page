@@ -3,6 +3,7 @@
 import { useId, useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { formatCurrencyFloored } from "@/lib/format";
 
 type PromiseKey = "upgrade" | "improve" | "save";
@@ -16,28 +17,42 @@ const PROMISES: Array<{
   label: string;
   overlay: [string, string, string];
 }> = [
+  { key: "save", label: "Save", overlay: ["Save", "A", "Ton"] },
   { key: "upgrade", label: "Upgrade", overlay: ["Upgrade", "Your", "Advice"] },
   { key: "improve", label: "Improve", overlay: ["Improve", "Your", "Tools"] },
-  { key: "save", label: "Save", overlay: ["Save", "A", "Ton"] },
 ];
 
 export function PremiumPromisePreview({ savings }: PremiumPromisePreviewProps) {
   const [activeKey, setActiveKey] = useState<PromiseKey>("upgrade");
   const baseId = useId();
+  const reduceMotion = useReducedMotion();
   const activePromise = PROMISES.find((item) => item.key === activeKey) ?? PROMISES[0];
+  const activeIndex = Math.max(
+    PROMISES.findIndex((item) => item.key === activeKey),
+    0
+  );
   const projectedSavings = useMemo(() => formatCurrencyFloored(savings), [savings]);
 
   return (
-    <section
-      className="relative left-1/2 mt-16 w-screen -translate-x-1/2 overflow-hidden text-left sm:left-auto sm:mt-24 sm:w-auto sm:translate-x-0 sm:overflow-visible"
+    <motion.section
+      className="relative -mx-4 mt-24 w-[calc(100%+2rem)] overflow-hidden text-left sm:mx-0 sm:mt-32 sm:w-auto sm:overflow-visible lg:mt-36"
       aria-label="Upgrade, improve, and save preview"
+      initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+      whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.22 }}
+      transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className="overflow-hidden bg-white shadow-[0_18px_55px_rgba(16,35,58,0.16)] sm:rounded-lg">
         <div
-          className="grid h-12 grid-cols-3 border-b border-[#D7E0E8] bg-white"
+          className="relative grid h-12 grid-cols-3 border-b border-[#D7E0E8] bg-white/95 backdrop-blur"
           role="tablist"
           aria-label="Promise preview categories"
         >
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute bottom-0 left-0 z-0 h-[3px] w-1/3 bg-[#007A2F] transition-transform duration-300 ease-out"
+            style={{ transform: `translateX(${activeIndex * 100}%)` }}
+          />
           {PROMISES.map((item) => {
             const selected = item.key === activeKey;
             const tabId = `${baseId}-${item.key}-tab`;
@@ -55,17 +70,11 @@ export function PremiumPromisePreview({ savings }: PremiumPromisePreviewProps) {
                 onClick={() => setActiveKey(item.key)}
                 onFocus={() => setActiveKey(item.key)}
                 onMouseEnter={() => setActiveKey(item.key)}
-                className={`relative flex h-12 items-center justify-center px-3 text-sm font-semibold transition focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#007A2F] sm:text-base ${
-                  selected ? "text-[#061421]" : "text-[#667587] hover:bg-[#F6F9FB] hover:text-[#061421]"
+                className={`relative z-10 flex h-12 items-center justify-center px-3 text-sm font-semibold transition focus-visible:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#007A2F] sm:text-base ${
+                  selected ? "text-[#061421]" : "text-[#667587] hover:bg-[#F6F9FB]/72 hover:text-[#061421]"
                 }`}
               >
                 {item.label}
-                <span
-                  aria-hidden="true"
-                  className={`absolute inset-x-5 bottom-0 h-[3px] rounded-full bg-[#007A2F] transition-transform duration-200 ${
-                    selected ? "scale-x-100" : "scale-x-0"
-                  }`}
-                />
               </button>
             );
           })}
@@ -77,27 +86,38 @@ export function PremiumPromisePreview({ savings }: PremiumPromisePreviewProps) {
           aria-labelledby={`${baseId}-${activeKey}-tab`}
           className="relative min-h-[520px] overflow-hidden bg-[#EDF2F5] sm:min-h-[560px] lg:min-h-[600px]"
         >
-          {activeKey === "upgrade" ? (
-            <UpgradeVideoPanel />
-          ) : activeKey === "improve" ? (
-            <ImproveToolsPanel />
-          ) : (
-            <SaveProofPanel projectedSavings={projectedSavings} />
-          )}
+          <AnimatePresence initial={false} mode="wait">
+            <motion.div
+              key={activeKey}
+              className="absolute inset-0"
+              initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+              animate={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
+              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+              transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {activeKey === "upgrade" ? (
+                <UpgradeVideoPanel />
+              ) : activeKey === "improve" ? (
+                <ImproveToolsPanel />
+              ) : (
+                <SaveProofPanel projectedSavings={projectedSavings} />
+              )}
 
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-[78%] bg-gradient-to-r from-white/88 via-white/56 to-transparent sm:w-[58%]" />
-          <OverlayHeadline lines={activePromise.overlay} />
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-[78%] bg-gradient-to-r from-white/88 via-white/56 to-transparent sm:w-[58%]" />
+              <OverlayHeadline lines={activePromise.overlay} />
 
-          {activeKey === "upgrade" ? <VideoLink /> : null}
+              {activeKey === "upgrade" ? <VideoLink /> : null}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
 function OverlayHeadline({ lines }: { lines: [string, string, string] }) {
   return (
-    <h2 className="pointer-events-none absolute left-4 top-10 z-10 text-[clamp(3.25rem,14vw,5.75rem)] font-black uppercase leading-[0.88] tracking-normal text-black sm:left-8 sm:top-14 sm:text-[clamp(4.5rem,8.2vw,7rem)]">
+    <h2 className="pointer-events-none absolute left-4 top-14 z-10 text-[clamp(3.25rem,14vw,5.75rem)] font-black uppercase leading-[0.88] tracking-normal text-black sm:left-8 sm:top-20 sm:text-[clamp(4.5rem,8.2vw,7rem)]">
       {lines.map((line) => (
         <span key={line} className="block">
           {line}
