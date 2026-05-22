@@ -16,6 +16,7 @@ import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
 import { HomeTopBanner } from "@/components/HomeTopBanner";
+import { PremiumPromisePreview } from "@/components/PremiumPromisePreview";
 import {
   HomeCalculatorExperience,
   type CalculatorSimpleControlNodes,
@@ -422,11 +423,9 @@ function SavingsLeadHero({
       </div>
       <div className="mx-auto max-w-6xl px-4">
         {introBlock}
-        <p className="mt-16 text-xl leading-7 text-slate-900 sm:mt-24 sm:text-2xl">
-          See how much <strong>you</strong> can save.
-        </p>
+        <PremiumPromisePreview savings={savings} />
         {disclosure ? (
-          <div className="mx-auto mt-12 max-w-3xl text-center [&_p]:mt-0">
+          <div className="mx-auto mt-8 max-w-3xl text-center [&_p]:mt-0 sm:mt-10">
             {disclosure}
           </div>
         ) : null}
