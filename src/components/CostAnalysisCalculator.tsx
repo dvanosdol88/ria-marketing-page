@@ -168,7 +168,14 @@ function SimpleRangeControl({
           autoComplete="off"
           spellCheck={false}
           value={displayValue}
-          onChange={(event) => setDraft(event.target.value)}
+          onChange={(event) => {
+            const nextDraft = event.target.value;
+            setDraft(nextDraft);
+            const numeric = parseTextValue(nextDraft);
+            if (numeric !== null) {
+              onChange(clampAndSnap(numeric));
+            }
+          }}
           onFocus={(event) => {
             setDraft(formatter(value));
             // Defer so the value is in the DOM before selection.
