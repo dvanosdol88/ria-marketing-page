@@ -138,7 +138,7 @@ function SimpleRangeControl({
   const canIncrease = value < max;
 
   return (
-    <div className="flex items-center justify-between gap-3">
+    <div className="flex flex-col gap-2 min-[430px]:flex-row min-[430px]:items-center min-[430px]:justify-between min-[430px]:gap-3">
       <div className="min-w-0">
         <label htmlFor={inputId} className="block text-[13px] font-bold leading-tight text-[#213B56]">
           <span>
@@ -150,13 +150,13 @@ function SimpleRangeControl({
           </span>
         </label>
       </div>
-      <div className="flex shrink-0 items-stretch overflow-hidden rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30">
+      <div className="flex w-full shrink-0 items-stretch overflow-hidden rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30 min-[430px]:w-auto">
         <button
           type="button"
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => stepValue(-step)}
           disabled={!canDecrease}
-          className="grid h-[34px] w-8 place-items-center border-r border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
+          className="grid h-11 w-11 place-items-center border-r border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
           aria-label={`Decrease ${label}`}
         >
           <Minus aria-hidden="true" size={14} strokeWidth={2.5} />
@@ -186,7 +186,7 @@ function SimpleRangeControl({
               event.currentTarget.blur();
             }
           }}
-          className="h-[34px] min-w-[74px] max-w-[150px] border-0 bg-transparent px-2.5 text-right text-base font-bold leading-none text-[#10233A] tabular-nums outline-none"
+          className="h-11 min-w-[7ch] flex-1 border-0 bg-transparent px-2.5 text-right text-base font-bold leading-none text-[#10233A] tabular-nums outline-none min-[430px]:flex-none"
           style={{ width: `${Math.max(7, displayValue.length + 3)}ch` }}
           aria-label={`${label} value`}
         />
@@ -195,7 +195,7 @@ function SimpleRangeControl({
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => stepValue(step)}
           disabled={!canIncrease}
-          className="grid h-[34px] w-8 place-items-center border-l border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
+          className="grid h-11 w-11 place-items-center border-l border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
           aria-label={`Increase ${label}`}
         >
           <Plus aria-hidden="true" size={14} strokeWidth={2.5} />
@@ -637,6 +637,7 @@ export function CostAnalysisCalculator({
   const isCalculatorFirst = experienceMode === "calculator-first";
   const isSavingsCalculatorUpgrade = experienceMode === "savings-calculator-upgrade";
   const usesOpeningMarketingHero = experienceMode === "marketing";
+  const reducedMotion = useReducedMotion();
 
   const quoteSectionStyle = isDarkMode
     ? {
@@ -932,6 +933,35 @@ export function CostAnalysisCalculator({
     </div>
   );
 
+  const calculatorHandoff = isSavingsCalculatorUpgrade ? (
+    <div className="section-shell relative z-10 pt-10 sm:pt-14">
+      <motion.div
+        initial={reducedMotion ? false : { opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.55, ease: "easeOut" }}
+        className="mx-auto flex w-full max-w-[1380px] flex-col gap-4 text-left sm:flex-row sm:items-end sm:justify-between"
+      >
+        <div className="min-w-0">
+          <h2 className="text-[clamp(2rem,8vw,3.25rem)] font-bold leading-[1.02] tracking-normal text-[#10233A]">
+            The Fee Calculator
+          </h2>
+          <p className="mt-2 max-w-xl text-base leading-7 text-[#52657A] sm:text-lg">
+            Put the math on your own portfolio.
+          </p>
+        </div>
+        <div className="inline-flex min-h-11 w-fit max-w-full items-center gap-2 rounded-md border border-[#BFD4C8] bg-white px-3 py-2 shadow-[0_10px_28px_rgba(17,33,52,0.08)] sm:px-4">
+          <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#5E6F80]">
+            Projected gap
+          </span>
+          <span className="text-xl font-bold leading-none text-[#007A2F] tabular-nums sm:text-2xl">
+            {formatCurrencyFloored(projection.savings)}
+          </span>
+        </div>
+      </motion.div>
+    </div>
+  ) : null;
+
   return (
     <>
       {isSavingsCalculatorUpgrade && (
@@ -1045,6 +1075,8 @@ export function CostAnalysisCalculator({
           }`}
         />
 
+        {calculatorHandoff}
+
         {isCalculatorFirst && (
           <HomeTopBanner
             bannerId={bannerId}
@@ -1081,6 +1113,9 @@ export function CostAnalysisCalculator({
           renderChart={renderChart}
           activeScenario={activeCard}
           assumptionsCustomized={assumptionsCustomized}
+          showViewTabs={!isSavingsCalculatorUpgrade}
+          initialView={isSavingsCalculatorUpgrade ? "inputs" : "header"}
+          showChartHeading={isSavingsCalculatorUpgrade}
           onHighlightScenario={handleCardTap}
           onAssumptionChange={(patch) => updateCalculatorState(patch)}
         />

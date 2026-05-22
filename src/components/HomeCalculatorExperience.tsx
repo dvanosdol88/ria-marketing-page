@@ -89,6 +89,9 @@ type HomeCalculatorExperienceProps = {
   renderChart: (className: string) => ReactNode;
   activeScenario: Scenario | null;
   assumptionsCustomized: boolean;
+  showViewTabs?: boolean;
+  initialView?: "header" | "inputs";
+  showChartHeading?: boolean;
   onHighlightScenario: (scenario: Scenario) => void;
   onAssumptionChange: (patch: CalculatorAssumptionPatch) => void;
 };
@@ -1590,6 +1593,9 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     totalAssetBasedFees,
     totalFlatFees,
     years,
+    showChartHeading = false,
+    showViewTabs = true,
+    initialView = "header",
   } = props;
   const [chartPinned, setChartPinned] = useState(false);
   const [barPinned, setBarPinned] = useState(false);
@@ -1602,7 +1608,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   // Two-tab swap in the title-bar slot: "header" shows the title/subtitle/growth
   // pill (default); "inputs" shows the 2×2 assumptions grid. Exactly one view
   // is always visible — clicking the active tab is a no-op.
-  const [activeView, setActiveView] = useState<"header" | "inputs">("header");
+  const [activeView, setActiveView] = useState<"header" | "inputs">(initialView);
   const visualizationRef = useRef<HTMLDivElement | null>(null);
   const gapHintCancelledRef = useRef(false);
   const gapHintPlayCountRef = useRef(0);
@@ -1615,6 +1621,19 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     : { duration: 0.24 };
   const headerSwapInitial = prefersReducedMotion ? false : { opacity: 0, y: 5 };
   const headerSwapExit = prefersReducedMotion ? undefined : { opacity: 0, y: -5 };
+  const assumptionGrid = (
+    <section
+      className="grid overflow-hidden border-b border-[#DFE6EE] bg-white px-3 py-3 sm:px-7"
+      aria-label="Calculator assumptions"
+    >
+      <div className="grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white md:grid-cols-2">
+        <div className="border-b border-[#DFE6EE] p-3 md:border-r">{simpleControls.portfolio}</div>
+        <div className="border-b border-[#DFE6EE] p-3">{simpleControls.advisoryFee}</div>
+        <div className="border-b border-[#DFE6EE] p-3 md:border-b-0 md:border-r">{simpleControls.years}</div>
+        <div className="p-3">{simpleControls.growth}</div>
+      </div>
+    </section>
+  );
   const activateHeaderField = (field: EditableHeaderField) => {
     const scrollX = window.scrollX;
     const scrollY = window.scrollY;
@@ -1755,6 +1774,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         </div>
       ) : null}
       <div id="savings-section" className="mx-auto max-w-[1380px]">
+      {showViewTabs ? (
       <div
         className="mb-3 inline-flex rounded-md border border-[#C9D8E4] bg-white/80 p-1 shadow-[0_8px_22px_rgba(17,33,52,0.07)] backdrop-blur"
         role="tablist"
@@ -1797,8 +1817,10 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <span className="hidden sm:inline">Header</span>
         </button>
       </div>
+      ) : null}
       <ScrollReveal className="overflow-hidden rounded-md border border-[#CFD9E3] bg-white shadow-[0_18px_45px_rgba(17,33,52,0.08)]">
         <div id="calc-view-slot">
+        {showViewTabs ? (
         <AnimatePresence mode="wait" initial={false}>
         {activeView === "header" ? (
         <motion.div
@@ -1977,20 +1999,11 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           exit={{ opacity: 0, y: -6 }}
           transition={{ duration: 0.25, ease: "easeInOut" }}
         >
-        <section
-          className="grid overflow-hidden border-b border-[#DFE6EE] bg-white px-4 py-3 sm:px-7"
-          aria-label="Calculator assumptions"
-        >
-          <div className="grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white md:grid-cols-2">
-            <div className="border-b border-[#DFE6EE] p-3 md:border-r">{simpleControls.portfolio}</div>
-            <div className="border-b border-[#DFE6EE] p-3">{simpleControls.advisoryFee}</div>
-            <div className="border-b border-[#DFE6EE] p-3 md:border-b-0 md:border-r">{simpleControls.growth}</div>
-            <div className="p-3">{simpleControls.years}</div>
-          </div>
-        </section>
+        {assumptionGrid}
         </motion.div>
         )}
         </AnimatePresence>
+        ) : assumptionGrid}
         </div>
 
         <section className="grid gap-2 px-4 pt-3 sm:px-7 md:grid-cols-[1fr_auto_1fr]" aria-label="Ending value comparison">
@@ -2056,6 +2069,19 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           It may start above the selected average and decrease as the portfolio grows. This calculator is illustrative
           only and should not be relied on for a precise cost analysis.
         </p>
+
+        {showChartHeading ? (
+          <ScrollReveal delay={0.08} className="mx-4 mt-5 sm:mx-7">
+            <div className="border-t border-[#D7E0E8] pt-4">
+              <h3 className="text-xl font-bold leading-tight tracking-normal text-[#10233A] sm:text-2xl">
+                Your Portfolio Over Time
+              </h3>
+              <p className="mt-1 text-sm leading-6 text-[#52657A]">
+                Same portfolio. Same market assumption. Different fee structure.
+              </p>
+            </div>
+          </ScrollReveal>
+        ) : null}
 
         <div ref={visualizationRef}>
           <section
