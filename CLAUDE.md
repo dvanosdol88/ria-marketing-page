@@ -13,6 +13,7 @@ Effective 2026-05-22, this site is **mobile-first**, not mobile-aware. Design an
 - Layout reasoning starts at ~375px width. Typography, spacing, tap targets, and information density are decided there first.
 - Desktop is a progressive enhancement of the mobile layout, not the source of truth that gets shrunk down.
 - No need to retroactively re-audit existing pages for mobile-first compliance. Only flag and fix glaring mobile breaks (overflow, illegible text, broken tap targets) you encounter during normal work.
+- When touching a section for any reason, proactively surface 1–3 mobile-first improvement opportunities (typography stairs, content density, tap target size, layout reflow, hover-only interactions) with concrete options for David to pick from. Don't apply them unprompted — just call them out alongside the requested change.
 
 ## Project Backlog
 - Tracked items live in docs/backlog.md
