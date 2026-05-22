@@ -6,6 +6,13 @@
 
 For all architecture rules, safety rules, coding standards, tool usage, and workflow — follow your global ~/.claude/CLAUDE.md instructions.
 
+## Design: mobile-first
+
+Effective 2026-05-22, this site is **mobile-first**, not mobile-aware. Design and build for the smallest viewport first, then scale up to tablet and desktop via responsive utilities — not the other way around. This applies to every new component, section, copy block, and visual treatment.
+
+- Layout reasoning starts at ~375px width. Typography, spacing, tap targets, and information density are decided there first.
+- Desktop is a progressive enhancement of the mobile layout, not the source of truth that gets shrunk down.
+- No need to retroactively re-audit existing pages for mobile-first compliance. Only flag and fix glaring mobile breaks (overflow, illegible text, broken tap targets) you encounter during normal work.
 
 ## Project Backlog
 - Tracked items live in docs/backlog.md
