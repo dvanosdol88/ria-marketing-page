@@ -2,7 +2,7 @@
 
 import { useId, useMemo, useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight, BadgeDollarSign, LineChart, Sparkles } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { formatCurrencyFloored } from "@/lib/format";
 
 type PromiseKey = "upgrade" | "improve" | "save";
@@ -14,38 +14,12 @@ type PremiumPromisePreviewProps = {
 const PROMISES: Array<{
   key: PromiseKey;
   label: string;
-  eyebrow: string;
-  headline: string;
-  body: string;
+  overlay: [string, string, string];
 }> = [
-  {
-    key: "upgrade",
-    label: "Upgrade",
-    eyebrow: "Your advice",
-    headline: "Upgrade your advice.",
-    body: "A credentialed fiduciary conversation should feel personal, direct, and useful.",
-  },
-  {
-    key: "improve",
-    label: "Improve",
-    eyebrow: "Your tools",
-    headline: "Improve your tools.",
-    body: "Better planning software turns abstract tradeoffs into decisions you can actually see.",
-  },
-  {
-    key: "save",
-    label: "Save",
-    eyebrow: "Your cost",
-    headline: "Save a ton.",
-    body: "The flat-fee model keeps more of the long-term result in your plan.",
-  },
+  { key: "upgrade", label: "Upgrade", overlay: ["Upgrade", "Your", "Advice"] },
+  { key: "improve", label: "Improve", overlay: ["Improve", "Your", "Tools"] },
+  { key: "save", label: "Save", overlay: ["Save", "A", "Ton"] },
 ];
-
-const ICONS: Record<PromiseKey, typeof Sparkles> = {
-  upgrade: Sparkles,
-  improve: LineChart,
-  save: BadgeDollarSign,
-};
 
 export function PremiumPromisePreview({ savings }: PremiumPromisePreviewProps) {
   const [activeKey, setActiveKey] = useState<PromiseKey>("upgrade");
@@ -55,96 +29,89 @@ export function PremiumPromisePreview({ savings }: PremiumPromisePreviewProps) {
 
   return (
     <section
-      className="relative left-1/2 mt-10 w-screen -translate-x-1/2 overflow-hidden text-left sm:left-auto sm:mt-14 sm:w-auto sm:translate-x-0 sm:overflow-visible"
+      className="relative left-1/2 mt-16 w-screen -translate-x-1/2 overflow-hidden text-left sm:left-auto sm:mt-24 sm:w-auto sm:translate-x-0 sm:overflow-visible"
       aria-label="Upgrade, improve, and save preview"
     >
-      <div className="bg-[#091521] text-white shadow-[0_24px_70px_rgba(9,21,33,0.25)] sm:rounded-lg">
-        <div className="grid overflow-hidden sm:rounded-lg lg:min-h-[500px] lg:grid-cols-[0.92fr_1.08fr]">
-          <div className="flex flex-col justify-between border-b border-white/10 bg-[#0C1C2B] px-4 py-4 sm:px-6 sm:py-7 lg:border-b-0 lg:border-r">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#7ADCA6]">
-                See the promise
-              </p>
-              <h2 className="mt-2 max-w-sm text-3xl font-semibold leading-tight tracking-normal sm:mt-3 sm:text-4xl">
-                Upgrade. Improve. Save.
-              </h2>
-              <p className="mt-3 hidden max-w-sm text-sm leading-6 text-slate-300 sm:block sm:text-base">
-                One model, three reasons this message should drive the next step to Smarter Way Wealth.
-              </p>
-            </div>
+      <div className="overflow-hidden bg-white shadow-[0_18px_55px_rgba(16,35,58,0.16)] sm:rounded-lg">
+        <div
+          className="grid h-12 grid-cols-3 border-b border-[#D7E0E8] bg-white"
+          role="tablist"
+          aria-label="Promise preview categories"
+        >
+          {PROMISES.map((item) => {
+            const selected = item.key === activeKey;
+            const tabId = `${baseId}-${item.key}-tab`;
+            const panelId = `${baseId}-${item.key}-panel`;
 
-            <div
-              className="mt-4 grid grid-cols-3 gap-1 rounded-lg border border-white/10 bg-white/5 p-1 sm:mt-6"
-              role="tablist"
-              aria-label="Promise preview categories"
-            >
-              {PROMISES.map((item) => {
-                const selected = item.key === activeKey;
-                const Icon = ICONS[item.key];
-                const tabId = `${baseId}-${item.key}-tab`;
-                const panelId = `${baseId}-${item.key}-panel`;
+            return (
+              <button
+                key={item.key}
+                type="button"
+                id={tabId}
+                role="tab"
+                aria-controls={panelId}
+                aria-selected={selected}
+                tabIndex={selected ? 0 : -1}
+                onClick={() => setActiveKey(item.key)}
+                onFocus={() => setActiveKey(item.key)}
+                onMouseEnter={() => setActiveKey(item.key)}
+                className={`relative flex h-12 items-center justify-center px-3 text-sm font-semibold transition focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#007A2F] sm:text-base ${
+                  selected ? "text-[#061421]" : "text-[#667587] hover:bg-[#F6F9FB] hover:text-[#061421]"
+                }`}
+              >
+                {item.label}
+                <span
+                  aria-hidden="true"
+                  className={`absolute inset-x-5 bottom-0 h-[3px] rounded-full bg-[#007A2F] transition-transform duration-200 ${
+                    selected ? "scale-x-100" : "scale-x-0"
+                  }`}
+                />
+              </button>
+            );
+          })}
+        </div>
 
-                return (
-                  <button
-                    key={item.key}
-                    type="button"
-                    id={tabId}
-                    role="tab"
-                    aria-controls={panelId}
-                    aria-selected={selected}
-                    tabIndex={selected ? 0 : -1}
-                    onClick={() => setActiveKey(item.key)}
-                    onFocus={() => setActiveKey(item.key)}
-                    onMouseEnter={() => setActiveKey(item.key)}
-                    className={`flex min-h-12 flex-col items-center justify-center gap-1 rounded-md px-2 py-2 text-center text-[13px] font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7ADCA6] sm:min-h-14 ${
-                      selected
-                        ? "bg-white text-[#091521] shadow-[0_10px_25px_rgba(0,0,0,0.18)]"
-                        : "text-slate-300 hover:bg-white/10 hover:text-white"
-                    }`}
-                  >
-                    <Icon className="h-4 w-4" aria-hidden="true" />
-                    <span>{item.label}</span>
-                  </button>
-                );
-              })}
-            </div>
+        <div
+          id={`${baseId}-${activeKey}-panel`}
+          role="tabpanel"
+          aria-labelledby={`${baseId}-${activeKey}-tab`}
+          className="relative min-h-[520px] overflow-hidden bg-[#EDF2F5] sm:min-h-[560px] lg:min-h-[600px]"
+        >
+          {activeKey === "upgrade" ? (
+            <UpgradeVideoPanel />
+          ) : activeKey === "improve" ? (
+            <ImproveToolsPanel />
+          ) : (
+            <SaveProofPanel projectedSavings={projectedSavings} />
+          )}
 
-            <div className="mt-6 hidden rounded-md border border-white/10 bg-white/[0.04] p-4 sm:block">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#B0EBC8]">
-                {activePromise.eyebrow}
-              </p>
-              <p className="mt-2 text-2xl font-semibold leading-tight tracking-normal text-white">
-                {activePromise.headline}
-              </p>
-              <p className="mt-3 text-sm leading-6 text-slate-300">{activePromise.body}</p>
-            </div>
-          </div>
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-[78%] bg-gradient-to-r from-white/88 via-white/56 to-transparent sm:w-[58%]" />
+          <OverlayHeadline lines={activePromise.overlay} />
 
-          <div
-            id={`${baseId}-${activeKey}-panel`}
-            role="tabpanel"
-            aria-labelledby={`${baseId}-${activeKey}-tab`}
-            className="relative min-h-[310px] overflow-hidden bg-[#F8FAFC] text-[#10233A] sm:min-h-[430px] lg:min-h-full"
-          >
-            {activeKey === "upgrade" ? (
-              <UpgradeVideoPanel />
-            ) : activeKey === "improve" ? (
-              <ImproveToolsPanel />
-            ) : (
-              <SaveProofPanel projectedSavings={projectedSavings} />
-            )}
-          </div>
+          {activeKey === "upgrade" ? <VideoLink /> : null}
         </div>
       </div>
     </section>
   );
 }
 
+function OverlayHeadline({ lines }: { lines: [string, string, string] }) {
+  return (
+    <h2 className="pointer-events-none absolute left-4 top-10 z-10 text-[clamp(3.25rem,14vw,5.75rem)] font-black uppercase leading-[0.88] tracking-normal text-black sm:left-8 sm:top-14 sm:text-[clamp(4.5rem,8.2vw,7rem)]">
+      {lines.map((line) => (
+        <span key={line} className="block">
+          {line}
+        </span>
+      ))}
+    </h2>
+  );
+}
+
 function UpgradeVideoPanel() {
   return (
-    <div className="relative h-full min-h-[310px] bg-[#0A1520] sm:min-h-[430px]">
+    <div className="absolute inset-0 bg-[#0A1520]">
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        className="h-full w-full object-cover object-[72%_center] sm:object-[66%_center]"
         autoPlay
         muted
         loop
@@ -155,37 +122,37 @@ function UpgradeVideoPanel() {
       >
         <source src="/assets/promise-preview/upgrade-placeholder.mp4" type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-gradient-to-t from-[#07111B]/82 via-[#07111B]/20 to-transparent" />
-      <a
-        href="https://smarterwaywealth.com/upgrade"
-        target="_blank"
-        rel="noreferrer"
-        className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-md bg-white px-4 py-3 text-sm font-bold text-[#091521] no-underline shadow-[0_16px_35px_rgba(0,0,0,0.25)] transition hover:bg-[#EEFBF3] hover:text-[#00682B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white sm:bottom-6 sm:left-6"
-      >
-        View the entire video
-        <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-      </a>
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/58 via-black/16 to-transparent" />
     </div>
+  );
+}
+
+function VideoLink() {
+  return (
+    <a
+      href="https://smarterwaywealth.com/upgrade"
+      target="_blank"
+      rel="noreferrer"
+      className="absolute bottom-5 left-4 z-20 inline-flex items-center gap-2 bg-transparent text-sm font-bold !text-[#00A540] !no-underline drop-shadow-[0_2px_6px_rgba(255,255,255,0.9)] transition hover:!text-[#008435] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00A540] sm:bottom-7 sm:left-8 sm:text-base"
+    >
+      View the entire video
+      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+    </a>
   );
 }
 
 function ImproveToolsPanel() {
   return (
-    <div className="flex h-full min-h-[310px] flex-col bg-[#EEF4F7] p-3 sm:min-h-[430px] sm:p-5">
-      <div className="relative flex-1 overflow-hidden rounded-md border border-[#C7D4DF] bg-white">
+    <div className="absolute inset-0 bg-[#F3F7F9]">
+      <div className="absolute inset-x-4 bottom-6 top-44 overflow-hidden rounded-md border border-[#D7E0E8] bg-white shadow-[0_24px_60px_rgba(16,35,58,0.16)] sm:inset-x-10 sm:bottom-10 sm:top-24">
         <Image
           src="/assets/rightcapital/cashflow-waterfall.gif"
           alt="Planning software cash flow waterfall view"
           fill
           unoptimized
           className="object-contain"
-          sizes="(max-width: 640px) 100vw, 640px"
+          sizes="(max-width: 640px) 100vw, 960px"
         />
-      </div>
-      <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[11px] font-bold uppercase tracking-[0.12em] text-[#52657A] sm:text-xs">
-        <span className="rounded-md border border-[#D7E0E8] bg-white px-2 py-2">Plan</span>
-        <span className="rounded-md border border-[#D7E0E8] bg-white px-2 py-2">Stress test</span>
-        <span className="rounded-md border border-[#D7E0E8] bg-white px-2 py-2">Decide</span>
       </div>
     </div>
   );
@@ -193,36 +160,27 @@ function ImproveToolsPanel() {
 
 function SaveProofPanel({ projectedSavings }: { projectedSavings: string }) {
   return (
-    <div className="flex h-full min-h-[310px] flex-col justify-center bg-[#F8FAFC] px-5 py-8 sm:min-h-[430px] sm:px-8">
-      <div className="mx-auto w-full max-w-xl">
-        <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#007A2F]">
-          Projected fee gap
-        </p>
-        <p className="mt-2 text-4xl font-bold tracking-normal text-[#062B43] sm:text-6xl">
+    <div className="absolute inset-0 bg-[#F8FAFC]">
+      <div className="absolute inset-x-5 bottom-8 top-48 rounded-md border border-[#D7E0E8] bg-white/92 p-4 shadow-[0_24px_60px_rgba(16,35,58,0.14)] sm:inset-x-10 sm:bottom-10 sm:top-32 sm:p-8">
+        <p className="text-right text-[clamp(2.5rem,8vw,6.25rem)] font-black leading-none tracking-normal text-[#007A2F]">
           {projectedSavings}
         </p>
-        <div className="mt-7 h-52 rounded-md border border-[#D7E0E8] bg-white p-4 shadow-[0_20px_45px_rgba(16,35,58,0.09)]">
-          <svg viewBox="0 0 520 210" role="img" aria-label="Chart showing the fee gap widening over time" className="h-full w-full">
-            <defs>
-              <linearGradient id="saveGap" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0%" stopColor="#14B254" stopOpacity="0.26" />
-                <stop offset="100%" stopColor="#14B254" stopOpacity="0.02" />
-              </linearGradient>
-            </defs>
-            <path d="M35 168 C 135 151, 202 118, 285 84 C 366 51, 430 39, 485 27" fill="none" stroke="#007A2F" strokeWidth="7" strokeLinecap="round" />
-            <path d="M35 168 C 135 151, 202 118, 285 84 C 366 51, 430 39, 485 27 L 485 180 L 35 180 Z" fill="url(#saveGap)" />
-            <path d="M35 168 C 142 160, 214 141, 292 121 C 382 98, 431 86, 485 78" fill="none" stroke="#064B84" strokeWidth="6" strokeLinecap="round" strokeDasharray="10 12" />
-            <line x1="35" x2="485" y1="180" y2="180" stroke="#D7E0E8" strokeWidth="2" />
-            <text x="34" y="199" fill="#667587" fontSize="18" fontWeight="700">Today</text>
-            <text x="405" y="199" fill="#667587" fontSize="18" fontWeight="700">Later</text>
-            <circle cx="485" cy="27" r="8" fill="#007A2F" />
-            <circle cx="485" cy="78" r="8" fill="#064B84" />
-          </svg>
-        </div>
-        <div className="mt-4 flex flex-wrap gap-2 text-xs font-semibold text-[#42556C]">
-          <span className="rounded-md bg-[#EEFBF3] px-3 py-2 text-[#00682B]">Flat monthly fee</span>
-          <span className="rounded-md bg-[#EAF1F8] px-3 py-2 text-[#064B84]">Asset-based fee drag</span>
-        </div>
+        <svg viewBox="0 0 740 320" role="img" aria-label="Chart showing the fee gap widening over time" className="mt-4 h-[58%] w-full sm:mt-6">
+          <defs>
+            <linearGradient id="saveGapPreview" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0%" stopColor="#14B254" stopOpacity="0.28" />
+              <stop offset="100%" stopColor="#14B254" stopOpacity="0.02" />
+            </linearGradient>
+          </defs>
+          <path d="M44 254 C 170 226, 282 168, 392 116 C 512 60, 604 42, 696 30" fill="none" stroke="#007A2F" strokeWidth="10" strokeLinecap="round" />
+          <path d="M44 254 C 170 226, 282 168, 392 116 C 512 60, 604 42, 696 30 L 696 280 L 44 280 Z" fill="url(#saveGapPreview)" />
+          <path d="M44 254 C 184 242, 294 218, 408 190 C 525 161, 608 139, 696 125" fill="none" stroke="#064B84" strokeWidth="9" strokeLinecap="round" strokeDasharray="16 18" />
+          <line x1="44" x2="696" y1="280" y2="280" stroke="#D7E0E8" strokeWidth="3" />
+          <circle cx="696" cy="30" r="11" fill="#007A2F" />
+          <circle cx="696" cy="125" r="11" fill="#064B84" />
+          <text x="44" y="310" fill="#667587" fontSize="24" fontWeight="800">Today</text>
+          <text x="604" y="310" fill="#667587" fontSize="24" fontWeight="800">Later</text>
+        </svg>
       </div>
     </div>
   );
