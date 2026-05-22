@@ -367,10 +367,10 @@ function SavingsLeadHero({
     introStyle === "panel" ? (
       <div className="relative mx-auto max-w-4xl px-5 py-8 sm:px-10 sm:py-10">
         <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
-        <p className="mx-auto max-w-3xl text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
+        <p className="mx-auto max-w-3xl text-[clamp(1.55rem,3.8vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
           {statement}
         </p>
-        <p className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A] sm:mt-7">
+        <p className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.35rem,3.15vw,2rem)] font-medium leading-[1.14] tracking-normal text-[#10233A] sm:mt-7">
           <span className="whitespace-nowrap">David Van Osdol,</span>{" "}
           <span className="whitespace-nowrap">CFA, CFP</span>
         </p>
@@ -379,7 +379,7 @@ function SavingsLeadHero({
     ) : introStyle === "quote" ? (
       <div className="mx-auto max-w-4xl px-3 py-8 sm:py-10">
         <div className="mx-auto max-w-3xl border-l-[6px] border-[#108843] pl-6 text-left">
-          <p className="text-[clamp(1.45rem,2.9vw,2.45rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
+          <p className="text-[clamp(1.55rem,3.8vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
             {statement}
           </p>
         </div>
@@ -387,7 +387,7 @@ function SavingsLeadHero({
     ) : (
       <div className="mx-auto max-w-4xl py-7 sm:py-9">
         <div className="mx-auto h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
-        <p className="mx-auto mt-7 max-w-3xl text-[clamp(1.4rem,2.75vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
+        <p className="mx-auto mt-7 max-w-3xl text-[clamp(1.55rem,3.8vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
           {statement}
         </p>
         <div className="mx-auto mt-7 h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
