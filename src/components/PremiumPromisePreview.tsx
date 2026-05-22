@@ -22,6 +22,9 @@ const PROMISES: Array<{
   { key: "improve", label: "Improve", overlay: ["Improve", "Your", "Tools"] },
 ];
 
+const SMARTER_WAY_WEALTH_URL = "https://smarterwaywealth.com/";
+const UPGRADE_VIDEO_URL = "https://smarterwaywealth.com/upgrade";
+
 export function PremiumPromisePreview({ savings }: PremiumPromisePreviewProps) {
   const [activeKey, setActiveKey] = useState<PromiseKey>("upgrade");
   const baseId = useId();
@@ -35,7 +38,7 @@ export function PremiumPromisePreview({ savings }: PremiumPromisePreviewProps) {
 
   return (
     <motion.section
-      className="relative -mx-4 mt-24 w-[calc(100%+2rem)] overflow-hidden text-left sm:mx-0 sm:mt-32 sm:w-auto sm:overflow-visible lg:mt-36"
+      className="relative -mx-4 mt-24 w-[calc(100%+2rem)] overflow-hidden text-left sm:mx-0 sm:mt-32 sm:w-auto sm:overflow-visible lg:mx-auto lg:mt-36 lg:max-w-5xl xl:max-w-[1040px]"
       aria-label="Upgrade, improve, and save preview"
       initial={reduceMotion ? false : { opacity: 0, y: 18 }}
       whileInView={reduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
@@ -84,7 +87,7 @@ export function PremiumPromisePreview({ savings }: PremiumPromisePreviewProps) {
           id={`${baseId}-${activeKey}-panel`}
           role="tabpanel"
           aria-labelledby={`${baseId}-${activeKey}-tab`}
-          className="relative min-h-[520px] overflow-hidden bg-[#EDF2F5] sm:min-h-[560px] lg:min-h-[600px]"
+          className="relative min-h-[520px] overflow-hidden bg-[#EDF2F5] sm:min-h-[560px] lg:min-h-[540px]"
         >
           <AnimatePresence initial={false} mode="wait">
             <motion.div
@@ -106,7 +109,11 @@ export function PremiumPromisePreview({ savings }: PremiumPromisePreviewProps) {
               <div className="pointer-events-none absolute inset-y-0 left-0 w-[78%] bg-gradient-to-r from-white/88 via-white/56 to-transparent sm:w-[58%]" />
               <OverlayHeadline lines={activePromise.overlay} />
 
-              {activeKey === "upgrade" ? <VideoLink /> : null}
+              {activeKey === "upgrade" ? (
+                <PanelLink href={UPGRADE_VIDEO_URL} label="View the entire video" align="right" />
+              ) : (
+                <PanelLink href={SMARTER_WAY_WEALTH_URL} label="Learn more at smarterwaywealth.com" />
+              )}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -147,15 +154,25 @@ function UpgradeVideoPanel() {
   );
 }
 
-function VideoLink() {
+function PanelLink({
+  href,
+  label,
+  align = "left",
+}: {
+  href: string;
+  label: string;
+  align?: "left" | "right";
+}) {
   return (
     <a
-      href="https://smarterwaywealth.com/upgrade"
+      href={href}
       target="_blank"
       rel="noreferrer"
-      className="absolute bottom-5 left-4 z-20 inline-flex items-center gap-2 bg-transparent text-sm font-bold !text-[#00A540] !no-underline drop-shadow-[0_2px_6px_rgba(255,255,255,0.9)] transition hover:!text-[#008435] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00A540] sm:bottom-7 sm:left-8 sm:text-base"
+      className={`absolute bottom-5 z-20 inline-flex max-w-[calc(100%-2rem)] items-center gap-2 bg-transparent text-sm font-bold !text-[#00A540] !no-underline drop-shadow-[0_2px_6px_rgba(255,255,255,0.9)] transition hover:!text-[#008435] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00A540] sm:bottom-7 sm:max-w-[calc(100%-4rem)] sm:text-base ${
+        align === "right" ? "right-4 text-right sm:right-8" : "left-4 sm:left-8"
+      }`}
     >
-      View the entire video
+      {label}
       <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
     </a>
   );
