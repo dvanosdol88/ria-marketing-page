@@ -30,7 +30,7 @@ const adviceCards: ProofCard[] = [
     eyebrow: "Credentials",
     title: "Highly Credentialed, Highly Experienced",
     summary:
-      "CFA investment rigor, CFP planning discipline, and 20+ years of real advisory experience.",
+      "The rigor of a CFA Charterholder. The process of a CFP professional. 20+ years of real advisory experience.",
     stat: "20+",
     statLabel: "years experience",
     logos: [
@@ -44,8 +44,8 @@ const adviceCards: ProofCard[] = [
       },
     ],
     details: [
-      "CFA Charterholders are trained in investment analysis, portfolio construction, risk, ethics, and disciplined decision-making under uncertainty.",
-      "CFP professionals are trained to connect investments to real-life planning: retirement, taxes, estate, insurance, cash flow, and family tradeoffs.",
+      "The rigor of a CFA Charterholder: investment analysis, portfolio construction, risk, ethics, and disciplined decision-making under uncertainty.",
+      "The process of a CFP professional: connecting investments to real-life planning, including retirement, taxes, estate, insurance, cash flow, and family tradeoffs.",
       "David's experience includes Morgan Stanley Smith Barney and Fidelity, plus the perspective that comes from seeing what large-firm advice can and cannot deliver.",
     ],
     detailLink: {
@@ -83,8 +83,8 @@ const adviceCards: ProofCard[] = [
 
 const toolCards: ProofCard[] = [
   {
-    eyebrow: "Planning",
-    title: "Cash Flow Planning",
+    eyebrow: "Timing matters",
+    title: "Cash Flow Planning in Retirement",
     summary:
       "See how income, spending, taxes, and portfolio withdrawals interact before you make a major decision.",
     stat: "Flow",
@@ -125,7 +125,7 @@ const toolCards: ProofCard[] = [
     eyebrow: "Portfolio",
     title: "Tax-Aware Investment Strategy",
     summary:
-      "Tie the portfolio to the plan: location, withdrawal sequencing, rebalancing, and risk capacity.",
+      "We believe asset location is as important as asset allocation. Do you have the right assets in the right accounts? We have found many investors do not, and this is one more way we add value.",
     stat: "Fit",
     statLabel: "portfolio tied to plan",
     details: [
@@ -595,14 +595,16 @@ function StorySection({
 function LowFrictionUpgradeSection() {
   const frictionPoints = [
     {
-      lead: "Where you are",
+      lead: "Where",
+      leadRest: "you are",
       title: "Keep your accounts where they are.",
       summary:
         "Schwab, Fidelity, Morgan Stanley, several custodians - advice can start before a transfer project.",
       icon: MapPin,
     },
     {
-      lead: "When you can",
+      lead: "When",
+      leadRest: "you can",
       title: "Meet when real life allows.",
       summary:
         "Virtual-first conversations, rotating Tuesday evenings, and one Saturday per month.",
@@ -618,7 +620,7 @@ function LowFrictionUpgradeSection() {
     >
       <ScrollReveal className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(248px,320px)] lg:items-stretch lg:gap-6">
         <div className="border border-[#CBD8E4] bg-white p-5 shadow-[0_18px_44px_rgba(17,33,52,0.08)] sm:p-7 lg:p-8">
-          <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#108843]">
+          <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-[#108843]">
             Low-friction upgrade
           </p>
           <h2
@@ -643,10 +645,10 @@ function LowFrictionUpgradeSection() {
                   <div className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-md bg-[#EAF7EF] text-[#108843] sm:right-5 sm:top-5">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </div>
-                  <p className="max-w-[11rem] text-2xl font-black leading-none tracking-normal text-[#108843] sm:text-3xl">
-                    {point.lead}
+                  <p className="max-w-[13rem] whitespace-nowrap text-xl font-black leading-none tracking-normal text-[#062417] sm:text-2xl">
+                    <span className="text-[#108843]">{point.lead}</span> {point.leadRest}
                   </p>
-                  <h3 className="mt-5 text-xl font-black leading-tight tracking-normal text-[#062417]">
+                  <h3 className="mt-5 text-xl font-black leading-tight tracking-normal text-[#064B84]">
                     {point.title}
                   </h3>
                   <p className="mt-3 text-sm leading-6 text-slate-600">{point.summary}</p>
@@ -662,11 +664,16 @@ function LowFrictionUpgradeSection() {
           rel="noreferrer"
           className="group flex min-h-[224px] flex-col justify-between bg-[#064B84] p-6 !text-white !no-underline shadow-[0_18px_44px_rgba(6,75,132,0.22)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#053E6D] hover:!text-white hover:shadow-[0_24px_58px_rgba(6,75,132,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84] sm:min-h-[260px] lg:min-h-0"
         >
-          <span className="inline-flex h-12 w-12 items-center justify-center rounded-md bg-white/12 text-white ring-1 ring-white/20">
-            <ArrowUpRight
-              className="h-6 w-6 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              aria-hidden="true"
-            />
+          <span className="flex items-center justify-between gap-4">
+            <span className="inline-flex h-12 w-12 items-center justify-center rounded-md bg-white/12 text-white ring-1 ring-white/20">
+              <ArrowUpRight
+                className="h-6 w-6 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden="true"
+              />
+            </span>
+            <span className="text-xl font-black leading-none tracking-normal text-white/88 sm:text-2xl">
+              Next Steps
+            </span>
           </span>
           <span>
             <span className="block text-3xl font-black leading-none tracking-normal sm:text-4xl">
