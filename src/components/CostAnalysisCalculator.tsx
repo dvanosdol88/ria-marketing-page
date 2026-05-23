@@ -410,7 +410,7 @@ function SavingsLeadHero({
   );
 
   return (
-    <section className="w-full bg-[#EEF0F5] pb-16 text-center text-[#10233A] sm:pb-20">
+    <section className="w-full bg-[#EEF0F5] pb-[94px] text-center text-[#10233A] sm:pb-[110px]">
       <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-16 pb-16 sm:pt-20 sm:pb-20">
         <div
           aria-hidden="true"
@@ -947,7 +947,7 @@ export function CostAnalysisCalculator({
             The Fee Calculator
           </h2>
           <p className="mt-1 max-w-2xl text-base leading-6 text-[#52657A] sm:text-lg">
-            Calculate potential additional wealth using your own numbers.
+            Calculate your potential additional wealth using your own numbers.
           </p>
         </div>
         <div className="flex w-full max-w-full flex-col items-start gap-2 sm:w-auto sm:items-end">
