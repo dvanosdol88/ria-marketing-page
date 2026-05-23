@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Maximize2, X } from "lucide-react";
+import { ArrowUpRight, CalendarDays, MapPin, Maximize2, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { fitCta } from "@/config/fitCtaConfig";
@@ -588,22 +588,104 @@ function StorySection({
   );
 }
 
+function LowFrictionUpgradeSection() {
+  const frictionPoints = [
+    {
+      eyebrow: "Where you are",
+      title: "Keep your accounts where they are.",
+      summary:
+        "Schwab, Fidelity, Morgan Stanley, several custodians - advice can start before a transfer project.",
+      icon: MapPin,
+    },
+    {
+      eyebrow: "When you can",
+      title: "Meet when real life allows.",
+      summary:
+        "Virtual-first conversations, rotating Tuesday evenings, and one Saturday per month.",
+      icon: CalendarDays,
+    },
+  ];
+
+  return (
+    <section
+      id="upgrade-your-advice"
+      aria-labelledby="low-friction-upgrade-title"
+      className="scroll-mt-40 border-t border-[#DDE5EC] px-4 py-12 sm:px-6 sm:py-16 lg:scroll-mt-36 lg:py-20"
+    >
+      <ScrollReveal className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(248px,320px)] lg:items-stretch lg:gap-6">
+        <div className="border border-[#CBD8E4] bg-white p-5 shadow-[0_18px_44px_rgba(17,33,52,0.08)] sm:p-7 lg:p-8">
+          <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#108843]">
+            Low-friction upgrade
+          </p>
+          <h2
+            id="low-friction-upgrade-title"
+            className="mt-3 max-w-2xl text-3xl font-black leading-tight tracking-normal text-[#062417] sm:text-4xl lg:text-5xl"
+          >
+            Better advice should not require a paperwork project.
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
+            Start with the planning question, not a transfer form. Smarter Way Wealth is built to fit around the accounts, schedule, and real life you already have.
+          </p>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {frictionPoints.map((point) => {
+              const Icon = point.icon;
+              return (
+                <article
+                  key={point.eyebrow}
+                  className="min-h-[188px] border border-[#D8E2EA] bg-[#F6FAFC] p-4 sm:p-5"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#EAF7EF] text-[#108843]">
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </div>
+                  <p className="mt-4 text-[0.68rem] font-extrabold uppercase tracking-[0.2em] text-[#108843]">
+                    {point.eyebrow}
+                  </p>
+                  <h3 className="mt-2 text-xl font-black leading-tight tracking-normal text-[#062417]">
+                    {point.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">{point.summary}</p>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+
+        <a
+          href={fitCta.href}
+          className="group flex min-h-[224px] flex-col justify-between bg-[#064B84] p-6 !text-white !no-underline shadow-[0_18px_44px_rgba(6,75,132,0.22)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#053E6D] hover:!text-white hover:shadow-[0_24px_58px_rgba(6,75,132,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84] sm:min-h-[260px] lg:min-h-0"
+        >
+          <span className="inline-flex h-12 w-12 items-center justify-center rounded-md bg-white/12 text-white ring-1 ring-white/20">
+            <ArrowUpRight
+              className="h-6 w-6 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden="true"
+            />
+          </span>
+          <span>
+            <span className="block text-3xl font-black leading-none tracking-normal sm:text-4xl">
+              See if this fits
+            </span>
+            <span className="mt-4 block text-sm font-bold leading-6 text-white/82">
+              Talk to David at Smarter Way Wealth.
+            </span>
+          </span>
+        </a>
+      </ScrollReveal>
+    </section>
+  );
+}
+
 export function AdvisorProofSections() {
   return (
     <div className="bg-[#EEF0F5] text-slate-900">
       <ProofSectionProgressCue />
-      <StorySection id="upgrade-your-advice" rail={["Upgrade", "Your", "Advice"]}>
+      <LowFrictionUpgradeSection />
+      <StorySection id="advisor-proof" rail={["Upgrade", "Your", "Advice"]}>
         <div className="space-y-5">
           <AdvisorCard />
           <ProofBento cards={adviceCards} />
         </div>
       </StorySection>
-
-      <FitCtaDivider
-        eyebrow="Convenient"
-        lead={<>We meet <span className="text-[#007A2F]">when</span> you can.</>}
-        support="Our hours include one Saturday per month, plus rotating Tuesday evenings."
-      />
 
       <StorySection id="improve-your-tools" rail={["Improve", "Your", "Tools"]}>
         <ProofBento cards={toolCards} />
