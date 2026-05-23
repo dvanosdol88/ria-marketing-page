@@ -182,6 +182,8 @@ export function FitCtaDivider({
           <div className="flex flex-col items-start gap-3 lg:items-stretch">
             <a
               href={fitCta.href}
+              target="_blank"
+              rel="noreferrer"
               className="fit-cta-action inline-flex min-h-14 w-full items-center justify-center rounded-md px-5 py-3 text-center text-base font-extrabold !text-white !no-underline shadow-[0_12px_28px_rgba(6,36,23,0.14)] transition-transform duration-200 ease-out hover:!text-white hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(6,36,23,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10233A]/60 sm:w-auto sm:px-8 sm:text-lg lg:w-full"
               style={{
                 background: "#064B84",
@@ -468,6 +470,8 @@ function ProofDetailDialog({
           <div className="mt-8 border-t border-[#D5DEE8] pt-5">
             <Link
               href={fitCta.href}
+              target="_blank"
+              rel="noreferrer"
               className="inline-flex items-center gap-2 rounded-md bg-[#064B84] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_26px_rgba(6,75,132,0.2)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#053E6D] hover:shadow-[0_16px_32px_rgba(6,75,132,0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84]"
             >
               <span>See if you are a good fit</span>
@@ -591,14 +595,14 @@ function StorySection({
 function LowFrictionUpgradeSection() {
   const frictionPoints = [
     {
-      eyebrow: "Where you are",
+      lead: "Where you are",
       title: "Keep your accounts where they are.",
       summary:
         "Schwab, Fidelity, Morgan Stanley, several custodians - advice can start before a transfer project.",
       icon: MapPin,
     },
     {
-      eyebrow: "When you can",
+      lead: "When you can",
       title: "Meet when real life allows.",
       summary:
         "Virtual-first conversations, rotating Tuesday evenings, and one Saturday per month.",
@@ -621,10 +625,11 @@ function LowFrictionUpgradeSection() {
             id="low-friction-upgrade-title"
             className="mt-3 max-w-2xl text-3xl font-black leading-tight tracking-normal text-[#062417] sm:text-4xl lg:text-5xl"
           >
-            Better advice should not require a paperwork project.
+            <span className="block">Better advice</span>
+            <span className="block">should be easy.</span>
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-            Start with the planning question, not a transfer form. Smarter Way Wealth is built to fit around the accounts, schedule, and real life you already have.
+            Everywhere we can, we want to ADD VALUE. Convenience is just one of those ways.
           </p>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -632,16 +637,16 @@ function LowFrictionUpgradeSection() {
               const Icon = point.icon;
               return (
                 <article
-                  key={point.eyebrow}
-                  className="min-h-[188px] border border-[#D8E2EA] bg-[#F6FAFC] p-4 sm:p-5"
+                  key={point.lead}
+                  className="relative min-h-[188px] border border-[#D8E2EA] bg-[#F6FAFC] p-4 pr-16 sm:p-5 sm:pr-16"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-[#EAF7EF] text-[#108843]">
+                  <div className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-md bg-[#EAF7EF] text-[#108843] sm:right-5 sm:top-5">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </div>
-                  <p className="mt-4 text-[0.68rem] font-extrabold uppercase tracking-[0.2em] text-[#108843]">
-                    {point.eyebrow}
+                  <p className="max-w-[11rem] text-2xl font-black leading-none tracking-normal text-[#108843] sm:text-3xl">
+                    {point.lead}
                   </p>
-                  <h3 className="mt-2 text-xl font-black leading-tight tracking-normal text-[#062417]">
+                  <h3 className="mt-5 text-xl font-black leading-tight tracking-normal text-[#062417]">
                     {point.title}
                   </h3>
                   <p className="mt-3 text-sm leading-6 text-slate-600">{point.summary}</p>
@@ -653,6 +658,8 @@ function LowFrictionUpgradeSection() {
 
         <a
           href={fitCta.href}
+          target="_blank"
+          rel="noreferrer"
           className="group flex min-h-[224px] flex-col justify-between bg-[#064B84] p-6 !text-white !no-underline shadow-[0_18px_44px_rgba(6,75,132,0.22)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#053E6D] hover:!text-white hover:shadow-[0_24px_58px_rgba(6,75,132,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84] sm:min-h-[260px] lg:min-h-0"
         >
           <span className="inline-flex h-12 w-12 items-center justify-center rounded-md bg-white/12 text-white ring-1 ring-white/20">

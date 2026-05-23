@@ -356,11 +356,9 @@ function normalizeSearchParams(searchParams: Record<string, string | string[] | 
 function SavingsLeadHero({
   introStyle,
   savings,
-  disclosure,
 }: {
   introStyle: IntroStyle;
   savings: number;
-  disclosure?: ReactNode;
 }) {
   const reducedMotion = useReducedMotion();
   const statement = (
@@ -412,7 +410,7 @@ function SavingsLeadHero({
   );
 
   return (
-    <section className="w-full bg-[#EEF0F5] pb-4 text-center text-[#10233A] sm:pb-5">
+    <section className="w-full bg-[#EEF0F5] pb-16 text-center text-[#10233A] sm:pb-20">
       <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-16 pb-16 sm:pt-20 sm:pb-20">
         <div
           aria-hidden="true"
@@ -431,11 +429,6 @@ function SavingsLeadHero({
       <div className="mx-auto max-w-6xl px-4">
         {introBlock}
         <PremiumPromisePreview savings={savings} />
-        {disclosure ? (
-          <div className="mx-auto mt-8 max-w-3xl text-center [&_p]:mt-0 sm:mt-10">
-            {disclosure}
-          </div>
-        ) : null}
       </div>
     </section>
   );
@@ -941,29 +934,34 @@ export function CostAnalysisCalculator({
   );
 
   const calculatorHandoff = isSavingsCalculatorUpgrade ? (
-    <div className="section-shell relative z-10 pt-10 sm:pt-14">
+    <div className="section-shell relative z-10 pt-2 sm:pt-3">
       <motion.div
         initial={reducedMotion ? false : { opacity: 0, y: 18 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.55, ease: "easeOut" }}
-        className="mx-auto flex w-full max-w-[1380px] flex-col gap-4 text-left sm:flex-row sm:items-end sm:justify-between"
+        className="mx-auto flex w-full max-w-[1380px] flex-col gap-3 text-left sm:flex-row sm:items-end sm:justify-between"
       >
         <div className="min-w-0">
           <h2 className="text-[clamp(2rem,8vw,3.25rem)] font-bold leading-[1.02] tracking-normal text-[#10233A]">
             The Fee Calculator
           </h2>
-          <p className="mt-2 max-w-xl text-base leading-7 text-[#52657A] sm:text-lg">
-            Put the math on your own portfolio.
+          <p className="mt-1 max-w-2xl text-base leading-6 text-[#52657A] sm:text-lg">
+            Calculate potential additional wealth using your own numbers.
           </p>
         </div>
-        <div className="inline-flex min-h-11 w-fit max-w-full items-center gap-2 rounded-md border border-[#BFD4C8] bg-white px-3 py-2 shadow-[0_10px_28px_rgba(17,33,52,0.08)] sm:px-4">
-          <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#5E6F80]">
-            Projected gap
-          </span>
-          <span className="text-xl font-bold leading-none text-[#007A2F] tabular-nums sm:text-2xl">
-            {formatCurrencyFloored(projection.savings)}
-          </span>
+        <div className="flex w-full max-w-full flex-col items-start gap-2 sm:w-auto sm:items-end">
+          <div className="inline-flex min-h-11 w-fit max-w-full items-center gap-2 rounded-md border border-[#BFD4C8] bg-white px-3 py-2 shadow-[0_10px_28px_rgba(17,33,52,0.08)] sm:px-4">
+            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#5E6F80]">
+              Potential savings
+            </span>
+            <span className="text-xl font-bold leading-none text-[#007A2F] tabular-nums sm:text-2xl">
+              {formatCurrencyFloored(projection.savings)}
+            </span>
+          </div>
+          <div className="max-w-[22rem] text-left sm:text-right [&_p]:mt-0">
+            {disclosure}
+          </div>
         </div>
       </motion.div>
     </div>
@@ -975,7 +973,6 @@ export function CostAnalysisCalculator({
         <SavingsLeadHero
           introStyle={introStyle}
           savings={projection.savings}
-          disclosure={disclosure}
         />
       )}
 
