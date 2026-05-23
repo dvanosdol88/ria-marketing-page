@@ -21,6 +21,11 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-23 - Instruction hierarchy pointer
+**Agent:** Codex GPT-5 | **Surface:** project instructions | **Duration:** short docs pass
+- changed: updated `AGENTS.md` to point agents to the shared `D:\AGENTS.md` rulebook and keep this repo file scoped to RIA marketing-page-specific additions or true overrides.
+- note: existing unrelated working-tree changes were left untouched.
+
 ### 2026-05-22 - Fit-CTA copy/emphasis pass, hero polish, mobile-first rule
 **Agent:** Claude | **Surface:** marketing/calculator + fit CTAs + project docs | **Duration:** 1 session
 - changed: `src/components/AdvisorProofSections.tsx` reworks the shared `FitCtaDivider` — props widened from `string` to `React.ReactNode` so leads can carry inline emphasis; band switched from green-tint to blue-tint background, grid overlay removed (`.fit-cta-band::before` deleted in `src/app/globals.css`), padding reduced for less vertical height; the CTA button is now explicitly un-underlined (`!no-underline` + inline `textDecoration:"none"`) with a `hover:-translate-y-0.5` lift; `SectionRail` headers (`Upgrade/Your/Advice`, `Improve/Your/Tools`) eased from `font-black` to `font-extrabold`.

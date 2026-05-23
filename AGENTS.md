@@ -4,7 +4,7 @@
 - Domain: youarepayingtoomuch.com (no dashes)
 - Purpose: Fee calculator/visualization tool showing the impact of investment fees over time
 
-For all architecture rules, safety rules, coding standards, tool usage, and workflow — follow your global ~/.codex/AGENTS.md instructions.
+Shared cross-agent rules live in `D:\AGENTS.md`. This project file contains only RIA marketing-page-specific additions or true overrides.
 
 ## Design: mobile-first
 
