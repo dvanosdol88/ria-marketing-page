@@ -1767,7 +1767,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   }, [barGapHintActive, barPinned, chartGapHintActive, chartPinned]);
 
   return (
-    <div className="section-shell relative z-10 pb-16 pt-5 sm:pt-6">
+    <div className={`section-shell relative z-10 pb-16 ${showChartHeading ? "pt-1 sm:pt-2" : "pt-5 sm:pt-6"}`}>
       {disclosure ? (
         <div className="mx-auto mb-4 max-w-3xl text-center [&_p]:mt-0">
           {disclosure}
