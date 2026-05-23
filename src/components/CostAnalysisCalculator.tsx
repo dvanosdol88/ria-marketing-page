@@ -11,7 +11,7 @@ import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { Quiz } from "./Quiz";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { AdvisorProofSections, FitCtaDivider } from "@/components/AdvisorProofSections";
+import { AdvisorProofSections } from "@/components/AdvisorProofSections";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
@@ -1139,14 +1139,6 @@ export function CostAnalysisCalculator({
           </div>
         )}
       </section>
-
-      {isSavingsCalculatorUpgrade && (
-        <FitCtaDivider
-          eyebrow="Hassle-free"
-          lead={<>We work <span className="text-[#007A2F]">where</span> you are.</>}
-          support="Schwab? Fidelity? Morgan Stanley? No need to transfer assets and open new accounts. We can advise you even if you have assets at several custodians."
-        />
-      )}
 
       {isSavingsCalculatorUpgrade && (
         <AdvisorProofSections />

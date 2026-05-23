@@ -60,6 +60,34 @@ export function SiteNav() {
     setDrawerOpen(false);
   }, [pathname]);
 
+  /* Next can hydrate the calculator before hash targets exist; retry briefly. */
+  useEffect(() => {
+    if (pathname !== "/") return;
+
+    const timeoutIds: number[] = [];
+
+    const scrollToHashTarget = () => {
+      const targetId = window.location.hash.slice(1);
+      if (!targetId) return;
+
+      const scroll = () => {
+        const target = document.getElementById(targetId);
+        if (target) target.scrollIntoView({ block: "start" });
+      };
+
+      window.requestAnimationFrame(scroll);
+      timeoutIds.push(window.setTimeout(scroll, 180));
+      timeoutIds.push(window.setTimeout(scroll, 650));
+    };
+
+    scrollToHashTarget();
+    window.addEventListener("hashchange", scrollToHashTarget);
+    return () => {
+      window.removeEventListener("hashchange", scrollToHashTarget);
+      timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    };
+  }, [pathname]);
+
   /* Lock body scroll when drawer is open */
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? "hidden" : "";
