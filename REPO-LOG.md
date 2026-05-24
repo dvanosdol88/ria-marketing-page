@@ -8,6 +8,8 @@
 Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepayingtoomuch.com via Vercel.
 
 - Home fee-savings calculator (`CostAnalysisCalculator` + `ProFeeChart`): pill-slider inputs (advisory fee, mutual fund expenses, portfolio value, annual growth, time horizon), live odometer of "lost to asset-based fees", URL-shareable state via `buildQueryFromState`, share-to-clipboard, sticky fee bar (mobile + desktop), interactive Quiz, scrolling QuoteTicker.
+- Home CTA video / promise preview: mobile-first media tab strip immediately after the fiduciary/value message, defaulting to Upgrade. Uses the placeholder CTA video asset, transparent "View the entire video" link to `https://smarterwaywealth.com/upgrade`, Save/Upgrade/Improve tabs, and a production handoff into "The Fee Calculator".
+- Home calculator handoff: after the CTA video, the page now introduces "The Fee Calculator" with a projected-gap chip, compact live assumption controls, result cards, then a dedicated "Your Portfolio Over Time" chart heading.
 - Three inline regulatory disclosures around the home calculator: hypothetical-illustration caveat, advisory-relationship disclaimer, growth-rate-is-an-assumption + third-party data caveat.
 - Site-wide `SiteFooter` (logo + marketing disclaimer + Disclosures/ADV/Privacy links wired to `/privacy#disclosures`, IAPD URL, `/privacy`) followed by `ComplianceFooter` (CRD identification, IAPD link, educational/risk text, Privacy link, contact, last-updated date, copyright).
 - `/privacy` page with CT Data Privacy Act-aware notice, canonical disclosures, and a `#disclosures` anchor target.
@@ -20,6 +22,17 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 ---
 
 ## Sessions
+
+### 2026-05-24 - CTA video and mobile calculator handoff closeout
+**Agent:** Codex | **Surface:** marketing/home CTA video + calculator | **Duration:** multi-turn design/ship session
+- changed: `src/components/PremiumPromisePreview.tsx` and the home calculator surface were iterated into a Betterment-style CTA video strip: tabs ordered `Save | Upgrade | Improve`, `Upgrade` active by default, media-first panel, large overlay text, transparent green "View the entire video" CTA, and no white/pill box treatment around the link.
+- changed: `src/components/CostAnalysisCalculator.tsx` adds the post-video handoff "The Fee Calculator" with "Put the math on your own portfolio." and a projected-gap chip. The handoff appears after the CTA video so the calculator reads as a new tool rather than a dense continuation.
+- changed: `src/components/HomeCalculatorExperience.tsx` hides the old `Inputs | Header` tab choice for the default homepage flow, shows compact assumptions first, then result cards, then a dedicated "Your Portfolio Over Time" chart heading and chart. Compact assumption inputs update the projected-gap output live while typing.
+- changed: hero/question-mark spacing was adjusted during the same CTA-video pass so the lower dot is not covered by the next section and the CTA video has more breathing room below the main fiduciary/value statement.
+- verified locally: `npx tsc --noEmit` clean; `npm run lint` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the known Tailwind token/Turbopack warning. Browser QA covered `320`, `375`, `390`, `430`, and `1280` widths, CTA video attributes (`muted`, `autoplay`, `loop`, `playsInline`), CTA URL, tab switching, tap targets, reduced motion, live input behavior, and no console errors.
+- deployed: pushed directly to `main` in commits `f1c6241` (`Add mobile calculator handoff`) and `89b37bd` (`Update compact calculator inputs live`). Vercel production deployment `dpl_31cx65Be95FqUHwHNUZM21jutMj6` was READY and aliased to `https://youarepayingtoomuch.com/`. Production Playwright confirmed the handoff, chart heading, removed old tablist, CTA URL, video attributes, no console errors, and live projected-gap update from `$788,000` to `$830,000` when editing portfolio value.
+- decision: David and Codex agreed to ignore the remaining `320px` full-document horizontal-scroll edge case for now. The calculator itself has no overflow at `320px`; the full page reports `340px` scroll width from unrelated nav/later-section layout. At `375px+`, the full production page passed no-overflow checks. Revisit only if analytics or user reports justify it.
+- reminder: Codex app heartbeat `cta-video-next-steps` is scheduled for 2026-05-25 at 11:00 AM America/New_York to remind David to review the production CTA video section, placeholder video/message, CTA link, calculator handoff, and live inputs.
 
 ### 2026-05-23 - Instruction hierarchy pointer
 **Agent:** Codex GPT-5 | **Surface:** project instructions | **Duration:** short docs pass
