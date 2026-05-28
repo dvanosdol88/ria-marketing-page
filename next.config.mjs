@@ -5,6 +5,14 @@ const nextConfig = {
   reactStrictMode: true,
   typedRoutes: false,
   serverExternalPackages: ["firebase-admin"],
+  outputFileTracingIncludes: {
+    "/api/eddm-evals/**/*": [
+      "./docs/eddm-evals/**/*",
+      "./output/mailer-samples/**/*",
+      "./output/redesigns/**/*",
+      "./crapFromGemini.html",
+    ],
+  },
 };
 
 export default withSentryConfig(nextConfig, {

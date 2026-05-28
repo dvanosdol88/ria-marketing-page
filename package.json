@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "eddm:evals": "node scripts/eddm-evals-server.mjs",
+    "eddm:catalog:add-round": "node scripts/eddm-catalog-add-round.mjs",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
