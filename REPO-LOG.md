@@ -23,6 +23,24 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-28 - EDDM Save Upgrade Tools v2 Mailer Iterations
+**Agent:** Gemini | **Surface:** EDDM print layout | **Duration:** Multi-turn design/proof session
+- changed: iterated 6 concepts based on the designer handoff for "Save Upgrade Tools v2" back-side EDDM mailer, focusing on a professional, white-space-led design.
+- changed: refined the "01 · Editorial Rule" concept via detailed layout, CSS grid, SVG chart, and typography modifications. Addressed check-mark styling (moving to a square green version), exact element spacing, chart label clear space, and precision cut-offs for chart frame borders without altering the charts' relative grid position.
+- changed: generated all final PNG proof assets using Playwright and generated the contact sheet.
+- changed: updated `catalog.json` and `state.json` via the EDDM catalog npm script.
+- verified locally: HTML proofs render correctly, PNG assets generated correctly, dry run and write of catalog were successful, and `npm run build` completed successfully.
+- note: the updated PNGs, HTML files, and catalog state were added to git and committed to the main branch.
+
+### 2026-05-24 - Local URL eval hub and calculator eval publish handoff
+**Agent:** Codex | **Surface:** eval tooling + RIA Builder handoff | **Duration:** multi-turn build/publish pass
+- changed: added a local `/url-evals` review surface with a live iframe preview, section-divider note areas, URL section tabs, and disk-backed note persistence through `/api/url-evals/state`.
+- changed: added a local `/evals` hub with tabs for URL, EDDM, Calculators, and Legacy; renamed the previous calculator/gallery lane to Legacy; added `/calculator-evals` to wrap `output/round-4-local-publish/index.html` through a guarded local file API.
+- changed: hid the public marketing nav/footer chrome on the eval-only routes so the review surfaces stay focused.
+- verified locally: `npx tsc --noEmit` passed; `npm run lint` passed with the same three pre-existing `<img>` warnings; `npm run build` passed with the known Tailwind token/Turbopack warning. Browser checks confirmed `/evals#calculators`, the local file wrapper, prototype iframes, and screenshot assets load.
+- deployed elsewhere: copied the Round 4 calculator eval bundle into `D:\riabuilder\RIA-builder\public\EVALS`, scrubbed local file paths, deployed production Vercel deployment `dpl_EyYkG9sk7yZLK5sy5VHBrzKASxSc`, and verified `https://riabuilder.dvo88.com/EVALS`.
+- note: this repo's eval tooling remains local/uncommitted in a pre-existing dirty working tree; the production public publish lives in the RIA Builder repo.
+
 ### 2026-05-24 - CTA video and mobile calculator handoff closeout
 **Agent:** Codex | **Surface:** marketing/home CTA video + calculator | **Duration:** multi-turn design/ship session
 - changed: `src/components/PremiumPromisePreview.tsx` and the home calculator surface were iterated into a Betterment-style CTA video strip: tabs ordered `Save | Upgrade | Improve`, `Upgrade` active by default, media-first panel, large overlay text, transparent green "View the entire video" CTA, and no white/pill box treatment around the link.
