@@ -4,11 +4,23 @@
   "candidateStates": {
     "eddm-v2-overview-six-concepts": {},
     "eddm-v2-01-editorial-rule": {},
-    "eddm-v2-02-structured-columns": {},
+    "eddm-v2-02-structured-columns": {
+      "decision": "reject",
+      "notes": "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "updatedAt": "2026-05-28T21:25:43.749Z"
+    },
     "eddm-v2-03-callout-band": {},
     "eddm-v2-04-paper-and-ink": {},
-    "eddm-v2-05-chart-led-front": {},
-    "eddm-v2-06-print-safe-classic": {},
+    "eddm-v2-05-chart-led-front": {
+      "decision": "reject",
+      "notes": "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "updatedAt": "2026-05-28T21:25:43.749Z"
+    },
+    "eddm-v2-06-print-safe-classic": {
+      "decision": "reject",
+      "notes": "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "updatedAt": "2026-05-28T21:25:43.749Z"
+    },
     "eddm-paired-concepts-overview": {},
     "eddm-paired-01-ledger-rules": {},
     "eddm-paired-02-editorial-column": {},
@@ -33,10 +45,26 @@
     "eddm-back-08-subtle-dot-field": {},
     "eddm-save-upgrade-v2-overview": {},
     "eddm-save-upgrade-v2-v2-01-editorial-rule": {},
-    "eddm-save-upgrade-v2-v2-02-structured-columns": {},
+    "eddm-save-upgrade-v2-v2-02-structured-columns": {
+      "decision": "reject",
+      "notes": "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "updatedAt": "2026-05-28T21:25:43.749Z"
+    },
     "eddm-save-upgrade-v2-v2-03-callout-band": {},
     "eddm-save-upgrade-v2-v2-04-paper-and-ink": {},
-    "eddm-save-upgrade-v2-v2-05-chart-led-front": {},
-    "eddm-save-upgrade-v2-v2-06-print-safe-classic": {}
+    "eddm-save-upgrade-v2-v2-05-chart-led-front": {
+      "decision": "reject",
+      "notes": "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "updatedAt": "2026-05-28T21:25:43.749Z"
+    },
+    "eddm-save-upgrade-v2-v2-06-print-safe-classic": {
+      "decision": "reject",
+      "notes": "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "updatedAt": "2026-05-28T21:25:43.749Z"
+    },
+    "eddm-v2-editorial-hybrid-overview": {},
+    "eddm-v2-editorial-hybrid-01-editorial-callout-bands": {},
+    "eddm-v2-editorial-hybrid-02-editorial-paper-bar": {},
+    "eddm-v2-editorial-hybrid-03-editorial-framed-amalgam": {}
   }
 }

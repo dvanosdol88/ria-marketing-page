@@ -129,9 +129,10 @@
       "variant": "02 Structured Columns",
       "name": "V2 02: Structured Columns",
       "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Three-column Swiss-style grid with receipt-style numbers panel and a chart in its own column.",
+      "suggestedDecision": "reject",
+      "summary": "Three-column Swiss-style grid with receipt-style numbers panel and a chart in its own column. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
       "reviewFocus": [
+        "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
         "Print safety: medium-high.",
         "Score this individual concept after using the contact sheet for first-pass comparison.",
         "If shortlisted, generate a print-ready PDF in the next pass."
@@ -258,9 +259,10 @@
       "variant": "05 Chart-Led Front",
       "name": "V2 05: Chart-Led Front",
       "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Front dominated by the savings curve at scale; headline floats in a small card; back is the calm sibling.",
+      "suggestedDecision": "reject",
+      "summary": "Front dominated by the savings curve at scale; headline floats in a small card; back is the calm sibling. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
       "reviewFocus": [
+        "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
         "Print safety: lower-medium.",
         "Score this individual concept after using the contact sheet for first-pass comparison.",
         "If shortlisted, generate a print-ready PDF in the next pass."
@@ -301,9 +303,10 @@
       "variant": "06 Print-Safe Classic",
       "name": "V2 06: Print-Safe Classic",
       "status": "proof-only",
-      "suggestedDecision": "finalist",
-      "summary": "Maximum print-friendliness: big type, generous white, solid colors only, thick lines, no hairlines or gradients.",
+      "suggestedDecision": "reject",
+      "summary": "Maximum print-friendliness: big type, generous white, solid colors only, thick lines, no hairlines or gradients. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
       "reviewFocus": [
+        "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
         "Print safety: high.",
         "Score this individual concept after using the contact sheet for first-pass comparison.",
         "If shortlisted, generate a print-ready PDF in the next pass."
@@ -1317,9 +1320,10 @@
       "variant": "V2 02 Structured Columns",
       "name": "Save Upgrade Tools v2: V2 02 Structured Columns",
       "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "suggestedDecision": "reject",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
       "reviewFocus": [
+        "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
         "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
@@ -1446,9 +1450,10 @@
       "variant": "V2 05 Chart Led Front",
       "name": "Save Upgrade Tools v2: V2 05 Chart Led Front",
       "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "suggestedDecision": "reject",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
       "reviewFocus": [
+        "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
         "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
@@ -1489,9 +1494,10 @@
       "variant": "V2 06 Print Safe Classic",
       "name": "Save Upgrade Tools v2: V2 06 Print Safe Classic",
       "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "suggestedDecision": "reject",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
       "reviewFocus": [
+        "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
         "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
@@ -1522,6 +1528,174 @@
           "label": "Rationale",
           "type": "markdown",
           "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_06_print-safe-classic_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-editorial-hybrid-overview",
+      "group": "H. V2 Editorial Hybrid Revisions",
+      "variant": "Overview / contact sheet",
+      "name": "V2 Editorial Hybrid overview",
+      "status": "overview",
+      "suggestedDecision": "undecided",
+      "summary": "Imported overview row for this revision round. Start here before scoring individual front/back candidates.",
+      "reviewFocus": [
+        "Use this overview to narrow the field before scoring individual concepts.",
+        "Confirm every concept worth reviewing has its own front/back scoreable row."
+      ],
+      "assets": [
+        {
+          "label": "Sww Yaptom Editorial Hybrids Contact Sheet",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_ContactSheet.html",
+          "role": "overview"
+        },
+        {
+          "label": "Sww Yaptom Editorial Hybrids Contact Sheet",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_ContactSheet.png",
+          "role": "overview"
+        },
+        {
+          "label": "README",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/README.md",
+          "role": "notes"
+        },
+        {
+          "label": "Manifest",
+          "type": "json",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/mailer-assets-manifest.json",
+          "role": "manifest"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-editorial-hybrid-01-editorial-callout-bands",
+      "group": "H. V2 Editorial Hybrid Revisions",
+      "variant": "01 Editorial Callout Bands",
+      "name": "V2 Editorial Hybrid: 01 Editorial Callout Bands",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "reviewFocus": [
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
+      ],
+      "knownLimitations": [
+        "Imported proof assets may not include a final print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_01_editorial-callout-bands_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_01_editorial-callout-bands_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_01_editorial-callout-bands_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_01_editorial-callout-bands_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-editorial-hybrid-02-editorial-paper-bar",
+      "group": "H. V2 Editorial Hybrid Revisions",
+      "variant": "02 Editorial Paper Bar",
+      "name": "V2 Editorial Hybrid: 02 Editorial Paper Bar",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "reviewFocus": [
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
+      ],
+      "knownLimitations": [
+        "Imported proof assets may not include a final print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-editorial-hybrid-03-editorial-framed-amalgam",
+      "group": "H. V2 Editorial Hybrid Revisions",
+      "variant": "03 Editorial Framed Amalgam",
+      "name": "V2 Editorial Hybrid: 03 Editorial Framed Amalgam",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "reviewFocus": [
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
+      ],
+      "knownLimitations": [
+        "Imported proof assets may not include a final print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_03_editorial-framed-amalgam_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_03_editorial-framed-amalgam_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_03_editorial-framed-amalgam_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_03_editorial-framed-amalgam_Rationale.md",
           "role": "rationale"
         }
       ]

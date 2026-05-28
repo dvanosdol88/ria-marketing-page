@@ -1,0 +1,58 @@
+{
+  "name": "SWW YAPTOM Save Upgrade Tools v2 Editorial Hybrids",
+  "generatedAt": "2026-05-28T21:24:55.701Z",
+  "base": "V2 01 Editorial Rule",
+  "dimensions": {
+    "trimInches": {
+      "width": 8.5,
+      "height": 6.25
+    },
+    "bleedInches": 0.125,
+    "pdfPageInches": {
+      "width": 8.75,
+      "height": 6.5
+    },
+    "proofPixels": {
+      "width": 1750,
+      "height": 1300
+    }
+  },
+  "concepts": [
+    {
+      "num": "01",
+      "slug": "editorial-callout-bands",
+      "title": "Editorial Callout Bands",
+      "intent": "Keeps the V2 01 editorial grid and line-chart logic, but borrows V2 03's dark callout-band discipline for stronger mailbox contrast. The copy/name block and QR are framed as distinct modules without moving away from the base editorial feel.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_EditorialHybrids_01_editorial-callout-bands_Proof.html",
+        "frontPng": "SWW_YAPTOM_EditorialHybrids_01_editorial-callout-bands_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_EditorialHybrids_01_editorial-callout-bands_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_EditorialHybrids_01_editorial-callout-bands_Rationale.md"
+      }
+    },
+    {
+      "num": "02",
+      "slug": "editorial-paper-bar",
+      "title": "Editorial Paper Bar",
+      "intent": "Keeps the V2 01 centered editorial hierarchy, then adds V2 04's warm paper tone and bar-chart proof. The front uses explicit frames around the headline/advisor copy and chart so the copy itself feels more highlighted.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Proof.html",
+        "frontPng": "SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Rationale.md"
+      }
+    },
+    {
+      "num": "03",
+      "slug": "editorial-framed-amalgam",
+      "title": "Editorial Framed Amalgam",
+      "intent": "A fuller amalgamation of the base and tweaks: editorial hierarchy, V2 03 callout bands, V2 04 cream-paper/bar-chart language, and stronger front-side frames around both the core copy/name and the chart.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_EditorialHybrids_03_editorial-framed-amalgam_Proof.html",
+        "frontPng": "SWW_YAPTOM_EditorialHybrids_03_editorial-framed-amalgam_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_EditorialHybrids_03_editorial-framed-amalgam_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_EditorialHybrids_03_editorial-framed-amalgam_Rationale.md"
+      }
+    }
+  ]
+}
