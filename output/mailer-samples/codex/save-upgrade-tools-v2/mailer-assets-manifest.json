@@ -1,0 +1,152 @@
+{
+  "name": "SWW YAPTOM Save / Upgrade / Improve EDDM Mailer — v2 (six concept proofs)",
+  "generatedAt": "2026-05-27T21:09:00.000Z",
+  "generator": "output/mailer-samples/codex/save-upgrade-tools-v2/build-concepts.cjs + render.cjs",
+  "campaign": {
+    "client": "Smarter Way Wealth",
+    "site": "youarepayingtoomuch.com",
+    "round": "v2 — six distinct concept proofs (no mint wash)"
+  },
+  "dimensions": {
+    "trimInches": { "width": 8.5, "height": 6.25 },
+    "bleedInches": 0.125,
+    "pdfPageInches": { "width": 8.75, "height": 6.5 },
+    "proofPixels": { "width": 1750, "height": 1300 },
+    "ppi": 200
+  },
+  "qrUrl": "https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1",
+  "assumptions": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 8,
+    "years": 20
+  },
+  "calculatorValues": {
+    "flatFeeEndingValue": 4604057,
+    "assetBasedFeeEndingValue": 3815751,
+    "estimatedGap": 788306,
+    "totalFlatFeesPaid": 24000,
+    "totalAumFeesPaid": 422058
+  },
+  "printSafetyPick": "06_print-safe-classic",
+  "sourceAssets": {
+    "logo": "brand-assets/logo-800.png",
+    "logoSvg": "brand-assets/logo.svg",
+    "logoIconSvg": "brand-assets/logo-icon.svg",
+    "logoStrongPrimaryLightbg": "brand-assets/logo-strong-primary-lightbg.png",
+    "dvo": "brand-assets/dvo-headshot.jpg",
+    "qr": "brand-assets/yaptom_default_inputs_qr.png"
+  },
+  "concepts": [
+    {
+      "num": "01",
+      "slug": "editorial-rule",
+      "title": "Editorial Rule",
+      "intent": "Newspaper-style hairline grid; large headline; restrained green only on the $788K figure.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_v2_01_editorial-rule_Proof.html",
+        "frontPng": "SWW_YAPTOM_v2_01_editorial-rule_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_v2_01_editorial-rule_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_v2_01_editorial-rule_Rationale.md"
+      },
+      "dimensions": { "width": 1750, "height": 1300 },
+      "printSafety": "medium"
+    },
+    {
+      "num": "02",
+      "slug": "structured-columns",
+      "title": "Structured Columns",
+      "intent": "Three-column Swiss-style grid with receipt-style numbers panel and a chart in its own column.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_v2_02_structured-columns_Proof.html",
+        "frontPng": "SWW_YAPTOM_v2_02_structured-columns_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_v2_02_structured-columns_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_v2_02_structured-columns_Rationale.md"
+      },
+      "dimensions": { "width": 1750, "height": 1300 },
+      "printSafety": "medium-high"
+    },
+    {
+      "num": "03",
+      "slug": "callout-band",
+      "title": "Callout Band",
+      "intent": "Single dark-ink band carries the headline on the front; white everywhere else. A unifying ink strap on the back.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_v2_03_callout-band_Proof.html",
+        "frontPng": "SWW_YAPTOM_v2_03_callout-band_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_v2_03_callout-band_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_v2_03_callout-band_Rationale.md"
+      },
+      "dimensions": { "width": 1750, "height": 1300 },
+      "printSafety": "medium"
+    },
+    {
+      "num": "04",
+      "slug": "paper-and-ink",
+      "title": "Paper & Ink",
+      "intent": "Warm paper-color field (#FAF8F2 — NOT mint); dark ink type; brand green on the dollar figure and a single keyline.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_v2_04_paper-and-ink_Proof.html",
+        "frontPng": "SWW_YAPTOM_v2_04_paper-and-ink_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_v2_04_paper-and-ink_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_v2_04_paper-and-ink_Rationale.md"
+      },
+      "dimensions": { "width": 1750, "height": 1300 },
+      "printSafety": "medium"
+    },
+    {
+      "num": "05",
+      "slug": "chart-led-front",
+      "title": "Chart-Led Front",
+      "intent": "Front dominated by the savings curve at scale; headline floats in a small card; back is the calm sibling.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_v2_05_chart-led-front_Proof.html",
+        "frontPng": "SWW_YAPTOM_v2_05_chart-led-front_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_v2_05_chart-led-front_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_v2_05_chart-led-front_Rationale.md"
+      },
+      "dimensions": { "width": 1750, "height": 1300 },
+      "printSafety": "lower-medium"
+    },
+    {
+      "num": "06",
+      "slug": "print-safe-classic",
+      "title": "Print-Safe Classic",
+      "intent": "Maximum print-friendliness: big type, generous white, solid colors only, thick lines, no hairlines or gradients.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_v2_06_print-safe-classic_Proof.html",
+        "frontPng": "SWW_YAPTOM_v2_06_print-safe-classic_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_v2_06_print-safe-classic_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_v2_06_print-safe-classic_Rationale.md"
+      },
+      "dimensions": { "width": 1750, "height": 1300 },
+      "printSafety": "high"
+    }
+  ],
+  "rootFiles": {
+    "contactSheetHtml": "SWW_YAPTOM_v2_ContactSheet.html",
+    "contactSheetPng": "SWW_YAPTOM_v2_ContactSheet.png",
+    "readme": "README.md",
+    "manifest": "mailer-assets-manifest.json"
+  },
+  "approvedCopy": {
+    "front": [
+      "youarepayingtoomuch.com",
+      "What would you do with $788,000*?",
+      "* potential savings over 20 years.",
+      "Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.",
+      "David Van Osdol, CFA, CFP"
+    ],
+    "back": [
+      "Save a Ton!",
+      "$100/mo. flat fee vs. % asset-based fee.",
+      "Upgrade your Advice",
+      "Highly credentialed, highly experienced.",
+      "Improve your Tools",
+      "Better financial planning tools that you own.",
+      "See how much you can save using your actual numbers.",
+      "youarepayingtoomuch.com"
+    ],
+    "disclosure": "Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee."
+  }
+}

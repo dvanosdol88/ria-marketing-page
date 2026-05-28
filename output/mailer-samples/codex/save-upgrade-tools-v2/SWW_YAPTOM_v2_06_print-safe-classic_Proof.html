@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>SWW EDDM v2 · 06 · Print-Safe Classic</title>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&display=swap');
+
+  :root {
+    --green: #00A540;
+    --ink: #07140D;
+    --slate: #34483C;
+    --rule: rgba(7,20,13,0.18);
+    --rule-strong: rgba(7,20,13,0.55);
+    --paper: #FFFFFF;
+    --paper-warm: #FAF8F2;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #e9eae6;
+    font-family: 'Inter', system-ui, Arial, Helvetica, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+  }
+  .stage {
+    display: flex; flex-direction: column; align-items: center; gap: 32px; padding: 32px 0;
+  }
+  .card {
+    width: 8.75in;
+    height: 6.5in;
+    position: relative;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+  /* trim guides — shown on screen, hidden on print */
+  .trim::before, .trim::after {
+    content: ''; position: absolute; pointer-events: none;
+  }
+  .trim::before {
+    inset: 0.125in; border: 1px dashed rgba(7,20,13,0.30);
+  }
+  .label-front, .label-back {
+    position: fixed; top: 6px; left: 50%; transform: translateX(-50%);
+    font: 600 11px 'Inter', sans-serif; color: #6b6b6b;
+    background: #fff; padding: 2px 10px; border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    z-index: 9999;
+  }
+  .corner {
+    position: absolute; font: 500 9px 'Inter', sans-serif; color: rgba(7,20,13,0.45);
+    letter-spacing: 0.04em;
+  }
+  .corner.tl { top: 6px; left: 10px; }
+  .corner.tr { top: 6px; right: 10px; }
+  @media print {
+    .trim::before { display: none; }
+    .corner { display: none; }
+    body { background: #fff; }
+    .card { box-shadow: none; }
+    .stage { gap: 0; padding: 0; }
+  }
+  /* Safety: arrest greens going too lime */
+  .green { color: var(--green); }
+  .ink { color: var(--ink); }
+  .slate { color: var(--slate); }
+
+  /* Default chart styling — concepts override locally */
+  .chart-svg { display: block; width: 100%; height: 100%; }
+
+    .ps-front, .ps-back { background: #fff; color: var(--ink); padding: 0.5in 0.5in 0.45in; display: flex; flex-direction: column; gap: 16px; }
+    .ps-front .domain-top { text-align: center; font: 900 22px 'Inter'; letter-spacing: -0.005em; }
+    .ps-front .hr-thick { height: 4px; background: var(--ink); }
+    .ps-front .headline { text-align: center; font: 900 64px/0.98 'Inter'; letter-spacing: -0.025em; }
+    .ps-front .headline .dollar { color: var(--green); display: block; font-size: 80px; }
+    .ps-front .foot { text-align: center; font: 600 14px 'Inter'; color: var(--slate); }
+    .ps-front .founder { text-align: center; font: 500 15px/1.45 'Inter'; max-width: 7.2in; margin: 0 auto; }
+    .ps-front .byline { text-align: center; font: 900 13px 'Inter'; letter-spacing: 0.08em; text-transform: uppercase; }
+    .ps-front .chart-grid { display: grid; grid-template-columns: 1fr 1.4in; gap: 24px; align-items: center; padding-top: 6px; }
+    .ps-front .chart-grid .chart { height: 1.5in; }
+    .ps-front .chart-grid .qr { text-align: center; }
+    .ps-front .chart-grid .qr img { width: 1.3in; height: 1.3in; display: block; margin: 0 auto; }
+    .ps-front .chart-grid .qr .cap { font: 700 11px 'Inter'; margin-top: 6px; letter-spacing: 0.05em; }
+    .ps-front .disclosure { font: 500 10px/1.4 'Inter'; color: var(--slate); text-align: center; }
+
+    .ps-back .indicia { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; align-items: start; padding-bottom: 14px; border-bottom: 4px solid var(--ink); }
+    .ps-back .indicia .ret { font: 600 11.5px/1.45 'Inter'; }
+    .ps-back .indicia .ret .name { font-weight: 900; margin-bottom: 4px; }
+    .ps-back .indicia .addr { text-align: center; font: 900 15px 'Inter'; letter-spacing: 0.05em; padding-top: 4px; }
+    .ps-back .indicia .addr .sub { font: 600 10.5px 'Inter'; letter-spacing: 0.04em; margin-top: 4px; color: var(--slate); text-transform: none; font-weight: 600; }
+    .ps-back .indicia .ind { justify-self: end; border: 2px solid var(--ink); padding: 8px 14px; font: 800 10px/1.4 'Inter'; text-align: center; letter-spacing: 0.05em; width: 1.6in; }
+    .ps-back .row { display: grid; grid-template-columns: 2.2in 1fr 1.4in; gap: 24px; align-items: start; padding-top: 6px; }
+    .ps-back .row .founder .logo { width: 1.7in; display: block; margin-bottom: 10px; }
+    .ps-back .row .founder .photo { width: 1.9in; height: 2.1in; object-fit: cover; display: block; }
+    .ps-back .row .founder .name { font: 900 13px 'Inter'; margin-top: 8px; letter-spacing: 0.02em; }
+    .ps-back .row .founder .sub { font: 600 10.5px 'Inter'; color: var(--slate); margin-top: 2px; letter-spacing: 0.04em; }
+    .ps-back .row .benefits .item { padding: 0 0 10px; }
+    .ps-back .row .benefits .key { font: 900 48px/1 'Inter'; letter-spacing: -0.02em; }
+    .ps-back .row .benefits .tail { font: 700 18px 'Inter'; margin-left: 8px; color: var(--slate); }
+    .ps-back .row .benefits .desc { font: 600 13.5px/1.4 'Inter'; margin-top: 6px; }
+    .ps-back .row .benefits .desc .b-you { font-weight: 900; color: var(--ink); }
+    .ps-back .row .qr { text-align: center; }
+    .ps-back .row .qr img { width: 1.4in; height: 1.4in; display: block; margin: 0 auto; }
+    .ps-back .row .qr .cap { font: 600 11px/1.35 'Inter'; margin-top: 8px; }
+    .ps-back .domain { text-align: center; padding-top: 14px; }
+    .ps-back .domain .d { font: 900 40px 'Inter'; letter-spacing: -0.01em; }
+    .ps-back .domain .u { display: inline-block; width: 1.6in; height: 4px; background: var(--green); margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="label-front">06 · Print-Safe Classic — Front (8.75 × 6.5 in incl. 0.125 in bleed)</div>
+  <div class="stage">
+    <div class="card trim" data-side="front" id="front">
+      <span class="corner tl">FRONT · trim 8.5 × 6.25 in · bleed 0.125 in</span>
+      <span class="corner tr">06 · Print-Safe Classic</span>
+      
+    <div class="ps-front">
+      <div class="domain-top">youarepayingtoomuch.com</div>
+      <div class="hr-thick"></div>
+      <div class="headline">What would you do with<span class="dollar">$788,000*?</span></div>
+      <div class="foot">* potential savings over 20 years.</div>
+      <div class="founder">Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.</div>
+      <div class="byline">David Van Osdol, CFA, CFP</div>
+      <div class="chart-grid">
+        <div class="chart">
+    <svg class="chart-svg" viewBox="0 0 640 220" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      
+      <path d="M56.0,155.6 L84.4,152.8 L112.8,149.9 L141.2,146.7 L169.6,143.2 L198.0,139.5 L226.4,135.4 L254.8,131.0 L283.2,126.3 L311.6,121.2 L340.0,115.7 L368.4,109.8 L396.8,103.4 L425.2,96.4 L453.6,89.0 L482.0,80.9 L510.4,72.1 L538.8,62.7 L567.2,52.5 L595.6,41.5 L624.0,29.7 L624.0,56.9 L595.6,65.6 L567.2,73.7 L538.8,81.3 L510.4,88.4 L482.0,95.1 L453.6,101.3 L425.2,107.1 L396.8,112.5 L368.4,117.6 L340.0,122.3 L311.6,126.8 L283.2,130.9 L254.8,134.8 L226.4,138.4 L198.0,141.8 L169.6,144.9 L141.2,147.9 L112.8,150.6 L84.4,153.2 L56.0,155.6 Z" fill="#00A540" fill-opacity="0.10" />
+      <path d="M56.0,155.6 L84.4,153.2 L112.8,150.6 L141.2,147.9 L169.6,144.9 L198.0,141.8 L226.4,138.4 L254.8,134.8 L283.2,130.9 L311.6,126.8 L340.0,122.3 L368.4,117.6 L396.8,112.5 L425.2,107.1 L453.6,101.3 L482.0,95.1 L510.4,88.4 L538.8,81.3 L567.2,73.7 L595.6,65.6 L624.0,56.9" fill="none" stroke="#34483C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M56.0,155.6 L84.4,152.8 L112.8,149.9 L141.2,146.7 L169.6,143.2 L198.0,139.5 L226.4,135.4 L254.8,131.0 L283.2,126.3 L311.6,121.2 L340.0,115.7 L368.4,109.8 L396.8,103.4 L425.2,96.4 L453.6,89.0 L482.0,80.9 L510.4,72.1 L538.8,62.7 L567.2,52.5 L595.6,41.5 L624.0,29.7" fill="none" stroke="#00A540" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="56" y1="190" x2="624" y2="190" stroke="rgba(7,20,13,0.35)" stroke-width="1"/>
+      <text x="48" y="193.5" text-anchor="end" font-family="Inter" font-size="11" fill="rgba(7,20,13,0.7)">$0</text><text x="48" y="159.1" text-anchor="end" font-family="Inter" font-size="11" fill="rgba(7,20,13,0.7)">$1M</text><text x="48" y="124.7" text-anchor="end" font-family="Inter" font-size="11" fill="rgba(7,20,13,0.7)">$2M</text><text x="48" y="90.3" text-anchor="end" font-family="Inter" font-size="11" fill="rgba(7,20,13,0.7)">$3M</text><text x="48" y="55.9" text-anchor="end" font-family="Inter" font-size="11" fill="rgba(7,20,13,0.7)">$4M</text><text x="48" y="21.5" text-anchor="end" font-family="Inter" font-size="11" fill="rgba(7,20,13,0.7)">$5M</text><text x="56.0" y="206" text-anchor="middle" font-family="Inter" font-size="11" fill="rgba(7,20,13,0.7)">0y</text><text x="198.0" y="206" text-anchor="middle" font-family="Inter" font-size="11" fill="rgba(7,20,13,0.7)">5y</text><text x="340.0" y="206" text-anchor="middle" font-family="Inter" font-size="11" fill="rgba(7,20,13,0.7)">10y</text><text x="482.0" y="206" text-anchor="middle" font-family="Inter" font-size="11" fill="rgba(7,20,13,0.7)">15y</text><text x="624.0" y="206" text-anchor="middle" font-family="Inter" font-size="11" fill="rgba(7,20,13,0.7)">20y</text>
+      
+      <text x="618" y="21.7" text-anchor="end" font-family="Inter" font-size="12" font-weight="700" fill="#00A540">$4,604,057</text>
+      <text x="618" y="72.9" text-anchor="end" font-family="Inter" font-size="12" font-weight="700" fill="#34483C">$3,815,751</text>
+    
+        <line x1="624.0" y1="29.7" x2="624.0" y2="56.9" stroke="#00A540" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <text x="453.6" y="95.1" text-anchor="middle" font-family="Inter" font-size="12" font-weight="800" fill="#00A540">$788,306 gap</text>
+      
+    </svg>
+  </div>
+        <div class="qr">
+          <img src="brand-assets/yaptom_default_inputs_qr.png" alt="QR"/>
+          <div class="cap">SCAN TO RUN YOUR NUMBERS</div>
+        </div>
+      </div>
+      <div class="disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </div>
+  
+    </div>
+    <div class="card trim" data-side="back" id="back">
+      <span class="corner tl">BACK · trim 8.5 × 6.25 in · bleed 0.125 in</span>
+      <span class="corner tr">06 · Print-Safe Classic</span>
+      
+    <div class="ps-back">
+      <div class="indicia">
+        <div class="ret"><div class="name">Smarter Way Wealth, LLC</div>youarepayingtoomuch.com<br/>smarterwaywealth.com</div>
+        <div class="addr">LOCAL POSTAL CUSTOMER<div class="sub">EDDM route delivery</div></div>
+        <div class="ind">PRSRT STD<br/>ECRWSS<br/>U.S. POSTAGE<br/>PAID<br/>EDDM RETAIL</div>
+      </div>
+      <div class="row">
+        <div class="founder">
+          <img class="logo" src="brand-assets/logo-800.png" alt="Smarter Way Wealth"/>
+          <img class="photo" src="brand-assets/dvo-headshot.jpg" alt="David Van Osdol"/>
+          <div class="name">David J. Van Osdol, CFA, CFP</div>
+          <div class="sub">Founder, Smarter Way Wealth</div>
+        </div>
+        <div class="benefits">
+          <div class="item">
+            <div><span class="key ink">Save</span><span class="tail"> a Ton!</span></div>
+            <div class="desc">$100/mo. flat fee vs. % asset-based fee.</div>
+          </div>
+          <div class="item">
+            <div><span class="key ink">Upgrade</span><span class="tail"> your Advice</span></div>
+            <div class="desc">Highly credentialed, highly experienced.</div>
+          </div>
+          <div class="item">
+            <div><span class="key ink">Improve</span><span class="tail"> your Tools</span></div>
+            <div class="desc">Better financial planning tools that <span class="b-you">you</span> own.</div>
+          </div>
+        </div>
+        <div class="qr">
+          <img src="brand-assets/yaptom_default_inputs_qr.png" alt="QR"/>
+          <div class="cap">See how much you can save using your actual numbers.</div>
+        </div>
+      </div>
+      <div class="domain"><div class="d">youarepayingtoomuch.com</div><span class="u"></span></div>
+    </div>
+  
+    </div>
+  </div>
+</body>
+</html>

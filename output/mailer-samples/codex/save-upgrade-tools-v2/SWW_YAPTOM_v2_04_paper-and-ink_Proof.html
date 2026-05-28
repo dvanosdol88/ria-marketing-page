@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>SWW EDDM v2 · 04 · Paper & Ink</title>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&display=swap');
+
+  :root {
+    --green: #00A540;
+    --ink: #07140D;
+    --slate: #34483C;
+    --rule: rgba(7,20,13,0.18);
+    --rule-strong: rgba(7,20,13,0.55);
+    --paper: #FFFFFF;
+    --paper-warm: #FAF8F2;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #e9eae6;
+    font-family: 'Inter', system-ui, Arial, Helvetica, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+  }
+  .stage {
+    display: flex; flex-direction: column; align-items: center; gap: 32px; padding: 32px 0;
+  }
+  .card {
+    width: 8.75in;
+    height: 6.5in;
+    position: relative;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+  /* trim guides — shown on screen, hidden on print */
+  .trim::before, .trim::after {
+    content: ''; position: absolute; pointer-events: none;
+  }
+  .trim::before {
+    inset: 0.125in; border: 1px dashed rgba(7,20,13,0.30);
+  }
+  .label-front, .label-back {
+    position: fixed; top: 6px; left: 50%; transform: translateX(-50%);
+    font: 600 11px 'Inter', sans-serif; color: #6b6b6b;
+    background: #fff; padding: 2px 10px; border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    z-index: 9999;
+  }
+  .corner {
+    position: absolute; font: 500 9px 'Inter', sans-serif; color: rgba(7,20,13,0.45);
+    letter-spacing: 0.04em;
+  }
+  .corner.tl { top: 6px; left: 10px; }
+  .corner.tr { top: 6px; right: 10px; }
+  @media print {
+    .trim::before { display: none; }
+    .corner { display: none; }
+    body { background: #fff; }
+    .card { box-shadow: none; }
+    .stage { gap: 0; padding: 0; }
+  }
+  /* Safety: arrest greens going too lime */
+  .green { color: var(--green); }
+  .ink { color: var(--ink); }
+  .slate { color: var(--slate); }
+
+  /* Default chart styling — concepts override locally */
+  .chart-svg { display: block; width: 100%; height: 100%; }
+
+    .pi-card { background: var(--paper-warm); color: var(--ink); padding: 0.45in 0.5in 0.4in; }
+    .pi-front .head { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 14px; }
+    .pi-front .head .domain { font: 800 22px 'Inter'; letter-spacing: -0.005em; }
+    .pi-front .head .domain .u { border-bottom: 2px solid var(--green); padding-bottom: 3px; }
+    .pi-front .head .meta { font: 600 11px 'Inter'; letter-spacing: 0.10em; text-transform: uppercase; color: var(--slate); }
+    .pi-front .hl { font: 900 64px/0.98 'Inter'; letter-spacing: -0.02em; margin-top: 18px; }
+    .pi-front .hl .dollar { color: var(--green); }
+    .pi-front .foot { font: 500 14px 'Inter'; color: var(--slate); margin-top: 8px; }
+    .pi-front .founder { font: 500 14px/1.45 'Inter'; margin-top: 18px; max-width: 6.2in; }
+    .pi-front .byline { font: 800 12px 'Inter'; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 8px; }
+    .pi-front .grid { display: grid; grid-template-columns: 1fr 1.4in; gap: 26px; align-items: center; margin-top: 22px; }
+    .pi-front .grid .chart-bg { background: #fff; padding: 12px 12px 8px; border: 1px solid var(--rule); }
+    .pi-front .grid .chart-bg .chart { height: 1.5in; }
+    .pi-front .grid .qr { text-align: center; }
+    .pi-front .grid .qr img { width: 1.3in; height: 1.3in; display: block; margin: 0 auto; background: #fff; padding: 6px; border: 1px solid var(--rule); }
+    .pi-front .grid .qr .cap { font: 600 10px 'Inter'; margin-top: 6px; letter-spacing: 0.05em; }
+    .pi-front .disclosure { font: 400 9.5px/1.4 'Inter'; color: var(--slate); margin-top: 16px; max-width: 7.4in; }
+
+    .pi-back .indicia { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; align-items: start; background: #fff; padding: 14px 18px; border: 1px solid var(--rule); }
+    .pi-back .indicia .ret { font: 500 11px/1.45 'Inter'; }
+    .pi-back .indicia .ret .name { font-weight: 800; margin-bottom: 4px; }
+    .pi-back .indicia .addr { text-align: center; font: 800 14px 'Inter'; letter-spacing: 0.05em; padding-top: 4px; }
+    .pi-back .indicia .addr .sub { font: 500 10px 'Inter'; letter-spacing: 0.04em; margin-top: 4px; color: var(--slate); text-transform: none; font-weight: 500; }
+    .pi-back .indicia .ind { justify-self: end; border: 1px solid var(--ink); padding: 6px 12px; font: 700 9.5px/1.35 'Inter'; text-align: center; letter-spacing: 0.05em; width: 1.55in; background: #fff; }
+    .pi-back .body { display: grid; grid-template-columns: 2.1in 1fr 1.4in; gap: 26px; padding-top: 22px; align-items: start; }
+    .pi-back .body .founder .logo { width: 1.55in; display: block; margin-bottom: 8px; }
+    .pi-back .body .founder .photo { width: 1.85in; height: 2.05in; object-fit: cover; display: block; border: 1px solid var(--rule); }
+    .pi-back .body .founder .name { font: 800 12px 'Inter'; margin-top: 8px; letter-spacing: 0.02em; }
+    .pi-back .body .founder .sub { font: 500 10px 'Inter'; color: var(--slate); margin-top: 2px; letter-spacing: 0.04em; }
+    .pi-back .body .benefits .item { padding: 4px 0 14px; }
+    .pi-back .body .benefits .key { font: 900 40px/1 'Inter'; letter-spacing: -0.02em; }
+    .pi-back .body .benefits .tail { font: 600 16px 'Inter'; margin-left: 6px; color: var(--slate); }
+    .pi-back .body .benefits .desc { font: 500 13px/1.4 'Inter'; margin-top: 6px; }
+    .pi-back .body .benefits .desc .b-you { font-weight: 800; color: var(--ink); }
+    .pi-back .body .qr { text-align: center; }
+    .pi-back .body .qr img { width: 1.3in; height: 1.3in; display: block; margin: 0 auto; }
+    .pi-back .body .qr .cap { font: 500 10.5px/1.35 'Inter'; margin-top: 8px; }
+    .pi-back .domain-row { margin-top: 16px; text-align: center; }
+    .pi-back .domain-row .d { font: 900 36px 'Inter'; letter-spacing: -0.01em; }
+    .pi-back .domain-row .u { display: inline-block; width: 1.4in; height: 2px; background: var(--green); margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="label-front">04 · Paper & Ink — Front (8.75 × 6.5 in incl. 0.125 in bleed)</div>
+  <div class="stage">
+    <div class="card trim" data-side="front" id="front">
+      <span class="corner tl">FRONT · trim 8.5 × 6.25 in · bleed 0.125 in</span>
+      <span class="corner tr">04 · Paper & Ink</span>
+      
+    <div class="pi-card pi-front">
+      <div class="head">
+        <div class="domain"><span class="u">youarepayingtoomuch.com</span></div>
+        <div class="meta">A fee-savings proof from Smarter Way Wealth</div>
+      </div>
+      <div class="hl">What would you do with <span class="dollar">$788,000*?</span></div>
+      <div class="foot">* potential savings over 20 years.</div>
+      <div class="founder">Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.</div>
+      <div class="byline">David Van Osdol, CFA, CFP</div>
+      <div class="grid">
+        <div class="chart-bg"><div class="chart">
+    <svg class="chart-svg" viewBox="0 0 660 220" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      
+      <text x="90" y="65" text-anchor="end" font-family="Inter" font-size="12" font-weight="600" fill="rgba(7,20,13,0.7)">With 1% asset fee</text>
+      <rect x="100" y="33" width="409.0" height="56" fill="#34483C"/>
+      <text x="497.0485072" y="66" text-anchor="end" font-family="Inter" font-size="14" font-weight="800" fill="#fff">$3,815,751</text>
+    
+      <text x="90" y="151" text-anchor="end" font-family="Inter" font-size="12" font-weight="600" fill="rgba(7,20,13,0.7)">With $100/mo flat fee</text>
+      <rect x="100" y="119" width="493.6" height="56" fill="#00A540"/>
+      <text x="581.5549103999999" y="152" text-anchor="end" font-family="Inter" font-size="14" font-weight="800" fill="#fff">$4,604,057</text>
+    
+    <line x1="100409.0" y1="89" x2="100409.0" y2="119" stroke="#00A540" stroke-width="1.25" stroke-dasharray="3 3"/>
+    <line x1="100493.6" y1="119" x2="100493.6" y2="175" stroke="#00A540" stroke-width="1.25" stroke-dasharray="3 3"/>
+    <text x="551.3017088" y="109" text-anchor="middle" font-family="Inter" font-size="13" font-weight="800" fill="#00A540">$788,306 gap</text>
+  
+    </svg>
+  </div></div>
+        <div class="qr">
+          <img src="brand-assets/yaptom_default_inputs_qr.png" alt="QR"/>
+          <div class="cap">SCAN TO RUN YOUR NUMBERS</div>
+        </div>
+      </div>
+      <div class="disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </div>
+  
+    </div>
+    <div class="card trim" data-side="back" id="back">
+      <span class="corner tl">BACK · trim 8.5 × 6.25 in · bleed 0.125 in</span>
+      <span class="corner tr">04 · Paper & Ink</span>
+      
+    <div class="pi-card pi-back">
+      <div class="indicia">
+        <div class="ret"><div class="name">Smarter Way Wealth, LLC</div>youarepayingtoomuch.com<br/>smarterwaywealth.com</div>
+        <div class="addr">LOCAL POSTAL CUSTOMER<div class="sub">EDDM route delivery</div></div>
+        <div class="ind">PRSRT STD<br/>ECRWSS<br/>U.S. POSTAGE<br/>PAID<br/>EDDM RETAIL</div>
+      </div>
+      <div class="body">
+        <div class="founder">
+          <img class="logo" src="brand-assets/logo-800.png" alt="Smarter Way Wealth"/>
+          <img class="photo" src="brand-assets/dvo-headshot.jpg" alt="David Van Osdol"/>
+          <div class="name">David J. Van Osdol, CFA, CFP</div>
+          <div class="sub">Founder, Smarter Way Wealth</div>
+        </div>
+        <div class="benefits">
+          <div class="item">
+            <div><span class="key ink">Save</span><span class="tail"> a Ton!</span></div>
+            <div class="desc">$100/mo. flat fee vs. % asset-based fee.</div>
+          </div>
+          <div class="item">
+            <div><span class="key ink">Upgrade</span><span class="tail"> your Advice</span></div>
+            <div class="desc">Highly credentialed, highly experienced.</div>
+          </div>
+          <div class="item">
+            <div><span class="key ink">Improve</span><span class="tail"> your Tools</span></div>
+            <div class="desc">Better financial planning tools that <span class="b-you">you</span> own.</div>
+          </div>
+        </div>
+        <div class="qr">
+          <img src="brand-assets/yaptom_default_inputs_qr.png" alt="QR"/>
+          <div class="cap">See how much you can save using your actual numbers.</div>
+        </div>
+      </div>
+      <div class="domain-row">
+        <div class="d">youarepayingtoomuch.com</div>
+        <span class="u"></span>
+      </div>
+    </div>
+  
+    </div>
+  </div>
+</body>
+</html>
