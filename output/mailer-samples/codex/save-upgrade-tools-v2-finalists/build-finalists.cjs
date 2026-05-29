@@ -35,7 +35,6 @@ function buildKey() {
 
 function buildChartRow(chartFrame, qrBlock, boxed) {
   return `
-      <div class="hero-bottom-rule"></div>
       <div class="chart-row finalist-chart-row${boxed ? " boxed-version" : ""}">
         <div class="chart-proof-box">
           ${chartFrame}
@@ -45,7 +44,8 @@ function buildChartRow(chartFrame, qrBlock, boxed) {
           </div>
         </div>
         ${qrBlock}
-      </div>`;
+      </div>
+      <div class="hero-bottom-rule"></div>`;
 }
 
 const source = fs.readFileSync(BASE_HTML, "utf8");
@@ -78,6 +78,9 @@ const finalistCss = `
     }
     .ed-front .hero-bottom-rule {
       margin: 12px 0 0;
+    }
+    .ed-front .founder-banner {
+      margin-top: 40px;
     }
     .ed-front .finalist-chart-row .chart-proof-box {
       min-width: 0;
@@ -166,6 +169,7 @@ const finalistCss = `
     .ed-back .founder-block .logo {
       width: 1.33in;
       margin-left: calc((1.4828in - 1.33in) / 2);
+      transform: translateY(8px);
     }
     .ed-back .founder-block .photo-crop {
       width: 1.4828in;
@@ -194,7 +198,20 @@ const finalistCss = `
       margin-top: 2px;
     }
     .ed-back .benefits {
-      transform: translateX(-5px);
+      transform: translateX(-10px);
+    }
+    .ed-back .benefits .item {
+      position: relative;
+      border-bottom: none;
+    }
+    .ed-back .benefits .item:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 10px;
+      bottom: 0;
+      height: 1px;
+      background: var(--rule);
     }
     .ed-back .benefits .key {
       font-weight: 800;
@@ -203,8 +220,8 @@ const finalistCss = `
       margin-left: 4px;
     }
     .ed-back .no-move-callout {
-      margin-top: 30px;
-      transform: translateX(-5px);
+      margin-top: 32px;
+      transform: translate(-5px, -5px);
     }
     .ed-back .no-move-callout span {
       font: italic 700 15px/1.3 'Inter';

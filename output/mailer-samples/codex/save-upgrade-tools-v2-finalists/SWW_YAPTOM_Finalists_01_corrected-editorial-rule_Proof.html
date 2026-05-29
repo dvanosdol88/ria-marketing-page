@@ -133,6 +133,9 @@
     .ed-front .hero-bottom-rule {
       margin: 12px 0 0;
     }
+    .ed-front .founder-banner {
+      margin-top: 40px;
+    }
     .ed-front .finalist-chart-row .chart-proof-box {
       min-width: 0;
       width: fit-content;
@@ -220,6 +223,7 @@
     .ed-back .founder-block .logo {
       width: 1.33in;
       margin-left: calc((1.4828in - 1.33in) / 2);
+      transform: translateY(8px);
     }
     .ed-back .founder-block .photo-crop {
       width: 1.4828in;
@@ -248,7 +252,20 @@
       margin-top: 2px;
     }
     .ed-back .benefits {
-      transform: translateX(-5px);
+      transform: translateX(-10px);
+    }
+    .ed-back .benefits .item {
+      position: relative;
+      border-bottom: none;
+    }
+    .ed-back .benefits .item:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 10px;
+      bottom: 0;
+      height: 1px;
+      background: var(--rule);
     }
     .ed-back .benefits .key {
       font-weight: 800;
@@ -257,8 +274,8 @@
       margin-left: 4px;
     }
     .ed-back .no-move-callout {
-      margin-top: 30px;
-      transform: translateX(-5px);
+      margin-top: 32px;
+      transform: translate(-5px, -5px);
     }
     .ed-back .no-move-callout span {
       font: italic 700 15px/1.3 'Inter';
@@ -279,7 +296,6 @@
       <div class="headline">What would you do with<br/><span class="dollar">$788,000*?</span></div>
       <div class="footnote">* potential savings over 20 years.</div>
 
-      <div class="hero-bottom-rule"></div>
       <div class="chart-row finalist-chart-row">
         <div class="chart-proof-box">
                   <div class="chart-frame">
@@ -362,6 +378,7 @@
           <div class="qr-cap">SCAN TO RUN YOUR NUMBERS</div>
         </div>
       </div>
+      <div class="hero-bottom-rule"></div>
       <div class="founder-banner">
         <div class="founder">Smarter Way Wealth delivers personal, <span class="green">real human</span> fiduciary advice and planning for a simple $100/month. Period.</div>
         <div class="byline" style="margin-top: 14px;">David Van Osdol, CFA, CFP</div>
