@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-05-28",
+  "updatedAt": "2026-05-29",
   "title": "EDDM Eval Catalog",
   "description": "Local review catalog for EDDM mailer proof packages, proof-only concept sets, planning references, scores, and decisions.",
   "criteria": [
@@ -1696,6 +1696,174 @@
           "label": "Rationale",
           "type": "markdown",
           "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_03_editorial-framed-amalgam_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-copy-spotlight-overview",
+      "group": "J. V2 Copy Spotlight Revisions",
+      "variant": "Overview / contact sheet",
+      "name": "V2 Copy Spotlight overview",
+      "status": "overview",
+      "suggestedDecision": "undecided",
+      "summary": "Imported overview row for this revision round. Start here before scoring individual front/back candidates.",
+      "reviewFocus": [
+        "Use this overview to narrow the field before scoring individual concepts.",
+        "Confirm every concept worth reviewing has its own front/back scoreable row."
+      ],
+      "assets": [
+        {
+          "label": "Sww Yaptom Copy Spotlight Contact Sheet",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_ContactSheet.html",
+          "role": "overview"
+        },
+        {
+          "label": "Sww Yaptom Copy Spotlight Contact Sheet",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_ContactSheet.png",
+          "role": "overview"
+        },
+        {
+          "label": "README",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/README.md",
+          "role": "notes"
+        },
+        {
+          "label": "Manifest",
+          "type": "json",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/mailer-assets-manifest.json",
+          "role": "manifest"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-copy-spotlight-01-proof-card",
+      "group": "J. V2 Copy Spotlight Revisions",
+      "variant": "01 Proof Card",
+      "name": "V2 Copy Spotlight: 01 Proof Card",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "reviewFocus": [
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
+      ],
+      "knownLimitations": [
+        "Imported proof assets may not include a final print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_01_proof-card_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_01_proof-card_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_01_proof-card_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_01_proof-card_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-copy-spotlight-02-callout-band",
+      "group": "J. V2 Copy Spotlight Revisions",
+      "variant": "02 Callout Band",
+      "name": "V2 Copy Spotlight: 02 Callout Band",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "reviewFocus": [
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
+      ],
+      "knownLimitations": [
+        "Imported proof assets may not include a final print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_02_callout-band_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_02_callout-band_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_02_callout-band_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_02_callout-band_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-copy-spotlight-03-advisor-frame",
+      "group": "J. V2 Copy Spotlight Revisions",
+      "variant": "03 Advisor Frame",
+      "name": "V2 Copy Spotlight: 03 Advisor Frame",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "reviewFocus": [
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
+      ],
+      "knownLimitations": [
+        "Imported proof assets may not include a final print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_03_advisor-frame_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_03_advisor-frame_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_03_advisor-frame_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_03_advisor-frame_Rationale.md",
           "role": "rationale"
         }
       ]

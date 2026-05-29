@@ -1,0 +1,59 @@
+{
+  "name": "SWW YAPTOM Save Upgrade Tools v2 Copy Spotlight",
+  "generatedAt": "2026-05-29T15:22:18.029Z",
+  "base": "Save Upgrade Tools v2: V2 01 Editorial Rule",
+  "sourceIcon": {
+    "original": "brand-assets/source-check-icon-sheet.jpg",
+    "crop": "brand-assets/green-checked-box-exact.png",
+    "note": "Crop is from the upper-right green checked-box in the supplied sheet; the icon is not redrawn."
+  },
+  "dimensions": {
+    "trimInches": {
+      "width": 8.5,
+      "height": 6.25
+    },
+    "bleedInches": 0.125,
+    "proofPageInches": {
+      "width": 8.75,
+      "height": 6.5
+    }
+  },
+  "concepts": [
+    {
+      "num": "01",
+      "slug": "proof-card",
+      "title": "Proof Card",
+      "idea": "Turns the Smarter Way Wealth sentence into a bordered proof card directly under the headline, so the copy reads as a central promise instead of a footer note.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_CopySpotlight_01_proof-card_Proof.html",
+        "frontPng": "SWW_YAPTOM_CopySpotlight_01_proof-card_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_CopySpotlight_01_proof-card_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_CopySpotlight_01_proof-card_Rationale.md"
+      }
+    },
+    {
+      "num": "02",
+      "slug": "callout-band",
+      "title": "Callout Band",
+      "idea": "Uses a crisp high-contrast band to interrupt the front and give the founder proof sentence more mailbox-level stopping power.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_CopySpotlight_02_callout-band_Proof.html",
+        "frontPng": "SWW_YAPTOM_CopySpotlight_02_callout-band_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_CopySpotlight_02_callout-band_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_CopySpotlight_02_callout-band_Rationale.md"
+      }
+    },
+    {
+      "num": "03",
+      "slug": "advisor-frame",
+      "title": "Advisor Frame",
+      "idea": "Frames the copy and David's name as a signature-style advisor panel beside the chart, giving the human fiduciary message its own visual territory.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_CopySpotlight_03_advisor-frame_Proof.html",
+        "frontPng": "SWW_YAPTOM_CopySpotlight_03_advisor-frame_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_CopySpotlight_03_advisor-frame_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_CopySpotlight_03_advisor-frame_Rationale.md"
+      }
+    }
+  ]
+}
