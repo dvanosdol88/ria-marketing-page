@@ -35,6 +35,7 @@ function buildKey() {
 
 function buildChartRow(chartFrame, qrBlock, boxed) {
   return `
+      <div class="hero-bottom-rule"></div>
       <div class="chart-row finalist-chart-row${boxed ? " boxed-version" : ""}">
         <div class="chart-proof-box">
           ${chartFrame}
@@ -70,13 +71,22 @@ const finalistCss = `
       gap: 22px;
       align-items: center;
     }
+    .ed-front .rule,
+    .ed-front .hero-bottom-rule {
+      height: 1px;
+      background: rgba(7,20,13,0.55);
+    }
+    .ed-front .hero-bottom-rule {
+      margin: 12px 0 0;
+    }
     .ed-front .finalist-chart-row .chart-proof-box {
       min-width: 0;
       width: fit-content;
-      transform: translateX(20px);
+      transform: translateX(30px);
     }
     .ed-front .finalist-chart-row .chart-frame {
       margin: 0;
+      border-top: none;
       border-bottom: none;
     }
     .ed-front .finalist-chart-row .chart-frame .chart-svg {
@@ -85,6 +95,9 @@ const finalistCss = `
     .ed-front .finalist-chart-row .qr-block img {
       width: 1.2075in;
       height: 1.2075in;
+    }
+    .ed-front .finalist-chart-row .qr-block {
+      transform: translateX(-5px);
     }
     .ed-front .chart-meta {
       margin: 3px 0 0;
@@ -151,14 +164,14 @@ const finalistCss = `
       flex-shrink: 0;
     }
     .ed-back .founder-block .logo {
-      width: 1.4in;
-      margin-left: calc((1.665in - 10px - 1.4in) / 2);
+      width: 1.33in;
+      margin-left: calc((1.4828in - 1.33in) / 2);
     }
     .ed-back .founder-block .photo-crop {
-      width: calc(1.665in - 10px);
-      height: 1.89in;
+      width: 1.4828in;
+      height: 1.7955in;
       margin-top: 0.21in;
-      border: 5px solid var(--green);
+      border: 2.5px solid var(--green);
       box-sizing: border-box;
       overflow: hidden;
       display: block;
@@ -174,6 +187,13 @@ const finalistCss = `
     }
     .ed-back .founder-block .name {
       font-size: 12px;
+      margin-top: 26px;
+    }
+    .ed-back .founder-block .sub {
+      margin-top: 2px;
+    }
+    .ed-back .no-move-callout {
+      margin-top: 28px;
     }
 `;
 
