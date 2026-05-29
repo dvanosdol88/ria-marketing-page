@@ -1706,9 +1706,10 @@
       "variant": "Overview / contact sheet",
       "name": "V2 Copy Spotlight overview",
       "status": "overview",
-      "suggestedDecision": "undecided",
-      "summary": "Imported overview row for this revision round. Start here before scoring individual front/back candidates.",
+      "suggestedDecision": "reject",
+      "summary": "Imported overview row for this revision round. Start here before scoring individual front/back candidates. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
         "Use this overview to narrow the field before scoring individual concepts.",
         "Confirm every concept worth reviewing has its own front/back scoreable row."
       ],
@@ -1745,9 +1746,10 @@
       "variant": "01 Proof Card",
       "name": "V2 Copy Spotlight: 01 Proof Card",
       "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "suggestedDecision": "reject",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
         "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
@@ -1788,9 +1790,10 @@
       "variant": "02 Callout Band",
       "name": "V2 Copy Spotlight: 02 Callout Band",
       "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "suggestedDecision": "reject",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
         "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
@@ -1831,9 +1834,10 @@
       "variant": "03 Advisor Frame",
       "name": "V2 Copy Spotlight: 03 Advisor Frame",
       "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "suggestedDecision": "reject",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
         "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
@@ -1864,6 +1868,131 @@
           "label": "Rationale",
           "type": "markdown",
           "path": "output/mailer-samples/codex/save-upgrade-tools-v2-copy-spotlight/SWW_YAPTOM_CopySpotlight_03_advisor-frame_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-finalists-overview",
+      "group": "FINALISTS",
+      "variant": "Overview / contact sheet",
+      "name": "FINALISTS overview",
+      "status": "overview",
+      "suggestedDecision": "undecided",
+      "summary": "Imported overview row for this revision round. Start here before scoring individual front/back candidates.",
+      "reviewFocus": [
+        "Use this overview to narrow the field before scoring individual concepts.",
+        "Confirm every concept worth reviewing has its own front/back scoreable row."
+      ],
+      "assets": [
+        {
+          "label": "Sww Yaptom Finalists Contact Sheet",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_ContactSheet.html",
+          "role": "overview"
+        },
+        {
+          "label": "Sww Yaptom Finalists Contact Sheet",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_ContactSheet.png",
+          "role": "overview"
+        },
+        {
+          "label": "README",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/README.md",
+          "role": "notes"
+        },
+        {
+          "label": "Manifest",
+          "type": "json",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/mailer-assets-manifest.json",
+          "role": "manifest"
+        }
+      ]
+    },
+    {
+      "id": "eddm-finalists-01-corrected-editorial-rule",
+      "group": "FINALISTS",
+      "variant": "01 Corrected Editorial Rule",
+      "name": "FINALISTS: 01 Corrected Editorial Rule",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "reviewFocus": [
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
+      ],
+      "knownLimitations": [
+        "Imported proof assets may not include a final print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-finalists-02-boxed-chart-key",
+      "group": "FINALISTS",
+      "variant": "02 Boxed Chart Key",
+      "name": "FINALISTS: 02 Boxed Chart Key",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "reviewFocus": [
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
+      ],
+      "knownLimitations": [
+        "Imported proof assets may not include a final print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_02_boxed-chart-key_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_02_boxed-chart-key_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_02_boxed-chart-key_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_02_boxed-chart-key_Rationale.md",
           "role": "rationale"
         }
       ]

@@ -1,0 +1,47 @@
+{
+  "name": "FINALISTS - Save Upgrade Tools v2",
+  "generatedAt": "2026-05-29T16:39:02.709Z",
+  "base": "Save Upgrade Tools v2: V2 01 Editorial Rule",
+  "group": "FINALISTS",
+  "sourceIcon": {
+    "crop": "brand-assets/green-checked-box-exact.png",
+    "note": "Exact pixel crop from the upper-right green checked-box in the supplied sheet; not redrawn."
+  },
+  "dimensions": {
+    "trimInches": {
+      "width": 8.5,
+      "height": 6.25
+    },
+    "bleedInches": 0.125,
+    "proofPageInches": {
+      "width": 8.75,
+      "height": 6.5
+    }
+  },
+  "concepts": [
+    {
+      "num": "01",
+      "slug": "corrected-editorial-rule",
+      "title": "Corrected Editorial Rule",
+      "rationale": "V2 01 Editorial Rule with only the requested production corrections: exact checked-box icon, compact horizontal key/disclaimer, and 15% larger QR.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Proof.html",
+        "frontPng": "SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Rationale.md"
+      }
+    },
+    {
+      "num": "02",
+      "slug": "boxed-chart-key",
+      "title": "Boxed Chart Key",
+      "rationale": "Same corrected V2 01 base, with the chart, key, and disclaimer gathered inside a thick black proof box.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_Finalists_02_boxed-chart-key_Proof.html",
+        "frontPng": "SWW_YAPTOM_Finalists_02_boxed-chart-key_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_Finalists_02_boxed-chart-key_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_Finalists_02_boxed-chart-key_Rationale.md"
+      }
+    }
+  ]
+}

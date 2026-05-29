@@ -110,6 +110,7 @@ function stripCommonPrefix(base) {
     .replace(/^SWW[_ -]/i, "")
     .replace(/^EditorialHybrids[_ -]/i, "")
     .replace(/^CopySpotlight[_ -]/i, "")
+    .replace(/^Finalists[_ -]/i, "")
     .replace(/[_ -]EDDM$/i, "")
     .replace(/[_ -]Proof$/i, "");
 }
