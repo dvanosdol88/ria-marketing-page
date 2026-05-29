@@ -106,21 +106,32 @@ function formatCompactCurrency(value: number) {
 }
 
 // Animates a numeric value from 0 → `target` over `durationMs` whenever `active`
-// flips from false → true. Live `target` changes while active update the
-// displayed value on the next render without restarting the animation.
+// flips from false → true. Live `target` changes while active keep the displayed
+// value in sync: mid-animation the tick reads the latest target, and once the
+// animation has finished the value snaps to any new target so input changes are
+// always reflected — even while the element stays activated.
 function useCountUp(target: number, durationMs: number, active: boolean): number {
   const [value, setValue] = useState(active ? target : 0);
   const targetRef = useRef(target);
+  const animationDoneRef = useRef(false);
 
   useEffect(() => {
     targetRef.current = target;
-  }, [target]);
+    // After the entrance animation completes the rAF loop has stopped, so a
+    // later target change would otherwise leave a stale value on screen. Snap
+    // to the live target so the displayed number tracks the current inputs.
+    if (active && animationDoneRef.current) {
+      setValue(target);
+    }
+  }, [active, target]);
 
   useEffect(() => {
     if (!active) {
+      animationDoneRef.current = false;
       setValue(0);
       return;
     }
+    animationDoneRef.current = false;
     let raf = 0;
     let startTime: number | null = null;
     const startValue = 0;
@@ -130,7 +141,11 @@ function useCountUp(target: number, durationMs: number, active: boolean): number
       const t = Math.min(1, elapsed / durationMs);
       const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
       setValue(Math.round(startValue + (targetRef.current - startValue) * eased));
-      if (t < 1) raf = requestAnimationFrame(tick);
+      if (t < 1) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        animationDoneRef.current = true;
+      }
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
@@ -2064,12 +2079,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           />
         </section>
 
-        <p className="mx-4 mt-3 rounded-md border border-[#D7E0E8] bg-[#F8FAFC] px-3 py-2 text-[12px] font-semibold leading-relaxed text-[#42556C] sm:mx-7 sm:text-[13px]">
-          <span className="text-[#213B56]">Asset-based fee*</span> is modeled as an average over the selected time period.
-          It may start above the selected average and decrease as the portfolio grows. This calculator is illustrative
-          only and should not be relied on for a precise cost analysis.
-        </p>
-
         {showChartHeading ? (
           <ScrollReveal delay={0.08} className="mx-4 mt-5 sm:mx-7">
             <div className="border-t border-[#D7E0E8] pt-4">
@@ -2120,7 +2129,19 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           />
         </div>
 
-        <div className="mx-4 mt-4 sm:mx-7">
+        <div className="mx-4 mt-3 space-y-1.5 rounded-md border border-[#D7E0E8] bg-[#F8FAFC] px-3 py-2 sm:mx-7">
+          <p className="text-[12px] font-semibold leading-relaxed text-[#42556C] sm:text-[13px]">
+            <span className="text-[#213B56]">Asset-based fee*</span> is modeled as an average over the selected time period.
+            It may start above the selected average and decrease as the portfolio grows. This calculator is illustrative
+            only and should not be relied on for a precise cost analysis.
+          </p>
+          <p className="text-[11px] leading-relaxed text-[#667587] sm:text-xs">
+            This calculator is for illustrative purposes only and does not represent actual performance.
+            Values are nominal and before taxes.
+          </p>
+        </div>
+
+        <div className="mx-4 mt-4 pb-5 sm:mx-7">
           <SeeOurMathBento
             annualFlatFee={annualFlatFee}
             annualGrowthPercent={annualGrowthPercent}
@@ -2133,10 +2154,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             years={years}
           />
         </div>
-        <p className="px-4 pb-5 pt-4 text-center text-xs leading-relaxed text-[#667587] sm:px-7">
-          This calculator is for illustrative purposes only and does not represent actual performance.
-          Values are nominal and before taxes.
-        </p>
       </ScrollReveal>
       </div>
     </div>
