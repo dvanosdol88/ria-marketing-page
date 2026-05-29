@@ -156,6 +156,31 @@ const finalistCss = `
       object-fit: contain;
       flex-shrink: 0;
     }
+    .ed-back .founder-block .logo {
+      width: 2.475in;
+      margin-left: 0;
+    }
+    .ed-back .founder-block .photo-crop {
+      width: calc(1.665in - 10px);
+      height: 1.89in;
+      margin-top: 0.21in;
+      border: 5px solid var(--green);
+      box-sizing: border-box;
+      overflow: hidden;
+      display: block;
+      background: #102318;
+    }
+    .ed-back .founder-block .photo-crop .photo {
+      width: calc(100% + 10px);
+      height: 100%;
+      max-width: none;
+      transform: translateX(-5px);
+      border: none;
+      margin: 0;
+    }
+    .ed-back .founder-block .name {
+      font-size: 12px;
+    }
 `;
 
 for (const concept of CONCEPTS) {
@@ -168,6 +193,11 @@ for (const concept of CONCEPTS) {
     html,
     iconSvgMatch[0],
     `<img class="exact-check-box" src="brand-assets/green-checked-box-exact.png" alt=""/>`
+  );
+  html = replaceFirstRequired(
+    html,
+    `<img class="photo" src="brand-assets/dvo-headshot.jpg" alt="David Van Osdol"/>`,
+    `<span class="photo-crop"><img class="photo" src="brand-assets/dvo-headshot.jpg" alt="David Van Osdol"/></span>`
   );
   html = html.replace("</style>", `${finalistCss}\n  </style>`);
 
