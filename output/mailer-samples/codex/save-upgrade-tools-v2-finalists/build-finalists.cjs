@@ -80,11 +80,11 @@ const finalistCss = `
     }
     .ed-front .finalist-chart-row .chart-proof-box {
       min-width: 0;
-      width: calc(100% - 20px);
+      width: fit-content;
       transform: translateX(20px);
     }
     .ed-front .finalist-chart-row .chart-frame {
-      margin: 0 -8px;
+      margin: 0;
       border-bottom: none;
     }
     .ed-front .finalist-chart-row .chart-frame .chart-svg {
@@ -95,7 +95,8 @@ const finalistCss = `
       height: 1.2075in;
     }
     .ed-front .chart-meta {
-      margin: 3px -8px 0;
+      margin: 3px 0 0;
+      width: 100%;
     }
     .ed-front .assumption-key {
       display: grid;
@@ -127,6 +128,7 @@ const finalistCss = `
     }
     .ed-front .thin-disclaimer {
       margin-top: 2px;
+      width: 100%;
       text-align: center;
       font: 400 8.7px/1.15 'Inter';
       color: var(--slate);
