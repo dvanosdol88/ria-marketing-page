@@ -4,7 +4,6 @@ const path = require("path");
 const OUT = __dirname;
 const CONCEPTS = [
   ["01", "corrected-editorial-rule", "Corrected Editorial Rule"],
-  ["02", "boxed-chart-key", "Boxed Chart Key"],
 ];
 
 const cards = CONCEPTS.map(([num, slug, title]) => {
@@ -47,7 +46,7 @@ const html = `<!doctype html>
 </head>
 <body>
   <h1>FINALISTS</h1>
-  <p class="lede">Two targeted Save Upgrade Tools v2 finalists from V2 01 Editorial Rule.</p>
+  <p class="lede">Targeted Save Upgrade Tools v2 finalist from V2 01 Editorial Rule.</p>
   <main class="sheet">${cards}</main>
 </body>
 </html>`;

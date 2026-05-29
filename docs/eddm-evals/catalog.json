@@ -1953,49 +1953,6 @@
           "role": "rationale"
         }
       ]
-    },
-    {
-      "id": "eddm-finalists-02-boxed-chart-key",
-      "group": "FINALISTS",
-      "variant": "02 Boxed Chart Key",
-      "name": "FINALISTS: 02 Boxed Chart Key",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
-      "reviewFocus": [
-        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
-        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
-        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
-      ],
-      "knownLimitations": [
-        "Imported proof assets may not include a final print-ready PDF yet."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_02_boxed-chart-key_Front_Proof.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_02_boxed-chart-key_Back_Proof.png",
-          "role": "back"
-        },
-        {
-          "label": "HTML proof",
-          "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_02_boxed-chart-key_Proof.html",
-          "role": "proof"
-        },
-        {
-          "label": "Rationale",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_02_boxed-chart-key_Rationale.md",
-          "role": "rationale"
-        }
-      ]
     }
   ]
 }

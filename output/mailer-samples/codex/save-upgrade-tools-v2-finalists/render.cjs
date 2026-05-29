@@ -5,7 +5,6 @@ const { chromium } = require("playwright");
 const OUT = __dirname;
 const CONCEPTS = [
   ["01", "corrected-editorial-rule"],
-  ["02", "boxed-chart-key"],
 ];
 const DSF = 200 / 96;
 

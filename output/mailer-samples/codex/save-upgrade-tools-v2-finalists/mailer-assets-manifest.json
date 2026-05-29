@@ -1,6 +1,6 @@
 {
   "name": "FINALISTS - Save Upgrade Tools v2",
-  "generatedAt": "2026-05-29T18:23:49.894Z",
+  "generatedAt": "2026-05-29T18:28:45.661Z",
   "base": "Save Upgrade Tools v2: V2 01 Editorial Rule",
   "group": "FINALISTS",
   "sourceIcon": {
@@ -29,18 +29,6 @@
         "frontPng": "SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Front_Proof.png",
         "backPng": "SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Back_Proof.png",
         "rationale": "SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Rationale.md"
-      }
-    },
-    {
-      "num": "02",
-      "slug": "boxed-chart-key",
-      "title": "Boxed Chart Key",
-      "rationale": "Same corrected V2 01 base, with the chart, key, and disclaimer gathered inside a thick black proof box.",
-      "files": {
-        "proofHtml": "SWW_YAPTOM_Finalists_02_boxed-chart-key_Proof.html",
-        "frontPng": "SWW_YAPTOM_Finalists_02_boxed-chart-key_Front_Proof.png",
-        "backPng": "SWW_YAPTOM_Finalists_02_boxed-chart-key_Back_Proof.png",
-        "rationale": "SWW_YAPTOM_Finalists_02_boxed-chart-key_Rationale.md"
       }
     }
   ]

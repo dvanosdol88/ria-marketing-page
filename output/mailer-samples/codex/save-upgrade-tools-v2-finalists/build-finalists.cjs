@@ -13,14 +13,6 @@ const CONCEPTS = [
     rationale:
       "V2 01 Editorial Rule with only the requested production corrections: exact checked-box icon, compact horizontal key/disclaimer, and 15% larger QR.",
   },
-  {
-    num: "02",
-    slug: "boxed-chart-key",
-    title: "Boxed Chart Key",
-    boxed: true,
-    rationale:
-      "Same corrected V2 01 base, with the chart, key, and disclaimer gathered inside a thick black proof box.",
-  },
 ];
 
 const KEY = [
@@ -214,7 +206,7 @@ for (const concept of CONCEPTS) {
 
 fs.writeFileSync(
   path.join(OUT, "README.md"),
-  `# FINALISTS\n\nTwo targeted finalists generated from Save Upgrade Tools v2: V2 01 Editorial Rule.\n\n- 01 Corrected Editorial Rule: requested icon, compact key/disclaimer, and 15% larger QR.\n- 02 Boxed Chart Key: same correction, with chart/key/disclaimer inside a thick black border.\n\nThe back-side checked-box icon is \`brand-assets/green-checked-box-exact.png\`, copied from the exact upper-right green checked-box crop from the supplied source sheet.\n`,
+  `# FINALISTS\n\nTargeted finalist generated from Save Upgrade Tools v2: V2 01 Editorial Rule.\n\n- 01 Corrected Editorial Rule: requested icon, compact key/disclaimer, and 15% larger QR.\n\nThe back-side checked-box icon is \`brand-assets/green-checked-box-exact.png\`, copied from the exact upper-right green checked-box crop from the supplied source sheet.\n`,
   "utf8"
 );
 
