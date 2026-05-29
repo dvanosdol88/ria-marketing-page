@@ -97,6 +97,7 @@ function buildV3LineChartGroup() {
             <stop offset="100%" stop-color="#00A540" stop-opacity="0"/>
           </linearGradient>
         </defs>
+        <rect x="25" y="13" width="531" height="196" rx="12" ry="12" fill="#EEF0F5" stroke="#e2e8f0" stroke-width="1.5"/>
         ${yTicks
           .map(
             (tick) => `
@@ -177,6 +178,17 @@ const finalistCss = `
     }
     .ed-front .founder-banner {
       margin-top: 40px;
+    }
+    .ed-front .headline {
+      font: 900 50px/0.96 'Inter';
+      letter-spacing: -0.02em;
+      text-align: center;
+    }
+    .ed-front .headline .dollar {
+      font-size: 65px;
+    }
+    .ed-front .footnote {
+      margin-bottom: 4.78px;
     }
     .ed-front .finalist-chart-row .chart-proof-box {
       min-width: 0;
@@ -317,7 +329,8 @@ const finalistCss = `
     }
     .ed-back .no-move-callout {
       margin-top: 32px;
-      transform: translate(-5px, 0);
+      gap: 6px;
+      transform: translate(-5px, -5px);
     }
     .ed-back .no-move-callout span {
       font: italic 700 14.5px/1.3 'Inter';
