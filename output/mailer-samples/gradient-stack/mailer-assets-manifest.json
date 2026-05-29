@@ -1,0 +1,48 @@
+{
+  "name": "SWW YAPTOM Gradient Stack EDDM Mailer",
+  "generatedAt": "2026-05-27T18:31:24.539Z",
+  "generator": "scripts/build-eddm-gradient-stack.mjs",
+  "dimensions": {
+    "trimInches": {
+      "width": 8.5,
+      "height": 6.25
+    },
+    "bleedInches": 0.125,
+    "pdfPageInches": {
+      "width": 8.75,
+      "height": 6.5
+    },
+    "proofPixels": {
+      "width": 1750,
+      "height": 1300
+    }
+  },
+  "qrUrl": "https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1",
+  "assumptions": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 8,
+    "years": 20
+  },
+  "outputs": [
+    "SWW_YAPTOM_GradientStack_EDDM_Front_Proof.png",
+    "SWW_YAPTOM_GradientStack_EDDM_Back_Proof.png",
+    "SWW_YAPTOM_GradientStack_EDDM_ContactSheet.png",
+    "SWW_YAPTOM_GradientStack_EDDM_8p75x6p5_PrintReady.pdf",
+    "SWW_YAPTOM_GradientStack_EDDM_Proof.html",
+    "SWW_YAPTOM_GradientStack_EDDM_ContactSheet.html",
+    "SWW_YAPTOM_GradientStack_EDDM_Production_Notes.md"
+  ],
+  "calculatorValues": {
+    "flatFeeEndingValue": 4604057,
+    "assetBasedFeeEndingValue": 3815751,
+    "estimatedGap": 788306,
+    "totalFlatFeesPaid": 24000,
+    "totalAumFeesPaid": 422058
+  },
+  "sourceAssets": {
+    "logoWhite": "D:\\ria-marketing-page\\public\\brand\\logo-white-400.png",
+    "dvo": "D:\\ria-marketing-page\\public\\images\\portraits\\WSJ-DVO.jpg",
+    "qr": "D:\\ria-marketing-page\\output\\mailer-samples\\1-percent-blues\\source-eddm\\yaptom_default_inputs_qr.png"
+  }
+}

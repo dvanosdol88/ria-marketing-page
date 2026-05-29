@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SWW YAPTOM EDDM Designer Handoff</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f6faf7;
+      color: #07140D;
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      line-height: 1.45;
+    }
+    main {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 48px 42px 72px;
+    }
+    header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: center;
+      padding-bottom: 30px;
+      border-bottom: 4px solid #00A540;
+    }
+    h1, h2, h3 { margin: 0; line-height: 1.08; }
+    h1 { font-size: 44px; letter-spacing: 0; }
+    h2 { margin-top: 44px; font-size: 28px; }
+    h3 { font-size: 18px; }
+    p { margin: 10px 0 0; color: #34483C; }
+    .hero-logo { max-width: 240px; height: auto; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 18px;
+    }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .panel, .asset-card {
+      background: #ffffff;
+      border: 1px solid #d8e6dc;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(7, 20, 13, 0.06);
+    }
+    .asset-card img {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-top: 14px;
+      border: 1px solid #d8e6dc;
+      background: #fff;
+    }
+    .source .asset-card img { max-height: 260px; object-fit: contain; }
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .swatch {
+      min-height: 92px;
+      padding: 12px;
+      border: 1px solid #d8e6dc;
+      display: flex;
+      align-items: end;
+      font-weight: 800;
+      color: #07140d;
+    }
+    code, pre, textarea {
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    }
+    pre, textarea {
+      width: 100%;
+      margin: 14px 0 0;
+      padding: 18px;
+      border: 1px solid #c8d9cf;
+      background: #ffffff;
+      color: #07140d;
+      white-space: pre-wrap;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    textarea { min-height: 560px; resize: vertical; }
+    ul { margin: 12px 0 0; padding-left: 22px; }
+    li + li { margin-top: 6px; }
+    .specs {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .spec {
+      border-left: 6px solid #00A540;
+      background: #ffffff;
+      padding: 14px 16px;
+    }
+    .spec strong { display: block; font-size: 22px; }
+    .pdf-link {
+      display: inline-flex;
+      margin-top: 14px;
+      padding: 14px 16px;
+      border: 2px solid #00A540;
+      color: #07140d;
+      text-decoration: none;
+      font-weight: 900;
+    }
+    .note {
+      border-left: 6px solid #00A540;
+      background: #edf8f1;
+      padding: 16px 18px;
+      margin-top: 18px;
+      color: #07140d;
+      font-weight: 750;
+    }
+    @media (max-width: 900px) {
+      main { padding: 30px 18px 48px; }
+      header, .grid, .grid.three, .specs { grid-template-columns: 1fr; }
+      h1 { font-size: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>EDDM Designer Handoff</h1>
+        <p>Smarter Way Wealth / youarepayingtoomuch.com / Save, Upgrade, Improve mailer package.</p>
+      </div>
+      <img class="hero-logo" src="[BASE64_IMAGE_REMOVED]" alt="Smarter Way Wealth logo" />
+    </header>
+
+    <section>
+      <h2>Assignment</h2>
+      <div class="note">Create more thoughtful back-side iterations without the current light-green treatment. Avoid large mint fields or washes; keep brand continuity, use the supplied assets, and preserve the approved copy.</div>
+      <div class="specs">
+        <div class="spec"><strong>8.5 x 6.25 in</strong>Trim size</div>
+        <div class="spec"><strong>0.125 in</strong>Bleed on all sides</div>
+        <div class="spec"><strong>8.75 x 6.5 in</strong>PDF/artboard page</div>
+        <div class="spec"><strong>200 px/in</strong>Proof scale used here</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Brand</h2>
+      <div class="grid">
+        <div class="panel">
+          <h3>Brand Notes</h3>
+          <p>Inter / DM Sans style: clean, modern, professional, not decorative.</p>
+          <p>Use the supplied logo. Do not rebrand, redraw the mark, or introduce new primary colors.</p>
+        </div>
+        <div class="panel">
+          <h3>Colors</h3>
+          <div class="swatches">
+            <div class="swatch" style="background:#00A540; color:#fff;">#00A540</div>
+            <div class="swatch" style="background:#07140D; color:#fff;">#07140D</div>
+            <div class="swatch" style="background:#34483C; color:#fff;">#34483C</div>
+            <div class="swatch" style="background:#D6F5E2;">#D6F5E2</div>
+            <div class="swatch" style="background:#EFFAF3;">#EFFAF3</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="source">
+      <h2>Source Assets</h2>
+      <div class="grid three">
+    <article class="asset-card">
+      <h3>Smarter Way Wealth logo</h3>
+      <p>logo-800.png - 13 KB</p>
+      <img src="[BASE64_IMAGE_REMOVED]" alt="Smarter Way Wealth logo" />
+    </article>
+    <article class="asset-card">
+      <h3>David Van Osdol photo</h3>
+      <p>DVO Head Shot picture.jpg - 56 KB</p>
+      <img src="[BASE64_IMAGE_REMOVED]" alt="David Van Osdol photo" />
+    </article>
+    <article class="asset-card">
+      <h3>Calculator QR code</h3>
+      <p>yaptom_default_inputs_qr.png - 2 KB</p>
+      <img src="[BASE64_IMAGE_REMOVED]" alt="Calculator QR code" />
+    </article></div>
+    </section>
+
+    <section>
+      <h2>Approved Copy</h2>
+      <div class="grid">
+        <div class="panel"><h3>Front</h3><ul><li>youarepayingtoomuch.com</li><li>What would you do with $788,000*?</li><li>* potential savings over 20 years.</li><li>Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.</li><li>David Van Osdol, CFA, CFP</li></ul></div>
+        <div class="panel"><h3>Back / Mailing Side</h3><ul><li>Save a Ton!</li><li>$100/mo. flat fee vs. % asset-based fee.</li><li>Upgrade your Advice</li><li>Highly credentialed, highly experienced.</li><li>Improve your Tools</li><li>Better financial planning tools that you own.</li><li>See how much you can save using your actual numbers.</li><li>youarepayingtoomuch.com</li></ul></div>
+      </div>
+      <div class="panel" style="margin-top:20px;">
+        <h3>Disclosure</h3>
+        <p>Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Current Artwork</h2>
+      <div class="grid">
+    <article class="asset-card">
+      <h3>Current front proof</h3>
+      <p>SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png - 228 KB</p>
+      <img src="[BASE64_IMAGE_REMOVED]" alt="Current front proof" />
+    </article>
+    <article class="asset-card">
+      <h3>Current back proof</h3>
+      <p>SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_Proof.png - 682 KB</p>
+      <img src="[BASE64_IMAGE_REMOVED]" alt="Current back proof" />
+    </article>
+    <article class="asset-card">
+      <h3>Current contact sheet</h3>
+      <p>SWW_YAPTOM_SaveUpgradeTools_EDDM_ContactSheet.png - 447 KB</p>
+      <img src="[BASE64_IMAGE_REMOVED]" alt="Current contact sheet" />
+    </article>
+    <article class="asset-card">
+      <h3>No-gradient variations</h3>
+      <p>SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_NoGradient_Variations.png - 640 KB</p>
+      <img src="[BASE64_IMAGE_REMOVED]" alt="No-gradient variations" />
+    </article>
+    <article class="asset-card">
+      <h3>Earlier gradient variations</h3>
+      <p>SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_Gradient_Variations.png - 1,092 KB</p>
+      <img src="[BASE64_IMAGE_REMOVED]" alt="Earlier gradient variations" />
+    </article>
+    <article class="asset-card">
+      <h3>Current print-ready PDF</h3>
+      <p>SWW_YAPTOM_SaveUpgradeTools_EDDM_8p75x6p5_PrintReady.pdf - 273 KB</p>
+      <a class="pdf-link" download="SWW_YAPTOM_SaveUpgradeTools_EDDM_8p75x6p5_PrintReady.pdf" href="[BASE64_REMOVED]">Download embedded PDF</a>
+    </article></div>
+    </section>
+
+    <section>
+      <h2>No-Gradient Concepts Already Tried</h2>
+      <div class="grid">
+    <article class="asset-card">
+      <h3>Back concept 5 - Clean Paper</h3>
+      <p>SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_05-clean-paper.png - 214 KB</p>
+      <img src="[BASE64_IMAGE_REMOVED]" alt="Back concept 5 - Clean Paper" />
+    </article>
+    <article class="asset-card">
+      <h3>Back concept 6 - Split Mint Field</h3>
+      <p>SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_06-split-mint-field.png - 212 KB</p>
+      <img src="[BASE64_IMAGE_REMOVED]" alt="Back concept 6 - Split Mint Field" />
+    </article>
+    <article class="asset-card">
+      <h3>Back concept 7 - Editorial Rule</h3>
+      <p>SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_07-editorial-rule.png - 213 KB</p>
+      <img src="[BASE64_IMAGE_REMOVED]" alt="Back concept 7 - Editorial Rule" />
+    </article>
+    <article class="asset-card">
+      <h3>Back concept 8 - Subtle Dot Field</h3>
+      <p>SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_08-subtle-dot-field.png - 219 KB</p>
+      <img src="[BASE64_IMAGE_REMOVED]" alt="Back concept 8 - Subtle Dot Field" />
+    </article></div>
+    </section>
+
+    <section>
+      <h2>Designer Prompt</h2>
+      <textarea readonly>Create multiple thoughtful back/mailing-side EDDM iterations for Smarter Way Wealth using the assets, copy, and print specs in this handoff.
+
+Primary objective: make the back side feel more professionally designed and less dependent on the current light-green wash/gradient treatment.
+
+Do not use the light green treatment as a background, field, wash, or gradient. Avoid large mint panels. Explore alternatives such as white-space-led layouts, crisp editorial rules, solid white or very pale neutral/gray fields, restrained brand-green accents, structured columns, callout bands, print-friendly borders, and stronger QR/domain hierarchy.
+
+Keep the existing brand: Smarter Way Wealth logo, dark ink, brand green (#00A540), clean modern typography, David Van Osdol photo, QR code, and the exact core copy. Do not rebrand, change the domain, invent new claims, or introduce decorative illustration/stock imagery.
+
+Back side requirements:
+- Preserve the top mailing/post-office area and EDDM indicia clear zone.
+- Below the separation line, left-align the visible logo and David photo/title block.
+- The words Save, Upgrade, and Improve should be the only oversized/bold keywords in the benefit copy.
+- Do not repeat Save/Upgrade/Improve elsewhere on the back.
+- Do not put the QR code inside a box. It can sit on white space or a very subtle solid field.
+- QR caption: &quot;See how much you can save using your actual numbers.&quot;
+- Domain should be large, bold, black, and have generous white space above it.
+- In &quot;Better financial planning tools that you own.&quot;, the word &quot;you&quot; should be bold black, not green or italic.
+- Keep punctuation and capitalization uniform.
+
+Please deliver at least 6 distinct back-side concepts, each as a print-oriented composition at 8.5 x 6.25 in trim plus 0.125 in bleed. For each concept, include a one-sentence rationale and note which concept is most print-safe for average EDDM printers.</textarea>
+    </section>
+
+    <section>
+      <h2>Machine-Readable Payload</h2>
+      <p>This JSON includes copy, specs, prompt, and embedded asset filenames for reference.</p>
+      <pre>{
+  &quot;specs&quot;: {
+    &quot;trim&quot;: &quot;8.5 x 6.25 in&quot;,
+    &quot;bleed&quot;: &quot;0.125 in&quot;,
+    &quot;page&quot;: &quot;8.75 x 6.5 in&quot;,
+    &quot;qrUrl&quot;: &quot;https://youarepayingtoomuch.com/?portfolio=1000000&amp;years=20&amp;growth=8&amp;fee=1&quot;
+  },
+  &quot;brand&quot;: {
+    &quot;name&quot;: &quot;Smarter Way Wealth&quot;,
+    &quot;primaryGreen&quot;: &quot;#00A540&quot;,
+    &quot;darkInk&quot;: &quot;#07140D&quot;,
+    &quot;slate&quot;: &quot;#34483C&quot;,
+    &quot;paleMint&quot;: &quot;#D6F5E2&quot;,
+    &quot;softMint&quot;: &quot;#EFFAF3&quot;,
+    &quot;fonts&quot;: &quot;Inter / DM Sans style: clean, modern, professional, not decorative.&quot;
+  },
+  &quot;copy&quot;: {
+    &quot;front&quot;: [
+      &quot;youarepayingtoomuch.com&quot;,
+      &quot;What would you do with $788,000*?&quot;,
+      &quot;* potential savings over 20 years.&quot;,
+      &quot;Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.&quot;,
+      &quot;David Van Osdol, CFA, CFP&quot;
+    ],
+    &quot;back&quot;: [
+      &quot;Save a Ton!&quot;,
+      &quot;$100/mo. flat fee vs. % asset-based fee.&quot;,
+      &quot;Upgrade your Advice&quot;,
+      &quot;Highly credentialed, highly experienced.&quot;,
+      &quot;Improve your Tools&quot;,
+      &quot;Better financial planning tools that you own.&quot;,
+      &quot;See how much you can save using your actual numbers.&quot;,
+      &quot;youarepayingtoomuch.com&quot;
+    ],
+    &quot;disclosure&quot;: &quot;Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.&quot;
+  },
+  &quot;designerPrompt&quot;: &quot;Create multiple thoughtful back/mailing-side EDDM iterations for Smarter Way Wealth using the assets, copy, and print specs in this handoff.\n\nPrimary objective: make the back side feel more professionally designed and less dependent on the current light-green wash/gradient treatment.\n\nDo not use the light green treatment as a background, field, wash, or gradient. Avoid large mint panels. Explore alternatives such as white-space-led layouts, crisp editorial rules, solid white or very pale neutral/gray fields, restrained brand-green accents, structured columns, callout bands, print-friendly borders, and stronger QR/domain hierarchy.\n\nKeep the existing brand: Smarter Way Wealth logo, dark ink, brand green (#00A540), clean modern typography, David Van Osdol photo, QR code, and the exact core copy. Do not rebrand, change the domain, invent new claims, or introduce decorative illustration/stock imagery.\n\nBack side requirements:\n- Preserve the top mailing/post-office area and EDDM indicia clear zone.\n- Below the separation line, left-align the visible logo and David photo/title block.\n- The words Save, Upgrade, and Improve should be the only oversized/bold keywords in the benefit copy.\n- Do not repeat Save/Upgrade/Improve elsewhere on the back.\n- Do not put the QR code inside a box. It can sit on white space or a very subtle solid field.\n- QR caption: \&quot;See how much you can save using your actual numbers.\&quot;\n- Domain should be large, bold, black, and have generous white space above it.\n- In \&quot;Better financial planning tools that you own.\&quot;, the word \&quot;you\&quot; should be bold black, not green or italic.\n- Keep punctuation and capitalization uniform.\n\nPlease deliver at least 6 distinct back-side concepts, each as a print-oriented composition at 8.5 x 6.25 in trim plus 0.125 in bleed. For each concept, include a one-sentence rationale and note which concept is most print-safe for average EDDM printers.&quot;,
+  &quot;embeddedAssets&quot;: [
+    {
+      &quot;key&quot;: &quot;logo&quot;,
+      &quot;label&quot;: &quot;Smarter Way Wealth logo&quot;,
+      &quot;filename&quot;: &quot;logo-800.png&quot;,
+      &quot;mime&quot;: &quot;image/png&quot;,
+      &quot;bytes&quot;: 12854
+    },
+    {
+      &quot;key&quot;: &quot;founderPhoto&quot;,
+      &quot;label&quot;: &quot;David Van Osdol photo&quot;,
+      &quot;filename&quot;: &quot;DVO Head Shot picture.jpg&quot;,
+      &quot;mime&quot;: &quot;image/jpeg&quot;,
+      &quot;bytes&quot;: 56977
+    },
+    {
+      &quot;key&quot;: &quot;qr&quot;,
+      &quot;label&quot;: &quot;Calculator QR code&quot;,
+      &quot;filename&quot;: &quot;yaptom_default_inputs_qr.png&quot;,
+      &quot;mime&quot;: &quot;image/png&quot;,
+      &quot;bytes&quot;: 2391
+    },
+    {
+      &quot;key&quot;: &quot;frontProof&quot;,
+      &quot;label&quot;: &quot;Current front proof&quot;,
+      &quot;filename&quot;: &quot;SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png&quot;,
+      &quot;mime&quot;: &quot;image/png&quot;,
+      &quot;bytes&quot;: 233499
+    },
+    {
+      &quot;key&quot;: &quot;backProof&quot;,
+      &quot;label&quot;: &quot;Current back proof&quot;,
+      &quot;filename&quot;: &quot;SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_Proof.png&quot;,
+      &quot;mime&quot;: &quot;image/png&quot;,
+      &quot;bytes&quot;: 698018
+    },
+    {
+      &quot;key&quot;: &quot;contactSheet&quot;,
+      &quot;label&quot;: &quot;Current contact sheet&quot;,
+      &quot;filename&quot;: &quot;SWW_YAPTOM_SaveUpgradeTools_EDDM_ContactSheet.png&quot;,
+      &quot;mime&quot;: &quot;image/png&quot;,
+      &quot;bytes&quot;: 458016
+    },
+    {
+      &quot;key&quot;: &quot;gradientSheet&quot;,
+      &quot;label&quot;: &quot;Earlier gradient variations&quot;,
+      &quot;filename&quot;: &quot;SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_Gradient_Variations.png&quot;,
+      &quot;mime&quot;: &quot;image/png&quot;,
+      &quot;bytes&quot;: 1118262
+    },
+    {
+      &quot;key&quot;: &quot;noGradientSheet&quot;,
+      &quot;label&quot;: &quot;No-gradient variations&quot;,
+      &quot;filename&quot;: &quot;SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_NoGradient_Variations.png&quot;,
+      &quot;mime&quot;: &quot;image/png&quot;,
+      &quot;bytes&quot;: 655092
+    },
+    {
+      &quot;key&quot;: &quot;05-clean-paper&quot;,
+      &quot;label&quot;: &quot;Back concept 5 - Clean Paper&quot;,
+      &quot;filename&quot;: &quot;SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_05-clean-paper.png&quot;,
+      &quot;mime&quot;: &quot;image/png&quot;,
+      &quot;bytes&quot;: 218737
+    },
+    {
+      &quot;key&quot;: &quot;06-split-mint-field&quot;,
+      &quot;label&quot;: &quot;Back concept 6 - Split Mint Field&quot;,
+      &quot;filename&quot;: &quot;SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_06-split-mint-field.png&quot;,
+      &quot;mime&quot;: &quot;image/png&quot;,
+      &quot;bytes&quot;: 217203
+    },
+    {
+      &quot;key&quot;: &quot;07-editorial-rule&quot;,
+      &quot;label&quot;: &quot;Back concept 7 - Editorial Rule&quot;,
+      &quot;filename&quot;: &quot;SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_07-editorial-rule.png&quot;,
+      &quot;mime&quot;: &quot;image/png&quot;,
+      &quot;bytes&quot;: 217906
+    },
+    {
+      &quot;key&quot;: &quot;08-subtle-dot-field&quot;,
+      &quot;label&quot;: &quot;Back concept 8 - Subtle Dot Field&quot;,
+      &quot;filename&quot;: &quot;SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_08-subtle-dot-field.png&quot;,
+      &quot;mime&quot;: &quot;image/png&quot;,
+      &quot;bytes&quot;: 224348
+    },
+    {
+      &quot;key&quot;: &quot;printPdf&quot;,
+      &quot;label&quot;: &quot;Current print-ready PDF&quot;,
+      &quot;filename&quot;: &quot;SWW_YAPTOM_SaveUpgradeTools_EDDM_8p75x6p5_PrintReady.pdf&quot;,
+      &quot;mime&quot;: &quot;application/pdf&quot;,
+      &quot;bytes&quot;: 279496
+    }
+  ]
+}</pre>
+    </section>
+  </main>
+</body>
+</html>

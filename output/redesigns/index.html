@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Three redesigns — youarepayingtoomuch.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --brand-50:  #EEFBF3;
+  --brand-100: #D6F5E2;
+  --brand-200: #B0EBC8;
+  --brand-300: #7ADCA6;
+  --brand-400: #3FC87C;
+  --brand-500: #14B254;
+  --brand-600: #00A540;
+  --brand-700: #008435;
+  --brand-800: #00682B;
+
+  --logo-dark: #4A4A4A;
+
+  --paper:    #EEF0F5;
+  --surface:  #FFFFFF;
+  --neutral-200: #e2e8f0;
+  --neutral-300: #cbd5e1;
+  --neutral-500: #64748b;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-900: #0f172a;
+
+  --red: #B91C1C;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--neutral-900);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 1240px; margin: 0 auto; padding: 32px 24px 80px; }
+
+/* TOP NAV */
+.top-nav {
+  background: var(--surface);
+  border-bottom: 1.5px solid var(--neutral-200);
+  padding: 14px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.brand-link {
+  display: inline-flex;
+  align-items: end;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+.brand-icon { display: flex; align-items: end; gap: 2px; }
+.brand-wordmark {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.brand-wordmark .top {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.166em;
+  color: var(--logo-dark);
+  text-transform: uppercase;
+}
+.brand-wordmark .bot {
+  font-weight: 500;
+  font-size: 8px;
+  letter-spacing: 0.222em;
+  color: var(--brand-700);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.top-nav .meta {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--neutral-500);
+  text-transform: uppercase;
+}
+
+/* HEADER */
+header.intro {
+  text-align: center;
+  padding: 50px 0 40px;
+}
+.tag {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--brand-700);
+  margin-bottom: 18px;
+  display: inline-block;
+  padding: 6px 14px;
+  border: 1px solid var(--brand-300);
+  border-radius: 999px;
+  background: var(--brand-50);
+  font-weight: 700;
+}
+h1 {
+  font-weight: 800;
+  font-size: clamp(40px, 7vw, 72px);
+  line-height: 1.0;
+  letter-spacing: -0.045em;
+  margin: 0 0 14px;
+  color: var(--neutral-900);
+}
+h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--brand-700);
+  letter-spacing: -0.03em;
+}
+.deck {
+  font-size: 18px;
+  color: var(--neutral-600);
+  max-width: 60ch;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.note {
+  margin: 30px auto 50px;
+  max-width: 760px;
+  background: var(--surface);
+  border: 1px solid var(--neutral-200);
+  border-radius: 16px;
+  padding: 22px 26px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--neutral-700);
+}
+.note strong { color: var(--brand-700); font-weight: 700; }
+.note ul { margin: 8px 0 0; padding-left: 18px; }
+.note li { margin: 4px 0; }
+.note li strong { color: var(--neutral-900); }
+
+/* GRID */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+@media (min-width: 760px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--neutral-200);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--brand-400);
+  box-shadow: 0 24px 60px -20px rgba(15, 23, 42, 0.18);
+}
+
+.preview {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--neutral-200);
+}
+.preview .num {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  z-index: 2;
+}
+.preview .badge {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  z-index: 2;
+}
+
+/* V1 — editorial paper */
+.v1 .preview {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(185, 28, 28, 0.06), transparent 50%),
+    var(--paper);
+  color: var(--neutral-900);
+}
+.v1 .preview .num { color: var(--red); }
+.v1 .preview .badge { background: var(--neutral-900); color: var(--paper); }
+.v1 .preview .receipt-mock {
+  position: absolute;
+  bottom: 18px; left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  width: 150px;
+  background: var(--surface);
+  padding: 12px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--neutral-300);
+  text-align: center;
+  box-shadow: 0 8px 24px -8px rgba(15, 23, 42, 0.3);
+  border-radius: 4px;
+}
+.v1 .preview .receipt-mock .top {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.166em;
+  color: var(--brand-800);
+  margin-bottom: 6px;
+  border-bottom: 1px dashed var(--neutral-300);
+  padding-bottom: 4px;
+}
+.v1 .preview .receipt-mock .row {
+  display: flex; justify-content: space-between;
+  font-size: 8px;
+  margin: 2px 0;
+  color: var(--neutral-600);
+}
+.v1 .preview .receipt-mock .total {
+  font-weight: 800;
+  color: var(--brand-700);
+  font-size: 16px;
+  border-top: 1.5px solid var(--neutral-900);
+  padding-top: 4px;
+  margin-top: 4px;
+  letter-spacing: -0.02em;
+}
+
+/* V2 — dark vault */
+.v2 .preview {
+  background:
+    radial-gradient(circle at 30% 0%, rgba(0, 165, 64, 0.22), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(63, 200, 124, 0.10), transparent 50%),
+    #02150D;
+  color: white;
+}
+.v2 .preview .num { color: var(--brand-300); }
+.v2 .preview .badge { background: rgba(0, 165, 64, 0.18); color: var(--brand-300); border: 1px solid var(--brand-500); }
+.v2 .preview .vault-num {
+  position: absolute;
+  bottom: 32px; left: 0; right: 0;
+  text-align: center;
+  font-style: italic;
+  font-size: 56px;
+  font-weight: 300;
+  color: var(--brand-300);
+  text-shadow: 0 0 20px rgba(0, 165, 64, 0.5);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.v2 .preview .vault-lbl {
+  position: absolute;
+  bottom: 14px; left: 0; right: 0;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--brand-400);
+  font-weight: 700;
+}
+.v2 .preview::before {
+  content: "";
+  position: absolute;
+  top: 50%; left: 24px; right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brand-500), transparent);
+  opacity: 0.5;
+}
+
+/* V3 — pass */
+.v3 .preview {
+  background:
+    radial-gradient(circle at 80% 20%, var(--brand-100), transparent 50%),
+    var(--paper);
+  color: var(--neutral-900);
+}
+.v3 .preview .num { color: var(--brand-700); }
+.v3 .preview .badge { background: var(--neutral-900); color: var(--brand-300); }
+.v3 .preview .pass-mock {
+  position: absolute;
+  bottom: 20px;
+  left: 18px;
+  right: 18px;
+  background: var(--surface);
+  border: 1.5px solid var(--neutral-900);
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 2px 0 var(--neutral-900), 0 12px 24px -8px rgba(15, 23, 42, 0.2);
+}
+.v3 .preview .pass-mock .row1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.v3 .preview .pass-mock .row1 .lbl {
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--neutral-500);
+  font-weight: 700;
+}
+.v3 .preview .pass-mock .big-3 {
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.05em;
+  color: var(--brand-700);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.v3 .preview .pass-mock .big-3 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--brand-500);
+  font-size: 0.55em;
+}
+.v3 .preview .pass-mock .pills { display: flex; gap: 4px; margin-top: 6px; }
+.v3 .preview .pass-mock .pill {
+  height: 4px;
+  flex: 1;
+  background: var(--brand-600);
+  border-radius: 4px;
+}
+
+.body {
+  padding: 22px 22px 24px;
+}
+.title {
+  font-weight: 800;
+  font-size: 24px;
+  letter-spacing: -0.04em;
+  margin: 0 0 4px;
+  color: var(--neutral-900);
+}
+.title em { font-style: italic; font-weight: 300; color: var(--brand-700); }
+.subtitle {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--neutral-500);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+.desc {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--neutral-700);
+  margin: 0 0 16px;
+}
+.desc em { font-style: italic; color: var(--brand-700); font-weight: 500; }
+
+.meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 16px;
+  font-size: 11px;
+  color: var(--neutral-500);
+  border-top: 1px solid var(--neutral-200);
+  padding-top: 14px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+.meta .k { color: var(--neutral-400); letter-spacing: 0.04em; text-transform: uppercase; font-size: 10px; }
+.meta .v { color: var(--neutral-900); font-weight: 600; }
+
+.actions { display: flex; gap: 8px; align-items: center; }
+.btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 14px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: -0.005em;
+  border-radius: 10px;
+  border: 1px solid var(--neutral-300);
+  background: var(--surface);
+  color: var(--neutral-900);
+  text-decoration: none;
+  transition: all 0.15s;
+  min-height: 44px;
+  font-family: inherit;
+}
+.btn:hover { background: var(--brand-50); border-color: var(--brand-400); }
+.btn.primary {
+  background: var(--brand-600);
+  color: white;
+  border-color: var(--brand-600);
+}
+.btn.primary:hover { background: var(--brand-700); border-color: var(--brand-700); }
+
+.foot {
+  margin-top: 70px;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--neutral-500);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.foot a { color: var(--brand-700); text-decoration: underline; text-underline-offset: 4px; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <a class="brand-link" href="/" aria-label="Smarter Way Wealth home">
+    <span class="brand-icon">
+      <svg viewBox="0 0 40 36" width="32" height="29" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="0" y="18" width="12" height="18" rx="1.5" fill="#3DA85C"/>
+        <rect x="14" y="8" width="12" height="28" rx="1.5" fill="#1E8F42"/>
+        <rect x="28" y="0" width="12" height="36" rx="1.5" fill="#007A2F"/>
+      </svg>
+    </span>
+    <span class="brand-wordmark">
+      <span class="top">Smarter</span>
+      <span class="bot">Way Wealth</span>
+    </span>
+  </a>
+  <span class="meta">Three redesigns &middot; CRD #342140</span>
+</nav>
+
+<div class="wrap">
+
+<header class="intro">
+  <span class="tag">3 redesigns · mobile-first · QR-code traffic</span>
+  <h1>Three takes on <em>youarepayingtoomuch</em>.com</h1>
+  <p class="deck">Same calculator math, same compliance copy, same brand system. Three different aesthetic directions for the postcard's landing page.</p>
+</header>
+
+<div class="note">
+  <strong>Brand-respecting redesign.</strong> Each version uses the existing brand: Inter (body) + DM Sans (logo wordmark), the brand-green family from <code>tokens.ts</code> (<code>#00A540</code> et al.), and the real logo asset inlined as SVG. The fee-drag red accent (<code>#B91C1C</code>) matches the existing <code>fee-receipt</code> variant.
+  <ul>
+    <li><strong>V1 Fee Receipt</strong> &mdash; trust through restraint. The calculator is laid out like an itemized printed receipt. Best fit for an audience that reads the WSJ.</li>
+    <li><strong>V2 Vault</strong> &mdash; trust through depth. Uses the existing <code>fiduciary-upgrade</code> dark variant palette; two-ledger comparison and an animated odometer.</li>
+    <li><strong>V3 Savings Pass</strong> &mdash; trust through clarity. Boarding-pass meets quiz, with three tap-to-answer questions instead of sliders. Designed thumb-first for QR-code traffic.</li>
+  </ul>
+</div>
+
+<div class="grid">
+
+  <a class="card v1" href="v1-fee-receipt.html">
+    <div class="preview">
+      <span class="num">VERSION 01</span>
+      <span class="badge">Editorial</span>
+      <div class="receipt-mock">
+        <div class="top">SMARTER · WAY · WEALTH</div>
+        <div class="row"><span>Years</span><span>20</span></div>
+        <div class="row"><span>Fee</span><span style="color: #B91C1C">1.00%</span></div>
+        <div class="total">$788,306</div>
+      </div>
+    </div>
+    <div class="body">
+      <h3 class="title">Fee <em>Receipt</em></h3>
+      <div class="subtitle">— Editorial · Print · Authority</div>
+      <p class="desc">A WSJ-inspired financial-print layout. The calculator <em>is</em> the receipt &mdash; itemized rows, dotted dividers, a brand-green stamp, and a barcode. Built on the existing brand palette with red used only where the existing <code>fee-receipt</code> variant uses it.</p>
+      <div class="meta">
+        <span class="k">Mood</span><span class="v">Restrained · Trustworthy</span>
+        <span class="k">Body</span><span class="v">Inter</span>
+        <span class="k">Wordmark</span><span class="v">DM Sans</span>
+        <span class="k">Logo</span><span class="v">Real (inlined SVG)</span>
+      </div>
+      <div class="actions">
+        <a href="v1-fee-receipt.html" class="btn primary">Open V1 →</a>
+      </div>
+    </div>
+  </a>
+
+  <a class="card v2" href="v2-vault.html">
+    <div class="preview">
+      <span class="num">VERSION 02</span>
+      <span class="badge">Dark</span>
+      <div class="vault-num">$788,306</div>
+      <div class="vault-lbl">— LIFETIME FEE GAP —</div>
+    </div>
+    <div class="body">
+      <h3 class="title">The <em>Vault</em></h3>
+      <div class="subtitle">— Dark · Confident · Considered</div>
+      <p class="desc">Uses the brand's existing dark variant (<code>#02150D</code> / <code>#06301D</code>) from the <code>fiduciary-upgrade</code> theme. Animated odometer for the savings number, two-ledger side-by-side comparison, and a glowing brand-green endpoint on the chart.</p>
+      <div class="meta">
+        <span class="k">Mood</span><span class="v">Considered · Confident</span>
+        <span class="k">Body</span><span class="v">Inter</span>
+        <span class="k">Wordmark</span><span class="v">DM Sans</span>
+        <span class="k">Logo</span><span class="v">Real (inlined SVG)</span>
+      </div>
+      <div class="actions">
+        <a href="v2-vault.html" class="btn primary">Open V2 →</a>
+      </div>
+    </div>
+  </a>
+
+  <a class="card v3" href="v3-savings-pass.html">
+    <div class="preview">
+      <span class="num">VERSION 03</span>
+      <span class="badge">Mobile-first</span>
+      <div class="pass-mock">
+        <div class="row1">
+          <span class="lbl">Fee gap · LIVE</span>
+          <span class="lbl">SWW · 100 · 020</span>
+        </div>
+        <div class="big-3"><em>$</em>788,306</div>
+        <div class="pills"><span class="pill"></span><span class="pill"></span><span class="pill"></span></div>
+      </div>
+    </div>
+    <div class="body">
+      <h3 class="title">Savings <em>Pass</em></h3>
+      <div class="subtitle">— Mobile · Friendly · Quiz</div>
+      <p class="desc">Boarding-pass meets quiz. Three <em>tap-to-answer</em> questions instead of four sliders, with an optional fine-tune panel. Designed thumb-first for QR-code traffic from the postcard.</p>
+      <div class="meta">
+        <span class="k">Mood</span><span class="v">Friendly · Direct</span>
+        <span class="k">Body</span><span class="v">Inter</span>
+        <span class="k">Wordmark</span><span class="v">DM Sans</span>
+        <span class="k">Logo</span><span class="v">Real (inlined SVG)</span>
+      </div>
+      <div class="actions">
+        <a href="v3-savings-pass.html" class="btn primary">Open V3 →</a>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<p class="foot">Original code untouched · output/redesigns/ · brand-respecting</p>
+
+</div>
+</body>
+</html>

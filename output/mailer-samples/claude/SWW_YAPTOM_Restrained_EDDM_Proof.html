@@ -1,0 +1,602 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>SWW YAPTOM Restrained EDDM</title>
+<style>
+  /* ---------- foundation ---------- */
+  @page { size: 8.75in 6.5in; margin: 0; }
+  * { box-sizing: border-box; }
+  :root {
+    --ink: #000;
+    --ink-soft: #2a2a2a;
+    --ink-mute: #6b6b6b;
+    --accent: #00682B;         /* single accent: deep brand green */
+    --wash: rgba(0,104,43,0.06);
+    --rule: #111;
+  }
+  html, body {
+    margin: 0;
+    background: #d8dad6;
+    color: var(--ink);
+    font-family: 'Inter','Helvetica Neue','Arial',sans-serif;
+    font-feature-settings: 'ss01','cv11';
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .page {
+    position: relative;
+    width: 1750px;
+    height: 1300px;
+    background: #ffffff;
+    overflow: hidden;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* Hairline rules used as the only structural decoration. */
+  .rule {
+    position: absolute;
+    height: 1px;
+    background: var(--rule);
+  }
+  .rule.thick { height: 2px; }
+
+  /* Type scale (deliberately small). */
+  .t-eyebrow {
+    font-size: 18px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .t-domain {
+    font-size: 42px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+  }
+  .t-h1 {
+    font-size: 88px;
+    line-height: 0.96;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+  }
+  .t-h2 {
+    font-size: 46px;
+    line-height: 1.02;
+    font-weight: 700;
+    letter-spacing: -0.018em;
+  }
+  .t-body {
+    font-size: 24px;
+    line-height: 1.28;
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+  .t-caption {
+    font-size: 16px;
+    line-height: 1.35;
+    font-weight: 500;
+    color: var(--ink-mute);
+  }
+  .t-meta {
+    font-size: 18px;
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+  }
+
+  /* ============================ FRONT ============================ */
+  .front { padding: 0; }
+
+  .front-domain {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: var(--ink);
+    font-size: 46px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .front-rule { top: 138px; left: 120px; right: 120px; }
+
+  /* RIGHT column: full photo + name + title below. Headline/footnote/see-shot/
+     chart all constrained to the LEFT column so they don't collide. */
+  .front-photo {
+    position: absolute;
+    top: 168px;
+    right: 120px;
+    width: 440px;
+    height: 418px;       /* matches photo's natural 1.053 aspect — no crop */
+    object-fit: cover;
+    display: block;
+  }
+  .front-name {
+    position: absolute;
+    top: 608px;
+    right: 120px;
+    width: 440px;
+    color: var(--ink);
+    font-size: 26px;
+    line-height: 1.12;
+    font-weight: 800;
+    letter-spacing: -0.012em;
+  }
+  .front-role {
+    position: absolute;
+    top: 678px;
+    right: 120px;
+    width: 440px;
+    color: var(--ink-mute);
+    font-size: 18px;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  .front-headline {
+    position: absolute;
+    top: 188px;
+    left: 120px;
+    right: 620px;
+    text-align: left;
+    color: var(--ink);
+    font-size: 84px;
+    line-height: 1.0;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+  }
+  .front-headline em {
+    font-style: normal;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .front-note {
+    position: absolute;
+    top: 380px;
+    left: 120px;
+    right: 620px;
+    color: var(--ink-mute);
+  }
+  .see-screenshot {
+    position: absolute;
+    top: 432px;
+    left: 120px;
+    right: 620px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--ink-soft);
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .see-screenshot .arrow {
+    flex: 0 0 56px;
+    height: 1px;
+    background: var(--ink-soft);
+    position: relative;
+  }
+  .see-screenshot .arrow::after {
+    content: "";
+    position: absolute;
+    right: 0; top: -4px;
+    width: 9px; height: 9px;
+    border-right: 1.5px solid var(--ink-soft);
+    border-bottom: 1.5px solid var(--ink-soft);
+    transform: rotate(-45deg);
+  }
+
+  .chart-region {
+    position: absolute;
+    left: 120px;
+    right: 620px;
+    top: 510px;
+    bottom: 130px;
+  }
+  .chart-meta {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 12px;
+  }
+  .chart-meta .right {
+    text-align: right;
+    color: var(--ink-mute);
+  }
+  .chart-svg { width: 100%; height: calc(100% - 60px); display: block; }
+
+  /* Chart QR — placed ON the chart's data area (top-left of the data,
+     not at the chart-region's outer left margin). */
+  .chart-qr {
+    position: absolute;
+    top: 80px;
+    left: 180px;
+    width: 150px;
+    height: 150px;
+    background: #fff;
+  }
+  .chart-qr img { width: 100%; height: 100%; display: block; }
+  .chart-qr-cap {
+    position: absolute;
+    top: 236px;
+    left: 180px;
+    width: 150px;
+    font-size: 14px;
+    line-height: 1.25;
+    font-weight: 600;
+    color: var(--ink-mute);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .front-foot {
+    position: absolute;
+    left: 120px;
+    right: 120px;
+    bottom: 56px;
+    color: var(--ink-mute);
+    font-size: 13px;
+    line-height: 1.35;
+    font-weight: 500;
+  }
+
+  /* ============================ BACK ============================ */
+  /* Top 1/3 (0 to 433 px on a 1300 px page) is reserved for postal use:
+     indicia, address block, and clear zones for USPS. No logo, no marketing
+     copy, no decorative elements in this zone. */
+
+  /* USPS indicia + LOCAL POSTAL CUSTOMER block, lives in the postal zone. */
+  .indicia {
+    position: absolute;
+    top: 96px;
+    right: 120px;
+    width: 460px;
+    height: 200px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--rule);
+  }
+  .indicia .left, .indicia .right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 17px;
+    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+  .indicia .left { border-right: 1px solid var(--rule); }
+
+  /* Tiny label noting the reserved zone (for proof only; printer can remove). */
+  .postal-label {
+    position: absolute;
+    top: 50px;
+    left: 120px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+  }
+
+  /* Demarcation rule at the 1/3 line (433 px). Thicker — this is the visual
+     boundary between postal zone and design zone. */
+  .sep { top: 432px; left: 120px; right: 120px; }
+
+  /* Subtle green wash, 100% to 0% left-to-right, BELOW the demarcation. */
+  .back-wash {
+    position: absolute;
+    top: 434px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(0, 165, 64, 0.07) 0%,
+      rgba(0, 165, 64, 0.04) 40%,
+      rgba(0, 165, 64, 0.015) 70%,
+      rgba(0, 165, 64, 0)   100%
+    );
+    pointer-events: none;
+  }
+
+  /* LEFT column of design zone — ONLY transparent brand logo + photo. */
+  .back-logo {
+    position: absolute;
+    top: 472px;
+    left: 120px;
+    width: 280px;        /* logo-400.png aspect 2.5 -> rendered 280x112 */
+    height: auto;
+    display: block;
+  }
+  .back-photo {
+    position: absolute;
+    top: 614px;          /* below logo with breathing room */
+    left: 120px;
+    width: 320px;
+    height: 320px;       /* slightly tighter to free room for tagline below */
+    object-fit: cover;
+    object-position: center 28%;
+    display: block;
+  }
+
+  /* CENTER column — three benefit blocks. No 01/02/03 numbering.
+     Keyword stays large; inline qualifier ("a Ton", "your Advice", "your Tools")
+     two sizes smaller. */
+  .benefits {
+    position: absolute;
+    top: 470px;
+    left: 500px;
+    width: 600px;
+  }
+  .benefit {
+    padding: 18px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.10);
+  }
+  .benefit:last-child { border-bottom: 0; }
+  .benefit h2 {
+    margin: 0 0 6px;
+    font-size: 46px;
+    line-height: 1.0;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .benefit h2 .qual {
+    font-size: 30px;        /* two sizes smaller than the 46px keyword */
+    font-weight: 700;
+    margin-left: 10px;
+    letter-spacing: -0.012em;
+    color: var(--ink);
+  }
+  .benefit p {
+    margin: 0;
+    font-size: 22px;
+    line-height: 1.3;
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+  .benefit p u {
+    text-decoration: none;
+    font-weight: 800;
+    color: var(--ink);
+  }
+
+  /* RIGHT column — QR. */
+  .qr-block {
+    position: absolute;
+    top: 480px;
+    right: 120px;
+    width: 380px;
+    text-align: center;
+  }
+  .qr-block img {
+    width: 380px;
+    height: 380px;
+    display: block;
+    background: #fff;
+  }
+  .qr-cap {
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+  }
+
+  /* Brand tagline + byline — sits in the band between the photo/QR row above
+     and the bottom-rule below. Prominent type but generous whitespace. */
+  .tagline {
+    position: absolute;
+    top: 970px;
+    left: 200px;
+    right: 200px;
+    text-align: center;
+    color: var(--ink);
+    font-size: 26px;
+    line-height: 1.28;
+    font-weight: 700;
+    letter-spacing: -0.005em;
+  }
+  .tagline .g {
+    color: var(--accent);
+  }
+  .byline {
+    position: absolute;
+    top: 1108px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 17px;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  /* Bottom: hairline rule  →  centered domain  →  disclosure. */
+  .bottom-rule { left: 120px; right: 120px; bottom: 146px; }
+
+  .back-domain {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 84px;
+    text-align: center;
+    color: var(--ink);
+    font-size: 50px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.012em;
+  }
+
+  .back-disclosure {
+    position: absolute;
+    left: 120px;
+    right: 120px;
+    bottom: 36px;
+    color: var(--ink-mute);
+    font-size: 12px;
+    line-height: 1.4;
+    font-weight: 500;
+    text-align: left;
+    max-width: 1280px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============== FRONT ============== -->
+  <section class="page front">
+    <div class="front-domain">youarepayingtoomuch.com</div>
+    <div class="rule front-rule"></div>
+
+    <!-- Photo (full image) + name + title -->
+    <img class="front-photo" src="../../../public/DVO%20Head%20Shot%20picture.jpg" alt="David Van Osdol" />
+    <div class="front-name">David Van Osdol, CFA, CFP</div>
+    <div class="front-role">Founder, Smarter Way Wealth</div>
+
+    <div class="front-headline">
+      What would you do<br />
+      with <em>$788,000*</em>?
+    </div>
+    <div class="front-note t-caption">* Potential savings over 20 years.</div>
+
+    <div class="see-screenshot">
+      <span class="arrow" aria-hidden="true"></span>
+      See screen shot
+    </div>
+
+    <div class="chart-region">
+      <div class="chart-meta">
+        <div class="t-meta">Projected ending value, 20 years</div>
+        <div class="right t-meta">Portfolio $1,000,000 &nbsp;·&nbsp; 8% growth &nbsp;·&nbsp; 1% AUM fee &nbsp;·&nbsp; $100/mo flat</div>
+      </div>
+      <div class="chart-qr"><img src="../1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="" /></div>
+      <div class="chart-qr-cap">Scan to run<br />your numbers</div>
+      
+  <svg viewBox="0 0 1260 600" class="chart-svg" role="img" aria-label="Projected portfolio values over 20 years">
+    <defs>
+      <style>
+        .chart-svg { font-family: 'Inter','Helvetica Neue',Arial,sans-serif; }
+        .grid-h { stroke: #000; stroke-width: 0.6; opacity: 0.10; }
+        .axis  { stroke: #000; stroke-width: 1; }
+        .tick  { fill: #111; font-size: 22px; font-weight: 500; letter-spacing: 0.02em; }
+        .axis-title { fill: #6b6b6b; font-size: 20px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+        .line-flat { fill: none; stroke: #00682B; stroke-width: 3.2; }
+        .line-aum  { fill: none; stroke: #111;    stroke-width: 2.2; stroke-dasharray: 6 6; }
+        .end-flat  { fill: #00682B; font-size: 26px; font-weight: 800; }
+        .end-aum   { fill: #111;    font-size: 26px; font-weight: 800; }
+        .end-sub   { fill: #6b6b6b; font-size: 18px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+        .end-mark  { fill: none; stroke-width: 1; }
+      </style>
+    </defs>
+
+    
+        <line x1="100" y1="530" x2="1030" y2="530" class="grid-h" />
+        <text x="84" y="535" class="tick" text-anchor="end">0</text>
+        <line x1="100" y1="434" x2="1030" y2="434" class="grid-h" />
+        <text x="84" y="439" class="tick" text-anchor="end">1M</text>
+        <line x1="100" y1="338" x2="1030" y2="338" class="grid-h" />
+        <text x="84" y="343" class="tick" text-anchor="end">2M</text>
+        <line x1="100" y1="242" x2="1030" y2="242" class="grid-h" />
+        <text x="84" y="247" class="tick" text-anchor="end">3M</text>
+        <line x1="100" y1="145.99999999999997" x2="1030" y2="145.99999999999997" class="grid-h" />
+        <text x="84" y="150.99999999999997" class="tick" text-anchor="end">4M</text>
+        <line x1="100" y1="50" x2="1030" y2="50" class="grid-h" />
+        <text x="84" y="55" class="tick" text-anchor="end">5M</text>
+    <text x="100" y="558" class="tick" text-anchor="middle">0</text><text x="332.5" y="558" class="tick" text-anchor="middle">5</text><text x="565" y="558" class="tick" text-anchor="middle">10</text><text x="797.5" y="558" class="tick" text-anchor="middle">15</text><text x="1030" y="558" class="tick" text-anchor="middle">20</text>
+
+    <line x1="100" y1="50" x2="100" y2="530" class="axis" />
+    <line x1="100" y1="530" x2="1030" y2="530" class="axis" />
+
+    <text x="565" y="586" class="axis-title" text-anchor="middle">Years</text>
+
+    <path d="M 100.0 434.0 L 146.5 427.4 L 193.0 420.2 L 239.5 412.6 L 286.0 404.5 L 332.5 395.8 L 379.0 386.5 L 425.5 376.6 L 472.0 366.0 L 518.5 354.6 L 565.0 342.5 L 611.5 329.5 L 658.0 315.6 L 704.5 300.8 L 751.0 284.9 L 797.5 267.9 L 844.0 249.8 L 890.5 230.4 L 937.0 209.6 L 983.5 187.4 L 1030.0 163.7" class="line-aum" />
+    <path d="M 100.0 434.0 L 146.5 426.4 L 193.0 418.3 L 239.5 409.5 L 286.0 399.9 L 332.5 389.6 L 379.0 378.5 L 425.5 366.5 L 472.0 353.6 L 518.5 339.6 L 565.0 324.5 L 611.5 308.1 L 658.0 290.5 L 704.5 271.5 L 751.0 250.9 L 797.5 228.7 L 844.0 204.7 L 890.5 178.8 L 937.0 150.9 L 983.5 120.6 L 1030.0 88.0" class="line-flat" />
+
+    <line x1="1030" y1="88.01050525486774" x2="1048" y2="88.01050525486774" class="end-mark" stroke="#00682B" />
+    <line x1="1030" y1="163.68792481413095"  x2="1048" y2="163.68792481413095"  class="end-mark" stroke="#111" />
+
+    <text x="1056" y="70.01050525486774" class="end-sub">Flat fee</text>
+    <text x="1056" y="96.01050525486774"  class="end-flat">$4,604,057</text>
+
+    <text x="1056" y="191.68792481413095"  class="end-sub">% AUM fee</text>
+    <text x="1056" y="217.68792481413095"  class="end-aum">$3,815,751</text>
+  </svg>
+    </div>
+
+    <div class="front-foot">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee. Smarter Way Wealth is a registered investment adviser. See ADV at adviserinfo.sec.gov.</div>
+  </section>
+
+  <!-- ============== BACK / MAILING SIDE ============== -->
+  <!-- TOP 1/3 (0-433 px) RESERVED FOR USPS / ADDRESS USE.
+       Only the indicia + address block live in this zone. -->
+  <section class="page back">
+    <div class="postal-label">Reserved for USPS / addressing</div>
+    <div class="indicia">
+      <div class="left">PRSRT&nbsp;STD<br />ECRWSS<br />U.S.&nbsp;POSTAGE<br />PAID<br />EDDM&nbsp;RETAIL</div>
+      <div class="right">LOCAL<br />POSTAL<br />CUSTOMER</div>
+    </div>
+
+    <div class="rule thick sep"></div>
+
+    <!-- ===== DESIGN ZONE (433-1300 px) ===== -->
+    <div class="back-wash"></div>
+
+    <!-- LEFT column: ONLY the light brand logo + DVO photo -->
+    <img class="back-logo" src="../../../public/brand/logo-400.png" alt="Smarter Way Wealth" />
+    <img class="back-photo" src="../../../public/DVO%20Head%20Shot%20picture.jpg" alt="David Van Osdol" />
+
+    <!-- CENTER column: three benefits, no 01/02/03 numbering -->
+    <div class="benefits">
+      <div class="benefit">
+        <h2>Save <span class="qual">a Ton</span></h2>
+        <p>$100/mo. flat fee vs. % asset-based fee.</p>
+      </div>
+      <div class="benefit">
+        <h2>Upgrade <span class="qual">your Advice</span></h2>
+        <p>Highly credentialed. Highly experienced.</p>
+      </div>
+      <div class="benefit">
+        <h2>Improve <span class="qual">your Tools</span></h2>
+        <p>Better financial planning tools that <u>you</u> own.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT column: QR -->
+    <div class="qr-block">
+      <img src="../1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="" />
+      <div class="qr-cap">Scan to see the math</div>
+    </div>
+
+    <!-- Brand tagline band -->
+    <div class="tagline">
+      Smarter Way Wealth delivers <span class="g">personal,<br />
+      real human fiduciary advice and planning</span><br />
+      for a simple $100/month. Period.
+    </div>
+    <div class="byline">David Van Osdol, CFA, CFP</div>
+
+    <div class="rule bottom-rule"></div>
+    <div class="back-domain">youarepayingtoomuch.com</div>
+    <div class="back-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee. Smarter Way Wealth is a registered investment adviser. See ADV at adviserinfo.sec.gov.</div>
+  </section>
+
+</body>
+</html>

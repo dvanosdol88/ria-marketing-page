@@ -1,0 +1,1285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#EEF0F5" />
+<title>You Are Paying Too Much - A Fee Receipt | Smarter Way Wealth</title>
+<meta name="description" content="See the dollar cost of a 1% advisory fee over your investing lifetime. Compare against a $100/month flat fee from Smarter Way Wealth, a CFA + CFP fiduciary." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Brand tokens (from src/styles/tokens.ts) */
+  --brand-50:  #EEFBF3;
+  --brand-100: #D6F5E2;
+  --brand-200: #B0EBC8;
+  --brand-300: #7ADCA6;
+  --brand-400: #3FC87C;
+  --brand-500: #14B254;
+  --brand-600: #00A540;
+  --brand-700: #008435;
+  --brand-800: #00682B;
+  --brand-900: #004D20;
+  --brand-950: #002A11;
+
+  --logo-dark: #4A4A4A;
+
+  --neutral-50:  #f8fafc;
+  --neutral-100: #f1f5f9;
+  --neutral-200: #e2e8f0;
+  --neutral-300: #cbd5e1;
+  --neutral-400: #94a3b8;
+  --neutral-500: #64748b;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-800: #1e293b;
+  --neutral-900: #0f172a;
+
+  /* Loss/fee-drag — matches existing fee-receipt variant */
+  --red:      #B91C1C;
+  --red-deep: #7F1D1D;
+  --red-soft: #FECACA;
+
+  --paper:    #EEF0F5;
+  --paper-2:  #FFFFFF;
+  --rule:     var(--neutral-300);
+  --rule-soft: var(--neutral-200);
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-logo: 'DM Sans', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--neutral-900);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a { color: var(--brand-700); }
+button { font-family: inherit; }
+
+/* MASTHEAD */
+.masthead {
+  border-bottom: 1px solid var(--neutral-300);
+  background: var(--paper-2);
+  padding: 12px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--neutral-500);
+  font-weight: 500;
+}
+.masthead .vol { display: flex; gap: 18px; flex-wrap: wrap; }
+.masthead .vol span:not(:last-child)::after {
+  content: "·";
+  margin-left: 18px;
+  color: var(--neutral-300);
+}
+.masthead .crd { color: var(--brand-700); font-weight: 600; }
+
+/* NAV w/ real logo */
+.nav-row {
+  background: var(--paper-2);
+  border-bottom: 3px double var(--neutral-800);
+  padding: 14px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.brand-link {
+  display: inline-flex;
+  align-items: end;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+.brand-icon { display: flex; align-items: end; gap: 2px; height: 36px; }
+.brand-icon rect { transition: transform 0.25s; }
+.brand-link:hover .brand-icon rect:nth-child(3) { transform: translateY(-2px); }
+.brand-wordmark {
+  font-family: var(--font-logo);
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.brand-wordmark .top {
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.166em;
+  color: var(--logo-dark);
+  text-transform: uppercase;
+}
+.brand-wordmark .bot {
+  font-weight: 500;
+  font-size: 9px;
+  letter-spacing: 0.222em;
+  color: var(--brand-700);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.nav-cta {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  background: var(--brand-600);
+  text-decoration: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+.nav-cta:hover { background: var(--brand-700); }
+
+.dateline {
+  background: var(--paper-2);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--neutral-500);
+  text-align: center;
+  padding: 8px 22px;
+  border-bottom: 1px solid var(--neutral-200);
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* HERO */
+.hero {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 32px 22px 24px;
+}
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.hero-eyebrow::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: var(--red);
+}
+.hero-eyebrow::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--red);
+  opacity: 0.4;
+}
+
+.hero h1 {
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-size: clamp(38px, 9vw, 96px);
+  line-height: 0.96;
+  letter-spacing: -0.045em;
+  margin: 0 0 18px;
+  color: var(--neutral-900);
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--brand-700);
+  letter-spacing: -0.03em;
+}
+.hero h1 .strike {
+  position: relative;
+  white-space: nowrap;
+  font-weight: 800;
+  color: var(--neutral-900);
+  font-style: normal;
+}
+.hero h1 .strike::after {
+  content: "";
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  top: 52%;
+  height: 6px;
+  background: var(--red);
+  transform: rotate(-2deg);
+}
+
+.hero-deck {
+  font-size: clamp(16px, 2vw, 21px);
+  line-height: 1.5;
+  color: var(--neutral-700);
+  max-width: 60ch;
+  font-weight: 400;
+  margin: 0 0 24px;
+}
+.hero-deck strong { color: var(--neutral-900); font-weight: 600; }
+.hero-deck em { color: var(--brand-700); font-style: italic; font-weight: 500; }
+
+.byline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--neutral-500);
+  border-top: 1px solid var(--neutral-200);
+  padding-top: 14px;
+  flex-wrap: wrap;
+  font-weight: 500;
+}
+.byline .sep { color: var(--neutral-300); }
+.byline strong { color: var(--neutral-900); font-weight: 700; }
+
+/* GRID */
+.grid {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 22px 50px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+}
+@media (min-width: 920px) {
+  .grid { grid-template-columns: 1.05fr 0.95fr; gap: 56px; padding-bottom: 90px; }
+}
+
+/* RECEIPT (the right column) */
+.receipt {
+  background: var(--paper-2);
+  border: 1px solid var(--neutral-300);
+  border-top: none;
+  border-bottom: none;
+  position: relative;
+  padding: 0;
+  box-shadow:
+    0 1px 0 rgba(15, 23, 42, 0.04),
+    0 18px 60px -28px rgba(15, 23, 42, 0.32);
+}
+.receipt::before, .receipt::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 14px;
+  background: radial-gradient(circle at 7px 0, transparent 6px, var(--paper) 6px) repeat-x;
+  background-size: 14px 14px;
+}
+.receipt::before { top: -1px; }
+.receipt::after { bottom: -1px; transform: scaleY(-1); }
+
+.receipt-inner { padding: 38px 26px 32px; }
+@media (min-width: 600px) { .receipt-inner { padding: 44px 44px 38px; } }
+
+.r-store { text-align: center; border-bottom: 1px dashed var(--neutral-300); padding-bottom: 20px; margin-bottom: 22px; }
+.r-store .name {
+  font-family: var(--font-logo);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.222em;
+  color: var(--brand-800);
+  text-transform: uppercase;
+  margin-top: 10px;
+}
+.r-store .sub {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--neutral-500);
+  margin-top: 6px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.r-store .doc {
+  font-size: 10px;
+  color: var(--neutral-400);
+  margin-top: 8px;
+  letter-spacing: 0.18em;
+  font-weight: 500;
+}
+
+.r-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  font-size: 13px;
+  padding: 6px 0;
+  align-items: baseline;
+  color: var(--neutral-600);
+}
+.r-row .label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--neutral-500);
+}
+.r-row .val { font-weight: 600; text-align: right; color: var(--neutral-900); font-variant-numeric: tabular-nums; }
+.r-row .val.red { color: var(--red); }
+.r-row .val.green { color: var(--brand-700); }
+
+.r-divider { border: 0; border-top: 1px dashed var(--neutral-300); margin: 14px 0; }
+.r-divider.thick { border-top: 2px solid var(--neutral-900); margin: 18px 0; }
+
+.r-section-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--neutral-400);
+  margin: 6px 0 10px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.r-total {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: baseline;
+  margin: 8px 0 4px;
+}
+.r-total .label {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--neutral-900);
+}
+.r-total .val {
+  font-weight: 800;
+  font-size: clamp(28px, 6.5vw, 38px);
+  color: var(--brand-700);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.r-headline {
+  font-weight: 800;
+  font-size: clamp(20px, 4vw, 26px);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-align: center;
+  margin: 18px 0 6px;
+  color: var(--neutral-900);
+}
+.r-headline em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--brand-700);
+}
+.r-sub {
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--neutral-600);
+  margin: 0 0 18px;
+  font-weight: 400;
+}
+
+.r-stamp {
+  position: relative;
+  display: inline-block;
+  border: 2.5px solid var(--brand-700);
+  color: var(--brand-700);
+  padding: 5px 14px;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  transform: rotate(-3deg);
+  border-radius: 2px;
+  background: rgba(0, 165, 64, 0.04);
+}
+.r-stamp::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border: 1px dashed var(--brand-700);
+  border-radius: 2px;
+  opacity: 0.4;
+}
+
+.r-footer {
+  margin-top: 16px;
+  text-align: center;
+  border-top: 1px dashed var(--neutral-300);
+  padding-top: 14px;
+  font-size: 11px;
+  color: var(--neutral-500);
+  line-height: 1.5;
+}
+.r-footer a { color: var(--brand-700); }
+.r-footer .barcode {
+  display: block;
+  margin: 14px auto 8px;
+  height: 38px;
+  width: 80%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--neutral-900) 0 1px, transparent 1px 3px,
+    var(--neutral-900) 3px 5px, transparent 5px 6px,
+    var(--neutral-900) 6px 9px, transparent 9px 11px,
+    var(--neutral-900) 11px 12px, transparent 12px 16px
+  );
+}
+.r-footer .barnum { font-size: 10px; letter-spacing: 0.4em; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+@keyframes flash-green {
+  0% { background: var(--brand-100); color: var(--brand-800); }
+  100% { background: transparent; color: var(--brand-700); }
+}
+.flash { animation: flash-green 0.6s ease-out; padding: 0 4px; border-radius: 2px; }
+
+/* CONTROLS COLUMN */
+.controls { display: flex; flex-direction: column; }
+
+.controls-head {
+  border-top: 3px double var(--neutral-800);
+  border-bottom: 1px solid var(--neutral-200);
+  padding: 14px 0;
+  margin-bottom: 22px;
+}
+.controls-head h2 {
+  font-weight: 800;
+  font-size: clamp(28px, 5vw, 38px);
+  line-height: 1.0;
+  margin: 0 0 6px;
+  letter-spacing: -0.035em;
+  color: var(--neutral-900);
+}
+.controls-head h2 em { font-style: italic; font-weight: 300; color: var(--brand-700); }
+.controls-head p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--neutral-500);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+}
+
+.field { margin: 0 0 18px; border-bottom: 1px dotted var(--neutral-300); padding-bottom: 16px; }
+.field:last-of-type { border-bottom: none; }
+
+.field-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.field-label {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--neutral-900);
+}
+.field-label small {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--neutral-500);
+  margin-top: 3px;
+}
+.field-val {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--neutral-900);
+  background: var(--neutral-50);
+  padding: 4px 10px;
+  border: 1px solid var(--neutral-300);
+  border-radius: 6px;
+  min-width: 80px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 36px;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+input[type=range]:focus { outline: none; }
+input[type=range]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(0, 165, 64, 0.25); }
+input[type=range]::-webkit-slider-runnable-track { height: 2px; background: var(--neutral-800); border: none; }
+input[type=range]::-moz-range-track { height: 2px; background: var(--neutral-800); border: none; }
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 22px;
+  width: 22px;
+  background: var(--brand-600);
+  border: 2.5px solid var(--neutral-900);
+  margin-top: -10px;
+  cursor: grab;
+  box-shadow: 0 2px 0 var(--neutral-900);
+  transition: transform 0.1s;
+  border-radius: 50%;
+}
+input[type=range]::-moz-range-thumb {
+  height: 22px; width: 22px;
+  background: var(--brand-600);
+  border: 2.5px solid var(--neutral-900);
+  cursor: grab;
+  box-shadow: 0 2px 0 var(--neutral-900);
+  border-radius: 50%;
+}
+input[type=range]:active::-webkit-slider-thumb { transform: scale(1.1); cursor: grabbing; }
+
+.tick-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--neutral-400);
+  letter-spacing: 0.06em;
+  margin-top: 6px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* CHART */
+.chart-frame {
+  background: var(--paper-2);
+  border: 1px solid var(--neutral-300);
+  border-radius: 4px;
+  padding: 22px 16px 16px;
+  margin-top: 26px;
+  position: relative;
+}
+.chart-frame::before {
+  content: "FIG. 01";
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  background: var(--paper);
+  padding: 0 8px;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--neutral-500);
+  font-weight: 700;
+}
+.chart-frame h3 {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--neutral-900);
+}
+.chart-frame .chart-sub {
+  margin: 0 0 16px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--neutral-500);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.chart-svg { width: 100%; height: auto; display: block; }
+.chart-legend {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--neutral-600);
+  font-weight: 500;
+}
+.chart-legend .swatch {
+  display: inline-block;
+  width: 22px;
+  height: 3px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+/* CTA */
+.cta-bar { margin-top: 30px; display: flex; flex-direction: column; gap: 12px; }
+@media (min-width: 600px) { .cta-bar { flex-direction: row; } }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 22px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  min-height: 56px;
+  border-radius: 8px;
+  font-family: inherit;
+}
+.btn-primary {
+  background: var(--brand-600);
+  color: white;
+  box-shadow: 4px 4px 0 var(--neutral-900);
+}
+.btn-primary:hover { background: var(--brand-700); transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--neutral-900); }
+.btn-secondary {
+  background: transparent;
+  color: var(--neutral-900);
+  border: 1.5px solid var(--neutral-900);
+}
+.btn-secondary:hover { background: var(--neutral-900); color: white; }
+
+/* QUOTE BAND */
+.quote-band {
+  border-top: 3px double var(--neutral-800);
+  border-bottom: 3px double var(--neutral-800);
+  padding: 50px 22px;
+  margin: 30px 0 0;
+  background: var(--paper-2);
+  background-image:
+    radial-gradient(circle at 18% 50%, rgba(0,165,64,0.08), transparent 36%),
+    radial-gradient(circle at 82% 50%, rgba(185,28,28,0.06), transparent 36%);
+}
+.quote-inner { max-width: 860px; margin: 0 auto; text-align: center; }
+.quote-mark {
+  font-size: 100px;
+  line-height: 0.6;
+  color: var(--brand-600);
+  font-weight: 800;
+  font-style: italic;
+}
+.quote {
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(22px, 3.6vw, 36px);
+  line-height: 1.25;
+  margin: 6px 0 22px;
+  color: var(--neutral-900);
+  letter-spacing: -0.02em;
+}
+.quote-attr {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--neutral-500);
+  font-weight: 600;
+}
+.quote-attr strong { color: var(--neutral-900); font-weight: 700; }
+
+/* PRINCIPLES */
+.principles { max-width: 1180px; margin: 0 auto; padding: 70px 22px 30px; }
+.principles h2 {
+  font-size: clamp(32px, 6vw, 56px);
+  font-weight: 800;
+  margin: 0 0 8px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--neutral-900);
+}
+.principles h2 em { font-style: italic; font-weight: 300; color: var(--brand-700); }
+.principles .deck {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--neutral-500);
+  margin: 0 0 32px;
+  font-weight: 600;
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  border-top: 1px solid var(--neutral-800);
+  padding-top: 32px;
+}
+@media (min-width: 720px) { .cols { grid-template-columns: repeat(3, 1fr); gap: 44px; } }
+
+.col-num {
+  font-style: italic;
+  font-weight: 300;
+  font-size: 56px;
+  line-height: 0.8;
+  color: var(--brand-600);
+  margin-bottom: 12px;
+  letter-spacing: -0.04em;
+}
+.col-h {
+  font-weight: 800;
+  font-size: 22px;
+  margin: 0 0 8px;
+  letter-spacing: -0.025em;
+  color: var(--neutral-900);
+}
+.col-p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--neutral-700);
+  margin: 0;
+}
+
+/* AUTHOR */
+.author {
+  max-width: 1180px;
+  margin: 50px auto 0;
+  padding: 40px 22px;
+  border-top: 3px double var(--neutral-800);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (min-width: 700px) { .author { grid-template-columns: 240px 1fr; gap: 40px; } }
+
+.author-tag {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--neutral-500);
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+.author h3 {
+  font-size: clamp(28px, 4.5vw, 40px);
+  font-weight: 800;
+  margin: 0 0 6px;
+  letter-spacing: -0.03em;
+  color: var(--neutral-900);
+}
+.author .creds {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--brand-700);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+.author p {
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--neutral-700);
+  margin: 0 0 14px;
+  max-width: 56ch;
+}
+.author .signature {
+  font-style: italic;
+  font-size: 28px;
+  line-height: 1;
+  margin-top: 16px;
+  color: var(--brand-700);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+
+/* AUTHOR PORTRAIT FRAME (uses real headshot via relative path) */
+.portrait-frame {
+  width: 200px;
+  height: 240px;
+  border: 1px solid var(--neutral-300);
+  padding: 8px;
+  background: var(--paper-2);
+  box-shadow: 0 2px 0 var(--neutral-300);
+}
+.portrait-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: contrast(1.04);
+}
+.portrait-frame .placeholder {
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(160deg, var(--brand-200) 0%, var(--brand-700) 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 12px;
+  font-size: 10px;
+  color: white;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* COLOPHON */
+.colophon {
+  border-top: 1px solid var(--neutral-200);
+  margin-top: 60px;
+  padding: 30px 22px 40px;
+  font-size: 11px;
+  color: var(--neutral-500);
+  letter-spacing: 0.04em;
+  line-height: 1.7;
+  text-align: center;
+  background: var(--paper-2);
+}
+.colophon strong { color: var(--neutral-900); }
+.colophon a { color: var(--brand-700); }
+
+/* STICKY BAR (mobile) */
+.sticky-bar {
+  position: sticky;
+  bottom: 0;
+  background: var(--neutral-900);
+  color: white;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-top: 3px double var(--brand-600);
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  z-index: 50;
+  font-weight: 600;
+}
+.sticky-bar .amt {
+  color: var(--brand-300);
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: -0.015em;
+  font-variant-numeric: tabular-nums;
+}
+.sticky-bar a {
+  background: var(--brand-600);
+  color: white;
+  padding: 10px 14px;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 6px;
+}
+@media (min-width: 920px) { .sticky-bar { display: none; } }
+
+.scroll-fade { opacity: 0; transform: translateY(16px); transition: opacity 0.6s, transform 0.6s; }
+.scroll-fade.in { opacity: 1; transform: none; }
+</style>
+</head>
+<body>
+
+<header class="masthead" role="banner">
+  <div class="vol">
+    <span>VOL. CXLVII</span>
+    <span>NO. 4·30</span>
+    <span>A FIDUCIARY DAILY</span>
+  </div>
+  <div class="crd">EST. 2026 · CRD #342140</div>
+</header>
+
+<nav class="nav-row">
+  <a class="brand-link" href="/" aria-label="Smarter Way Wealth home">
+    <span class="brand-icon">
+      <svg viewBox="0 0 40 36" width="36" height="32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="0" y="18" width="12" height="18" rx="1.5" fill="#3DA85C"/>
+        <rect x="14" y="8" width="12" height="28" rx="1.5" fill="#1E8F42"/>
+        <rect x="28" y="0" width="12" height="36" rx="1.5" fill="#007A2F"/>
+      </svg>
+    </span>
+    <span class="brand-wordmark">
+      <span class="top">Smarter</span>
+      <span class="bot">Way Wealth</span>
+    </span>
+  </a>
+  <a href="https://riabuilder.dvo88.com" class="nav-cta">Book audit →</a>
+</nav>
+
+<div class="dateline">Filed <span id="dateline">—</span></div>
+
+<section class="hero">
+  <div class="hero-eyebrow">A receipt for the fee you cannot see</div>
+  <h1>
+    Your advisor sent the bill.<br>
+    <em>We&rsquo;re sending</em> <span class="strike">the receipt</span><em>.</em>
+  </h1>
+  <p class="hero-deck">
+    Most investors know the percentage. <strong>Few have ever seen the dollar amount.</strong>
+    Move the dials and watch what a 1% advisory fee actually subtracts from a lifetime
+    of compounding &mdash; <em>itemized</em>, in writing, on this page.
+  </p>
+  <div class="byline">
+    <span>By <strong>David J. Van Osdol</strong></span>
+    <span class="sep">·</span>
+    <span>CFA Charterholder · CFP&reg; Practitioner</span>
+    <span class="sep">·</span>
+    <span>Smarter Way Wealth · Connecticut</span>
+  </div>
+</section>
+
+<div class="grid">
+  <section class="controls" aria-label="Calculator">
+    <div class="controls-head">
+      <h2>The <em>Itemizer</em></h2>
+      <p>Four assumptions · live receipt</p>
+    </div>
+
+    <div class="field">
+      <div class="field-head">
+        <div class="field-label">Advisory fee<small>annual % of assets</small></div>
+        <div class="field-val" id="feeVal">1.00%</div>
+      </div>
+      <input id="fee" type="range" min="0" max="3" step="0.05" value="1" aria-label="Advisory fee percent">
+      <div class="tick-row"><span>0.00%</span><span>1.50%</span><span>3.00%</span></div>
+    </div>
+
+    <div class="field">
+      <div class="field-head">
+        <div class="field-label">Portfolio value<small>starting balance</small></div>
+        <div class="field-val" id="pvVal">$1,000,000</div>
+      </div>
+      <input id="pv" type="range" min="50000" max="5000000" step="50000" value="1000000" aria-label="Portfolio value">
+      <div class="tick-row"><span>$50K</span><span>$2.5M</span><span>$5M</span></div>
+    </div>
+
+    <div class="field">
+      <div class="field-head">
+        <div class="field-label">Annual growth<small>before fees</small></div>
+        <div class="field-val" id="grVal">8.0%</div>
+      </div>
+      <input id="gr" type="range" min="0" max="15" step="0.1" value="8" aria-label="Annual growth percent">
+      <div class="tick-row"><span>0%</span><span>7.5%</span><span>15%</span></div>
+    </div>
+
+    <div class="field">
+      <div class="field-head">
+        <div class="field-label">Time horizon<small>years invested</small></div>
+        <div class="field-val" id="yrVal">20 yrs</div>
+      </div>
+      <input id="yr" type="range" min="1" max="40" step="1" value="20" aria-label="Years">
+      <div class="tick-row"><span>1 yr</span><span>20 yrs</span><span>40 yrs</span></div>
+    </div>
+
+    <div class="chart-frame">
+      <h3>The compounding gap</h3>
+      <p class="chart-sub">Two paths · same return · different fee</p>
+      <svg class="chart-svg" id="chart" viewBox="0 0 600 300" aria-label="Portfolio value chart"></svg>
+      <div class="chart-legend">
+        <div><span class="swatch" style="background: #00A540"></span>$100/mo flat fee</div>
+        <div><span class="swatch" style="background: #B91C1C"></span>1% advisor (your fee)</div>
+      </div>
+    </div>
+
+    <div class="cta-bar">
+      <a href="https://riabuilder.dvo88.com" class="btn btn-primary">Book a 15-minute audit →</a>
+      <button id="copyBtn" class="btn btn-secondary">Copy this scenario</button>
+    </div>
+  </section>
+
+  <aside class="receipt" aria-label="Itemized fee receipt">
+    <div class="receipt-inner">
+      <div class="r-store">
+        <span style="display: inline-block;">
+          <svg viewBox="0 0 40 36" width="42" height="38" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="0" y="18" width="12" height="18" rx="1.5" fill="#3DA85C"/>
+            <rect x="14" y="8" width="12" height="28" rx="1.5" fill="#1E8F42"/>
+            <rect x="28" y="0" width="12" height="36" rx="1.5" fill="#007A2F"/>
+          </svg>
+        </span>
+        <div class="name">SMARTER · WAY · WEALTH</div>
+        <div class="sub">An itemized investing receipt</div>
+        <div class="doc">DOC <span id="docNum">SWW-100000-20</span></div>
+      </div>
+
+      <div class="r-section-label">— YOUR INPUTS —</div>
+      <div class="r-row"><span class="label">Starting balance</span><span class="val" id="rStart">$1,000,000</span></div>
+      <div class="r-row"><span class="label">Years invested</span><span class="val" id="rYears">20</span></div>
+      <div class="r-row"><span class="label">Gross growth</span><span class="val" id="rGrowth">8.0% / yr</span></div>
+      <div class="r-row"><span class="label">Advisor fee</span><span class="val red" id="rFee">1.00% AUM</span></div>
+
+      <hr class="r-divider">
+      <div class="r-section-label">— PROJECTED ENDING VALUE —</div>
+      <div class="r-row"><span class="label">$100/mo flat fee</span><span class="val green" id="rFlat">$0</span></div>
+      <div class="r-row"><span class="label">1% AUM advisor</span><span class="val" id="rAum">$0</span></div>
+
+      <hr class="r-divider">
+      <div class="r-section-label">— FEES PAID, LIFETIME —</div>
+      <div class="r-row"><span class="label">$100/mo flat fee</span><span class="val" id="rFlatFees">$0</span></div>
+      <div class="r-row"><span class="label">1% AUM advisor</span><span class="val red" id="rAumFees">$0</span></div>
+
+      <hr class="r-divider thick">
+      <div class="r-total">
+        <span class="label">Net to you</span>
+        <span class="val" id="rSavings">$0</span>
+      </div>
+      <div class="r-row" style="margin-top: 4px;"><span class="label">% of portfolio kept (vs lost)</span><span class="val green" id="rKept">0%</span></div>
+
+      <hr class="r-divider">
+      <div style="text-align: center; margin: 20px 0 6px;">
+        <span class="r-stamp">Saved by smarter fees</span>
+      </div>
+      <p class="r-headline">
+        What would you do<br>
+        with <em id="rSavingsInline">$788,306</em>?
+      </p>
+      <p class="r-sub">Retire earlier. Pay the mortgage. A house on the water. Or simply leave it compounding.</p>
+
+      <div class="r-footer">
+        <span class="barcode" aria-hidden="true"></span>
+        <span class="barnum" id="barnum">0&nbsp;040&nbsp;788306&nbsp;7</span>
+        <div style="margin-top: 14px;">
+          Hypothetical illustration. Past performance does not guarantee future results.
+          See <a href="#disclosures">disclosures</a>.
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<section class="quote-band">
+  <div class="quote-inner">
+    <div class="quote-mark">"</div>
+    <p class="quote">
+      The miracle of compounding returns is overwhelmed by<br>the tyranny of compounding costs.
+    </p>
+    <div class="quote-attr"><strong>John C. Bogle</strong> · founder, The Vanguard Group</div>
+  </div>
+</section>
+
+<section class="principles">
+  <h2>Three things <em>every fee schedule</em><br>ought to tell you.</h2>
+  <p class="deck">A short field guide for anyone reviewing an advisor</p>
+
+  <div class="cols">
+    <div class="col scroll-fade">
+      <div class="col-num">i.</div>
+      <h3 class="col-h">The dollar amount</h3>
+      <p class="col-p">A 1% fee on a $2 million portfolio is $20,000 a year &mdash; every year &mdash; whether your account grew or shrank. Most statements only show a percentage. The dollar number ought to be in plain English on page one.</p>
+    </div>
+    <div class="col scroll-fade">
+      <div class="col-num">ii.</div>
+      <h3 class="col-h">The lifetime cost</h3>
+      <p class="col-p">A small percentage compounds. Over thirty years at 8%, every 1% of recurring fee subtracts roughly a fifth of the wealth you would otherwise have kept. That is not opinion; it is arithmetic.</p>
+    </div>
+    <div class="col scroll-fade">
+      <div class="col-num">iii.</div>
+      <h3 class="col-h">The alternative</h3>
+      <p class="col-p">A flat monthly retainer &mdash; $100 a month, in our case &mdash; pays the same fiduciary advice without a percentage of every additional dollar you save. The savings line up with your hard work, not the advisor's.</p>
+    </div>
+  </div>
+</section>
+
+<section class="author" id="about">
+  <div>
+    <div class="author-tag">— About the author</div>
+    <div class="portrait-frame">
+      <img src="../../public/DVO Head Shot picture.jpg" alt="David J. Van Osdol" onerror="this.onerror=null; this.outerHTML='&lt;div class=&quot;placeholder&quot;&gt;PORTRAIT &middot; D.V.O&lt;/div&gt;';">
+    </div>
+  </div>
+  <div>
+    <div class="author-tag">— Smarter Way Wealth, LLC · CRD #342140</div>
+    <h3>David J. Van Osdol</h3>
+    <div class="creds">CFA Charterholder · CFP&reg; Practitioner</div>
+    <p>
+      I built Smarter Way Wealth for the simple reason that the fee model in our industry
+      no longer matches the work. A retainer, not a tax on your savings. The same fiduciary
+      planning, full portfolio management, real estate analysis, and tax-aware advice &mdash;
+      paid the same way you pay for any other professional service: a flat fee, agreed in advance.
+    </p>
+    <p>
+      If you scanned the QR code on the postcard, the calculator above is for you.
+      If the gap is large enough that it&rsquo;s worth a conversation, I&rsquo;d be glad to have one.
+    </p>
+    <div class="signature">— David</div>
+  </div>
+</section>
+
+<footer class="colophon" id="disclosures">
+  <p><strong>Smarter Way Wealth, LLC</strong> · SEC-registered investment adviser · CRD #342140</p>
+  <p>
+    The calculator on this page is a hypothetical illustration, not a guarantee or projection of any specific account.
+    Past performance does not guarantee future results. The 8% default growth rate is an assumption, not a forecast.
+    Advisory services are provided only after delivery of Form ADV and execution of a written agreement.
+    See full disclosures · Form ADV · Privacy · <a href="https://adviserinfo.sec.gov" target="_blank" rel="noopener">IAPD</a>
+  </p>
+  <p>&copy; 2026 Smarter Way Wealth, LLC · All rights reserved.</p>
+</footer>
+
+<div class="sticky-bar" role="status" aria-live="polite">
+  <div>Lifetime fee gap <span class="amt" id="stickyAmt">$788,306</span></div>
+  <a href="https://riabuilder.dvo88.com">Book audit →</a>
+</div>
+
+<script>
+const RIA_MONTHLY_FEE = 100;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function buildFeeProjection({ initialInvestment, years, annualFeePercent, annualGrowthPercent }) {
+  const rAnnual = annualGrowthPercent / 100;
+  const rMonthly = Math.pow(1 + rAnnual, 1 / 12) - 1;
+  const aumMonthly = annualFeePercent / 100 / 12;
+  const totalMonths = years * 12;
+  let withFlat = initialInvestment;
+  let withAum = initialInvestment;
+  let cumAumFees = 0, cumFlatFees = 0;
+  const series = [{ year: 0, withoutFees: withFlat, withFees: withAum }];
+  for (let m = 1; m <= totalMonths; m++) {
+    withFlat *= 1 + rMonthly;
+    withAum *= 1 + rMonthly;
+    withFlat = Math.max(0, withFlat - RIA_MONTHLY_FEE);
+    cumFlatFees += RIA_MONTHLY_FEE;
+    const fee = withAum * aumMonthly;
+    withAum = Math.max(0, withAum - fee);
+    cumAumFees += fee;
+    if (m % 12 === 0) series.push({ year: m / 12, withoutFees: withFlat, withFees: withAum });
+  }
+  return {
+    series, totalFees: cumAumFees, totalFlatFees: cumFlatFees,
+    savings: withFlat - withAum, finalValueWithFees: withAum, finalValueWithoutFees: withFlat,
+  };
+}
+
+const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+function usdShort(n) {
+  if (Math.abs(n) >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
+  if (Math.abs(n) >= 1e3) return '$' + Math.round(n/1e3) + 'K';
+  return usd.format(n);
+}
+
+const $ = (id) => document.getElementById(id);
+const fee = $('fee'), pv = $('pv'), gr = $('gr'), yr = $('yr');
+
+function flash(el) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
+
+function svgEl(tag, attrs) {
+  const el = document.createElementNS(SVG_NS, tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  return el;
+}
+
+function drawChart(series) {
+  const svg = $('chart');
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+  const W = 600, H = 300, PAD_L = 56, PAD_R = 12, PAD_T = 14, PAD_B = 32;
+  const innerW = W - PAD_L - PAD_R, innerH = H - PAD_T - PAD_B;
+  const maxY = Math.max(...series.map(d => Math.max(d.withoutFees, d.withFees))) * 1.05;
+  const maxX = series[series.length-1].year;
+  const x = (yr) => PAD_L + (yr) / Math.max(1, maxX) * innerW;
+  const y = (v) => PAD_T + innerH - (v / maxY) * innerH;
+
+  const defs = svgEl('defs');
+  const grad = svgEl('linearGradient', { id: 'flatFill', x1: '0', x2: '0', y1: '0', y2: '1' });
+  grad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#00A540', 'stop-opacity': '0.20' }));
+  grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#00A540', 'stop-opacity': '0' }));
+  defs.appendChild(grad);
+  const pat = svgEl('pattern', { id: 'hatch1', patternUnits: 'userSpaceOnUse', width: '6', height: '6', patternTransform: 'rotate(45)' });
+  pat.appendChild(svgEl('line', { x1: '0', y1: '0', x2: '0', y2: '6', stroke: '#B91C1C', 'stroke-opacity': '0.16', 'stroke-width': '2' }));
+  defs.appendChild(pat);
+  svg.appendChild(defs);
+
+  const yTicks = [0, 0.25, 0.5, 0.75, 1].map(t => t * maxY);
+  for (const t of yTicks) {
+    svg.appendChild(svgEl('line', { x1: PAD_L, x2: W-PAD_R, y1: y(t).toFixed(1), y2: y(t).toFixed(1), stroke: '#e2e8f0', 'stroke-dasharray': '2,3' }));
+    const lbl = svgEl('text', { x: PAD_L-8, y: (y(t)+3).toFixed(1), 'text-anchor': 'end', 'font-family': 'Inter, sans-serif', 'font-size': '10', 'font-weight': '500', fill: '#94a3b8' });
+    lbl.textContent = usdShort(t);
+    svg.appendChild(lbl);
+  }
+  const xStep = Math.max(1, Math.round(maxX / 5));
+  const xTicks = [];
+  for (let v = 0; v <= maxX; v += xStep) xTicks.push(v);
+  if (xTicks[xTicks.length-1] !== maxX) xTicks.push(maxX);
+  for (const t of xTicks) {
+    const lbl = svgEl('text', { x: x(t).toFixed(1), y: H-12, 'text-anchor': 'middle', 'font-family': 'Inter, sans-serif', 'font-size': '10', 'font-weight': '500', fill: '#94a3b8' });
+    lbl.textContent = t + 'y';
+    svg.appendChild(lbl);
+  }
+
+  // gap polygon
+  const gapPts = series.map(d => `${x(d.year).toFixed(1)},${y(d.withoutFees).toFixed(1)}`)
+    .concat(series.slice().reverse().map(d => `${x(d.year).toFixed(1)},${y(d.withFees).toFixed(1)}`)).join(' ');
+  svg.appendChild(svgEl('polygon', { points: gapPts, fill: 'url(#hatch1)', stroke: 'none' }));
+
+  // flat area
+  const flatArea = `M ${x(0)} ${y(0).toFixed(1)} ` +
+    series.map(d => `L ${x(d.year).toFixed(1)} ${y(d.withoutFees).toFixed(1)}`).join(' ') +
+    ` L ${x(maxX).toFixed(1)} ${y(0).toFixed(1)} Z`;
+  svg.appendChild(svgEl('path', { d: flatArea, fill: 'url(#flatFill)', stroke: 'none' }));
+
+  // flat line
+  const flatD = series.map((d, i) => `${i===0?'M':'L'}${x(d.year).toFixed(1)} ${y(d.withoutFees).toFixed(1)}`).join(' ');
+  svg.appendChild(svgEl('path', { d: flatD, fill: 'none', stroke: '#00A540', 'stroke-width': '2.4' }));
+
+  // aum line (red dashed)
+  const aumD = series.map((d, i) => `${i===0?'M':'L'}${x(d.year).toFixed(1)} ${y(d.withFees).toFixed(1)}`).join(' ');
+  svg.appendChild(svgEl('path', { d: aumD, fill: 'none', stroke: '#B91C1C', 'stroke-width': '1.5', 'stroke-dasharray': '4,3' }));
+
+  // end caps
+  svg.appendChild(svgEl('circle', { cx: x(maxX).toFixed(1), cy: y(series[series.length-1].withoutFees).toFixed(1), r: '4', fill: '#00A540' }));
+  svg.appendChild(svgEl('circle', { cx: x(maxX).toFixed(1), cy: y(series[series.length-1].withFees).toFixed(1), r: '4', fill: '#B91C1C' }));
+}
+
+function render() {
+  const fPct = parseFloat(fee.value);
+  const port = parseFloat(pv.value);
+  const grow = parseFloat(gr.value);
+  const yrs = parseInt(yr.value, 10);
+
+  $('feeVal').textContent = fPct.toFixed(2) + '%';
+  $('pvVal').textContent = usd.format(port);
+  $('grVal').textContent = grow.toFixed(1) + '%';
+  $('yrVal').textContent = yrs + ' yrs';
+
+  const r = buildFeeProjection({ initialInvestment: port, years: yrs, annualFeePercent: fPct, annualGrowthPercent: grow });
+  const savings = Math.max(0, r.savings);
+
+  $('rStart').textContent = usd.format(port);
+  $('rYears').textContent = yrs;
+  $('rGrowth').textContent = grow.toFixed(1) + '% / yr';
+  $('rFee').textContent = fPct.toFixed(2) + '% AUM';
+  $('rFlat').textContent = usd.format(r.finalValueWithoutFees);
+  $('rAum').textContent = usd.format(r.finalValueWithFees);
+  $('rFlatFees').textContent = usd.format(r.totalFlatFees);
+  $('rAumFees').textContent = usd.format(r.totalFees);
+
+  const sav = $('rSavings'); sav.textContent = usd.format(savings); flash(sav);
+  const lostPct = r.finalValueWithoutFees > 0 ? (r.finalValueWithoutFees - r.finalValueWithFees) / r.finalValueWithoutFees : 0;
+  $('rKept').textContent = (lostPct * 100).toFixed(1) + '% lost';
+  $('rSavingsInline').textContent = usd.format(savings);
+  $('stickyAmt').textContent = usd.format(savings);
+
+  $('docNum').textContent = `SWW-${Math.round(port/10000)}-${yrs}`;
+  $('barnum').textContent = `0 ${String(Math.round(port/10000)).padStart(4,'0')} ${String(Math.round(savings)).padStart(6,'0').slice(-6)} ${String(yrs).padStart(2,'0')}`;
+
+  drawChart(r.series);
+}
+
+[fee, pv, gr, yr].forEach(el => el.addEventListener('input', render));
+$('copyBtn').addEventListener('click', () => {
+  const url = `${location.origin}${location.pathname}?fee=${fee.value}&pv=${pv.value}&gr=${gr.value}&yr=${yr.value}`;
+  if (navigator.clipboard) navigator.clipboard.writeText(url).then(() => {
+    const b = $('copyBtn'); const t = b.textContent; b.textContent = '✓ Link copied'; setTimeout(() => b.textContent = t, 1800);
+  });
+});
+
+const params = new URLSearchParams(location.search);
+['fee','pv','gr','yr'].forEach(k => { if (params.get(k)) $(k).value = params.get(k); });
+
+const d = new Date();
+$('dateline').textContent = d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+
+const io = new IntersectionObserver((es) => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), { threshold: 0.15 });
+document.querySelectorAll('.scroll-fade').forEach(el => io.observe(el));
+
+render();
+</script>
+</body>
+</html>

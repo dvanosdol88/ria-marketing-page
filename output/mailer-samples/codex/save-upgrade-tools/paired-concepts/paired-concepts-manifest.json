@@ -1,0 +1,114 @@
+{
+  "name": "SWW YAPTOM Save / Upgrade / Improve Paired EDDM Concepts",
+  "generatedAt": "2026-05-27T21:11:18.247Z",
+  "generator": "scripts/build-eddm-save-upgrade-tools-paired-concepts.mjs",
+  "dimensions": {
+    "trimInches": {
+      "width": 8.5,
+      "height": 6.25
+    },
+    "bleedInches": 0.125,
+    "pdfPageInches": {
+      "width": 8.75,
+      "height": 6.5
+    },
+    "proofPixels": {
+      "width": 1750,
+      "height": 1300
+    }
+  },
+  "qrUrl": "https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1",
+  "assumptions": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 8,
+    "years": 20
+  },
+  "calculatorValues": {
+    "flatFeeEndingValue": 4604057,
+    "assetBasedFeeEndingValue": 3815751,
+    "estimatedGap": 788306,
+    "totalFlatFeesPaid": 24000,
+    "totalAumFeesPaid": 422058
+  },
+  "concepts": [
+    {
+      "id": "01-ledger-rules",
+      "label": "1. Ledger Rules",
+      "rationale": "A clean ledger-style grid makes the calculator feel factual and keeps the QR/domain path unmistakable.",
+      "frontBackFit": "The front uses a structured data-report rhythm, and the back continues it with rule-led columns and a disciplined identity rail.",
+      "printSafety": "high",
+      "front": "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_01-ledger-rules_Front.png",
+      "back": "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_01-ledger-rules_Back.png"
+    },
+    {
+      "id": "02-editorial-column",
+      "label": "2. Editorial Column",
+      "rationale": "A magazine-like hierarchy gives the $788,000 number more authority without adding decoration or stock imagery.",
+      "frontBackFit": "The front opens like a feature spread; the back resolves into a left identity column and a strong right-side action lane.",
+      "printSafety": "medium",
+      "front": "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_02-editorial-column_Front.png",
+      "back": "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_02-editorial-column_Back.png"
+    },
+    {
+      "id": "03-statement-border",
+      "label": "3. Statement Border",
+      "rationale": "A print-friendly black-and-green border creates polish while using almost no tinted area.",
+      "frontBackFit": "Both sides share the same framed-system language, making this the most conservative printer-friendly direction.",
+      "printSafety": "high",
+      "front": "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_03-statement-border_Front.png",
+      "back": "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_03-statement-border_Back.png"
+    },
+    {
+      "id": "04-white-space",
+      "label": "4. White Space",
+      "rationale": "More blank space makes the mailer feel premium and lets the domain and QR breathe.",
+      "frontBackFit": "The front gives the headline generous room; the back mirrors that restraint with sparse benefit blocks and a quiet QR zone.",
+      "printSafety": "high",
+      "front": "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_04-white-space_Front.png",
+      "back": "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_04-white-space_Back.png"
+    },
+    {
+      "id": "05-proof-strip",
+      "label": "5. Proof Strip",
+      "rationale": "A narrow green proof strip creates brand continuity without becoming a mint background.",
+      "frontBackFit": "The front uses the strip to anchor assumptions and the back uses it as a visual handoff from advisor identity to action.",
+      "printSafety": "medium",
+      "front": "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_05-proof-strip_Front.png",
+      "back": "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_05-proof-strip_Back.png"
+    },
+    {
+      "id": "06-classic-direct",
+      "label": "6. Classic Direct",
+      "rationale": "A straightforward direct-mail layout maximizes readability for average EDDM printing and quick scanning.",
+      "frontBackFit": "The front is a simple calculator proof; the back is a direct response layout with clear identity, benefits, QR, and domain.",
+      "printSafety": "high",
+      "front": "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_06-classic-direct_Front.png",
+      "back": "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_06-classic-direct_Back.png"
+    }
+  ],
+  "outputs": [
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts.html",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts_ContactSheet.html",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts_ContactSheet.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts_6Concepts.pdf",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts_Notes.md",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_01-ledger-rules_Front.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_01-ledger-rules_Back.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_02-editorial-column_Front.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_02-editorial-column_Back.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_03-statement-border_Front.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_03-statement-border_Back.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_04-white-space_Front.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_04-white-space_Back.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_05-proof-strip_Front.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_05-proof-strip_Back.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_06-classic-direct_Front.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_06-classic-direct_Back.png"
+  ],
+  "sourceAssets": {
+    "logo": "D:\\ria-marketing-page\\public\\brand\\logo-800.png",
+    "dvo": "D:\\ria-marketing-page\\public\\DVO Head Shot picture.jpg",
+    "qr": "D:\\ria-marketing-page\\output\\mailer-samples\\1-percent-blues\\source-eddm\\yaptom_default_inputs_qr.png"
+  }
+}

@@ -1,0 +1,1475 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>SWW YAPTOM Paired EDDM Concepts</title>
+  <style>
+    @page {
+      size: 8.75in 6.5in;
+      margin: 0;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    html,
+    body {
+      margin: 0;
+      background: #f3f6f4;
+      color: #07140d;
+      font-family: Inter, "DM Sans", Arial, Helvetica, sans-serif;
+      letter-spacing: 0;
+    }
+    .print-pack {
+      background: #ffffff;
+    }
+    .page {
+      width: 1750px;
+      height: 1300px;
+      position: relative;
+      overflow: hidden;
+      page-break-after: always;
+      background: #ffffff;
+    }
+    .trim-frame {
+      position: absolute;
+      inset: 25px;
+      border: 1px solid rgba(7, 20, 13, 0.12);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .front-domain {
+      position: absolute;
+      top: 74px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 56px;
+      font-weight: 950;
+      line-height: 1;
+      color: #07140d;
+    }
+    .front-hero {
+      position: absolute;
+      left: 150px;
+      right: 150px;
+      top: 150px;
+      text-align: center;
+    }
+    .front-hero h1 {
+      margin: 0;
+      font-size: 64px;
+      line-height: 1.02;
+      font-weight: 950;
+    }
+    .front-hero h1 span {
+      display: block;
+      margin-top: 10px;
+      font-size: 82px;
+      color: #008f38;
+      line-height: 0.98;
+    }
+    .front-hero p {
+      margin: 18px 0 0;
+      font-size: 28px;
+      font-weight: 850;
+    }
+    .founder-statement {
+      position: absolute;
+      left: 145px;
+      right: 145px;
+      top: 398px;
+      padding: 22px 40px 20px;
+      text-align: center;
+      border-top: 2px solid rgba(0, 165, 64, 0.24);
+      border-bottom: 2px solid rgba(0, 165, 64, 0.24);
+    }
+    .founder-statement strong {
+      display: block;
+      max-width: 1060px;
+      margin: 0 auto;
+      font-size: 37px;
+      line-height: 1.08;
+      font-weight: 950;
+    }
+    .founder-statement span {
+      display: block;
+      margin-top: 16px;
+      font-size: 26px;
+      font-weight: 900;
+    }
+    .calculator-surface {
+      position: absolute;
+      left: 112px;
+      right: 112px;
+      top: 615px;
+      height: 530px;
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      grid-template-rows: 102px 1fr;
+      gap: 20px 26px;
+      padding: 26px 30px;
+      border: 2px solid rgba(7, 20, 13, 0.14);
+      background: #ffffff;
+    }
+    .inputs {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .input-card {
+      border: 2px solid rgba(7, 20, 13, 0.14);
+      padding: 15px 16px;
+      min-height: 76px;
+      background: #fbfcfb;
+    }
+    .input-card span {
+      display: block;
+      color: #50645a;
+      font-size: 18px;
+      font-weight: 850;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .input-card strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 28px;
+      line-height: 1.05;
+      font-weight: 950;
+    }
+    .chart-panel {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: stretch;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+      padding: 10px 8px 0;
+      background: #fcfdfc;
+    }
+    .chart-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .chart-background {
+      fill: #ffffff;
+    }
+    .chart-grid {
+      stroke: #dce8df;
+      stroke-width: 2;
+    }
+    .chart-grid-vertical {
+      stroke-dasharray: 8 9;
+    }
+    .chart-axis {
+      stroke: #63776c;
+      stroke-width: 3;
+    }
+    .chart-flat {
+      fill: none;
+      stroke: #00a540;
+      stroke-width: 10;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .chart-aum {
+      fill: none;
+      stroke: #18263a;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .chart-dot-flat {
+      fill: #00a540;
+      stroke: #ffffff;
+      stroke-width: 5;
+    }
+    .chart-dot-aum {
+      fill: #18263a;
+      stroke: #ffffff;
+      stroke-width: 5;
+    }
+    .chart-label {
+      fill: #40544a;
+      font-size: 20px;
+      font-weight: 850;
+    }
+    .chart-final,
+    .chart-gap {
+      font-size: 25px;
+      font-weight: 950;
+    }
+    .chart-final-flat,
+    .chart-gap {
+      fill: #007e31;
+    }
+    .chart-final-aum {
+      fill: #18263a;
+    }
+    .gap-line {
+      stroke: #00a540;
+      stroke-width: 4;
+      stroke-dasharray: 8 9;
+    }
+    .front-qr {
+      grid-column: 1;
+      grid-row: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      text-align: center;
+      background: #ffffff;
+    }
+    .front-qr img {
+      width: 180px;
+      height: 180px;
+      display: block;
+    }
+    .front-qr strong {
+      display: block;
+      font-size: 22px;
+      line-height: 1.05;
+      font-weight: 950;
+    }
+    .front-disclosure,
+    .back-disclosure {
+      position: absolute;
+      left: 120px;
+      right: 120px;
+      bottom: 55px;
+      text-align: center;
+      color: #34483c;
+      font-size: 15px;
+      line-height: 1.18;
+      font-weight: 760;
+    }
+    .mail-zone {
+      position: absolute;
+      inset: 70px 92px auto;
+      height: 210px;
+      display: grid;
+      grid-template-columns: 1fr 1.5fr 280px;
+      align-items: start;
+      gap: 48px;
+    }
+    .return-address {
+      padding-top: 20px;
+      font-size: 20px;
+      line-height: 1.14;
+      font-weight: 800;
+    }
+    .return-address strong,
+    .return-address span {
+      display: block;
+    }
+    .postal-customer {
+      padding-top: 74px;
+      text-align: center;
+    }
+    .postal-customer strong {
+      display: block;
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 950;
+    }
+    .postal-customer span {
+      display: block;
+      margin-top: 12px;
+      color: #34483c;
+      font-size: 16px;
+      font-weight: 800;
+    }
+    .indicia {
+      min-height: 155px;
+      padding: 30px 18px 18px;
+      border: 5px solid #101828;
+      text-align: center;
+      font-size: 20px;
+      line-height: 1.05;
+      font-weight: 950;
+    }
+    .mail-separator {
+      position: absolute;
+      left: 25px;
+      right: 25px;
+      top: 308px;
+      height: 4px;
+      background: #00a540;
+    }
+    .back-content {
+      position: absolute;
+      left: 88px;
+      right: 88px;
+      top: 338px;
+      height: 760px;
+      display: grid;
+      grid-template-columns: 300px 1fr 345px;
+      gap: 48px;
+      align-items: center;
+      background: #ffffff;
+    }
+    .identity-block {
+      align-self: stretch;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 22px;
+    }
+    .brand-logo {
+      width: 220px;
+      height: auto;
+      display: block;
+    }
+    .dvo-photo {
+      width: 216px;
+      height: 286px;
+      object-fit: cover;
+      object-position: 50% 42%;
+      border: 6px solid #008f38;
+      display: block;
+    }
+    .identity-block strong {
+      max-width: 270px;
+      font-size: 21px;
+      line-height: 1.08;
+      font-weight: 950;
+    }
+    .identity-block span {
+      display: block;
+      max-width: 260px;
+      color: #34483c;
+      font-size: 16px;
+      line-height: 1.1;
+      font-weight: 820;
+    }
+    .benefits {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 38px;
+    }
+    .benefit {
+      color: #07140d;
+    }
+    .benefit-keyword {
+      font-size: 58px;
+      line-height: 0.95;
+      font-weight: 950;
+    }
+    .benefit-rest {
+      font-size: 27px;
+      line-height: 1;
+      font-weight: 780;
+    }
+    .benefit p {
+      margin: 10px 0 0;
+      max-width: 570px;
+      font-size: 22px;
+      line-height: 1.1;
+      font-weight: 780;
+    }
+    .you-word {
+      color: #07140d;
+      font-weight: 950;
+      font-style: normal;
+    }
+    .back-action {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 22px;
+      min-height: 100%;
+      padding-bottom: 112px;
+    }
+    .back-action img {
+      width: 260px;
+      height: 260px;
+      display: block;
+    }
+    .back-action p {
+      margin: 0;
+      max-width: 292px;
+      font-size: 22px;
+      line-height: 1.05;
+      font-weight: 900;
+    }
+    .back-action > strong {
+      display: block;
+      position: absolute;
+      left: -720px;
+      right: -12px;
+      bottom: 34px;
+      margin-top: 0;
+      color: #07140d;
+      text-align: center;
+      font-size: 42px;
+      line-height: 1;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+  
+    .ledger.front {
+      background:
+        linear-gradient(#ffffff 0 0) padding-box,
+        repeating-linear-gradient(0deg, rgba(0, 165, 64, 0.035) 0 1px, transparent 1px 48px);
+    }
+    .ledger .calculator-surface {
+      border-color: #07140d;
+      box-shadow: inset 10px 0 0 #00a540;
+    }
+    .ledger .front-qr {
+      border-right: 2px solid rgba(7, 20, 13, 0.16);
+    }
+    .ledger.back .back-content {
+      grid-template-columns: 320px 1fr 355px;
+      border-left: 8px solid #00a540;
+      padding-left: 34px;
+    }
+    .ledger.back .benefits {
+      border-top: 3px solid #00a540;
+      border-bottom: 3px solid #00a540;
+      padding: 36px 0;
+    }
+
+    .editorial.front .front-domain {
+      top: 68px;
+      font-size: 48px;
+    }
+    .editorial.front .front-hero {
+      left: 128px;
+      right: auto;
+      width: 760px;
+      top: 150px;
+      text-align: left;
+    }
+    .editorial.front .front-hero h1 {
+      font-size: 70px;
+    }
+    .editorial.front .front-hero h1 span {
+      font-size: 92px;
+    }
+    .editorial.front .founder-statement {
+      left: 940px;
+      right: 118px;
+      top: 168px;
+      padding: 0;
+      text-align: left;
+      border: 0;
+      border-left: 6px solid #00a540;
+      padding-left: 28px;
+    }
+    .editorial.front .founder-statement strong {
+      font-size: 28px;
+      line-height: 1.12;
+    }
+    .editorial.front .founder-statement span {
+      font-size: 22px;
+    }
+    .editorial.front .calculator-surface {
+      top: 556px;
+      grid-template-columns: 1fr 270px;
+      grid-template-rows: 92px 1fr;
+      border: 0;
+      border-top: 5px solid #07140d;
+      border-bottom: 5px solid #07140d;
+    }
+    .editorial.front .front-qr {
+      grid-column: 2;
+      grid-row: 1 / -1;
+      border-left: 2px solid rgba(7, 20, 13, 0.16);
+      padding-left: 24px;
+    }
+    .editorial.front .front-qr img {
+      width: 210px;
+      height: 210px;
+    }
+    .editorial.front .chart-panel {
+      grid-column: 1;
+    }
+    .editorial.back .back-content {
+      grid-template-columns: 330px 610px 360px;
+      gap: 52px;
+    }
+    .editorial.back .identity-block {
+      border-right: 5px solid #00a540;
+      padding-right: 40px;
+    }
+    .editorial.back .back-action {
+      align-items: flex-start;
+      text-align: left;
+    }
+    .editorial.back .back-action > strong {
+      right: 0;
+      text-align: center;
+      white-space: nowrap;
+      font-size: 40px;
+      line-height: 1;
+    }
+
+    .bordered.front,
+    .bordered.back {
+      background: #ffffff;
+    }
+    .bordered .trim-frame {
+      border: 5px solid #07140d;
+      outline: 5px solid #00a540;
+      outline-offset: -18px;
+    }
+    .bordered.front .front-hero {
+      top: 155px;
+    }
+    .bordered.front .calculator-surface {
+      top: 610px;
+      border: 4px solid #07140d;
+      padding: 22px 26px;
+    }
+    .bordered.front .input-card {
+      border-color: #07140d;
+    }
+    .bordered.back .mail-separator {
+      height: 7px;
+      background: #07140d;
+      box-shadow: 0 10px 0 #00a540;
+    }
+    .bordered.back .back-content {
+      top: 360px;
+      height: 700px;
+      border: 4px solid #07140d;
+      padding: 32px 40px;
+      grid-template-columns: 295px 1fr 340px;
+      gap: 40px;
+    }
+    .bordered.back .brand-logo {
+      width: 205px;
+    }
+    .bordered.back .dvo-photo {
+      width: 195px;
+      height: 260px;
+    }
+    .bordered.back .benefits {
+      gap: 30px;
+    }
+    .bordered.back .back-action > strong {
+      bottom: 30px;
+      font-size: 39px;
+    }
+
+    .whitespace.front .front-domain {
+      top: 86px;
+      font-size: 44px;
+    }
+    .whitespace.front .front-hero {
+      top: 168px;
+    }
+    .whitespace.front .front-hero h1 {
+      font-size: 58px;
+    }
+    .whitespace.front .front-hero h1 span {
+      font-size: 86px;
+    }
+    .whitespace.front .founder-statement {
+      top: 392px;
+      border: 0;
+      padding: 0 120px;
+    }
+    .whitespace.front .founder-statement strong {
+      font-size: 32px;
+    }
+    .whitespace.front .calculator-surface {
+      top: 650px;
+      height: 470px;
+      border: 0;
+      padding: 0;
+      grid-template-columns: 255px 1fr;
+      background: transparent;
+    }
+    .whitespace.front .inputs {
+      grid-template-columns: repeat(5, 1fr);
+      padding-bottom: 18px;
+      border-bottom: 2px solid rgba(7, 20, 13, 0.13);
+    }
+    .whitespace.front .input-card {
+      border: 0;
+      border-left: 4px solid #00a540;
+      background: transparent;
+      padding-left: 18px;
+    }
+    .whitespace.back .mail-separator {
+      left: 92px;
+      right: 92px;
+      height: 2px;
+    }
+    .whitespace.back .back-content {
+      left: 132px;
+      right: 132px;
+      grid-template-columns: 285px 1fr 330px;
+      gap: 62px;
+    }
+    .whitespace.back .identity-block,
+    .whitespace.back .back-action {
+      justify-content: flex-start;
+      padding-top: 70px;
+    }
+    .whitespace.back .benefit {
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(7, 20, 13, 0.16);
+    }
+    .whitespace.back .benefit:last-child {
+      border-bottom: 0;
+    }
+
+    .proofstrip.front:before,
+    .proofstrip.back:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 58px;
+      background: #00a540;
+    }
+    .proofstrip.front .front-domain,
+    .proofstrip.front .front-hero,
+    .proofstrip.front .founder-statement,
+    .proofstrip.front .calculator-surface,
+    .proofstrip.front .front-disclosure {
+      transform: translateX(22px);
+    }
+    .proofstrip.front .calculator-surface {
+      border: 0;
+      border-left: 8px solid #00a540;
+      box-shadow: 0 0 0 2px rgba(7, 20, 13, 0.12);
+    }
+    .proofstrip.front .input-card:last-child {
+      background: #ffffff;
+      border-color: #00a540;
+    }
+    .proofstrip.back .mail-zone,
+    .proofstrip.back .mail-separator,
+    .proofstrip.back .back-content,
+    .proofstrip.back .back-disclosure {
+      transform: translateX(22px);
+    }
+    .proofstrip.back .mail-separator {
+      left: 80px;
+    }
+    .proofstrip.back .back-content {
+      grid-template-columns: 285px 1fr 380px;
+      gap: 52px;
+    }
+    .proofstrip.back .identity-block {
+      border-right: 2px solid rgba(0, 165, 64, 0.45);
+      padding-right: 34px;
+    }
+    .proofstrip.back .back-action {
+      border-left: 2px solid rgba(7, 20, 13, 0.12);
+      padding-left: 34px;
+    }
+
+    .classic.front .front-domain {
+      top: 80px;
+      font-size: 52px;
+    }
+    .classic.front .front-hero {
+      top: 162px;
+      left: 190px;
+      right: 190px;
+    }
+    .classic.front .front-hero h1 {
+      font-size: 58px;
+    }
+    .classic.front .front-hero h1 span {
+      font-size: 82px;
+    }
+    .classic.front .founder-statement {
+      top: 402px;
+      left: 210px;
+      right: 210px;
+      padding: 22px 0;
+      background: #ffffff;
+    }
+    .classic.front .calculator-surface {
+      left: 160px;
+      right: 160px;
+      top: 620px;
+      height: 508px;
+      border-color: #c6d6cc;
+      border-radius: 0;
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 18px 24px;
+    }
+    .classic.front .input-card {
+      background: #ffffff;
+    }
+    .classic.back .back-content {
+      grid-template-columns: 292px 1fr 330px;
+      gap: 46px;
+    }
+    .classic.back .identity-block {
+      padding-left: 20px;
+    }
+    .classic.back .benefits {
+      gap: 34px;
+    }
+    .classic.back .benefit-keyword {
+      font-size: 54px;
+    }
+    .classic.back .back-action img {
+      width: 240px;
+      height: 240px;
+    }
+    .classic.back .back-action > strong {
+      font-size: 40px;
+    }
+  </style>
+</head>
+<body>
+  <main class="print-pack">
+    <section class="page front ledger" data-concept="01-ledger-rules-front">
+      <div class="trim-frame"></div>
+      <div class="front-domain">youarepayingtoomuch.com</div>
+      <div class="front-hero">
+        <h1>What would you do with <span>$788,000*?</span></h1>
+        <p>* potential savings over 20 years.</p>
+      </div>
+      <div class="founder-statement">
+        <strong>Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.</strong>
+        <span>David Van Osdol, CFA, CFP</span>
+      </div>
+      <div class="calculator-surface">
+        <div class="inputs">
+        <div class="input-card">
+          <span>Portfolio</span>
+          <strong>$1,000,000</strong>
+        </div>
+        <div class="input-card">
+          <span>Years</span>
+          <strong>20</strong>
+        </div>
+        <div class="input-card">
+          <span>Growth</span>
+          <strong>8%</strong>
+        </div>
+        <div class="input-card">
+          <span>AUM fee</span>
+          <strong>1%</strong>
+        </div>
+        <div class="input-card">
+          <span>Potential gap</span>
+          <strong>$788,306</strong>
+        </div></div>
+        <div class="chart-panel">
+    <svg class="chart-svg" viewBox="0 0 980 420" aria-label="Projected values over 20 years" role="img">
+      <rect x="0" y="0" width="980" height="420" rx="0" class="chart-background" />
+      
+        <line x1="112" y1="298.4" x2="934" y2="298.4" class="chart-grid" />
+        <text x="94" y="303.4" class="chart-label" text-anchor="end">$1M</text>
+        <line x1="112" y1="234.79999999999998" x2="934" y2="234.79999999999998" class="chart-grid" />
+        <text x="94" y="239.79999999999998" class="chart-label" text-anchor="end">$2M</text>
+        <line x1="112" y1="171.2" x2="934" y2="171.2" class="chart-grid" />
+        <text x="94" y="176.2" class="chart-label" text-anchor="end">$3M</text>
+        <line x1="112" y1="107.6" x2="934" y2="107.6" class="chart-grid" />
+        <text x="94" y="112.6" class="chart-label" text-anchor="end">$4M</text>
+        <line x1="112" y1="44" x2="934" y2="44" class="chart-grid" />
+        <text x="94" y="49" class="chart-label" text-anchor="end">$5M</text>
+      
+        <line x1="112" y1="44" x2="112" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="112" y="396" class="chart-label" text-anchor="middle">0y</text>
+        <line x1="317.5" y1="44" x2="317.5" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="317.5" y="396" class="chart-label" text-anchor="middle">5y</text>
+        <line x1="523" y1="44" x2="523" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="523" y="396" class="chart-label" text-anchor="middle">10y</text>
+        <line x1="728.5" y1="44" x2="728.5" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="728.5" y="396" class="chart-label" text-anchor="middle">15y</text>
+        <line x1="934" y1="44" x2="934" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="934" y="396" class="chart-label" text-anchor="middle">20y</text>
+      <line x1="112" y1="44" x2="112" y2="362" class="chart-axis" />
+      <line x1="112" y1="362" x2="934" y2="362" class="chart-axis" />
+      <polyline points="112.0,298.4 153.1,294.0 194.2,289.3 235.3,284.3 276.4,278.9 317.5,273.1 358.6,267.0 399.7,260.4 440.8,253.3 481.9,245.8 523.0,237.8 564.1,229.2 605.2,220.0 646.3,210.1 687.4,199.6 728.5,188.4 769.6,176.3 810.7,163.5 851.8,149.7 892.9,135.0 934.0,119.3" class="chart-aum" />
+      <polyline points="112.0,298.4 153.1,293.4 194.2,288.0 235.3,282.1 276.4,275.8 317.5,269.0 358.6,261.7 399.7,253.7 440.8,245.1 481.9,235.9 523.0,225.8 564.1,215.0 605.2,203.3 646.3,190.7 687.4,177.1 728.5,162.4 769.6,146.5 810.7,129.3 851.8,110.8 892.9,90.8 934.0,69.2" class="chart-flat" />
+      <circle cx="934" cy="69.18195973134988" r="9" class="chart-dot-flat" />
+      <circle cx="934" cy="119.31825018936175" r="9" class="chart-dot-aum" />
+      <text x="919" y="45.18195973134988" class="chart-final chart-final-flat" text-anchor="end">$4,604,057</text>
+      <text x="919" y="147.31825018936175" class="chart-final chart-final-aum" text-anchor="end">$3,815,751</text>
+      <line x1="846" y1="79.18195973134988" x2="846" y2="109.31825018936175" class="gap-line" />
+      <text x="829" y="101.25010496035581" class="chart-gap" text-anchor="end">$788,306 gap</text>
+    </svg></div>
+        <div class="front-qr">
+          <img src="file:///D:/ria-marketing-page/output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="Calculator QR code" />
+          <strong>Scan to run<br />your numbers</strong>
+        </div>
+      </div>
+      <div class="front-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </section>
+    <section class="page back ledger" data-concept="01-ledger-rules-back">
+      <div class="trim-frame"></div>
+      <div class="mail-zone">
+        <div class="return-address">
+          <strong>Smarter Way Wealth, LLC</strong>
+          <span>youarepayingtoomuch.com</span>
+          <span>smarterwaywealth.com</span>
+        </div>
+        <div class="postal-customer">
+          <strong>LOCAL POSTAL CUSTOMER</strong>
+          <span>EDDM route delivery</span>
+        </div>
+        <div class="indicia">PRSRT STD<br />ECRWSS<br />U.S. POSTAGE<br />PAID<br />EDDM RETAIL</div>
+      </div>
+      <div class="mail-separator"></div>
+      <div class="back-content">
+        <div class="identity-block">
+          <img class="brand-logo" src="file:///D:/ria-marketing-page/public/brand/logo-800.png" alt="Smarter Way Wealth logo" />
+          <img class="dvo-photo" src="file:///D:/ria-marketing-page/public/DVO%20Head%20Shot%20picture.jpg" alt="David Van Osdol" />
+          <strong>David Van Osdol, CFA, CFP</strong>
+          <span>Founder, Smarter Way Wealth</span>
+        </div>
+        <div class="benefits">
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Save</span> <span class="benefit-rest">a Ton!</span></div>
+      <p>$100/mo. flat fee vs. % asset-based fee.</p>
+    </div>
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Upgrade</span> <span class="benefit-rest">your Advice</span></div>
+      <p>Highly credentialed, highly experienced.</p>
+    </div>
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Improve</span> <span class="benefit-rest">your Tools</span></div>
+      <p>Better financial planning tools that <strong class="you-word">you</strong> own.</p>
+    </div>
+        </div>
+        <div class="back-action">
+          <img src="file:///D:/ria-marketing-page/output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="Calculator QR code" />
+          <p>See how much you can save using your actual numbers.</p>
+          <strong>youarepayingtoomuch.com</strong>
+        </div>
+      </div>
+      <div class="back-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </section>
+    <section class="page front editorial" data-concept="02-editorial-column-front">
+      <div class="trim-frame"></div>
+      <div class="front-domain">youarepayingtoomuch.com</div>
+      <div class="front-hero">
+        <h1>What would you do with <span>$788,000*?</span></h1>
+        <p>* potential savings over 20 years.</p>
+      </div>
+      <div class="founder-statement">
+        <strong>Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.</strong>
+        <span>David Van Osdol, CFA, CFP</span>
+      </div>
+      <div class="calculator-surface">
+        <div class="inputs">
+        <div class="input-card">
+          <span>Portfolio</span>
+          <strong>$1,000,000</strong>
+        </div>
+        <div class="input-card">
+          <span>Years</span>
+          <strong>20</strong>
+        </div>
+        <div class="input-card">
+          <span>Growth</span>
+          <strong>8%</strong>
+        </div>
+        <div class="input-card">
+          <span>AUM fee</span>
+          <strong>1%</strong>
+        </div>
+        <div class="input-card">
+          <span>Potential gap</span>
+          <strong>$788,306</strong>
+        </div></div>
+        <div class="chart-panel">
+    <svg class="chart-svg" viewBox="0 0 980 420" aria-label="Projected values over 20 years" role="img">
+      <rect x="0" y="0" width="980" height="420" rx="0" class="chart-background" />
+      
+        <line x1="112" y1="298.4" x2="934" y2="298.4" class="chart-grid" />
+        <text x="94" y="303.4" class="chart-label" text-anchor="end">$1M</text>
+        <line x1="112" y1="234.79999999999998" x2="934" y2="234.79999999999998" class="chart-grid" />
+        <text x="94" y="239.79999999999998" class="chart-label" text-anchor="end">$2M</text>
+        <line x1="112" y1="171.2" x2="934" y2="171.2" class="chart-grid" />
+        <text x="94" y="176.2" class="chart-label" text-anchor="end">$3M</text>
+        <line x1="112" y1="107.6" x2="934" y2="107.6" class="chart-grid" />
+        <text x="94" y="112.6" class="chart-label" text-anchor="end">$4M</text>
+        <line x1="112" y1="44" x2="934" y2="44" class="chart-grid" />
+        <text x="94" y="49" class="chart-label" text-anchor="end">$5M</text>
+      
+        <line x1="112" y1="44" x2="112" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="112" y="396" class="chart-label" text-anchor="middle">0y</text>
+        <line x1="317.5" y1="44" x2="317.5" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="317.5" y="396" class="chart-label" text-anchor="middle">5y</text>
+        <line x1="523" y1="44" x2="523" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="523" y="396" class="chart-label" text-anchor="middle">10y</text>
+        <line x1="728.5" y1="44" x2="728.5" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="728.5" y="396" class="chart-label" text-anchor="middle">15y</text>
+        <line x1="934" y1="44" x2="934" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="934" y="396" class="chart-label" text-anchor="middle">20y</text>
+      <line x1="112" y1="44" x2="112" y2="362" class="chart-axis" />
+      <line x1="112" y1="362" x2="934" y2="362" class="chart-axis" />
+      <polyline points="112.0,298.4 153.1,294.0 194.2,289.3 235.3,284.3 276.4,278.9 317.5,273.1 358.6,267.0 399.7,260.4 440.8,253.3 481.9,245.8 523.0,237.8 564.1,229.2 605.2,220.0 646.3,210.1 687.4,199.6 728.5,188.4 769.6,176.3 810.7,163.5 851.8,149.7 892.9,135.0 934.0,119.3" class="chart-aum" />
+      <polyline points="112.0,298.4 153.1,293.4 194.2,288.0 235.3,282.1 276.4,275.8 317.5,269.0 358.6,261.7 399.7,253.7 440.8,245.1 481.9,235.9 523.0,225.8 564.1,215.0 605.2,203.3 646.3,190.7 687.4,177.1 728.5,162.4 769.6,146.5 810.7,129.3 851.8,110.8 892.9,90.8 934.0,69.2" class="chart-flat" />
+      <circle cx="934" cy="69.18195973134988" r="9" class="chart-dot-flat" />
+      <circle cx="934" cy="119.31825018936175" r="9" class="chart-dot-aum" />
+      <text x="919" y="45.18195973134988" class="chart-final chart-final-flat" text-anchor="end">$4,604,057</text>
+      <text x="919" y="147.31825018936175" class="chart-final chart-final-aum" text-anchor="end">$3,815,751</text>
+      <line x1="846" y1="79.18195973134988" x2="846" y2="109.31825018936175" class="gap-line" />
+      <text x="829" y="101.25010496035581" class="chart-gap" text-anchor="end">$788,306 gap</text>
+    </svg></div>
+        <div class="front-qr">
+          <img src="file:///D:/ria-marketing-page/output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="Calculator QR code" />
+          <strong>Scan to run<br />your numbers</strong>
+        </div>
+      </div>
+      <div class="front-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </section>
+    <section class="page back editorial" data-concept="02-editorial-column-back">
+      <div class="trim-frame"></div>
+      <div class="mail-zone">
+        <div class="return-address">
+          <strong>Smarter Way Wealth, LLC</strong>
+          <span>youarepayingtoomuch.com</span>
+          <span>smarterwaywealth.com</span>
+        </div>
+        <div class="postal-customer">
+          <strong>LOCAL POSTAL CUSTOMER</strong>
+          <span>EDDM route delivery</span>
+        </div>
+        <div class="indicia">PRSRT STD<br />ECRWSS<br />U.S. POSTAGE<br />PAID<br />EDDM RETAIL</div>
+      </div>
+      <div class="mail-separator"></div>
+      <div class="back-content">
+        <div class="identity-block">
+          <img class="brand-logo" src="file:///D:/ria-marketing-page/public/brand/logo-800.png" alt="Smarter Way Wealth logo" />
+          <img class="dvo-photo" src="file:///D:/ria-marketing-page/public/DVO%20Head%20Shot%20picture.jpg" alt="David Van Osdol" />
+          <strong>David Van Osdol, CFA, CFP</strong>
+          <span>Founder, Smarter Way Wealth</span>
+        </div>
+        <div class="benefits">
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Save</span> <span class="benefit-rest">a Ton!</span></div>
+      <p>$100/mo. flat fee vs. % asset-based fee.</p>
+    </div>
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Upgrade</span> <span class="benefit-rest">your Advice</span></div>
+      <p>Highly credentialed, highly experienced.</p>
+    </div>
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Improve</span> <span class="benefit-rest">your Tools</span></div>
+      <p>Better financial planning tools that <strong class="you-word">you</strong> own.</p>
+    </div>
+        </div>
+        <div class="back-action">
+          <img src="file:///D:/ria-marketing-page/output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="Calculator QR code" />
+          <p>See how much you can save using your actual numbers.</p>
+          <strong>youarepayingtoomuch.com</strong>
+        </div>
+      </div>
+      <div class="back-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </section>
+    <section class="page front bordered" data-concept="03-statement-border-front">
+      <div class="trim-frame"></div>
+      <div class="front-domain">youarepayingtoomuch.com</div>
+      <div class="front-hero">
+        <h1>What would you do with <span>$788,000*?</span></h1>
+        <p>* potential savings over 20 years.</p>
+      </div>
+      <div class="founder-statement">
+        <strong>Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.</strong>
+        <span>David Van Osdol, CFA, CFP</span>
+      </div>
+      <div class="calculator-surface">
+        <div class="inputs">
+        <div class="input-card">
+          <span>Portfolio</span>
+          <strong>$1,000,000</strong>
+        </div>
+        <div class="input-card">
+          <span>Years</span>
+          <strong>20</strong>
+        </div>
+        <div class="input-card">
+          <span>Growth</span>
+          <strong>8%</strong>
+        </div>
+        <div class="input-card">
+          <span>AUM fee</span>
+          <strong>1%</strong>
+        </div>
+        <div class="input-card">
+          <span>Potential gap</span>
+          <strong>$788,306</strong>
+        </div></div>
+        <div class="chart-panel">
+    <svg class="chart-svg" viewBox="0 0 980 420" aria-label="Projected values over 20 years" role="img">
+      <rect x="0" y="0" width="980" height="420" rx="0" class="chart-background" />
+      
+        <line x1="112" y1="298.4" x2="934" y2="298.4" class="chart-grid" />
+        <text x="94" y="303.4" class="chart-label" text-anchor="end">$1M</text>
+        <line x1="112" y1="234.79999999999998" x2="934" y2="234.79999999999998" class="chart-grid" />
+        <text x="94" y="239.79999999999998" class="chart-label" text-anchor="end">$2M</text>
+        <line x1="112" y1="171.2" x2="934" y2="171.2" class="chart-grid" />
+        <text x="94" y="176.2" class="chart-label" text-anchor="end">$3M</text>
+        <line x1="112" y1="107.6" x2="934" y2="107.6" class="chart-grid" />
+        <text x="94" y="112.6" class="chart-label" text-anchor="end">$4M</text>
+        <line x1="112" y1="44" x2="934" y2="44" class="chart-grid" />
+        <text x="94" y="49" class="chart-label" text-anchor="end">$5M</text>
+      
+        <line x1="112" y1="44" x2="112" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="112" y="396" class="chart-label" text-anchor="middle">0y</text>
+        <line x1="317.5" y1="44" x2="317.5" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="317.5" y="396" class="chart-label" text-anchor="middle">5y</text>
+        <line x1="523" y1="44" x2="523" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="523" y="396" class="chart-label" text-anchor="middle">10y</text>
+        <line x1="728.5" y1="44" x2="728.5" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="728.5" y="396" class="chart-label" text-anchor="middle">15y</text>
+        <line x1="934" y1="44" x2="934" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="934" y="396" class="chart-label" text-anchor="middle">20y</text>
+      <line x1="112" y1="44" x2="112" y2="362" class="chart-axis" />
+      <line x1="112" y1="362" x2="934" y2="362" class="chart-axis" />
+      <polyline points="112.0,298.4 153.1,294.0 194.2,289.3 235.3,284.3 276.4,278.9 317.5,273.1 358.6,267.0 399.7,260.4 440.8,253.3 481.9,245.8 523.0,237.8 564.1,229.2 605.2,220.0 646.3,210.1 687.4,199.6 728.5,188.4 769.6,176.3 810.7,163.5 851.8,149.7 892.9,135.0 934.0,119.3" class="chart-aum" />
+      <polyline points="112.0,298.4 153.1,293.4 194.2,288.0 235.3,282.1 276.4,275.8 317.5,269.0 358.6,261.7 399.7,253.7 440.8,245.1 481.9,235.9 523.0,225.8 564.1,215.0 605.2,203.3 646.3,190.7 687.4,177.1 728.5,162.4 769.6,146.5 810.7,129.3 851.8,110.8 892.9,90.8 934.0,69.2" class="chart-flat" />
+      <circle cx="934" cy="69.18195973134988" r="9" class="chart-dot-flat" />
+      <circle cx="934" cy="119.31825018936175" r="9" class="chart-dot-aum" />
+      <text x="919" y="45.18195973134988" class="chart-final chart-final-flat" text-anchor="end">$4,604,057</text>
+      <text x="919" y="147.31825018936175" class="chart-final chart-final-aum" text-anchor="end">$3,815,751</text>
+      <line x1="846" y1="79.18195973134988" x2="846" y2="109.31825018936175" class="gap-line" />
+      <text x="829" y="101.25010496035581" class="chart-gap" text-anchor="end">$788,306 gap</text>
+    </svg></div>
+        <div class="front-qr">
+          <img src="file:///D:/ria-marketing-page/output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="Calculator QR code" />
+          <strong>Scan to run<br />your numbers</strong>
+        </div>
+      </div>
+      <div class="front-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </section>
+    <section class="page back bordered" data-concept="03-statement-border-back">
+      <div class="trim-frame"></div>
+      <div class="mail-zone">
+        <div class="return-address">
+          <strong>Smarter Way Wealth, LLC</strong>
+          <span>youarepayingtoomuch.com</span>
+          <span>smarterwaywealth.com</span>
+        </div>
+        <div class="postal-customer">
+          <strong>LOCAL POSTAL CUSTOMER</strong>
+          <span>EDDM route delivery</span>
+        </div>
+        <div class="indicia">PRSRT STD<br />ECRWSS<br />U.S. POSTAGE<br />PAID<br />EDDM RETAIL</div>
+      </div>
+      <div class="mail-separator"></div>
+      <div class="back-content">
+        <div class="identity-block">
+          <img class="brand-logo" src="file:///D:/ria-marketing-page/public/brand/logo-800.png" alt="Smarter Way Wealth logo" />
+          <img class="dvo-photo" src="file:///D:/ria-marketing-page/public/DVO%20Head%20Shot%20picture.jpg" alt="David Van Osdol" />
+          <strong>David Van Osdol, CFA, CFP</strong>
+          <span>Founder, Smarter Way Wealth</span>
+        </div>
+        <div class="benefits">
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Save</span> <span class="benefit-rest">a Ton!</span></div>
+      <p>$100/mo. flat fee vs. % asset-based fee.</p>
+    </div>
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Upgrade</span> <span class="benefit-rest">your Advice</span></div>
+      <p>Highly credentialed, highly experienced.</p>
+    </div>
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Improve</span> <span class="benefit-rest">your Tools</span></div>
+      <p>Better financial planning tools that <strong class="you-word">you</strong> own.</p>
+    </div>
+        </div>
+        <div class="back-action">
+          <img src="file:///D:/ria-marketing-page/output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="Calculator QR code" />
+          <p>See how much you can save using your actual numbers.</p>
+          <strong>youarepayingtoomuch.com</strong>
+        </div>
+      </div>
+      <div class="back-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </section>
+    <section class="page front whitespace" data-concept="04-white-space-front">
+      <div class="trim-frame"></div>
+      <div class="front-domain">youarepayingtoomuch.com</div>
+      <div class="front-hero">
+        <h1>What would you do with <span>$788,000*?</span></h1>
+        <p>* potential savings over 20 years.</p>
+      </div>
+      <div class="founder-statement">
+        <strong>Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.</strong>
+        <span>David Van Osdol, CFA, CFP</span>
+      </div>
+      <div class="calculator-surface">
+        <div class="inputs">
+        <div class="input-card">
+          <span>Portfolio</span>
+          <strong>$1,000,000</strong>
+        </div>
+        <div class="input-card">
+          <span>Years</span>
+          <strong>20</strong>
+        </div>
+        <div class="input-card">
+          <span>Growth</span>
+          <strong>8%</strong>
+        </div>
+        <div class="input-card">
+          <span>AUM fee</span>
+          <strong>1%</strong>
+        </div>
+        <div class="input-card">
+          <span>Potential gap</span>
+          <strong>$788,306</strong>
+        </div></div>
+        <div class="chart-panel">
+    <svg class="chart-svg" viewBox="0 0 980 420" aria-label="Projected values over 20 years" role="img">
+      <rect x="0" y="0" width="980" height="420" rx="0" class="chart-background" />
+      
+        <line x1="112" y1="298.4" x2="934" y2="298.4" class="chart-grid" />
+        <text x="94" y="303.4" class="chart-label" text-anchor="end">$1M</text>
+        <line x1="112" y1="234.79999999999998" x2="934" y2="234.79999999999998" class="chart-grid" />
+        <text x="94" y="239.79999999999998" class="chart-label" text-anchor="end">$2M</text>
+        <line x1="112" y1="171.2" x2="934" y2="171.2" class="chart-grid" />
+        <text x="94" y="176.2" class="chart-label" text-anchor="end">$3M</text>
+        <line x1="112" y1="107.6" x2="934" y2="107.6" class="chart-grid" />
+        <text x="94" y="112.6" class="chart-label" text-anchor="end">$4M</text>
+        <line x1="112" y1="44" x2="934" y2="44" class="chart-grid" />
+        <text x="94" y="49" class="chart-label" text-anchor="end">$5M</text>
+      
+        <line x1="112" y1="44" x2="112" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="112" y="396" class="chart-label" text-anchor="middle">0y</text>
+        <line x1="317.5" y1="44" x2="317.5" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="317.5" y="396" class="chart-label" text-anchor="middle">5y</text>
+        <line x1="523" y1="44" x2="523" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="523" y="396" class="chart-label" text-anchor="middle">10y</text>
+        <line x1="728.5" y1="44" x2="728.5" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="728.5" y="396" class="chart-label" text-anchor="middle">15y</text>
+        <line x1="934" y1="44" x2="934" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="934" y="396" class="chart-label" text-anchor="middle">20y</text>
+      <line x1="112" y1="44" x2="112" y2="362" class="chart-axis" />
+      <line x1="112" y1="362" x2="934" y2="362" class="chart-axis" />
+      <polyline points="112.0,298.4 153.1,294.0 194.2,289.3 235.3,284.3 276.4,278.9 317.5,273.1 358.6,267.0 399.7,260.4 440.8,253.3 481.9,245.8 523.0,237.8 564.1,229.2 605.2,220.0 646.3,210.1 687.4,199.6 728.5,188.4 769.6,176.3 810.7,163.5 851.8,149.7 892.9,135.0 934.0,119.3" class="chart-aum" />
+      <polyline points="112.0,298.4 153.1,293.4 194.2,288.0 235.3,282.1 276.4,275.8 317.5,269.0 358.6,261.7 399.7,253.7 440.8,245.1 481.9,235.9 523.0,225.8 564.1,215.0 605.2,203.3 646.3,190.7 687.4,177.1 728.5,162.4 769.6,146.5 810.7,129.3 851.8,110.8 892.9,90.8 934.0,69.2" class="chart-flat" />
+      <circle cx="934" cy="69.18195973134988" r="9" class="chart-dot-flat" />
+      <circle cx="934" cy="119.31825018936175" r="9" class="chart-dot-aum" />
+      <text x="919" y="45.18195973134988" class="chart-final chart-final-flat" text-anchor="end">$4,604,057</text>
+      <text x="919" y="147.31825018936175" class="chart-final chart-final-aum" text-anchor="end">$3,815,751</text>
+      <line x1="846" y1="79.18195973134988" x2="846" y2="109.31825018936175" class="gap-line" />
+      <text x="829" y="101.25010496035581" class="chart-gap" text-anchor="end">$788,306 gap</text>
+    </svg></div>
+        <div class="front-qr">
+          <img src="file:///D:/ria-marketing-page/output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="Calculator QR code" />
+          <strong>Scan to run<br />your numbers</strong>
+        </div>
+      </div>
+      <div class="front-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </section>
+    <section class="page back whitespace" data-concept="04-white-space-back">
+      <div class="trim-frame"></div>
+      <div class="mail-zone">
+        <div class="return-address">
+          <strong>Smarter Way Wealth, LLC</strong>
+          <span>youarepayingtoomuch.com</span>
+          <span>smarterwaywealth.com</span>
+        </div>
+        <div class="postal-customer">
+          <strong>LOCAL POSTAL CUSTOMER</strong>
+          <span>EDDM route delivery</span>
+        </div>
+        <div class="indicia">PRSRT STD<br />ECRWSS<br />U.S. POSTAGE<br />PAID<br />EDDM RETAIL</div>
+      </div>
+      <div class="mail-separator"></div>
+      <div class="back-content">
+        <div class="identity-block">
+          <img class="brand-logo" src="file:///D:/ria-marketing-page/public/brand/logo-800.png" alt="Smarter Way Wealth logo" />
+          <img class="dvo-photo" src="file:///D:/ria-marketing-page/public/DVO%20Head%20Shot%20picture.jpg" alt="David Van Osdol" />
+          <strong>David Van Osdol, CFA, CFP</strong>
+          <span>Founder, Smarter Way Wealth</span>
+        </div>
+        <div class="benefits">
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Save</span> <span class="benefit-rest">a Ton!</span></div>
+      <p>$100/mo. flat fee vs. % asset-based fee.</p>
+    </div>
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Upgrade</span> <span class="benefit-rest">your Advice</span></div>
+      <p>Highly credentialed, highly experienced.</p>
+    </div>
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Improve</span> <span class="benefit-rest">your Tools</span></div>
+      <p>Better financial planning tools that <strong class="you-word">you</strong> own.</p>
+    </div>
+        </div>
+        <div class="back-action">
+          <img src="file:///D:/ria-marketing-page/output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="Calculator QR code" />
+          <p>See how much you can save using your actual numbers.</p>
+          <strong>youarepayingtoomuch.com</strong>
+        </div>
+      </div>
+      <div class="back-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </section>
+    <section class="page front proofstrip" data-concept="05-proof-strip-front">
+      <div class="trim-frame"></div>
+      <div class="front-domain">youarepayingtoomuch.com</div>
+      <div class="front-hero">
+        <h1>What would you do with <span>$788,000*?</span></h1>
+        <p>* potential savings over 20 years.</p>
+      </div>
+      <div class="founder-statement">
+        <strong>Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.</strong>
+        <span>David Van Osdol, CFA, CFP</span>
+      </div>
+      <div class="calculator-surface">
+        <div class="inputs">
+        <div class="input-card">
+          <span>Portfolio</span>
+          <strong>$1,000,000</strong>
+        </div>
+        <div class="input-card">
+          <span>Years</span>
+          <strong>20</strong>
+        </div>
+        <div class="input-card">
+          <span>Growth</span>
+          <strong>8%</strong>
+        </div>
+        <div class="input-card">
+          <span>AUM fee</span>
+          <strong>1%</strong>
+        </div>
+        <div class="input-card">
+          <span>Potential gap</span>
+          <strong>$788,306</strong>
+        </div></div>
+        <div class="chart-panel">
+    <svg class="chart-svg" viewBox="0 0 980 420" aria-label="Projected values over 20 years" role="img">
+      <rect x="0" y="0" width="980" height="420" rx="0" class="chart-background" />
+      
+        <line x1="112" y1="298.4" x2="934" y2="298.4" class="chart-grid" />
+        <text x="94" y="303.4" class="chart-label" text-anchor="end">$1M</text>
+        <line x1="112" y1="234.79999999999998" x2="934" y2="234.79999999999998" class="chart-grid" />
+        <text x="94" y="239.79999999999998" class="chart-label" text-anchor="end">$2M</text>
+        <line x1="112" y1="171.2" x2="934" y2="171.2" class="chart-grid" />
+        <text x="94" y="176.2" class="chart-label" text-anchor="end">$3M</text>
+        <line x1="112" y1="107.6" x2="934" y2="107.6" class="chart-grid" />
+        <text x="94" y="112.6" class="chart-label" text-anchor="end">$4M</text>
+        <line x1="112" y1="44" x2="934" y2="44" class="chart-grid" />
+        <text x="94" y="49" class="chart-label" text-anchor="end">$5M</text>
+      
+        <line x1="112" y1="44" x2="112" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="112" y="396" class="chart-label" text-anchor="middle">0y</text>
+        <line x1="317.5" y1="44" x2="317.5" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="317.5" y="396" class="chart-label" text-anchor="middle">5y</text>
+        <line x1="523" y1="44" x2="523" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="523" y="396" class="chart-label" text-anchor="middle">10y</text>
+        <line x1="728.5" y1="44" x2="728.5" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="728.5" y="396" class="chart-label" text-anchor="middle">15y</text>
+        <line x1="934" y1="44" x2="934" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="934" y="396" class="chart-label" text-anchor="middle">20y</text>
+      <line x1="112" y1="44" x2="112" y2="362" class="chart-axis" />
+      <line x1="112" y1="362" x2="934" y2="362" class="chart-axis" />
+      <polyline points="112.0,298.4 153.1,294.0 194.2,289.3 235.3,284.3 276.4,278.9 317.5,273.1 358.6,267.0 399.7,260.4 440.8,253.3 481.9,245.8 523.0,237.8 564.1,229.2 605.2,220.0 646.3,210.1 687.4,199.6 728.5,188.4 769.6,176.3 810.7,163.5 851.8,149.7 892.9,135.0 934.0,119.3" class="chart-aum" />
+      <polyline points="112.0,298.4 153.1,293.4 194.2,288.0 235.3,282.1 276.4,275.8 317.5,269.0 358.6,261.7 399.7,253.7 440.8,245.1 481.9,235.9 523.0,225.8 564.1,215.0 605.2,203.3 646.3,190.7 687.4,177.1 728.5,162.4 769.6,146.5 810.7,129.3 851.8,110.8 892.9,90.8 934.0,69.2" class="chart-flat" />
+      <circle cx="934" cy="69.18195973134988" r="9" class="chart-dot-flat" />
+      <circle cx="934" cy="119.31825018936175" r="9" class="chart-dot-aum" />
+      <text x="919" y="45.18195973134988" class="chart-final chart-final-flat" text-anchor="end">$4,604,057</text>
+      <text x="919" y="147.31825018936175" class="chart-final chart-final-aum" text-anchor="end">$3,815,751</text>
+      <line x1="846" y1="79.18195973134988" x2="846" y2="109.31825018936175" class="gap-line" />
+      <text x="829" y="101.25010496035581" class="chart-gap" text-anchor="end">$788,306 gap</text>
+    </svg></div>
+        <div class="front-qr">
+          <img src="file:///D:/ria-marketing-page/output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="Calculator QR code" />
+          <strong>Scan to run<br />your numbers</strong>
+        </div>
+      </div>
+      <div class="front-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </section>
+    <section class="page back proofstrip" data-concept="05-proof-strip-back">
+      <div class="trim-frame"></div>
+      <div class="mail-zone">
+        <div class="return-address">
+          <strong>Smarter Way Wealth, LLC</strong>
+          <span>youarepayingtoomuch.com</span>
+          <span>smarterwaywealth.com</span>
+        </div>
+        <div class="postal-customer">
+          <strong>LOCAL POSTAL CUSTOMER</strong>
+          <span>EDDM route delivery</span>
+        </div>
+        <div class="indicia">PRSRT STD<br />ECRWSS<br />U.S. POSTAGE<br />PAID<br />EDDM RETAIL</div>
+      </div>
+      <div class="mail-separator"></div>
+      <div class="back-content">
+        <div class="identity-block">
+          <img class="brand-logo" src="file:///D:/ria-marketing-page/public/brand/logo-800.png" alt="Smarter Way Wealth logo" />
+          <img class="dvo-photo" src="file:///D:/ria-marketing-page/public/DVO%20Head%20Shot%20picture.jpg" alt="David Van Osdol" />
+          <strong>David Van Osdol, CFA, CFP</strong>
+          <span>Founder, Smarter Way Wealth</span>
+        </div>
+        <div class="benefits">
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Save</span> <span class="benefit-rest">a Ton!</span></div>
+      <p>$100/mo. flat fee vs. % asset-based fee.</p>
+    </div>
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Upgrade</span> <span class="benefit-rest">your Advice</span></div>
+      <p>Highly credentialed, highly experienced.</p>
+    </div>
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Improve</span> <span class="benefit-rest">your Tools</span></div>
+      <p>Better financial planning tools that <strong class="you-word">you</strong> own.</p>
+    </div>
+        </div>
+        <div class="back-action">
+          <img src="file:///D:/ria-marketing-page/output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="Calculator QR code" />
+          <p>See how much you can save using your actual numbers.</p>
+          <strong>youarepayingtoomuch.com</strong>
+        </div>
+      </div>
+      <div class="back-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </section>
+    <section class="page front classic" data-concept="06-classic-direct-front">
+      <div class="trim-frame"></div>
+      <div class="front-domain">youarepayingtoomuch.com</div>
+      <div class="front-hero">
+        <h1>What would you do with <span>$788,000*?</span></h1>
+        <p>* potential savings over 20 years.</p>
+      </div>
+      <div class="founder-statement">
+        <strong>Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.</strong>
+        <span>David Van Osdol, CFA, CFP</span>
+      </div>
+      <div class="calculator-surface">
+        <div class="inputs">
+        <div class="input-card">
+          <span>Portfolio</span>
+          <strong>$1,000,000</strong>
+        </div>
+        <div class="input-card">
+          <span>Years</span>
+          <strong>20</strong>
+        </div>
+        <div class="input-card">
+          <span>Growth</span>
+          <strong>8%</strong>
+        </div>
+        <div class="input-card">
+          <span>AUM fee</span>
+          <strong>1%</strong>
+        </div>
+        <div class="input-card">
+          <span>Potential gap</span>
+          <strong>$788,306</strong>
+        </div></div>
+        <div class="chart-panel">
+    <svg class="chart-svg" viewBox="0 0 980 420" aria-label="Projected values over 20 years" role="img">
+      <rect x="0" y="0" width="980" height="420" rx="0" class="chart-background" />
+      
+        <line x1="112" y1="298.4" x2="934" y2="298.4" class="chart-grid" />
+        <text x="94" y="303.4" class="chart-label" text-anchor="end">$1M</text>
+        <line x1="112" y1="234.79999999999998" x2="934" y2="234.79999999999998" class="chart-grid" />
+        <text x="94" y="239.79999999999998" class="chart-label" text-anchor="end">$2M</text>
+        <line x1="112" y1="171.2" x2="934" y2="171.2" class="chart-grid" />
+        <text x="94" y="176.2" class="chart-label" text-anchor="end">$3M</text>
+        <line x1="112" y1="107.6" x2="934" y2="107.6" class="chart-grid" />
+        <text x="94" y="112.6" class="chart-label" text-anchor="end">$4M</text>
+        <line x1="112" y1="44" x2="934" y2="44" class="chart-grid" />
+        <text x="94" y="49" class="chart-label" text-anchor="end">$5M</text>
+      
+        <line x1="112" y1="44" x2="112" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="112" y="396" class="chart-label" text-anchor="middle">0y</text>
+        <line x1="317.5" y1="44" x2="317.5" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="317.5" y="396" class="chart-label" text-anchor="middle">5y</text>
+        <line x1="523" y1="44" x2="523" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="523" y="396" class="chart-label" text-anchor="middle">10y</text>
+        <line x1="728.5" y1="44" x2="728.5" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="728.5" y="396" class="chart-label" text-anchor="middle">15y</text>
+        <line x1="934" y1="44" x2="934" y2="362" class="chart-grid chart-grid-vertical" />
+        <text x="934" y="396" class="chart-label" text-anchor="middle">20y</text>
+      <line x1="112" y1="44" x2="112" y2="362" class="chart-axis" />
+      <line x1="112" y1="362" x2="934" y2="362" class="chart-axis" />
+      <polyline points="112.0,298.4 153.1,294.0 194.2,289.3 235.3,284.3 276.4,278.9 317.5,273.1 358.6,267.0 399.7,260.4 440.8,253.3 481.9,245.8 523.0,237.8 564.1,229.2 605.2,220.0 646.3,210.1 687.4,199.6 728.5,188.4 769.6,176.3 810.7,163.5 851.8,149.7 892.9,135.0 934.0,119.3" class="chart-aum" />
+      <polyline points="112.0,298.4 153.1,293.4 194.2,288.0 235.3,282.1 276.4,275.8 317.5,269.0 358.6,261.7 399.7,253.7 440.8,245.1 481.9,235.9 523.0,225.8 564.1,215.0 605.2,203.3 646.3,190.7 687.4,177.1 728.5,162.4 769.6,146.5 810.7,129.3 851.8,110.8 892.9,90.8 934.0,69.2" class="chart-flat" />
+      <circle cx="934" cy="69.18195973134988" r="9" class="chart-dot-flat" />
+      <circle cx="934" cy="119.31825018936175" r="9" class="chart-dot-aum" />
+      <text x="919" y="45.18195973134988" class="chart-final chart-final-flat" text-anchor="end">$4,604,057</text>
+      <text x="919" y="147.31825018936175" class="chart-final chart-final-aum" text-anchor="end">$3,815,751</text>
+      <line x1="846" y1="79.18195973134988" x2="846" y2="109.31825018936175" class="gap-line" />
+      <text x="829" y="101.25010496035581" class="chart-gap" text-anchor="end">$788,306 gap</text>
+    </svg></div>
+        <div class="front-qr">
+          <img src="file:///D:/ria-marketing-page/output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="Calculator QR code" />
+          <strong>Scan to run<br />your numbers</strong>
+        </div>
+      </div>
+      <div class="front-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </section>
+    <section class="page back classic" data-concept="06-classic-direct-back">
+      <div class="trim-frame"></div>
+      <div class="mail-zone">
+        <div class="return-address">
+          <strong>Smarter Way Wealth, LLC</strong>
+          <span>youarepayingtoomuch.com</span>
+          <span>smarterwaywealth.com</span>
+        </div>
+        <div class="postal-customer">
+          <strong>LOCAL POSTAL CUSTOMER</strong>
+          <span>EDDM route delivery</span>
+        </div>
+        <div class="indicia">PRSRT STD<br />ECRWSS<br />U.S. POSTAGE<br />PAID<br />EDDM RETAIL</div>
+      </div>
+      <div class="mail-separator"></div>
+      <div class="back-content">
+        <div class="identity-block">
+          <img class="brand-logo" src="file:///D:/ria-marketing-page/public/brand/logo-800.png" alt="Smarter Way Wealth logo" />
+          <img class="dvo-photo" src="file:///D:/ria-marketing-page/public/DVO%20Head%20Shot%20picture.jpg" alt="David Van Osdol" />
+          <strong>David Van Osdol, CFA, CFP</strong>
+          <span>Founder, Smarter Way Wealth</span>
+        </div>
+        <div class="benefits">
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Save</span> <span class="benefit-rest">a Ton!</span></div>
+      <p>$100/mo. flat fee vs. % asset-based fee.</p>
+    </div>
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Upgrade</span> <span class="benefit-rest">your Advice</span></div>
+      <p>Highly credentialed, highly experienced.</p>
+    </div>
+          
+    <div class="benefit">
+      <div><span class="benefit-keyword">Improve</span> <span class="benefit-rest">your Tools</span></div>
+      <p>Better financial planning tools that <strong class="you-word">you</strong> own.</p>
+    </div>
+        </div>
+        <div class="back-action">
+          <img src="file:///D:/ria-marketing-page/output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="Calculator QR code" />
+          <p>See how much you can save using your actual numbers.</p>
+          <strong>youarepayingtoomuch.com</strong>
+        </div>
+      </div>
+      <div class="back-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee.</div>
+    </section></main>
+</body>
+</html>

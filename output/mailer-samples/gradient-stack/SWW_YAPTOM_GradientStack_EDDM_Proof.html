@@ -1,0 +1,533 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>SWW YAPTOM Gradient Stack EDDM</title>
+  <style>
+    @page { size: 8.75in 6.5in; margin: 0; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #dbe5e2;
+      color: #07140d;
+      font-family: 'DM Sans', Inter, Arial, Helvetica, sans-serif;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .page {
+      position: relative;
+      width: 1750px;
+      height: 1300px;
+      overflow: hidden;
+      page-break-after: always;
+      background: #ffffff;
+    }
+    .page:last-child { page-break-after: auto; }
+
+    /* ---------------- FRONT ---------------- */
+    .front {
+      background: linear-gradient(180deg, #ffffff 0%, #f4faf6 100%);
+    }
+    .front-domain {
+      position: absolute;
+      top: 70px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 50px;
+      line-height: 1;
+      font-weight: 900;
+      color: #07140d;
+      letter-spacing: -0.005em;
+    }
+    .front-headline {
+      position: absolute;
+      top: 140px;
+      left: 80px;
+      right: 80px;
+      text-align: center;
+      font-size: 78px;
+      line-height: 1.02;
+      font-weight: 950;
+      color: #07140d;
+      letter-spacing: -0.012em;
+    }
+    .front-headline .green { color: #008435; white-space: nowrap; }
+    .front-note {
+      position: absolute;
+      top: 318px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: #34483c;
+      font-size: 25px;
+      font-weight: 700;
+    }
+    .see-shot {
+      position: absolute;
+      top: 372px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: #182920;
+      font-size: 32px;
+      font-style: italic;
+      font-weight: 750;
+    }
+    .see-shot-arrow {
+      display: block;
+      margin: 6px auto 0;
+    }
+    .chart-card {
+      position: absolute;
+      left: 112px;
+      right: 112px;
+      top: 480px;
+      bottom: 110px;
+      border: 3px solid #d7e8dc;
+      background: #ffffff;
+      border-radius: 28px;
+      box-shadow: 0 20px 50px rgba(0, 48, 22, 0.08);
+      overflow: hidden;
+    }
+    .input-strip {
+      position: absolute;
+      top: 24px;
+      left: 30px;
+      right: 30px;
+      height: 84px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) 1.25fr;
+      gap: 16px;
+      align-items: stretch;
+      z-index: 2;
+    }
+    .input-chip,
+    .gap-chip {
+      border: 2px solid #d8e6dc;
+      border-radius: 16px;
+      padding: 12px 16px;
+      background: #f7fbf8;
+    }
+    .input-chip span,
+    .gap-chip span {
+      display: block;
+      color: #52655a;
+      font-size: 18px;
+      line-height: 1;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .input-chip strong {
+      display: block;
+      margin-top: 8px;
+      color: #07140d;
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 950;
+    }
+    .gap-chip {
+      border-color: #00a540;
+      background: #ecfff3;
+    }
+    .gap-chip strong {
+      display: block;
+      margin-top: 7px;
+      color: #00682b;
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 950;
+    }
+    .chart-frame {
+      position: absolute;
+      left: 26px;
+      right: 26px;
+      top: 124px;
+      bottom: 26px;
+    }
+    .chart-qr {
+      position: absolute;
+      left: 24px;
+      top: 22px;
+      width: 178px;
+      height: 178px;
+      background: #fff;
+      border: 9px solid #fff;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+      z-index: 3;
+    }
+    .chart-qr-label {
+      position: absolute;
+      left: 22px;
+      top: 216px;
+      width: 182px;
+      text-align: center;
+      color: #07140d;
+      font-size: 19px;
+      line-height: 1.1;
+      font-weight: 900;
+      z-index: 3;
+    }
+    .chart-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .chart-bg { fill: #fbfdfb; }
+    .grid-line { stroke: #dfe9e3; stroke-width: 2; }
+    .grid-line.vertical { stroke-dasharray: 8 10; opacity: 0.55; }
+    .axis-line { stroke: #7f9689; stroke-width: 3; }
+    .axis-label { fill: #566a60; font-size: 22px; font-weight: 750; }
+    .flat-line {
+      fill: none; stroke: #00a540; stroke-width: 10;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    .aum-line {
+      fill: none; stroke: #17233a; stroke-width: 8;
+      stroke-linecap: round; stroke-linejoin: round; opacity: 0.92;
+    }
+    .flat-dot { fill: #00a540; stroke: #fff; stroke-width: 5; }
+    .aum-dot { fill: #17233a; stroke: #fff; stroke-width: 5; }
+    .value-label { font-size: 27px; font-weight: 950; }
+    .flat-label { fill: #00682b; }
+    .aum-label { fill: #17233a; }
+    .gap-line {
+      stroke: #008435; stroke-width: 4; stroke-dasharray: 7 9; fill: none;
+    }
+    .gap-label { fill: #00682b; font-size: 28px; font-weight: 950; }
+    .front-disclosure,
+    .back-disclosure {
+      position: absolute;
+      left: 118px;
+      right: 118px;
+      color: #34483c;
+      font-size: 17px;
+      line-height: 1.25;
+      text-align: center;
+      font-weight: 650;
+    }
+    .front-disclosure { bottom: 42px; }
+
+    /* ---------------- BACK ---------------- */
+    .back { background: #ffffff; }
+    /* The gradient fills the area BELOW the separation line: 100% brand light green
+       on the left edge fading to 0% (transparent) on the right edge. */
+    .back-gradient {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 188px;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        #D6F5E2 0%,
+        rgba(214, 245, 226, 0.78) 30%,
+        rgba(214, 245, 226, 0.38) 60%,
+        rgba(214, 245, 226, 0) 100%
+      );
+    }
+    .separation-line {
+      position: absolute;
+      top: 184px;
+      left: 60px;
+      right: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #008435 0%, #00a540 38%, rgba(0, 165, 64, 0) 100%);
+      z-index: 4;
+    }
+
+    /* Top strip: light logo (left) + mailing indicia (right) */
+    .logo-panel {
+      position: absolute;
+      top: 52px;
+      left: 92px;
+      width: 405px;
+      height: 116px;
+      padding: 22px 28px;
+      background: #00682b;
+      border-radius: 0 0 24px 0;
+      display: flex;
+      align-items: center;
+      z-index: 3;
+    }
+    .logo-panel img {
+      width: 320px;
+      height: auto;
+      display: block;
+    }
+    .mailing-panel {
+      position: absolute;
+      top: 58px;
+      right: 92px;
+      width: 430px;
+      height: 116px;
+      border: 3px solid #0f172a;
+      background: rgba(255, 255, 255, 0.92);
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      overflow: hidden;
+      z-index: 3;
+    }
+    .indicia {
+      padding: 14px 16px;
+      border-right: 3px solid #0f172a;
+      font-size: 18px;
+      line-height: 1.1;
+      font-weight: 950;
+      text-align: center;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .customer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      text-align: center;
+      color: #0f172a;
+      font-size: 21px;
+      line-height: 1.08;
+      font-weight: 950;
+    }
+
+    /* Center-left: three benefit blocks */
+    .benefits {
+      position: absolute;
+      top: 230px;
+      left: 100px;
+      width: 880px;
+      color: #06120b;
+      z-index: 2;
+    }
+    .benefit {
+      margin-bottom: 36px;
+    }
+    .benefit:last-child { margin-bottom: 0; }
+    .benefit h2 {
+      margin: 0 0 8px;
+      font-size: 64px;
+      line-height: 1.0;
+      font-weight: 950;
+      letter-spacing: -0.012em;
+      color: #06120b;
+    }
+    .benefit h2 .paren {
+      font-size: 0.74em;
+      font-weight: 850;
+      color: #06120b;
+      letter-spacing: -0.01em;
+    }
+    .benefit p {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 750;
+      color: #142019;
+    }
+    .benefit p strong {
+      font-weight: 950;
+      color: #06120b;
+    }
+
+    /* Center-right: large QR code */
+    .back-qr-wrap {
+      position: absolute;
+      top: 308px;
+      right: 124px;
+      width: 460px;
+      text-align: center;
+      z-index: 2;
+    }
+    .back-qr {
+      width: 440px;
+      height: 440px;
+      border: 14px solid #fff;
+      background: #fff;
+      box-shadow: 0 24px 56px rgba(7, 20, 13, 0.20);
+    }
+    .back-qr-caption {
+      margin-top: 18px;
+      font-size: 28px;
+      line-height: 1.05;
+      font-weight: 950;
+      color: #06120b;
+    }
+
+    /* Bottom-left: DVO portrait + title */
+    .dvo-lockup {
+      position: absolute;
+      left: 100px;
+      bottom: 192px;
+      width: 460px;
+      display: grid;
+      grid-template-columns: 116px 1fr;
+      gap: 20px;
+      align-items: center;
+      z-index: 2;
+    }
+    .dvo-lockup img {
+      width: 116px;
+      height: 116px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 5px solid #fff;
+      box-shadow: 0 10px 24px rgba(0, 44, 20, 0.18);
+    }
+    .dvo-title {
+      color: #06120b;
+      font-size: 24px;
+      line-height: 1.04;
+      font-weight: 950;
+    }
+    .dvo-title span {
+      display: block;
+      margin-top: 6px;
+      color: #2c3f35;
+      font-size: 19px;
+      line-height: 1.1;
+      font-weight: 750;
+    }
+
+    /* Bottom centered: domain + disclaimer */
+    .back-domain {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 96px;
+      text-align: center;
+      font-size: 58px;
+      line-height: 1;
+      font-weight: 950;
+      color: #06120b;
+      letter-spacing: -0.008em;
+      z-index: 3;
+    }
+    .back-disclosure { bottom: 32px; z-index: 3; }
+  </style>
+</head>
+<body>
+
+  <!-- ============== FRONT ============== -->
+  <section class="page front">
+    <div class="front-domain">youarepayingtoomuch.com</div>
+    <div class="front-headline">
+      What would you do with<br />
+      <span class="green">$788,000*?</span>
+    </div>
+    <div class="front-note">* potential savings over 20 years.</div>
+
+    <div class="see-shot">
+      See screen shot.
+      <svg class="see-shot-arrow" width="40" height="24" viewBox="0 0 40 24" aria-hidden="true">
+        <path d="M2 4 L20 20 L38 4" fill="none" stroke="#008435" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </div>
+
+    <div class="chart-card">
+      <div class="input-strip">
+        <div class="input-chip"><span>Portfolio</span><strong>$1,000,000</strong></div>
+        <div class="input-chip"><span>Years</span><strong>20</strong></div>
+        <div class="input-chip"><span>Growth</span><strong>8%</strong></div>
+        <div class="input-chip"><span>AUM fee</span><strong>1%</strong></div>
+        <div class="gap-chip"><span>Potential gap</span><strong>$788,306</strong></div>
+      </div>
+      <div class="chart-frame">
+        <img class="chart-qr" src="../1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="" />
+        <div class="chart-qr-label">Scan to run<br />your numbers</div>
+        
+    <svg class="chart-svg" viewBox="0 0 1220 540" role="img" aria-label="Projected portfolio values over 20 years">
+      <rect x="0" y="0" width="1220" height="540" rx="22" class="chart-bg" />
+      
+        <line x1="252" y1="474" x2="1158" y2="474" class="grid-line" />
+        <text x="232" y="480" class="axis-label" text-anchor="end">$0</text>
+        <line x1="252" y1="391.20000000000005" x2="1158" y2="391.20000000000005" class="grid-line" />
+        <text x="232" y="397.20000000000005" class="axis-label" text-anchor="end">$1M</text>
+        <line x1="252" y1="308.4" x2="1158" y2="308.4" class="grid-line" />
+        <text x="232" y="314.4" class="axis-label" text-anchor="end">$2M</text>
+        <line x1="252" y1="225.60000000000002" x2="1158" y2="225.60000000000002" class="grid-line" />
+        <text x="232" y="231.60000000000002" class="axis-label" text-anchor="end">$3M</text>
+        <line x1="252" y1="142.79999999999998" x2="1158" y2="142.79999999999998" class="grid-line" />
+        <text x="232" y="148.79999999999998" class="axis-label" text-anchor="end">$4M</text>
+        <line x1="252" y1="60" x2="1158" y2="60" class="grid-line" />
+        <text x="232" y="66" class="axis-label" text-anchor="end">$5M</text>
+      
+        <line x1="252" y1="60" x2="252" y2="474" class="grid-line vertical" />
+        <text x="252" y="508" class="axis-label" text-anchor="middle">0y</text>
+        <line x1="478.5" y1="60" x2="478.5" y2="474" class="grid-line vertical" />
+        <text x="478.5" y="508" class="axis-label" text-anchor="middle">5y</text>
+        <line x1="705" y1="60" x2="705" y2="474" class="grid-line vertical" />
+        <text x="705" y="508" class="axis-label" text-anchor="middle">10y</text>
+        <line x1="931.5" y1="60" x2="931.5" y2="474" class="grid-line vertical" />
+        <text x="931.5" y="508" class="axis-label" text-anchor="middle">15y</text>
+        <line x1="1158" y1="60" x2="1158" y2="474" class="grid-line vertical" />
+        <text x="1158" y="508" class="axis-label" text-anchor="middle">20y</text>
+      <line x1="252" y1="60" x2="252" y2="474" class="axis-line" />
+      <line x1="252" y1="474" x2="1158" y2="474" class="axis-line" />
+      <polyline points="252.0,391.2 297.3,385.5 342.6,379.3 387.9,372.8 433.2,365.8 478.5,358.3 523.8,350.3 569.1,341.7 614.4,332.5 659.7,322.7 705.0,312.3 750.3,301.1 795.6,289.1 840.9,276.3 886.2,262.6 931.5,247.9 976.8,232.3 1022.1,215.6 1067.4,197.7 1112.7,178.5 1158.0,158.1" class="aum-line" />
+      <polyline points="252.0,391.2 297.3,384.7 342.6,377.6 387.9,370.0 433.2,361.8 478.5,352.9 523.8,343.4 569.1,333.0 614.4,321.8 659.7,309.8 705.0,296.7 750.3,282.7 795.6,267.4 840.9,251.0 886.2,233.3 931.5,214.1 976.8,193.5 1022.1,171.1 1067.4,147.0 1112.7,120.9 1158.0,92.8" class="flat-line" />
+      <circle cx="1158" cy="92.78406078232342" r="10" class="flat-dot" />
+      <circle cx="1158" cy="158.05583515218794" r="10" class="aum-dot" />
+      <text x="1140" y="74.78406078232342" class="value-label flat-label" text-anchor="end">$4,604,057</text>
+      <text x="1140" y="190.05583515218794" class="value-label aum-label" text-anchor="end">$3,815,751</text>
+      <path d="M 1132 104.78406078232342 L 1132 146.05583515218794" class="gap-line" />
+    </svg>
+      </div>
+    </div>
+
+    <div class="front-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee. Smarter Way Wealth is a registered investment adviser. See ADV at adviserinfo.sec.gov.</div>
+  </section>
+
+  <!-- ============== BACK / MAILING SIDE ============== -->
+  <section class="page back">
+    <!-- 100% → 0% brand-light-green gradient, BELOW separation line -->
+    <div class="back-gradient"></div>
+    <div class="separation-line"></div>
+
+    <!-- Top-left: light logo on dark green plate -->
+    <div class="logo-panel"><img src="../../../public/brand/logo-white-400.png" alt="" /></div>
+
+    <!-- Top-right: USPS EDDM indicia + address block -->
+    <div class="mailing-panel">
+      <div class="indicia">PRSRT STD<br />ECRWSS<br />U.S. POSTAGE<br />PAID<br />EDDM RETAIL</div>
+      <div class="customer">LOCAL<br />POSTAL<br />CUSTOMER</div>
+    </div>
+
+    <!-- Center-left: three Save/Upgrade/Improve benefit blocks -->
+    <div class="benefits">
+      <div class="benefit">
+        <h2>Save <span class="paren">(a Ton!)</span></h2>
+        <p>$100/mo. flat fee vs. % asset-based fee</p>
+      </div>
+      <div class="benefit">
+        <h2>Upgrade <span class="paren">(your Advice)</span></h2>
+        <p>Highly Credentialed, Highly Experienced</p>
+      </div>
+      <div class="benefit">
+        <h2>Improve <span class="paren">(your Tools)</span></h2>
+        <p>Better financial planning tools that <strong>you</strong> own</p>
+      </div>
+    </div>
+
+    <!-- Center-right: large QR -->
+    <div class="back-qr-wrap">
+      <img class="back-qr" src="../1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="" />
+      <div class="back-qr-caption">Scan to see the math</div>
+    </div>
+
+    <!-- Bottom-left: DVO portrait + title -->
+    <div class="dvo-lockup">
+      <img src="../../../public/images/portraits/WSJ-DVO.jpg" alt="" />
+      <div class="dvo-title">David Van Osdol, CFA, CFP<span>Founder, Smarter Way Wealth</span></div>
+    </div>
+
+    <!-- Bottom-center: domain + disclaimer -->
+    <div class="back-domain">youarepayingtoomuch.com</div>
+    <div class="back-disclosure">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 8% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee. Smarter Way Wealth is a registered investment adviser. See ADV at adviserinfo.sec.gov.</div>
+  </section>
+
+</body>
+</html>

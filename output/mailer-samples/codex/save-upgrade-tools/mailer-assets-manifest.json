@@ -1,0 +1,60 @@
+{
+  "name": "SWW YAPTOM Save / Upgrade / Improve EDDM Mailer",
+  "generatedAt": "2026-05-27T19:44:49.699Z",
+  "generator": "scripts/build-eddm-save-upgrade-tools.mjs",
+  "dimensions": {
+    "trimInches": {
+      "width": 8.5,
+      "height": 6.25
+    },
+    "bleedInches": 0.125,
+    "pdfPageInches": {
+      "width": 8.75,
+      "height": 6.5
+    },
+    "proofPixels": {
+      "width": 1750,
+      "height": 1300
+    }
+  },
+  "qrUrl": "https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1",
+  "assumptions": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 8,
+    "years": 20
+  },
+  "outputs": [
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_Proof.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_ContactSheet.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_8p75x6p5_PrintReady.pdf",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Proof.html",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_ContactSheet.html",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_Gradient_Variations.html",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_Gradient_Variations.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_NoGradient_Variations.html",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_NoGradient_Variations.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_01-soft-full-wash.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_02-strong-left-fade.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_03-diagonal-sweep.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_04-open-air.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_05-clean-paper.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_06-split-mint-field.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_07-editorial-rule.png",
+    "SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_08-subtle-dot-field.png"
+  ],
+  "calculatorValues": {
+    "flatFeeEndingValue": 4604057,
+    "assetBasedFeeEndingValue": 3815751,
+    "estimatedGap": 788306,
+    "totalFlatFeesPaid": 24000,
+    "totalAumFeesPaid": 422058
+  },
+  "sourceAssets": {
+    "logoLight": "D:\\ria-marketing-page\\public\\brand\\logo-800.png",
+    "dvo": "D:\\ria-marketing-page\\public\\DVO Head Shot picture.jpg",
+    "qr": "D:\\ria-marketing-page\\output\\mailer-samples\\1-percent-blues\\source-eddm\\yaptom_default_inputs_qr.png"
+  }
+}

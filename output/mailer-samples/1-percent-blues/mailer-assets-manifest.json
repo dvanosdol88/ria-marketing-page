@@ -1,0 +1,41 @@
+﻿{
+    "packageName":  "1% Blues Mailer Sample Assets",
+    "correctedBrandProofs":  [
+                                 "corrected-brand-proofs/SWW_1PercentBlues_Front_Proof_CorrectBrand.png",
+                                 "corrected-brand-proofs/SWW_1PercentBlues_Back_Proof_CorrectBrand.png",
+                                 "corrected-brand-proofs/SWW_1PercentBlues_ContactSheet_CorrectBrand.png",
+                                 "corrected-brand-proofs/SWW_1PercentBlues_8p75x6p5_PrintReady_CorrectBrand.pdf"
+                             ],
+    "sourceZip":  "C:\\Users\\user2\\Downloads\\SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_Pack.zip",
+    "qrUrlShownInMailerSource":  "https://youarepayingtoomuch.com/?portfolio=1000000\u0026years=20\u0026growth=8\u0026fee=1",
+    "assumptions":  {
+                        "portfolio":  "$1,000,000",
+                        "timeHorizon":  "20 years",
+                        "growthAssumption":  "8% annualized",
+                        "advisoryFee":  "1%",
+                        "flatFeeComparison":  "$100/month"
+                    },
+    "sourceFilesReferenceOnly":  [
+                                     "source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_8p5x6p25_PrintReady.pdf",
+                                     "source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_Front_Proof.png",
+                                     "source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_Back_Proof.png",
+                                     "source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_ContactSheet.png",
+                                     "source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_Production_Notes.md",
+                                     "source-eddm/yaptom_default_inputs_qr.png"
+                                 ],
+    "brandAssets":  [
+                        "brand-assets/logo.svg",
+                        "brand-assets/logo-800.png",
+                        "brand-assets/logo-icon.svg",
+                        "brand-assets/logo-strong-primary-lightbg.png",
+                        "brand-assets/logo-strong-primary-dark.png",
+                        "brand-assets/logo-white.svg"
+                    ],
+    "excludes":  [
+                     "app routes",
+                     "campaign preset code",
+                     "calculator code",
+                     "homepage variant code"
+                 ],
+    "limitation":  "Corrected proofs are raster proof exports with the repo brand overlaid into the source artwork."
+}

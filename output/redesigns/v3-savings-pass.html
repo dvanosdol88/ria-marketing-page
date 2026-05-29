@@ -1,0 +1,1380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#EEF0F5" />
+<title>Find Out How Much You're Overpaying — Smarter Way Wealth</title>
+<meta name="description" content="Three quick questions and you'll know — to the dollar — what your advisor's percentage fee will cost you over a lifetime. Then we tell you what a flat $100/month would do instead." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Brand tokens (from src/styles/tokens.ts) */
+  --brand-50:  #EEFBF3;
+  --brand-100: #D6F5E2;
+  --brand-200: #B0EBC8;
+  --brand-300: #7ADCA6;
+  --brand-400: #3FC87C;
+  --brand-500: #14B254;
+  --brand-600: #00A540;
+  --brand-700: #008435;
+  --brand-800: #00682B;
+  --brand-900: #004D20;
+
+  --logo-dark: #4A4A4A;
+
+  --neutral-50:  #f8fafc;
+  --neutral-100: #f1f5f9;
+  --neutral-200: #e2e8f0;
+  --neutral-300: #cbd5e1;
+  --neutral-400: #94a3b8;
+  --neutral-500: #64748b;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-800: #1e293b;
+  --neutral-900: #0f172a;
+
+  --red:      #B91C1C;
+  --red-deep: #7F1D1D;
+
+  --paper:    #EEF0F5;
+  --surface:  #FFFFFF;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-logo: 'DM Sans', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--neutral-900);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a { color: var(--brand-700); }
+button { font-family: inherit; cursor: pointer; }
+
+/* TOPBAR with real logo */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 30;
+  border-bottom: 1.5px solid var(--neutral-200);
+}
+.brand-link {
+  display: inline-flex;
+  align-items: end;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+.brand-icon { display: flex; align-items: end; gap: 2px; }
+.brand-wordmark {
+  font-family: var(--font-logo);
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.brand-wordmark .top {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.166em;
+  color: var(--logo-dark);
+  text-transform: uppercase;
+}
+.brand-wordmark .bot {
+  font-weight: 500;
+  font-size: 8px;
+  letter-spacing: 0.222em;
+  color: var(--brand-700);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.topbar-right {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--neutral-500);
+}
+
+/* HERO */
+.hero {
+  padding: 36px 20px 0;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: left;
+  position: relative;
+}
+@media (min-width: 800px) { .hero { padding: 60px 24px 0; max-width: 820px; } }
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--neutral-900);
+  color: var(--brand-300);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  margin-bottom: 22px;
+}
+.kicker .dot {
+  width: 7px; height: 7px;
+  background: var(--brand-400);
+  border-radius: 50%;
+  animation: blink 1.4s ease-in-out infinite;
+  box-shadow: 0 0 8px var(--brand-400);
+}
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.hero h1 {
+  font-weight: 800;
+  font-size: clamp(40px, 9vw, 88px);
+  line-height: 0.97;
+  letter-spacing: -0.045em;
+  margin: 0 0 22px;
+  color: var(--neutral-900);
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--brand-700);
+  letter-spacing: -0.03em;
+}
+.hero h1 .underline {
+  position: relative;
+  display: inline-block;
+}
+.hero h1 .underline::after {
+  content: "";
+  position: absolute;
+  bottom: 4%;
+  left: -2%;
+  right: -2%;
+  height: 14%;
+  background: var(--brand-200);
+  z-index: -1;
+  border-radius: 4px;
+}
+
+.hero .deck {
+  font-size: clamp(17px, 2.2vw, 20px);
+  line-height: 1.5;
+  color: var(--neutral-700);
+  max-width: 56ch;
+  margin: 0 0 30px;
+  font-weight: 400;
+}
+.hero .deck strong { font-weight: 600; color: var(--neutral-900); }
+.hero .deck em { font-style: italic; color: var(--brand-700); font-weight: 500; }
+
+/* PASS CONTAINER */
+.pass-wrap {
+  padding: 16px 16px 30px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+@media (min-width: 800px) { .pass-wrap { padding: 30px 24px 40px; } }
+
+.pass {
+  background: var(--surface);
+  border-radius: 24px;
+  border: 1.5px solid var(--neutral-900);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 var(--neutral-900),
+    0 24px 48px -16px rgba(15, 23, 42, 0.18),
+    0 8px 16px -8px rgba(15, 23, 42, 0.10);
+}
+
+.pass-stub {
+  background: var(--neutral-900);
+  color: var(--surface);
+  padding: 16px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1.5px dashed rgba(255, 255, 255, 0.3);
+  position: relative;
+}
+.pass-stub::before, .pass-stub::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  width: 20px; height: 20px;
+  background: var(--paper);
+  border-radius: 50%;
+}
+.pass-stub::before { left: -10px; box-shadow: inset -1.5px 1.5px 0 var(--neutral-900); }
+.pass-stub::after { right: -10px; box-shadow: inset 1.5px 1.5px 0 var(--neutral-900); }
+
+.pass-stub .label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+}
+.pass-stub .v {
+  font-family: var(--font-logo);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.166em;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+.pass-stub .v em {
+  font-family: var(--font-logo);
+  font-weight: 500;
+  font-style: normal;
+  font-size: 9px;
+  letter-spacing: 0.222em;
+  color: var(--brand-300);
+  display: block;
+  margin-top: 2px;
+}
+
+.pass-body { padding: 26px 22px 30px; }
+@media (min-width: 600px) { .pass-body { padding: 32px 30px 32px; } }
+
+.steps-meter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.step-pill {
+  flex: 1;
+  height: 6px;
+  background: var(--neutral-200);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.step-pill.done {
+  background: var(--brand-600);
+}
+.step-pill.done::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  animation: shine 2s ease-in-out infinite;
+}
+@keyframes shine {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+.step-num {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--neutral-500);
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+.step-num strong { color: var(--neutral-900); font-weight: 700; }
+
+.q-block { margin-bottom: 24px; }
+
+.q-num {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brand-700);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.q-text {
+  font-size: clamp(20px, 3.8vw, 26px);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  margin: 0 0 14px;
+  color: var(--neutral-900);
+}
+.q-text em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--brand-700);
+  letter-spacing: -0.02em;
+}
+
+.q-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+@media (min-width: 500px) { .q-options { grid-template-columns: repeat(4, 1fr); } }
+
+.opt {
+  background: var(--surface);
+  border: 1.5px solid var(--neutral-900);
+  color: var(--neutral-900);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  padding: 14px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.1;
+  box-shadow: 0 2px 0 var(--neutral-900);
+  font-family: inherit;
+}
+.opt:hover { background: var(--brand-50); transform: translateY(-1px); box-shadow: 0 3px 0 var(--neutral-900); }
+.opt.selected {
+  background: var(--brand-600);
+  color: var(--surface);
+  border-color: var(--brand-800);
+  box-shadow: 0 2px 0 var(--brand-800);
+}
+.opt small {
+  display: block;
+  font-weight: 500;
+  font-size: 10px;
+  color: var(--neutral-500);
+  margin-top: 4px;
+  letter-spacing: 0.04em;
+}
+.opt.selected small { color: rgba(255,255,255,0.8); }
+
+.adv-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--neutral-600);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 4px;
+  padding: 6px 0;
+  font-family: inherit;
+}
+.adv-toggle:hover { color: var(--brand-700); }
+
+.adv-panel {
+  display: none;
+  margin-top: 14px;
+  padding: 16px;
+  background: var(--paper);
+  border-radius: 14px;
+  border: 1px dashed var(--neutral-300);
+}
+.adv-panel.open { display: block; }
+
+.adv-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.adv-label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--neutral-600);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.adv-val {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--neutral-900);
+  font-variant-numeric: tabular-nums;
+}
+
+input[type=range].playful {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+  margin: 0 0 12px;
+  cursor: pointer;
+}
+input[type=range].playful:focus { outline: none; }
+input[type=range].playful:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(0, 165, 64, 0.30), 0 2px 0 var(--neutral-900); }
+input[type=range].playful::-webkit-slider-runnable-track { height: 4px; background: var(--neutral-900); border-radius: 4px; }
+input[type=range].playful::-moz-range-track { height: 4px; background: var(--neutral-900); border-radius: 4px; }
+input[type=range].playful::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 24px; width: 24px;
+  background: var(--brand-600);
+  border: 2px solid var(--neutral-900);
+  border-radius: 50%;
+  margin-top: -10px;
+  box-shadow: 0 2px 0 var(--neutral-900);
+  cursor: grab;
+}
+input[type=range].playful::-moz-range-thumb {
+  height: 24px; width: 24px;
+  background: var(--brand-600);
+  border: 2px solid var(--neutral-900);
+  border-radius: 50%;
+  box-shadow: 0 2px 0 var(--neutral-900);
+}
+
+/* RESULT BOX */
+.result-box {
+  background: var(--neutral-900);
+  color: var(--surface);
+  border-radius: 18px;
+  padding: 24px 22px 20px;
+  margin: 22px 0 18px;
+  position: relative;
+  overflow: hidden;
+}
+.result-box::before {
+  content: "";
+  position: absolute;
+  top: -40%; right: -10%;
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(0, 165, 64, 0.30), transparent 60%);
+  border-radius: 50%;
+}
+.result-box::after {
+  content: "";
+  position: absolute;
+  bottom: -50%; left: -20%;
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(63, 200, 124, 0.18), transparent 60%);
+  border-radius: 50%;
+}
+.result-box .lbl {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brand-300);
+  font-weight: 700;
+  margin-bottom: 8px;
+  position: relative;
+}
+.result-box .big {
+  font-size: clamp(48px, 12vw, 80px);
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  color: white;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  position: relative;
+  font-variant-numeric: tabular-nums;
+}
+.result-box .big .currency {
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.5em;
+  color: var(--brand-300);
+}
+.result-box .big.bounce { animation: bounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes bounce {
+  0% { transform: scale(0.85); }
+  60% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+.result-box .sub {
+  font-size: 14px;
+  color: rgba(255,255,255,0.78);
+  margin-top: 12px;
+  position: relative;
+  line-height: 1.5;
+}
+.result-box .sub em {
+  font-style: italic;
+  color: var(--brand-300);
+  font-weight: 500;
+}
+.result-box .sub strong { color: var(--surface); font-weight: 600; }
+
+.result-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  position: relative;
+}
+.tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: var(--surface);
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+.tag strong { color: var(--brand-300); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.pass-cta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+@media (min-width: 460px) { .pass-cta { grid-template-columns: 1fr 1fr; } }
+
+.btn-3 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 18px;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  min-height: 56px;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  text-align: center;
+  line-height: 1.2;
+  font-family: inherit;
+}
+.btn-3.primary {
+  background: var(--brand-600);
+  color: white;
+  box-shadow: 0 2px 0 var(--neutral-900), 0 8px 0 -4px var(--brand-800);
+}
+.btn-3.primary:hover { transform: translateY(-1px); background: var(--brand-700); box-shadow: 0 3px 0 var(--neutral-900), 0 10px 0 -4px var(--brand-800); }
+.btn-3.secondary {
+  background: var(--surface);
+  color: var(--neutral-900);
+  border: 1.5px solid var(--neutral-900);
+  box-shadow: 0 2px 0 var(--neutral-900);
+}
+.btn-3.secondary:hover { transform: translateY(-1px); background: var(--brand-50); box-shadow: 0 3px 0 var(--neutral-900); }
+
+/* CHART */
+.chart3-wrap {
+  background: var(--paper);
+  border: 1.5px solid var(--neutral-200);
+  border-radius: 16px;
+  padding: 18px 16px 14px;
+  margin-top: 18px;
+}
+.chart3-wrap .ch-title {
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  color: var(--neutral-900);
+  margin: 0 0 4px;
+}
+.chart3-wrap .ch-sub {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--neutral-500);
+  letter-spacing: 0.04em;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+}
+#chart3 { width: 100%; height: auto; }
+.ch-legend {
+  display: flex;
+  gap: 14px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--neutral-600);
+  margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.ch-legend .swatch { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 4px; }
+
+/* WHAT WOULD YOU DO POLL */
+.poll-wrap {
+  max-width: 720px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+.poll-card {
+  background: var(--brand-50);
+  border: 1.5px solid var(--brand-700);
+  border-radius: 22px;
+  padding: 26px 22px;
+  box-shadow: 0 3px 0 var(--brand-800);
+}
+.poll-card h3 {
+  font-weight: 800;
+  font-size: clamp(22px, 4vw, 30px);
+  letter-spacing: -0.035em;
+  margin: 0 0 4px;
+  line-height: 1.05;
+  color: var(--neutral-900);
+}
+.poll-card h3 em { font-style: italic; font-weight: 300; color: var(--brand-700); }
+.poll-card .poll-sub {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--neutral-700);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.poll-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+@media (min-width: 600px) { .poll-grid { grid-template-columns: repeat(5, 1fr); } }
+
+.poll-opt {
+  background: var(--surface);
+  border: 1.5px solid var(--neutral-900);
+  color: var(--neutral-900);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 12px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  transition: transform 0.15s, background 0.15s;
+  box-shadow: 0 2px 0 var(--neutral-900);
+  min-height: 52px;
+  font-family: inherit;
+}
+.poll-opt:hover { transform: translateY(-1px); background: var(--brand-100); box-shadow: 0 3px 0 var(--neutral-900); }
+.poll-opt.picked {
+  background: var(--brand-600);
+  color: var(--surface);
+  border-color: var(--brand-800);
+  box-shadow: 0 2px 0 var(--brand-800);
+}
+
+/* FACTS STRIP */
+.facts {
+  max-width: 920px;
+  margin: 30px auto 0;
+  padding: 0 20px;
+}
+.facts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 700px) { .facts-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.fact {
+  background: var(--surface);
+  border: 1.5px solid var(--neutral-900);
+  border-radius: 18px;
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+}
+.fact .num {
+  font-style: italic;
+  font-weight: 300;
+  font-size: 56px;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  color: var(--brand-700);
+  margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.fact h4 {
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.025em;
+  margin: 0 0 6px;
+  color: var(--neutral-900);
+}
+.fact p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--neutral-600);
+  margin: 0;
+}
+
+.fact.alt {
+  background: var(--brand-600);
+  color: white;
+  border-color: var(--neutral-900);
+}
+.fact.alt .num { color: var(--brand-100); }
+.fact.alt h4 { color: white; }
+.fact.alt p { color: rgba(255,255,255,0.9); }
+
+.fact.alt2 {
+  background: var(--neutral-900);
+  color: white;
+  border-color: var(--neutral-900);
+}
+.fact.alt2 .num { color: var(--brand-300); }
+.fact.alt2 h4 { color: white; }
+.fact.alt2 p { color: rgba(255,255,255,0.85); }
+
+/* QUOTE PILL */
+.pill-quote {
+  max-width: 760px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+  text-align: center;
+}
+.pill-quote blockquote {
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(22px, 4vw, 32px);
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+  color: var(--neutral-900);
+  margin: 0 0 14px;
+}
+.pill-quote .who {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--neutral-500);
+}
+.pill-quote .who strong { color: var(--brand-700); }
+
+/* MEET DAVID */
+.meet {
+  max-width: 920px;
+  margin: 60px auto 0;
+  padding: 30px 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: start;
+}
+@media (min-width: 720px) { .meet { grid-template-columns: 220px 1fr; gap: 36px; } }
+
+.meet-card {
+  background: var(--surface);
+  border: 1.5px solid var(--neutral-900);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: 0 3px 0 var(--neutral-900);
+}
+.meet-card .ph-wrap {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+}
+.meet-card .ph-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.meet-card .ph-wrap .placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(160deg, var(--brand-200) 0%, var(--brand-700) 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 10px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: white;
+  font-weight: 700;
+}
+
+.meet-info .pre {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brand-700);
+  margin-bottom: 10px;
+}
+.meet-info h3 {
+  font-weight: 800;
+  font-size: clamp(28px, 5vw, 42px);
+  letter-spacing: -0.04em;
+  margin: 0 0 4px;
+  line-height: 1;
+  color: var(--neutral-900);
+}
+.meet-info .creds {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--neutral-500);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+.meet-info p {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--neutral-700);
+  margin: 0 0 12px;
+}
+.meet-info p strong { color: var(--neutral-900); font-weight: 600; }
+
+/* FINAL CTA */
+.final {
+  max-width: 720px;
+  margin: 50px auto 30px;
+  padding: 0 20px;
+}
+.final-card {
+  background: var(--neutral-900);
+  color: var(--surface);
+  border-radius: 24px;
+  padding: 40px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.final-card::before {
+  content: "";
+  position: absolute;
+  top: -60%; right: -30%;
+  width: 380px; height: 380px;
+  background: radial-gradient(circle, var(--brand-600), transparent 65%);
+  opacity: 0.5;
+  border-radius: 50%;
+}
+.final-card h3 {
+  font-weight: 800;
+  font-size: clamp(32px, 6vw, 52px);
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  margin: 0 0 14px;
+  position: relative;
+}
+.final-card h3 em { font-style: italic; font-weight: 300; color: var(--brand-300); }
+.final-card p {
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0 0 24px;
+  color: rgba(255,255,255,0.85);
+  max-width: 50ch;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+/* FOOTER */
+.foot-3 {
+  max-width: 920px;
+  margin: 60px auto 0;
+  padding: 24px 20px 40px;
+  border-top: 1.5px solid var(--neutral-200);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--neutral-500);
+  line-height: 1.65;
+  text-align: center;
+}
+.foot-3 strong { color: var(--neutral-900); font-weight: 600; }
+.foot-3 a { color: var(--brand-700); }
+
+/* STICKY MOBILE */
+.sticky-3 {
+  position: sticky;
+  bottom: 0;
+  background: var(--surface);
+  border-top: 1.5px solid var(--neutral-900);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  z-index: 50;
+  box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.06);
+}
+.sticky-3 .lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--neutral-500);
+}
+.sticky-3 .v {
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: -0.025em;
+  color: var(--brand-700);
+  font-variant-numeric: tabular-nums;
+}
+.sticky-3 a {
+  background: var(--brand-600);
+  color: var(--surface);
+  text-decoration: none;
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.005em;
+}
+@media (min-width: 800px) { .sticky-3 { display: none; } }
+
+.fade-up { opacity: 0; transform: translateY(16px); transition: opacity 0.6s, transform 0.6s; }
+.fade-up.in { opacity: 1; transform: none; }
+
+.tx-link {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--brand-400);
+  color: var(--brand-700);
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand-link" href="/" aria-label="Smarter Way Wealth home">
+    <span class="brand-icon">
+      <svg viewBox="0 0 40 36" width="32" height="29" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="0" y="18" width="12" height="18" rx="1.5" fill="#3DA85C"/>
+        <rect x="14" y="8" width="12" height="28" rx="1.5" fill="#1E8F42"/>
+        <rect x="28" y="0" width="12" height="36" rx="1.5" fill="#007A2F"/>
+      </svg>
+    </span>
+    <span class="brand-wordmark">
+      <span class="top">Smarter</span>
+      <span class="bot">Way Wealth</span>
+    </span>
+  </a>
+  <span class="topbar-right">CRD #342140</span>
+</header>
+
+<section class="hero">
+  <span class="kicker"><span class="dot"></span>Scanned the postcard? Welcome.</span>
+  <h1>How much<br>are you <em>actually</em><br><span class="underline">overpaying</span>?</h1>
+  <p class="deck">
+    <strong>Three taps</strong> and you'll know the dollar amount &mdash; not the percentage.
+    The number you've <em>never been shown</em>.
+  </p>
+</section>
+
+<div class="pass-wrap">
+  <div class="pass">
+    <div class="pass-stub">
+      <div>
+        <div class="label">Boarding pass</div>
+        <div class="v">Smarter<em>Way Wealth</em></div>
+      </div>
+      <div style="text-align:right;">
+        <div class="label">Pass No.</div>
+        <div class="v" id="passNum" style="font-family: 'Inter', sans-serif; font-size: 13px; letter-spacing: 0.04em; font-weight: 600; text-transform: none;">SWW · 100 · 020</div>
+      </div>
+    </div>
+
+    <div class="pass-body">
+      <div class="steps-meter" aria-hidden="true">
+        <div class="step-pill done"></div>
+        <div class="step-pill done"></div>
+        <div class="step-pill done"></div>
+      </div>
+      <div class="step-num"><strong>Defaults loaded.</strong> &nbsp; Tap any answer to update.</div>
+
+      <div class="q-block">
+        <div class="q-num">Q1 · Portfolio size</div>
+        <h3 class="q-text">What's your portfolio worth <em>roughly</em>?</h3>
+        <div class="q-options" role="radiogroup" aria-label="Portfolio size">
+          <button class="opt" data-pv="250000">$250k<small>or close</small></button>
+          <button class="opt" data-pv="500000">$500k<small>half-mil</small></button>
+          <button class="opt selected" data-pv="1000000">$1M<small>seven-figure</small></button>
+          <button class="opt" data-pv="2500000">$2.5M+<small>multi-mil</small></button>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q2 · Time horizon</div>
+        <h3 class="q-text">How long until you'd <em>actually use</em> the money?</h3>
+        <div class="q-options" role="radiogroup" aria-label="Years invested">
+          <button class="opt" data-yr="10">10 yrs<small>soon</small></button>
+          <button class="opt selected" data-yr="20">20 yrs<small>retirement</small></button>
+          <button class="opt" data-yr="30">30 yrs<small>long-haul</small></button>
+          <button class="opt" data-yr="40">40 yrs<small>generational</small></button>
+        </div>
+      </div>
+
+      <div class="q-block">
+        <div class="q-num">Q3 · Their fee</div>
+        <h3 class="q-text">What does your advisor <em>charge you</em>?</h3>
+        <div class="q-options" role="radiogroup" aria-label="Advisor fee">
+          <button class="opt" data-fee="0.5">0.5%<small>low end</small></button>
+          <button class="opt" data-fee="0.75">0.75%<small>typical</small></button>
+          <button class="opt selected" data-fee="1">1.0%<small>industry std</small></button>
+          <button class="opt" data-fee="1.5">1.5%<small>full service</small></button>
+        </div>
+      </div>
+
+      <button class="adv-toggle" id="advToggle" aria-expanded="false">+ Fine-tune assumptions</button>
+      <div class="adv-panel" id="advPanel">
+        <div class="adv-row">
+          <span class="adv-label">Annual growth</span>
+          <span class="adv-val" id="advGrowVal">8.0%</span>
+        </div>
+        <input type="range" id="advGrow" class="playful" min="0" max="15" step="0.1" value="8" aria-label="Growth rate">
+
+        <div class="adv-row">
+          <span class="adv-label">Custom portfolio</span>
+          <span class="adv-val" id="advPvVal">$1,000,000</span>
+        </div>
+        <input type="range" id="advPv" class="playful" min="50000" max="5000000" step="50000" value="1000000" aria-label="Custom portfolio">
+      </div>
+
+      <div class="result-box" aria-live="polite">
+        <div class="lbl">Your lifetime fee gap</div>
+        <div class="big" id="bigSavings"><span class="currency">$</span><span id="bigSavingsVal">788,306</span></div>
+        <div class="sub">
+          That's how much <em>more</em> you'd keep with our flat <strong>$100/month</strong> fee
+          instead of a <span id="rsFee">1.0%</span> AUM advisor over <span id="rsYrs">20 years</span>.
+        </div>
+        <div class="result-tags">
+          <span class="tag">Their lifetime fees: <strong id="tTheir">$401,694</strong></span>
+          <span class="tag">Our lifetime fees: <strong id="tOurs">$24,000</strong></span>
+        </div>
+      </div>
+
+      <div class="chart3-wrap">
+        <h4 class="ch-title">Your money, two paths</h4>
+        <p class="ch-sub">$100/mo flat vs. <span id="ch-fee">1%</span> AUM &middot; both at <span id="ch-grow">8%</span> annual growth</p>
+        <svg id="chart3" viewBox="0 0 600 240" aria-label="Portfolio comparison chart"></svg>
+        <div class="ch-legend">
+          <span><span class="swatch" style="background: #00A540"></span>$100/mo flat</span>
+          <span><span class="swatch" style="background: #B91C1C"></span>Their %</span>
+        </div>
+      </div>
+
+      <div class="pass-cta">
+        <a href="https://riabuilder.dvo88.com" class="btn-3 primary">Book my fee audit →</a>
+        <button class="btn-3 secondary" id="copyBtn">Share my number</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="poll-wrap">
+  <div class="poll-card">
+    <h3>What would you do<br>with that <em>extra money</em>?</h3>
+    <p class="poll-sub">Pick your favorite. (No spoilers, no email required.)</p>
+    <div class="poll-grid">
+      <button class="poll-opt" data-poll="retire">Retire earlier</button>
+      <button class="poll-opt" data-poll="house">A second home</button>
+      <button class="poll-opt" data-poll="invest">Keep investing</button>
+      <button class="poll-opt" data-poll="mortgage">Pay off mortgage</button>
+      <button class="poll-opt" data-poll="other">Something else</button>
+    </div>
+  </div>
+</section>
+
+<section class="facts">
+  <div class="facts-grid">
+    <div class="fact fade-up">
+      <div class="num">1%</div>
+      <h4>doesn't sound like much.</h4>
+      <p>Until you compound it for 30 years &mdash; then it quietly subtracts roughly a fifth of your wealth. That's not opinion; it's arithmetic.</p>
+    </div>
+    <div class="fact alt fade-up">
+      <div class="num">$100</div>
+      <h4>flat per month.</h4>
+      <p>Same fiduciary advice. Same portfolio management. Same tax-aware planning. None of the AUM creep.</p>
+    </div>
+    <div class="fact alt2 fade-up">
+      <div class="num">$0</div>
+      <h4>extra to find out.</h4>
+      <p>The calculator above is free. The 15-minute audit is free. You see your actual fee gap before you ever sign anything.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pill-quote fade-up">
+  <blockquote>"Fees are one of the few things in investing<br>that are <em style="color: var(--brand-700);">entirely within your control</em>."</blockquote>
+  <div class="who"><strong>The Wall Street Journal</strong> &middot; on the math of long-term investing</div>
+</section>
+
+<section class="meet">
+  <div class="meet-card">
+    <div class="ph-wrap">
+      <img src="../../public/DVO Head Shot picture.jpg" alt="David J. Van Osdol" onerror="this.onerror=null; this.outerHTML='&lt;div class=&quot;placeholder&quot;&gt;PORTRAIT &middot; D.V.O&lt;/div&gt;';">
+    </div>
+  </div>
+  <div class="meet-info">
+    <div class="pre">— Meet your advisor</div>
+    <h3>David J. Van Osdol</h3>
+    <div class="creds">CFA Charterholder &middot; CFP&reg; Practitioner &middot; Connecticut</div>
+    <p>
+      I built Smarter Way Wealth because <strong>the percentage-fee model no longer matches the work.</strong>
+      You shouldn't pay 5x more just because you saved 5x more.
+    </p>
+    <p>
+      A flat $100/month retainer covers the same fiduciary planning, portfolio management,
+      tax-aware rebalancing, and real-estate analysis &mdash; without the silent escalator.
+    </p>
+    <p>
+      If your number above is bigger than you expected, <a href="https://riabuilder.dvo88.com" class="tx-link">let's have a 15-minute chat</a>.
+    </p>
+  </div>
+</section>
+
+<section class="final">
+  <div class="final-card">
+    <h3>Stop paying for <em>last year's</em><br>investment advice.</h3>
+    <p>Bring your fee number to a free 15-minute audit. We'll plug in your real portfolio and tell you the gap, in writing.</p>
+    <a href="https://riabuilder.dvo88.com" class="btn-3 primary" style="display: inline-flex;">Book my audit →</a>
+  </div>
+</section>
+
+<footer class="foot-3">
+  <p><strong>Smarter Way Wealth, LLC</strong> &middot; SEC-registered investment adviser &middot; CRD #342140</p>
+  <p>
+    Calculator is a hypothetical illustration. Past performance does not guarantee future results.
+    The 8% growth rate is an assumption, not a forecast. Advisory services are provided only after delivery
+    of Form ADV and a signed agreement.
+  </p>
+  <p>Disclosures &middot; Form ADV &middot; Privacy &middot; <a href="https://adviserinfo.sec.gov" class="tx-link">IAPD</a> &middot; &copy; 2026</p>
+</footer>
+
+<div class="sticky-3" role="status" aria-live="polite">
+  <div>
+    <div class="lbl">Your fee gap</div>
+    <div class="v" id="stickyV">$788,306</div>
+  </div>
+  <a href="https://riabuilder.dvo88.com">Book audit</a>
+</div>
+
+<script>
+const RIA_MONTHLY_FEE = 100;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function buildFeeProjection({ initialInvestment, years, annualFeePercent, annualGrowthPercent }) {
+  const rAnnual = annualGrowthPercent / 100;
+  const rMonthly = Math.pow(1 + rAnnual, 1 / 12) - 1;
+  const aumMonthly = annualFeePercent / 100 / 12;
+  const totalMonths = years * 12;
+  let withFlat = initialInvestment;
+  let withAum = initialInvestment;
+  let cumAumFees = 0, cumFlatFees = 0;
+  const series = [{ year: 0, withoutFees: withFlat, withFees: withAum }];
+  for (let m = 1; m <= totalMonths; m++) {
+    withFlat *= 1 + rMonthly;
+    withAum *= 1 + rMonthly;
+    withFlat = Math.max(0, withFlat - RIA_MONTHLY_FEE);
+    cumFlatFees += RIA_MONTHLY_FEE;
+    const fee = withAum * aumMonthly;
+    withAum = Math.max(0, withAum - fee);
+    cumAumFees += fee;
+    if (m % 12 === 0) series.push({ year: m / 12, withoutFees: withFlat, withFees: withAum });
+  }
+  return {
+    series, totalFees: cumAumFees, totalFlatFees: cumFlatFees,
+    savings: withFlat - withAum, finalValueWithFees: withAum, finalValueWithoutFees: withFlat,
+  };
+}
+
+const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+const usdNum = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+function usdShort(n) {
+  if (Math.abs(n) >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
+  if (Math.abs(n) >= 1e3) return '$' + Math.round(n/1e3) + 'K';
+  return usd.format(n);
+}
+
+const $ = (id) => document.getElementById(id);
+
+const state = { pv: 1000000, yr: 20, fee: 1.0, gr: 8, customPv: false };
+
+function svgEl(tag, attrs) {
+  const el = document.createElementNS(SVG_NS, tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  return el;
+}
+
+function drawChart(series) {
+  const svg = $('chart3');
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+  const W = 600, H = 240, PAD_L = 50, PAD_R = 16, PAD_T = 14, PAD_B = 28;
+  const innerW = W - PAD_L - PAD_R, innerH = H - PAD_T - PAD_B;
+  const maxY = Math.max(...series.map(d => Math.max(d.withoutFees, d.withFees))) * 1.05 || 1;
+  const maxX = Math.max(1, series[series.length-1].year);
+  const x = (v) => PAD_L + (v) / maxX * innerW;
+  const y = (v) => PAD_T + innerH - (v / maxY) * innerH;
+
+  const defs = svgEl('defs');
+  const grad = svgEl('linearGradient', { id: 'pop', x1: '0', x2: '0', y1: '0', y2: '1' });
+  grad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#00A540', 'stop-opacity': '0.30' }));
+  grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#00A540', 'stop-opacity': '0' }));
+  defs.appendChild(grad);
+  svg.appendChild(defs);
+
+  const yTicks = [0, 0.25, 0.5, 0.75, 1].map(t => t * maxY);
+  for (const t of yTicks) {
+    svg.appendChild(svgEl('line', { x1: PAD_L, x2: W-PAD_R, y1: y(t).toFixed(1), y2: y(t).toFixed(1), stroke: '#cbd5e1', 'stroke-opacity': '0.5', 'stroke-width': '1' }));
+    const lbl = svgEl('text', { x: PAD_L-8, y: (y(t)+4).toFixed(1), 'text-anchor': 'end', 'font-family': 'Inter, sans-serif', 'font-size': '10', fill: '#64748b', 'font-weight': '500' });
+    lbl.textContent = usdShort(t);
+    svg.appendChild(lbl);
+  }
+  const xStep = Math.max(1, Math.round(maxX / 5));
+  const xs = [];
+  for (let v = 0; v <= maxX; v += xStep) xs.push(v);
+  if (xs[xs.length-1] !== maxX) xs.push(maxX);
+  for (const t of xs) {
+    const lbl = svgEl('text', { x: x(t).toFixed(1), y: H-10, 'text-anchor': 'middle', 'font-family': 'Inter, sans-serif', 'font-size': '10', fill: '#64748b', 'font-weight': '500' });
+    lbl.textContent = t + 'y';
+    svg.appendChild(lbl);
+  }
+
+  // flat area
+  const flatArea = `M ${x(0)} ${y(0).toFixed(1)} ` + series.map(d => `L ${x(d.year).toFixed(1)} ${y(d.withoutFees).toFixed(1)}`).join(' ') + ` L ${x(maxX).toFixed(1)} ${y(0).toFixed(1)} Z`;
+  svg.appendChild(svgEl('path', { d: flatArea, fill: 'url(#pop)', stroke: 'none' }));
+
+  // aum line (dashed red)
+  const aumD = series.map((d, i) => `${i===0?'M':'L'}${x(d.year).toFixed(1)} ${y(d.withFees).toFixed(1)}`).join(' ');
+  svg.appendChild(svgEl('path', { d: aumD, fill: 'none', stroke: '#B91C1C', 'stroke-width': '2', 'stroke-dasharray': '5,4', 'stroke-linecap': 'round' }));
+
+  // flat line (brand green bold)
+  const flatD = series.map((d, i) => `${i===0?'M':'L'}${x(d.year).toFixed(1)} ${y(d.withoutFees).toFixed(1)}`).join(' ');
+  svg.appendChild(svgEl('path', { d: flatD, fill: 'none', stroke: '#00A540', 'stroke-width': '3', 'stroke-linecap': 'round' }));
+
+  svg.appendChild(svgEl('circle', { cx: x(maxX).toFixed(1), cy: y(series[series.length-1].withoutFees).toFixed(1), r: '5', fill: '#00A540', stroke: '#0f172a', 'stroke-width': '2' }));
+  svg.appendChild(svgEl('circle', { cx: x(maxX).toFixed(1), cy: y(series[series.length-1].withFees).toFixed(1), r: '5', fill: 'white', stroke: '#0f172a', 'stroke-width': '2' }));
+}
+
+function bounceBig() {
+  const b = $('bigSavings');
+  b.classList.remove('bounce'); void b.offsetWidth; b.classList.add('bounce');
+}
+
+let lastSav = 788306;
+function tweenBig(target) {
+  const node = $('bigSavingsVal');
+  const start = lastSav, delta = target - start;
+  const dur = 380;
+  const t0 = performance.now();
+  function step(now) {
+    const t = Math.min(1, (now - t0) / dur);
+    const e = 1 - Math.pow(1 - t, 3);
+    node.textContent = usdNum.format(Math.round(start + delta * e));
+    if (t < 1) requestAnimationFrame(step);
+    else lastSav = target;
+  }
+  requestAnimationFrame(step);
+}
+
+function render() {
+  const r = buildFeeProjection({
+    initialInvestment: state.pv,
+    years: state.yr,
+    annualFeePercent: state.fee,
+    annualGrowthPercent: state.gr,
+  });
+  const sav = Math.max(0, r.savings);
+  tweenBig(Math.round(sav));
+
+  $('rsFee').textContent = state.fee.toFixed(state.fee % 1 === 0 ? 0 : 2) + '%';
+  $('rsYrs').textContent = state.yr + ' years';
+  $('tTheir').textContent = usd.format(r.totalFees);
+  $('tOurs').textContent = usd.format(r.totalFlatFees);
+  $('stickyV').textContent = usd.format(sav);
+
+  $('ch-fee').textContent = state.fee.toFixed(2) + '%';
+  $('ch-grow').textContent = state.gr.toFixed(1) + '%';
+  $('passNum').textContent = `SWW · ${Math.round(state.pv/10000).toString().padStart(3,'0')} · ${state.yr.toString().padStart(3,'0')}`;
+
+  drawChart(r.series);
+}
+
+function bindGroup(selector, key, parser) {
+  document.querySelectorAll(selector).forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.parentElement;
+      group.querySelectorAll('.opt').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      state[key] = parser(btn.dataset[key]);
+      if (key === 'pv' && !state.customPv) {
+        $('advPv').value = state.pv;
+        $('advPvVal').textContent = usd.format(state.pv);
+      }
+      bounceBig();
+      render();
+    });
+  });
+}
+bindGroup('.opt[data-pv]', 'pv', (v) => parseFloat(v));
+bindGroup('.opt[data-yr]', 'yr', (v) => parseInt(v, 10));
+bindGroup('.opt[data-fee]', 'fee', (v) => parseFloat(v));
+
+$('advToggle').addEventListener('click', () => {
+  const panel = $('advPanel');
+  const tg = $('advToggle');
+  const open = panel.classList.toggle('open');
+  tg.setAttribute('aria-expanded', String(open));
+  tg.textContent = open ? '− Hide assumptions' : '+ Fine-tune assumptions';
+});
+
+$('advGrow').addEventListener('input', (e) => {
+  state.gr = parseFloat(e.target.value);
+  $('advGrowVal').textContent = state.gr.toFixed(1) + '%';
+  render();
+});
+$('advPv').addEventListener('input', (e) => {
+  state.pv = parseFloat(e.target.value);
+  state.customPv = true;
+  $('advPvVal').textContent = usd.format(state.pv);
+  document.querySelectorAll('.opt[data-pv]').forEach(b => b.classList.remove('selected'));
+  bounceBig();
+  render();
+});
+
+document.querySelectorAll('.poll-opt').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.poll-opt').forEach(x => x.classList.remove('picked'));
+    b.classList.add('picked');
+  });
+});
+
+$('copyBtn').addEventListener('click', () => {
+  const url = `${location.origin}${location.pathname}?fee=${state.fee}&pv=${state.pv}&gr=${state.gr}&yr=${state.yr}`;
+  if (navigator.clipboard) navigator.clipboard.writeText(url).then(() => {
+    const b = $('copyBtn'); const t = b.textContent;
+    b.textContent = '✓ Link copied!'; setTimeout(() => b.textContent = t, 1800);
+  });
+});
+
+const params = new URLSearchParams(location.search);
+if (params.get('fee')) state.fee = parseFloat(params.get('fee'));
+if (params.get('pv')) state.pv = parseFloat(params.get('pv'));
+if (params.get('gr')) state.gr = parseFloat(params.get('gr'));
+if (params.get('yr')) state.yr = parseInt(params.get('yr'), 10);
+
+const io = new IntersectionObserver((es) => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), { threshold: 0.15 });
+document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+render();
+</script>
+</body>
+</html>

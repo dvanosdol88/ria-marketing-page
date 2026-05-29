@@ -1,0 +1,1313 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#02150D" />
+<title>The Vault — Smarter Way Wealth | A flat fee, by design</title>
+<meta name="description" content="Fiduciary advice for a flat $100/month. Run the numbers and see what a percentage-fee model is quietly costing you. CFA + CFP, fee-only." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  /* Brand tokens (from src/styles/tokens.ts) */
+  --brand-50:  #EEFBF3;
+  --brand-100: #D6F5E2;
+  --brand-200: #B0EBC8;
+  --brand-300: #7ADCA6;
+  --brand-400: #3FC87C;
+  --brand-500: #14B254;
+  --brand-600: #00A540;
+  --brand-700: #008435;
+  --brand-800: #00682B;
+  --brand-900: #004D20;
+  --brand-950: #002A11;
+
+  /* Dark variant background — matches existing 'fiduciary-upgrade' variant */
+  --bg-deep:   #02150D;
+  --bg-mid:    #06301D;
+  --bg-card:   #062417;
+  --bg-card-2: #082A1A;
+  --bg-elev:   #061B12;
+
+  /* Loss accent (still red — same as existing variants) */
+  --red:       #F87171;
+  --red-deep:  #B91C1C;
+
+  --neutral-200: #e2e8f0;
+  --neutral-300: #cbd5e1;
+  --neutral-400: #94a3b8;
+  --neutral-500: #64748b;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+
+  --text:       #F0FDF4;
+  --text-soft:  rgba(209, 250, 229, 0.78);
+  --text-mute:  rgba(209, 250, 229, 0.55);
+
+  --line:       rgba(122, 220, 166, 0.18);
+  --line-soft:  rgba(122, 220, 166, 0.10);
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-logo: 'DM Sans', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--bg-deep);
+  color: var(--text);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  background-image:
+    radial-gradient(circle at 80% 12%, rgba(63, 200, 124, 0.18), transparent 36%),
+    linear-gradient(180deg, #02150D 0%, #06301D 54%, #02150D 100%);
+  background-attachment: fixed;
+}
+a { color: var(--brand-300); }
+button { font-family: inherit; cursor: pointer; }
+
+/* RULES (replacing gold rules with brand-green rules) */
+.brand-rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brand-600) 20%, var(--brand-600) 80%, transparent);
+  opacity: 0.5;
+}
+.brand-rule.thick {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--brand-700) 5%, var(--brand-500) 50%, var(--brand-700) 95%, transparent);
+  opacity: 0.55;
+}
+
+/* TICKER */
+.ticker-bar {
+  border-bottom: 1px solid var(--line);
+  background: rgba(0,0,0,0.4);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-weight: 500;
+}
+.ticker-bar .left { display: flex; gap: 22px; align-items: center; }
+.ticker-bar .crd { color: var(--brand-300); font-weight: 600; }
+.ticker-bar .pulse {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand-500);
+  box-shadow: 0 0 10px var(--brand-500);
+  animation: pulse 1.6s ease-in-out infinite;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* NAV with real logo */
+.nav-row {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 22px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.brand-link {
+  display: inline-flex;
+  align-items: end;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+.brand-icon { display: flex; align-items: end; gap: 2px; }
+.brand-wordmark {
+  font-family: var(--font-logo);
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+.brand-wordmark .top {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.166em;
+  color: var(--text);
+  text-transform: uppercase;
+}
+.brand-wordmark .bot {
+  font-weight: 500;
+  font-size: 9px;
+  letter-spacing: 0.222em;
+  color: var(--brand-400);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.nav-cta {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  background: rgba(0, 165, 64, 0.06);
+  transition: all 0.2s;
+  font-weight: 600;
+}
+.nav-cta:hover {
+  border-color: var(--brand-500);
+  background: rgba(0, 165, 64, 0.14);
+  color: var(--brand-300);
+}
+
+/* HERO */
+.hero {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 30px 24px 40px;
+  position: relative;
+}
+@media (min-width: 900px) { .hero { padding: 60px 24px 80px; } }
+
+.hero-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--brand-300);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 28px;
+  font-weight: 700;
+}
+.hero-eyebrow::before {
+  content: "";
+  width: 56px;
+  height: 1px;
+  background: var(--brand-500);
+}
+
+.hero h1 {
+  font-weight: 800;
+  font-size: clamp(40px, 9vw, 116px);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  margin: 0 0 28px;
+  color: var(--text);
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--brand-300);
+  letter-spacing: -0.03em;
+}
+.hero h1 strong { font-style: normal; font-weight: 800; }
+
+.hero-deck {
+  font-size: clamp(17px, 2vw, 21px);
+  line-height: 1.5;
+  color: var(--text-soft);
+  font-weight: 300;
+  max-width: 60ch;
+  margin: 0 0 36px;
+}
+.hero-deck strong { color: var(--brand-300); font-weight: 600; }
+
+/* BIG NUMBER + DIALS */
+.vault-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+  align-items: center;
+  margin-top: 30px;
+}
+@media (min-width: 1000px) { .vault-hero { grid-template-columns: 1.1fr 0.9fr; gap: 60px; } }
+
+.bignum-wrap {
+  position: relative;
+  padding: 32px 24px;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 30% 0%, rgba(0, 165, 64, 0.14), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.4));
+  overflow: hidden;
+  border-radius: 4px;
+}
+.bignum-wrap::before {
+  content: "";
+  position: absolute;
+  top: -2px; left: 24px; right: 24px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--brand-500), transparent);
+  opacity: 0.7;
+}
+.bignum-wrap::after {
+  content: "";
+  position: absolute;
+  bottom: -2px; left: 24px; right: 24px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--brand-500), transparent);
+  opacity: 0.5;
+}
+
+.bignum-label {
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--brand-300);
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+.bignum-label .live {
+  color: var(--brand-400);
+  margin-left: 8px;
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.bignum {
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(56px, 12vw, 144px);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  color: var(--brand-300);
+  text-shadow: 0 0 40px rgba(63, 200, 124, 0.4);
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.bignum .currency {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.5em;
+  color: var(--brand-400);
+  margin-right: 4px;
+}
+
+.bignum-sub {
+  margin-top: 18px;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  color: var(--text-soft);
+  line-height: 1.5;
+  max-width: 50ch;
+}
+.bignum-sub strong { color: var(--brand-300); font-weight: 600; }
+
+.scenario {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: start;
+  gap: 6px 18px;
+  font-weight: 500;
+}
+.scenario span:nth-child(odd) { color: var(--text-mute); }
+.scenario span:nth-child(even) { color: var(--text); font-weight: 700; letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+
+/* DIALS */
+.dials-card {
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(63, 200, 124, 0.08), transparent 50%),
+    linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.35));
+  padding: 28px 24px;
+  border-radius: 4px;
+}
+.dials-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.dials-head h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.dials-head h3 em { font-style: italic; font-weight: 300; color: var(--brand-300); }
+.dials-head .num {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--brand-300);
+  font-weight: 700;
+}
+
+.dial { margin-bottom: 24px; }
+.dial:last-child { margin-bottom: 0; }
+.dial-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.dial-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  font-weight: 600;
+}
+.dial-val {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+}
+.dial-val em { font-style: italic; font-weight: 300; color: var(--brand-300); }
+
+input[type=range].lux {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 28px;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+input[type=range].lux:focus { outline: none; }
+input[type=range].lux:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px rgba(0, 165, 64, 0.35); }
+input[type=range].lux::-webkit-slider-runnable-track {
+  height: 1px;
+  background: rgba(122, 220, 166, 0.4);
+  border: none;
+}
+input[type=range].lux::-moz-range-track {
+  height: 1px;
+  background: rgba(122, 220, 166, 0.4);
+  border: none;
+}
+input[type=range].lux::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 18px; width: 18px;
+  background: var(--bg-deep);
+  border: 1.5px solid var(--brand-500);
+  border-radius: 50%;
+  margin-top: -9px;
+  box-shadow: 0 0 14px rgba(0, 165, 64, 0.5);
+  transition: all 0.15s;
+}
+input[type=range].lux::-moz-range-thumb {
+  height: 18px; width: 18px;
+  background: var(--bg-deep);
+  border: 1.5px solid var(--brand-500);
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgba(0, 165, 64, 0.5);
+}
+input[type=range].lux:active::-webkit-slider-thumb {
+  background: var(--brand-500);
+  box-shadow: 0 0 22px rgba(0, 165, 64, 0.8);
+}
+
+.dial-tick {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-mute);
+  letter-spacing: 0.14em;
+  margin-top: 8px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* LEDGER */
+.ledger { max-width: 1280px; margin: 0 auto; padding: 60px 24px; }
+
+.ledger-head {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  margin-bottom: 26px;
+  flex-wrap: wrap;
+}
+.ledger-head .roman {
+  font-size: 36px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--brand-300);
+  letter-spacing: -0.02em;
+}
+.ledger-head h2 {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 800;
+  margin: 0;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--text);
+}
+.ledger-head h2 em { font-style: italic; font-weight: 300; color: var(--brand-300); }
+
+.ledger-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-top: 30px;
+}
+@media (min-width: 800px) { .ledger-grid { grid-template-columns: 1fr 1fr; gap: 0; } }
+
+.ledger-col {
+  border: 1px solid var(--line);
+  padding: 30px 26px 32px;
+  background: rgba(0,0,0,0.25);
+  position: relative;
+  overflow: hidden;
+}
+.ledger-col.theirs {
+  border-color: rgba(248, 113, 113, 0.22);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(248, 113, 113, 0.08), transparent 60%),
+    rgba(0,0,0,0.25);
+}
+.ledger-col.ours {
+  border-color: rgba(0, 165, 64, 0.30);
+  background:
+    radial-gradient(circle at 0% 100%, rgba(0, 165, 64, 0.12), transparent 60%),
+    rgba(0,0,0,0.25);
+}
+@media (min-width: 800px) { .ledger-col.theirs { border-right: none; } }
+
+.ledger-col-head {
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+.ledger-col.theirs .ledger-col-head { color: var(--red); }
+.ledger-col.ours .ledger-col-head { color: var(--brand-300); }
+
+.ledger-col h4 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 22px;
+  letter-spacing: -0.025em;
+  color: var(--text);
+}
+.ledger-col h4 em { font-style: italic; font-weight: 300; }
+.ledger-col.theirs h4 em { color: var(--red); }
+.ledger-col.ours h4 em { color: var(--brand-300); }
+
+.ledger-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px dotted var(--line);
+  font-size: 14px;
+}
+.ledger-line:last-child { border-bottom: none; }
+.ledger-line .k { color: var(--text-mute); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+.ledger-line .v { font-weight: 600; color: var(--text); font-size: 14px; font-variant-numeric: tabular-nums; }
+
+.ledger-final {
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+.ledger-final-label {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+.ledger-final-val {
+  font-size: clamp(36px, 6vw, 56px);
+  line-height: 0.95;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.ledger-col.theirs .ledger-final-val { color: var(--red); }
+.ledger-col.ours .ledger-final-val { color: var(--brand-300); text-shadow: 0 0 24px rgba(0, 165, 64, 0.4); }
+
+/* CHART */
+.chart-vault { max-width: 1280px; margin: 30px auto 0; padding: 0 24px; }
+.chart-card {
+  border: 1px solid var(--line);
+  padding: 26px 24px;
+  background: rgba(0,0,0,0.3);
+}
+.chart-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.chart-card-head h3 {
+  font-weight: 700;
+  font-size: 22px;
+  margin: 0;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.chart-card-head h3 em { font-style: italic; font-weight: 300; color: var(--brand-300); }
+.chart-legend-vault {
+  display: flex;
+  gap: 18px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  font-weight: 600;
+}
+.chart-legend-vault .swatch {
+  display: inline-block;
+  width: 16px; height: 2px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+#chart2 { width: 100%; height: auto; }
+
+/* CTA STRIP */
+.cta-strip { max-width: 1280px; margin: 50px auto 0; padding: 0 24px; }
+.cta-card {
+  border: 1px solid var(--line);
+  background: linear-gradient(135deg, rgba(0, 165, 64, 0.10), rgba(63, 200, 124, 0.04));
+  padding: 36px 28px;
+  text-align: center;
+}
+.cta-card h3 {
+  font-size: clamp(28px, 4.4vw, 42px);
+  font-weight: 800;
+  margin: 0 0 10px;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--text);
+}
+.cta-card h3 em { font-style: italic; font-weight: 300; color: var(--brand-300); }
+.cta-card p {
+  margin: 0 auto 24px;
+  max-width: 56ch;
+  color: var(--text-soft);
+  font-size: 16px;
+}
+.cta-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+}
+@media (min-width: 600px) { .cta-actions { flex-direction: row; } }
+
+.btn-vault {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 28px;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  min-height: 56px;
+  transition: all 0.2s;
+  font-family: inherit;
+  border-radius: 4px;
+}
+.btn-vault.primary {
+  background: var(--brand-600);
+  color: white;
+  box-shadow: 0 0 24px rgba(0, 165, 64, 0.35);
+}
+.btn-vault.primary:hover {
+  background: var(--brand-500);
+  box-shadow: 0 0 32px rgba(0, 165, 64, 0.55);
+  transform: translateY(-1px);
+}
+.btn-vault.outline {
+  background: transparent;
+  color: var(--brand-300);
+  border: 1px solid var(--brand-500);
+}
+.btn-vault.outline:hover { background: rgba(0, 165, 64, 0.10); }
+
+/* QUOTES */
+.quotes { max-width: 1280px; margin: 80px auto 0; padding: 0 24px; }
+.quotes h2 {
+  font-size: clamp(32px, 6vw, 64px);
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+.quotes h2 em { font-style: italic; font-weight: 300; color: var(--brand-300); }
+.quotes .sub {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 50px;
+  font-weight: 600;
+}
+
+.quote-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+@media (min-width: 800px) { .quote-grid { grid-template-columns: repeat(3, 1fr); gap: 26px; } }
+
+.q-card {
+  border: 1px solid var(--line);
+  background: rgba(0,0,0,0.3);
+  padding: 28px 24px;
+  position: relative;
+  transition: border-color 0.3s, transform 0.3s;
+}
+.q-card:hover { border-color: var(--brand-500); transform: translateY(-2px); }
+.q-card .mark {
+  font-style: italic;
+  font-weight: 800;
+  color: var(--brand-500);
+  font-size: 64px;
+  line-height: 0.4;
+  position: absolute;
+  top: 22px;
+  left: 18px;
+  opacity: 0.5;
+}
+.q-card blockquote {
+  margin: 22px 0 22px;
+  font-style: italic;
+  font-size: 18px;
+  line-height: 1.4;
+  color: var(--text);
+  font-weight: 300;
+  letter-spacing: -0.015em;
+}
+.q-card .who {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  font-weight: 600;
+}
+.q-card .who strong { color: var(--brand-300); font-weight: 700; }
+
+/* ABOUT */
+.about {
+  max-width: 1280px;
+  margin: 90px auto 0;
+  padding: 60px 24px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 36px;
+}
+@media (min-width: 800px) { .about { grid-template-columns: 0.42fr 0.58fr; gap: 60px; } }
+
+.about-frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border: 1px solid var(--brand-500);
+  padding: 14px;
+  background: rgba(0, 165, 64, 0.04);
+}
+.about-frame::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--line);
+  pointer-events: none;
+}
+.about-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.about-frame .placeholder {
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse at top, rgba(63, 200, 124, 0.20), transparent 60%),
+    linear-gradient(180deg, var(--bg-card-2), var(--bg-deep));
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 14px;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--brand-300);
+  font-weight: 700;
+}
+
+.about-tag {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--brand-300);
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+.about h3 {
+  font-size: clamp(36px, 6vw, 56px);
+  font-weight: 800;
+  margin: 0 0 6px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--text);
+}
+.about .creds {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 22px;
+  font-weight: 600;
+}
+.about .creds .dot { color: var(--brand-500); margin: 0 8px; }
+.about p {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-soft);
+  font-weight: 300;
+  margin: 0 0 16px;
+  max-width: 56ch;
+}
+.about p strong { color: var(--brand-300); font-weight: 600; }
+.about-sig {
+  font-style: italic;
+  font-size: 30px;
+  font-weight: 300;
+  color: var(--brand-300);
+  margin-top: 22px;
+  letter-spacing: -0.02em;
+}
+
+/* FOOTER */
+.foot {
+  max-width: 1280px;
+  margin: 60px auto 0;
+  padding: 36px 24px 80px;
+  border-top: 1px solid var(--line);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  color: var(--text-mute);
+  line-height: 1.7;
+  text-align: center;
+  font-weight: 500;
+}
+.foot strong { color: var(--brand-300); font-weight: 600; }
+.foot a { color: var(--brand-300); }
+
+/* STICKY */
+.lux-sticky {
+  position: sticky;
+  bottom: 0;
+  background: rgba(2, 21, 13, 0.96);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--brand-500);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  z-index: 50;
+  font-weight: 600;
+}
+.lux-sticky .save-num {
+  font-style: italic;
+  font-weight: 300;
+  font-size: 22px;
+  color: var(--brand-300);
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.lux-sticky a {
+  background: var(--brand-600);
+  color: white;
+  text-decoration: none;
+  padding: 10px 14px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  border-radius: 4px;
+}
+@media (min-width: 1000px) { .lux-sticky { display: none; } }
+
+@keyframes roll {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.7s, transform 0.7s; }
+.fade-up.in { opacity: 1; transform: none; }
+
+/* Decorative dots constellation */
+.constellation {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 12% 24%, rgba(63, 200, 124, 0.5) 0.5px, transparent 1.5px),
+    radial-gradient(circle at 38% 18%, rgba(63, 200, 124, 0.35) 0.5px, transparent 1.5px),
+    radial-gradient(circle at 86% 32%, rgba(63, 200, 124, 0.45) 0.5px, transparent 1.5px),
+    radial-gradient(circle at 60% 64%, rgba(63, 200, 124, 0.35) 0.5px, transparent 1.5px),
+    radial-gradient(circle at 22% 78%, rgba(63, 200, 124, 0.45) 0.5px, transparent 1.5px),
+    radial-gradient(circle at 92% 88%, rgba(63, 200, 124, 0.3) 0.5px, transparent 1.5px);
+  opacity: 0.6;
+}
+</style>
+</head>
+<body>
+
+<div class="ticker-bar">
+  <div class="left">
+    <span><span class="pulse"></span>VAULT&nbsp;OPEN</span>
+    <span>EST. 2026</span>
+    <span class="crd">CRD #342140</span>
+  </div>
+  <div>SEC-REGISTERED · CONNECTICUT</div>
+</div>
+
+<nav class="nav-row">
+  <a class="brand-link" href="/" aria-label="Smarter Way Wealth home">
+    <span class="brand-icon">
+      <svg viewBox="0 0 40 36" width="36" height="32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="0" y="18" width="12" height="18" rx="1.5" fill="#3DA85C"/>
+        <rect x="14" y="8" width="12" height="28" rx="1.5" fill="#1E8F42"/>
+        <rect x="28" y="0" width="12" height="36" rx="1.5" fill="#007A2F"/>
+      </svg>
+    </span>
+    <span class="brand-wordmark">
+      <span class="top">Smarter</span>
+      <span class="bot">Way Wealth</span>
+    </span>
+  </a>
+  <a href="https://riabuilder.dvo88.com" class="nav-cta">Book audit →</a>
+</nav>
+
+<div class="brand-rule"></div>
+
+<section class="hero">
+  <div class="constellation"></div>
+  <div class="hero-eyebrow">A flat fee · By design · Since 2026</div>
+  <h1>The fee meter<br><em>quietly running</em><br>against your <strong>future</strong>.</h1>
+  <p class="hero-deck">
+    Most wealth managers charge a <strong>percentage of every dollar you save</strong> &mdash; forever.
+    A flat retainer matches the work. The vault below shows the difference, in real money,
+    over a real lifetime.
+  </p>
+
+  <div class="vault-hero">
+    <div class="bignum-wrap">
+      <div class="bignum-label">YOUR LIFETIME FEE GAP <span class="live">● LIVE</span></div>
+      <div class="bignum" id="bigNum"><span class="currency">$</span><span id="bigVal">788,306</span></div>
+      <div class="bignum-sub">
+        Projected difference between a <strong>$100/month flat fee</strong>
+        and a traditional <strong>1% AUM advisor</strong> over your investing lifetime.
+      </div>
+      <div class="scenario">
+        <span>Portfolio</span><span id="sPort">$1,000,000</span>
+        <span>Horizon</span><span id="sYrs">20 years</span>
+        <span>Growth</span><span id="sGrow">8.0% / yr</span>
+        <span>Their fee</span><span id="sFee">1.00%</span>
+      </div>
+    </div>
+
+    <div class="dials-card">
+      <div class="dials-head">
+        <h3>The <em>Dials</em></h3>
+        <span class="num">04</span>
+      </div>
+
+      <div class="dial">
+        <div class="dial-row">
+          <span class="dial-label">Advisory fee</span>
+          <span class="dial-val" id="dFee">1.00%</span>
+        </div>
+        <input type="range" class="lux" id="fee" min="0" max="3" step="0.05" value="1" aria-label="Advisory fee">
+        <div class="dial-tick"><span>0%</span><span>1.5%</span><span>3%</span></div>
+      </div>
+
+      <div class="dial">
+        <div class="dial-row">
+          <span class="dial-label">Portfolio</span>
+          <span class="dial-val" id="dPv">$1,000,000</span>
+        </div>
+        <input type="range" class="lux" id="pv" min="50000" max="5000000" step="50000" value="1000000" aria-label="Portfolio">
+        <div class="dial-tick"><span>$50k</span><span>$2.5m</span><span>$5m</span></div>
+      </div>
+
+      <div class="dial">
+        <div class="dial-row">
+          <span class="dial-label">Annual growth</span>
+          <span class="dial-val" id="dGr">8.0%</span>
+        </div>
+        <input type="range" class="lux" id="gr" min="0" max="15" step="0.1" value="8" aria-label="Growth">
+        <div class="dial-tick"><span>0%</span><span>7.5%</span><span>15%</span></div>
+      </div>
+
+      <div class="dial">
+        <div class="dial-row">
+          <span class="dial-label">Time horizon</span>
+          <span class="dial-val" id="dYr">20 yrs</span>
+        </div>
+        <input type="range" class="lux" id="yr" min="1" max="40" step="1" value="20" aria-label="Years">
+        <div class="dial-tick"><span>1y</span><span>20y</span><span>40y</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="brand-rule thick"></div>
+
+<section class="ledger">
+  <div class="ledger-head">
+    <span class="roman">I.</span>
+    <h2>The <em>two ledgers</em>, side by side.</h2>
+  </div>
+
+  <div class="ledger-grid">
+    <div class="ledger-col theirs fade-up">
+      <div class="ledger-col-head">— TRADITIONAL 1% ADVISOR</div>
+      <h4>The <em>percentage</em> model</h4>
+
+      <div class="ledger-line"><span class="k">Fees / year (Y1)</span><span class="v" id="tFy">$10,000</span></div>
+      <div class="ledger-line"><span class="k">Lifetime fees</span><span class="v" id="tFt">$401,694</span></div>
+      <div class="ledger-line"><span class="k">Wealth lost to fees</span><span class="v" id="tFw">$788,306</span></div>
+      <div class="ledger-line"><span class="k">Final portfolio</span><span class="v" id="tFv">$3,872,712</span></div>
+
+      <div class="ledger-final">
+        <div class="ledger-final-label">Ends with</div>
+        <div class="ledger-final-val" id="tEnd">$3.87M</div>
+      </div>
+    </div>
+
+    <div class="ledger-col ours fade-up">
+      <div class="ledger-col-head">— SMARTER WAY · $100/MO FLAT</div>
+      <h4>The <em>flat retainer</em></h4>
+
+      <div class="ledger-line"><span class="k">Fees / year</span><span class="v">$1,200 fixed</span></div>
+      <div class="ledger-line"><span class="k">Lifetime fees</span><span class="v" id="oFt">$24,000</span></div>
+      <div class="ledger-line"><span class="k">Wealth lost to fees</span><span class="v" id="oFw">~$24,000</span></div>
+      <div class="ledger-line"><span class="k">Final portfolio</span><span class="v" id="oFv">$4,661,018</span></div>
+
+      <div class="ledger-final">
+        <div class="ledger-final-label">Ends with</div>
+        <div class="ledger-final-val" id="oEnd">$4.66M</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="chart-vault">
+  <div class="chart-card">
+    <div class="chart-card-head">
+      <h3>The compounding gap, <em>visualized</em></h3>
+      <div class="chart-legend-vault">
+        <span><span class="swatch" style="background: #00A540"></span>$100/mo flat</span>
+        <span><span class="swatch" style="background: #F87171"></span>1% AUM</span>
+      </div>
+    </div>
+    <svg id="chart2" viewBox="0 0 800 320" aria-label="Portfolio comparison chart"></svg>
+  </div>
+</div>
+
+<section class="quotes" id="quotes">
+  <h2>The numbers <em>are not subtle.</em></h2>
+  <p class="sub">— Three lines from people who built the field —</p>
+
+  <div class="quote-grid">
+    <div class="q-card fade-up">
+      <span class="mark">"</span>
+      <blockquote>The miracle of compounding returns is overwhelmed by the tyranny of compounding costs.</blockquote>
+      <div class="who"><strong>John C. Bogle</strong> · Founder, The Vanguard Group</div>
+    </div>
+    <div class="q-card fade-up">
+      <span class="mark">"</span>
+      <blockquote>In investing, you get what you don't pay for. Costs are a certainty. Returns are not.</blockquote>
+      <div class="who"><strong>Warren Buffett</strong> · annual letter, 2016</div>
+    </div>
+    <div class="q-card fade-up">
+      <span class="mark">"</span>
+      <blockquote>Fees are one of the few things in investing that are entirely within your control.</blockquote>
+      <div class="who"><strong>The Wall Street Journal</strong> · personal finance</div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-strip">
+  <div class="cta-card">
+    <h3>Bring the calculator. <em>Keep the gap.</em></h3>
+    <p>A 15-minute audit. We pull your existing fees, plug in your real numbers, and tell you what a flat retainer would cost &mdash; and save &mdash; in plain English.</p>
+    <div class="cta-actions">
+      <a href="https://riabuilder.dvo88.com" class="btn-vault primary">Book a 15-minute audit</a>
+      <button id="copyBtn" class="btn-vault outline">Copy this scenario</button>
+    </div>
+  </div>
+</div>
+
+<section class="about">
+  <div>
+    <div class="about-frame">
+      <img src="../../public/DVO Head Shot picture.jpg" alt="David J. Van Osdol" onerror="this.onerror=null; this.outerHTML='&lt;div class=&quot;placeholder&quot;&gt;DAVID J. VAN OSDOL&lt;/div&gt;';">
+    </div>
+  </div>
+  <div>
+    <div class="about-tag">— PRINCIPAL · FIDUCIARY · BUILDER</div>
+    <h3>David J. Van Osdol</h3>
+    <div class="creds">
+      CFA Charterholder<span class="dot">·</span>CFP&reg; Practitioner<span class="dot">·</span>Connecticut
+    </div>
+    <p>
+      Smarter Way Wealth was built around a single observation: <strong>the asset-based fee model
+      no longer matches the work.</strong> A retainer does. So that's how we charge.
+    </p>
+    <p>
+      $100 a month, flat. Every client receives the same fiduciary attention &mdash; portfolio
+      management, tax-aware rebalancing, real-estate analysis, planning &mdash; without an
+      escalating tax on their savings.
+    </p>
+    <p>
+      If the gap above is large enough that it warrants a conversation, I'd be glad to have one.
+    </p>
+    <div class="about-sig">— David</div>
+  </div>
+</section>
+
+<footer class="foot">
+  <p><strong>Smarter Way Wealth, LLC</strong> · SEC-registered investment adviser · CRD #342140</p>
+  <p>The calculator is a hypothetical illustration. Past performance does not guarantee future results.<br>
+  The 8% default growth rate is an assumption, not a forecast. Advisory services provided only after delivery of Form ADV and a signed agreement.</p>
+  <p>Disclosures · Form ADV · Privacy · <a href="https://adviserinfo.sec.gov" target="_blank" rel="noopener">IAPD</a> · &copy; 2026 Smarter Way Wealth, LLC</p>
+</footer>
+
+<div class="lux-sticky" role="status" aria-live="polite">
+  <div>Lifetime gap <span class="save-num" id="sGap">$788,306</span></div>
+  <a href="https://riabuilder.dvo88.com">Book audit</a>
+</div>
+
+<script>
+const RIA_MONTHLY_FEE = 100;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function buildFeeProjection({ initialInvestment, years, annualFeePercent, annualGrowthPercent }) {
+  const rAnnual = annualGrowthPercent / 100;
+  const rMonthly = Math.pow(1 + rAnnual, 1 / 12) - 1;
+  const aumMonthly = annualFeePercent / 100 / 12;
+  const totalMonths = years * 12;
+  let withFlat = initialInvestment;
+  let withAum = initialInvestment;
+  let cumAumFees = 0, cumFlatFees = 0;
+  const series = [{ year: 0, withoutFees: withFlat, withFees: withAum }];
+  let firstYearFee = 0;
+  for (let m = 1; m <= totalMonths; m++) {
+    withFlat *= 1 + rMonthly;
+    withAum *= 1 + rMonthly;
+    withFlat = Math.max(0, withFlat - RIA_MONTHLY_FEE);
+    cumFlatFees += RIA_MONTHLY_FEE;
+    const fee = withAum * aumMonthly;
+    if (m <= 12) firstYearFee += fee;
+    withAum = Math.max(0, withAum - fee);
+    cumAumFees += fee;
+    if (m % 12 === 0) series.push({ year: m / 12, withoutFees: withFlat, withFees: withAum });
+  }
+  return {
+    series, totalFees: cumAumFees, totalFlatFees: cumFlatFees,
+    savings: withFlat - withAum, finalValueWithFees: withAum, finalValueWithoutFees: withFlat,
+    firstYearFee
+  };
+}
+
+const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+function usdShort(n) {
+  if (Math.abs(n) >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
+  if (Math.abs(n) >= 1e3) return '$' + Math.round(n/1e3) + 'K';
+  return usd.format(n);
+}
+const usdNoDollar = (n) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(Math.round(n));
+
+const $ = (id) => document.getElementById(id);
+const fee = $('fee'), pv = $('pv'), gr = $('gr'), yr = $('yr');
+
+function svgEl(tag, attrs) {
+  const el = document.createElementNS(SVG_NS, tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  return el;
+}
+
+function drawChart(series) {
+  const svg = $('chart2');
+  while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+  const W = 800, H = 320, PAD_L = 64, PAD_R = 24, PAD_T = 18, PAD_B = 36;
+  const innerW = W - PAD_L - PAD_R, innerH = H - PAD_T - PAD_B;
+  const maxY = Math.max(...series.map(d => Math.max(d.withoutFees, d.withFees))) * 1.05 || 1;
+  const maxX = Math.max(1, series[series.length-1].year);
+  const x = (v) => PAD_L + (v) / maxX * innerW;
+  const y = (v) => PAD_T + innerH - (v / maxY) * innerH;
+
+  const defs = svgEl('defs');
+  const grad = svgEl('linearGradient', { id: 'gapGrad', x1: '0', x2: '0', y1: '0', y2: '1' });
+  grad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#F87171', 'stop-opacity': '0.18' }));
+  grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#F87171', 'stop-opacity': '0.02' }));
+  defs.appendChild(grad);
+
+  const flatG = svgEl('linearGradient', { id: 'flatGrad', x1: '0', x2: '0', y1: '0', y2: '1' });
+  flatG.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#00A540', 'stop-opacity': '0.30' }));
+  flatG.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#00A540', 'stop-opacity': '0' }));
+  defs.appendChild(flatG);
+  svg.appendChild(defs);
+
+  const yTicks = [0, 0.25, 0.5, 0.75, 1].map(t => t * maxY);
+  for (const t of yTicks) {
+    svg.appendChild(svgEl('line', { x1: PAD_L, x2: W-PAD_R, y1: y(t).toFixed(1), y2: y(t).toFixed(1), stroke: 'rgba(122,220,166,0.10)', 'stroke-width': '1' }));
+    const lbl = svgEl('text', { x: PAD_L-10, y: (y(t)+4).toFixed(1), 'text-anchor': 'end', 'font-family': 'Inter, sans-serif', 'font-size': '10', 'font-weight': '500', fill: 'rgba(209,250,229,0.55)' });
+    lbl.textContent = usdShort(t);
+    svg.appendChild(lbl);
+  }
+  const xStep = Math.max(1, Math.round(maxX / 6));
+  const xs = [];
+  for (let v = 0; v <= maxX; v += xStep) xs.push(v);
+  if (xs[xs.length-1] !== maxX) xs.push(maxX);
+  for (const t of xs) {
+    const lbl = svgEl('text', { x: x(t).toFixed(1), y: H-12, 'text-anchor': 'middle', 'font-family': 'Inter, sans-serif', 'font-size': '10', 'font-weight': '500', fill: 'rgba(209,250,229,0.55)' });
+    lbl.textContent = t + 'y';
+    svg.appendChild(lbl);
+  }
+
+  // gap polygon
+  const gapPts = series.map(d => `${x(d.year).toFixed(1)},${y(d.withoutFees).toFixed(1)}`)
+    .concat(series.slice().reverse().map(d => `${x(d.year).toFixed(1)},${y(d.withFees).toFixed(1)}`))
+    .join(' ');
+  svg.appendChild(svgEl('polygon', { points: gapPts, fill: 'url(#gapGrad)', stroke: 'none' }));
+
+  // flat area
+  const flatArea = `M ${x(0)} ${y(0).toFixed(1)} ` + series.map(d => `L ${x(d.year).toFixed(1)} ${y(d.withoutFees).toFixed(1)}`).join(' ') + ` L ${x(maxX).toFixed(1)} ${y(0).toFixed(1)} Z`;
+  svg.appendChild(svgEl('path', { d: flatArea, fill: 'url(#flatGrad)', stroke: 'none' }));
+
+  // flat line
+  const flatD = series.map((d, i) => `${i===0?'M':'L'}${x(d.year).toFixed(1)} ${y(d.withoutFees).toFixed(1)}`).join(' ');
+  svg.appendChild(svgEl('path', { d: flatD, fill: 'none', stroke: '#00A540', 'stroke-width': '2.4' }));
+
+  // aum line
+  const aumD = series.map((d, i) => `${i===0?'M':'L'}${x(d.year).toFixed(1)} ${y(d.withFees).toFixed(1)}`).join(' ');
+  svg.appendChild(svgEl('path', { d: aumD, fill: 'none', stroke: '#F87171', 'stroke-width': '1.8', 'stroke-dasharray': '5,4' }));
+
+  // end caps
+  svg.appendChild(svgEl('circle', { cx: x(maxX).toFixed(1), cy: y(series[series.length-1].withoutFees).toFixed(1), r: '4.5', fill: '#00A540' }));
+  svg.appendChild(svgEl('circle', { cx: x(maxX).toFixed(1), cy: y(series[series.length-1].withFees).toFixed(1), r: '4.5', fill: '#F87171' }));
+}
+
+let lastBig = 788306;
+function setBigNum(target) {
+  const start = lastBig;
+  const delta = target - start;
+  const dur = 480;
+  const t0 = performance.now();
+  const node = $('bigVal');
+  function step(now) {
+    const t = Math.min(1, (now - t0) / dur);
+    const ease = 1 - Math.pow(1 - t, 3);
+    const v = Math.round(start + delta * ease);
+    node.textContent = usdNoDollar(v);
+    if (t < 1) requestAnimationFrame(step);
+    else lastBig = target;
+  }
+  requestAnimationFrame(step);
+}
+
+function render() {
+  const fPct = parseFloat(fee.value);
+  const port = parseFloat(pv.value);
+  const grow = parseFloat(gr.value);
+  const yrs = parseInt(yr.value, 10);
+
+  $('dFee').textContent = fPct.toFixed(2) + '%';
+  $('dPv').textContent = usd.format(port);
+  $('dGr').textContent = grow.toFixed(1) + '%';
+  $('dYr').textContent = yrs + ' yrs';
+
+  const r = buildFeeProjection({ initialInvestment: port, years: yrs, annualFeePercent: fPct, annualGrowthPercent: grow });
+  const savings = Math.max(0, r.savings);
+
+  setBigNum(Math.round(savings));
+  $('sPort').textContent = usd.format(port);
+  $('sYrs').textContent = yrs + ' years';
+  $('sGrow').textContent = grow.toFixed(1) + '% / yr';
+  $('sFee').textContent = fPct.toFixed(2) + '%';
+
+  $('tFy').textContent = usd.format(r.firstYearFee || (port * fPct / 100));
+  $('tFt').textContent = usd.format(r.totalFees);
+  $('tFw').textContent = usd.format(savings);
+  $('tFv').textContent = usd.format(r.finalValueWithFees);
+  $('tEnd').textContent = usdShort(r.finalValueWithFees);
+
+  $('oFt').textContent = usd.format(r.totalFlatFees);
+  $('oFw').textContent = '~' + usd.format(r.totalFlatFees);
+  $('oFv').textContent = usd.format(r.finalValueWithoutFees);
+  $('oEnd').textContent = usdShort(r.finalValueWithoutFees);
+
+  $('sGap').textContent = usd.format(savings);
+
+  drawChart(r.series);
+}
+
+[fee, pv, gr, yr].forEach(el => el.addEventListener('input', render));
+$('copyBtn').addEventListener('click', () => {
+  const url = `${location.origin}${location.pathname}?fee=${fee.value}&pv=${pv.value}&gr=${gr.value}&yr=${yr.value}`;
+  if (navigator.clipboard) navigator.clipboard.writeText(url).then(() => {
+    const b = $('copyBtn'); const t = b.textContent;
+    b.textContent = '✓ Link copied'; setTimeout(() => b.textContent = t, 1800);
+  });
+});
+
+const params = new URLSearchParams(location.search);
+['fee','pv','gr','yr'].forEach(k => { if (params.get(k)) $(k).value = params.get(k); });
+
+const io = new IntersectionObserver((es) => es.forEach(e => e.isIntersecting && e.target.classList.add('in')), { threshold: 0.15 });
+document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+render();
+</script>
+</body>
+</html>
