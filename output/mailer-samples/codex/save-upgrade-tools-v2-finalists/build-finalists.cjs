@@ -80,9 +80,12 @@ const finalistCss = `
     }
     .ed-front .finalist-chart-row .chart-proof-box {
       min-width: 0;
+      width: calc(100% - 20px);
+      transform: translateX(20px);
     }
     .ed-front .finalist-chart-row .chart-frame {
       margin: 0 -8px;
+      border-bottom: none;
     }
     .ed-front .finalist-chart-row .chart-frame .chart-svg {
       height: 1.34in;
@@ -95,10 +98,12 @@ const finalistCss = `
       margin: 3px -8px 0;
     }
     .ed-front .assumption-key {
-      display: flex;
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: max-content;
       align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+      justify-content: start;
+      column-gap: 42px;
       border-top: 1px solid rgba(7,20,13,0.20);
       border-bottom: 1px solid rgba(7,20,13,0.20);
       padding: 2px 0;
