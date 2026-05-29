@@ -33,11 +33,104 @@ function buildKey() {
   return KEY.map(([label, value]) => `<span><b>${label}</b><strong>${value}</strong></span>`).join("");
 }
 
+function usdShort(n) {
+  if (Math.abs(n) >= 1e6) return `$${(n / 1e6).toFixed(2)}M`;
+  if (Math.abs(n) >= 1e3) return `$${Math.round(n / 1e3)}K`;
+  return `$${Math.round(n)}`;
+}
+
+function buildProjectionSeries() {
+  const initialInvestment = 1000000;
+  const years = 20;
+  const annualFeePercent = 1;
+  const annualGrowthPercent = 8;
+  const monthlyGrowth = Math.pow(1 + annualGrowthPercent / 100, 1 / 12) - 1;
+  const aumMonthly = annualFeePercent / 100 / 12;
+  let withFlat = initialInvestment;
+  let withAum = initialInvestment;
+  const series = [{ year: 0, withoutFees: withFlat, withFees: withAum }];
+
+  for (let month = 1; month <= years * 12; month += 1) {
+    withFlat = withFlat * (1 + monthlyGrowth) - 100;
+    withAum = withAum * (1 + monthlyGrowth);
+    withAum = Math.max(0, withAum - withAum * aumMonthly);
+    if (month % 12 === 0) {
+      series.push({ year: month / 12, withoutFees: withFlat, withFees: withAum });
+    }
+  }
+
+  return series;
+}
+
+function buildV3ChartSvg() {
+  const series = buildProjectionSeries();
+  const W = 600;
+  const H = 220;
+  const PAD_L = 50;
+  const PAD_R = 16;
+  const PAD_T = 14;
+  const PAD_B = 26;
+  const innerW = W - PAD_L - PAD_R;
+  const innerH = H - PAD_T - PAD_B;
+  const maxY = Math.max(...series.map((d) => Math.max(d.withoutFees, d.withFees))) * 1.05 || 1;
+  const maxX = Math.max(1, series[series.length - 1].year);
+  const x = (v) => PAD_L + (v / maxX) * innerW;
+  const y = (v) => PAD_T + innerH - (v / maxY) * innerH;
+  const yTicks = [0, 0.25, 0.5, 0.75, 1].map((t) => t * maxY);
+  const xTicks = [0, 4, 8, 12, 16, 20];
+  const flatArea =
+    `M ${x(0)} ${y(0).toFixed(1)} ` +
+    series.map((d) => `L ${x(d.year).toFixed(1)} ${y(d.withoutFees).toFixed(1)}`).join(" ") +
+    ` L ${x(maxX).toFixed(1)} ${y(0).toFixed(1)} Z`;
+  const aumD = series
+    .map((d, i) => `${i === 0 ? "M" : "L"}${x(d.year).toFixed(1)} ${y(d.withFees).toFixed(1)}`)
+    .join(" ");
+  const flatD = series
+    .map((d, i) => `${i === 0 ? "M" : "L"}${x(d.year).toFixed(1)} ${y(d.withoutFees).toFixed(1)}`)
+    .join(" ");
+  const finalFlat = series[series.length - 1].withoutFees;
+  const finalAum = series[series.length - 1].withFees;
+
+  return `
+            <div class="v3-chart-card">
+              <svg class="v3-chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" aria-label="Portfolio comparison chart" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="v3-flat-fill" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#00A540" stop-opacity="0.30"/>
+                    <stop offset="100%" stop-color="#00A540" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                ${yTicks
+                  .map(
+                    (tick) => `
+                <line x1="${PAD_L}" x2="${W - PAD_R}" y1="${y(tick).toFixed(1)}" y2="${y(tick).toFixed(1)}" stroke="#cbd5e1" stroke-opacity="0.5" stroke-width="1"/>
+                <text x="${PAD_L - 8}" y="${(y(tick) + 4).toFixed(1)}" text-anchor="end" font-family="Inter, sans-serif" font-size="10" fill="#64748b" font-weight="500">${usdShort(tick)}</text>`
+                  )
+                  .join("")}
+                ${xTicks
+                  .map(
+                    (tick) => `
+                <text x="${x(tick).toFixed(1)}" y="${H - 9}" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#64748b" font-weight="500">${tick}y</text>`
+                  )
+                  .join("")}
+                <path d="${flatArea}" fill="url(#v3-flat-fill)" stroke="none"/>
+                <path d="${aumD}" fill="none" stroke="#B91C1C" stroke-width="2" stroke-dasharray="5,4" stroke-linecap="round"/>
+                <path d="${flatD}" fill="none" stroke="#00A540" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="${x(maxX).toFixed(1)}" cy="${y(finalFlat).toFixed(1)}" r="5" fill="#00A540" stroke="#0f172a" stroke-width="2"/>
+                <circle cx="${x(maxX).toFixed(1)}" cy="${y(finalAum).toFixed(1)}" r="5" fill="white" stroke="#0f172a" stroke-width="2"/>
+              </svg>
+              <div class="v3-chart-legend">
+                <span><span class="swatch swatch-flat"></span>$100/MO FLAT</span>
+                <span><span class="swatch swatch-asset"></span>Asset-based %</span>
+              </div>
+            </div>`;
+}
+
 function buildChartRow(chartFrame, qrBlock, boxed) {
   return `
       <div class="chart-row finalist-chart-row${boxed ? " boxed-version" : ""}">
         <div class="chart-proof-box">
-          ${chartFrame}
+          ${buildV3ChartSvg()}
           <div class="chart-meta">
             <div class="assumption-key">${buildKey()}</div>
             <div class="thin-disclaimer">${DISCLAIMER}</div>
@@ -94,6 +187,43 @@ const finalistCss = `
     }
     .ed-front .finalist-chart-row .chart-frame .chart-svg {
       height: 1.34in;
+    }
+    .ed-front .v3-chart-card {
+      width: 4.68in;
+      background: #EEF0F5;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 7px 9px 6px;
+    }
+    .ed-front .v3-chart-svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .ed-front .v3-chart-legend {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-top: 2px;
+      font: 600 8.8px/1 'Inter';
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+    .ed-front .v3-chart-legend .swatch {
+      display: inline-block;
+      width: 14px;
+      height: 3px;
+      border-radius: 2px;
+      vertical-align: middle;
+      margin-right: 4px;
+    }
+    .ed-front .v3-chart-legend .swatch-flat {
+      background: #00A540;
+    }
+    .ed-front .v3-chart-legend .swatch-asset {
+      background: #B91C1C;
     }
     .ed-front .finalist-chart-row .qr-block img {
       width: 1.2075in;
@@ -160,8 +290,8 @@ const finalistCss = `
       margin: 3px 0 0;
     }
     .ed-back .no-move-callout img.exact-check-box {
-      width: 30.6px;
-      height: 30.6px;
+      width: 24.5px;
+      height: 24.5px;
       display: block;
       object-fit: contain;
       flex-shrink: 0;
@@ -198,7 +328,7 @@ const finalistCss = `
       margin-top: 2px;
     }
     .ed-back .benefits {
-      transform: translateX(-10px);
+      transform: translate(-10px, 5px);
     }
     .ed-back .benefits .item {
       position: relative;
@@ -221,10 +351,10 @@ const finalistCss = `
     }
     .ed-back .no-move-callout {
       margin-top: 32px;
-      transform: translate(-5px, -5px);
+      transform: translate(-5px, 0);
     }
     .ed-back .no-move-callout span {
-      font: italic 700 15px/1.3 'Inter';
+      font: italic 700 14.5px/1.3 'Inter';
     }
 `;
 
