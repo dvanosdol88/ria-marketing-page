@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-05-29",
+  "updatedAt": "2026-05-29T19:17:13.034Z",
   "title": "EDDM Eval Catalog",
   "description": "Local review catalog for EDDM mailer proof packages, proof-only concept sets, planning references, scores, and decisions.",
   "criteria": [
@@ -347,9 +347,10 @@
       "variant": "Overview / contact sheet / PDF",
       "name": "Paired concepts overview",
       "status": "available",
-      "suggestedDecision": "undecided",
-      "summary": "Six paired Save/Upgrade/Improve concepts with a contact sheet and combined PDF. Use as the second comparison lane against the v2 proof set.",
+      "suggestedDecision": "reject",
+      "summary": "Six paired Save/Upgrade/Improve concepts with a contact sheet and combined PDF. Use as the second comparison lane against the v2 proof set. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Use the contact sheet and 6-concept PDF for fast side-by-side review.",
         "Then score individual paired concepts below.",
         "Prioritize high print-safety entries if the printer path is uncertain."
@@ -399,9 +400,10 @@
       "variant": "1. Ledger Rules",
       "name": "1. Ledger Rules",
       "status": "available",
-      "suggestedDecision": "undecided",
-      "summary": "A clean ledger-style grid makes the calculator feel factual and keeps the QR/domain path unmistakable.",
+      "suggestedDecision": "reject",
+      "summary": "A clean ledger-style grid makes the calculator feel factual and keeps the QR/domain path unmistakable. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "The front uses a structured data-report rhythm, and the back continues it with rule-led columns and a disciplined identity rail.",
         "Print safety: high.",
         "Compare against the matching v2 proof-only concept before naming a finalist."
@@ -427,9 +429,10 @@
       "variant": "2. Editorial Column",
       "name": "2. Editorial Column",
       "status": "available",
-      "suggestedDecision": "revise",
-      "summary": "A magazine-like hierarchy gives the $788,000 number more authority without adding decoration or stock imagery.",
+      "suggestedDecision": "reject",
+      "summary": "A magazine-like hierarchy gives the $788,000 number more authority without adding decoration or stock imagery. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "The front opens like a feature spread; the back resolves into a left identity column and a strong right-side action lane.",
         "Print safety: medium.",
         "Compare against the matching v2 proof-only concept before naming a finalist."
@@ -455,9 +458,10 @@
       "variant": "3. Statement Border",
       "name": "3. Statement Border",
       "status": "available",
-      "suggestedDecision": "undecided",
-      "summary": "A print-friendly black-and-green border creates polish while using almost no tinted area.",
+      "suggestedDecision": "reject",
+      "summary": "A print-friendly black-and-green border creates polish while using almost no tinted area. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Both sides share the same framed-system language, making this the most conservative printer-friendly direction.",
         "Print safety: high.",
         "Compare against the matching v2 proof-only concept before naming a finalist."
@@ -483,9 +487,10 @@
       "variant": "4. White Space",
       "name": "4. White Space",
       "status": "available",
-      "suggestedDecision": "undecided",
-      "summary": "More blank space makes the mailer feel premium and lets the domain and QR breathe.",
+      "suggestedDecision": "reject",
+      "summary": "More blank space makes the mailer feel premium and lets the domain and QR breathe. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "The front gives the headline generous room; the back mirrors that restraint with sparse benefit blocks and a quiet QR zone.",
         "Print safety: high.",
         "Compare against the matching v2 proof-only concept before naming a finalist."
@@ -511,9 +516,10 @@
       "variant": "5. Proof Strip",
       "name": "5. Proof Strip",
       "status": "available",
-      "suggestedDecision": "revise",
-      "summary": "A narrow green proof strip creates brand continuity without becoming a mint background.",
+      "suggestedDecision": "reject",
+      "summary": "A narrow green proof strip creates brand continuity without becoming a mint background. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "The front uses the strip to anchor assumptions and the back uses it as a visual handoff from advisor identity to action.",
         "Print safety: medium.",
         "Compare against the matching v2 proof-only concept before naming a finalist."
@@ -539,9 +545,10 @@
       "variant": "6. Classic Direct",
       "name": "6. Classic Direct",
       "status": "available",
-      "suggestedDecision": "undecided",
-      "summary": "A straightforward direct-mail layout maximizes readability for average EDDM printing and quick scanning.",
+      "suggestedDecision": "reject",
+      "summary": "A straightforward direct-mail layout maximizes readability for average EDDM printing and quick scanning. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "The front is a simple calculator proof; the back is a direct response layout with clear identity, benefits, QR, and domain.",
         "Print safety: high.",
         "Compare against the matching v2 proof-only concept before naming a finalist."
@@ -567,9 +574,10 @@
       "variant": "01 Soft Full Wash",
       "name": "Back variant 01 Soft Full Wash",
       "status": "supporting-variant",
-      "suggestedDecision": "undecided",
-      "summary": "Full light-green wash across the back side; highest visual continuity with the front but likely the least conservative for print.",
+      "suggestedDecision": "reject",
+      "summary": "Full light-green wash across the back side; highest visual continuity with the front but likely the least conservative for print. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
         "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
         "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
@@ -605,9 +613,10 @@
       "variant": "02 Strong Left Fade",
       "name": "Back variant 02 Strong Left Fade",
       "status": "supporting-variant",
-      "suggestedDecision": "undecided",
-      "summary": "Green concentration on the left side fading into the QR/action area; stronger brand presence with more white space near the scan zone.",
+      "suggestedDecision": "reject",
+      "summary": "Green concentration on the left side fading into the QR/action area; stronger brand presence with more white space near the scan zone. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
         "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
         "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
@@ -643,9 +652,10 @@
       "variant": "03 Diagonal Sweep",
       "name": "Back variant 03 Diagonal Sweep",
       "status": "supporting-variant",
-      "suggestedDecision": "undecided",
-      "summary": "Diagonal green movement across the back side; more energetic and noticeable, with a higher risk of feeling designed rather than direct.",
+      "suggestedDecision": "reject",
+      "summary": "Diagonal green movement across the back side; more energetic and noticeable, with a higher risk of feeling designed rather than direct. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
         "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
         "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
@@ -681,9 +691,10 @@
       "variant": "04 Open Air",
       "name": "Back variant 04 Open Air",
       "status": "supporting-variant",
-      "suggestedDecision": "undecided",
-      "summary": "Lighter open layout with restrained green fields; intended to keep the back readable while preserving a designed feel.",
+      "suggestedDecision": "reject",
+      "summary": "Lighter open layout with restrained green fields; intended to keep the back readable while preserving a designed feel. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
         "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
         "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
@@ -719,9 +730,10 @@
       "variant": "05 Clean Paper",
       "name": "Back variant 05 Clean Paper",
       "status": "supporting-variant",
-      "suggestedDecision": "undecided",
-      "summary": "Mostly white paper treatment; likely one of the safest print/readability backs.",
+      "suggestedDecision": "reject",
+      "summary": "Mostly white paper treatment; likely one of the safest print/readability backs. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
         "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
         "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
@@ -757,9 +769,10 @@
       "variant": "06 Split Mint Field",
       "name": "Back variant 06 Split Mint Field",
       "status": "supporting-variant",
-      "suggestedDecision": "undecided",
-      "summary": "Split field with a mint panel; creates structure but may overuse the light-green surface.",
+      "suggestedDecision": "reject",
+      "summary": "Split field with a mint panel; creates structure but may overuse the light-green surface. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
         "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
         "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
@@ -795,9 +808,10 @@
       "variant": "07 Editorial Rule",
       "name": "Back variant 07 Editorial Rule",
       "status": "supporting-variant",
-      "suggestedDecision": "undecided",
-      "summary": "Rule-led editorial back treatment; more disciplined, lower-ink, and suitable for a serious fiduciary tone.",
+      "suggestedDecision": "reject",
+      "summary": "Rule-led editorial back treatment; more disciplined, lower-ink, and suitable for a serious fiduciary tone. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
         "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
         "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
@@ -833,9 +847,10 @@
       "variant": "08 Subtle Dot Field",
       "name": "Back variant 08 Subtle Dot Field",
       "status": "supporting-variant",
-      "suggestedDecision": "undecided",
-      "summary": "Subtle field texture treatment; adds texture while trying to avoid a heavy wash.",
+      "suggestedDecision": "reject",
+      "summary": "Subtle field texture treatment; adds texture while trying to avoid a heavy wash. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
         "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
         "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
@@ -871,9 +886,10 @@
       "variant": "Save / Upgrade / Improve v1",
       "name": "Save, Upgrade, Improve EDDM proof set",
       "status": "print-ready-proof",
-      "suggestedDecision": "undecided",
-      "summary": "Two-sided print-ready proof package built from the Save, Upgrade, Improve structure, with extra back-side variation sheets.",
+      "suggestedDecision": "reject",
+      "summary": "Two-sided print-ready proof package built from the Save, Upgrade, Improve structure, with extra back-side variation sheets. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Review whether the front-side chart and founder proof create a strong enough QR handoff.",
         "Check that the back-side hierarchy makes Save, Upgrade, and Improve readable at mailbox distance.",
         "Compare against the newer v2 and paired-concept sets before selecting a finalist."
@@ -945,9 +961,10 @@
       "variant": "Restrained / Swiss",
       "name": "Restrained EDDM proof set",
       "status": "print-ready-proof",
-      "suggestedDecision": "undecided",
-      "summary": "Restrained Swiss-style proof set with front/back proofs, contact sheet, production notes, and print-ready PDF.",
+      "suggestedDecision": "reject",
+      "summary": "Restrained Swiss-style proof set with front/back proofs, contact sheet, production notes, and print-ready PDF. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Compare as the most conservative design direction against Gradient Stack and Save/Upgrade/Improve.",
         "Check whether restrained hierarchy still has enough mailbox pull.",
         "Use as a print-safe fallback if louder versions feel too busy."
@@ -1003,9 +1020,10 @@
       "variant": "Gradient Stack",
       "name": "Gradient Stack EDDM proof set",
       "status": "print-ready-proof",
-      "suggestedDecision": "revise",
-      "summary": "Earlier gradient-backed proof package with full proof assets and print-ready PDF.",
+      "suggestedDecision": "reject",
+      "summary": "Earlier gradient-backed proof package with full proof assets and print-ready PDF. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Use as a contrast reference for why the later v2 pass avoided dominant mint/gradient fields.",
         "Score visual pull separately from print readiness.",
         "Compare back-side readability against the newer no-mint concepts."
@@ -1321,8 +1339,9 @@
       "name": "Save Upgrade Tools v2: V2 02 Structured Columns",
       "status": "proof-only",
       "suggestedDecision": "reject",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
@@ -1451,8 +1470,9 @@
       "name": "Save Upgrade Tools v2: V2 05 Chart Led Front",
       "status": "proof-only",
       "suggestedDecision": "reject",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
@@ -1495,8 +1515,9 @@
       "name": "Save Upgrade Tools v2: V2 06 Print Safe Classic",
       "status": "proof-only",
       "suggestedDecision": "reject",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
@@ -1707,8 +1728,9 @@
       "name": "V2 Copy Spotlight overview",
       "status": "overview",
       "suggestedDecision": "reject",
-      "summary": "Imported overview row for this revision round. Start here before scoring individual front/back candidates. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
+      "summary": "Imported overview row for this revision round. Start here before scoring individual front/back candidates. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
         "Use this overview to narrow the field before scoring individual concepts.",
         "Confirm every concept worth reviewing has its own front/back scoreable row."
@@ -1747,8 +1769,9 @@
       "name": "V2 Copy Spotlight: 01 Proof Card",
       "status": "proof-only",
       "suggestedDecision": "reject",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
@@ -1791,8 +1814,9 @@
       "name": "V2 Copy Spotlight: 02 Callout Band",
       "status": "proof-only",
       "suggestedDecision": "reject",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
@@ -1835,8 +1859,9 @@
       "name": "V2 Copy Spotlight: 03 Advisor Frame",
       "status": "proof-only",
       "suggestedDecision": "reject",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",

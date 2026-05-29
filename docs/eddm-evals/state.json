@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": null,
+  "updatedAt": "2026-05-29T19:17:13.034Z",
   "candidateStates": {
     "eddm-v2-overview-six-concepts": {},
     "eddm-v2-01-editorial-rule": {},
@@ -21,46 +21,118 @@
       "notes": "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
       "updatedAt": "2026-05-28T21:25:43.749Z"
     },
-    "eddm-paired-concepts-overview": {},
-    "eddm-paired-01-ledger-rules": {},
-    "eddm-paired-02-editorial-column": {},
-    "eddm-paired-03-statement-border": {},
-    "eddm-paired-04-white-space": {},
-    "eddm-paired-05-proof-strip": {},
-    "eddm-paired-06-classic-direct": {},
-    "eddm-save-upgrade-tools-proof": {},
-    "eddm-claude-restrained-proof": {},
-    "eddm-gradient-stack-proof": {},
+    "eddm-paired-concepts-overview": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-paired-01-ledger-rules": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-paired-02-editorial-column": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-paired-03-statement-border": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-paired-04-white-space": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-paired-05-proof-strip": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-paired-06-classic-direct": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-save-upgrade-tools-proof": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-claude-restrained-proof": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-gradient-stack-proof": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
     "eddm-a-1-percent-blues-corrected-proof": {},
     "eddm-source-default-inputs-reference": {},
     "ria-chief-abc-planning-copy-bundle": {},
     "related-qr-landing-prototypes": {},
-    "eddm-back-01-soft-full-wash": {},
-    "eddm-back-02-strong-left-fade": {},
-    "eddm-back-03-diagonal-sweep": {},
-    "eddm-back-04-open-air": {},
-    "eddm-back-05-clean-paper": {},
-    "eddm-back-06-split-mint-field": {},
-    "eddm-back-07-editorial-rule": {},
-    "eddm-back-08-subtle-dot-field": {},
+    "eddm-back-01-soft-full-wash": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-back-02-strong-left-fade": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-back-03-diagonal-sweep": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-back-04-open-air": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-back-05-clean-paper": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-back-06-split-mint-field": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-back-07-editorial-rule": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
+    "eddm-back-08-subtle-dot-field": {
+      "decision": "reject",
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
+    },
     "eddm-save-upgrade-v2-overview": {},
     "eddm-save-upgrade-v2-v2-01-editorial-rule": {},
     "eddm-save-upgrade-v2-v2-02-structured-columns": {
       "decision": "reject",
-      "notes": "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
-      "updatedAt": "2026-05-28T21:25:43.749Z"
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
     },
     "eddm-save-upgrade-v2-v2-03-callout-band": {},
     "eddm-save-upgrade-v2-v2-04-paper-and-ink": {},
     "eddm-save-upgrade-v2-v2-05-chart-led-front": {
       "decision": "reject",
-      "notes": "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
-      "updatedAt": "2026-05-28T21:25:43.749Z"
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
     },
     "eddm-save-upgrade-v2-v2-06-print-safe-classic": {
       "decision": "reject",
-      "notes": "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
-      "updatedAt": "2026-05-28T21:25:43.749Z"
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
     },
     "eddm-v2-editorial-hybrid-overview": {},
     "eddm-v2-editorial-hybrid-01-editorial-callout-bands": {},
@@ -68,23 +140,23 @@
     "eddm-v2-editorial-hybrid-03-editorial-framed-amalgam": {},
     "eddm-v2-copy-spotlight-overview": {
       "decision": "reject",
-      "notes": "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
-      "updatedAt": "2026-05-29T00:00:00.000Z"
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
     },
     "eddm-v2-copy-spotlight-01-proof-card": {
       "decision": "reject",
-      "notes": "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
-      "updatedAt": "2026-05-29T00:00:00.000Z"
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
     },
     "eddm-v2-copy-spotlight-02-callout-band": {
       "decision": "reject",
-      "notes": "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
-      "updatedAt": "2026-05-29T00:00:00.000Z"
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
     },
     "eddm-v2-copy-spotlight-03-advisor-frame": {
       "decision": "reject",
-      "notes": "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
-      "updatedAt": "2026-05-29T00:00:00.000Z"
+      "notes": "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "updatedAt": "2026-05-29T19:17:13.034Z"
     },
     "eddm-finalists-overview": {},
     "eddm-finalists-01-corrected-editorial-rule": {}
