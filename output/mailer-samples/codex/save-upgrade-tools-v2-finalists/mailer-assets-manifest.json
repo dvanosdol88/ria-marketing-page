@@ -1,11 +1,15 @@
 {
   "name": "FINALISTS - Save Upgrade Tools v2",
-  "generatedAt": "2026-05-29T18:28:45.661Z",
+  "generatedAt": "2026-05-29T18:34:20.593Z",
   "base": "Save Upgrade Tools v2: V2 01 Editorial Rule",
   "group": "FINALISTS",
   "sourceIcon": {
     "crop": "brand-assets/green-checked-box-exact.png",
     "note": "Exact pixel crop from the upper-right green checked-box in the supplied sheet; not redrawn."
+  },
+  "sourceLogo": {
+    "crop": "brand-assets/logo-800-cropped.png",
+    "note": "Visible-artwork crop of the Smarter Way Wealth logo, used so the logo centers visually above the founder photo instead of centering the whitespace-heavy PNG canvas."
   },
   "dimensions": {
     "trimInches": {

@@ -151,8 +151,8 @@ const finalistCss = `
       flex-shrink: 0;
     }
     .ed-back .founder-block .logo {
-      width: 2.475in;
-      margin-left: 0;
+      width: 1.4in;
+      margin-left: calc((1.665in - 10px - 1.4in) / 2);
     }
     .ed-back .founder-block .photo-crop {
       width: calc(1.665in - 10px);
@@ -190,6 +190,11 @@ for (const concept of CONCEPTS) {
   );
   html = replaceFirstRequired(
     html,
+    `<img class="logo" src="brand-assets/logo-800.png" alt="Smarter Way Wealth"/>`,
+    `<img class="logo" src="brand-assets/logo-800-cropped.png" alt="Smarter Way Wealth"/>`
+  );
+  html = replaceFirstRequired(
+    html,
     `<img class="photo" src="brand-assets/dvo-headshot.jpg" alt="David Van Osdol"/>`,
     `<span class="photo-crop"><img class="photo" src="brand-assets/dvo-headshot.jpg" alt="David Van Osdol"/></span>`
   );
@@ -221,6 +226,10 @@ fs.writeFileSync(
       sourceIcon: {
         crop: "brand-assets/green-checked-box-exact.png",
         note: "Exact pixel crop from the upper-right green checked-box in the supplied sheet; not redrawn.",
+      },
+      sourceLogo: {
+        crop: "brand-assets/logo-800-cropped.png",
+        note: "Visible-artwork crop of the Smarter Way Wealth logo, used so the logo centers visually above the founder photo instead of centering the whitespace-heavy PNG canvas.",
       },
       dimensions: {
         trimInches: { width: 8.5, height: 6.25 },
