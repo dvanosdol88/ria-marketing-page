@@ -69,7 +69,7 @@ function buildV3LineChartGroup() {
   const series = buildProjectionSeries();
   const plotLeft = 70;
   const plotRight = 536;
-  const plotTop = 18;
+  const plotTop = 23;
   const plotBottom = 190;
   const innerW = plotRight - plotLeft;
   const innerH = plotBottom - plotTop;
@@ -103,7 +103,7 @@ function buildV3LineChartGroup() {
             <stop offset="100%" stop-color="#00A540" stop-opacity="0"/>
           </linearGradient>
         </defs>
-        <rect x="25" y="6" width="531" height="203" rx="12" ry="12" fill="#EEF0F5" stroke="#e2e8f0" stroke-width="1.5"/>
+        <rect x="25" y="13" width="531" height="196" rx="12" ry="12" fill="#EEF0F5" stroke="#e2e8f0" stroke-width="1.5"/>
         ${yTicks
           .map(
             (tick) => `
@@ -118,13 +118,13 @@ function buildV3LineChartGroup() {
         <circle cx="${x(maxX).toFixed(1)}" cy="${y(finalFlat).toFixed(1)}" r="4.5" fill="#00A540" stroke="#0f172a" stroke-width="1.8"/>
         <circle cx="${x(maxX).toFixed(1)}" cy="${y(finalAum).toFixed(1)}" r="4.5" fill="white" stroke="#0f172a" stroke-width="1.8"/>
         <text x="${(x(maxX) - 12).toFixed(1)}" y="${(y(finalFlat) + 3).toFixed(1)}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#00A540" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">${usdShort(finalFlat)}</text>
-        <text x="${(x(maxX) - 12).toFixed(1)}" y="${(y(finalAum) + 13).toFixed(1)}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#B91C1C" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">${usdShort(finalAum)}</text>
+        <text x="${(x(maxX) - 12).toFixed(1)}" y="${(y(finalAum) + 13).toFixed(1)}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#07140D" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">${usdShort(finalAum)}</text>
         <text x="${x(midPoint.year).toFixed(1)}" y="${((y(midPoint.withoutFees) + y(midPoint.withFees)) / 2 - 3).toFixed(1)}" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="800" fill="#B91C1C" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">$${Math.round(gap / 1000)}k gap</text>
         <line x1="${plotLeft}" y1="${plotBottom}" x2="${plotRight}" y2="${plotBottom}" stroke="#cbd5e1" stroke-opacity="0.8" stroke-width="1"/>
         ${xTicks
           .map(
             (tick) => `
-        <text x="${x(tick).toFixed(1)}" y="206" text-anchor="middle" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">${tick}y</text>`
+        <text x="${x(tick).toFixed(1)}" y="204" text-anchor="middle" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">${tick}y</text>`
           )
           .join("")}
       </g>`;
