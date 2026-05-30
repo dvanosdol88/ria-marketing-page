@@ -88,6 +88,9 @@ function buildV3LineChartGroup() {
     .join(" ");
   const finalFlat = series[series.length - 1].withoutFees;
   const finalAum = series[series.length - 1].withFees;
+  const midPoint = series.find((d) => d.year === 15) || series[Math.floor(series.length * 0.75)];
+  const gap = finalFlat - finalAum;
+  const labelStroke = "#EEF0F5";
 
   return `
       <g transform="translate(-10, 2)">
@@ -111,6 +114,9 @@ function buildV3LineChartGroup() {
         <path d="${flatD}" fill="none" stroke="#00A540" stroke-width="3" stroke-linecap="round"/>
         <circle cx="${x(maxX).toFixed(1)}" cy="${y(finalFlat).toFixed(1)}" r="4.5" fill="#00A540" stroke="#0f172a" stroke-width="1.8"/>
         <circle cx="${x(maxX).toFixed(1)}" cy="${y(finalAum).toFixed(1)}" r="4.5" fill="white" stroke="#0f172a" stroke-width="1.8"/>
+        <text x="${(x(maxX) - 12).toFixed(1)}" y="${(y(finalFlat) + 3).toFixed(1)}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#00A540" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">${usdShort(finalFlat)}</text>
+        <text x="${(x(maxX) - 12).toFixed(1)}" y="${(y(finalAum) + 13).toFixed(1)}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#B91C1C" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">${usdShort(finalAum)}</text>
+        <text x="${x(midPoint.year).toFixed(1)}" y="${((y(midPoint.withoutFees) + y(midPoint.withFees)) / 2 - 3).toFixed(1)}" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="800" fill="#00A540" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">$${Math.round(gap / 1000)}k gap</text>
         <line x1="${plotLeft}" y1="${plotBottom}" x2="${plotRight}" y2="${plotBottom}" stroke="#cbd5e1" stroke-opacity="0.8" stroke-width="1"/>
         ${xTicks
           .map(
@@ -130,11 +136,36 @@ function replaceLineChartOnly(chartFrame) {
   return chartFrame.replace(lineChartPattern, (_match, prefix, suffix) => `${prefix}${buildV3LineChartGroup()}${suffix}`);
 }
 
+function buildResizedBarChartGroup() {
+  return `      <!-- VERTICAL BAR CHART -->
+      <!-- Lost: 17.1%, Keep: 82.9% -->
+      <!-- Right edge anchored at original x=707; width increased from 100 to 120. -->
+      <g transform="translate(587, 0)">
+        <rect x="0" y="13" width="120" height="33.5" fill="#FEE2E2" />
+        <rect x="0" y="46.5" width="120" height="162.5" fill="#34483C" fill-opacity="0.15" />
+        <line x1="0" y1="209" x2="120" y2="209" stroke="#34483C" stroke-width="2"/>
+        
+        <text x="60" y="33.8" text-anchor="middle" font-family="Inter" font-size="13" font-weight="900" fill="#B91C1C">17% Lost</text>
+        <text x="60" y="91.5" text-anchor="middle" font-family="Inter" font-size="13" font-weight="800" fill="#34483C">Wealth</text>
+        <text x="60" y="136" text-anchor="middle" font-family="Inter" font-size="20" font-weight="800" fill="#34483C">83%</text>
+        <text x="60" y="149.2" text-anchor="middle" font-family="Inter" font-size="13" font-weight="500" fill="#34483C">You keep</text>
+      </g>`;
+}
+
+function replaceBarChartOnly(chartFrame) {
+  const barChartPattern = /      <!-- VERTICAL BAR CHART -->[\s\S]*?      <\/g>/;
+  if (!barChartPattern.test(chartFrame)) {
+    throw new Error("Could not isolate original vertical bar chart group.");
+  }
+  return chartFrame.replace(barChartPattern, () => buildResizedBarChartGroup());
+}
+
 function buildChartRow(chartFrame, qrBlock, boxed) {
+  const updatedChartFrame = replaceBarChartOnly(replaceLineChartOnly(chartFrame));
   return `
       <div class="chart-row finalist-chart-row${boxed ? " boxed-version" : ""}">
         <div class="chart-proof-box">
-          ${replaceLineChartOnly(chartFrame)}
+          ${updatedChartFrame}
           <div class="chart-meta">
             <div class="assumption-key">${buildKey()}</div>
             <div class="thin-disclaimer">${DISCLAIMER}</div>
@@ -275,8 +306,8 @@ const finalistCss = `
       flex-shrink: 0;
     }
     .ed-back .founder-block .logo {
-      width: 1.33in;
-      margin-left: calc((1.4828in - 1.33in) / 2);
+      width: 1.3965in;
+      margin-left: calc((1.4828in - 1.3965in) / 2);
       transform: translateY(8px);
     }
     .ed-back .founder-block .photo-crop {
@@ -330,7 +361,7 @@ const finalistCss = `
     .ed-back .no-move-callout {
       margin-top: 32px;
       gap: 6px;
-      transform: translate(-5px, -5px);
+      transform: translate(-5px, -10px);
     }
     .ed-back .no-move-callout span {
       font: italic 700 14.5px/1.3 'Inter';
