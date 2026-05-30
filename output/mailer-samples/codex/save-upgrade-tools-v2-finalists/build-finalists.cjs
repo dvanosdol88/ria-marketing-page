@@ -34,7 +34,10 @@ function buildKey() {
 }
 
 function usdShort(n) {
-  if (Math.abs(n) >= 1e6) return `$${(n / 1e6).toFixed(2)}M`;
+  if (Math.abs(n) >= 1e6) {
+    const millions = n / 1e6;
+    return Number.isInteger(millions) ? `$${millions}M` : `$${millions.toFixed(2)}M`;
+  }
   if (Math.abs(n) >= 1e3) return `$${Math.round(n / 1e3)}K`;
   return `$${Math.round(n)}`;
 }
@@ -70,11 +73,11 @@ function buildV3LineChartGroup() {
   const plotBottom = 190;
   const innerW = plotRight - plotLeft;
   const innerH = plotBottom - plotTop;
-  const maxY = Math.max(...series.map((d) => Math.max(d.withoutFees, d.withFees))) * 1.05 || 1;
+  const maxY = 5000000;
   const maxX = Math.max(1, series[series.length - 1].year);
   const x = (v) => plotLeft + (v / maxX) * innerW;
   const y = (v) => plotTop + innerH - (v / maxY) * innerH;
-  const yTicks = [0, 0.25, 0.5, 0.75, 1].map((t) => t * maxY);
+  const yTicks = [0, 1000000, 2000000, 3000000, 4000000, 5000000];
   const xTicks = [0, 4, 8, 12, 16, 20];
   const flatArea =
     `M ${x(0)} ${y(0).toFixed(1)} ` +
@@ -100,7 +103,7 @@ function buildV3LineChartGroup() {
             <stop offset="100%" stop-color="#00A540" stop-opacity="0"/>
           </linearGradient>
         </defs>
-        <rect x="25" y="13" width="531" height="196" rx="12" ry="12" fill="#EEF0F5" stroke="#e2e8f0" stroke-width="1.5"/>
+        <rect x="25" y="6" width="531" height="203" rx="12" ry="12" fill="#EEF0F5" stroke="#e2e8f0" stroke-width="1.5"/>
         ${yTicks
           .map(
             (tick) => `
@@ -116,7 +119,7 @@ function buildV3LineChartGroup() {
         <circle cx="${x(maxX).toFixed(1)}" cy="${y(finalAum).toFixed(1)}" r="4.5" fill="white" stroke="#0f172a" stroke-width="1.8"/>
         <text x="${(x(maxX) - 12).toFixed(1)}" y="${(y(finalFlat) + 3).toFixed(1)}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#00A540" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">${usdShort(finalFlat)}</text>
         <text x="${(x(maxX) - 12).toFixed(1)}" y="${(y(finalAum) + 13).toFixed(1)}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#B91C1C" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">${usdShort(finalAum)}</text>
-        <text x="${x(midPoint.year).toFixed(1)}" y="${((y(midPoint.withoutFees) + y(midPoint.withFees)) / 2 - 3).toFixed(1)}" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="800" fill="#00A540" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">$${Math.round(gap / 1000)}k gap</text>
+        <text x="${x(midPoint.year).toFixed(1)}" y="${((y(midPoint.withoutFees) + y(midPoint.withFees)) / 2 - 3).toFixed(1)}" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="800" fill="#B91C1C" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">$${Math.round(gap / 1000)}k gap</text>
         <line x1="${plotLeft}" y1="${plotBottom}" x2="${plotRight}" y2="${plotBottom}" stroke="#cbd5e1" stroke-opacity="0.8" stroke-width="1"/>
         ${xTicks
           .map(
@@ -141,12 +144,11 @@ function buildResizedBarChartGroup() {
       <!-- Lost: 17.1%, Keep: 82.9% -->
       <!-- Right edge anchored at original x=707; width increased from 100 to 120. -->
       <g transform="translate(587, 0)">
-        <rect x="0" y="13" width="120" height="33.5" fill="#FEE2E2" />
+        <rect x="0" y="13" width="120" height="33.5" fill="#B91C1C" />
         <rect x="0" y="46.5" width="120" height="162.5" fill="#34483C" fill-opacity="0.15" />
-        <line x1="0" y1="209" x2="120" y2="209" stroke="#34483C" stroke-width="2"/>
         
-        <text x="60" y="33.8" text-anchor="middle" font-family="Inter" font-size="13" font-weight="900" fill="#B91C1C">17% Lost</text>
-        <text x="60" y="91.5" text-anchor="middle" font-family="Inter" font-size="13" font-weight="800" fill="#34483C">Wealth</text>
+        <text x="60" y="33.8" text-anchor="middle" font-family="Inter" font-size="13" font-weight="900" fill="#fff">17% Lost</text>
+        <text x="60" y="91.5" text-anchor="middle" font-family="Inter" font-size="15" font-weight="900" fill="#07140D">Wealth</text>
         <text x="60" y="136" text-anchor="middle" font-family="Inter" font-size="20" font-weight="800" fill="#34483C">83%</text>
         <text x="60" y="149.2" text-anchor="middle" font-family="Inter" font-size="13" font-weight="500" fill="#34483C">You keep</text>
       </g>`;
