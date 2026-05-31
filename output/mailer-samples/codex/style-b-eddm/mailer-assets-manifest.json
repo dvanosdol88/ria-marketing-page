@@ -1,0 +1,58 @@
+{
+  "name": "Style B EDDM",
+  "generatedAt": "2026-05-31T19:06:22.488Z",
+  "baseReference": "Screenshot supplied by David plus Style A winner 01E advisor-green-band",
+  "dimensions": {
+    "trimInches": {
+      "width": 8.5,
+      "height": 6.25
+    },
+    "bleedInches": 0.125,
+    "proofPageInches": {
+      "width": 8.75,
+      "height": 6.5
+    },
+    "proofPixels": {
+      "width": 1750,
+      "height": 1300
+    }
+  },
+  "concepts": [
+    {
+      "num": "01",
+      "slug": "hero-gap",
+      "title": "Hero Gap",
+      "rationale": "Style B with the postcard/landing-page headline as the main hook, followed by the lifetime-fee-gap proof and the two-path chart.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_StyleB_01_hero-gap_Proof.html",
+        "frontPng": "SWW_YAPTOM_StyleB_01_hero-gap_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_StyleB_01_hero-gap_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_StyleB_01_hero-gap_Rationale.md"
+      }
+    },
+    {
+      "num": "02",
+      "slug": "three-taps",
+      "title": "Three Taps",
+      "rationale": "Style B with the simple three-tap promise and the extra-money poll on the front, leaving the numerical proof and advisor story for the back.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_StyleB_02_three-taps_Proof.html",
+        "frontPng": "SWW_YAPTOM_StyleB_02_three-taps_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_StyleB_02_three-taps_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_StyleB_02_three-taps_Rationale.md"
+      }
+    },
+    {
+      "num": "03",
+      "slug": "advisor-story",
+      "title": "Advisor Proof",
+      "rationale": "Style B with the advisor/fiduciary block pulled forward so the fee-gap number is paired immediately with David's human proof.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_StyleB_03_advisor-story_Proof.html",
+        "frontPng": "SWW_YAPTOM_StyleB_03_advisor-story_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_StyleB_03_advisor-story_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_StyleB_03_advisor-story_Rationale.md"
+      }
+    }
+  ]
+}

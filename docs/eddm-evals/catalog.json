@@ -2327,6 +2327,174 @@
           "role": "rationale"
         }
       ]
+    },
+    {
+      "id": "eddm-style-b-overview",
+      "group": "I. Style B EDDM",
+      "variant": "Overview / contact sheet",
+      "name": "Style B EDDM overview",
+      "status": "overview",
+      "suggestedDecision": "undecided",
+      "summary": "Imported overview row for this revision round. Start here before scoring individual front/back candidates.",
+      "reviewFocus": [
+        "Use this overview to narrow the field before scoring individual concepts.",
+        "Confirm every concept worth reviewing has its own front/back scoreable row."
+      ],
+      "assets": [
+        {
+          "label": "Sww Yaptom Style B Contact Sheet",
+          "type": "html",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_ContactSheet.html",
+          "role": "overview"
+        },
+        {
+          "label": "Sww Yaptom Style B Contact Sheet",
+          "type": "image",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_ContactSheet.png",
+          "role": "overview"
+        },
+        {
+          "label": "README",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/style-b-eddm/README.md",
+          "role": "notes"
+        },
+        {
+          "label": "Manifest",
+          "type": "json",
+          "path": "output/mailer-samples/codex/style-b-eddm/mailer-assets-manifest.json",
+          "role": "manifest"
+        }
+      ]
+    },
+    {
+      "id": "eddm-style-b-style-b-01-hero-gap",
+      "group": "I. Style B EDDM",
+      "variant": "Style B 01 Hero Gap",
+      "name": "Style B EDDM: Style B 01 Hero Gap",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "reviewFocus": [
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
+      ],
+      "knownLimitations": [
+        "Imported proof assets may not include a final print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_01_hero-gap_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_01_hero-gap_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_01_hero-gap_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_01_hero-gap_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-style-b-style-b-02-three-taps",
+      "group": "I. Style B EDDM",
+      "variant": "Style B 02 Three Taps",
+      "name": "Style B EDDM: Style B 02 Three Taps",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "reviewFocus": [
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
+      ],
+      "knownLimitations": [
+        "Imported proof assets may not include a final print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_02_three-taps_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_02_three-taps_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_02_three-taps_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_02_three-taps_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-style-b-style-b-03-advisor-story",
+      "group": "I. Style B EDDM",
+      "variant": "Style B 03 Advisor Story",
+      "name": "Style B EDDM: Style B 03 Advisor Story",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "reviewFocus": [
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
+      ],
+      "knownLimitations": [
+        "Imported proof assets may not include a final print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_03_advisor-story_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_03_advisor-story_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_03_advisor-story_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/style-b-eddm/SWW_YAPTOM_StyleB_03_advisor-story_Rationale.md",
+          "role": "rationale"
+        }
+      ]
     }
   ]
 }

@@ -23,6 +23,15 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-05-31 - Style B EDDM Mailer Round
+**Agent:** Codex | **Surface:** EDDM print layout + eval catalog | **Duration:** focused design/proof pass
+- changed: added `output/mailer-samples/codex/style-b-eddm/` with three new Style B EDDM proof concepts: `01 Hero Gap`, `02 Three Taps`, and `03 Advisor Proof`.
+- changed: each concept uses the screenshot's hero question, `$952,405` lifetime fee gap card, two-path chart, extra-money poll, `1% / $100 / $0` explainer tiles, Wall Street Journal quote, and David advisor block; Style A winner assets provide the Smarter Way Wealth logo, David photo, QR code, EDDM postal structure, and proof-canvas spacing discipline.
+- changed: generated front/back PNG proofs, HTML proofs, rationale files, contact sheet, manifest, and copied local brand assets for the new round.
+- changed: updated `docs/eddm-evals/catalog.json` and `docs/eddm-evals/state.json` via the EDDM catalog helper after a dry run confirmed candidate IDs and asset paths.
+- verified locally: Playwright render checks confirmed all six proof faces fit the fixed postcard canvas with no horizontal or vertical overflow; `npm run build` passed with the known Tailwind token/Turbopack warning; `/api/eddm-evals/catalog` on local production server returned the three Style B candidates and preserved the Style A winner rows; Playwright loaded `/eddm-evals` and showed the expanded active catalog.
+- not deployed: this was a local EDDM review-asset/catalog update; final printer-ready PDF/package is still pending after David chooses a Style B candidate.
+
 ### 2026-05-28 - EDDM Save Upgrade Tools v2 Mailer Iterations
 **Agent:** Gemini | **Surface:** EDDM print layout | **Duration:** Multi-turn design/proof session
 - changed: iterated 6 concepts based on the designer handoff for "Save Upgrade Tools v2" back-side EDDM mailer, focusing on a professional, white-space-led design.
