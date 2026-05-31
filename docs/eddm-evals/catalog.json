@@ -2,7 +2,7 @@
   "version": 2,
   "updatedAt": "2026-05-31",
   "title": "EDDM Eval Catalog",
-  "description": "Active EDDM review catalog narrowed to the Style A winner, a Style A bar-chart variant, and preserved reference rows including style exploration references; legacy rows are hidden by default.",
+  "description": "Active EDDM review catalog narrowed to the Style A winner, a Style A bar-chart variant, Claude reference rows, and strong alternate/social-media concepts; legacy rows are hidden by default.",
   "criteria": [
     {
       "id": "clarity",
@@ -169,7 +169,7 @@
     },
     {
       "id": "eddm-save-upgrade-v2-v2-03-callout-band",
-      "group": "G. Save Upgrade Tools v2",
+      "group": "K. Claude - Editorial and Brutalist",
       "variant": "V2 03 Callout Band",
       "name": "Save Upgrade Tools v2: V2 03 Callout Band",
       "status": "reference-only",
@@ -212,7 +212,7 @@
     },
     {
       "id": "ria-chief-abc-planning-copy-bundle",
-      "group": "F. Planning and landing references",
+      "group": "Strong Alternate Concepts/Social Media",
       "variant": "Variants A/B/C planning copy",
       "name": "RIA Chief EDDM Wave 1 planning bundle",
       "status": "external-reference",
@@ -234,7 +234,7 @@
     },
     {
       "id": "related-qr-landing-prototypes",
-      "group": "F. Planning and landing references",
+      "group": "Strong Alternate Concepts/Social Media",
       "variant": "Landing/prototype references",
       "name": "QR landing and prototype reference set",
       "status": "reference-only",
@@ -1574,7 +1574,7 @@
     },
     {
       "id": "eddm-save-upgrade-v2-overview",
-      "group": "G. Save Upgrade Tools v2",
+      "group": "K. Claude - Editorial and Brutalist",
       "variant": "Overview / contact sheet",
       "name": "Save Upgrade Tools v2 overview",
       "status": "legacy",
@@ -1614,7 +1614,7 @@
     },
     {
       "id": "eddm-save-upgrade-v2-v2-01-editorial-rule",
-      "group": "G. Save Upgrade Tools v2",
+      "group": "K. Claude - Editorial and Brutalist",
       "variant": "V2 01 Editorial Rule",
       "name": "Save Upgrade Tools v2: V2 01 Editorial Rule",
       "status": "legacy",
@@ -1658,7 +1658,7 @@
     },
     {
       "id": "eddm-save-upgrade-v2-v2-02-structured-columns",
-      "group": "G. Save Upgrade Tools v2",
+      "group": "K. Claude - Editorial and Brutalist",
       "variant": "V2 02 Structured Columns",
       "name": "Save Upgrade Tools v2: V2 02 Structured Columns",
       "status": "legacy",
@@ -1704,7 +1704,7 @@
     },
     {
       "id": "eddm-save-upgrade-v2-v2-04-paper-and-ink",
-      "group": "G. Save Upgrade Tools v2",
+      "group": "K. Claude - Editorial and Brutalist",
       "variant": "V2 04 Paper And Ink",
       "name": "Save Upgrade Tools v2: V2 04 Paper And Ink",
       "status": "legacy",
@@ -1748,7 +1748,7 @@
     },
     {
       "id": "eddm-save-upgrade-v2-v2-05-chart-led-front",
-      "group": "G. Save Upgrade Tools v2",
+      "group": "K. Claude - Editorial and Brutalist",
       "variant": "V2 05 Chart Led Front",
       "name": "Save Upgrade Tools v2: V2 05 Chart Led Front",
       "status": "legacy",
@@ -1794,7 +1794,7 @@
     },
     {
       "id": "eddm-save-upgrade-v2-v2-06-print-safe-classic",
-      "group": "G. Save Upgrade Tools v2",
+      "group": "K. Claude - Editorial and Brutalist",
       "variant": "V2 06 Print Safe Classic",
       "name": "Save Upgrade Tools v2: V2 06 Print Safe Classic",
       "status": "legacy",
