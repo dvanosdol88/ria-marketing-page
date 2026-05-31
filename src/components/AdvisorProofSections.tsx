@@ -37,7 +37,7 @@ const adviceCards: ProofCard[] = [
     eyebrow: "Credentials",
     title: "Highly Credentialed, Highly Experienced",
     summary:
-      "The rigor of a CFA Charterholder. The process of a CFP® professional. 20+ years of real advisory experience.",
+      "The rigor and investment expertise of a CFA Charterholder. The planning and process of a CFP® professional. 20+ years of real advisory experience.",
     stat: "20+",
     statLabel: "years experience",
     logos: [
@@ -323,10 +323,10 @@ function AdvisorCard() {
             Smarter Way Wealth
           </p>
           <h2 className="mt-3 text-2xl font-black tracking-tight text-[#062417] sm:text-3xl">
-            David J. Van Osdol
+            David J. Van Osdol, CFA, CFP®
           </h2>
           <p className="mt-2 text-base font-semibold text-[#213B56]">
-            CFA Charterholder, CFP® Practitioner
+            Founder
           </p>
           <p className="mt-4 max-w-xl text-sm leading-6 text-slate-600">
             Built for investors who want serious planning, better tools, and a flat monthly fee instead of asset-based fee drag. We make it easy!
