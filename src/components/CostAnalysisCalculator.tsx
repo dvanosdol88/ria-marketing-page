@@ -356,9 +356,11 @@ function normalizeSearchParams(searchParams: Record<string, string | string[] | 
 function SavingsLeadHero({
   introStyle,
   savings,
+  years,
 }: {
   introStyle: IntroStyle;
   savings: number;
+  years: number;
 }) {
   const reducedMotion = useReducedMotion();
   const statement = (
@@ -422,8 +424,11 @@ function SavingsLeadHero({
         <div className="relative z-10 mx-auto max-w-6xl">
           <h1 className="text-[clamp(2.25rem,4.8vw,4rem)] font-semibold leading-[1.06] tracking-normal">
             <span className="block">What would you do with</span>
-            <span className="block text-[#007A2F] tabular-nums">{formatCurrencyFloored(savings)}</span>
+            <span className="block text-[#007A2F] tabular-nums">{formatCurrencyFloored(savings)}*</span>
           </h1>
+          <p className="mt-3 text-base font-medium leading-snug text-[#10233A]/80 sm:text-lg">
+            * potential savings over {years} years.
+          </p>
         </div>
       </div>
       <div className="mx-auto max-w-6xl px-4">
@@ -973,6 +978,7 @@ export function CostAnalysisCalculator({
         <SavingsLeadHero
           introStyle={introStyle}
           savings={projection.savings}
+          years={state.years}
         />
       )}
 

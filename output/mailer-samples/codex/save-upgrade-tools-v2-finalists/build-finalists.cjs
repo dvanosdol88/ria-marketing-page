@@ -42,6 +42,10 @@ function usdShort(n) {
   return `$${Math.round(n)}`;
 }
 
+function usdCompactK(n) {
+  return `$${Math.round(n / 1000)}k`;
+}
+
 function buildProjectionSeries() {
   const initialInvestment = 1000000;
   const years = 20;
@@ -93,6 +97,7 @@ function buildV3LineChartGroup() {
   const finalAum = series[series.length - 1].withFees;
   const midPoint = series.find((d) => d.year === 15) || series[Math.floor(series.length * 0.75)];
   const gap = finalFlat - finalAum;
+  const gapLabel = usdCompactK(gap);
   const labelStroke = "#EEF0F5";
 
   return `
@@ -119,7 +124,7 @@ function buildV3LineChartGroup() {
         <circle cx="${x(maxX).toFixed(1)}" cy="${y(finalAum).toFixed(1)}" r="4.5" fill="white" stroke="#0f172a" stroke-width="1.8"/>
         <text x="${(x(maxX) - 12).toFixed(1)}" y="${(y(finalFlat) + 3).toFixed(1)}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#00A540" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">${usdShort(finalFlat)}</text>
         <text x="${(x(maxX) - 12).toFixed(1)}" y="${(y(finalAum) + 13).toFixed(1)}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#07140D" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">${usdShort(finalAum)}</text>
-        <text x="${x(midPoint.year).toFixed(1)}" y="${((y(midPoint.withoutFees) + y(midPoint.withFees)) / 2 - 3).toFixed(1)}" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="800" fill="#B91C1C" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">$${Math.round(gap / 1000)}k gap</text>
+        <text x="${x(midPoint.year).toFixed(1)}" y="${((y(midPoint.withoutFees) + y(midPoint.withFees)) / 2 - 3).toFixed(1)}" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="800" fill="#B91C1C" stroke="${labelStroke}" stroke-width="4" paint-order="stroke">${gapLabel} gap</text>
         <line x1="${plotLeft}" y1="${plotBottom}" x2="${plotRight}" y2="${plotBottom}" stroke="#cbd5e1" stroke-opacity="0.8" stroke-width="1"/>
         ${xTicks
           .map(
@@ -140,6 +145,10 @@ function replaceLineChartOnly(chartFrame) {
 }
 
 function buildResizedBarChartGroup() {
+  const series = buildProjectionSeries();
+  const finalFlat = series[series.length - 1].withoutFees;
+  const finalAum = series[series.length - 1].withFees;
+  const gap = finalFlat - finalAum;
   return `      <!-- VERTICAL BAR CHART -->
       <!-- Lost: 17.1%, Keep: 82.9% -->
       <!-- Right edge anchored at original x=707; width increased from 100 to 120. -->
@@ -151,6 +160,8 @@ function buildResizedBarChartGroup() {
         <text x="60" y="91.5" text-anchor="middle" font-family="Inter" font-size="15" font-weight="900" fill="#07140D">Wealth</text>
         <text x="60" y="136" text-anchor="middle" font-family="Inter" font-size="20" font-weight="800" fill="#34483C">83%</text>
         <text x="60" y="149.2" text-anchor="middle" font-family="Inter" font-size="13" font-weight="500" fill="#34483C">You keep</text>
+        <text x="144" y="34.2" text-anchor="middle" font-family="Inter" font-size="12" font-weight="900" fill="#B91C1C">${usdCompactK(gap)}</text>
+        <text x="144" y="136.8" text-anchor="middle" font-family="Inter" font-size="12" font-weight="900" fill="#07140D">${usdShort(finalAum)}</text>
       </g>`;
 }
 
@@ -235,6 +246,7 @@ const finalistCss = `
     }
     .ed-front .finalist-chart-row .chart-frame .chart-svg {
       height: 1.34in;
+      overflow: visible;
     }
     .ed-front .finalist-chart-row .qr-block img {
       width: 1.2075in;
@@ -282,6 +294,15 @@ const finalistCss = `
       font: 400 8.7px/1.15 'Inter';
       color: var(--slate);
       white-space: nowrap;
+    }
+    .ed-front .front-proof-box {
+      margin-top: 12px;
+      border-left: 1px solid rgba(7,20,13,0.55);
+      border-right: 1px solid rgba(7,20,13,0.55);
+      box-sizing: border-box;
+    }
+    .ed-front .front-proof-box .rule {
+      margin: 0 0 14px;
     }
     .ed-front .boxed-version .chart-proof-box {
       border: 4px solid #07140D;
@@ -376,6 +397,8 @@ for (const concept of CONCEPTS) {
   html = html.replace(/<title>.*?<\/title>/, `<title>SWW EDDM FINALISTS · ${concept.num} · ${concept.title}</title>`);
   html = html.replace(/01 · Editorial Rule/g, `FINALISTS ${concept.num} · ${concept.title}`);
   html = replaceFirstRequired(html, originalChartRowAndDisclosure, buildChartRow(chartFrameHtml, qrBlockHtml, concept.boxed));
+  html = replaceFirstRequired(html, `<div class="rule"></div>`, `<div class="front-proof-box">\n      <div class="rule"></div>`);
+  html = replaceFirstRequired(html, `<div class="hero-bottom-rule"></div>`, `<div class="hero-bottom-rule"></div>\n      </div>`);
   html = replaceFirstRequired(
     html,
     iconSvgMatch[0],
