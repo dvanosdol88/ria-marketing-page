@@ -239,6 +239,48 @@
     .ed-front.green-wash .byline {
       font-size: 15px;
     }
+    .ed-front.founder-advisor-soft-panel .founder-banner {
+      margin-top: 34px;
+      padding: 18px 24px;
+      border: 1.5px solid rgba(0,165,64,0.42);
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(239,252,244,0.88));
+      box-shadow: 0 8px 18px rgba(0,165,64,0.08);
+    }
+    .ed-front.founder-advisor-green-band .founder-banner {
+      margin-top: 34px;
+      padding: 18px 28px;
+      border: none;
+      border-radius: 9px;
+      background: #07140D;
+      box-shadow: 0 8px 18px rgba(7,20,13,0.16);
+    }
+    .ed-front.founder-advisor-green-band .founder,
+    .ed-front.founder-advisor-green-band .byline {
+      color: #fff;
+    }
+    .ed-front.founder-advisor-green-band .founder .green {
+      color: #20C65A;
+    }
+    .ed-front.founder-advisor-nameplate .founder-banner {
+      position: relative;
+      margin-top: 34px;
+      padding: 18px 28px 18px 36px;
+      border: 1.5px solid rgba(7,20,13,0.26);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 7px 16px rgba(7,20,13,0.09);
+    }
+    .ed-front.founder-advisor-nameplate .founder-banner::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: 14px;
+      bottom: 14px;
+      width: 5px;
+      border-radius: 999px;
+      background: var(--green);
+    }
     .ed-front .front-proof-box.raised-paper {
       border-radius: 9px;
       background: linear-gradient(180deg, #fff 0%, #fbfcfa 100%);
@@ -273,9 +315,10 @@
       flex-shrink: 0;
     }
     .ed-back .founder-block .logo {
-      width: 1.3965in;
-      margin-left: calc((1.4828in - 1.3965in) / 2);
-      transform: translateY(8px);
+      width: 1.53615in;
+      margin-left: calc((1.4828in - 1.53615in) / 2);
+      margin-bottom: -0.0725in;
+      transform: translateY(1px);
     }
     .ed-back .founder-block .photo-crop {
       width: 1.4828in;
@@ -343,7 +386,7 @@
       <span class="corner tl">FRONT · trim 8.5 × 6.25 in · bleed 0.125 in</span>
       <span class="corner tr">FINALISTS 01B · Soft Green Wash</span>
 
-    <div class="ed-front green-wash">
+    <div class="ed-front green-wash founder-standard">
       <div class="kicker"><span class="domain">you<span class="green">are</span>paying<span class="green">too</span>much.com</span></div>
       <div class="front-proof-box green-wash">
       <div class="rule"></div>

@@ -10,6 +10,7 @@ const CONCEPTS = [
     slug: "rounded-soft-card",
     title: "Rounded Soft Card",
     boxStyle: "soft-card",
+    founderStyle: "standard",
     rationale:
       "Corrected Editorial Rule with the hero/chart area pulled into a rounded white card with a soft print-safe shadow.",
   },
@@ -18,6 +19,7 @@ const CONCEPTS = [
     slug: "soft-green-wash",
     title: "Soft Green Wash",
     boxStyle: "green-wash",
+    founderStyle: "standard",
     rationale:
       "Corrected Editorial Rule with a pale brand-green wash that makes the hero/chart area feel like one cohesive response panel.",
   },
@@ -26,8 +28,36 @@ const CONCEPTS = [
     slug: "raised-paper-panel",
     title: "Raised Paper Panel",
     boxStyle: "raised-paper",
+    founderStyle: "standard",
     rationale:
       "Corrected Editorial Rule with a warmer raised paper panel and restrained shadow for a slightly more premium printed feel.",
+  },
+  {
+    num: "01D",
+    slug: "advisor-soft-panel",
+    title: "Advisor Soft Panel",
+    boxStyle: "green-wash",
+    founderStyle: "advisor-soft-panel",
+    rationale:
+      "Soft Green Wash with the Smarter Way Wealth/DVO message elevated inside a quiet rounded advisor panel.",
+  },
+  {
+    num: "01E",
+    slug: "advisor-green-band",
+    title: "Advisor Green Band",
+    boxStyle: "green-wash",
+    founderStyle: "advisor-green-band",
+    rationale:
+      "Soft Green Wash with the Smarter Way Wealth/DVO message turned into a high-contrast green trust band.",
+  },
+  {
+    num: "01F",
+    slug: "advisor-nameplate",
+    title: "Advisor Nameplate",
+    boxStyle: "green-wash",
+    founderStyle: "advisor-nameplate",
+    rationale:
+      "Soft Green Wash with the Smarter Way Wealth/DVO message framed as a clean nameplate with a green vertical accent.",
   },
 ];
 
@@ -346,6 +376,48 @@ const finalistCss = `
     .ed-front.green-wash .byline {
       font-size: 15px;
     }
+    .ed-front.founder-advisor-soft-panel .founder-banner {
+      margin-top: 34px;
+      padding: 18px 24px;
+      border: 1.5px solid rgba(0,165,64,0.42);
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(239,252,244,0.88));
+      box-shadow: 0 8px 18px rgba(0,165,64,0.08);
+    }
+    .ed-front.founder-advisor-green-band .founder-banner {
+      margin-top: 34px;
+      padding: 18px 28px;
+      border: none;
+      border-radius: 9px;
+      background: #07140D;
+      box-shadow: 0 8px 18px rgba(7,20,13,0.16);
+    }
+    .ed-front.founder-advisor-green-band .founder,
+    .ed-front.founder-advisor-green-band .byline {
+      color: #fff;
+    }
+    .ed-front.founder-advisor-green-band .founder .green {
+      color: #20C65A;
+    }
+    .ed-front.founder-advisor-nameplate .founder-banner {
+      position: relative;
+      margin-top: 34px;
+      padding: 18px 28px 18px 36px;
+      border: 1.5px solid rgba(7,20,13,0.26);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 7px 16px rgba(7,20,13,0.09);
+    }
+    .ed-front.founder-advisor-nameplate .founder-banner::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: 14px;
+      bottom: 14px;
+      width: 5px;
+      border-radius: 999px;
+      background: var(--green);
+    }
     .ed-front .front-proof-box.raised-paper {
       border-radius: 9px;
       background: linear-gradient(180deg, #fff 0%, #fbfcfa 100%);
@@ -380,9 +452,10 @@ const finalistCss = `
       flex-shrink: 0;
     }
     .ed-back .founder-block .logo {
-      width: 1.3965in;
-      margin-left: calc((1.4828in - 1.3965in) / 2);
-      transform: translateY(8px);
+      width: 1.53615in;
+      margin-left: calc((1.4828in - 1.53615in) / 2);
+      margin-bottom: -0.0725in;
+      transform: translateY(1px);
     }
     .ed-back .founder-block .photo-crop {
       width: 1.4828in;
@@ -447,7 +520,11 @@ for (const concept of CONCEPTS) {
   let html = source;
   html = html.replace(/<title>.*?<\/title>/, `<title>SWW EDDM FINALISTS · ${concept.num} · ${concept.title}</title>`);
   html = html.replace(/01 · Editorial Rule/g, `FINALISTS ${concept.num} · ${concept.title}`);
-  html = replaceFirstRequired(html, `<div class="ed-front">`, `<div class="ed-front ${concept.boxStyle}">`);
+  html = replaceFirstRequired(
+    html,
+    `<div class="ed-front">`,
+    `<div class="ed-front ${concept.boxStyle} founder-${concept.founderStyle}">`
+  );
   html = replaceFirstRequired(html, originalChartRowAndDisclosure, buildChartRow(chartFrameHtml, qrBlockHtml, false));
   html = replaceFirstRequired(html, `<div class="rule"></div>`, `<div class="front-proof-box ${concept.boxStyle}">\n      <div class="rule"></div>`);
   html = replaceFirstRequired(html, `<div class="hero-bottom-rule"></div>`, `<div class="hero-bottom-rule"></div>\n      </div>`);
@@ -476,7 +553,7 @@ for (const concept of CONCEPTS) {
   fs.writeFileSync(path.join(OUT, `${base}_Proof.html`), trimTrailingWhitespace(html), "utf8");
   fs.writeFileSync(
     path.join(OUT, `${base}_Rationale.md`),
-    `# ${concept.num} · ${concept.title}\n\n**Group:** FINALISTS\n\n**Base:** Save Upgrade Tools v2: V2 01 Editorial Rule\n\n**Intent:** ${concept.rationale}\n\n**Requested changes:** aligned bar-side dollar labels; rounded cohesive front box treatment; exact upper-right checked-box crop on the back; compact horizontal key/disclaimer; 15% larger QR code.\n`,
+    `# ${concept.num} · ${concept.title}\n\n**Group:** FINALISTS\n\n**Base:** Save Upgrade Tools v2: V2 01 Editorial Rule\n\n**Intent:** ${concept.rationale}\n\n**Requested changes:** 10% larger back logo with bottom edge anchored; aligned bar-side dollar labels; front Smarter Way Wealth/DVO emphasis treatment; exact upper-right checked-box crop on the back; compact horizontal key/disclaimer; 15% larger QR code.\n`,
     "utf8"
   );
   console.log("wrote", `${base}_Proof.html`);
@@ -484,7 +561,7 @@ for (const concept of CONCEPTS) {
 
 fs.writeFileSync(
   path.join(OUT, "README.md"),
-  `# FINALISTS\n\nTargeted finalists generated from Save Upgrade Tools v2: V2 01 Editorial Rule.\n\n- 01A Rounded Soft Card: rounded white proof card with a print-safe shadow.\n- 01B Soft Green Wash: pale green cohesive panel treatment.\n- 01C Raised Paper Panel: warmer raised-paper treatment with restrained depth.\n\nAll three options align the bar-side dollar labels and keep the back-side checked-box icon as \`brand-assets/green-checked-box-exact.png\`, copied from the exact upper-right green checked-box crop from the supplied source sheet.\n`,
+  `# FINALISTS\n\nTargeted finalists generated from Save Upgrade Tools v2: V2 01 Editorial Rule.\n\n- 01A Rounded Soft Card: rounded white proof card with a print-safe shadow.\n- 01B Soft Green Wash: pale green cohesive panel treatment.\n- 01C Raised Paper Panel: warmer raised-paper treatment with restrained depth.\n- 01D Advisor Soft Panel: Soft Green Wash with a quiet rounded advisor panel around the Smarter Way Wealth/DVO message.\n- 01E Advisor Green Band: Soft Green Wash with a high-contrast green trust band around the Smarter Way Wealth/DVO message.\n- 01F Advisor Nameplate: Soft Green Wash with a clean nameplate and green vertical accent around the Smarter Way Wealth/DVO message.\n\nAll options align the bar-side dollar labels, enlarge the back-side logo by 10% while keeping it centered and bottom-anchored over the photo, and keep the back-side checked-box icon as \`brand-assets/green-checked-box-exact.png\`, copied from the exact upper-right green checked-box crop from the supplied source sheet.\n`,
   "utf8"
 );
 

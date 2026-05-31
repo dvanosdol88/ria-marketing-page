@@ -1904,9 +1904,9 @@
       "name": "FINALISTS overview",
       "status": "overview",
       "suggestedDecision": "undecided",
-      "summary": "FINALISTS contact sheet for the current narrowed proof set, now including three rounded box-treatment options for the front hero/chart area.",
+      "summary": "FINALISTS contact sheet for the narrowed proof set, now including three Soft Green Wash advisor-box emphasis mockups.",
       "reviewFocus": [
-        "Use this overview to compare 01A, 01B, and 01C before scoring an individual box treatment.",
+        "Use this overview to compare 01D, 01E, and 01F before scoring an individual advisor-box treatment.",
         "Confirm every concept worth reviewing has its own front/back scoreable row."
       ],
       "assets": [
@@ -2104,6 +2104,135 @@
           "label": "Rationale",
           "type": "markdown",
           "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01C_raised-paper-panel_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-finalists-01d-advisor-soft-panel",
+      "group": "FINALISTS",
+      "variant": "01D Advisor Soft Panel",
+      "name": "FINALISTS: 01D Advisor Soft Panel",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Soft Green Wash variant with a quiet rounded advisor panel emphasizing the Smarter Way Wealth/DVO message.",
+      "reviewFocus": [
+        "Evaluate whether the lower advisor panel highlights the fiduciary/DVO message while staying cohesive with the upper soft-green box.",
+        "Compare against FINALISTS: 01B Soft Green Wash and the other two advisor-box mockups.",
+        "Back side uses the 10% larger centered logo while preserving the photo/name/title positions."
+      ],
+      "knownLimitations": [
+        "Advisor-box treatment is a visual proof option; confirm final print-ready PDF dimensions, bleed, and printer handling if selected."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01D_advisor-soft-panel_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01D_advisor-soft-panel_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01D_advisor-soft-panel_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01D_advisor-soft-panel_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-finalists-01e-advisor-green-band",
+      "group": "FINALISTS",
+      "variant": "01E Advisor Green Band",
+      "name": "FINALISTS: 01E Advisor Green Band",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Soft Green Wash variant with a high-contrast dark green trust band emphasizing the Smarter Way Wealth/DVO message.",
+      "reviewFocus": [
+        "Evaluate whether the dark green band gives the advisor message enough authority without overpowering the chart and QR.",
+        "Compare against FINALISTS: 01B Soft Green Wash and the other two advisor-box mockups.",
+        "Back side uses the 10% larger centered logo while preserving the photo/name/title positions."
+      ],
+      "knownLimitations": [
+        "Advisor-box treatment is a visual proof option; confirm final print-ready PDF dimensions, bleed, and printer handling if selected."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-finalists-01f-advisor-nameplate",
+      "group": "FINALISTS",
+      "variant": "01F Advisor Nameplate",
+      "name": "FINALISTS: 01F Advisor Nameplate",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Soft Green Wash variant with a clean nameplate and green vertical accent emphasizing the Smarter Way Wealth/DVO message.",
+      "reviewFocus": [
+        "Evaluate whether the nameplate treatment feels polished, credible, and print-safe as a DVO/advisor signature block.",
+        "Compare against FINALISTS: 01B Soft Green Wash and the other two advisor-box mockups.",
+        "Back side uses the 10% larger centered logo while preserving the photo/name/title positions."
+      ],
+      "knownLimitations": [
+        "Advisor-box treatment is a visual proof option; confirm final print-ready PDF dimensions, bleed, and printer handling if selected."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01F_advisor-nameplate_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01F_advisor-nameplate_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01F_advisor-nameplate_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01F_advisor-nameplate_Rationale.md",
           "role": "rationale"
         }
       ]

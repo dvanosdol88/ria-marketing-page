@@ -1,6 +1,6 @@
 {
   "name": "FINALISTS - Save Upgrade Tools v2",
-  "generatedAt": "2026-05-31T14:15:31.769Z",
+  "generatedAt": "2026-05-31T14:30:02.596Z",
   "base": "Save Upgrade Tools v2: V2 01 Editorial Rule",
   "group": "FINALISTS",
   "sourceIcon": {
@@ -57,6 +57,42 @@
         "frontPng": "SWW_YAPTOM_Finalists_01C_raised-paper-panel_Front_Proof.png",
         "backPng": "SWW_YAPTOM_Finalists_01C_raised-paper-panel_Back_Proof.png",
         "rationale": "SWW_YAPTOM_Finalists_01C_raised-paper-panel_Rationale.md"
+      }
+    },
+    {
+      "num": "01D",
+      "slug": "advisor-soft-panel",
+      "title": "Advisor Soft Panel",
+      "rationale": "Soft Green Wash with the Smarter Way Wealth/DVO message elevated inside a quiet rounded advisor panel.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_Finalists_01D_advisor-soft-panel_Proof.html",
+        "frontPng": "SWW_YAPTOM_Finalists_01D_advisor-soft-panel_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_Finalists_01D_advisor-soft-panel_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_Finalists_01D_advisor-soft-panel_Rationale.md"
+      }
+    },
+    {
+      "num": "01E",
+      "slug": "advisor-green-band",
+      "title": "Advisor Green Band",
+      "rationale": "Soft Green Wash with the Smarter Way Wealth/DVO message turned into a high-contrast green trust band.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_Finalists_01E_advisor-green-band_Proof.html",
+        "frontPng": "SWW_YAPTOM_Finalists_01E_advisor-green-band_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_Finalists_01E_advisor-green-band_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_Finalists_01E_advisor-green-band_Rationale.md"
+      }
+    },
+    {
+      "num": "01F",
+      "slug": "advisor-nameplate",
+      "title": "Advisor Nameplate",
+      "rationale": "Soft Green Wash with the Smarter Way Wealth/DVO message framed as a clean nameplate with a green vertical accent.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_Finalists_01F_advisor-nameplate_Proof.html",
+        "frontPng": "SWW_YAPTOM_Finalists_01F_advisor-nameplate_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_Finalists_01F_advisor-nameplate_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_Finalists_01F_advisor-nameplate_Rationale.md"
       }
     }
   ]

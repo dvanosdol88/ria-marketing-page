@@ -7,6 +7,9 @@ const CONCEPTS = [
   ["01A", "rounded-soft-card"],
   ["01B", "soft-green-wash"],
   ["01C", "raised-paper-panel"],
+  ["01D", "advisor-soft-panel"],
+  ["01E", "advisor-green-band"],
+  ["01F", "advisor-nameplate"],
 ];
 const DSF = 200 / 96;
 
