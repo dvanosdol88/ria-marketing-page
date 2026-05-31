@@ -276,9 +276,9 @@ function buildResizedBarChartGroup() {
 function buildWealthPieChartGroup() {
   const lostPercent = 17;
   const keepPercent = 83;
-  const radius = 53;
-  const strokeWidth = 27;
-  const centerRadius = 32;
+  const radius = 63.6;
+  const strokeWidth = 32.4;
+  const centerRadius = 38.4;
   const circumference = 2 * Math.PI * radius;
   const lostArc = (lostPercent / 100) * circumference;
   const keepArc = circumference - lostArc;
@@ -287,12 +287,12 @@ function buildWealthPieChartGroup() {
         <circle cx="60" cy="74" r="${radius}" fill="none" stroke="#6F7376" stroke-width="${strokeWidth}"/>
         <circle cx="60" cy="74" r="${radius}" fill="none" stroke="#B91C1C" stroke-width="${strokeWidth}" stroke-dasharray="${lostArc.toFixed(1)} ${keepArc.toFixed(1)}" stroke-linecap="butt" transform="rotate(-90 60 74)"/>
         <circle cx="60" cy="74" r="${centerRadius}" fill="#fff"/>
-        <text x="60" y="56" text-anchor="middle" font-family="Inter" font-size="15" font-weight="900" fill="#B91C1C">${lostPercent}%</text>
-        <text x="60" y="75" text-anchor="middle" font-family="Inter" font-size="13" font-weight="900" fill="#07140D">Lost</text>
-        <text x="60" y="94" text-anchor="middle" font-family="Inter" font-size="13" font-weight="900" fill="#07140D">Wealth</text>
-        <text x="60" y="154" text-anchor="middle" font-family="Inter" font-size="18" font-weight="800" fill="#34483C">${keepPercent}%</text>
-        <text x="60" y="168" text-anchor="middle" font-family="Inter" font-size="13" font-weight="500" fill="#34483C">You keep</text>
-        <text class="bar-value-label" x="134" y="49" text-anchor="start" font-family="Inter" font-size="12" font-weight="900" fill="#B91C1C">$788k</text>
+        <text x="60" y="58" text-anchor="middle" font-family="Inter" font-size="17" font-weight="900" fill="#B91C1C">${lostPercent}%</text>
+        <text x="60" y="78" text-anchor="middle" font-family="Inter" font-size="15" font-weight="900" fill="#07140D">Lost</text>
+        <text x="60" y="99" text-anchor="middle" font-family="Inter" font-size="15" font-weight="900" fill="#07140D">Wealth</text>
+        <text x="50" y="164" text-anchor="middle" font-family="Inter" font-size="16" font-weight="800" fill="#34483C">${keepPercent}%</text>
+        <text x="50" y="178" text-anchor="middle" font-family="Inter" font-size="12" font-weight="500" fill="#34483C">You keep</text>
+        <text class="bar-value-label" x="134" y="39" text-anchor="start" font-family="Inter" font-size="12" font-weight="900" fill="#B91C1C">$788k</text>
         <text class="bar-value-label" x="134" y="156" text-anchor="start" font-family="Inter" font-size="12" font-weight="900" fill="#07140D">$3.82M</text>
       </g>`;
 }
