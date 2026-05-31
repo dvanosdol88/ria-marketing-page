@@ -186,6 +186,20 @@ function pollGraphic(compact = false) {
   `;
 }
 
+function votePanel() {
+  const options = ["Retire earlier", "A second home", "Keep investing", "Pay off mortgage", "Something else"];
+  return `
+    <aside class="vote-panel">
+      <div class="vote-title">VOTE!</div>
+      <p>What would you do with that extra money?</p>
+      <div class="vote-options">
+        ${options.map((option) => `<span>${option}</span>`).join("")}
+      </div>
+      ${qrBlock("vote-qr")}
+    </aside>
+  `;
+}
+
 function explainerTiles(compact = false) {
   return `
     <section class="tiles ${compact ? "compact" : ""}">
@@ -208,9 +222,10 @@ function explainerTiles(compact = false) {
   `;
 }
 
-function quoteBlock() {
+function quoteBlock(large = false) {
   return `
-    <section class="quote-block">
+    <section class="quote-block ${large ? "large" : ""}">
+      ${large ? '<div class="quote-mark">&ldquo;</div>' : ""}
       <blockquote>${COPY.quote.replace("entirely within your control", "<em>entirely within your control</em>")}</blockquote>
       <cite>${COPY.quoteSource}</cite>
     </section>
@@ -270,13 +285,11 @@ function frontFor(concept) {
         <span class="corner tl">BLEED</span><span class="corner tr">TRIM GUIDE</span>
         <header class="front-logo">${domainMarkup("mast")}</header>
         <section class="hero-lockup">
-          <span class="scan-pill">Scanned the postcard? Welcome.</span>
           <h1>How much are you <em>actually</em> overpaying?</h1>
-          <p>${COPY.subhead.replace("never", "<em>never</em>")}</p>
         </section>
         <div class="front-grid">
           <div>${feeGapCard()}${twoPathChart(true)}</div>
-          ${qrBlock("front-qr")}
+          ${votePanel()}
         </div>
         ${disclosureLine()}
       </div>
@@ -333,7 +346,7 @@ function backFor(concept) {
           <div>
             ${pollGraphic(true)}
             ${explainerTiles(true)}
-            ${quoteBlock()}
+            ${quoteBlock(true)}
           </div>
           <div>
             <img class="sww-logo" src="brand-assets/logo-800.png" alt="Smarter Way Wealth logo">
@@ -486,9 +499,10 @@ const CSS = `
   .hero-lockup p em { color: var(--green); font-style: italic; font-weight: 700; }
   .front-grid {
     display: grid;
-    grid-template-columns: 1fr 1.20in;
-    gap: 0.16in;
-    align-items: center;
+    grid-template-columns: 5.05in 1fr;
+    gap: 0.20in;
+    align-items: stretch;
+    justify-content: center;
   }
   .fee-gap {
     position: relative;
@@ -587,6 +601,64 @@ const CSS = `
     font-weight: 900;
     letter-spacing: 0.02em;
   }
+  .vote-panel {
+    border: 2px solid var(--green);
+    border-radius: 14px;
+    background: #ECFAF1;
+    padding: 11px 13px;
+    min-height: 2.50in;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+  }
+  .vote-title {
+    color: var(--green);
+    font-size: 37px;
+    line-height: 0.86;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+  }
+  .vote-panel p {
+    color: #0F172A;
+    margin-top: 5px;
+    font-size: 12px;
+    line-height: 1.05;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .vote-options {
+    display: grid;
+    gap: 5px;
+    margin-top: 8px;
+  }
+  .vote-options span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0.21in;
+    border: 2px solid #0F172A;
+    border-radius: 5px;
+    background: #fff;
+    color: #0F172A;
+    font-size: 7.5px;
+    line-height: 1.05;
+    font-weight: 900;
+  }
+  .vote-qr {
+    border-top: 1px solid rgba(7,20,13,0.14);
+    padding-top: 7px;
+    margin-top: 7px;
+  }
+  .vote-qr img {
+    width: 0.70in;
+    height: 0.70in;
+  }
+  .vote-qr .qr-cap {
+    font-size: 8px;
+    line-height: 1.1;
+    margin-top: 6px;
+  }
   .disclosure {
     margin: 12px auto 0;
     text-align: center;
@@ -665,7 +737,29 @@ const CSS = `
     text-align: center;
     color: #243246;
   }
+  .quote-block.large {
+    position: relative;
+    margin-top: 0.12in;
+    padding: 0.05in 0.10in 0;
+    min-height: 1.15in;
+  }
+  .quote-mark {
+    position: absolute;
+    left: -0.03in;
+    top: -0.20in;
+    color: rgba(0,165,64,0.16);
+    font-size: 118px;
+    line-height: 1;
+    font-family: Georgia, serif;
+    font-weight: 900;
+  }
   .quote-block blockquote { margin: 0; font-size: 24px; line-height: 1.18; font-style: italic; }
+  .quote-block.large blockquote {
+    position: relative;
+    font-size: 25px;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+  }
   .quote-block em { color: var(--green); }
   .quote-block cite {
     display: block;
@@ -839,22 +933,23 @@ const CSS = `
     padding-top: 0.13in;
     text-align: center;
   }
-  .hero-gap-front h1 { font-size: 43px; }
+  .hero-gap-front h1 { font-size: 42px; }
+  .hero-gap-front .hero-lockup { width: 5.05in; margin-left: 1.03in; margin-right: 0; margin-bottom: 0.11in; }
   .hero-gap-front .fee-gap {
-    min-height: 1.22in;
+    min-height: 1.12in;
     border-radius: 14px;
-    padding: 14px 17px 13px;
+    padding: 14px 18px 13px;
   }
   .hero-gap-front .fee-label { font-size: 9px; }
-  .hero-gap-front .fee-amount { font-size: 50px; margin-top: 6px; }
-  .hero-gap-front .fee-amount span { font-size: 31px; vertical-align: 5px; }
-  .hero-gap-front .fee-copy { font-size: 10px; line-height: 1.28; margin-top: 7px; }
-  .hero-gap-front .fee-pills { margin-top: 8px; }
-  .hero-gap-front .fee-pills span { font-size: 8px; padding: 5px 9px; }
+  .hero-gap-front .fee-amount { font-size: 50px; margin-top: 5px; }
+  .hero-gap-front .fee-amount span { font-size: 28px; vertical-align: 5px; }
+  .hero-gap-front .fee-copy { font-size: 9px; line-height: 1.22; margin-top: 6px; }
+  .hero-gap-front .fee-pills { margin-top: 7px; }
+  .hero-gap-front .fee-pills span { font-size: 7px; padding: 4px 8px; }
   .hero-gap-front .chart-card { margin-top: 8px; padding: 8px 11px 6px; }
   .hero-gap-front .chart-title { font-size: 14px; }
   .hero-gap-front .chart-subhead { font-size: 7px; }
-  .hero-gap-front .chart-card svg { height: 1.05in; }
+  .hero-gap-front .chart-card svg { height: 1.04in; }
   .hero-gap-front .chart-key { font-size: 8px; }
   .hero-gap-front .front-qr img { width: 1.05in; height: 1.05in; }
   .hero-gap-front .qr-cap { font-size: 10px; }
@@ -869,11 +964,11 @@ const CSS = `
   .hero-gap-back .tiles.compact b { font-size: 22px; }
   .hero-gap-back .tiles.compact strong { font-size: 8.5px; }
   .hero-gap-back .tiles.compact p { font-size: 6.8px; line-height: 1.18; margin-top: 3px; }
-  .hero-gap-back .quote-block { margin-top: 0.08in; }
-  .hero-gap-back .quote-block blockquote { font-size: 14px; }
-  .hero-gap-back .quote-block cite { font-size: 6.7px; margin-top: 6px; }
-  .hero-gap-back .footer-domain { margin-top: 0.09in; padding-top: 0.09in; }
-  .hero-gap-back .domain.footer { font-size: 38px; }
+  .hero-gap-back .quote-block.large { margin-top: 0.08in; }
+  .hero-gap-back .quote-block.large blockquote { font-size: 24px; }
+  .hero-gap-back .quote-block.large cite { font-size: 8px; margin-top: 8px; }
+  .hero-gap-back .footer-domain { margin-top: 0.06in; padding-top: 0.07in; }
+  .hero-gap-back .domain.footer { font-size: 33px; }
   .hero-gap-back .advisor-copy h2 { font-size: 22px; }
   .hero-gap-back .advisor-copy p:not(.advisor-label):not(.creds) { font-size: 8.5px; line-height: 1.35; }
   .three-taps-front .poll-card { padding: 14px 18px 13px; }
@@ -899,6 +994,8 @@ const CSS = `
   .proof-plus-advisor .advisor-block.compact h2 { font-size: 19px; }
   .proof-plus-advisor .advisor-copy p:not(.advisor-label):not(.creds) { font-size: 8px; line-height: 1.25; }
   .proof-plus-advisor .creds { font-size: 7px; margin-bottom: 7px; }
+  .three-taps-back .footer-domain { margin-top: 0.08in; padding-top: 0.08in; }
+  .three-taps-back .domain.footer { font-size: 40px; }
   .advisor-proof-front .advisor-block.compact { padding: 0.12in; }
   .advisor-proof-front .advisor-block.compact .portrait { width: 1.00in; }
   .advisor-proof-front .advisor-block.compact h2 { font-size: 21px; }
