@@ -610,64 +610,33 @@
     margin-top: 8px;
   }
 
-  /* THREE-STAT BLOCK — boxed row borrowed from the stronger v.02 back treatment */
+  /* THREE-STAT BLOCK — bottom-left of back, editorial style */
   .stats {
     position: absolute;
-    bottom: 210px;
+    bottom: 70px;
     left: 110px;
-    width: 1060px;
+    width: 760px;
+    border-top: 2px solid var(--ink);
+    padding-top: 14px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-  }
-  .stats .col {
-    min-height: 148px;
-    border-radius: 14px;
-    padding: 16px 18px 15px;
-  }
-  .stats .col:nth-child(1) {
-    background: var(--paper);
-    border: 3px solid #7E858A;
-  }
-  .stats .col:nth-child(2) {
-    background: var(--green);
-    border: 3px solid var(--green);
-    color: #fff;
-  }
-  .stats .col:nth-child(3) {
-    background: #101926;
-    border: 3px solid #101926;
-    color: #fff;
+    gap: 22px;
   }
   .stats .col .n {
     font-family: 'IBM Plex Serif', Georgia, serif;
     font-style: italic;
     font-weight: 800;
-    font-size: 52px;
+    font-size: 56px;
     line-height: 0.92;
     color: var(--green);
     letter-spacing: -0.025em;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
-  .stats .col:nth-child(2) .n { color: #fff; }
-  .stats .col:nth-child(3) .n { color: #32D06A; }
   .stats .col .t {
-    font-family: 'IBM Plex Sans', Arial, sans-serif;
-    font-size: 12.6px;
-    line-height: 1.28;
-    font-weight: 700;
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-size: 13.5px;
+    line-height: 1.35;
     color: var(--ink-2);
-  }
-  .stats .col:nth-child(2) .t,
-  .stats .col:nth-child(3) .t {
-    color: #fff;
-  }
-  .stats .col .t strong {
-    display: block;
-    font-size: 14px;
-    line-height: 1.1;
-    margin-bottom: 5px;
-    color: inherit;
   }
 
   /* BACK FOOT — small disclaimer */
@@ -878,15 +847,15 @@
     <div class="stats">
       <div class="col">
         <div class="n">1%</div>
-        <div class="t"><strong>doesn&rsquo;t sound like much.</strong> Until you compound it for 30 years &mdash; then it quietly subtracts roughly a fifth of your wealth. That&rsquo;s arithmetic.</div>
+        <div class="t">doesn&rsquo;t sound like much. Until you compound it for thirty years &mdash; then it quietly subtracts roughly a fifth of your wealth.</div>
       </div>
       <div class="col">
         <div class="n">$100</div>
-        <div class="t"><strong>flat per month.</strong> Same fiduciary advice. Same portfolio management. Same tax-aware planning. None of the AUM creep.</div>
+        <div class="t">flat per month. Same fiduciary advice. Same portfolio management. Same tax-aware planning. None of the AUM creep.</div>
       </div>
       <div class="col">
         <div class="n">$0</div>
-        <div class="t"><strong>extra to find out.</strong> The calculator is free. The 15-minute audit is free. You see your actual fee gap before you ever sign anything.</div>
+        <div class="t">extra to find out. The calculator is free. The fifteen-minute audit is free. You see your fee gap before you ever sign anything.</div>
       </div>
     </div>
 
