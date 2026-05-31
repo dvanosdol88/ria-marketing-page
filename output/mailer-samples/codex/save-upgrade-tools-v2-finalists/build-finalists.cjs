@@ -482,9 +482,19 @@ const finalistCss = `
     .ed-back .founder-block .name {
       font-size: 12px;
       margin-top: 26px;
+      transform: translateY(-4px);
     }
     .ed-back .founder-block .sub {
       margin-top: 2px;
+      transform: translateY(-4px);
+    }
+    .reg-mark {
+      font-size: 0.58em;
+      line-height: 0;
+      vertical-align: super;
+    }
+    .ed-back .qr-col {
+      transform: translateY(5px);
     }
     .ed-back .benefits {
       transform: translate(-10px, 5px);
@@ -551,6 +561,8 @@ for (const concept of CONCEPTS) {
     `<span>No need to move your assets or open new accounts!</span>`,
     `<span>We work where you already are- no need to transfer assets!</span>`
   );
+  html = html.replace(/David Van Osdol, CFA, CFP/g, `David Van Osdol, CFA, CFP<span class="reg-mark">&reg;</span>`);
+  html = html.replace(/David J\. Van Osdol, CFA, CFP/g, `David J. Van Osdol, CFA, CFP<span class="reg-mark">&reg;</span>`);
   html = html.replace("</style>", `${finalistCss}\n  </style>`);
 
   fs.writeFileSync(path.join(OUT, `${base}_Proof.html`), trimTrailingWhitespace(html), "utf8");
