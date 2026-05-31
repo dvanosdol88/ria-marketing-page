@@ -62,6 +62,10 @@ function groupCounts(candidates: EddmCandidate[]) {
   }, {});
 }
 
+function isLegacyCandidate(candidate: EddmCandidate) {
+  return candidate.status === "legacy";
+}
+
 function candidateSearchText(candidate: EddmCandidate) {
   return JSON.stringify(candidate).toLowerCase();
 }
@@ -346,6 +350,7 @@ export function EddmEvalClient() {
   const [state, setState] = useState<EddmState | null>(null);
   const [activeGroup, setActiveGroup] = useState("all");
   const [query, setQuery] = useState("");
+  const [showLegacy, setShowLegacy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -369,15 +374,20 @@ export function EddmEvalClient() {
     load();
   }, []);
 
+  const displayCandidates = useMemo(() => {
+    if (!catalog) return [];
+    return showLegacy ? catalog.candidates : catalog.candidates.filter((candidate) => !isLegacyCandidate(candidate));
+  }, [catalog, showLegacy]);
+
   const visibleCandidates = useMemo(() => {
     if (!catalog) return [];
     const normalizedQuery = query.trim().toLowerCase();
-    return catalog.candidates.filter((candidate) => {
+    return displayCandidates.filter((candidate) => {
       const groupMatches = activeGroup === "all" || candidate.group === activeGroup;
       const queryMatches = !normalizedQuery || candidateSearchText(candidate).includes(normalizedQuery);
       return groupMatches && queryMatches;
     });
-  }, [activeGroup, catalog, query]);
+  }, [activeGroup, catalog, displayCandidates, query]);
 
   if (error) {
     return (
@@ -394,9 +404,11 @@ export function EddmEvalClient() {
     return <main className="min-h-screen bg-[#F4F7F5] p-4 text-[#17231F]">Loading EDDM evals...</main>;
   }
 
-  const counts = groupCounts(catalog.candidates);
+  const counts = groupCounts(displayCandidates);
   const groups = Object.keys(counts);
-  const frontBackCount = catalog.candidates.filter((candidate) =>
+  const activeCount = catalog.candidates.filter((candidate) => !isLegacyCandidate(candidate)).length;
+  const legacyCount = catalog.candidates.length - activeCount;
+  const frontBackCount = displayCandidates.filter((candidate) =>
     candidate.assets?.some((asset) => asset.role === "front" || asset.role === "reference-front")
   ).length;
 
@@ -412,8 +424,19 @@ export function EddmEvalClient() {
 
           <div className="flex flex-wrap gap-2">
             <span className="rounded-full border border-[#CBD8D2] bg-[#F9FBFA] px-3 py-1 text-xs font-black text-[#5D6B66]">
-              {catalog.candidates.length} catalog entries
+              {activeCount} active catalog entries
             </span>
+            <button
+              type="button"
+              onClick={() => setShowLegacy((current) => !current)}
+              className={`rounded-full border px-3 py-1 text-xs font-black ${
+                showLegacy
+                  ? "border-[#0F7A55] bg-[#0F7A55] text-white"
+                  : "border-[#CBD8D2] bg-[#F9FBFA] text-[#5D6B66]"
+              }`}
+            >
+              {showLegacy ? "Showing legacy" : `Legacy hidden (${legacyCount})`}
+            </button>
             <span className="rounded-full border border-[#CBD8D2] bg-[#F9FBFA] px-3 py-1 text-xs font-black text-[#5D6B66]">
               {frontBackCount} scoreable proof rows
             </span>
@@ -440,7 +463,7 @@ export function EddmEvalClient() {
                     : "border-[#CBD8D2] bg-[#F9FBFA] text-[#5D6B66]"
                 }`}
               >
-                All ({catalog.candidates.length})
+                All ({displayCandidates.length})
               </button>
               {groups.map((group) => (
                 <button

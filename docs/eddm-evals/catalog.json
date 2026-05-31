@@ -2,7 +2,7 @@
   "version": 2,
   "updatedAt": "2026-05-31",
   "title": "EDDM Eval Catalog",
-  "description": "Local review catalog for EDDM mailer proof packages, proof-only concept sets, planning references, scores, and decisions.",
+  "description": "Active EDDM review catalog narrowed to the Style A winner plus preserved reference rows; legacy rows are hidden by default.",
   "criteria": [
     {
       "id": "clarity",
@@ -31,6 +31,7 @@
   ],
   "decisionOptions": [
     "undecided",
+    "winner",
     "finalist",
     "revise",
     "reject",
@@ -38,150 +39,106 @@
   ],
   "candidates": [
     {
-      "id": "eddm-v2-overview-six-concepts",
-      "group": "A. V2 six-concept proof set",
-      "variant": "Overview / contact sheet",
-      "name": "V2 six-concept proof set overview",
-      "status": "overview",
-      "suggestedDecision": "undecided",
-      "summary": "Side-by-side overview of the six v2 proof-only concepts. Start here to narrow the field before scoring individual concepts.",
+      "id": "eddm-finalists-01e-advisor-green-band",
+      "group": "WINNER - Style A",
+      "variant": "Style A Winner",
+      "name": "WINNER Style A: Advisor Green Band",
+      "status": "winner",
+      "suggestedDecision": "winner",
+      "summary": "Selected Style A winner based on FINALISTS 01E Advisor Green Band, with the latest QR-caption and key-band refinements applied.",
       "reviewFocus": [
-        "Use the contact sheet to pick the two or three concepts worth detailed review.",
-        "The README says this pass has no PDFs; pick favorites before a print-ready PDF pass.",
-        "Print-safety pick from the manifest: 06_print-safe-classic."
+        "Use this as the active Style A winner for final review and downstream print-ready production work.",
+        "Verify final print-ready PDF dimensions, bleed, USPS/EDDM placement, and compliance disclosure handling before mailing.",
+        "Reference retained comparison rows only for design provenance, not as active alternatives."
       ],
       "knownLimitations": [
-        "Proof-only round; no print-ready PDFs in this v2 folder yet."
-      ],
-      "assets": [
-        {
-          "label": "V2 contact sheet",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_ContactSheet.png",
-          "role": "overview"
-        },
-        {
-          "label": "V2 contact sheet HTML",
-          "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_ContactSheet.html",
-          "role": "overview"
-        },
-        {
-          "label": "README",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/README.md",
-          "role": "notes"
-        },
-        {
-          "label": "Manifest",
-          "type": "json",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/mailer-assets-manifest.json",
-          "role": "manifest"
-        }
-      ]
-    },
-    {
-      "id": "eddm-v2-01-editorial-rule",
-      "group": "A. V2 six-concept proof set",
-      "variant": "01 Editorial Rule",
-      "name": "V2 01: Editorial Rule",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Newspaper-style hairline grid; large headline; restrained green only on the $788K figure.",
-      "reviewFocus": [
-        "Print safety: medium.",
-        "Score this individual concept after using the contact sheet for first-pass comparison.",
-        "If shortlisted, generate a print-ready PDF in the next pass."
-      ],
-      "knownLimitations": [
-        "Proof-only HTML/PNG pair; no per-concept print-ready PDF yet."
+        "Winner proof is still an HTML/PNG proof set; final printer-ready PDF/package should be generated after final signoff."
       ],
       "assets": [
         {
           "label": "Front proof",
           "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_01_editorial-rule_Front_Proof.png",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Front_Proof.png",
           "role": "front"
         },
         {
           "label": "Back proof",
           "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_01_editorial-rule_Back_Proof.png",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Back_Proof.png",
           "role": "back"
         },
         {
           "label": "HTML proof",
           "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_01_editorial-rule_Proof.html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Proof.html",
           "role": "proof"
         },
         {
           "label": "Rationale",
           "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_01_editorial-rule_Rationale.md",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Rationale.md",
           "role": "rationale"
         }
       ]
     },
     {
-      "id": "eddm-v2-02-structured-columns",
-      "group": "A. V2 six-concept proof set",
-      "variant": "02 Structured Columns",
-      "name": "V2 02: Structured Columns",
-      "status": "proof-only",
-      "suggestedDecision": "reject",
-      "summary": "Three-column Swiss-style grid with receipt-style numbers panel and a chart in its own column. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "id": "eddm-v2-editorial-hybrid-02-editorial-paper-bar",
+      "group": "H. V2 Editorial Hybrid Revisions",
+      "variant": "02 Editorial Paper Bar",
+      "name": "V2 Editorial Hybrid: 02 Editorial Paper Bar",
+      "status": "reference-only",
+      "suggestedDecision": "undecided",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Retained as a Style A reference per David's 2026-05-31 narrowing request.",
       "reviewFocus": [
-        "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
-        "Print safety: medium-high.",
-        "Score this individual concept after using the contact sheet for first-pass comparison.",
-        "If shortlisted, generate a print-ready PDF in the next pass."
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
       ],
       "knownLimitations": [
-        "Proof-only HTML/PNG pair; no per-concept print-ready PDF yet."
+        "Imported proof assets may not include a final print-ready PDF yet."
       ],
       "assets": [
         {
           "label": "Front proof",
           "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_02_structured-columns_Front_Proof.png",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Front_Proof.png",
           "role": "front"
         },
         {
           "label": "Back proof",
           "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_02_structured-columns_Back_Proof.png",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Back_Proof.png",
           "role": "back"
         },
         {
           "label": "HTML proof",
           "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_02_structured-columns_Proof.html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Proof.html",
           "role": "proof"
         },
         {
           "label": "Rationale",
           "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_02_structured-columns_Rationale.md",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Rationale.md",
           "role": "rationale"
         }
       ]
     },
     {
-      "id": "eddm-v2-03-callout-band",
-      "group": "A. V2 six-concept proof set",
-      "variant": "03 Callout Band",
-      "name": "V2 03: Callout Band",
-      "status": "proof-only",
+      "id": "eddm-save-upgrade-v2-v2-03-callout-band",
+      "group": "G. Save Upgrade Tools v2",
+      "variant": "V2 03 Callout Band",
+      "name": "Save Upgrade Tools v2: V2 03 Callout Band",
+      "status": "reference-only",
       "suggestedDecision": "undecided",
-      "summary": "Single dark-ink band carries the headline on the front; white everywhere else. A unifying ink strap on the back.",
+      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Retained as a callout-band reference per David's 2026-05-31 narrowing request.",
       "reviewFocus": [
-        "Print safety: medium.",
-        "Score this individual concept after using the contact sheet for first-pass comparison.",
-        "If shortlisted, generate a print-ready PDF in the next pass."
+        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
+        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
       ],
       "knownLimitations": [
-        "Proof-only HTML/PNG pair; no per-concept print-ready PDF yet."
+        "Imported proof assets may not include a final print-ready PDF yet."
       ],
       "assets": [
         {
@@ -207,979 +164,6 @@
           "type": "markdown",
           "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_03_callout-band_Rationale.md",
           "role": "rationale"
-        }
-      ]
-    },
-    {
-      "id": "eddm-v2-04-paper-and-ink",
-      "group": "A. V2 six-concept proof set",
-      "variant": "04 Paper & Ink",
-      "name": "V2 04: Paper & Ink",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Warm paper-color field (#FAF8F2 — NOT mint); dark ink type; brand green on the dollar figure and a single keyline.",
-      "reviewFocus": [
-        "Print safety: medium.",
-        "Score this individual concept after using the contact sheet for first-pass comparison.",
-        "If shortlisted, generate a print-ready PDF in the next pass."
-      ],
-      "knownLimitations": [
-        "Proof-only HTML/PNG pair; no per-concept print-ready PDF yet."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_04_paper-and-ink_Front_Proof.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_04_paper-and-ink_Back_Proof.png",
-          "role": "back"
-        },
-        {
-          "label": "HTML proof",
-          "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_04_paper-and-ink_Proof.html",
-          "role": "proof"
-        },
-        {
-          "label": "Rationale",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_04_paper-and-ink_Rationale.md",
-          "role": "rationale"
-        }
-      ]
-    },
-    {
-      "id": "eddm-v2-05-chart-led-front",
-      "group": "A. V2 six-concept proof set",
-      "variant": "05 Chart-Led Front",
-      "name": "V2 05: Chart-Led Front",
-      "status": "proof-only",
-      "suggestedDecision": "reject",
-      "summary": "Front dominated by the savings curve at scale; headline floats in a small card; back is the calm sibling. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
-      "reviewFocus": [
-        "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
-        "Print safety: lower-medium.",
-        "Score this individual concept after using the contact sheet for first-pass comparison.",
-        "If shortlisted, generate a print-ready PDF in the next pass."
-      ],
-      "knownLimitations": [
-        "Proof-only HTML/PNG pair; no per-concept print-ready PDF yet."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_05_chart-led-front_Front_Proof.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_05_chart-led-front_Back_Proof.png",
-          "role": "back"
-        },
-        {
-          "label": "HTML proof",
-          "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_05_chart-led-front_Proof.html",
-          "role": "proof"
-        },
-        {
-          "label": "Rationale",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_05_chart-led-front_Rationale.md",
-          "role": "rationale"
-        }
-      ]
-    },
-    {
-      "id": "eddm-v2-06-print-safe-classic",
-      "group": "A. V2 six-concept proof set",
-      "variant": "06 Print-Safe Classic",
-      "name": "V2 06: Print-Safe Classic",
-      "status": "proof-only",
-      "suggestedDecision": "reject",
-      "summary": "Maximum print-friendliness: big type, generous white, solid colors only, thick lines, no hairlines or gradients. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
-      "reviewFocus": [
-        "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
-        "Print safety: high.",
-        "Score this individual concept after using the contact sheet for first-pass comparison.",
-        "If shortlisted, generate a print-ready PDF in the next pass."
-      ],
-      "knownLimitations": [
-        "Proof-only HTML/PNG pair; no per-concept print-ready PDF yet."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_06_print-safe-classic_Front_Proof.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_06_print-safe-classic_Back_Proof.png",
-          "role": "back"
-        },
-        {
-          "label": "HTML proof",
-          "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_06_print-safe-classic_Proof.html",
-          "role": "proof"
-        },
-        {
-          "label": "Rationale",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_06_print-safe-classic_Rationale.md",
-          "role": "rationale"
-        }
-      ]
-    },
-    {
-      "id": "eddm-paired-concepts-overview",
-      "group": "B. Paired six-concept set",
-      "variant": "Overview / contact sheet / PDF",
-      "name": "Paired concepts overview",
-      "status": "available",
-      "suggestedDecision": "reject",
-      "summary": "Six paired Save/Upgrade/Improve concepts with a contact sheet and combined PDF. Use as the second comparison lane against the v2 proof set. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Use the contact sheet and 6-concept PDF for fast side-by-side review.",
-        "Then score individual paired concepts below.",
-        "Prioritize high print-safety entries if the printer path is uncertain."
-      ],
-      "assets": [
-        {
-          "label": "Paired concepts contact sheet",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts_ContactSheet.png",
-          "role": "overview"
-        },
-        {
-          "label": "Paired concepts contact sheet HTML",
-          "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts_ContactSheet.html",
-          "role": "overview"
-        },
-        {
-          "label": "Six concepts PDF",
-          "type": "pdf",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts_6Concepts.pdf",
-          "role": "overview-pdf"
-        },
-        {
-          "label": "Combined concepts HTML",
-          "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts.html",
-          "role": "overview"
-        },
-        {
-          "label": "Paired concept notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts_Notes.md",
-          "role": "notes"
-        },
-        {
-          "label": "Manifest",
-          "type": "json",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/paired-concepts-manifest.json",
-          "role": "manifest"
-        }
-      ]
-    },
-    {
-      "id": "eddm-paired-01-ledger-rules",
-      "group": "B. Paired six-concept set",
-      "variant": "1. Ledger Rules",
-      "name": "1. Ledger Rules",
-      "status": "available",
-      "suggestedDecision": "reject",
-      "summary": "A clean ledger-style grid makes the calculator feel factual and keeps the QR/domain path unmistakable. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "The front uses a structured data-report rhythm, and the back continues it with rule-led columns and a disciplined identity rail.",
-        "Print safety: high.",
-        "Compare against the matching v2 proof-only concept before naming a finalist."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_01-ledger-rules_Front.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_01-ledger-rules_Back.png",
-          "role": "back"
-        }
-      ]
-    },
-    {
-      "id": "eddm-paired-02-editorial-column",
-      "group": "B. Paired six-concept set",
-      "variant": "2. Editorial Column",
-      "name": "2. Editorial Column",
-      "status": "available",
-      "suggestedDecision": "reject",
-      "summary": "A magazine-like hierarchy gives the $788,000 number more authority without adding decoration or stock imagery. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "The front opens like a feature spread; the back resolves into a left identity column and a strong right-side action lane.",
-        "Print safety: medium.",
-        "Compare against the matching v2 proof-only concept before naming a finalist."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_02-editorial-column_Front.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_02-editorial-column_Back.png",
-          "role": "back"
-        }
-      ]
-    },
-    {
-      "id": "eddm-paired-03-statement-border",
-      "group": "B. Paired six-concept set",
-      "variant": "3. Statement Border",
-      "name": "3. Statement Border",
-      "status": "available",
-      "suggestedDecision": "reject",
-      "summary": "A print-friendly black-and-green border creates polish while using almost no tinted area. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Both sides share the same framed-system language, making this the most conservative printer-friendly direction.",
-        "Print safety: high.",
-        "Compare against the matching v2 proof-only concept before naming a finalist."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_03-statement-border_Front.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_03-statement-border_Back.png",
-          "role": "back"
-        }
-      ]
-    },
-    {
-      "id": "eddm-paired-04-white-space",
-      "group": "B. Paired six-concept set",
-      "variant": "4. White Space",
-      "name": "4. White Space",
-      "status": "available",
-      "suggestedDecision": "reject",
-      "summary": "More blank space makes the mailer feel premium and lets the domain and QR breathe. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "The front gives the headline generous room; the back mirrors that restraint with sparse benefit blocks and a quiet QR zone.",
-        "Print safety: high.",
-        "Compare against the matching v2 proof-only concept before naming a finalist."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_04-white-space_Front.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_04-white-space_Back.png",
-          "role": "back"
-        }
-      ]
-    },
-    {
-      "id": "eddm-paired-05-proof-strip",
-      "group": "B. Paired six-concept set",
-      "variant": "5. Proof Strip",
-      "name": "5. Proof Strip",
-      "status": "available",
-      "suggestedDecision": "reject",
-      "summary": "A narrow green proof strip creates brand continuity without becoming a mint background. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "The front uses the strip to anchor assumptions and the back uses it as a visual handoff from advisor identity to action.",
-        "Print safety: medium.",
-        "Compare against the matching v2 proof-only concept before naming a finalist."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_05-proof-strip_Front.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_05-proof-strip_Back.png",
-          "role": "back"
-        }
-      ]
-    },
-    {
-      "id": "eddm-paired-06-classic-direct",
-      "group": "B. Paired six-concept set",
-      "variant": "6. Classic Direct",
-      "name": "6. Classic Direct",
-      "status": "available",
-      "suggestedDecision": "reject",
-      "summary": "A straightforward direct-mail layout maximizes readability for average EDDM printing and quick scanning. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "The front is a simple calculator proof; the back is a direct response layout with clear identity, benefits, QR, and domain.",
-        "Print safety: high.",
-        "Compare against the matching v2 proof-only concept before naming a finalist."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_06-classic-direct_Front.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_06-classic-direct_Back.png",
-          "role": "back"
-        }
-      ]
-    },
-    {
-      "id": "eddm-back-01-soft-full-wash",
-      "group": "C. Back-side supporting variants",
-      "variant": "01 Soft Full Wash",
-      "name": "Back variant 01 Soft Full Wash",
-      "status": "supporting-variant",
-      "suggestedDecision": "reject",
-      "summary": "Full light-green wash across the back side; highest visual continuity with the front but likely the least conservative for print. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
-        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
-        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
-      ],
-      "knownLimitations": [
-        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
-        "The shared front proof is included only for context."
-      ],
-      "assets": [
-        {
-          "label": "Shared Save / Upgrade / Improve front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
-          "role": "reference-front"
-        },
-        {
-          "label": "Back variant 01 Soft Full Wash",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_01-soft-full-wash.png",
-          "role": "back-variant"
-        },
-        {
-          "label": "Production notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
-          "role": "notes"
-        }
-      ]
-    },
-    {
-      "id": "eddm-back-02-strong-left-fade",
-      "group": "C. Back-side supporting variants",
-      "variant": "02 Strong Left Fade",
-      "name": "Back variant 02 Strong Left Fade",
-      "status": "supporting-variant",
-      "suggestedDecision": "reject",
-      "summary": "Green concentration on the left side fading into the QR/action area; stronger brand presence with more white space near the scan zone. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
-        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
-        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
-      ],
-      "knownLimitations": [
-        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
-        "The shared front proof is included only for context."
-      ],
-      "assets": [
-        {
-          "label": "Shared Save / Upgrade / Improve front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
-          "role": "reference-front"
-        },
-        {
-          "label": "Back variant 02 Strong Left Fade",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_02-strong-left-fade.png",
-          "role": "back-variant"
-        },
-        {
-          "label": "Production notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
-          "role": "notes"
-        }
-      ]
-    },
-    {
-      "id": "eddm-back-03-diagonal-sweep",
-      "group": "C. Back-side supporting variants",
-      "variant": "03 Diagonal Sweep",
-      "name": "Back variant 03 Diagonal Sweep",
-      "status": "supporting-variant",
-      "suggestedDecision": "reject",
-      "summary": "Diagonal green movement across the back side; more energetic and noticeable, with a higher risk of feeling designed rather than direct. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
-        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
-        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
-      ],
-      "knownLimitations": [
-        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
-        "The shared front proof is included only for context."
-      ],
-      "assets": [
-        {
-          "label": "Shared Save / Upgrade / Improve front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
-          "role": "reference-front"
-        },
-        {
-          "label": "Back variant 03 Diagonal Sweep",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_03-diagonal-sweep.png",
-          "role": "back-variant"
-        },
-        {
-          "label": "Production notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
-          "role": "notes"
-        }
-      ]
-    },
-    {
-      "id": "eddm-back-04-open-air",
-      "group": "C. Back-side supporting variants",
-      "variant": "04 Open Air",
-      "name": "Back variant 04 Open Air",
-      "status": "supporting-variant",
-      "suggestedDecision": "reject",
-      "summary": "Lighter open layout with restrained green fields; intended to keep the back readable while preserving a designed feel. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
-        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
-        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
-      ],
-      "knownLimitations": [
-        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
-        "The shared front proof is included only for context."
-      ],
-      "assets": [
-        {
-          "label": "Shared Save / Upgrade / Improve front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
-          "role": "reference-front"
-        },
-        {
-          "label": "Back variant 04 Open Air",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_04-open-air.png",
-          "role": "back-variant"
-        },
-        {
-          "label": "Production notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
-          "role": "notes"
-        }
-      ]
-    },
-    {
-      "id": "eddm-back-05-clean-paper",
-      "group": "C. Back-side supporting variants",
-      "variant": "05 Clean Paper",
-      "name": "Back variant 05 Clean Paper",
-      "status": "supporting-variant",
-      "suggestedDecision": "reject",
-      "summary": "Mostly white paper treatment; likely one of the safest print/readability backs. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
-        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
-        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
-      ],
-      "knownLimitations": [
-        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
-        "The shared front proof is included only for context."
-      ],
-      "assets": [
-        {
-          "label": "Shared Save / Upgrade / Improve front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
-          "role": "reference-front"
-        },
-        {
-          "label": "Back variant 05 Clean Paper",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_05-clean-paper.png",
-          "role": "back-variant"
-        },
-        {
-          "label": "Production notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
-          "role": "notes"
-        }
-      ]
-    },
-    {
-      "id": "eddm-back-06-split-mint-field",
-      "group": "C. Back-side supporting variants",
-      "variant": "06 Split Mint Field",
-      "name": "Back variant 06 Split Mint Field",
-      "status": "supporting-variant",
-      "suggestedDecision": "reject",
-      "summary": "Split field with a mint panel; creates structure but may overuse the light-green surface. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
-        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
-        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
-      ],
-      "knownLimitations": [
-        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
-        "The shared front proof is included only for context."
-      ],
-      "assets": [
-        {
-          "label": "Shared Save / Upgrade / Improve front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
-          "role": "reference-front"
-        },
-        {
-          "label": "Back variant 06 Split Mint Field",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_06-split-mint-field.png",
-          "role": "back-variant"
-        },
-        {
-          "label": "Production notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
-          "role": "notes"
-        }
-      ]
-    },
-    {
-      "id": "eddm-back-07-editorial-rule",
-      "group": "C. Back-side supporting variants",
-      "variant": "07 Editorial Rule",
-      "name": "Back variant 07 Editorial Rule",
-      "status": "supporting-variant",
-      "suggestedDecision": "reject",
-      "summary": "Rule-led editorial back treatment; more disciplined, lower-ink, and suitable for a serious fiduciary tone. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
-        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
-        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
-      ],
-      "knownLimitations": [
-        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
-        "The shared front proof is included only for context."
-      ],
-      "assets": [
-        {
-          "label": "Shared Save / Upgrade / Improve front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
-          "role": "reference-front"
-        },
-        {
-          "label": "Back variant 07 Editorial Rule",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_07-editorial-rule.png",
-          "role": "back-variant"
-        },
-        {
-          "label": "Production notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
-          "role": "notes"
-        }
-      ]
-    },
-    {
-      "id": "eddm-back-08-subtle-dot-field",
-      "group": "C. Back-side supporting variants",
-      "variant": "08 Subtle Dot Field",
-      "name": "Back variant 08 Subtle Dot Field",
-      "status": "supporting-variant",
-      "suggestedDecision": "reject",
-      "summary": "Subtle field texture treatment; adds texture while trying to avoid a heavy wash. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
-        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
-        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
-      ],
-      "knownLimitations": [
-        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
-        "The shared front proof is included only for context."
-      ],
-      "assets": [
-        {
-          "label": "Shared Save / Upgrade / Improve front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
-          "role": "reference-front"
-        },
-        {
-          "label": "Back variant 08 Subtle Dot Field",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_08-subtle-dot-field.png",
-          "role": "back-variant"
-        },
-        {
-          "label": "Production notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
-          "role": "notes"
-        }
-      ]
-    },
-    {
-      "id": "eddm-save-upgrade-tools-proof",
-      "group": "D. Print-ready proof packages",
-      "variant": "Save / Upgrade / Improve v1",
-      "name": "Save, Upgrade, Improve EDDM proof set",
-      "status": "print-ready-proof",
-      "suggestedDecision": "reject",
-      "summary": "Two-sided print-ready proof package built from the Save, Upgrade, Improve structure, with extra back-side variation sheets. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Review whether the front-side chart and founder proof create a strong enough QR handoff.",
-        "Check that the back-side hierarchy makes Save, Upgrade, and Improve readable at mailbox distance.",
-        "Compare against the newer v2 and paired-concept sets before selecting a finalist."
-      ],
-      "knownLimitations": [
-        "Back-side EDDM indicia/mailing area is a proof layout and must be confirmed with the printer/USPS.",
-        "Some variation sheets are exploratory, not final print files."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_Proof.png",
-          "role": "back"
-        },
-        {
-          "label": "Contact sheet",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_ContactSheet.png",
-          "role": "overview"
-        },
-        {
-          "label": "Print-ready PDF",
-          "type": "pdf",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_8p75x6p5_PrintReady.pdf",
-          "role": "print-file"
-        },
-        {
-          "label": "No-gradient back variations",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_NoGradient_Variations.png",
-          "role": "variations"
-        },
-        {
-          "label": "Gradient back variations",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_Gradient_Variations.png",
-          "role": "variations"
-        },
-        {
-          "label": "Designer handoff clean",
-          "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_Designer_Handoff_AllAssets_Clean.html",
-          "role": "handoff"
-        },
-        {
-          "label": "Notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
-          "role": "notes"
-        },
-        {
-          "label": "Manifest",
-          "type": "json",
-          "path": "output/mailer-samples/codex/save-upgrade-tools/mailer-assets-manifest.json",
-          "role": "manifest"
-        }
-      ]
-    },
-    {
-      "id": "eddm-claude-restrained-proof",
-      "group": "D. Print-ready proof packages",
-      "variant": "Restrained / Swiss",
-      "name": "Restrained EDDM proof set",
-      "status": "print-ready-proof",
-      "suggestedDecision": "reject",
-      "summary": "Restrained Swiss-style proof set with front/back proofs, contact sheet, production notes, and print-ready PDF. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Compare as the most conservative design direction against Gradient Stack and Save/Upgrade/Improve.",
-        "Check whether restrained hierarchy still has enough mailbox pull.",
-        "Use as a print-safe fallback if louder versions feel too busy."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/claude/SWW_YAPTOM_Restrained_EDDM_Front_Proof.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/claude/SWW_YAPTOM_Restrained_EDDM_Back_Proof.png",
-          "role": "back"
-        },
-        {
-          "label": "Contact sheet",
-          "type": "image",
-          "path": "output/mailer-samples/claude/SWW_YAPTOM_Restrained_EDDM_ContactSheet.png",
-          "role": "overview"
-        },
-        {
-          "label": "Print-ready PDF",
-          "type": "pdf",
-          "path": "output/mailer-samples/claude/SWW_YAPTOM_Restrained_EDDM_8p75x6p5_PrintReady.pdf",
-          "role": "print-file"
-        },
-        {
-          "label": "HTML proof",
-          "type": "html",
-          "path": "output/mailer-samples/claude/SWW_YAPTOM_Restrained_EDDM_Proof.html",
-          "role": "proof"
-        },
-        {
-          "label": "Notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/claude/SWW_YAPTOM_Restrained_EDDM_Production_Notes.md",
-          "role": "notes"
-        },
-        {
-          "label": "Manifest",
-          "type": "json",
-          "path": "output/mailer-samples/claude/mailer-assets-manifest.json",
-          "role": "manifest"
-        }
-      ]
-    },
-    {
-      "id": "eddm-gradient-stack-proof",
-      "group": "D. Print-ready proof packages",
-      "variant": "Gradient Stack",
-      "name": "Gradient Stack EDDM proof set",
-      "status": "print-ready-proof",
-      "suggestedDecision": "reject",
-      "summary": "Earlier gradient-backed proof package with full proof assets and print-ready PDF. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-      "reviewFocus": [
-        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
-        "Use as a contrast reference for why the later v2 pass avoided dominant mint/gradient fields.",
-        "Score visual pull separately from print readiness.",
-        "Compare back-side readability against the newer no-mint concepts."
-      ],
-      "knownLimitations": [
-        "Production notes call out a dominant light-green gradient on the back; that may be less desirable for final print."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/gradient-stack/SWW_YAPTOM_GradientStack_EDDM_Front_Proof.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/gradient-stack/SWW_YAPTOM_GradientStack_EDDM_Back_Proof.png",
-          "role": "back"
-        },
-        {
-          "label": "Contact sheet",
-          "type": "image",
-          "path": "output/mailer-samples/gradient-stack/SWW_YAPTOM_GradientStack_EDDM_ContactSheet.png",
-          "role": "overview"
-        },
-        {
-          "label": "Print-ready PDF",
-          "type": "pdf",
-          "path": "output/mailer-samples/gradient-stack/SWW_YAPTOM_GradientStack_EDDM_8p75x6p5_PrintReady.pdf",
-          "role": "print-file"
-        },
-        {
-          "label": "HTML proof",
-          "type": "html",
-          "path": "output/mailer-samples/gradient-stack/SWW_YAPTOM_GradientStack_EDDM_Proof.html",
-          "role": "proof"
-        },
-        {
-          "label": "Notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/gradient-stack/SWW_YAPTOM_GradientStack_EDDM_Production_Notes.md",
-          "role": "notes"
-        },
-        {
-          "label": "Manifest",
-          "type": "json",
-          "path": "output/mailer-samples/gradient-stack/mailer-assets-manifest.json",
-          "role": "manifest"
-        }
-      ]
-    },
-    {
-      "id": "eddm-a-1-percent-blues-corrected-proof",
-      "group": "E. Earlier baseline/reference",
-      "variant": "Likely Variant A - Fee Shock / Loss Aversion",
-      "name": "1% Blues corrected-brand EDDM proof set",
-      "status": "print-ready-proof",
-      "suggestedDecision": "undecided",
-      "summary": "Original corrected-brand proof set. Useful baseline for the fee-shock direction and historical comparison.",
-      "reviewFocus": [
-        "Treat as the baseline fee-shock concept.",
-        "Compare its mailbox pull against the newer Save/Upgrade/Improve concepts.",
-        "Review the corrected brand overlay carefully because the source native design file is not present."
-      ],
-      "knownLimitations": [
-        "Corrected PDF/PNGs are raster proof exports with the correct brand overlaid into source artwork.",
-        "Printer-ready final should ideally be rebuilt from a native design file if one exists."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/1-percent-blues/corrected-brand-proofs/SWW_1PercentBlues_Front_Proof_CorrectBrand.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/1-percent-blues/corrected-brand-proofs/SWW_1PercentBlues_Back_Proof_CorrectBrand.png",
-          "role": "back"
-        },
-        {
-          "label": "Contact sheet",
-          "type": "image",
-          "path": "output/mailer-samples/1-percent-blues/corrected-brand-proofs/SWW_1PercentBlues_ContactSheet_CorrectBrand.png",
-          "role": "overview"
-        },
-        {
-          "label": "Print-ready PDF",
-          "type": "pdf",
-          "path": "output/mailer-samples/1-percent-blues/corrected-brand-proofs/SWW_1PercentBlues_8p75x6p5_PrintReady_CorrectBrand.pdf",
-          "role": "print-file"
-        },
-        {
-          "label": "Notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/1-percent-blues/MAILER_ASSET_MANIFEST.md",
-          "role": "notes"
-        },
-        {
-          "label": "Manifest",
-          "type": "json",
-          "path": "output/mailer-samples/1-percent-blues/mailer-assets-manifest.json",
-          "role": "manifest"
-        }
-      ]
-    },
-    {
-      "id": "eddm-source-default-inputs-reference",
-      "group": "E. Earlier baseline/reference",
-      "variant": "Original extracted EDDM source",
-      "name": "Near-identical default-inputs source EDDM pack",
-      "status": "reference-only",
-      "suggestedDecision": "revise",
-      "summary": "Original extracted EDDM package retained for source comparison. It still contains the source logo treatment and should not be the final brand proof.",
-      "reviewFocus": [
-        "Use for print dimensions, QR/default assumptions, and before/after comparison.",
-        "Do not select for production without brand correction and printer confirmation."
-      ],
-      "assets": [
-        {
-          "label": "Source front proof",
-          "type": "image",
-          "path": "output/mailer-samples/1-percent-blues/source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_Front_Proof.png",
-          "role": "reference-front"
-        },
-        {
-          "label": "Source back proof",
-          "type": "image",
-          "path": "output/mailer-samples/1-percent-blues/source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_Back_Proof.png",
-          "role": "reference-back"
-        },
-        {
-          "label": "Source contact sheet",
-          "type": "image",
-          "path": "output/mailer-samples/1-percent-blues/source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_ContactSheet.png",
-          "role": "overview"
-        },
-        {
-          "label": "Source print-ready PDF",
-          "type": "pdf",
-          "path": "output/mailer-samples/1-percent-blues/source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_8p5x6p25_PrintReady.pdf",
-          "role": "source-print-file"
-        },
-        {
-          "label": "Notes",
-          "type": "markdown",
-          "path": "output/mailer-samples/1-percent-blues/source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_Production_Notes.md",
-          "role": "notes"
-        },
-        {
-          "label": "QR code image",
-          "type": "image",
-          "path": "output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png",
-          "role": "qr"
         }
       ]
     },
@@ -1251,14 +235,1188 @@
       ]
     },
     {
+      "id": "eddm-v2-overview-six-concepts",
+      "group": "A. V2 six-concept proof set",
+      "variant": "Overview / contact sheet",
+      "name": "V2 six-concept proof set overview",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Side-by-side overview of the six v2 proof-only concepts. Start here to narrow the field before scoring individual concepts.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Use the contact sheet to pick the two or three concepts worth detailed review.",
+        "The README says this pass has no PDFs; pick favorites before a print-ready PDF pass.",
+        "Print-safety pick from the manifest: 06_print-safe-classic."
+      ],
+      "knownLimitations": [
+        "Proof-only round; no print-ready PDFs in this v2 folder yet."
+      ],
+      "assets": [
+        {
+          "label": "V2 contact sheet",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_ContactSheet.png",
+          "role": "overview"
+        },
+        {
+          "label": "V2 contact sheet HTML",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_ContactSheet.html",
+          "role": "overview"
+        },
+        {
+          "label": "README",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/README.md",
+          "role": "notes"
+        },
+        {
+          "label": "Manifest",
+          "type": "json",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/mailer-assets-manifest.json",
+          "role": "manifest"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-01-editorial-rule",
+      "group": "A. V2 six-concept proof set",
+      "variant": "01 Editorial Rule",
+      "name": "V2 01: Editorial Rule",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Newspaper-style hairline grid; large headline; restrained green only on the $788K figure.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Print safety: medium.",
+        "Score this individual concept after using the contact sheet for first-pass comparison.",
+        "If shortlisted, generate a print-ready PDF in the next pass."
+      ],
+      "knownLimitations": [
+        "Proof-only HTML/PNG pair; no per-concept print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_01_editorial-rule_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_01_editorial-rule_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_01_editorial-rule_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_01_editorial-rule_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-02-structured-columns",
+      "group": "A. V2 six-concept proof set",
+      "variant": "02 Structured Columns",
+      "name": "V2 02: Structured Columns",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Three-column Swiss-style grid with receipt-style numbers panel and a chart in its own column. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+        "Print safety: medium-high.",
+        "Score this individual concept after using the contact sheet for first-pass comparison.",
+        "If shortlisted, generate a print-ready PDF in the next pass."
+      ],
+      "knownLimitations": [
+        "Proof-only HTML/PNG pair; no per-concept print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_02_structured-columns_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_02_structured-columns_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_02_structured-columns_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_02_structured-columns_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-03-callout-band",
+      "group": "A. V2 six-concept proof set",
+      "variant": "03 Callout Band",
+      "name": "V2 03: Callout Band",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Single dark-ink band carries the headline on the front; white everywhere else. A unifying ink strap on the back.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Print safety: medium.",
+        "Score this individual concept after using the contact sheet for first-pass comparison.",
+        "If shortlisted, generate a print-ready PDF in the next pass."
+      ],
+      "knownLimitations": [
+        "Proof-only HTML/PNG pair; no per-concept print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_03_callout-band_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_03_callout-band_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_03_callout-band_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_03_callout-band_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-04-paper-and-ink",
+      "group": "A. V2 six-concept proof set",
+      "variant": "04 Paper & Ink",
+      "name": "V2 04: Paper & Ink",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Warm paper-color field (#FAF8F2 — NOT mint); dark ink type; brand green on the dollar figure and a single keyline.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Print safety: medium.",
+        "Score this individual concept after using the contact sheet for first-pass comparison.",
+        "If shortlisted, generate a print-ready PDF in the next pass."
+      ],
+      "knownLimitations": [
+        "Proof-only HTML/PNG pair; no per-concept print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_04_paper-and-ink_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_04_paper-and-ink_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_04_paper-and-ink_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_04_paper-and-ink_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-05-chart-led-front",
+      "group": "A. V2 six-concept proof set",
+      "variant": "05 Chart-Led Front",
+      "name": "V2 05: Chart-Led Front",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Front dominated by the savings curve at scale; headline floats in a small card; back is the calm sibling. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+        "Print safety: lower-medium.",
+        "Score this individual concept after using the contact sheet for first-pass comparison.",
+        "If shortlisted, generate a print-ready PDF in the next pass."
+      ],
+      "knownLimitations": [
+        "Proof-only HTML/PNG pair; no per-concept print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_05_chart-led-front_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_05_chart-led-front_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_05_chart-led-front_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_05_chart-led-front_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-v2-06-print-safe-classic",
+      "group": "A. V2 six-concept proof set",
+      "variant": "06 Print-Safe Classic",
+      "name": "V2 06: Print-Safe Classic",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Maximum print-friendliness: big type, generous white, solid colors only, thick lines, no hairlines or gradients. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
+        "Print safety: high.",
+        "Score this individual concept after using the contact sheet for first-pass comparison.",
+        "If shortlisted, generate a print-ready PDF in the next pass."
+      ],
+      "knownLimitations": [
+        "Proof-only HTML/PNG pair; no per-concept print-ready PDF yet."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_06_print-safe-classic_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_06_print-safe-classic_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_06_print-safe-classic_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_06_print-safe-classic_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-paired-concepts-overview",
+      "group": "B. Paired six-concept set",
+      "variant": "Overview / contact sheet / PDF",
+      "name": "Paired concepts overview",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Six paired Save/Upgrade/Improve concepts with a contact sheet and combined PDF. Use as the second comparison lane against the v2 proof set. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Use the contact sheet and 6-concept PDF for fast side-by-side review.",
+        "Then score individual paired concepts below.",
+        "Prioritize high print-safety entries if the printer path is uncertain."
+      ],
+      "assets": [
+        {
+          "label": "Paired concepts contact sheet",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts_ContactSheet.png",
+          "role": "overview"
+        },
+        {
+          "label": "Paired concepts contact sheet HTML",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts_ContactSheet.html",
+          "role": "overview"
+        },
+        {
+          "label": "Six concepts PDF",
+          "type": "pdf",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts_6Concepts.pdf",
+          "role": "overview-pdf"
+        },
+        {
+          "label": "Combined concepts HTML",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts.html",
+          "role": "overview"
+        },
+        {
+          "label": "Paired concept notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_PairedConcepts_Notes.md",
+          "role": "notes"
+        },
+        {
+          "label": "Manifest",
+          "type": "json",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/paired-concepts-manifest.json",
+          "role": "manifest"
+        }
+      ]
+    },
+    {
+      "id": "eddm-paired-01-ledger-rules",
+      "group": "B. Paired six-concept set",
+      "variant": "1. Ledger Rules",
+      "name": "1. Ledger Rules",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. A clean ledger-style grid makes the calculator feel factual and keeps the QR/domain path unmistakable. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "The front uses a structured data-report rhythm, and the back continues it with rule-led columns and a disciplined identity rail.",
+        "Print safety: high.",
+        "Compare against the matching v2 proof-only concept before naming a finalist."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_01-ledger-rules_Front.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_01-ledger-rules_Back.png",
+          "role": "back"
+        }
+      ]
+    },
+    {
+      "id": "eddm-paired-02-editorial-column",
+      "group": "B. Paired six-concept set",
+      "variant": "2. Editorial Column",
+      "name": "2. Editorial Column",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. A magazine-like hierarchy gives the $788,000 number more authority without adding decoration or stock imagery. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "The front opens like a feature spread; the back resolves into a left identity column and a strong right-side action lane.",
+        "Print safety: medium.",
+        "Compare against the matching v2 proof-only concept before naming a finalist."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_02-editorial-column_Front.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_02-editorial-column_Back.png",
+          "role": "back"
+        }
+      ]
+    },
+    {
+      "id": "eddm-paired-03-statement-border",
+      "group": "B. Paired six-concept set",
+      "variant": "3. Statement Border",
+      "name": "3. Statement Border",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. A print-friendly black-and-green border creates polish while using almost no tinted area. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Both sides share the same framed-system language, making this the most conservative printer-friendly direction.",
+        "Print safety: high.",
+        "Compare against the matching v2 proof-only concept before naming a finalist."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_03-statement-border_Front.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_03-statement-border_Back.png",
+          "role": "back"
+        }
+      ]
+    },
+    {
+      "id": "eddm-paired-04-white-space",
+      "group": "B. Paired six-concept set",
+      "variant": "4. White Space",
+      "name": "4. White Space",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. More blank space makes the mailer feel premium and lets the domain and QR breathe. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "The front gives the headline generous room; the back mirrors that restraint with sparse benefit blocks and a quiet QR zone.",
+        "Print safety: high.",
+        "Compare against the matching v2 proof-only concept before naming a finalist."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_04-white-space_Front.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_04-white-space_Back.png",
+          "role": "back"
+        }
+      ]
+    },
+    {
+      "id": "eddm-paired-05-proof-strip",
+      "group": "B. Paired six-concept set",
+      "variant": "5. Proof Strip",
+      "name": "5. Proof Strip",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. A narrow green proof strip creates brand continuity without becoming a mint background. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "The front uses the strip to anchor assumptions and the back uses it as a visual handoff from advisor identity to action.",
+        "Print safety: medium.",
+        "Compare against the matching v2 proof-only concept before naming a finalist."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_05-proof-strip_Front.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_05-proof-strip_Back.png",
+          "role": "back"
+        }
+      ]
+    },
+    {
+      "id": "eddm-paired-06-classic-direct",
+      "group": "B. Paired six-concept set",
+      "variant": "6. Classic Direct",
+      "name": "6. Classic Direct",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. A straightforward direct-mail layout maximizes readability for average EDDM printing and quick scanning. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "The front is a simple calculator proof; the back is a direct response layout with clear identity, benefits, QR, and domain.",
+        "Print safety: high.",
+        "Compare against the matching v2 proof-only concept before naming a finalist."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_06-classic-direct_Front.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/paired-concepts/SWW_YAPTOM_SaveUpgradeTools_EDDM_Paired_06-classic-direct_Back.png",
+          "role": "back"
+        }
+      ]
+    },
+    {
+      "id": "eddm-back-01-soft-full-wash",
+      "group": "C. Back-side supporting variants",
+      "variant": "01 Soft Full Wash",
+      "name": "Back variant 01 Soft Full Wash",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Full light-green wash across the back side; highest visual continuity with the front but likely the least conservative for print. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
+        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
+        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
+      ],
+      "knownLimitations": [
+        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
+        "The shared front proof is included only for context."
+      ],
+      "assets": [
+        {
+          "label": "Shared Save / Upgrade / Improve front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
+          "role": "reference-front"
+        },
+        {
+          "label": "Back variant 01 Soft Full Wash",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_01-soft-full-wash.png",
+          "role": "back-variant"
+        },
+        {
+          "label": "Production notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
+          "role": "notes"
+        }
+      ]
+    },
+    {
+      "id": "eddm-back-02-strong-left-fade",
+      "group": "C. Back-side supporting variants",
+      "variant": "02 Strong Left Fade",
+      "name": "Back variant 02 Strong Left Fade",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Green concentration on the left side fading into the QR/action area; stronger brand presence with more white space near the scan zone. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
+        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
+        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
+      ],
+      "knownLimitations": [
+        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
+        "The shared front proof is included only for context."
+      ],
+      "assets": [
+        {
+          "label": "Shared Save / Upgrade / Improve front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
+          "role": "reference-front"
+        },
+        {
+          "label": "Back variant 02 Strong Left Fade",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_02-strong-left-fade.png",
+          "role": "back-variant"
+        },
+        {
+          "label": "Production notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
+          "role": "notes"
+        }
+      ]
+    },
+    {
+      "id": "eddm-back-03-diagonal-sweep",
+      "group": "C. Back-side supporting variants",
+      "variant": "03 Diagonal Sweep",
+      "name": "Back variant 03 Diagonal Sweep",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Diagonal green movement across the back side; more energetic and noticeable, with a higher risk of feeling designed rather than direct. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
+        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
+        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
+      ],
+      "knownLimitations": [
+        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
+        "The shared front proof is included only for context."
+      ],
+      "assets": [
+        {
+          "label": "Shared Save / Upgrade / Improve front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
+          "role": "reference-front"
+        },
+        {
+          "label": "Back variant 03 Diagonal Sweep",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_03-diagonal-sweep.png",
+          "role": "back-variant"
+        },
+        {
+          "label": "Production notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
+          "role": "notes"
+        }
+      ]
+    },
+    {
+      "id": "eddm-back-04-open-air",
+      "group": "C. Back-side supporting variants",
+      "variant": "04 Open Air",
+      "name": "Back variant 04 Open Air",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Lighter open layout with restrained green fields; intended to keep the back readable while preserving a designed feel. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
+        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
+        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
+      ],
+      "knownLimitations": [
+        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
+        "The shared front proof is included only for context."
+      ],
+      "assets": [
+        {
+          "label": "Shared Save / Upgrade / Improve front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
+          "role": "reference-front"
+        },
+        {
+          "label": "Back variant 04 Open Air",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_04-open-air.png",
+          "role": "back-variant"
+        },
+        {
+          "label": "Production notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
+          "role": "notes"
+        }
+      ]
+    },
+    {
+      "id": "eddm-back-05-clean-paper",
+      "group": "C. Back-side supporting variants",
+      "variant": "05 Clean Paper",
+      "name": "Back variant 05 Clean Paper",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Mostly white paper treatment; likely one of the safest print/readability backs. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
+        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
+        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
+      ],
+      "knownLimitations": [
+        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
+        "The shared front proof is included only for context."
+      ],
+      "assets": [
+        {
+          "label": "Shared Save / Upgrade / Improve front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
+          "role": "reference-front"
+        },
+        {
+          "label": "Back variant 05 Clean Paper",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_05-clean-paper.png",
+          "role": "back-variant"
+        },
+        {
+          "label": "Production notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
+          "role": "notes"
+        }
+      ]
+    },
+    {
+      "id": "eddm-back-06-split-mint-field",
+      "group": "C. Back-side supporting variants",
+      "variant": "06 Split Mint Field",
+      "name": "Back variant 06 Split Mint Field",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Split field with a mint panel; creates structure but may overuse the light-green surface. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
+        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
+        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
+      ],
+      "knownLimitations": [
+        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
+        "The shared front proof is included only for context."
+      ],
+      "assets": [
+        {
+          "label": "Shared Save / Upgrade / Improve front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
+          "role": "reference-front"
+        },
+        {
+          "label": "Back variant 06 Split Mint Field",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_06-split-mint-field.png",
+          "role": "back-variant"
+        },
+        {
+          "label": "Production notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
+          "role": "notes"
+        }
+      ]
+    },
+    {
+      "id": "eddm-back-07-editorial-rule",
+      "group": "C. Back-side supporting variants",
+      "variant": "07 Editorial Rule",
+      "name": "Back variant 07 Editorial Rule",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Rule-led editorial back treatment; more disciplined, lower-ink, and suitable for a serious fiduciary tone. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
+        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
+        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
+      ],
+      "knownLimitations": [
+        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
+        "The shared front proof is included only for context."
+      ],
+      "assets": [
+        {
+          "label": "Shared Save / Upgrade / Improve front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
+          "role": "reference-front"
+        },
+        {
+          "label": "Back variant 07 Editorial Rule",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_07-editorial-rule.png",
+          "role": "back-variant"
+        },
+        {
+          "label": "Production notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
+          "role": "notes"
+        }
+      ]
+    },
+    {
+      "id": "eddm-back-08-subtle-dot-field",
+      "group": "C. Back-side supporting variants",
+      "variant": "08 Subtle Dot Field",
+      "name": "Back variant 08 Subtle Dot Field",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Subtle field texture treatment; adds texture while trying to avoid a heavy wash. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Evaluate this as a back-side treatment for the Save / Upgrade / Improve v1 front, not as a standalone full mailer.",
+        "Score QR clarity, mailing-area readability, ink load, and whether the back side reinforces the front-side promise.",
+        "If selected, regenerate or confirm a complete front/back print-ready PDF with printer-safe margins and USPS/EDDM placement."
+      ],
+      "knownLimitations": [
+        "Back-side-only supporting variant; no standalone print-ready PDF for this exact pairing yet.",
+        "The shared front proof is included only for context."
+      ],
+      "assets": [
+        {
+          "label": "Shared Save / Upgrade / Improve front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
+          "role": "reference-front"
+        },
+        {
+          "label": "Back variant 08 Subtle Dot Field",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_08-subtle-dot-field.png",
+          "role": "back-variant"
+        },
+        {
+          "label": "Production notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
+          "role": "notes"
+        }
+      ]
+    },
+    {
+      "id": "eddm-save-upgrade-tools-proof",
+      "group": "D. Print-ready proof packages",
+      "variant": "Save / Upgrade / Improve v1",
+      "name": "Save, Upgrade, Improve EDDM proof set",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Two-sided print-ready proof package built from the Save, Upgrade, Improve structure, with extra back-side variation sheets. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Review whether the front-side chart and founder proof create a strong enough QR handoff.",
+        "Check that the back-side hierarchy makes Save, Upgrade, and Improve readable at mailbox distance.",
+        "Compare against the newer v2 and paired-concept sets before selecting a finalist."
+      ],
+      "knownLimitations": [
+        "Back-side EDDM indicia/mailing area is a proof layout and must be confirmed with the printer/USPS.",
+        "Some variation sheets are exploratory, not final print files."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "Contact sheet",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_ContactSheet.png",
+          "role": "overview"
+        },
+        {
+          "label": "Print-ready PDF",
+          "type": "pdf",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_8p75x6p5_PrintReady.pdf",
+          "role": "print-file"
+        },
+        {
+          "label": "No-gradient back variations",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_NoGradient_Variations.png",
+          "role": "variations"
+        },
+        {
+          "label": "Gradient back variations",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Back_Gradient_Variations.png",
+          "role": "variations"
+        },
+        {
+          "label": "Designer handoff clean",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_Designer_Handoff_AllAssets_Clean.html",
+          "role": "handoff"
+        },
+        {
+          "label": "Notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/SWW_YAPTOM_SaveUpgradeTools_EDDM_Production_Notes.md",
+          "role": "notes"
+        },
+        {
+          "label": "Manifest",
+          "type": "json",
+          "path": "output/mailer-samples/codex/save-upgrade-tools/mailer-assets-manifest.json",
+          "role": "manifest"
+        }
+      ]
+    },
+    {
+      "id": "eddm-claude-restrained-proof",
+      "group": "D. Print-ready proof packages",
+      "variant": "Restrained / Swiss",
+      "name": "Restrained EDDM proof set",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Restrained Swiss-style proof set with front/back proofs, contact sheet, production notes, and print-ready PDF. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Compare as the most conservative design direction against Gradient Stack and Save/Upgrade/Improve.",
+        "Check whether restrained hierarchy still has enough mailbox pull.",
+        "Use as a print-safe fallback if louder versions feel too busy."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/claude/SWW_YAPTOM_Restrained_EDDM_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/claude/SWW_YAPTOM_Restrained_EDDM_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "Contact sheet",
+          "type": "image",
+          "path": "output/mailer-samples/claude/SWW_YAPTOM_Restrained_EDDM_ContactSheet.png",
+          "role": "overview"
+        },
+        {
+          "label": "Print-ready PDF",
+          "type": "pdf",
+          "path": "output/mailer-samples/claude/SWW_YAPTOM_Restrained_EDDM_8p75x6p5_PrintReady.pdf",
+          "role": "print-file"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/claude/SWW_YAPTOM_Restrained_EDDM_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/claude/SWW_YAPTOM_Restrained_EDDM_Production_Notes.md",
+          "role": "notes"
+        },
+        {
+          "label": "Manifest",
+          "type": "json",
+          "path": "output/mailer-samples/claude/mailer-assets-manifest.json",
+          "role": "manifest"
+        }
+      ]
+    },
+    {
+      "id": "eddm-gradient-stack-proof",
+      "group": "D. Print-ready proof packages",
+      "variant": "Gradient Stack",
+      "name": "Gradient Stack EDDM proof set",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Earlier gradient-backed proof package with full proof assets and print-ready PDF. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+        "Use as a contrast reference for why the later v2 pass avoided dominant mint/gradient fields.",
+        "Score visual pull separately from print readiness.",
+        "Compare back-side readability against the newer no-mint concepts."
+      ],
+      "knownLimitations": [
+        "Production notes call out a dominant light-green gradient on the back; that may be less desirable for final print."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/gradient-stack/SWW_YAPTOM_GradientStack_EDDM_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/gradient-stack/SWW_YAPTOM_GradientStack_EDDM_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "Contact sheet",
+          "type": "image",
+          "path": "output/mailer-samples/gradient-stack/SWW_YAPTOM_GradientStack_EDDM_ContactSheet.png",
+          "role": "overview"
+        },
+        {
+          "label": "Print-ready PDF",
+          "type": "pdf",
+          "path": "output/mailer-samples/gradient-stack/SWW_YAPTOM_GradientStack_EDDM_8p75x6p5_PrintReady.pdf",
+          "role": "print-file"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/gradient-stack/SWW_YAPTOM_GradientStack_EDDM_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/gradient-stack/SWW_YAPTOM_GradientStack_EDDM_Production_Notes.md",
+          "role": "notes"
+        },
+        {
+          "label": "Manifest",
+          "type": "json",
+          "path": "output/mailer-samples/gradient-stack/mailer-assets-manifest.json",
+          "role": "manifest"
+        }
+      ]
+    },
+    {
+      "id": "eddm-a-1-percent-blues-corrected-proof",
+      "group": "E. Earlier baseline/reference",
+      "variant": "Likely Variant A - Fee Shock / Loss Aversion",
+      "name": "1% Blues corrected-brand EDDM proof set",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Original corrected-brand proof set. Useful baseline for the fee-shock direction and historical comparison.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Treat as the baseline fee-shock concept.",
+        "Compare its mailbox pull against the newer Save/Upgrade/Improve concepts.",
+        "Review the corrected brand overlay carefully because the source native design file is not present."
+      ],
+      "knownLimitations": [
+        "Corrected PDF/PNGs are raster proof exports with the correct brand overlaid into source artwork.",
+        "Printer-ready final should ideally be rebuilt from a native design file if one exists."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/1-percent-blues/corrected-brand-proofs/SWW_1PercentBlues_Front_Proof_CorrectBrand.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/1-percent-blues/corrected-brand-proofs/SWW_1PercentBlues_Back_Proof_CorrectBrand.png",
+          "role": "back"
+        },
+        {
+          "label": "Contact sheet",
+          "type": "image",
+          "path": "output/mailer-samples/1-percent-blues/corrected-brand-proofs/SWW_1PercentBlues_ContactSheet_CorrectBrand.png",
+          "role": "overview"
+        },
+        {
+          "label": "Print-ready PDF",
+          "type": "pdf",
+          "path": "output/mailer-samples/1-percent-blues/corrected-brand-proofs/SWW_1PercentBlues_8p75x6p5_PrintReady_CorrectBrand.pdf",
+          "role": "print-file"
+        },
+        {
+          "label": "Notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/1-percent-blues/MAILER_ASSET_MANIFEST.md",
+          "role": "notes"
+        },
+        {
+          "label": "Manifest",
+          "type": "json",
+          "path": "output/mailer-samples/1-percent-blues/mailer-assets-manifest.json",
+          "role": "manifest"
+        }
+      ]
+    },
+    {
+      "id": "eddm-source-default-inputs-reference",
+      "group": "E. Earlier baseline/reference",
+      "variant": "Original extracted EDDM source",
+      "name": "Near-identical default-inputs source EDDM pack",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Original extracted EDDM package retained for source comparison. It still contains the source logo treatment and should not be the final brand proof.",
+      "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
+        "Use for print dimensions, QR/default assumptions, and before/after comparison.",
+        "Do not select for production without brand correction and printer confirmation."
+      ],
+      "assets": [
+        {
+          "label": "Source front proof",
+          "type": "image",
+          "path": "output/mailer-samples/1-percent-blues/source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_Front_Proof.png",
+          "role": "reference-front"
+        },
+        {
+          "label": "Source back proof",
+          "type": "image",
+          "path": "output/mailer-samples/1-percent-blues/source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_Back_Proof.png",
+          "role": "reference-back"
+        },
+        {
+          "label": "Source contact sheet",
+          "type": "image",
+          "path": "output/mailer-samples/1-percent-blues/source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_ContactSheet.png",
+          "role": "overview"
+        },
+        {
+          "label": "Source print-ready PDF",
+          "type": "pdf",
+          "path": "output/mailer-samples/1-percent-blues/source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_8p5x6p25_PrintReady.pdf",
+          "role": "source-print-file"
+        },
+        {
+          "label": "Notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/1-percent-blues/source-eddm/SWW_YAPTOM_NearIdentical_DefaultInputs_EDDM_Production_Notes.md",
+          "role": "notes"
+        },
+        {
+          "label": "QR code image",
+          "type": "image",
+          "path": "output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png",
+          "role": "qr"
+        }
+      ]
+    },
+    {
       "id": "eddm-save-upgrade-v2-overview",
       "group": "G. Save Upgrade Tools v2",
       "variant": "Overview / contact sheet",
       "name": "Save Upgrade Tools v2 overview",
-      "status": "overview",
-      "suggestedDecision": "undecided",
-      "summary": "Imported overview row for this revision round. Start here before scoring individual front/back candidates.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported overview row for this revision round. Start here before scoring individual front/back candidates.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Use this overview to narrow the field before scoring individual concepts.",
         "Confirm every concept worth reviewing has its own front/back scoreable row."
       ],
@@ -1294,10 +1452,11 @@
       "group": "G. Save Upgrade Tools v2",
       "variant": "V2 01 Editorial Rule",
       "name": "Save Upgrade Tools v2: V2 01 Editorial Rule",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
         "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
@@ -1337,10 +1496,11 @@
       "group": "G. Save Upgrade Tools v2",
       "variant": "V2 02 Structured Columns",
       "name": "Save Upgrade Tools v2: V2 02 Structured Columns",
-      "status": "proof-only",
+      "status": "legacy",
       "suggestedDecision": "reject",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
@@ -1378,57 +1538,15 @@
       ]
     },
     {
-      "id": "eddm-save-upgrade-v2-v2-03-callout-band",
-      "group": "G. Save Upgrade Tools v2",
-      "variant": "V2 03 Callout Band",
-      "name": "Save Upgrade Tools v2: V2 03 Callout Band",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
-      "reviewFocus": [
-        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
-        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
-        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
-      ],
-      "knownLimitations": [
-        "Imported proof assets may not include a final print-ready PDF yet."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_03_callout-band_Front_Proof.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_03_callout-band_Back_Proof.png",
-          "role": "back"
-        },
-        {
-          "label": "HTML proof",
-          "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_03_callout-band_Proof.html",
-          "role": "proof"
-        },
-        {
-          "label": "Rationale",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2/SWW_YAPTOM_v2_03_callout-band_Rationale.md",
-          "role": "rationale"
-        }
-      ]
-    },
-    {
       "id": "eddm-save-upgrade-v2-v2-04-paper-and-ink",
       "group": "G. Save Upgrade Tools v2",
       "variant": "V2 04 Paper And Ink",
       "name": "Save Upgrade Tools v2: V2 04 Paper And Ink",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
         "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
@@ -1468,10 +1586,11 @@
       "group": "G. Save Upgrade Tools v2",
       "variant": "V2 05 Chart Led Front",
       "name": "Save Upgrade Tools v2: V2 05 Chart Led Front",
-      "status": "proof-only",
+      "status": "legacy",
       "suggestedDecision": "reject",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
@@ -1513,10 +1632,11 @@
       "group": "G. Save Upgrade Tools v2",
       "variant": "V2 06 Print Safe Classic",
       "name": "Save Upgrade Tools v2: V2 06 Print Safe Classic",
-      "status": "proof-only",
+      "status": "legacy",
       "suggestedDecision": "reject",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Eliminated by David on 2026-05-28 after selecting V2 01 Editorial Rule as the base for revised hybrid exploration.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
@@ -1558,10 +1678,11 @@
       "group": "H. V2 Editorial Hybrid Revisions",
       "variant": "Overview / contact sheet",
       "name": "V2 Editorial Hybrid overview",
-      "status": "overview",
-      "suggestedDecision": "undecided",
-      "summary": "Imported overview row for this revision round. Start here before scoring individual front/back candidates.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported overview row for this revision round. Start here before scoring individual front/back candidates.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Use this overview to narrow the field before scoring individual concepts.",
         "Confirm every concept worth reviewing has its own front/back scoreable row."
       ],
@@ -1597,10 +1718,11 @@
       "group": "H. V2 Editorial Hybrid Revisions",
       "variant": "01 Editorial Callout Bands",
       "name": "V2 Editorial Hybrid: 01 Editorial Callout Bands",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
         "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
@@ -1636,57 +1758,15 @@
       ]
     },
     {
-      "id": "eddm-v2-editorial-hybrid-02-editorial-paper-bar",
-      "group": "H. V2 Editorial Hybrid Revisions",
-      "variant": "02 Editorial Paper Bar",
-      "name": "V2 Editorial Hybrid: 02 Editorial Paper Bar",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
-      "reviewFocus": [
-        "Score this as a new revision candidate; do not compare it using an older candidate ID.",
-        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
-        "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
-      ],
-      "knownLimitations": [
-        "Imported proof assets may not include a final print-ready PDF yet."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Front_Proof.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Back_Proof.png",
-          "role": "back"
-        },
-        {
-          "label": "HTML proof",
-          "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Proof.html",
-          "role": "proof"
-        },
-        {
-          "label": "Rationale",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-editorial-hybrids/SWW_YAPTOM_EditorialHybrids_02_editorial-paper-bar_Rationale.md",
-          "role": "rationale"
-        }
-      ]
-    },
-    {
       "id": "eddm-v2-editorial-hybrid-03-editorial-framed-amalgam",
       "group": "H. V2 Editorial Hybrid Revisions",
       "variant": "03 Editorial Framed Amalgam",
       "name": "V2 Editorial Hybrid: 03 Editorial Framed Amalgam",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
         "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
@@ -1726,10 +1806,11 @@
       "group": "J. V2 Copy Spotlight Revisions",
       "variant": "Overview / contact sheet",
       "name": "V2 Copy Spotlight overview",
-      "status": "overview",
+      "status": "legacy",
       "suggestedDecision": "reject",
-      "summary": "Imported overview row for this revision round. Start here before scoring individual front/back candidates. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported overview row for this revision round. Start here before scoring individual front/back candidates. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
         "Use this overview to narrow the field before scoring individual concepts.",
@@ -1767,10 +1848,11 @@
       "group": "J. V2 Copy Spotlight Revisions",
       "variant": "01 Proof Card",
       "name": "V2 Copy Spotlight: 01 Proof Card",
-      "status": "proof-only",
+      "status": "legacy",
       "suggestedDecision": "reject",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
@@ -1812,10 +1894,11 @@
       "group": "J. V2 Copy Spotlight Revisions",
       "variant": "02 Callout Band",
       "name": "V2 Copy Spotlight: 02 Callout Band",
-      "status": "proof-only",
+      "status": "legacy",
       "suggestedDecision": "reject",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
@@ -1857,10 +1940,11 @@
       "group": "J. V2 Copy Spotlight Revisions",
       "variant": "03 Advisor Frame",
       "name": "V2 Copy Spotlight: 03 Advisor Frame",
-      "status": "proof-only",
+      "status": "legacy",
       "suggestedDecision": "reject",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist. Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule. Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Rejected by David on 2026-05-29; narrowed out in favor of FINALISTS 01 Corrected Editorial Rule.",
         "Rejected by David on 2026-05-29; replaced by the targeted FINALISTS revisions from V2 01 Editorial Rule.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
@@ -1902,10 +1986,11 @@
       "group": "FINALISTS",
       "variant": "Overview / contact sheet",
       "name": "FINALISTS overview",
-      "status": "overview",
-      "suggestedDecision": "undecided",
-      "summary": "FINALISTS contact sheet for the narrowed proof set, now including three Soft Green Wash advisor-box emphasis mockups.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. FINALISTS contact sheet for the narrowed proof set, now including three Soft Green Wash advisor-box emphasis mockups.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Use this overview to compare 01D, 01E, and 01F before scoring an individual advisor-box treatment.",
         "Confirm every concept worth reviewing has its own front/back scoreable row."
       ],
@@ -1941,10 +2026,11 @@
       "group": "FINALISTS",
       "variant": "01 Corrected Editorial Rule",
       "name": "FINALISTS: 01 Corrected Editorial Rule",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Imported revision candidate. Review front/back fit, mailbox clarity, QR handoff, print readiness, and compliance risk before selecting a finalist.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Score this as a new revision candidate; do not compare it using an older candidate ID.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk.",
         "If selected, confirm final print-ready PDF dimensions, bleed, and USPS/EDDM placement with the printer."
@@ -1984,10 +2070,11 @@
       "group": "FINALISTS",
       "variant": "01A Rounded Soft Card",
       "name": "FINALISTS: 01A Rounded Soft Card",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Rounded white front proof card with a print-safe shadow; bar-side dollar labels are aligned as one mini-column.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Rounded white front proof card with a print-safe shadow; bar-side dollar labels are aligned as one mini-column.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Evaluate whether the rounded white card makes the hero/chart/QR area feel cohesive without looking too soft for direct mail.",
         "Compare against FINALISTS: 01 Corrected Editorial Rule and the other two box-treatment options.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk."
@@ -2027,10 +2114,11 @@
       "group": "FINALISTS",
       "variant": "01B Soft Green Wash",
       "name": "FINALISTS: 01B Soft Green Wash",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Pale brand-green front panel treatment; bar-side dollar labels are aligned as one mini-column.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Pale brand-green front panel treatment; bar-side dollar labels are aligned as one mini-column.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Evaluate whether the green wash adds brand cohesion while staying print-safe and not competing with the chart.",
         "Compare against FINALISTS: 01 Corrected Editorial Rule and the other two box-treatment options.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk."
@@ -2070,10 +2158,11 @@
       "group": "FINALISTS",
       "variant": "01C Raised Paper Panel",
       "name": "FINALISTS: 01C Raised Paper Panel",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Warm raised-paper front panel with restrained depth; bar-side dollar labels are aligned as one mini-column.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Warm raised-paper front panel with restrained depth; bar-side dollar labels are aligned as one mini-column.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Evaluate whether the warmer raised panel feels premium and cohesive without making the mailer too dimensional.",
         "Compare against FINALISTS: 01 Corrected Editorial Rule and the other two box-treatment options.",
         "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk."
@@ -2113,10 +2202,11 @@
       "group": "FINALISTS",
       "variant": "01D Advisor Soft Panel",
       "name": "FINALISTS: 01D Advisor Soft Panel",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Soft Green Wash variant with a quiet rounded advisor panel emphasizing the Smarter Way Wealth/DVO message.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Soft Green Wash variant with a quiet rounded advisor panel emphasizing the Smarter Way Wealth/DVO message.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Evaluate whether the lower advisor panel highlights the fiduciary/DVO message while staying cohesive with the upper soft-green box.",
         "Compare against FINALISTS: 01B Soft Green Wash and the other two advisor-box mockups.",
         "Back side uses the 10% larger centered logo while preserving the photo/name/title positions."
@@ -2152,57 +2242,15 @@
       ]
     },
     {
-      "id": "eddm-finalists-01e-advisor-green-band",
-      "group": "FINALISTS",
-      "variant": "01E Advisor Green Band",
-      "name": "FINALISTS: 01E Advisor Green Band",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Soft Green Wash variant with a high-contrast dark green trust band emphasizing the Smarter Way Wealth/DVO message.",
-      "reviewFocus": [
-        "Evaluate whether the dark green band gives the advisor message enough authority without overpowering the chart and QR.",
-        "Compare against FINALISTS: 01B Soft Green Wash and the other two advisor-box mockups.",
-        "Back side uses the 10% larger centered logo while preserving the photo/name/title positions."
-      ],
-      "knownLimitations": [
-        "Advisor-box treatment is a visual proof option; confirm final print-ready PDF dimensions, bleed, and printer handling if selected."
-      ],
-      "assets": [
-        {
-          "label": "Front proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Front_Proof.png",
-          "role": "front"
-        },
-        {
-          "label": "Back proof",
-          "type": "image",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Back_Proof.png",
-          "role": "back"
-        },
-        {
-          "label": "HTML proof",
-          "type": "html",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Proof.html",
-          "role": "proof"
-        },
-        {
-          "label": "Rationale",
-          "type": "markdown",
-          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Rationale.md",
-          "role": "rationale"
-        }
-      ]
-    },
-    {
       "id": "eddm-finalists-01f-advisor-nameplate",
       "group": "FINALISTS",
       "variant": "01F Advisor Nameplate",
       "name": "FINALISTS: 01F Advisor Nameplate",
-      "status": "proof-only",
-      "suggestedDecision": "undecided",
-      "summary": "Soft Green Wash variant with a clean nameplate and green vertical accent emphasizing the Smarter Way Wealth/DVO message.",
+      "status": "legacy",
+      "suggestedDecision": "reject",
+      "summary": "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band. Soft Green Wash variant with a clean nameplate and green vertical accent emphasizing the Smarter Way Wealth/DVO message.",
       "reviewFocus": [
+        "Moved to legacy archive on 2026-05-31 after selecting WINNER Style A: Advisor Green Band.",
         "Evaluate whether the nameplate treatment feels polished, credible, and print-safe as a DVO/advisor signature block.",
         "Compare against FINALISTS: 01B Soft Green Wash and the other two advisor-box mockups.",
         "Back side uses the 10% larger centered logo while preserving the photo/name/title positions."

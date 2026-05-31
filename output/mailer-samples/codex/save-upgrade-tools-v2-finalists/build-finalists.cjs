@@ -306,6 +306,9 @@ const finalistCss = `
     .ed-front .finalist-chart-row .qr-block {
       transform: translateX(-5px);
     }
+    .ed-front .finalist-chart-row .qr-block .qr-cap {
+      transform: translateY(-4px);
+    }
     .ed-front .chart-meta {
       margin: 3px 0 0;
       width: 100%;
