@@ -189,12 +189,14 @@ function pollGraphic(compact = false) {
 function votePanel() {
   const options = ["Retire earlier", "A second home", "Keep investing", "Pay off mortgage", "Something else"];
   return `
-    <aside class="vote-panel">
-      <div class="vote-title">VOTE!</div>
-      <p>What would you do with that extra money?</p>
-      <div class="vote-options">
-        ${options.map((option) => `<span>${option}</span>`).join("")}
-      </div>
+    <aside class="vote-stack">
+      <section class="vote-panel">
+        <div class="vote-title">VOTE!</div>
+        <p>What would you do with that extra money?</p>
+        <div class="vote-options">
+          ${options.map((option) => `<span>${option}</span>`).join("")}
+        </div>
+      </section>
       ${qrBlock("vote-qr")}
     </aside>
   `;
@@ -342,16 +344,17 @@ function backFor(concept) {
       <div class="back style-b hero-gap-back trim" id="back">
         <span class="corner tl">BLEED</span><span class="corner tr">TRIM GUIDE</span>
         ${postalHeader()}
-        <div class="back-main two-column">
-          <div>
-            ${pollGraphic(true)}
-            ${explainerTiles(true)}
-            ${quoteBlock(true)}
-          </div>
-          <div>
+        <div class="back-main hero-gap-back-main">
+          <div class="hero-gap-back-top">
+            <div class="quote-seat">
+              ${quoteBlock(true)}
+            </div>
+            <div class="advisor-seat">
             <img class="sww-logo" src="brand-assets/logo-800.png" alt="Smarter Way Wealth logo">
             ${advisorBlock()}
+            </div>
           </div>
+          ${explainerTiles()}
         </div>
         ${footerDomain()}
       </div>
@@ -601,20 +604,26 @@ const CSS = `
     font-weight: 900;
     letter-spacing: 0.02em;
   }
+  .vote-stack {
+    display: grid;
+    gap: 0.12in;
+    align-content: start;
+    text-align: center;
+  }
   .vote-panel {
     border: 2px solid var(--green);
     border-radius: 14px;
     background: #ECFAF1;
-    padding: 11px 13px;
-    min-height: 2.50in;
+    padding: 9px 12px 11px;
+    min-height: 1.55in;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     text-align: center;
   }
   .vote-title {
     color: var(--green);
-    font-size: 37px;
+    font-size: 30px;
     line-height: 0.86;
     font-weight: 900;
     letter-spacing: -0.03em;
@@ -622,42 +631,40 @@ const CSS = `
   .vote-panel p {
     color: #0F172A;
     margin-top: 5px;
-    font-size: 12px;
+    font-size: 10px;
     line-height: 1.05;
     font-weight: 900;
     letter-spacing: -0.02em;
   }
   .vote-options {
     display: grid;
-    gap: 5px;
-    margin-top: 8px;
+    gap: 4px;
+    margin-top: 7px;
   }
   .vote-options span {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 0.21in;
+    min-height: 0.19in;
     border: 2px solid #0F172A;
     border-radius: 5px;
     background: #fff;
     color: #0F172A;
-    font-size: 7.5px;
+    font-size: 6.8px;
     line-height: 1.05;
     font-weight: 900;
   }
   .vote-qr {
-    border-top: 1px solid rgba(7,20,13,0.14);
-    padding-top: 7px;
-    margin-top: 7px;
+    padding-top: 0;
   }
   .vote-qr img {
-    width: 0.70in;
-    height: 0.70in;
+    width: 1.12in;
+    height: 1.12in;
   }
   .vote-qr .qr-cap {
-    font-size: 8px;
+    font-size: 9.5px;
     line-height: 1.1;
-    margin-top: 6px;
+    margin-top: 7px;
   }
   .disclosure {
     margin: 12px auto 0;
@@ -953,20 +960,30 @@ const CSS = `
   .hero-gap-front .chart-key { font-size: 8px; }
   .hero-gap-front .front-qr img { width: 1.05in; height: 1.05in; }
   .hero-gap-front .qr-cap { font-size: 10px; }
-  .hero-gap-back .two-column { grid-template-columns: 3.65in 1fr; gap: 0.20in; }
+  .hero-gap-back-main { min-height: 4.10in; }
+  .hero-gap-back-top {
+    display: grid;
+    grid-template-columns: 3.70in 1fr;
+    gap: 0.22in;
+    align-items: start;
+  }
+  .hero-gap-back .advisor-seat .sww-logo { display: block; width: 2.15in; margin: 0 auto 0.12in; }
+  .hero-gap-back .advisor-seat .advisor-block { grid-template-columns: 1.10in 1fr; padding: 0.11in; }
+  .hero-gap-back .advisor-seat .portrait { width: 1.10in; }
   .hero-gap-back .postal { padding-bottom: 0.08in; margin-bottom: 0.10in; }
-  .hero-gap-back .poll-card.compact { padding: 11px 12px; }
-  .hero-gap-back .poll-card h3 { font-size: 18px; }
-  .hero-gap-back .poll-options { gap: 5px; margin-top: 9px; }
-  .hero-gap-back .poll-options span { min-height: 0.22in; padding: 0 7px; font-size: 6.8px; }
-  .hero-gap-back .tiles.compact { gap: 5px; margin-top: 0.08in; }
-  .hero-gap-back .tiles.compact article { padding: 6px 9px; }
-  .hero-gap-back .tiles.compact b { font-size: 22px; }
-  .hero-gap-back .tiles.compact strong { font-size: 8.5px; }
-  .hero-gap-back .tiles.compact p { font-size: 6.8px; line-height: 1.18; margin-top: 3px; }
-  .hero-gap-back .quote-block.large { margin-top: 0.08in; }
-  .hero-gap-back .quote-block.large blockquote { font-size: 24px; }
-  .hero-gap-back .quote-block.large cite { font-size: 8px; margin-top: 8px; }
+  .hero-gap-back .quote-block.large { margin-top: 0.02in; min-height: 1.34in; padding: 0.08in 0.12in 0; text-align: left; }
+  .hero-gap-back .quote-block.large blockquote { font-size: 28px; line-height: 1.08; }
+  .hero-gap-back .quote-block.large cite { font-size: 8px; margin-top: 10px; text-align: center; }
+  .hero-gap-back .quote-block.large .quote-mark { left: -0.05in; top: -0.18in; font-size: 130px; }
+  .hero-gap-back .tiles {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 0.14in;
+  }
+  .hero-gap-back .tiles article { min-height: 0.82in; padding: 9px 12px; }
+  .hero-gap-back .tiles b { font-size: 30px; }
+  .hero-gap-back .tiles strong { font-size: 9px; margin-top: 3px; }
+  .hero-gap-back .tiles p { font-size: 7.4px; line-height: 1.20; margin-top: 4px; }
   .hero-gap-back .footer-domain { margin-top: 0.06in; padding-top: 0.07in; }
   .hero-gap-back .domain.footer { font-size: 33px; }
   .hero-gap-back .advisor-copy h2 { font-size: 22px; }
