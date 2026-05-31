@@ -35,7 +35,7 @@ export const faqItems: FaqItem[] = [
     id: "is-there-a-contract",
     question: "Is there a contract?",
     answer:
-      "Yes — a standard investment-advisory agreement, which is required by the SEC and state regulators for any registered investment advisor. The agreement is month-to-month with no asset-based lock-in, no exit fees, and no surrender charges. You can terminate the relationship at any time. [REVIEW: confirm exact agreement terms before publishing.]",
+      "No lock-in. Period. No minimum term, no exit fees, no surrender charges. (Like every registered advisor, we sign a short advisory agreement so the SEC paperwork is clean — you can end it any time.)\n\nI am confident you will find the advice and relationship of great value, and we will build a long-term relationship. That is the Goal.",
   },
   {
     id: "do-i-have-to-move-my-assets",
@@ -65,7 +65,7 @@ export const faqItems: FaqItem[] = [
     id: "who-manages-the-money",
     question: "Who manages the money?",
     answer:
-      "David Van Osdol, CFA, CFP, directly and personally. Smarter Way Wealth is a solo fiduciary practice — there is no team of junior associates handling your account, and no hand-off chain. The credentialed advisor you speak with on the first call is the same credentialed advisor managing your portfolio. [REVIEW: confirm structure remains solo as the firm grows.]",
+      "David Van Osdol, CFA, CFP®, directly and personally. Smarter Way Wealth is a solo fiduciary practice — there is no team of junior associates handling your account, and no hand-off chain. The credentialed advisor you speak with on the first call is the same credentialed advisor managing your portfolio. [REVIEW: confirm structure remains solo as the firm grows.]",
   },
   {
     id: "who-makes-trades",
@@ -77,7 +77,7 @@ export const faqItems: FaqItem[] = [
     id: "are-you-qualified",
     question: "Are you qualified?",
     answer:
-      "Yes. David Van Osdol holds the Chartered Financial Analyst (CFA) charter and is a Certified Financial Planner (CFP) Practitioner, with 20+ years of experience in financial markets and advisory.\n\nSee \"What are your credentials?\" for what each designation requires.",
+      "Yes. David Van Osdol holds the Chartered Financial Analyst (CFA) charter and is a Certified Financial Planner (CFP®) Practitioner, with 20+ years of experience in financial markets and advisory.\n\nSee \"What are your credentials?\" for what each designation requires.",
   },
   {
     id: "credentials",
@@ -101,6 +101,6 @@ export const faqItems: FaqItem[] = [
     id: "are-you-a-roboadvisor",
     question: "Are you a roboadvisor?",
     answer:
-      "No. A roboadvisor is a fully automated asset allocator with minimal or no human contact — you fill out a questionnaire, the algorithm assigns a model portfolio, and you rarely if ever speak with a credentialed advisor.\n\nSmarter Way Wealth is the opposite: a credentialed human fiduciary (CFA, CFP) using modern technology — including AI — to operate efficiently enough to charge a flat $100/month. You get a human advisor; the technology just makes that human a lot more leveraged.",
+      "No. A roboadvisor is a fully automated asset allocator with minimal or no human contact — you fill out a questionnaire, the algorithm assigns a model portfolio, and you rarely if ever speak with a credentialed advisor.\n\nSmarter Way Wealth is the opposite: a credentialed human fiduciary (CFA, CFP®) using modern technology — including AI — to operate efficiently enough to charge a flat $100/month. You get a human advisor; the technology just makes that human a lot more leveraged.",
   },
 ];

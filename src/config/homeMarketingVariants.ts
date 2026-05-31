@@ -225,11 +225,11 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
     headline: "Upgrade the advice,",
     highlight: "not the fee.",
     body:
-      "David J. Van Osdol, CFA, CFP built Smarter Way Wealth for investors who want serious planning, better tools, and a flat monthly fee.",
+      "David J. Van Osdol, CFA, CFP® built Smarter Way Wealth for investors who want serious planning, better tools, and a flat monthly fee.",
     primaryCta: "Compare my fee",
     secondaryCta: "Share this projection",
     resultLabel: "Estimated wealth kept with the flat-fee model",
-    proofPoints: ["20+ years experience", "CFA Charterholder", "CFP Practitioner"],
+    proofPoints: ["20+ years experience", "CFA Charterholder", "CFP® Practitioner"],
     image: {
       src: "/DVO Head Shot picture.jpg",
       alt: "David J. Van Osdol",
@@ -296,11 +296,11 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
     headline: "Upgrade the advice,",
     highlight: "not the fee.",
     body:
-      "David J. Van Osdol, CFA, CFP built Smarter Way Wealth for investors who want serious planning, better tools, and a flat monthly fee.",
+      "David J. Van Osdol, CFA, CFP® built Smarter Way Wealth for investors who want serious planning, better tools, and a flat monthly fee.",
     primaryCta: "Compare my fee",
     secondaryCta: "Share this projection",
     resultLabel: "Estimated wealth kept with the flat-fee model",
-    proofPoints: ["20+ years experience", "CFA Charterholder", "CFP Practitioner"],
+    proofPoints: ["20+ years experience", "CFA Charterholder", "CFP® Practitioner"],
     image: {
       src: "/DVO Head Shot picture.jpg",
       alt: "David J. Van Osdol",

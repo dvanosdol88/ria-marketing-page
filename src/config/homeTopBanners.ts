@@ -30,13 +30,13 @@ export const homeTopBanners: Record<HomeTopBannerId, HomeTopBanner> = {
     eyebrow: "Smarter Way Wealth",
     headline: "A fee-drag check, built by a fiduciary.",
     body:
-      "David J. Van Osdol, CFA, CFP built Smarter Way Wealth for investors who want serious planning, better tools, and a flat monthly fee.",
+      "David J. Van Osdol, CFA, CFP® built Smarter Way Wealth for investors who want serious planning, better tools, and a flat monthly fee.",
     ctaLabel: "Visit Smarter Way Wealth",
     mobileCtaLabel: "Visit firm",
     ctaHref: "https://smarterwaywealth.com/",
     statLabel: "Flat monthly fee",
     statValue: "$100/mo",
-    proofPoints: ["CFA Charterholder", "CFP Practitioner", "20+ years experience"],
+    proofPoints: ["CFA Charterholder", "CFP® Practitioner", "20+ years experience"],
     tone: "founder",
   },
   "qr-bridge": {
@@ -58,7 +58,7 @@ export const homeTopBanners: Record<HomeTopBannerId, HomeTopBanner> = {
     id: "advisor-standard",
     label: "Advisor standard",
     eyebrow: "The advisor standard matters",
-    headline: "Built by a CFA/CFP fiduciary, not an asset-based fee model.",
+    headline: "Built by a CFA/CFP® fiduciary, not an asset-based fee model.",
     body:
       "The calculator gives you the math first. Smarter Way Wealth gives you the firm standard behind the math: serious planning, clear tradeoffs, and a flat monthly fee.",
     ctaLabel: "Continue to Smarter Way Wealth",

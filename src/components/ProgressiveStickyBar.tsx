@@ -3,9 +3,16 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
+import { LayoutGroup, motion } from "framer-motion";
 import { formatCompactCurrency, formatCurrencyFloored } from "@/lib/format";
 import { useSavingsBar, type SavingsBarData } from "@/components/SavingsBarContext";
+import {
+  getStickyScrollTriggerY,
+  getStickyStackHeight,
+  resolveActiveSection,
+  STICKY_BAR_OPACITY_MS,
+  STICKY_SECTION_SPRING,
+} from "@/config/stickyNavConfig";
 
 const COLLAPSE_SCROLL_Y = 132;
 const EXPAND_SCROLL_Y = 82;
@@ -83,22 +90,15 @@ export function ProgressiveStickyBar() {
       /* "Engaged" = the savings-section top has scrolled up past the nav/bar area
          AND its bottom is still meaningfully below it. Mirrors the old bar's
          logic so behavior is consistent with what shipped before. */
-      const navOffset = 92; // collapsed SiteNav (52) + progressive bar height (40)
-      const isEngaged = rect.top <= navOffset && rect.bottom > navOffset + 80;
+      const stackHeight = getStickyStackHeight();
+      const triggerY = getStickyScrollTriggerY();
+      const isEngaged = rect.top <= stackHeight && rect.bottom > stackHeight + 80;
       setInSavingsSection(isEngaged);
 
-      /* Track which pillar section is currently under the nav so the mobile
-         section indicator can highlight it. Defaults to "Save" (calculator). */
-      let current = "calculator";
-      STICKY_SECTIONS.forEach(({ id }) => {
-        const element = document.getElementById(id);
-        if (!element) return;
-        const sectionRect = element.getBoundingClientRect();
-        if (sectionRect.top <= navOffset + 18 && sectionRect.bottom > navOffset + 18) {
-          current = id;
-        }
-      });
-      setActiveSection(current);
+      /* Last section whose top crossed the trigger — stays on Upgrade through
+         #advisor-proof until Improve enters view. */
+      const sectionIds = STICKY_SECTIONS.map(({ id }) => id);
+      setActiveSection(resolveActiveSection(sectionIds, triggerY, "calculator"));
     };
 
     const onScroll = () => {
@@ -141,18 +141,20 @@ export function ProgressiveStickyBar() {
     <>
       {/* Desktop: tucks under collapsed SiteNav (52px). */}
       <div
-        className={`pointer-events-none fixed inset-x-0 top-[52px] z-40 hidden h-10 transition-opacity duration-300 ease-out md:block ${
+        className={`pointer-events-none fixed inset-x-0 top-[52px] z-40 hidden h-10 transition-opacity ease-out md:block ${
           desktopVisible ? "opacity-100" : "opacity-0"
         }`}
+        style={{ transitionDuration: `${STICKY_BAR_OPACITY_MS}ms` }}
         aria-hidden={!desktopVisible}
       >
         <BarInner label={label} />
       </div>
       {/* Mobile: tucks under collapsed SiteNav (58px). Savings + section nav. */}
       <div
-        className={`fixed inset-x-0 top-[58px] z-40 h-10 transition-opacity duration-300 ease-out md:hidden ${
+        className={`fixed inset-x-0 top-[58px] z-40 h-10 transition-opacity ease-out md:hidden ${
           mobileVisible ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
+        style={{ transitionDuration: `${STICKY_BAR_OPACITY_MS}ms` }}
         aria-hidden={!mobileVisible}
       >
         {savingsData ? (
@@ -178,9 +180,10 @@ function BarInner({ label }: { label: LabelState }) {
 function LabelBrand({ active, text }: { active: boolean; text: string }) {
   return (
     <span
-      className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-out ${
+      className={`absolute inset-0 flex items-center justify-center transition-opacity ease-out ${
         active ? "opacity-100" : "opacity-0"
       }`}
+      style={{ transitionDuration: `${STICKY_BAR_OPACITY_MS}ms` }}
     >
       <span className="text-sm font-semibold tracking-[0.04em] text-[#062B43] sm:text-base">{text}</span>
     </span>
@@ -190,9 +193,10 @@ function LabelBrand({ active, text }: { active: boolean; text: string }) {
 function LabelRoute({ active, text }: { active: boolean; text?: string }) {
   return (
     <span
-      className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-out ${
+      className={`absolute inset-0 flex items-center justify-center transition-opacity ease-out ${
         active ? "opacity-100" : "opacity-0"
       }`}
+      style={{ transitionDuration: `${STICKY_BAR_OPACITY_MS}ms` }}
     >
       <span className="text-sm font-semibold tracking-[0.04em] text-[#062B43] sm:text-base">{text ?? ""}</span>
     </span>
@@ -203,15 +207,17 @@ function LabelSavings({ active, data }: { active: boolean; data: SavingsBarData 
   if (!data) {
     return (
       <span
-        className={`absolute inset-0 transition-opacity duration-300 ease-out ${active ? "opacity-100" : "opacity-0"}`}
+        className={`absolute inset-0 transition-opacity ease-out ${active ? "opacity-100" : "opacity-0"}`}
+        style={{ transitionDuration: `${STICKY_BAR_OPACITY_MS}ms` }}
       />
     );
   }
   return (
     <span
-      className={`absolute inset-0 flex items-center justify-between gap-3 px-4 transition-opacity duration-300 ease-out sm:px-6 ${
+      className={`absolute inset-0 flex items-center justify-between gap-3 px-4 transition-opacity ease-out sm:px-6 ${
         active ? "opacity-100" : "opacity-0"
       }`}
+      style={{ transitionDuration: `${STICKY_BAR_OPACITY_MS}ms` }}
     >
       <span className="inline-flex shrink-0 items-baseline gap-2 text-sm font-bold text-[#062B43]">
         <span className="text-[11px] uppercase tracking-[0.14em] text-[#52657A] sm:text-xs">Savings</span>
@@ -267,32 +273,35 @@ function SectionSegments({ activeSection }: { activeSection: string }) {
     : "calculator";
 
   return (
-    <nav
-      aria-label="Jump to homepage section"
-      className="grid h-full shrink-0 grid-cols-3"
-    >
-      {STICKY_SECTIONS.map((section) => {
-        const active = knownActive === section.id;
-        return (
-          <Link
-            key={section.id}
-            href={section.href as never}
-            aria-current={active ? "page" : undefined}
-            className={`relative flex h-full items-center justify-center px-2.5 text-base font-bold leading-none transition-colors duration-300 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#108843] ${
-              active ? "text-white" : "text-[#108843]"
-            }`}
-          >
-            {active ? (
-              <motion.span
-                layoutId="sticky-section-active"
-                className="absolute inset-0 bg-[#108843]"
-                transition={{ type: "spring", stiffness: 360, damping: 30 }}
-              />
-            ) : null}
-            <span className="relative z-10">{section.label}</span>
-          </Link>
-        );
-      })}
-    </nav>
+    <LayoutGroup id="sticky-section-segments">
+      <nav
+        aria-label="Jump to homepage section"
+        className="grid h-full shrink-0 grid-cols-3"
+      >
+        {STICKY_SECTIONS.map((section) => {
+          const active = knownActive === section.id;
+          return (
+            <Link
+              key={section.id}
+              href={section.href as never}
+              aria-current={active ? "page" : undefined}
+              className={`relative flex h-full items-center justify-center px-2.5 text-base font-bold leading-none !no-underline transition-colors ease-out focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#108843] ${
+                active ? "!text-white" : "!text-[#108843]"
+              }`}
+              style={{ transitionDuration: `${STICKY_BAR_OPACITY_MS}ms` }}
+            >
+              {active ? (
+                <motion.span
+                  layoutId="sticky-section-active"
+                  className="absolute inset-0 bg-[#108843]"
+                  transition={STICKY_SECTION_SPRING}
+                />
+              ) : null}
+              <span className="relative z-10">{section.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
+    </LayoutGroup>
   );
 }

@@ -3,10 +3,17 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowUpRight, CalendarDays, MapPin, Maximize2, X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { fitCta } from "@/config/fitCtaConfig";
+import {
+  getStickyScrollTriggerY,
+  resolveActiveSection,
+  STICKY_BAR_OPACITY_MS,
+  STICKY_SECTION_SPRING,
+} from "@/config/stickyNavConfig";
 
 type ProofCard = {
   title: string;
@@ -30,7 +37,7 @@ const adviceCards: ProofCard[] = [
     eyebrow: "Credentials",
     title: "Highly Credentialed, Highly Experienced",
     summary:
-      "The rigor of a CFA Charterholder. The process of a CFP professional. 20+ years of real advisory experience.",
+      "The rigor of a CFA Charterholder. The process of a CFP® professional. 20+ years of real advisory experience.",
     stat: "20+",
     statLabel: "years experience",
     logos: [
@@ -45,19 +52,19 @@ const adviceCards: ProofCard[] = [
     ],
     details: [
       "The rigor of a CFA Charterholder: investment analysis, portfolio construction, risk, ethics, and disciplined decision-making under uncertainty.",
-      "The process of a CFP professional: connecting investments to real-life planning, including retirement, taxes, estate, insurance, cash flow, and family tradeoffs.",
+      "The process of a CFP® professional: connecting investments to real-life planning, including retirement, taxes, estate, insurance, cash flow, and family tradeoffs.",
       "David's experience includes Morgan Stanley Smith Barney and Fidelity, plus the perspective that comes from seeing what large-firm advice can and cannot deliver.",
     ],
     detailLink: {
       href: "https://smarterwaywealth.com/",
-      label: "Learn more about CFA and CFP at smarterwaywealth.com",
+      label: "Learn more about CFA and CFP® at smarterwaywealth.com",
     },
   },
   {
     eyebrow: "Standard",
     title: "100% Fiduciary",
     summary:
-      "Advice should be built around your interests, not a product shelf, sales quota, or asset-gathering incentive.",
+      "Advice should be built around your unique situation and goals, not a product shelf, sales quota, or asset-gathering incentive.",
     stat: "1",
     statLabel: "person we answer to: you",
     details: [
@@ -204,6 +211,7 @@ export function FitCtaDivider({
 }
 
 function ProofSectionProgressCue() {
+  const pathname = usePathname();
   const [activeSection, setActiveSection] = useState<string>("");
 
   useEffect(() => {
@@ -212,16 +220,9 @@ function ProofSectionProgressCue() {
     const update = () => {
       ticking = false;
 
-      const triggerY = 116;
-      const nextActive =
-        proofSectionProgressItems.find(({ id }) => {
-          const element = document.getElementById(id);
-          if (!element) return false;
-          const rect = element.getBoundingClientRect();
-          return rect.top <= triggerY && rect.bottom > triggerY;
-        })?.id ?? "";
-
-      setActiveSection(nextActive);
+      const triggerY = getStickyScrollTriggerY();
+      const sectionIds = proofSectionProgressItems.map(({ id }) => id);
+      setActiveSection(resolveActiveSection(sectionIds, triggerY, ""));
     };
 
     const onScroll = () => {
@@ -241,52 +242,57 @@ function ProofSectionProgressCue() {
     };
   }, []);
 
-  const activeIndex = proofSectionProgressItems.findIndex((item) => item.id === activeSection);
-  const progressWidth =
-    activeIndex >= 0 ? `${((activeIndex + 1) / proofSectionProgressItems.length) * 100}%` : "0%";
+  // On the home page the global SectionSegments bar is the sole mobile section
+  // nav; suppress this cue there to avoid a colliding/redundant sticky header.
+  if (pathname === "/") return null;
 
   return (
     <div
-      className={`fixed inset-x-0 top-[58px] z-40 border-y border-[#D5E0EA] bg-white/95 px-3 py-2 shadow-[0_10px_28px_rgba(17,33,52,0.10)] backdrop-blur transition-all duration-300 ease-out md:hidden ${
-        activeSection ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0"
+      className={`fixed inset-x-0 top-[58px] z-40 h-10 transition-opacity ease-out md:hidden ${
+        activeSection ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
+      style={{ transitionDuration: `${STICKY_BAR_OPACITY_MS}ms` }}
       aria-hidden={!activeSection}
     >
-      <div className="mx-auto max-w-md">
-        <div className="flex items-center gap-2">
-          {proofSectionProgressItems.map((item, index) => {
-            const isActive = item.id === activeSection;
-            return (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                className={`flex min-h-8 flex-1 items-center justify-center rounded-full px-3 text-xs font-extrabold no-underline transition-[background-color,color,font-weight] duration-300 ${
-                  isActive
-                    ? "bg-[#108843] !text-white"
-                    : "bg-[#EEF3F7] !text-[#41556C] hover:bg-[#E1EAF1] hover:!text-[#213B56]"
-                }`}
-                aria-current={isActive ? "location" : undefined}
-              >
-                <span className="mr-1.5 text-[10px] opacity-70">{index + 1}</span>
-                {item.label}
-              </a>
-            );
-          })}
-        </div>
-        <div className="mt-2 h-1 overflow-hidden rounded-full bg-[#E1EAF1]">
-          <div
-            className="h-full rounded-full bg-[#108843] transition-[width] duration-500 ease-out"
-            style={{ width: progressWidth }}
-          />
-        </div>
+      <div className="relative h-full w-full border-y border-[#D5E0EA] bg-white/95 shadow-[0_10px_28px_rgba(17,33,52,0.10)] backdrop-blur">
+        <LayoutGroup id="proof-section-cue">
+          <nav
+            aria-label="Jump to advisor proof section"
+            className="grid h-full shrink-0 grid-cols-2"
+          >
+            {proofSectionProgressItems.map((item) => {
+              const isActive = item.id === activeSection;
+              return (
+                <a
+                  key={item.id}
+                  href={`#${item.id}`}
+                  aria-current={isActive ? "location" : undefined}
+                  className={`relative flex h-full items-center justify-center px-2.5 text-base font-bold leading-none !no-underline transition-colors ease-out focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#108843] ${
+                    isActive ? "!text-white" : "!text-[#108843]"
+                  }`}
+                  style={{ transitionDuration: `${STICKY_BAR_OPACITY_MS}ms` }}
+                >
+                  {isActive ? (
+                    <motion.span
+                      layoutId="proof-section-cue-active"
+                      className="absolute inset-0 bg-[#108843]"
+                      transition={STICKY_SECTION_SPRING}
+                    />
+                  ) : null}
+                  <span className="relative z-10">{item.label}</span>
+                </a>
+              );
+            })}
+          </nav>
+        </LayoutGroup>
       </div>
     </div>
   );
 }
 
-function SectionRail({ words }: { words: string[] }) {
+function SectionRail({ words, sticky = true }: { words: string[]; sticky?: boolean }) {
   return (
-    <div className="lg:sticky lg:top-36">
+    <div className={sticky ? "lg:sticky lg:top-36" : undefined}>
       <p className="text-[3.25rem] font-extrabold leading-[0.9] tracking-tight text-[#062417] sm:text-[4.5rem] lg:text-[4.75rem] xl:text-[5rem]">
         {words.map((word) => (
           <span key={word} className="block">
@@ -320,10 +326,10 @@ function AdvisorCard() {
             David J. Van Osdol
           </h2>
           <p className="mt-2 text-base font-semibold text-[#213B56]">
-            CFA Charterholder, CFP Practitioner
+            CFA Charterholder, CFP® Practitioner
           </p>
           <p className="mt-4 max-w-xl text-sm leading-6 text-slate-600">
-            Built for investors who want serious planning, better tools, and a flat monthly fee instead of asset-based fee drag.
+            Built for investors who want serious planning, better tools, and a flat monthly fee instead of asset-based fee drag. We make it easy!
           </p>
           <div className="mt-5 flex flex-wrap gap-2">
             <span className="rounded-full border border-[#CBD8E4] bg-[#F6FAFC] px-3 py-1 text-xs font-bold text-[#213B56]">
@@ -428,7 +434,7 @@ function ProofDetailDialog({
               </div>
             ) : null}
             {card.logos ? (
-              <div className="mt-8 flex items-center gap-7" aria-label="Credential marks">
+              <div className="mt-8 flex items-center justify-center gap-7" aria-label="Credential marks">
                 {card.logos.map((logo) => (
                   <div key={logo.src} className="relative h-24 w-24 sm:h-28 sm:w-28">
                     <Image
@@ -541,17 +547,27 @@ function ProofBento({ cards }: { cards: ProofCard[] }) {
                 ) : null}
                 {card.logos ? (
                   <div className="ml-auto flex shrink-0 items-center gap-5 sm:gap-6" aria-hidden="true">
-                    {card.logos.map((logo) => (
-                      <span key={logo.src} className="relative block h-[72px] w-[72px] sm:h-20 sm:w-20">
-                        <Image
-                          src={logo.src}
-                          alt=""
-                          fill
-                          className="object-contain drop-shadow-[0_8px_16px_rgba(17,33,52,0.12)]"
-                          sizes="80px"
-                        />
-                      </span>
-                    ))}
+                    {card.logos.map((logo) => {
+                      const isCfp = logo.src === "/CFP_Logomark_Primary.png";
+                      return (
+                        <span
+                          key={logo.src}
+                          className={
+                            isCfp
+                              ? "relative block h-[90px] w-[90px] sm:h-[100px] sm:w-[100px]"
+                              : "relative block h-[72px] w-[72px] sm:h-20 sm:w-20"
+                          }
+                        >
+                          <Image
+                            src={logo.src}
+                            alt=""
+                            fill
+                            className="object-contain drop-shadow-[0_8px_16px_rgba(17,33,52,0.12)]"
+                            sizes={isCfp ? "100px" : "80px"}
+                          />
+                        </span>
+                      );
+                    })}
                   </div>
                 ) : null}
               </div>
@@ -579,13 +595,17 @@ function StorySection({
   children,
 }: {
   id: string;
-  rail: string[];
+  rail?: string[];
   children: React.ReactNode;
 }) {
   return (
     <section id={id} className="scroll-mt-40 border-t border-[#DDE5EC] px-4 py-16 sm:px-6 sm:py-20 lg:scroll-mt-36 lg:py-24">
-      <ScrollReveal className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[340px_1fr] lg:gap-14">
-        <SectionRail words={rail} />
+      <ScrollReveal
+        className={`mx-auto max-w-6xl gap-8 ${
+          rail ? "grid lg:grid-cols-[340px_1fr] lg:gap-14" : ""
+        }`}
+      >
+        {rail ? <SectionRail words={rail} /> : null}
         <div>{children}</div>
       </ScrollReveal>
     </section>
@@ -599,7 +619,7 @@ function LowFrictionUpgradeSection() {
       leadRest: "you are",
       title: "Keep your accounts where they are.",
       summary:
-        "Schwab, Fidelity, Morgan Stanley, several custodians - advice can start before a transfer project.",
+        "Schwab, Fidelity, Morgan Stanley, or multiple custodians - no need to transfer assets to another firm. We can advise you no matter where your assets are.",
       icon: MapPin,
     },
     {
@@ -618,10 +638,12 @@ function LowFrictionUpgradeSection() {
       aria-labelledby="low-friction-upgrade-title"
       className="scroll-mt-40 border-t border-[#DDE5EC] px-4 py-12 sm:px-6 sm:py-16 lg:scroll-mt-36 lg:py-20"
     >
-      <ScrollReveal className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(248px,320px)] lg:items-stretch lg:gap-6">
+      <ScrollReveal className="mx-auto flex max-w-6xl flex-col gap-8 lg:gap-10">
+        <SectionRail words={["Upgrade", "Your", "Advice"]} sticky={false} />
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(248px,320px)] lg:items-stretch lg:gap-6">
         <div className="border border-[#CBD8E4] bg-white p-5 shadow-[0_18px_44px_rgba(17,33,52,0.08)] sm:p-7 lg:p-8">
           <p className="text-sm font-extrabold uppercase tracking-[0.22em] text-[#108843]">
-            Low-friction upgrade
+            Simplicity
           </p>
           <h2
             id="low-friction-upgrade-title"
@@ -631,7 +653,7 @@ function LowFrictionUpgradeSection() {
             <span className="block">should be easy.</span>
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">
-            Everywhere we can, we want to ADD VALUE. Convenience is just one of those ways.
+            &ldquo;Always Add Value&rdquo; is our mantra. Convenience is just one of those ways.
           </p>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -677,13 +699,16 @@ function LowFrictionUpgradeSection() {
           </span>
           <span>
             <span className="block text-3xl font-black leading-none tracking-normal sm:text-4xl">
-              See if this fits
+              See if{" "}
+              <span className="whitespace-nowrap">Smarter Way Wealth</span> is a
+              good fit for you.
             </span>
             <span className="mt-4 block text-sm font-bold leading-6 text-white/82">
               Talk to David at Smarter Way Wealth.
             </span>
           </span>
         </a>
+        </div>
       </ScrollReveal>
     </section>
   );
@@ -694,7 +719,7 @@ export function AdvisorProofSections() {
     <div className="bg-[#EEF0F5] text-slate-900">
       <ProofSectionProgressCue />
       <LowFrictionUpgradeSection />
-      <StorySection id="advisor-proof" rail={["Upgrade", "Your", "Advice"]}>
+      <StorySection id="advisor-proof">
         <div className="space-y-5">
           <AdvisorCard />
           <ProofBento cards={adviceCards} />
@@ -707,7 +732,7 @@ export function AdvisorProofSections() {
 
       <FitCtaDivider
         eyebrow="Planning fit"
-        lead="Ready to turn the fee result into a real planning conversation?"
+        lead="Ready to Learn More?"
         support="Smarter Way Wealth is built for households that want credentialed planning, better tools, and a fee model that does not grow just because the portfolio grows."
         secondary={
           <>

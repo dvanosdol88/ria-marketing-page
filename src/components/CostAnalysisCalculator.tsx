@@ -379,7 +379,7 @@ function SavingsLeadHero({
         </p>
         <p className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.35rem,3.15vw,2rem)] font-medium leading-[1.14] tracking-normal text-[#10233A] sm:mt-7">
           <span className="whitespace-nowrap">David Van Osdol,</span>{" "}
-          <span className="whitespace-nowrap">CFA, CFP</span>
+          <span className="whitespace-nowrap">CFA, CFP®</span>
         </p>
         <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
       </div>
