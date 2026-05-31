@@ -4,6 +4,8 @@
  */
 export const DESKTOP_COLLAPSED_SITE_NAV_HEIGHT = 52;
 export const MOBILE_COLLAPSED_SITE_NAV_HEIGHT = 58;
+export const DESKTOP_EXPANDED_SITE_NAV_HEIGHT = 84;
+export const MOBILE_EXPANDED_SITE_NAV_HEIGHT = 77;
 export const STICKY_BAR_HEIGHT = 40;
 export const SCROLL_SPY_BUFFER = 18;
 
@@ -23,6 +25,24 @@ export function isMobileViewport(): boolean {
 
 export function getCollapsedSiteNavHeight(isMobile = isMobileViewport()): number {
   return isMobile ? MOBILE_COLLAPSED_SITE_NAV_HEIGHT : DESKTOP_COLLAPSED_SITE_NAV_HEIGHT;
+}
+
+export function getExpandedSiteNavHeight(isMobile = isMobileViewport()): number {
+  return isMobile ? MOBILE_EXPANDED_SITE_NAV_HEIGHT : DESKTOP_EXPANDED_SITE_NAV_HEIGHT;
+}
+
+/** Viewport Y for SiteNav scroll-spy (desktop: nav only; mobile: nav + sticky bar). */
+export function getSiteNavScrollTriggerY(
+  collapsed: boolean,
+  isMobile = isMobileViewport()
+): number {
+  const navHeight = collapsed
+    ? getCollapsedSiteNavHeight(isMobile)
+    : getExpandedSiteNavHeight(isMobile);
+  if (isMobile) {
+    return navHeight + STICKY_BAR_HEIGHT + SCROLL_SPY_BUFFER;
+  }
+  return navHeight + SCROLL_SPY_BUFFER;
 }
 
 /** Top edge of the sticky stack (SiteNav + section bar). */

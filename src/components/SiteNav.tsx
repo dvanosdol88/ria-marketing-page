@@ -6,6 +6,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { siteNavLinks } from "@/config/siteNavConfig";
+import {
+  getSiteNavScrollTriggerY,
+  isMobileViewport,
+  resolveActiveSection,
+} from "@/config/stickyNavConfig";
 
 const COLLAPSE_SCROLL_Y = 158;
 const EXPAND_SCROLL_Y = 104;
@@ -27,6 +32,11 @@ const EXPAND_SCROLL_Y = 104;
  */
 export function SiteNav() {
   const pathname = usePathname();
+  const hiddenForInternalTool =
+    pathname.startsWith("/evals") ||
+    pathname.startsWith("/calculator-evals") ||
+    pathname.startsWith("/url-evals") ||
+    pathname.startsWith("/gallery");
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("calculator");
@@ -109,20 +119,8 @@ export function SiteNav() {
     const updateActiveSection = () => {
       ticking = false;
 
-      const navOffset = collapsed ? 140 : 170;
-      let current = "calculator";
-
-      sectionIds.forEach((sectionId) => {
-        const element = document.getElementById(sectionId);
-        if (!element) return;
-
-        const rect = element.getBoundingClientRect();
-        if (rect.top <= navOffset && rect.bottom > navOffset) {
-          current = sectionId;
-        }
-      });
-
-      setActiveSection(current);
+      const triggerY = getSiteNavScrollTriggerY(collapsed, isMobileViewport());
+      setActiveSection(resolveActiveSection(sectionIds, triggerY, "calculator"));
     };
 
     const onScroll = () => {
@@ -160,6 +158,8 @@ export function SiteNav() {
     [activeSection, pathname]
   );
 
+  if (hiddenForInternalTool) return null;
+
   /* ── Tiered Logo Component ── */
   const Logo = ({ 
     heightClass,
@@ -194,10 +194,8 @@ export function SiteNav() {
     <>
       {/* ── Sticky Header Bar ── */}
       <header
-        className={`sticky top-0 z-50 transition-all duration-500 ease-out transform-gpu will-change-[height,background-color,backdrop-filter,box-shadow] ${
-          collapsed
-            ? "bg-white/90 backdrop-blur-md shadow-sm supports-[backdrop-filter]:bg-white/85"
-            : "bg-white"
+        className={`sticky top-0 z-50 bg-white transition-[height,box-shadow] duration-500 ease-out transform-gpu will-change-[height,box-shadow] ${
+          collapsed ? "shadow-sm" : ""
         }`}
       >
         {/* Reset link styles for nav */}

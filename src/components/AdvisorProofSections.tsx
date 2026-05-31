@@ -325,7 +325,7 @@ function AdvisorCard() {
           <h2 className="mt-3 text-2xl font-black tracking-tight text-[#062417] sm:text-3xl">
             David J. Van Osdol, CFA, CFP®
           </h2>
-          <p className="mt-2 text-base font-semibold text-[#213B56]">
+          <p className="mt-[3px] text-base font-semibold text-[#213B56]">
             Founder
           </p>
           <p className="mt-4 max-w-xl text-sm leading-6 text-slate-600">

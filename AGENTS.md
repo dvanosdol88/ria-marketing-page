@@ -15,6 +15,11 @@ Effective 2026-05-22, `youarepayingtoomuch.com` is mobile-first, not merely mobi
 - Do not perform a retroactive mobile-first audit of the full site unless explicitly requested. During normal work, flag and fix only glaring mobile issues such as overflow, illegible text, broken tap targets, or incoherent stacking.
 
 
+
+## Workflow
+
+**Ship by default:** After a task completes successfully (tsc/lint/build pass, user-requested work verified), commit and push to `main` and verify production unless the user explicitly said not to ship, said "wait" or "bundle later", or the change is exploratory/WIP. Do not ask "want me to ship?" when the task is done — ship it.
+
 ## Project Backlog
 - Tracked items live in docs/backlog.md
 - When encountering new issues or tech debt during a session, suggest adding them to the backlog
