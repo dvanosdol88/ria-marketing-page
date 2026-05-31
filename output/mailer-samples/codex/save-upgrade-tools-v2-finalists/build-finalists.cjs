@@ -6,12 +6,28 @@ const BASE_HTML = path.resolve(OUT, "..", "save-upgrade-tools-v2", "SWW_YAPTOM_v
 
 const CONCEPTS = [
   {
-    num: "01",
-    slug: "corrected-editorial-rule",
-    title: "Corrected Editorial Rule",
-    boxed: false,
+    num: "01A",
+    slug: "rounded-soft-card",
+    title: "Rounded Soft Card",
+    boxStyle: "soft-card",
     rationale:
-      "V2 01 Editorial Rule with only the requested production corrections: exact checked-box icon, compact horizontal key/disclaimer, and 15% larger QR.",
+      "Corrected Editorial Rule with the hero/chart area pulled into a rounded white card with a soft print-safe shadow.",
+  },
+  {
+    num: "01B",
+    slug: "soft-green-wash",
+    title: "Soft Green Wash",
+    boxStyle: "green-wash",
+    rationale:
+      "Corrected Editorial Rule with a pale brand-green wash that makes the hero/chart area feel like one cohesive response panel.",
+  },
+  {
+    num: "01C",
+    slug: "raised-paper-panel",
+    title: "Raised Paper Panel",
+    boxStyle: "raised-paper",
+    rationale:
+      "Corrected Editorial Rule with a warmer raised paper panel and restrained shadow for a slightly more premium printed feel.",
   },
 ];
 
@@ -27,6 +43,10 @@ const DISCLAIMER = "Educational only. Hypothetical results are not investment ad
 function replaceFirstRequired(source, needle, replacement) {
   if (!source.includes(needle)) throw new Error(`Missing expected HTML segment: ${needle.slice(0, 80)}`);
   return source.replace(needle, replacement);
+}
+
+function trimTrailingWhitespace(source) {
+  return source.replace(/[ \t]+$/gm, "");
 }
 
 function buildKey() {
@@ -160,8 +180,8 @@ function buildResizedBarChartGroup() {
         <text x="60" y="91.5" text-anchor="middle" font-family="Inter" font-size="15" font-weight="900" fill="#07140D">Wealth</text>
         <text x="60" y="136" text-anchor="middle" font-family="Inter" font-size="20" font-weight="800" fill="#34483C">83%</text>
         <text x="60" y="149.2" text-anchor="middle" font-family="Inter" font-size="13" font-weight="500" fill="#34483C">You keep</text>
-        <text x="144" y="34.2" text-anchor="middle" font-family="Inter" font-size="12" font-weight="900" fill="#B91C1C">${usdCompactK(gap)}</text>
-        <text x="144" y="136.8" text-anchor="middle" font-family="Inter" font-size="12" font-weight="900" fill="#07140D">${usdShort(finalAum)}</text>
+        <text class="bar-value-label" x="134" y="34.2" text-anchor="start" font-family="Inter" font-size="12" font-weight="900" fill="#B91C1C">${usdCompactK(gap)}</text>
+        <text class="bar-value-label" x="134" y="136.8" text-anchor="start" font-family="Inter" font-size="12" font-weight="900" fill="#07140D">${usdShort(finalAum)}</text>
       </g>`;
 }
 
@@ -297,12 +317,33 @@ const finalistCss = `
     }
     .ed-front .front-proof-box {
       margin-top: 12px;
-      border-left: 1px solid rgba(7,20,13,0.55);
-      border-right: 1px solid rgba(7,20,13,0.55);
+      padding: 0 20px 18px;
+      border: 1px solid rgba(7,20,13,0.55);
       box-sizing: border-box;
+      overflow: hidden;
     }
     .ed-front .front-proof-box .rule {
-      margin: 0 0 14px;
+      margin: 0 -20px 14px;
+    }
+    .ed-front .front-proof-box.soft-card {
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 9px 18px rgba(7,20,13,0.08);
+    }
+    .ed-front .front-proof-box.green-wash {
+      border-radius: 13px;
+      border-color: rgba(0,165,64,0.34);
+      background: linear-gradient(180deg, rgba(0,165,64,0.055) 0%, rgba(255,255,255,0.98) 58%, rgba(255,255,255,1) 100%);
+      box-shadow: 0 7px 16px rgba(0,165,64,0.09);
+    }
+    .ed-front .front-proof-box.raised-paper {
+      border-radius: 9px;
+      background: linear-gradient(180deg, #fff 0%, #fbfcfa 100%);
+      box-shadow: 0 11px 0 rgba(7,20,13,0.035), 0 14px 24px rgba(7,20,13,0.10);
+    }
+    .ed-front .front-proof-box.raised-paper .rule,
+    .ed-front .front-proof-box.raised-paper .hero-bottom-rule {
+      background: rgba(7,20,13,0.48);
     }
     .ed-front .boxed-version .chart-proof-box {
       border: 4px solid #07140D;
@@ -396,8 +437,8 @@ for (const concept of CONCEPTS) {
   let html = source;
   html = html.replace(/<title>.*?<\/title>/, `<title>SWW EDDM FINALISTS · ${concept.num} · ${concept.title}</title>`);
   html = html.replace(/01 · Editorial Rule/g, `FINALISTS ${concept.num} · ${concept.title}`);
-  html = replaceFirstRequired(html, originalChartRowAndDisclosure, buildChartRow(chartFrameHtml, qrBlockHtml, concept.boxed));
-  html = replaceFirstRequired(html, `<div class="rule"></div>`, `<div class="front-proof-box">\n      <div class="rule"></div>`);
+  html = replaceFirstRequired(html, originalChartRowAndDisclosure, buildChartRow(chartFrameHtml, qrBlockHtml, false));
+  html = replaceFirstRequired(html, `<div class="rule"></div>`, `<div class="front-proof-box ${concept.boxStyle}">\n      <div class="rule"></div>`);
   html = replaceFirstRequired(html, `<div class="hero-bottom-rule"></div>`, `<div class="hero-bottom-rule"></div>\n      </div>`);
   html = replaceFirstRequired(
     html,
@@ -421,10 +462,10 @@ for (const concept of CONCEPTS) {
   );
   html = html.replace("</style>", `${finalistCss}\n  </style>`);
 
-  fs.writeFileSync(path.join(OUT, `${base}_Proof.html`), html, "utf8");
+  fs.writeFileSync(path.join(OUT, `${base}_Proof.html`), trimTrailingWhitespace(html), "utf8");
   fs.writeFileSync(
     path.join(OUT, `${base}_Rationale.md`),
-    `# ${concept.num} · ${concept.title}\n\n**Group:** FINALISTS\n\n**Base:** Save Upgrade Tools v2: V2 01 Editorial Rule\n\n**Intent:** ${concept.rationale}\n\n**Requested changes:** exact upper-right checked-box crop on the back; horizontal portfolio/growth/years/AUM-fee key below the chart; shorter disclaimer in the same footprint; 15% larger QR code;${concept.boxed ? " thick black chart/key/disclaimer box." : " original chart framing retained."}\n`,
+    `# ${concept.num} · ${concept.title}\n\n**Group:** FINALISTS\n\n**Base:** Save Upgrade Tools v2: V2 01 Editorial Rule\n\n**Intent:** ${concept.rationale}\n\n**Requested changes:** aligned bar-side dollar labels; rounded cohesive front box treatment; exact upper-right checked-box crop on the back; compact horizontal key/disclaimer; 15% larger QR code.\n`,
     "utf8"
   );
   console.log("wrote", `${base}_Proof.html`);
@@ -432,7 +473,7 @@ for (const concept of CONCEPTS) {
 
 fs.writeFileSync(
   path.join(OUT, "README.md"),
-  `# FINALISTS\n\nTargeted finalist generated from Save Upgrade Tools v2: V2 01 Editorial Rule.\n\n- 01 Corrected Editorial Rule: requested icon, compact key/disclaimer, and 15% larger QR.\n\nThe back-side checked-box icon is \`brand-assets/green-checked-box-exact.png\`, copied from the exact upper-right green checked-box crop from the supplied source sheet.\n`,
+  `# FINALISTS\n\nTargeted finalists generated from Save Upgrade Tools v2: V2 01 Editorial Rule.\n\n- 01A Rounded Soft Card: rounded white proof card with a print-safe shadow.\n- 01B Soft Green Wash: pale green cohesive panel treatment.\n- 01C Raised Paper Panel: warmer raised-paper treatment with restrained depth.\n\nAll three options align the bar-side dollar labels and keep the back-side checked-box icon as \`brand-assets/green-checked-box-exact.png\`, copied from the exact upper-right green checked-box crop from the supplied source sheet.\n`,
   "utf8"
 );
 

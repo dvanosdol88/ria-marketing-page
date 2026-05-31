@@ -1,6 +1,6 @@
 {
   "name": "FINALISTS - Save Upgrade Tools v2",
-  "generatedAt": "2026-05-31T12:46:03.208Z",
+  "generatedAt": "2026-05-31T13:31:28.650Z",
   "base": "Save Upgrade Tools v2: V2 01 Editorial Rule",
   "group": "FINALISTS",
   "sourceIcon": {
@@ -24,15 +24,39 @@
   },
   "concepts": [
     {
-      "num": "01",
-      "slug": "corrected-editorial-rule",
-      "title": "Corrected Editorial Rule",
-      "rationale": "V2 01 Editorial Rule with only the requested production corrections: exact checked-box icon, compact horizontal key/disclaimer, and 15% larger QR.",
+      "num": "01A",
+      "slug": "rounded-soft-card",
+      "title": "Rounded Soft Card",
+      "rationale": "Corrected Editorial Rule with the hero/chart area pulled into a rounded white card with a soft print-safe shadow.",
       "files": {
-        "proofHtml": "SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Proof.html",
-        "frontPng": "SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Front_Proof.png",
-        "backPng": "SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Back_Proof.png",
-        "rationale": "SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Rationale.md"
+        "proofHtml": "SWW_YAPTOM_Finalists_01A_rounded-soft-card_Proof.html",
+        "frontPng": "SWW_YAPTOM_Finalists_01A_rounded-soft-card_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_Finalists_01A_rounded-soft-card_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_Finalists_01A_rounded-soft-card_Rationale.md"
+      }
+    },
+    {
+      "num": "01B",
+      "slug": "soft-green-wash",
+      "title": "Soft Green Wash",
+      "rationale": "Corrected Editorial Rule with a pale brand-green wash that makes the hero/chart area feel like one cohesive response panel.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_Finalists_01B_soft-green-wash_Proof.html",
+        "frontPng": "SWW_YAPTOM_Finalists_01B_soft-green-wash_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_Finalists_01B_soft-green-wash_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_Finalists_01B_soft-green-wash_Rationale.md"
+      }
+    },
+    {
+      "num": "01C",
+      "slug": "raised-paper-panel",
+      "title": "Raised Paper Panel",
+      "rationale": "Corrected Editorial Rule with a warmer raised paper panel and restrained shadow for a slightly more premium printed feel.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_Finalists_01C_raised-paper-panel_Proof.html",
+        "frontPng": "SWW_YAPTOM_Finalists_01C_raised-paper-panel_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_Finalists_01C_raised-paper-panel_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_Finalists_01C_raised-paper-panel_Rationale.md"
       }
     }
   ]

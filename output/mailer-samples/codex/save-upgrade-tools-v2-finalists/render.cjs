@@ -4,7 +4,9 @@ const { chromium } = require("playwright");
 
 const OUT = __dirname;
 const CONCEPTS = [
-  ["01", "corrected-editorial-rule"],
+  ["01A", "rounded-soft-card"],
+  ["01B", "soft-green-wash"],
+  ["01C", "raised-paper-panel"],
 ];
 const DSF = 200 / 96;
 

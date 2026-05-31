@@ -3,7 +3,9 @@ const path = require("path");
 
 const OUT = __dirname;
 const CONCEPTS = [
-  ["01", "corrected-editorial-rule", "Corrected Editorial Rule"],
+  ["01A", "rounded-soft-card", "Rounded Soft Card"],
+  ["01B", "soft-green-wash", "Soft Green Wash"],
+  ["01C", "raised-paper-panel", "Raised Paper Panel"],
 ];
 
 const cards = CONCEPTS.map(([num, slug, title]) => {
@@ -24,6 +26,10 @@ const cards = CONCEPTS.map(([num, slug, title]) => {
     </section>
   `;
 }).join("");
+
+function trimTrailingWhitespace(source) {
+  return source.replace(/[ \t]+$/gm, "");
+}
 
 const html = `<!doctype html>
 <html lang="en">
@@ -51,5 +57,5 @@ const html = `<!doctype html>
 </body>
 </html>`;
 
-fs.writeFileSync(path.join(OUT, "SWW_YAPTOM_Finalists_ContactSheet.html"), html, "utf8");
+fs.writeFileSync(path.join(OUT, "SWW_YAPTOM_Finalists_ContactSheet.html"), trimTrailingWhitespace(html), "utf8");
 console.log("wrote SWW_YAPTOM_Finalists_ContactSheet.html");

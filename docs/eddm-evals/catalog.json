@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-05-29T19:17:13.034Z",
+  "updatedAt": "2026-05-31",
   "title": "EDDM Eval Catalog",
   "description": "Local review catalog for EDDM mailer proof packages, proof-only concept sets, planning references, scores, and decisions.",
   "criteria": [
@@ -1904,9 +1904,9 @@
       "name": "FINALISTS overview",
       "status": "overview",
       "suggestedDecision": "undecided",
-      "summary": "Imported overview row for this revision round. Start here before scoring individual front/back candidates.",
+      "summary": "FINALISTS contact sheet for the current narrowed proof set, now including three rounded box-treatment options for the front hero/chart area.",
       "reviewFocus": [
-        "Use this overview to narrow the field before scoring individual concepts.",
+        "Use this overview to compare 01A, 01B, and 01C before scoring an individual box treatment.",
         "Confirm every concept worth reviewing has its own front/back scoreable row."
       ],
       "assets": [
@@ -1975,6 +1975,135 @@
           "label": "Rationale",
           "type": "markdown",
           "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01_corrected-editorial-rule_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-finalists-01a-rounded-soft-card",
+      "group": "FINALISTS",
+      "variant": "01A Rounded Soft Card",
+      "name": "FINALISTS: 01A Rounded Soft Card",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Rounded white front proof card with a print-safe shadow; bar-side dollar labels are aligned as one mini-column.",
+      "reviewFocus": [
+        "Evaluate whether the rounded white card makes the hero/chart/QR area feel cohesive without looking too soft for direct mail.",
+        "Compare against FINALISTS: 01 Corrected Editorial Rule and the other two box-treatment options.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk."
+      ],
+      "knownLimitations": [
+        "Box/shadow treatment is a visual proof option; confirm final print-ready PDF dimensions, bleed, and printer handling if selected."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01A_rounded-soft-card_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01A_rounded-soft-card_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01A_rounded-soft-card_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01A_rounded-soft-card_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-finalists-01b-soft-green-wash",
+      "group": "FINALISTS",
+      "variant": "01B Soft Green Wash",
+      "name": "FINALISTS: 01B Soft Green Wash",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Pale brand-green front panel treatment; bar-side dollar labels are aligned as one mini-column.",
+      "reviewFocus": [
+        "Evaluate whether the green wash adds brand cohesion while staying print-safe and not competing with the chart.",
+        "Compare against FINALISTS: 01 Corrected Editorial Rule and the other two box-treatment options.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk."
+      ],
+      "knownLimitations": [
+        "Box/shadow treatment is a visual proof option; confirm final print-ready PDF dimensions, bleed, and printer handling if selected."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01B_soft-green-wash_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01B_soft-green-wash_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01B_soft-green-wash_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01B_soft-green-wash_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-finalists-01c-raised-paper-panel",
+      "group": "FINALISTS",
+      "variant": "01C Raised Paper Panel",
+      "name": "FINALISTS: 01C Raised Paper Panel",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Warm raised-paper front panel with restrained depth; bar-side dollar labels are aligned as one mini-column.",
+      "reviewFocus": [
+        "Evaluate whether the warmer raised panel feels premium and cohesive without making the mailer too dimensional.",
+        "Compare against FINALISTS: 01 Corrected Editorial Rule and the other two box-treatment options.",
+        "Check front/back message fit, QR clarity, print safety, and compliance/disclosure risk."
+      ],
+      "knownLimitations": [
+        "Box/shadow treatment is a visual proof option; confirm final print-ready PDF dimensions, bleed, and printer handling if selected."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01C_raised-paper-panel_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01C_raised-paper-panel_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01C_raised-paper-panel_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01C_raised-paper-panel_Rationale.md",
           "role": "rationale"
         }
       ]
