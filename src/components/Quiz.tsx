@@ -186,7 +186,7 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel }: QuizProps) {
         <div>
           <h3 className="text-lg font-semibold text-neutral-900">Quick poll</h3>
           <p className="mt-1 text-sm text-neutral-600">
-            What would you do with {hasSavingsValue ? `your ${formattedSavings}` : "your savings"}?
+            What would you do with {hasSavingsValue ? `your ${formattedSavings}*` : "your savings"}?
           </p>
         </div>
 

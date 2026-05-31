@@ -535,6 +535,7 @@ function DirectMailCalculatorExperience(props: HomeCalculatorExperienceProps) {
               </p>
               <p className="text-3xl font-semibold text-[#007A2F]">
                 <Odometer value={savings} prefix="$" duration={1000} />
+                <span aria-hidden="true">*</span>
               </p>
             </div>
           </div>
@@ -687,6 +688,7 @@ function FeeReceiptCalculatorExperience(props: HomeCalculatorExperienceProps) {
               <p>Scenario total</p>
               <p className="mt-1 text-2xl font-semibold text-red-700">
                 <Odometer value={savings} prefix="$" duration={1000} />
+                <span aria-hidden="true">*</span>
               </p>
               <p>{percentLost.toFixed(1)}% of the flat-fee path</p>
             </div>
@@ -740,7 +742,7 @@ function FeeReceiptCalculatorExperience(props: HomeCalculatorExperienceProps) {
               </div>
               <div className="flex items-center justify-between gap-4 text-red-700">
                 <span>Projected fee drag</span>
-                <span className="text-xl font-semibold">{formatCurrency(savings)}</span>
+                <span className="text-xl font-semibold">{formatCurrency(savings)}<span aria-hidden="true">*</span></span>
               </div>
             </div>
 
@@ -774,7 +776,7 @@ function FeeReceiptCalculatorExperience(props: HomeCalculatorExperienceProps) {
           </div>
           <div className="bg-[#FFFEFB] p-4">
             <p className="text-[10px] uppercase tracking-[0.18em] text-slate-500">Receipt total</p>
-            <p className="mt-1 text-lg font-semibold text-red-700">{formatCurrency(savings)}</p>
+            <p className="mt-1 text-lg font-semibold text-red-700">{formatCurrency(savings)}<span aria-hidden="true">*</span></p>
           </div>
         </div>
 
@@ -1092,7 +1094,7 @@ function FinalHomeLineChart({
             fontSize="18"
             fontWeight="500"
           >
-            {formatCurrencyFloored(animatedSavings)} lost to fees
+            {formatCurrencyFloored(animatedSavings)}* lost to fees
           </text>
           <text
             x={feeGapLabelX + feeGapLabelWidth / 2}

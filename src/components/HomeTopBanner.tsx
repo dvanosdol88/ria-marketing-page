@@ -85,6 +85,7 @@ export function HomeTopBanner({ bannerId, savings, years }: HomeTopBannerProps) 
               </p>
               <p className={`mt-1 text-[clamp(1.6rem,7vw,3.2rem)] font-extrabold leading-none ${tone.accent}`}>
                 {formatCurrency(savings)}
+                <span aria-hidden="true">*</span>
               </p>
               <p className="mt-1 text-sm font-semibold text-white/78">over {years} years</p>
             </div>

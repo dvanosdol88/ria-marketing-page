@@ -412,7 +412,10 @@ function SavingsLeadHero({
   );
 
   return (
-    <section className="w-full bg-[#EEF0F5] pb-[94px] text-center text-[#10233A] sm:pb-[110px]">
+    <section
+      data-url-eval-section="opening-promise"
+      className="w-full bg-[#EEF0F5] pb-[94px] text-center text-[#10233A] sm:pb-[110px]"
+    >
       <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-16 pb-16 sm:pt-20 sm:pb-20">
         <div
           aria-hidden="true"
@@ -1015,6 +1018,7 @@ export function CostAnalysisCalculator({
               }}
             >
               <Odometer value={Math.floor(projection.savings / 1000) * 1000} prefix="$" duration={1000} className="text-lg font-bold" />
+              <span aria-hidden="true" className="text-lg font-bold">*</span>
               <span className="text-xs font-bold uppercase tracking-wider">
                 lost to asset-based fees!
               </span>
@@ -1057,6 +1061,7 @@ export function CostAnalysisCalculator({
                 duration={800}
                 className="font-bold"
               />
+              <span aria-hidden="true" className="font-bold">*</span>
             </div>
 
             <div className="flex items-center gap-2">

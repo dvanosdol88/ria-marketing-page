@@ -201,6 +201,7 @@ function SaveProofPanel({ projectedSavings }: { projectedSavings: string }) {
       <div className="absolute inset-x-5 bottom-8 top-48 rounded-md border border-[#D7E0E8] bg-white/92 p-4 shadow-[0_24px_60px_rgba(16,35,58,0.14)] sm:inset-x-10 sm:bottom-10 sm:top-32 sm:p-8">
         <p className="text-right text-[clamp(2.5rem,8vw,6.25rem)] font-black leading-none tracking-normal text-[#007A2F]">
           {projectedSavings}
+          <span aria-hidden="true">*</span>
         </p>
         <svg viewBox="0 0 740 320" role="img" aria-label="Chart showing the fee gap widening over time" className="mt-4 h-[58%] w-full sm:mt-6">
           <defs>
