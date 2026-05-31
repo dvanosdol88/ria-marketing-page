@@ -174,11 +174,10 @@
     }
     .ed-front .assumption-key {
       display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: max-content;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       align-items: center;
-      justify-content: start;
-      column-gap: 42px;
+      justify-content: stretch;
+      column-gap: 0;
       border-top: 1px solid rgba(7,20,13,0.20);
       border-bottom: 1px solid rgba(7,20,13,0.20);
       padding: 2px 0;
@@ -189,6 +188,7 @@
     .ed-front .assumption-key span {
       display: inline-flex;
       align-items: baseline;
+      justify-content: center;
       gap: 4px;
       min-width: 0;
     }
@@ -258,6 +258,9 @@
     .ed-front.founder-advisor-green-band .founder,
     .ed-front.founder-advisor-green-band .byline {
       color: #fff;
+    }
+    .ed-front.founder-advisor-green-band .founder {
+      font-size: 20px;
     }
     .ed-front.founder-advisor-green-band .founder .green {
       color: #20C65A;
