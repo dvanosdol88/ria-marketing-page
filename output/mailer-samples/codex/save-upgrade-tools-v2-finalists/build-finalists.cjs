@@ -208,8 +208,8 @@ function buildStyleABarChartGroup() {
   const barX = 47;
   const barMaxW = 500;
   const barH = 58;
-  const topY = 43;
-  const bottomY = 112;
+  const topY = 60;
+  const bottomY = 129;
   const aumW = (finalAum / maxV) * barMaxW;
   const flatW = (finalFlat / maxV) * barMaxW;
   const feeEnd = barX + aumW;
@@ -219,12 +219,13 @@ function buildStyleABarChartGroup() {
   return `
       <g transform="translate(-10, 2)">
         <rect x="${chartX}" y="${chartY}" width="${chartW}" height="${chartH}" rx="12" ry="12" fill="#EEF0F5" stroke="#e2e8f0" stroke-width="1.5"/>
+        <text x="${barX}" y="39" text-anchor="start" font-family="Inter" font-size="16" font-weight="900" fill="#07140D">Ending Portfolio Values</text>
         <rect x="${barX}" y="${topY}" width="${aumW.toFixed(1)}" height="${barH}" rx="5" fill="#6F7376"/>
-        <text x="${barX + 16}" y="${topY + barH / 2 - 1}" text-anchor="start" font-family="Inter" font-size="15" font-weight="900" fill="#fff">Fee-based portfolio</text>
+        <text x="${barX + 16}" y="${topY + barH / 2 - 1}" text-anchor="start" font-family="Inter" font-size="15" font-weight="900" fill="#fff">Fee-based</text>
         <text x="${(feeEnd - 14).toFixed(1)}" y="${topY + barH / 2 - 1}" text-anchor="end" font-family="Inter" font-size="15" font-weight="900" fill="#fff">${usdShort(finalAum)}</text>
 
         <rect x="${barX}" y="${bottomY}" width="${flatW.toFixed(1)}" height="${barH}" rx="5" fill="#00A540"/>
-        <text x="${barX + 16}" y="${bottomY + barH / 2 - 1}" text-anchor="start" font-family="Inter" font-size="15" font-weight="900" fill="#fff">Flat monthly fee portfolio</text>
+        <text x="${barX + 16}" y="${bottomY + barH / 2 - 1}" text-anchor="start" font-family="Inter" font-size="15" font-weight="900" fill="#fff">Flat monthly fee</text>
         <text x="${(flatEnd - 14).toFixed(1)}" y="${bottomY + barH / 2 - 1}" text-anchor="end" font-family="Inter" font-size="15" font-weight="900" fill="#fff">${usdShort(finalFlat)}</text>
 
         <line x1="${feeEnd.toFixed(1)}" y1="${topY + barH}" x2="${feeEnd.toFixed(1)}" y2="${bottomY}" stroke="#6F7376" stroke-width="1.5" stroke-dasharray="4 4"/>
@@ -275,19 +276,21 @@ function buildResizedBarChartGroup() {
 function buildWealthPieChartGroup() {
   const lostPercent = 17;
   const keepPercent = 83;
-  const radius = 47;
+  const radius = 53;
+  const strokeWidth = 27;
+  const centerRadius = 32;
   const circumference = 2 * Math.PI * radius;
   const lostArc = (lostPercent / 100) * circumference;
   const keepArc = circumference - lostArc;
   return `      <!-- WEALTH LOST PIE CHART -->
       <g transform="translate(587, 0)">
-        <circle cx="60" cy="74" r="${radius}" fill="none" stroke="#DDE3DF" stroke-width="25"/>
-        <circle cx="60" cy="74" r="${radius}" fill="none" stroke="#B91C1C" stroke-width="25" stroke-dasharray="${lostArc.toFixed(1)} ${keepArc.toFixed(1)}" stroke-linecap="butt" transform="rotate(-90 60 74)"/>
-        <circle cx="60" cy="74" r="29" fill="#fff"/>
-        <text x="60" y="58" text-anchor="middle" font-family="Inter" font-size="13" font-weight="900" fill="#B91C1C">${lostPercent}%</text>
-        <text x="60" y="74" text-anchor="middle" font-family="Inter" font-size="11" font-weight="900" fill="#07140D">Lost</text>
-        <text x="60" y="91" text-anchor="middle" font-family="Inter" font-size="11" font-weight="900" fill="#07140D">Wealth</text>
-        <text x="60" y="154" text-anchor="middle" font-family="Inter" font-size="20" font-weight="800" fill="#34483C">${keepPercent}%</text>
+        <circle cx="60" cy="74" r="${radius}" fill="none" stroke="#6F7376" stroke-width="${strokeWidth}"/>
+        <circle cx="60" cy="74" r="${radius}" fill="none" stroke="#B91C1C" stroke-width="${strokeWidth}" stroke-dasharray="${lostArc.toFixed(1)} ${keepArc.toFixed(1)}" stroke-linecap="butt" transform="rotate(-90 60 74)"/>
+        <circle cx="60" cy="74" r="${centerRadius}" fill="#fff"/>
+        <text x="60" y="56" text-anchor="middle" font-family="Inter" font-size="15" font-weight="900" fill="#B91C1C">${lostPercent}%</text>
+        <text x="60" y="75" text-anchor="middle" font-family="Inter" font-size="13" font-weight="900" fill="#07140D">Lost</text>
+        <text x="60" y="94" text-anchor="middle" font-family="Inter" font-size="13" font-weight="900" fill="#07140D">Wealth</text>
+        <text x="60" y="154" text-anchor="middle" font-family="Inter" font-size="18" font-weight="800" fill="#34483C">${keepPercent}%</text>
         <text x="60" y="168" text-anchor="middle" font-family="Inter" font-size="13" font-weight="500" fill="#34483C">You keep</text>
         <text class="bar-value-label" x="134" y="49" text-anchor="start" font-family="Inter" font-size="12" font-weight="900" fill="#B91C1C">$788k</text>
         <text class="bar-value-label" x="134" y="156" text-anchor="start" font-family="Inter" font-size="12" font-weight="900" fill="#07140D">$3.82M</text>
