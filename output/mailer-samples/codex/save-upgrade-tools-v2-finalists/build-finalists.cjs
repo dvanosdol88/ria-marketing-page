@@ -200,17 +200,16 @@ function buildStyleABarChartGroup() {
   const finalFlat = series[series.length - 1].withoutFees;
   const finalAum = series[series.length - 1].withFees;
   const gap = finalFlat - finalAum;
-  const maxV = 5000000;
+  const maxV = finalFlat;
   const chartX = 25;
   const chartY = 9;
   const chartW = 531;
   const chartH = 200;
-  const labelX = 139;
-  const barX = 153;
-  const barMaxW = 365;
-  const barH = 44;
-  const topY = 53;
-  const bottomY = 126;
+  const barX = 47;
+  const barMaxW = 500;
+  const barH = 58;
+  const topY = 43;
+  const bottomY = 112;
   const aumW = (finalAum / maxV) * barMaxW;
   const flatW = (finalFlat / maxV) * barMaxW;
   const feeEnd = barX + aumW;
@@ -220,17 +219,17 @@ function buildStyleABarChartGroup() {
   return `
       <g transform="translate(-10, 2)">
         <rect x="${chartX}" y="${chartY}" width="${chartW}" height="${chartH}" rx="12" ry="12" fill="#EEF0F5" stroke="#e2e8f0" stroke-width="1.5"/>
-        <text x="${labelX - 10}" y="${topY + barH / 2 + 4}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#34483C">Asset-based %</text>
-        <rect x="${barX}" y="${topY}" width="${aumW.toFixed(1)}" height="${barH}" rx="5" fill="#B91C1C"/>
-        <text x="${(feeEnd - 10).toFixed(1)}" y="${topY + barH / 2 + 5}" text-anchor="end" font-family="Inter" font-size="13" font-weight="900" fill="#fff">${usdShort(finalAum)}</text>
+        <rect x="${barX}" y="${topY}" width="${aumW.toFixed(1)}" height="${barH}" rx="5" fill="#6F7376"/>
+        <text x="${barX + 16}" y="${topY + barH / 2 - 1}" text-anchor="start" font-family="Inter" font-size="15" font-weight="900" fill="#fff">Fee-based portfolio</text>
+        <text x="${(feeEnd - 14).toFixed(1)}" y="${topY + barH / 2 - 1}" text-anchor="end" font-family="Inter" font-size="15" font-weight="900" fill="#fff">${usdShort(finalAum)}</text>
 
-        <text x="${labelX - 10}" y="${bottomY + barH / 2 + 4}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#34483C">$100/mo flat</text>
         <rect x="${barX}" y="${bottomY}" width="${flatW.toFixed(1)}" height="${barH}" rx="5" fill="#00A540"/>
-        <text x="${(flatEnd - 10).toFixed(1)}" y="${bottomY + barH / 2 + 5}" text-anchor="end" font-family="Inter" font-size="13" font-weight="900" fill="#fff">${usdShort(finalFlat)}</text>
+        <text x="${barX + 16}" y="${bottomY + barH / 2 - 1}" text-anchor="start" font-family="Inter" font-size="15" font-weight="900" fill="#fff">Flat monthly fee portfolio</text>
+        <text x="${(flatEnd - 14).toFixed(1)}" y="${bottomY + barH / 2 - 1}" text-anchor="end" font-family="Inter" font-size="15" font-weight="900" fill="#fff">${usdShort(finalFlat)}</text>
 
-        <line x1="${feeEnd.toFixed(1)}" y1="${topY + barH}" x2="${feeEnd.toFixed(1)}" y2="${bottomY}" stroke="#B91C1C" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <line x1="${feeEnd.toFixed(1)}" y1="${topY + barH}" x2="${feeEnd.toFixed(1)}" y2="${bottomY}" stroke="#6F7376" stroke-width="1.5" stroke-dasharray="4 4"/>
         <line x1="${flatEnd.toFixed(1)}" y1="${topY + barH}" x2="${flatEnd.toFixed(1)}" y2="${bottomY}" stroke="#00A540" stroke-width="1.5" stroke-dasharray="4 4"/>
-        <text x="${gapX.toFixed(1)}" y="${topY + barH + 22}" text-anchor="middle" font-family="Inter" font-size="12" font-weight="900" fill="#B91C1C" stroke="#EEF0F5" stroke-width="4" paint-order="stroke">${usdCompactK(gap)} gap</text>
+        <text x="${gapX.toFixed(1)}" y="${bottomY - 5}" text-anchor="middle" font-family="Inter" font-size="12" font-weight="900" fill="#3F4548" stroke="#EEF0F5" stroke-width="4" paint-order="stroke">${usdCompactK(gap)} gap</text>
       </g>`;
 }
 
