@@ -2,7 +2,7 @@
   "version": 2,
   "updatedAt": "2026-05-31",
   "title": "EDDM Eval Catalog",
-  "description": "Active EDDM review catalog narrowed to the Style A winner plus preserved reference rows; legacy rows are hidden by default.",
+  "description": "Active EDDM review catalog narrowed to the Style A winner, a Style A bar-chart variant, and preserved reference rows; legacy rows are hidden by default.",
   "criteria": [
     {
       "id": "clarity",
@@ -77,6 +77,49 @@
           "label": "Rationale",
           "type": "markdown",
           "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Rationale.md",
+          "role": "rationale"
+        }
+      ]
+    },
+    {
+      "id": "eddm-finalists-01g-style-a-bar",
+      "group": "WINNER - Style A",
+      "variant": "Style A Bar",
+      "name": "Style A-bar: Advisor Green Band with bar chart",
+      "status": "proof-only",
+      "suggestedDecision": "undecided",
+      "summary": "Style A winner variant replacing the original line chart with the Editorial Paper Bar two-path comparison structure, restyled with Style A colors, and replacing the wealth-lost vertical bar with a pie proof.",
+      "reviewFocus": [
+        "Compare against WINNER Style A: Advisor Green Band to decide whether the bar-chart proof is clearer than the line-chart proof.",
+        "Confirm the pie version of the 17% wealth-lost proof is intuitive beside the QR code.",
+        "If selected, verify final print-ready PDF dimensions, bleed, USPS/EDDM placement, and compliance disclosure handling before mailing."
+      ],
+      "knownLimitations": [
+        "Variant is still an HTML/PNG proof set; final printer-ready PDF/package should be generated after final signoff."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01G_style-a-bar_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01G_style-a-bar_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01G_style-a-bar_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Rationale",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01G_style-a-bar_Rationale.md",
           "role": "rationale"
         }
       ]

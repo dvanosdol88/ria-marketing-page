@@ -59,6 +59,16 @@ const CONCEPTS = [
     rationale:
       "Soft Green Wash with the Smarter Way Wealth/DVO message framed as a clean nameplate with a green vertical accent.",
   },
+  {
+    num: "01G",
+    slug: "style-a-bar",
+    title: "Style A Bar",
+    boxStyle: "green-wash",
+    founderStyle: "advisor-green-band",
+    chartStyle: "bar-pie",
+    rationale:
+      "Style A winner with the Editorial Paper Bar two-path chart structure restyled in the Style A palette and a pie proof replacing the wealth-lost vertical bar.",
+  },
 ];
 
 const KEY = [
@@ -185,6 +195,45 @@ function buildV3LineChartGroup() {
       </g>`;
 }
 
+function buildStyleABarChartGroup() {
+  const series = buildProjectionSeries();
+  const finalFlat = series[series.length - 1].withoutFees;
+  const finalAum = series[series.length - 1].withFees;
+  const gap = finalFlat - finalAum;
+  const maxV = 5000000;
+  const chartX = 25;
+  const chartY = 9;
+  const chartW = 531;
+  const chartH = 200;
+  const labelX = 139;
+  const barX = 153;
+  const barMaxW = 365;
+  const barH = 44;
+  const topY = 53;
+  const bottomY = 126;
+  const aumW = (finalAum / maxV) * barMaxW;
+  const flatW = (finalFlat / maxV) * barMaxW;
+  const feeEnd = barX + aumW;
+  const flatEnd = barX + flatW;
+  const gapX = (feeEnd + flatEnd) / 2;
+
+  return `
+      <g transform="translate(-10, 2)">
+        <rect x="${chartX}" y="${chartY}" width="${chartW}" height="${chartH}" rx="12" ry="12" fill="#EEF0F5" stroke="#e2e8f0" stroke-width="1.5"/>
+        <text x="${labelX - 10}" y="${topY + barH / 2 + 4}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#34483C">Asset-based %</text>
+        <rect x="${barX}" y="${topY}" width="${aumW.toFixed(1)}" height="${barH}" rx="5" fill="#B91C1C"/>
+        <text x="${(feeEnd - 10).toFixed(1)}" y="${topY + barH / 2 + 5}" text-anchor="end" font-family="Inter" font-size="13" font-weight="900" fill="#fff">${usdShort(finalAum)}</text>
+
+        <text x="${labelX - 10}" y="${bottomY + barH / 2 + 4}" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#34483C">$100/mo flat</text>
+        <rect x="${barX}" y="${bottomY}" width="${flatW.toFixed(1)}" height="${barH}" rx="5" fill="#00A540"/>
+        <text x="${(flatEnd - 10).toFixed(1)}" y="${bottomY + barH / 2 + 5}" text-anchor="end" font-family="Inter" font-size="13" font-weight="900" fill="#fff">${usdShort(finalFlat)}</text>
+
+        <line x1="${feeEnd.toFixed(1)}" y1="${topY + barH}" x2="${feeEnd.toFixed(1)}" y2="${bottomY}" stroke="#B91C1C" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <line x1="${flatEnd.toFixed(1)}" y1="${topY + barH}" x2="${flatEnd.toFixed(1)}" y2="${bottomY}" stroke="#00A540" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <text x="${gapX.toFixed(1)}" y="${topY + barH + 22}" text-anchor="middle" font-family="Inter" font-size="12" font-weight="900" fill="#B91C1C" stroke="#EEF0F5" stroke-width="4" paint-order="stroke">${usdCompactK(gap)} gap</text>
+      </g>`;
+}
+
 function replaceLineChartOnly(chartFrame) {
   const lineChartPattern =
     /(      <!-- LINE CHART WRAPPER \(Shifted -10px X, \+2px Y\) -->\r?\n)      <g transform="translate\(-10, 2\)">[\s\S]*?      <\/g>(\r?\n      \r?\n      <!-- VERTICAL BAR CHART -->)/;
@@ -192,6 +241,15 @@ function replaceLineChartOnly(chartFrame) {
     throw new Error("Could not isolate original line chart group.");
   }
   return chartFrame.replace(lineChartPattern, (_match, prefix, suffix) => `${prefix}${buildV3LineChartGroup()}${suffix}`);
+}
+
+function replaceLineChartWith(chartFrame, builder) {
+  const lineChartPattern =
+    /(      <!-- LINE CHART WRAPPER \(Shifted -10px X, \+2px Y\) -->\r?\n)      <g transform="translate\(-10, 2\)">[\s\S]*?      <\/g>(\r?\n      \r?\n      <!-- VERTICAL BAR CHART -->)/;
+  if (!lineChartPattern.test(chartFrame)) {
+    throw new Error("Could not isolate original line chart group.");
+  }
+  return chartFrame.replace(lineChartPattern, (_match, prefix, suffix) => `${prefix}${builder()}${suffix}`);
 }
 
 function buildResizedBarChartGroup() {
@@ -215,6 +273,28 @@ function buildResizedBarChartGroup() {
       </g>`;
 }
 
+function buildWealthPieChartGroup() {
+  const lostPercent = 17;
+  const keepPercent = 83;
+  const radius = 47;
+  const circumference = 2 * Math.PI * radius;
+  const lostArc = (lostPercent / 100) * circumference;
+  const keepArc = circumference - lostArc;
+  return `      <!-- WEALTH LOST PIE CHART -->
+      <g transform="translate(587, 0)">
+        <circle cx="60" cy="74" r="${radius}" fill="none" stroke="#DDE3DF" stroke-width="25"/>
+        <circle cx="60" cy="74" r="${radius}" fill="none" stroke="#B91C1C" stroke-width="25" stroke-dasharray="${lostArc.toFixed(1)} ${keepArc.toFixed(1)}" stroke-linecap="butt" transform="rotate(-90 60 74)"/>
+        <circle cx="60" cy="74" r="29" fill="#fff"/>
+        <text x="60" y="58" text-anchor="middle" font-family="Inter" font-size="13" font-weight="900" fill="#B91C1C">${lostPercent}%</text>
+        <text x="60" y="74" text-anchor="middle" font-family="Inter" font-size="11" font-weight="900" fill="#07140D">Lost</text>
+        <text x="60" y="91" text-anchor="middle" font-family="Inter" font-size="11" font-weight="900" fill="#07140D">Wealth</text>
+        <text x="60" y="154" text-anchor="middle" font-family="Inter" font-size="20" font-weight="800" fill="#34483C">${keepPercent}%</text>
+        <text x="60" y="168" text-anchor="middle" font-family="Inter" font-size="13" font-weight="500" fill="#34483C">You keep</text>
+        <text class="bar-value-label" x="134" y="49" text-anchor="start" font-family="Inter" font-size="12" font-weight="900" fill="#B91C1C">$788k</text>
+        <text class="bar-value-label" x="134" y="156" text-anchor="start" font-family="Inter" font-size="12" font-weight="900" fill="#07140D">$3.82M</text>
+      </g>`;
+}
+
 function replaceBarChartOnly(chartFrame) {
   const barChartPattern = /      <!-- VERTICAL BAR CHART -->[\s\S]*?      <\/g>/;
   if (!barChartPattern.test(chartFrame)) {
@@ -223,8 +303,19 @@ function replaceBarChartOnly(chartFrame) {
   return chartFrame.replace(barChartPattern, () => buildResizedBarChartGroup());
 }
 
-function buildChartRow(chartFrame, qrBlock, boxed) {
-  const updatedChartFrame = replaceBarChartOnly(replaceLineChartOnly(chartFrame));
+function replaceBarChartWith(chartFrame, builder) {
+  const barChartPattern = /      <!-- VERTICAL BAR CHART -->[\s\S]*?      <\/g>/;
+  if (!barChartPattern.test(chartFrame)) {
+    throw new Error("Could not isolate original vertical bar chart group.");
+  }
+  return chartFrame.replace(barChartPattern, () => builder());
+}
+
+function buildChartRow(chartFrame, qrBlock, boxed, chartStyle = "line-bar") {
+  const updatedChartFrame =
+    chartStyle === "bar-pie"
+      ? replaceBarChartWith(replaceLineChartWith(chartFrame, buildStyleABarChartGroup), buildWealthPieChartGroup)
+      : replaceBarChartOnly(replaceLineChartOnly(chartFrame));
   return `
       <div class="chart-row finalist-chart-row${boxed ? " boxed-version" : ""}">
         <div class="chart-proof-box">
@@ -543,7 +634,7 @@ for (const concept of CONCEPTS) {
     `<div class="ed-front">`,
     `<div class="ed-front ${concept.boxStyle} founder-${concept.founderStyle}">`
   );
-  html = replaceFirstRequired(html, originalChartRowAndDisclosure, buildChartRow(chartFrameHtml, qrBlockHtml, false));
+  html = replaceFirstRequired(html, originalChartRowAndDisclosure, buildChartRow(chartFrameHtml, qrBlockHtml, false, concept.chartStyle));
   html = replaceFirstRequired(html, `<div class="rule"></div>`, `<div class="front-proof-box ${concept.boxStyle}">\n      <div class="rule"></div>`);
   html = replaceFirstRequired(html, `<div class="hero-bottom-rule"></div>`, `<div class="hero-bottom-rule"></div>\n      </div>`);
   html = replaceFirstRequired(
@@ -581,7 +672,7 @@ for (const concept of CONCEPTS) {
 
 fs.writeFileSync(
   path.join(OUT, "README.md"),
-  `# FINALISTS\n\nTargeted finalists generated from Save Upgrade Tools v2: V2 01 Editorial Rule.\n\n- 01A Rounded Soft Card: rounded white proof card with a print-safe shadow.\n- 01B Soft Green Wash: pale green cohesive panel treatment.\n- 01C Raised Paper Panel: warmer raised-paper treatment with restrained depth.\n- 01D Advisor Soft Panel: Soft Green Wash with a quiet rounded advisor panel around the Smarter Way Wealth/DVO message.\n- 01E Advisor Green Band: Soft Green Wash with a high-contrast green trust band around the Smarter Way Wealth/DVO message.\n- 01F Advisor Nameplate: Soft Green Wash with a clean nameplate and green vertical accent around the Smarter Way Wealth/DVO message.\n\nAll options align the bar-side dollar labels, enlarge the back-side logo by 10% while keeping it centered and bottom-anchored over the photo, and keep the back-side checked-box icon as \`brand-assets/green-checked-box-exact.png\`, copied from the exact upper-right green checked-box crop from the supplied source sheet.\n`,
+  `# FINALISTS\n\nTargeted finalists generated from Save Upgrade Tools v2: V2 01 Editorial Rule.\n\n- 01A Rounded Soft Card: rounded white proof card with a print-safe shadow.\n- 01B Soft Green Wash: pale green cohesive panel treatment.\n- 01C Raised Paper Panel: warmer raised-paper treatment with restrained depth.\n- 01D Advisor Soft Panel: Soft Green Wash with a quiet rounded advisor panel around the Smarter Way Wealth/DVO message.\n- 01E Advisor Green Band: Soft Green Wash with a high-contrast green trust band around the Smarter Way Wealth/DVO message.\n- 01F Advisor Nameplate: Soft Green Wash with a clean nameplate and green vertical accent around the Smarter Way Wealth/DVO message.\n- 01G Style A Bar: Style A winner with the Editorial Paper Bar two-path chart structure and a pie proof in the former wealth-lost bar slot.\n\nAll options align the bar-side dollar labels, enlarge the back-side logo by 10% while keeping it centered and bottom-anchored over the photo, and keep the back-side checked-box icon as \`brand-assets/green-checked-box-exact.png\`, copied from the exact upper-right green checked-box crop from the supplied source sheet.\n`,
   "utf8"
 );
 

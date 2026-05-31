@@ -1,6 +1,6 @@
 {
   "name": "FINALISTS - Save Upgrade Tools v2",
-  "generatedAt": "2026-05-31T18:46:05.611Z",
+  "generatedAt": "2026-05-31T18:55:22.559Z",
   "base": "Save Upgrade Tools v2: V2 01 Editorial Rule",
   "group": "FINALISTS",
   "sourceIcon": {
@@ -93,6 +93,18 @@
         "frontPng": "SWW_YAPTOM_Finalists_01F_advisor-nameplate_Front_Proof.png",
         "backPng": "SWW_YAPTOM_Finalists_01F_advisor-nameplate_Back_Proof.png",
         "rationale": "SWW_YAPTOM_Finalists_01F_advisor-nameplate_Rationale.md"
+      }
+    },
+    {
+      "num": "01G",
+      "slug": "style-a-bar",
+      "title": "Style A Bar",
+      "rationale": "Style A winner with the Editorial Paper Bar two-path chart structure restyled in the Style A palette and a pie proof replacing the wealth-lost vertical bar.",
+      "files": {
+        "proofHtml": "SWW_YAPTOM_Finalists_01G_style-a-bar_Proof.html",
+        "frontPng": "SWW_YAPTOM_Finalists_01G_style-a-bar_Front_Proof.png",
+        "backPng": "SWW_YAPTOM_Finalists_01G_style-a-bar_Back_Proof.png",
+        "rationale": "SWW_YAPTOM_Finalists_01G_style-a-bar_Rationale.md"
       }
     }
   ]

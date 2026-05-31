@@ -10,6 +10,7 @@ const CONCEPTS = [
   ["01D", "advisor-soft-panel"],
   ["01E", "advisor-green-band"],
   ["01F", "advisor-nameplate"],
+  ["01G", "style-a-bar"],
 ];
 const DSF = 200 / 96;
 

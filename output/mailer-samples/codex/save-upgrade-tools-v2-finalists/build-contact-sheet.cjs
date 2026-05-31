@@ -9,6 +9,7 @@ const CONCEPTS = [
   ["01D", "advisor-soft-panel", "Advisor Soft Panel"],
   ["01E", "advisor-green-band", "Advisor Green Band"],
   ["01F", "advisor-nameplate", "Advisor Nameplate"],
+  ["01G", "style-a-bar", "Style A Bar"],
 ];
 
 const cards = CONCEPTS.map(([num, slug, title]) => {
