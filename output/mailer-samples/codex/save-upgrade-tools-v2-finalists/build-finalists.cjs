@@ -331,10 +331,20 @@ const finalistCss = `
       box-shadow: 0 9px 18px rgba(7,20,13,0.08);
     }
     .ed-front .front-proof-box.green-wash {
+      padding-bottom: 8px;
       border-radius: 13px;
       border-color: rgba(0,165,64,0.34);
       background: linear-gradient(180deg, rgba(0,165,64,0.055) 0%, rgba(255,255,255,0.98) 58%, rgba(255,255,255,1) 100%);
       box-shadow: 0 7px 16px rgba(0,165,64,0.09);
+    }
+    .ed-front .front-proof-box.green-wash .hero-bottom-rule {
+      display: none;
+    }
+    .ed-front.green-wash .founder {
+      font-size: 19px;
+    }
+    .ed-front.green-wash .byline {
+      font-size: 15px;
     }
     .ed-front .front-proof-box.raised-paper {
       border-radius: 9px;
@@ -437,6 +447,7 @@ for (const concept of CONCEPTS) {
   let html = source;
   html = html.replace(/<title>.*?<\/title>/, `<title>SWW EDDM FINALISTS · ${concept.num} · ${concept.title}</title>`);
   html = html.replace(/01 · Editorial Rule/g, `FINALISTS ${concept.num} · ${concept.title}`);
+  html = replaceFirstRequired(html, `<div class="ed-front">`, `<div class="ed-front ${concept.boxStyle}">`);
   html = replaceFirstRequired(html, originalChartRowAndDisclosure, buildChartRow(chartFrameHtml, qrBlockHtml, false));
   html = replaceFirstRequired(html, `<div class="rule"></div>`, `<div class="front-proof-box ${concept.boxStyle}">\n      <div class="rule"></div>`);
   html = replaceFirstRequired(html, `<div class="hero-bottom-rule"></div>`, `<div class="hero-bottom-rule"></div>\n      </div>`);
