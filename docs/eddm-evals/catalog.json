@@ -2,7 +2,7 @@
   "version": 2,
   "updatedAt": "2026-05-31",
   "title": "EDDM Eval Catalog",
-  "description": "Active EDDM review catalog narrowed to the Style A winner, a Style A bar-chart variant, and preserved reference rows; legacy rows are hidden by default.",
+  "description": "Active EDDM review catalog narrowed to the Style A winner, a Style A bar-chart variant, and preserved reference rows including style exploration references; legacy rows are hidden by default.",
   "criteria": [
     {
       "id": "clarity",
@@ -274,6 +274,128 @@
           "type": "html",
           "path": "output/redesigns/v3-savings-pass.html",
           "role": "prototype"
+        }
+      ]
+    },
+    {
+      "id": "eddm-style-reference-v-a-editorial",
+      "group": "K. Style Exploration References",
+      "variant": "V-A Editorial",
+      "name": "Style Reference: V-A Editorial",
+      "status": "reference-only",
+      "suggestedDecision": "undecided",
+      "summary": "Saved reference proof set from output/mailer-samples/v-A-editorial for comparison against the active Style A winner and bar variant.",
+      "reviewFocus": [
+        "Use as a preserved style reference, not as the current active winner.",
+        "Compare editorial hierarchy, front/back balance, QR handoff, and print-ready package structure against current finalists.",
+        "If revived, re-check USPS/EDDM placement, bleed, printer PDF requirements, and compliance disclosure handling."
+      ],
+      "knownLimitations": [
+        "Reference proof set may not reflect the latest Style A winner refinements."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/v-A-editorial/SWW_VA_Editorial_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/v-A-editorial/SWW_VA_Editorial_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/v-A-editorial/SWW_VA_Editorial_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Contact sheet",
+          "type": "html",
+          "path": "output/mailer-samples/v-A-editorial/SWW_VA_Editorial_ContactSheet.html",
+          "role": "overview"
+        },
+        {
+          "label": "Contact sheet image",
+          "type": "image",
+          "path": "output/mailer-samples/v-A-editorial/SWW_VA_Editorial_ContactSheet.png",
+          "role": "overview"
+        },
+        {
+          "label": "Print-ready PDF",
+          "type": "pdf",
+          "path": "output/mailer-samples/v-A-editorial/SWW_VA_Editorial_PrintReady_8p75x6p5.pdf",
+          "role": "print-ready"
+        },
+        {
+          "label": "Notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/v-A-editorial/SWW_VA_Editorial_Notes.md",
+          "role": "notes"
+        }
+      ]
+    },
+    {
+      "id": "eddm-style-reference-v-b-brutalist",
+      "group": "K. Style Exploration References",
+      "variant": "V-B Brutalist",
+      "name": "Style Reference: V-B Brutalist",
+      "status": "reference-only",
+      "suggestedDecision": "undecided",
+      "summary": "Saved reference proof set from output/mailer-samples/v-B-brutalist for comparison against the active Style A winner and bar variant.",
+      "reviewFocus": [
+        "Use as a preserved style reference, not as the current active winner.",
+        "Compare high-contrast/brutalist treatment, front/back balance, QR handoff, and print-ready package structure against current finalists.",
+        "If revived, re-check USPS/EDDM placement, bleed, printer PDF requirements, and compliance disclosure handling."
+      ],
+      "knownLimitations": [
+        "Reference proof set may not reflect the latest Style A winner refinements."
+      ],
+      "assets": [
+        {
+          "label": "Front proof",
+          "type": "image",
+          "path": "output/mailer-samples/v-B-brutalist/SWW_VB_Brutalist_Front_Proof.png",
+          "role": "front"
+        },
+        {
+          "label": "Back proof",
+          "type": "image",
+          "path": "output/mailer-samples/v-B-brutalist/SWW_VB_Brutalist_Back_Proof.png",
+          "role": "back"
+        },
+        {
+          "label": "HTML proof",
+          "type": "html",
+          "path": "output/mailer-samples/v-B-brutalist/SWW_VB_Brutalist_Proof.html",
+          "role": "proof"
+        },
+        {
+          "label": "Contact sheet",
+          "type": "html",
+          "path": "output/mailer-samples/v-B-brutalist/SWW_VB_Brutalist_ContactSheet.html",
+          "role": "overview"
+        },
+        {
+          "label": "Contact sheet image",
+          "type": "image",
+          "path": "output/mailer-samples/v-B-brutalist/SWW_VB_Brutalist_ContactSheet.png",
+          "role": "overview"
+        },
+        {
+          "label": "Print-ready PDF",
+          "type": "pdf",
+          "path": "output/mailer-samples/v-B-brutalist/SWW_VB_Brutalist_PrintReady_8p75x6p5.pdf",
+          "role": "print-ready"
+        },
+        {
+          "label": "Notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/v-B-brutalist/SWW_VB_Brutalist_Notes.md",
+          "role": "notes"
         }
       ]
     },

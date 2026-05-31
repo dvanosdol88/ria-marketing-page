@@ -1,0 +1,877 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>SWW Version A — Editorial EDDM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  @page { size: 8.75in 6.5in; margin: 0; }
+  * { box-sizing: border-box; }
+
+  :root {
+    --ink:      #111111;
+    --ink-2:    #2a2422;
+    --ink-mute: #6b5e57;
+    --paper:    #F6F1E6;        /* warm cream */
+    --paper-2:  #EFE7D5;        /* one shade deeper for postal zone backdrop */
+    --rule:     #1d1916;        /* nearly-black with a hint of warmth */
+    --rule-soft:#bdb4a3;
+    --green:    #00682B;        /* single brand accent */
+    --red:      #B11226;        /* used ONLY on AUM curve (signal of loss) */
+  }
+
+  html, body {
+    margin: 0;
+    background: #c8c5bc;       /* a quiet table behind the page */
+    color: var(--ink);
+    font-family: 'IBM Plex Serif', Georgia, 'Times New Roman', serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    font-feature-settings: 'onum','liga','kern';
+  }
+
+  .page {
+    position: relative;
+    width: 1750px;
+    height: 1300px;
+    background: var(--paper);
+    overflow: hidden;
+    page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* ============ TYPE SYSTEM ============ */
+  .sans { font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif; }
+
+  .smallcap {
+    font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-weight: 600;
+  }
+
+  /* ============ MASTHEAD (shared front + back top) ============ */
+  .mast {
+    position: absolute;
+    top: 56px;
+    left: 110px;
+    right: 110px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    color: var(--ink);
+  }
+  .mast-left {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 36px;
+    letter-spacing: -0.01em;
+  }
+  .mast-center {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink-mute);
+  }
+  .mast-right {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink-mute);
+  }
+  .mast-rule {
+    position: absolute;
+    left: 110px;
+    right: 110px;
+    top: 108px;
+    height: 1.5px;
+    background: var(--rule);
+  }
+  .mast-rule.hair {
+    top: 113px;
+    height: 0.6px;
+    background: var(--rule);
+    opacity: 0.55;
+  }
+
+  /* ============ FRONT ============ */
+  .front-headline {
+    position: absolute;
+    top: 140px;
+    left: 110px;
+    width: 1010px;
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-weight: 800;
+    font-size: 76px;
+    line-height: 0.96;
+    letter-spacing: -0.022em;
+    color: var(--ink);
+  }
+  .front-headline em {
+    font-style: italic;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .front-deck {
+    position: absolute;
+    top: 296px;
+    left: 110px;
+    width: 1010px;
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 1.22;
+    color: var(--ink-2);
+    letter-spacing: -0.005em;
+  }
+
+  /* --- LEAD PARA WITH DROP CAP --- */
+  .lead {
+    position: absolute;
+    top: 396px;
+    left: 110px;
+    width: 740px;
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 1.36;
+    color: var(--ink-2);
+    column-count: 2;
+    column-gap: 30px;
+    column-rule: 0.5px solid var(--rule-soft);
+    text-align: justify;
+    hyphens: auto;
+  }
+  .lead .dropcap {
+    float: left;
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-weight: 800;
+    font-size: 88px;
+    line-height: 0.86;
+    margin: 6px 10px 0 0;
+    color: var(--green);
+  }
+
+  /* --- HERO NUMBER (right column, sits next to headline) --- */
+  .hero {
+    position: absolute;
+    top: 140px;
+    right: 110px;
+    width: 470px;
+    text-align: right;
+    border-left: 1px solid var(--rule);
+    padding: 6px 0 6px 30px;
+  }
+  .hero-eyebrow {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink-mute);
+    margin-bottom: 10px;
+  }
+  .hero-number {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-weight: 800;
+    font-style: italic;
+    font-size: 122px;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    color: var(--green);
+    font-feature-settings: 'onum';
+  }
+  .hero-label {
+    margin-top: 14px;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .hero-sub {
+    margin-top: 12px;
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.32;
+    color: var(--ink-2);
+    text-align: right;
+  }
+  .hero-stats {
+    margin-top: 22px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 24px;
+    border-top: 0.6px solid var(--rule-soft);
+    padding-top: 14px;
+  }
+  .hero-stat {
+    text-align: right;
+  }
+  .hero-stat .k {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    font-size: 11px;
+    color: var(--ink-mute);
+  }
+  .hero-stat .v {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1;
+    margin-top: 5px;
+    color: var(--ink);
+    font-feature-settings: 'onum';
+  }
+  .hero-stat .v.red { color: var(--red); }
+  .hero-stat .v.green { color: var(--green); }
+
+  /* --- CHART (front, bottom-right) --- */
+  .chart-block {
+    position: absolute;
+    top: 640px;
+    right: 110px;
+    width: 820px;
+    border-top: 0.6px solid var(--rule);
+    padding-top: 14px;
+  }
+  .chart-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .chart-title {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 26px;
+    line-height: 1.1;
+    color: var(--ink);
+    letter-spacing: -0.012em;
+  }
+  .chart-sub {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-top: 2px;
+  }
+  .chart-wrap { width: 100%; height: 460px; }
+
+  /* --- PULL QUOTE (front, left, the editorial anchor) --- */
+  .pullquote {
+    position: absolute;
+    bottom: 158px;
+    left: 110px;
+    width: 760px;
+    border-top: 2px solid var(--ink);
+    border-bottom: 0.6px solid var(--ink);
+    padding: 22px 0 18px 0;
+  }
+  .pullquote .open {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-weight: 800;
+    font-size: 100px;
+    line-height: 0.4;
+    color: var(--green);
+    display: block;
+    margin: 0 0 -10px -6px;
+    height: 30px;
+  }
+  .pullquote .quote {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.18;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .pullquote .attrib {
+    margin-top: 14px;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--ink-mute);
+  }
+
+  /* --- FRONT FOOT --- */
+  .front-foot {
+    position: absolute;
+    left: 110px;
+    right: 110px;
+    bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 0.6px solid var(--rule-soft);
+    padding-top: 14px;
+  }
+  .front-disc {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: var(--ink-mute);
+    max-width: 1180px;
+    font-weight: 400;
+  }
+  .front-domain {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    margin-left: 30px;
+  }
+
+  /* ============ BACK ============
+     Top 433 px reserved for USPS: indicia + LOCAL POSTAL CUSTOMER.
+     A clear horizontal demarcation rule at y = 432.
+     Editorial contributor essay treatment lives below. */
+
+  .postal-zone {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 432px;
+    background: var(--paper);
+    border-bottom: 1.5px solid var(--rule);
+  }
+  .postal-tag {
+    position: absolute;
+    top: 38px;
+    left: 110px;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-weight: 600;
+    color: var(--ink-mute);
+  }
+
+  .indicia {
+    position: absolute;
+    top: 80px;
+    right: 110px;
+    width: 360px;
+    border: 1.2px solid var(--rule);
+    padding: 18px 12px;
+    text-align: center;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+  .indicia .label {
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    color: var(--ink-mute);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .lpc {
+    position: absolute;
+    top: 252px;
+    right: 110px;
+    width: 360px;
+    border: 0.6px dashed var(--rule);
+    padding: 26px 12px;
+    text-align: center;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: 0.22em;
+    color: var(--ink);
+    text-transform: uppercase;
+  }
+  .lpc .sub {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    color: var(--ink-mute);
+    margin-top: 8px;
+  }
+
+  /* Address-block helper text on the LEFT half of the postal zone — quiet,
+     editorial, not marketing. */
+  .postal-hint {
+    position: absolute;
+    top: 130px;
+    left: 110px;
+    width: 700px;
+    color: var(--ink-mute);
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .postal-hint .big {
+    display: block;
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-transform: none;
+    margin-top: 12px;
+  }
+
+  /* --- BACK EDITORIAL ZONE (y >= 432) --- */
+  .back-mast {
+    position: absolute;
+    top: 462px;
+    left: 110px;
+    right: 110px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .back-mast .section {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--ink-mute);
+  }
+  .back-mast .domain {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .back-mast-rule {
+    position: absolute;
+    left: 110px;
+    right: 110px;
+    top: 500px;
+    height: 0.6px;
+    background: var(--rule);
+  }
+
+  /* PORTRAIT — contributor photo treatment on the left */
+  .portrait-wrap {
+    position: absolute;
+    top: 528px;
+    left: 110px;
+    width: 280px;
+  }
+  .portrait {
+    width: 280px;
+    height: 296px;
+    object-fit: cover;
+    object-position: center 28%;
+    display: block;
+    filter: saturate(0.95) contrast(1.02);
+  }
+  .portrait-cap {
+    margin-top: 10px;
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.32;
+    color: var(--ink-mute);
+    border-top: 0.6px solid var(--rule-soft);
+    padding-top: 8px;
+  }
+  .portrait-cap .name {
+    font-style: normal;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* ARTICLE BODY — David's essay/bio */
+  .essay {
+    position: absolute;
+    top: 528px;
+    left: 430px;
+    width: 720px;
+  }
+  .essay .eyebrow {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .essay h2 {
+    margin: 0 0 4px;
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-weight: 800;
+    font-size: 48px;
+    line-height: 1.0;
+    letter-spacing: -0.022em;
+    color: var(--ink);
+  }
+  .essay .creds {
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-top: 6px;
+  }
+  .essay .body {
+    margin-top: 18px;
+    column-count: 2;
+    column-gap: 26px;
+    column-rule: 0.5px solid var(--rule-soft);
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.42;
+    color: var(--ink-2);
+    text-align: justify;
+    hyphens: auto;
+  }
+  .essay .body p {
+    margin: 0 0 12px;
+  }
+  .essay .body p:last-child { margin-bottom: 0; }
+  .essay .body .cta-line {
+    font-style: italic;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* QR + DOMAIN BAND — bottom right of back */
+  .qr-band {
+    position: absolute;
+    bottom: 70px;
+    right: 110px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .qr-band img {
+    width: 160px;
+    height: 160px;
+    display: block;
+    background: #fff;
+  }
+  .qr-band .qr-meta {
+    text-align: left;
+    max-width: 260px;
+  }
+  .qr-band .qr-meta .smallcap {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    color: var(--ink-mute);
+  }
+  .qr-band .qr-meta .dom {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 26px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-top: 6px;
+  }
+  .qr-band .qr-meta .helper {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.3;
+    color: var(--ink-mute);
+    margin-top: 8px;
+  }
+
+  /* THREE-STAT BLOCK — bottom-left of back, editorial style */
+  .stats {
+    position: absolute;
+    bottom: 70px;
+    left: 110px;
+    width: 760px;
+    border-top: 2px solid var(--ink);
+    padding-top: 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+  }
+  .stats .col .n {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 800;
+    font-size: 56px;
+    line-height: 0.92;
+    color: var(--green);
+    letter-spacing: -0.025em;
+    margin-bottom: 6px;
+  }
+  .stats .col .t {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-size: 13.5px;
+    line-height: 1.35;
+    color: var(--ink-2);
+  }
+
+  /* BACK FOOT — small disclaimer */
+  .back-disc {
+    position: absolute;
+    left: 110px;
+    right: 110px;
+    bottom: 22px;
+    font-family: 'IBM Plex Sans', Arial, sans-serif;
+    font-size: 9px;
+    line-height: 1.45;
+    color: var(--ink-mute);
+    font-weight: 400;
+  }
+
+  /* WALL STREET JOURNAL stamp on back — small editorial seal */
+  .wsj-seal {
+    position: absolute;
+    top: 462px;
+    right: 110px;
+    text-align: right;
+  }
+  .wsj-seal .smallcap {
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    color: var(--ink-mute);
+  }
+  .wsj-seal .name {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--ink);
+    margin-top: 3px;
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============== FRONT ============== -->
+  <section class="page front">
+    <!-- Masthead -->
+    <div class="mast">
+      <div class="mast-left">Smarter Way Wealth</div>
+      <div class="mast-center">A Reader Brief on the Math of Fees</div>
+      <div class="mast-right">Vol. I &nbsp;·&nbsp; No. 1</div>
+    </div>
+    <div class="mast-rule"></div>
+    <div class="mast-rule hair"></div>
+
+    <!-- Lead headline -->
+    <div class="front-headline">
+      How much are you<br />
+      <em>actually</em> overpaying?
+    </div>
+
+    <!-- Deck -->
+    <div class="front-deck">
+      The number you&rsquo;ve never been shown.
+    </div>
+
+    <!-- Hero number column (right) -->
+    <div class="hero">
+      <div class="hero-eyebrow">Your Lifetime Fee Gap</div>
+      <div class="hero-number">$952,405</div>
+      <div class="hero-sub">
+        That&rsquo;s how much more you&rsquo;d keep with our flat $100/month fee instead of a 1% AUM advisor over 20 years.
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="k">Their lifetime fees</div>
+          <div class="v red">$472,938</div>
+        </div>
+        <div class="hero-stat">
+          <div class="k">Our lifetime fees</div>
+          <div class="v green">$24,000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lead paragraph w/ drop cap -->
+    <div class="lead">
+      <span class="dropcap">O</span>ne&nbsp;percent doesn&rsquo;t sound like much. Until you compound it for thirty years &mdash; then it quietly subtracts roughly a fifth of your wealth. That&rsquo;s not opinion; it&rsquo;s arithmetic. A flat $100 per month buys the same fiduciary advice, the same portfolio management, the same tax&#8209;aware planning &mdash; without the silent escalator. Scan the code on the reverse, or run the numbers at youarepayingtoomuch.com. There&rsquo;s no email required, no spoilers, and no obligation. Just the math.
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-block">
+      <div class="chart-head">
+        <div>
+          <div class="chart-title">Your money, two paths.</div>
+          <div class="chart-sub">$100/mo flat vs. 1.00% AUM &nbsp;·&nbsp; Both at 9.0% annual growth</div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+  <svg viewBox="0 0 800 460" class="chart-svg" role="img" aria-label="Two paths over twenty years">
+    <defs>
+      <style>
+        .chart-svg { font-family: 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif; }
+        .grid { stroke: #111; stroke-width: 0.4; opacity: 0.12; }
+        .axis { stroke: #111; stroke-width: 0.9; }
+        .tick { fill: #2a2422; font-size: 17px; font-weight: 500; letter-spacing: 0.04em; }
+        .flat { fill: none; stroke: #00682B; stroke-width: 3.4; stroke-linecap: round; }
+        .aum  { fill: none; stroke: #B11226; stroke-width: 2.6; stroke-dasharray: 7 6; stroke-linecap: round; }
+        .end-dot { stroke-width: 0; }
+        .end-lbl-flat { fill: #00682B; font-family: 'IBM Plex Serif', Georgia, serif; font-size: 22px; font-weight: 700; font-feature-settings: 'onum'; }
+        .end-lbl-aum  { fill: #B11226; font-family: 'IBM Plex Serif', Georgia, serif; font-size: 22px; font-weight: 700; font-feature-settings: 'onum'; }
+        .end-sub { fill: #6b5e57; font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+      </style>
+    </defs>
+
+
+      <line x1="110" y1="400" x2="750" y2="400" class="grid" />
+      <text x="96" y="406" class="tick" text-anchor="end">$0</text>
+      <line x1="110" y1="307.81786941580754" x2="750" y2="307.81786941580754" class="grid" />
+      <text x="96" y="313.81786941580754" class="tick" text-anchor="end">$1.45M</text>
+      <line x1="110" y1="215" x2="750" y2="215" class="grid" />
+      <text x="96" y="221" class="tick" text-anchor="end">$2.91M</text>
+      <line x1="110" y1="122.81786941580756" x2="750" y2="122.81786941580756" class="grid" />
+      <text x="96" y="128.81786941580756" class="tick" text-anchor="end">$4.36M</text>
+      <line x1="110" y1="30" x2="750" y2="30" class="grid" />
+      <text x="96" y="36" class="tick" text-anchor="end">$5.82M</text>
+    <text x="110" y="428" class="tick" text-anchor="middle">0y</text><text x="238" y="428" class="tick" text-anchor="middle">4y</text><text x="366" y="428" class="tick" text-anchor="middle">8y</text><text x="494" y="428" class="tick" text-anchor="middle">12y</text><text x="622" y="428" class="tick" text-anchor="middle">16y</text><text x="750" y="428" class="tick" text-anchor="middle">20y</text>
+
+    <line x1="110" y1="30" x2="110" y2="400" class="axis" />
+    <line x1="110" y1="400" x2="750" y2="400" class="axis" />
+
+    <path d="M 110.00 336.43 L 142.00 331.57 L 174.00 326.34 L 206.00 320.71 L 238.00 314.66 L 270.00 308.13 L 302.00 301.12 L 334.00 293.56 L 366.00 285.43 L 398.00 276.68 L 430.00 267.25 L 462.00 257.11 L 494.00 246.19 L 526.00 234.44 L 558.00 221.80 L 590.00 208.18 L 622.00 193.52 L 654.00 177.75 L 686.00 160.77 L 718.00 142.49 L 750.00 122.82" class="aum" />
+    <path d="M 110.00 336.43 L 142.00 330.57 L 174.00 324.18 L 206.00 317.20 L 238.00 309.58 L 270.00 301.26 L 302.00 292.17 L 334.00 282.24 L 366.00 271.40 L 398.00 259.56 L 430.00 246.63 L 462.00 232.51 L 494.00 217.09 L 526.00 200.25 L 558.00 181.87 L 590.00 161.78 L 622.00 139.85 L 654.00 115.91 L 686.00 89.75 L 718.00 61.19 L 750.00 30.00" class="flat" />
+
+    <circle cx="750" cy="30" r="6" fill="#00682B" class="end-dot" />
+    <circle cx="750" cy="122.81786941580756" r="6" fill="#B11226" class="end-dot" />
+
+    <text x="738" y="14" class="end-sub" text-anchor="end">Flat fee</text>
+    <text x="738" y="36"  class="end-lbl-flat" text-anchor="end">$5.82M</text>
+
+    <text x="738" y="144.81786941580756" class="end-sub" text-anchor="end">1% AUM</text>
+    <text x="738" y="166.81786941580756" class="end-lbl-aum" text-anchor="end">$4.36M</text>
+  </svg></div>
+    </div>
+
+    <!-- Pull quote -->
+    <div class="pullquote">
+      <span class="open">&ldquo;</span>
+      <div class="quote">Fees are one of the few things in investing that are entirely within your control.</div>
+      <div class="attrib">&mdash; The Wall Street Journal &nbsp;·&nbsp; On the math of long-term investing</div>
+    </div>
+
+    <!-- Front foot -->
+    <div class="front-foot">
+      <div class="front-disc">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 9% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee. Smarter Way Wealth is a registered investment adviser. See ADV at adviserinfo.sec.gov.</div>
+      <div class="front-domain">youarepayingtoomuch.com</div>
+    </div>
+  </section>
+
+  <!-- ============== BACK / MAILING SIDE ============== -->
+  <section class="page back">
+    <!-- ===== POSTAL ZONE (0-432) ===== -->
+    <div class="postal-zone">
+      <div class="postal-tag">Reserved for USPS &nbsp;·&nbsp; Addressing</div>
+
+      <div class="postal-hint">
+        For Every Door Direct Mail<sup>&reg;</sup> Retail.
+        <span class="big">Local Postal Customer.</span>
+      </div>
+
+      <div class="indicia">
+        <div class="label">Indicia</div>
+        PRSRT STD<br />
+        ECRWSS<br />
+        U.S. POSTAGE PAID<br />
+        EDDM RETAIL
+      </div>
+
+      <div class="lpc">
+        Local<br />Postal<br />Customer
+        <div class="sub">Resident &nbsp;·&nbsp; Carrier Route</div>
+      </div>
+    </div>
+
+    <!-- ===== EDITORIAL ZONE (433-1300) ===== -->
+    <div class="back-mast">
+      <div class="section">Meet Your Advisor</div>
+      <div class="domain">youarepayingtoomuch.com</div>
+    </div>
+    <div class="back-mast-rule"></div>
+
+    <!-- Portrait + caption (contributor photo treatment) -->
+    <div class="portrait-wrap">
+      <img class="portrait" src="../../../public/DVO%20Head%20Shot%20picture.jpg" alt="David J. Van Osdol" />
+      <div class="portrait-cap">
+        <span class="name">David J. Van Osdol,</span> photographed in Connecticut. He is the founder of Smarter Way Wealth, a flat-fee registered investment adviser.
+      </div>
+    </div>
+
+    <!-- Article body / bio -->
+    <div class="essay">
+      <div class="eyebrow">&mdash; A note from the founder</div>
+      <h2>The percentage<br />no longer matches<br />the work.</h2>
+      <div class="creds">CFA Charterholder &nbsp;·&nbsp; CFP&reg; Practitioner &nbsp;·&nbsp; Connecticut</div>
+      <div class="body">
+        <p>I built Smarter Way Wealth because the percentage-fee model no longer matches the work. You shouldn&rsquo;t pay 5x more just because you saved 5x more.</p>
+        <p>A flat $100/month retainer covers the same fiduciary planning, portfolio management, tax-aware rebalancing, and real-estate analysis &mdash; without the silent escalator.</p>
+        <p class="cta-line">If your number on the reverse is bigger than you expected, let&rsquo;s have a fifteen-minute chat.</p>
+      </div>
+    </div>
+
+    <!-- Three-stat editorial block, bottom-left -->
+    <div class="stats">
+      <div class="col">
+        <div class="n">1%</div>
+        <div class="t">doesn&rsquo;t sound like much. Until you compound it for thirty years &mdash; then it quietly subtracts roughly a fifth of your wealth.</div>
+      </div>
+      <div class="col">
+        <div class="n">$100</div>
+        <div class="t">flat per month. Same fiduciary advice. Same portfolio management. Same tax-aware planning. None of the AUM creep.</div>
+      </div>
+      <div class="col">
+        <div class="n">$0</div>
+        <div class="t">extra to find out. The calculator is free. The fifteen-minute audit is free. You see your fee gap before you ever sign anything.</div>
+      </div>
+    </div>
+
+    <!-- QR + domain band -->
+    <div class="qr-band">
+      <img src="../1-percent-blues/source-eddm/yaptom_default_inputs_qr.png" alt="" />
+      <div class="qr-meta">
+        <div class="smallcap">Run the math</div>
+        <div class="dom">youarepayingtoomuch.com</div>
+        <div class="helper">Scan to see your own fee gap. No email required.</div>
+      </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="back-disc">Educational only. Hypothetical results are not investment advice. Actual results vary. Example assumes a $1,000,000 portfolio, 9% annual growth, a 1% asset-based fee, 20 years, and a $100/month flat advisory fee. Smarter Way Wealth is a registered investment adviser. See ADV at adviserinfo.sec.gov.</div>
+  </section>
+
+</body>
+</html>
