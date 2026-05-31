@@ -158,7 +158,7 @@ function buildV3LineChartGroup() {
             <stop offset="100%" stop-color="#00A540" stop-opacity="0"/>
           </linearGradient>
         </defs>
-        <rect x="25" y="13" width="531" height="196" rx="12" ry="12" fill="#EEF0F5" stroke="#e2e8f0" stroke-width="1.5"/>
+        <rect x="25" y="9" width="531" height="200" rx="12" ry="12" fill="#EEF0F5" stroke="#e2e8f0" stroke-width="1.5"/>
         ${yTicks
           .map(
             (tick) => `
