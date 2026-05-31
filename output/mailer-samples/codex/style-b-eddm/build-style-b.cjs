@@ -638,6 +638,7 @@ const CSS = `
   }
   .vote-options {
     display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 4px;
     margin-top: 7px;
   }
@@ -645,12 +646,12 @@ const CSS = `
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 0.19in;
+    min-height: 0.24in;
     border: 2px solid #0F172A;
     border-radius: 5px;
     background: #fff;
     color: #0F172A;
-    font-size: 6.8px;
+    font-size: 6.3px;
     line-height: 1.05;
     font-weight: 900;
   }
