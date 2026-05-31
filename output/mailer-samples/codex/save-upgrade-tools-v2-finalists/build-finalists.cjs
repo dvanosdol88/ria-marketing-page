@@ -301,6 +301,7 @@ const finalistCss = `
     .ed-front .finalist-chart-row .qr-block img {
       width: 1.2075in;
       height: 1.2075in;
+      transform: translateY(-10px);
     }
     .ed-front .finalist-chart-row .qr-block {
       transform: translateX(-5px);
@@ -328,6 +329,7 @@ const finalistCss = `
       justify-content: center;
       gap: 4px;
       min-width: 0;
+      transform: translateY(1px);
     }
     .ed-front .assumption-key b {
       font-weight: 600;
