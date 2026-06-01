@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>SWW EDDM FINALISTS · 01E · Advisor Green Band</title>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&display=swap');
+
+  :root {
+    --green: #00A540;
+    --ink: #07140D;
+    --slate: #34483C;
+    --rule: rgba(7,20,13,0.18);
+    --rule-strong: rgba(7,20,13,0.55);
+    --paper: #FFFFFF;
+    --paper-warm: #FAF8F2;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #e9eae6;
+    font-family: 'Inter', system-ui, Arial, Helvetica, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+  }
+  .stage {
+    display: flex; flex-direction: column; align-items: center; gap: 32px; padding: 32px 0;
+  }
+  .card {
+    width: 8.75in;
+    height: 6.5in;
+    position: relative;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  }
+  /* trim guides — shown on screen, hidden on print */
+  .trim::before, .trim::after {
+    content: ''; position: absolute; pointer-events: none;
+  }
+  .trim::before {
+    inset: 0.125in; border: 1px dashed rgba(7,20,13,0.30);
+  }
+  .label-front, .label-back {
+    position: fixed; top: 6px; left: 50%; transform: translateX(-50%);
+    font: 600 11px 'Inter', sans-serif; color: #6b6b6b;
+    background: #fff; padding: 2px 10px; border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    z-index: 9999;
+  }
+  .corner {
+    position: absolute; font: 500 9px 'Inter', sans-serif; color: rgba(7,20,13,0.45);
+    letter-spacing: 0.04em;
+  }
+  .corner.tl { top: 6px; left: 10px; }
+  .corner.tr { top: 6px; right: 10px; }
+  @media print {
+    .trim::before { display: none; }
+    .corner { display: none; }
+    body { background: #fff; }
+    .card { box-shadow: none; }
+    .stage { gap: 0; padding: 0; }
+  }
+  /* Safety: arrest greens going too lime */
+  .green { color: var(--green); }
+  .ink { color: var(--ink); }
+  .slate { color: var(--slate); }
+
+  /* Default chart styling — concepts override locally */
+  .chart-svg { display: block; width: 100%; height: 100%; }
+
+    .ed-front, .ed-back { padding: 0.36in 0.5in 0.32in; background: #fff; color: var(--ink); height: 100%; box-sizing: border-box; display: flex; flex-direction: column; }
+    .ed-front .kicker { text-align: center; font: 700 14px 'Inter'; letter-spacing: 0.02em; }
+    .ed-front .rule { height: 1px; background: rgba(7,20,13,0.55); margin: 12px 0 14px; }
+    .ed-front .rule { height: 1px; background: rgba(7,20,13,0.55); margin: 12px 0 14px; }
+    .ed-front .headline {
+      font: 900 52px/0.96 'Inter'; letter-spacing: -0.02em; text-align: center;
+    }
+    .ed-front .headline .dollar { color: var(--green); font-size: 68px; }
+    .ed-front .footnote { text-align: center; font: 500 13px 'Inter'; color: var(--slate); margin-top: 8px; }
+    .ed-front .founder-banner { border-top: 1.5px solid var(--green); border-bottom: 1.5px solid var(--green); padding: 14px 0; margin-top: 30px; text-align: center; }
+    .ed-front .founder { font: 800 18px/1.35 'Inter'; color: var(--ink); max-width: 6.8in; margin-left:auto; margin-right:auto; }
+    .ed-front .byline { font: 500 14px 'Inter'; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 6px; }
+    .ed-front .chart-row { display: grid; grid-template-columns: 1fr 1.25in; gap: 22px; margin-top: 12px; align-items: center; }
+    .ed-front .chart-frame { border-top: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule-strong); padding: 4px 8px; margin: 0 -8px; justify-self: start; }
+    .ed-front .chart-frame .chart-svg { width: auto; height: 1.45in; }
+    .ed-front .qr-block { text-align: center; }
+    .ed-front .qr-block img { width: 1.05in; height: 1.05in; display: block; margin: 0 auto; }
+    .ed-front .qr-block .qr-cap { font: 600 9.5px 'Inter'; margin-top: 6px; letter-spacing: 0.04em; }
+    .ed-front .disclosure { font: 400 9.5px/1.35 'Inter'; color: var(--slate); margin-top: 10px; text-align: center; max-width: 7.4in; margin-left:auto; margin-right:auto; }
+
+    .ed-back .indicia { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: start; padding-bottom: 18px; border-bottom: 1px solid rgba(7,20,13,0.55); }
+    .ed-back .indicia .ret { font: 500 11px/1.45 'Inter'; }
+    .ed-back .indicia .ret .name { font-weight: 800; margin-bottom: 4px; }
+    .ed-back .indicia .addr { text-align: center; font: 800 14px 'Inter'; letter-spacing: 0.05em; padding-top: 6px; }
+    .ed-back .indicia .addr .sub { font: 400 10px 'Inter'; letter-spacing: 0.04em; margin-top: 4px; color: var(--slate); text-transform: none; font-weight: 500; }
+    .ed-back .indicia .ind { justify-self: end; border: 1px solid var(--ink); padding: 8px 14px; font: 700 10px/1.4 'Inter'; text-align: center; letter-spacing: 0.05em; width: 1.55in; }
+    .ed-back .body-grid { display: grid; grid-template-columns: 2.4in 1fr 1.4in; gap: 12px 28px; padding-top: 18px; align-items: start; }
+    .ed-back .founder-block { grid-row: 1 / 3; }
+    .ed-back .founder-block .logo { width: 2.75in; display: block; margin-bottom: 9px; margin-left: -19px; }
+    .ed-back .founder-block .photo { width: 1.85in; height: 2.1in; object-fit: cover; display: block; border: 1px solid var(--rule); }
+    .ed-back .founder-block .name { font: 800 13px 'Inter'; margin-top: 10px; letter-spacing: 0.02em; }
+    .ed-back .founder-block .sub { font: 500 10px 'Inter'; color: var(--slate); margin-top: 2px; letter-spacing: 0.05em; }
+    .ed-back .benefits { align-self: start; margin-top: 4px; }
+    .ed-back .benefits .item { padding: 8px 0 12px; border-bottom: 1px solid var(--rule); }
+    .ed-back .benefits .item:last-child { border-bottom: none; }
+    .ed-back .benefits .key { font: 900 36px/1 'Inter'; letter-spacing: -0.02em; }
+    .ed-back .benefits .tail { font: 600 18px 'Inter'; margin-left: 8px; color: var(--slate); }
+    .ed-back .benefits .desc { font: 500 13px/1.4 'Inter'; margin-top: 6px; color: var(--ink); }
+    .ed-back .benefits .desc .b-you { font-weight: 800; color: var(--ink); }
+    .ed-back .qr-col { text-align: center; align-self: start; margin-top: 19px; }
+    .ed-back .no-move-callout { grid-column: 2 / 4; display: flex; align-items: center; gap: 10px; }
+    .ed-back .no-move-callout svg { width: 34px; height: 34px; flex-shrink: 0; }
+    .ed-back .no-move-callout span { font: italic 800 17px/1.3 'Inter'; color: var(--ink); letter-spacing: -0.02em; }
+    .ed-back .qr-col img { width: 1.4in; height: 1.4in; display: block; margin: 0 auto; }
+    .ed-back .qr-col .cap { font: 500 10px/1.35 'Inter'; margin-top: 8px; color: var(--ink); }
+    .ed-back .domain-row { margin-top: 13px; text-align: center; padding-top: 16px; border-top: 1px solid var(--rule-strong); }
+    .ed-back .domain-row .domain { font: 900 38px 'Inter'; letter-spacing: -0.01em; color: var(--ink); }
+
+
+    /* FINALISTS: targeted V2 01 corrections */
+    .ed-front .finalist-chart-row {
+      grid-template-columns: minmax(0, 1fr) 1.25in;
+      gap: 22px;
+      align-items: center;
+    }
+    .ed-front .rule,
+    .ed-front .hero-bottom-rule {
+      height: 1px;
+      background: rgba(7,20,13,0.55);
+    }
+    .ed-front .hero-bottom-rule {
+      margin: 12px 0 0;
+    }
+    .ed-front .founder-banner {
+      margin-top: 40px;
+    }
+    .ed-front .headline {
+      font: 900 50px/0.96 'Inter';
+      letter-spacing: -0.02em;
+      text-align: center;
+    }
+    .ed-front .headline .dollar {
+      font-size: 65px;
+    }
+    .ed-front .footnote {
+      margin-bottom: 4.78px;
+    }
+    .ed-front .finalist-chart-row .chart-proof-box {
+      min-width: 0;
+      width: fit-content;
+      transform: translateX(30px);
+    }
+    .ed-front .finalist-chart-row .chart-frame {
+      margin: 0;
+      border-top: none;
+      border-bottom: none;
+    }
+    .ed-front .finalist-chart-row .chart-frame .chart-svg {
+      height: 1.34in;
+      overflow: visible;
+    }
+    .ed-front .finalist-chart-row .qr-block img {
+      width: 1.2075in;
+      height: 1.2075in;
+      transform: translateY(-10px);
+    }
+    .ed-front .finalist-chart-row .qr-block {
+      transform: translateX(-5px);
+    }
+    .ed-front .finalist-chart-row .qr-block .qr-cap {
+      transform: translateY(-4px);
+    }
+    .ed-front .chart-meta {
+      margin: 3px 0 0;
+      width: 100%;
+    }
+    .ed-front .assumption-key {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: center;
+      justify-content: stretch;
+      column-gap: 0;
+      border-top: 1px solid rgba(7,20,13,0.20);
+      border-bottom: 1px solid rgba(7,20,13,0.20);
+      padding: 2px 0;
+      font: 650 8.5px/1.1 'Inter';
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .ed-front .assumption-key span {
+      display: inline-flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 4px;
+      min-width: 0;
+      transform: translateY(1px);
+    }
+    .ed-front .assumption-key b {
+      font-weight: 600;
+      color: var(--slate);
+    }
+    .ed-front .assumption-key strong {
+      font-weight: 900;
+      color: var(--ink);
+    }
+    .ed-front .thin-disclaimer {
+      margin-top: 2px;
+      width: 100%;
+      text-align: center;
+      font: 400 8.7px/1.15 'Inter';
+      color: var(--slate);
+      white-space: nowrap;
+    }
+    .ed-front .front-proof-box {
+      margin-top: 12px;
+      padding: 0 20px 18px;
+      border: 1px solid rgba(7,20,13,0.55);
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .ed-front .front-proof-box .rule {
+      margin: 0 -20px 14px;
+    }
+    .ed-front .front-proof-box.soft-card {
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 9px 18px rgba(7,20,13,0.08);
+    }
+    .ed-front .front-proof-box.green-wash {
+      padding-bottom: 8px;
+      border-radius: 13px;
+      border-color: rgba(0,165,64,0.34);
+      background: linear-gradient(180deg, rgba(0,165,64,0.055) 0%, rgba(255,255,255,0.98) 58%, rgba(255,255,255,1) 100%);
+      box-shadow: 0 7px 16px rgba(0,165,64,0.09);
+    }
+    .ed-front .front-proof-box.green-wash .hero-bottom-rule {
+      display: none;
+    }
+    .ed-front.green-wash .founder {
+      font-size: 19px;
+    }
+    .ed-front.green-wash .byline {
+      font-size: 15px;
+    }
+    .ed-front.founder-advisor-soft-panel .founder-banner {
+      margin-top: 34px;
+      padding: 18px 24px;
+      border: 1.5px solid rgba(0,165,64,0.42);
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(239,252,244,0.88));
+      box-shadow: 0 8px 18px rgba(0,165,64,0.08);
+    }
+    .ed-front.founder-advisor-green-band .founder-banner {
+      margin-top: 34px;
+      padding: 18px 28px;
+      border: none;
+      border-radius: 9px;
+      background: #07140D;
+      box-shadow: 0 8px 18px rgba(7,20,13,0.16);
+    }
+    .ed-front.founder-advisor-green-band .founder,
+    .ed-front.founder-advisor-green-band .byline {
+      color: #fff;
+    }
+    .ed-front.founder-advisor-green-band .founder {
+      font-size: 20px;
+    }
+    .ed-front.founder-advisor-green-band .founder .green {
+      color: #20C65A;
+    }
+    .ed-front.founder-advisor-nameplate .founder-banner {
+      position: relative;
+      margin-top: 34px;
+      padding: 18px 28px 18px 36px;
+      border: 1.5px solid rgba(7,20,13,0.26);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 7px 16px rgba(7,20,13,0.09);
+    }
+    .ed-front.founder-advisor-nameplate .founder-banner::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      top: 14px;
+      bottom: 14px;
+      width: 5px;
+      border-radius: 999px;
+      background: var(--green);
+    }
+    .ed-front .front-proof-box.raised-paper {
+      border-radius: 9px;
+      background: linear-gradient(180deg, #fff 0%, #fbfcfa 100%);
+      box-shadow: 0 11px 0 rgba(7,20,13,0.035), 0 14px 24px rgba(7,20,13,0.10);
+    }
+    .ed-front .front-proof-box.raised-paper .rule,
+    .ed-front .front-proof-box.raised-paper .hero-bottom-rule {
+      background: rgba(7,20,13,0.48);
+    }
+    .ed-front .boxed-version .chart-proof-box {
+      border: 4px solid #07140D;
+      padding: 6px 8px 5px;
+      background: #fff;
+    }
+    .ed-front .boxed-version .chart-frame {
+      margin: 0;
+      padding: 2px 5px;
+      border-top: none;
+      border-bottom: 1px solid rgba(7,20,13,0.45);
+    }
+    .ed-front .boxed-version .chart-frame .chart-svg {
+      height: 1.22in;
+    }
+    .ed-front .boxed-version .chart-meta {
+      margin: 3px 0 0;
+    }
+    .ed-back .no-move-callout img.exact-check-box {
+      width: 24.5px;
+      height: 24.5px;
+      display: block;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .ed-back .founder-block .logo {
+      width: 1.53615in;
+      margin-left: calc((1.4828in - 1.53615in) / 2);
+      margin-bottom: -0.0725in;
+      transform: translateY(1px);
+    }
+    .ed-back .founder-block .photo-crop {
+      width: 1.4828in;
+      height: 1.7955in;
+      margin-top: 0.21in;
+      border: 2.5px solid var(--green);
+      box-sizing: border-box;
+      overflow: hidden;
+      display: block;
+      background: #102318;
+      transform: translateY(13px);
+    }
+    .ed-back .founder-block .photo-crop .photo {
+      width: calc(100% + 10px);
+      height: 100%;
+      max-width: none;
+      transform: translateX(-5px);
+      border: none;
+      margin: 0;
+    }
+    .ed-back .founder-block .name {
+      font-size: 12px;
+      margin-top: 26px;
+      transform: translateY(-4px);
+    }
+    .ed-back .founder-block .sub {
+      margin-top: 2px;
+      transform: translateY(-4px);
+    }
+    .reg-mark {
+      font-size: 0.58em;
+      line-height: 0;
+      vertical-align: super;
+    }
+    .ed-back .qr-col {
+      transform: translateY(5px);
+    }
+    .ed-back .benefits {
+      transform: translate(-10px, 5px);
+    }
+    .ed-back .benefits .item {
+      position: relative;
+      border-bottom: none;
+    }
+    .ed-back .benefits .item:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 10px;
+      bottom: 0;
+      height: 1px;
+      background: var(--rule);
+    }
+    .ed-back .benefits .key {
+      font-weight: 800;
+    }
+    .ed-back .benefits .tail {
+      margin-left: 4px;
+    }
+    .ed-back .no-move-callout {
+      margin-top: 32px;
+      gap: 6px;
+      transform: translate(-5px, -10px);
+    }
+    .ed-back .no-move-callout span {
+      font: italic 700 14.5px/1.3 'Inter';
+    }
+
+  </style>
+</head>
+<body>
+  <div class="label-front">FINALISTS 01E · Advisor Green Band — Front (8.75 × 6.5 in incl. 0.125 in bleed)</div>
+  <div class="stage">
+    <div class="card trim" data-side="front" id="front">
+      <span class="corner tl">FRONT · trim 8.5 × 6.25 in · bleed 0.125 in</span>
+      <span class="corner tr">FINALISTS 01E · Advisor Green Band</span>
+
+    <div class="ed-front green-wash founder-advisor-green-band">
+      <div class="kicker"><span class="domain">you<span class="green">are</span>paying<span class="green">too</span>much.com</span></div>
+      <div class="front-proof-box green-wash">
+      <div class="rule"></div>
+      <div class="headline">What would you do with<br/><span class="dollar">$788,000*?</span></div>
+      <div class="footnote">* potential savings over 20 years.</div>
+
+      <div class="chart-row finalist-chart-row">
+        <div class="chart-proof-box">
+                  <div class="chart-frame">
+
+
+
+    <svg class="chart-svg" viewBox="15 15 692 195" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <!-- LINE CHART WRAPPER (Shifted -10px X, +2px Y) -->
+
+      <g transform="translate(-10, 2)">
+        <defs>
+          <linearGradient id="finalist-v3-flat-fill" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#00A540" stop-opacity="0.30"/>
+            <stop offset="100%" stop-color="#00A540" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <rect x="25" y="9" width="531" height="200" rx="12" ry="12" fill="#EEF0F5" stroke="#e2e8f0" stroke-width="1.5"/>
+
+        <line x1="70" y1="190.0" x2="536" y2="190.0" stroke="#cbd5e1" stroke-opacity="0.5" stroke-width="1"/>
+        <text x="62" y="194.0" text-anchor="end" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">$0</text>
+        <line x1="70" y1="156.6" x2="536" y2="156.6" stroke="#cbd5e1" stroke-opacity="0.5" stroke-width="1"/>
+        <text x="62" y="160.6" text-anchor="end" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">$1M</text>
+        <line x1="70" y1="123.2" x2="536" y2="123.2" stroke="#cbd5e1" stroke-opacity="0.5" stroke-width="1"/>
+        <text x="62" y="127.2" text-anchor="end" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">$2M</text>
+        <line x1="70" y1="89.8" x2="536" y2="89.8" stroke="#cbd5e1" stroke-opacity="0.5" stroke-width="1"/>
+        <text x="62" y="93.8" text-anchor="end" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">$3M</text>
+        <line x1="70" y1="56.4" x2="536" y2="56.4" stroke="#cbd5e1" stroke-opacity="0.5" stroke-width="1"/>
+        <text x="62" y="60.4" text-anchor="end" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">$4M</text>
+        <line x1="70" y1="23.0" x2="536" y2="23.0" stroke="#cbd5e1" stroke-opacity="0.5" stroke-width="1"/>
+        <text x="62" y="27.0" text-anchor="end" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">$5M</text>
+
+        <path d="M 70 190.0 L 70.0 156.6 L 93.3 154.0 L 116.6 151.1 L 139.9 148.1 L 163.2 144.7 L 186.5 141.2 L 209.8 137.3 L 233.1 133.1 L 256.4 128.6 L 279.7 123.8 L 303.0 118.5 L 326.3 112.8 L 349.6 106.7 L 372.9 100.1 L 396.2 92.9 L 419.5 85.2 L 442.8 76.8 L 466.1 67.8 L 489.4 58.1 L 512.7 47.6 L 536.0 36.2 L 536.0 190.0 Z" fill="url(#finalist-v3-flat-fill)" stroke="none"/>
+        <path d="M70.0 156.6 L93.3 154.3 L116.6 151.8 L139.9 149.2 L163.2 146.3 L186.5 143.3 L209.8 140.1 L233.1 136.6 L256.4 132.9 L279.7 129.0 L303.0 124.8 L326.3 120.2 L349.6 115.4 L372.9 110.2 L396.2 104.7 L419.5 98.8 L442.8 92.5 L466.1 85.7 L489.4 78.5 L512.7 70.8 L536.0 62.6" fill="none" stroke="#B91C1C" stroke-width="2" stroke-dasharray="5,4" stroke-linecap="round"/>
+        <path d="M70.0 156.6 L93.3 154.0 L116.6 151.1 L139.9 148.1 L163.2 144.7 L186.5 141.2 L209.8 137.3 L233.1 133.1 L256.4 128.6 L279.7 123.8 L303.0 118.5 L326.3 112.8 L349.6 106.7 L372.9 100.1 L396.2 92.9 L419.5 85.2 L442.8 76.8 L466.1 67.8 L489.4 58.1 L512.7 47.6 L536.0 36.2" fill="none" stroke="#00A540" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="536.0" cy="36.2" r="4.5" fill="#00A540" stroke="#0f172a" stroke-width="1.8"/>
+        <circle cx="536.0" cy="62.6" r="4.5" fill="white" stroke="#0f172a" stroke-width="1.8"/>
+        <text x="524.0" y="39.2" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#00A540" stroke="#EEF0F5" stroke-width="4" paint-order="stroke">$4.60M</text>
+        <text x="524.0" y="75.6" text-anchor="end" font-family="Inter" font-size="10.5" font-weight="800" fill="#07140D" stroke="#EEF0F5" stroke-width="4" paint-order="stroke">$3.82M</text>
+        <text x="419.5" y="89.0" text-anchor="middle" font-family="Inter" font-size="10.5" font-weight="800" fill="#B91C1C" stroke="#EEF0F5" stroke-width="4" paint-order="stroke">$788k gap</text>
+        <line x1="70" y1="190" x2="536" y2="190" stroke="#cbd5e1" stroke-opacity="0.8" stroke-width="1"/>
+
+        <text x="70.0" y="204" text-anchor="middle" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">0y</text>
+        <text x="163.2" y="204" text-anchor="middle" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">4y</text>
+        <text x="256.4" y="204" text-anchor="middle" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">8y</text>
+        <text x="349.6" y="204" text-anchor="middle" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">12y</text>
+        <text x="442.8" y="204" text-anchor="middle" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">16y</text>
+        <text x="536.0" y="204" text-anchor="middle" font-family="Inter" font-size="10" fill="#64748b" font-weight="500">20y</text>
+      </g>
+
+      <!-- VERTICAL BAR CHART -->
+      <!-- Lost: 17.1%, Keep: 82.9% -->
+      <!-- Right edge anchored at original x=707; width increased from 100 to 120. -->
+      <g transform="translate(587, 0)">
+        <rect x="0" y="13" width="120" height="33.5" fill="#B91C1C" />
+        <rect x="0" y="46.5" width="120" height="162.5" fill="#34483C" fill-opacity="0.15" />
+
+        <text x="60" y="33.8" text-anchor="middle" font-family="Inter" font-size="13" font-weight="900" fill="#fff">17% Lost</text>
+        <text x="60" y="91.5" text-anchor="middle" font-family="Inter" font-size="15" font-weight="900" fill="#07140D">Wealth</text>
+        <text x="60" y="136" text-anchor="middle" font-family="Inter" font-size="20" font-weight="800" fill="#34483C">83%</text>
+        <text x="60" y="149.2" text-anchor="middle" font-family="Inter" font-size="13" font-weight="500" fill="#34483C">You keep</text>
+        <text class="bar-value-label" x="134" y="34.2" text-anchor="start" font-family="Inter" font-size="12" font-weight="900" fill="#B91C1C">$788k</text>
+        <text class="bar-value-label" x="134" y="136.8" text-anchor="start" font-family="Inter" font-size="12" font-weight="900" fill="#07140D">$3.82M</text>
+      </g>
+    </svg>
+
+
+
+  </div>
+          <div class="chart-meta">
+            <div class="assumption-key"><span><b>Portfolio</b><strong>$1,000,000</strong></span><span><b>Growth</b><strong>8% / yr</strong></span><span><b>Years</b><strong>20</strong></span><span><b>AUM fee</b><strong>1.00%</strong></span></div>
+            <div class="thin-disclaimer">Educational only. Hypothetical results are not investment advice. Actual results vary.</div>
+          </div>
+        </div>
+                <div class="qr-block">
+          <img src="brand-assets/yaptom_default_inputs_qr.png" alt="Scan to run your numbers"/>
+          <div class="qr-cap">SCAN TO RUN YOUR NUMBERS</div>
+        </div>
+      </div>
+      <div class="hero-bottom-rule"></div>
+      </div>
+      <div class="founder-banner">
+        <div class="founder">Smarter Way Wealth delivers personal, <span class="green">real human</span> fiduciary advice and planning for a simple $100/month. Period.</div>
+        <div class="byline" style="margin-top: 14px;">David Van Osdol, CFA, CFP<span class="reg-mark">&reg;</span></div>
+      </div>
+    </div>
+
+    </div>
+    <div class="card trim" data-side="back" id="back">
+      <span class="corner tl">BACK · trim 8.5 × 6.25 in · bleed 0.125 in</span>
+      <span class="corner tr">FINALISTS 01E · Advisor Green Band</span>
+
+    <div class="ed-back" style="padding:0.5in 0.5in 0.45in; background:#fff; color:var(--ink);">
+      <div class="indicia">
+        <div class="ret"><div class="name">Smarter Way Wealth, LLC</div>youarepayingtoomuch.com<br/>smarterwaywealth.com</div>
+        <div class="addr">LOCAL POSTAL CUSTOMER<div class="sub">EDDM route delivery</div></div>
+        <div class="ind">PRSRT STD<br/>ECRWSS<br/>U.S. POSTAGE<br/>PAID<br/>EDDM RETAIL</div>
+      </div>
+      <div class="body-grid">
+        <div class="founder-block">
+          <img class="logo" src="brand-assets/logo-800-cropped.png" alt="Smarter Way Wealth"/>
+          <span class="photo-crop"><img class="photo" src="brand-assets/dvo-headshot.jpg" alt="David Van Osdol"/></span>
+          <div class="name">David J. Van Osdol, CFA, CFP<span class="reg-mark">&reg;</span></div>
+          <div class="sub">Founder, Smarter Way Wealth</div>
+        </div>
+        <div class="benefits">
+          <div class="item">
+            <div><span class="key ink">Save</span><span class="tail"> a Ton!</span></div>
+            <div class="desc"><strong class="green">$100/mo. flat fee</strong> vs. % asset-based fee.</div>
+          </div>
+          <div class="item">
+            <div><span class="key ink">Upgrade</span><span class="tail"> your Advice</span></div>
+            <div class="desc">Highly credentialed, highly experienced.</div>
+          </div>
+          <div class="item">
+            <div><span class="key ink">Improve</span><span class="tail"> your Tools</span></div>
+            <div class="desc">Better financial planning tools that <span class="b-you">you</span> own.</div>
+          </div>
+        </div>
+        <div class="qr-col">
+          <img src="brand-assets/yaptom_default_inputs_qr.png" alt="QR"/>
+          <div class="cap">See how much you can save using your actual numbers.</div>
+        </div>
+        <div class="no-move-callout">
+<img class="exact-check-box" src="brand-assets/green-checked-box-exact.png" alt=""/>
+          <span>We work where you already are- no need to transfer assets!</span>
+        </div>
+      </div>
+      <div class="domain-row">
+        <div class="domain">you<span class="green">are</span>paying<span class="green">too</span>much.com</div>
+      </div>
+    </div>
+
+    </div>
+  </div>
+</body>
+</html>

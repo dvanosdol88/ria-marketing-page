@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&amp;display=swap');
+    </style>
+  </defs>
+  
+  <!-- Chart bars - Progressive green (light to dark, ending at brand green) -->
+  <rect x="72" y="20" width="8" height="12" rx="1" fill="#66D980"/>
+  <rect x="84" y="14" width="8" height="18" rx="1" fill="#33BF60"/>
+  <rect x="96" y="6" width="8" height="26" rx="1" fill="#00A540"/>
+  
+  <!-- SMARTER text - Dark Gray, DM Sans Bold -->
+  <text x="88" y="52" font-family="'DM Sans', sans-serif" font-size="18" font-weight="700" fill="#4A4A4A" text-anchor="middle" letter-spacing="3">SMARTER</text>
+  
+  <!-- WAY WEALTH text - Brand Green, DM Sans Regular -->
+  <text x="88" y="63" font-family="'DM Sans', sans-serif" font-size="9" font-weight="400" fill="#00A540" text-anchor="middle" letter-spacing="2">WAY WEALTH</text>
+</svg>

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updatedAt": "2026-05-31",
+  "updatedAt": "2026-06-01",
   "title": "EDDM Eval Catalog",
   "description": "Active EDDM review catalog narrowed to the Style A winner, a Style A bar-chart variant, Claude reference rows, and strong alternate/social-media concepts; legacy rows are hidden by default.",
   "criteria": [
@@ -52,7 +52,7 @@
         "Reference retained comparison rows only for design provenance, not as active alternatives."
       ],
       "knownLimitations": [
-        "Winner proof is still an HTML/PNG proof set; final printer-ready PDF/package should be generated after final signoff."
+        "Printer-ready package generated from the approved RGB HTML proof; final printer preflight is still required for offset-specific CMYK/PDF-X or ICC-profile requirements."
       ],
       "assets": [
         {
@@ -78,6 +78,30 @@
           "type": "markdown",
           "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/SWW_YAPTOM_Finalists_01E_advisor-green-band_Rationale.md",
           "role": "rationale"
+        },
+        {
+          "label": "Print-ready PDF",
+          "type": "pdf",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/print-ready-style-a-winner/SWW_YAPTOM_StyleA_AdvisorGreenBand_PrintReady_8p75x6p5.pdf",
+          "role": "print-ready"
+        },
+        {
+          "label": "Printer package zip",
+          "type": "zip",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/print-ready-style-a-winner/SWW_YAPTOM_StyleA_AdvisorGreenBand_PrintPackage.zip",
+          "role": "package"
+        },
+        {
+          "label": "Printer package manifest",
+          "type": "json",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/print-ready-style-a-winner/printer-package-manifest.json",
+          "role": "manifest"
+        },
+        {
+          "label": "Printer package notes",
+          "type": "markdown",
+          "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/print-ready-style-a-winner/README.md",
+          "role": "notes"
         }
       ]
     },

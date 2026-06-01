@@ -11,3 +11,5 @@ Targeted finalists generated from Save Upgrade Tools v2: V2 01 Editorial Rule.
 - 01G Style A Bar: Style A winner with the Editorial Paper Bar two-path chart structure and a pie proof in the former wealth-lost bar slot.
 
 All options align the bar-side dollar labels, enlarge the back-side logo by 10% while keeping it centered and bottom-anchored over the photo, and keep the back-side checked-box icon as `brand-assets/green-checked-box-exact.png`, copied from the exact upper-right green checked-box crop from the supplied source sheet.
+
+Final printer package for the selected Style A winner lives in `print-ready-style-a-winner/`.

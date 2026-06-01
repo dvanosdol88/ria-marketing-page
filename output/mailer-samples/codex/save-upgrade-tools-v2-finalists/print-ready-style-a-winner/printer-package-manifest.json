@@ -1,0 +1,80 @@
+{
+  "name": "WINNER Style A - Advisor Green Band Printer Package",
+  "generatedAt": "2026-06-01T20:36:52.943Z",
+  "generator": "scripts/build-eddm-style-a-winner-print-package.mjs",
+  "sourceCandidateId": "eddm-finalists-01e-advisor-green-band",
+  "sourceConcept": "FINALISTS 01E - Advisor Green Band",
+  "dimensions": {
+    "trimInches": {
+      "width": 8.5,
+      "height": 6.25
+    },
+    "bleedInches": 0.125,
+    "pdfPageInches": {
+      "width": 8.75,
+      "height": 6.5
+    }
+  },
+  "colorModeNote": "Primary PDF is generated from RGB HTML artwork. Printer should convert/preflight for required offset CMYK or PDF/X profile if needed.",
+  "markPolicy": "Bleed-only primary PDF; no crop or trim marks.",
+  "pdfVerification": {
+    "pageCount": 2,
+    "mediaBoxes": [
+      {
+        "x0": 0,
+        "y0": 0,
+        "x1": 630,
+        "y1": 468
+      },
+      {
+        "x0": 0,
+        "y0": 0,
+        "x1": 630,
+        "y1": 468
+      }
+    ]
+  },
+  "packageArchive": "SWW_YAPTOM_StyleA_AdvisorGreenBand_PrintPackage.zip",
+  "files": [
+    {
+      "label": "Print-ready PDF",
+      "role": "print-ready",
+      "type": "pdf",
+      "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/print-ready-style-a-winner/SWW_YAPTOM_StyleA_AdvisorGreenBand_PrintReady_8p75x6p5.pdf",
+      "bytes": 800439,
+      "sha256": "ab8b1da1966e0a7babfdefb4857a3d1c440fc4682d8380d10ee77094ebd96ed2"
+    },
+    {
+      "label": "Front proof",
+      "role": "front",
+      "type": "image",
+      "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/print-ready-style-a-winner/SWW_YAPTOM_StyleA_AdvisorGreenBand_Front_Proof.png",
+      "bytes": 205876,
+      "sha256": "9966b8ca09d3b924e5adcd9b8783a00d7c4ba4b69e6249b17ac8592d0aca5054"
+    },
+    {
+      "label": "Back proof",
+      "role": "back",
+      "type": "image",
+      "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/print-ready-style-a-winner/SWW_YAPTOM_StyleA_AdvisorGreenBand_Back_Proof.png",
+      "bytes": 295213,
+      "sha256": "5a943d699eb163743c2cf3242e5721fb485fd64caeaa788181645a50d09c0797"
+    },
+    {
+      "label": "Source proof HTML",
+      "role": "source-proof",
+      "type": "html",
+      "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/print-ready-style-a-winner/SWW_YAPTOM_StyleA_AdvisorGreenBand_SourceProof.html",
+      "bytes": 25194,
+      "sha256": "ae82e27f42ab4351bbd1ce3b538901d8838140705a2fe1bd04ccb371de04a7ee"
+    },
+    {
+      "label": "Printer notes",
+      "role": "notes",
+      "type": "markdown",
+      "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/print-ready-style-a-winner/README.md",
+      "bytes": 1674,
+      "sha256": "3c1f2def4dc691269a4c548c15330e60c6829b3b74a030a9000b8bd104a7d7ff"
+    }
+  ]
+}
