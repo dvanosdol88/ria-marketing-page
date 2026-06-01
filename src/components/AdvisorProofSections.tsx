@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight, CalendarDays, MapPin, Maximize2, X } from "lucide-react";
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { ArrowUpRight, CalendarDays, ChevronDown, MapPin } from "lucide-react";
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "framer-motion";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { fitCta } from "@/config/fitCtaConfig";
 import {
@@ -345,247 +345,192 @@ function AdvisorCard() {
   );
 }
 
-function ProofExpandButton({
-  cardTitle,
-  isOpen,
-  onClick,
-}: {
-  cardTitle: string;
-  isOpen?: boolean;
-  onClick: () => void;
-}) {
-  const Icon = isOpen ? X : Maximize2;
-
-  return (
-    <motion.button
-      type="button"
-      onClick={onClick}
-      whileHover={{ scale: 1.08 }}
-      whileTap={{ scale: 0.96 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#EAF7EF] text-[#108843] transition-colors duration-300 hover:bg-[#D8F0E0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#108843]/35"
-      aria-label={isOpen ? `Close ${cardTitle}` : `Expand ${cardTitle}`}
-    >
-      <motion.span
-        aria-hidden="true"
-        animate={{ rotate: isOpen ? 90 : 0 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="grid place-items-center"
-      >
-        <Icon className="h-[18px] w-[18px]" strokeWidth={2.25} />
-      </motion.span>
-    </motion.button>
-  );
-}
-
-function ProofDetailDialog({
+function ProofAccordionCard({
   card,
-  onClose,
+  index,
+  isOpen,
+  onToggle,
 }: {
   card: ProofCard;
-  onClose: () => void;
+  index: number;
+  isOpen: boolean;
+  onToggle: () => void;
 }) {
+  const reduceMotion = useReducedMotion();
   const cardId = getProofCardId(card);
+  const panelId = `proof-panel-${cardId}`;
+  const headerId = `proof-header-${cardId}`;
 
   return (
-    <motion.div
-      className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-[#10233A]/18 px-4 py-20 backdrop-blur-sm sm:px-6"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-      onClick={onClose}
+    <article
+      className={[
+        "self-start overflow-hidden rounded-lg border bg-white transition-[border-color,box-shadow] duration-300",
+        isOpen
+          ? "border-[#108843]/55 shadow-[0_18px_44px_rgba(17,33,52,0.10)]"
+          : "border-[#D8E2EA] shadow-[0_12px_32px_rgba(17,33,52,0.06)] hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)]",
+        index === 0 ? "md:col-span-2" : "",
+      ].join(" ")}
     >
-      <motion.article
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={`proof-dialog-title-${cardId}`}
-        className="relative w-full max-w-5xl overflow-hidden rounded-lg border border-[#D5DEE8] bg-white p-6 shadow-[0_24px_80px_rgba(17,33,52,0.24)] sm:p-8 lg:p-10"
-        initial={{ y: 18, scale: 0.97 }}
-        animate={{ y: 0, scale: 1 }}
-        exit={{ y: 12, scale: 0.98 }}
-        transition={{ duration: 0.72, ease: [0.165, 0.84, 0.44, 1] }}
-        onClick={(event) => event.stopPropagation()}
+      {/* The entire header row is the toggle target, not just the icon. */}
+      <button
+        type="button"
+        id={headerId}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        onClick={onToggle}
+        className="group/header flex w-full items-start justify-between gap-4 p-6 text-left transition-colors duration-200 hover:bg-[#F3F9F5] active:bg-[#E7F3EC] focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-[#108843]"
       >
-        <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
-          <ProofExpandButton cardTitle={card.title} isOpen onClick={onClose} />
-        </div>
+        <span className="min-w-0">
+          <span className="block text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
+            {card.eyebrow}
+          </span>
+          <span className="mt-2 block text-xl font-black tracking-tight text-[#062417] sm:text-2xl">
+            {card.title}
+          </span>
+        </span>
+        <span
+          className={`mt-0.5 inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md transition-colors duration-200 ${
+            isOpen
+              ? "bg-[#D8F0E0] text-[#0A6E35]"
+              : "bg-[#EAF7EF] text-[#108843] group-hover/header:bg-[#D8F0E0]"
+          }`}
+        >
+          <motion.span
+            aria-hidden="true"
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={reduceMotion ? { duration: 0 } : { duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="grid place-items-center"
+          >
+            <ChevronDown className="h-6 w-6" strokeWidth={2.5} />
+          </motion.span>
+        </span>
+      </button>
 
-        <div className="grid gap-8 pr-12 lg:grid-cols-[1fr_0.85fr] lg:gap-12 lg:pr-16">
-          <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-[#108843]">
-              {card.eyebrow}
-            </p>
-            <h3
-              id={`proof-dialog-title-${cardId}`}
-              className="mt-4 max-w-2xl text-3xl font-black leading-tight tracking-tight text-[#062417] sm:text-4xl"
-            >
-              {card.title}
-            </h3>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
-              {card.summary}
-            </p>
-            {card.stat ? (
-              <div className="mt-8">
-                <p className="text-5xl font-black tracking-tight text-[#108843]">{card.stat}</p>
-                <p className="mt-1 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
-                  {card.statLabel}
-                </p>
-              </div>
-            ) : null}
-            {card.logos ? (
-              <div className="mt-8 flex items-center justify-center gap-7" aria-label="Credential marks">
-                {card.logos.map((logo) => (
-                  <div key={logo.src} className="relative h-24 w-24 sm:h-28 sm:w-28">
+      {/* Always-visible summary + stat/logos preserve the card's identity. */}
+      <div className="px-6 pb-2">
+        <p className="text-sm leading-6 text-slate-600">{card.summary}</p>
+        <div className="mt-5 flex items-end justify-between gap-4">
+          {card.stat ? (
+            <div>
+              <p className="text-3xl font-black tracking-tight text-[#108843]">{card.stat}</p>
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
+                {card.statLabel}
+              </p>
+            </div>
+          ) : null}
+          {card.logos ? (
+            <div className="ml-auto flex shrink-0 items-center gap-5 sm:gap-6" aria-hidden="true">
+              {card.logos.map((logo) => {
+                const isCfp = logo.src === "/CFP_Logomark_Primary.png";
+                return (
+                  <span
+                    key={logo.src}
+                    className={
+                      isCfp
+                        ? "relative block h-[90px] w-[90px] sm:h-[100px] sm:w-[100px]"
+                        : "relative block h-[72px] w-[72px] sm:h-20 sm:w-20"
+                    }
+                  >
                     <Image
                       src={logo.src}
-                      alt={logo.alt}
+                      alt=""
                       fill
-                      className="object-contain drop-shadow-[0_12px_22px_rgba(17,33,52,0.14)]"
-                      sizes="112px"
+                      className="object-contain drop-shadow-[0_8px_16px_rgba(17,33,52,0.12)]"
+                      sizes={isCfp ? "100px" : "80px"}
                     />
-                  </div>
-                ))}
-              </div>
-            ) : null}
-          </div>
-
-          <div className="rounded-md bg-[#F6FAFC] p-5 sm:p-6">
-            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#41556C]">
-              Why this matters
-            </p>
-            <ul className="mt-5 space-y-4">
-              {card.details.map((detail) => (
-                <li key={detail} className="flex gap-3 text-sm leading-6 text-slate-700">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#108843]" />
-                  <span>{detail}</span>
-                </li>
-              ))}
-            </ul>
-            {card.detailLink ? (
-              <Link
-                href={card.detailLink.href}
-                className="mt-6 inline-flex text-sm font-extrabold leading-6 !text-[#108843] underline decoration-[#8BBE9E] decoration-2 underline-offset-4 transition hover:!text-[#062417]"
-              >
-                {card.detailLink.label}
-              </Link>
-            ) : null}
-          </div>
+                  </span>
+                );
+              })}
+            </div>
+          ) : null}
         </div>
-        {!card.detailLink ? (
-          <div className="mt-8 border-t border-[#D5DEE8] pt-5">
-            <Link
-              href={fitCta.href}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-md bg-[#064B84] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_26px_rgba(6,75,132,0.2)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#053E6D] hover:shadow-[0_16px_32px_rgba(6,75,132,0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84]"
-            >
-              <span>See if you are a good fit</span>
-              <span aria-hidden="true">-&gt;</span>
-            </Link>
-          </div>
+      </div>
+
+      <AnimatePresence initial={false}>
+        {isOpen ? (
+          <motion.div
+            key="panel"
+            id={panelId}
+            role="region"
+            aria-labelledby={headerId}
+            initial={reduceMotion ? false : { height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={reduceMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
+            transition={
+              reduceMotion
+                ? { duration: 0 }
+                : {
+                    height: { duration: 0.34, ease: [0.16, 1, 0.3, 1] },
+                    opacity: { duration: 0.26, ease: "easeOut" },
+                  }
+            }
+            className="overflow-hidden"
+          >
+            <div className="mx-6 mt-3 mb-6 rounded-md bg-[#F6FAFC] p-5">
+              <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#41556C]">
+                Why this matters
+              </p>
+              <ul className="mt-4 space-y-3">
+                {card.details.map((detail) => (
+                  <li key={detail} className="flex gap-3 text-sm leading-6 text-slate-700">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#108843]" />
+                    <span>{detail}</span>
+                  </li>
+                ))}
+              </ul>
+              {card.detailLink ? (
+                <Link
+                  href={card.detailLink.href}
+                  className="mt-5 inline-flex text-sm font-extrabold leading-6 !text-[#108843] underline decoration-[#8BBE9E] decoration-2 underline-offset-4 transition hover:!text-[#062417]"
+                >
+                  {card.detailLink.label}
+                </Link>
+              ) : (
+                <Link
+                  href={fitCta.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-5 inline-flex items-center gap-2 rounded-md bg-[#064B84] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_26px_rgba(6,75,132,0.2)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#053E6D] hover:shadow-[0_16px_32px_rgba(6,75,132,0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84]"
+                >
+                  <span>See if you are a good fit</span>
+                  <span aria-hidden="true">-&gt;</span>
+                </Link>
+              )}
+            </div>
+          </motion.div>
         ) : null}
-      </motion.article>
-    </motion.div>
+      </AnimatePresence>
+    </article>
   );
 }
 
 function ProofBento({ cards }: { cards: ProofCard[] }) {
-  const [activeCardTitle, setActiveCardTitle] = useState<string | null>(null);
-  const activeCard = cards.find((card) => card.title === activeCardTitle) ?? null;
+  const [openTitles, setOpenTitles] = useState<Set<string>>(() => new Set());
 
-  useEffect(() => {
-    if (!activeCard) return;
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setActiveCardTitle(null);
+  const toggle = (title: string) => {
+    setOpenTitles((prev) => {
+      const next = new Set(prev);
+      if (next.has(title)) {
+        next.delete(title);
+      } else {
+        next.add(title);
       }
-    };
-
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [activeCard]);
+      return next;
+    });
+  };
 
   return (
-    <>
-      <div className="grid gap-4 md:grid-cols-2 md:items-start">
-        {cards.map((card, index) => {
-          return (
-            <motion.article
-              key={card.title}
-              whileHover={{ y: -3, scale: 1.004 }}
-              transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
-              className={[
-                "self-start rounded-lg border border-[#D8E2EA] bg-white p-6 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)]",
-                index === 0 ? "md:col-span-2" : "",
-              ].join(" ")}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
-                    {card.eyebrow}
-                  </p>
-                  <h3 className="mt-2 text-xl font-black tracking-tight text-[#062417] sm:text-2xl">
-                    {card.title}
-                  </h3>
-                </div>
-                <ProofExpandButton
-                  cardTitle={card.title}
-                  onClick={() => setActiveCardTitle(card.title)}
-                />
-              </div>
-              <p className="mt-4 text-sm leading-6 text-slate-600">{card.summary}</p>
-              <div className="mt-5 flex items-end justify-between gap-4">
-                {card.stat ? (
-                  <div>
-                    <p className="text-3xl font-black tracking-tight text-[#108843]">{card.stat}</p>
-                    <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
-                      {card.statLabel}
-                    </p>
-                  </div>
-                ) : null}
-                {card.logos ? (
-                  <div className="ml-auto flex shrink-0 items-center gap-5 sm:gap-6" aria-hidden="true">
-                    {card.logos.map((logo) => {
-                      const isCfp = logo.src === "/CFP_Logomark_Primary.png";
-                      return (
-                        <span
-                          key={logo.src}
-                          className={
-                            isCfp
-                              ? "relative block h-[90px] w-[90px] sm:h-[100px] sm:w-[100px]"
-                              : "relative block h-[72px] w-[72px] sm:h-20 sm:w-20"
-                          }
-                        >
-                          <Image
-                            src={logo.src}
-                            alt=""
-                            fill
-                            className="object-contain drop-shadow-[0_8px_16px_rgba(17,33,52,0.12)]"
-                            sizes={isCfp ? "100px" : "80px"}
-                          />
-                        </span>
-                      );
-                    })}
-                  </div>
-                ) : null}
-              </div>
-            </motion.article>
-          );
-        })}
-      </div>
-
-      <AnimatePresence>
-        {activeCard ? (
-          <ProofDetailDialog
-            key={activeCard.title}
-            card={activeCard}
-            onClose={() => setActiveCardTitle(null)}
-          />
-        ) : null}
-      </AnimatePresence>
-    </>
+    <div className="grid gap-4 md:grid-cols-2 md:items-start">
+      {cards.map((card, index) => (
+        <ProofAccordionCard
+          key={card.title}
+          card={card}
+          index={index}
+          isOpen={openTitles.has(card.title)}
+          onToggle={() => toggle(card.title)}
+        />
+      ))}
+    </div>
   );
 }
 

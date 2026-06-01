@@ -199,7 +199,7 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel }: QuizProps) {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-2 min-[480px]:grid-cols-2">
+      <div className="grid grid-cols-1 gap-2.5 min-[480px]:grid-cols-2">
         {quizOptions.map((option) => {
           const isSelected = selectedOption === option.id;
           const isWinner = hasVoted && winningOptionId === option.id;
@@ -213,11 +213,14 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel }: QuizProps) {
               type="button"
               onClick={() => void handleVote(option.id)}
               disabled={Boolean(isSubmittingOption) || hasVoted}
-              className={`group relative overflow-hidden rounded-xl border px-3 py-3 text-left transition-all ${
-                hasVoted
-                  ? "cursor-default border-neutral-200 bg-white"
-                  : "border-neutral-200 bg-white hover:border-brand-300 hover:shadow-sm"
-              } ${isSelected ? "ring-2 ring-brand-400" : ""}`}
+              aria-pressed={isSelected}
+              className={`group relative flex min-h-[56px] items-center overflow-hidden rounded-xl border-2 px-4 py-3.5 text-left transition-all duration-200 ${
+                isSelected
+                  ? "border-[#108843] bg-[#E3F5E9] shadow-[0_6px_18px_rgba(16,136,67,0.16)] ring-2 ring-[#108843]/30"
+                  : hasVoted
+                    ? "cursor-default border-neutral-200 bg-white/70 shadow-sm"
+                    : "border-[#CFE3D6] bg-white shadow-sm hover:-translate-y-0.5 hover:border-[#108843] hover:bg-[#F2FBF5] hover:shadow-md active:translate-y-0 active:bg-[#E7F3EC]"
+              }`}
             >
               {hasAnyCounts && (
                 <div
@@ -229,8 +232,15 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel }: QuizProps) {
                 />
               )}
 
-              <div className="relative z-10 flex items-center justify-between gap-2">
-                <span className="font-medium text-neutral-900">{option.label}</span>
+              <div className="relative z-10 flex w-full items-center justify-between gap-2">
+                <span className="flex items-center gap-2 font-semibold text-neutral-900">
+                  {isSelected ? (
+                    <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#108843] text-white">
+                      <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                    </span>
+                  ) : null}
+                  {option.label}
+                </span>
 
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-700">
@@ -238,7 +248,7 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel }: QuizProps) {
                     Submitting...
                   </span>
                 ) : hasAnyCounts ? (
-                  <span className={`text-sm font-semibold ${hasVoted ? "text-neutral-700" : "text-neutral-400"}`}>{percentage}%</span>
+                  <span className={`text-sm font-bold tabular-nums ${isSelected ? "text-[#0A6E35]" : hasVoted ? "text-neutral-700" : "text-neutral-400"}`}>{percentage}%</span>
                 ) : null}
               </div>
             </button>
@@ -249,12 +259,17 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel }: QuizProps) {
       {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
 
       {hasVoted && (
-        <div className="mt-4 flex flex-wrap items-center gap-3 text-sm font-semibold text-brand-700">
-          <span>Thanks for voting!</span>
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#BFE3CC] bg-white/80 px-4 py-3">
+          <span className="inline-flex items-center gap-2 text-sm font-bold text-[#0A6E35]">
+            <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#108843] text-white">
+              <Check className="h-4 w-4" strokeWidth={3} />
+            </span>
+            Thanks for voting!
+          </span>
           <button
             type="button"
             onClick={() => void handleShare()}
-            className="inline-flex min-h-8 items-center gap-1.5 rounded-full border border-brand-200 bg-white/75 px-3 py-1 text-sm font-bold text-brand-700 transition hover:border-brand-300 hover:bg-white hover:text-brand-800"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-brand-200 bg-white px-3.5 py-1.5 text-sm font-bold text-brand-700 transition hover:border-brand-300 hover:bg-[#F2FBF5] hover:text-brand-800"
             aria-label={hasSavingsValue ? `Share your ${formattedSavings} result` : "Share your result"}
           >
             <ShareIcon className="h-4 w-4" />

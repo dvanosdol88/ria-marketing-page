@@ -853,6 +853,9 @@ function FinalHomeLineChart({
   // Sensible defaults keep SSR-rendered SVG and first client paint matching
   // — the ResizeObserver overwrites these on mount within one frame.
   const [size, setSize] = useState<{ w: number; h: number }>({ w: 1040, h: 305 });
+  // Tap/focus-to-highlight: touch (and keyboard) users can activate an
+  // endpoint marker to read that scenario's ending value inline on the chart.
+  const [activePoint, setActivePoint] = useState<"flat" | "aum" | null>(null);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -883,7 +886,10 @@ function FinalHomeLineChart({
   const maxYear = Math.max(1, years, ...series.map((row) => row.year));
   const actualMaxValue = Math.max(finalValueWithoutFees, finalValueWithFees, ...series.map((row) => row.withoutFees));
   const actualMinValue = Math.min(...series.flatMap((row) => [row.withoutFees, row.withFees]));
-  const rawTickStep = actualMaxValue / 5;
+  // Mobile declutter: fewer Y gridlines/labels on narrow viewports so the
+  // chart reads cleanly at ~390px. Desktop keeps the denser axis.
+  const yTickTarget = isNarrow ? 3 : 5;
+  const rawTickStep = actualMaxValue / yTickTarget;
   const tickExponent = Math.floor(Math.log10(Math.max(1, rawTickStep)));
   const tickMagnitude = 10 ** tickExponent;
   const tickBase = rawTickStep / tickMagnitude;
@@ -1139,8 +1145,116 @@ function FinalHomeLineChart({
           }}
         />
 
-        <circle cx={aumEndX} cy={aumEndY} r="6" fill="#064B84" stroke="#FFFFFF" strokeWidth="3" />
-        <circle cx={flatEndX} cy={flatEndY} r="6" fill="#108843" stroke="#FFFFFF" strokeWidth="3" />
+        {([
+          {
+            key: "aum" as const,
+            cx: aumEndX,
+            cy: aumEndY,
+            color: "#064B84",
+            label: "Asset-based fee",
+            value: finalValueWithFees,
+          },
+          {
+            key: "flat" as const,
+            cx: flatEndX,
+            cy: flatEndY,
+            color: "#108843",
+            label: "Flat $100/mo fee",
+            value: finalValueWithoutFees,
+          },
+        ]).map((pointMarker) => {
+          const isPointActive = activePoint === pointMarker.key;
+          const togglePoint = () =>
+            setActivePoint((prev) => (prev === pointMarker.key ? null : pointMarker.key));
+          const tipWidth = 150;
+          const tipHeight = 40;
+          const tipX = Math.min(
+            Math.max(pad.left, pointMarker.cx - tipWidth - 12),
+            pad.left + plotWidth - tipWidth,
+          );
+          const tipY = Math.max(pad.top, pointMarker.cy - tipHeight - 10);
+          return (
+            <g key={pointMarker.key}>
+              <circle
+                cx={pointMarker.cx}
+                cy={pointMarker.cy}
+                r="6"
+                fill={pointMarker.color}
+                stroke="#FFFFFF"
+                strokeWidth="3"
+              />
+              {isPointActive ? (
+                <circle
+                  cx={pointMarker.cx}
+                  cy={pointMarker.cy}
+                  r="9"
+                  fill="none"
+                  stroke={pointMarker.color}
+                  strokeWidth="2"
+                  opacity="0.45"
+                />
+              ) : null}
+              {/* 40px transparent hit target for comfortable touch activation. */}
+              <circle
+                cx={pointMarker.cx}
+                cy={pointMarker.cy}
+                r="20"
+                fill="transparent"
+                style={{ cursor: "pointer", pointerEvents: "all" }}
+                role="button"
+                tabIndex={0}
+                aria-label={`${pointMarker.label} ending value ${formatCurrency(pointMarker.value)}`}
+                aria-pressed={isPointActive}
+                onPointerDown={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  togglePoint();
+                }}
+                onFocus={() => setActivePoint(pointMarker.key)}
+                onBlur={() =>
+                  setActivePoint((prev) => (prev === pointMarker.key ? null : prev))
+                }
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    togglePoint();
+                  }
+                }}
+              />
+              {isPointActive ? (
+                <g className="pointer-events-none" aria-hidden="true">
+                  <rect
+                    x={tipX}
+                    y={tipY}
+                    width={tipWidth}
+                    height={tipHeight}
+                    rx="8"
+                    fill="#10233A"
+                  />
+                  <text
+                    x={tipX + 10}
+                    y={tipY + 16}
+                    fill="rgba(255,255,255,0.78)"
+                    fontSize="10"
+                    fontWeight="700"
+                    style={{ textTransform: "uppercase", letterSpacing: "0.08em" }}
+                  >
+                    {pointMarker.label}
+                  </text>
+                  <text
+                    x={tipX + 10}
+                    y={tipY + 32}
+                    fill="#FFFFFF"
+                    fontSize="14"
+                    fontWeight="700"
+                  >
+                    {formatCurrencyFloored(pointMarker.value)}
+                  </text>
+                </g>
+              ) : null}
+            </g>
+          );
+        })}
 
         <text x={pad.left} y={height - 8} textAnchor="middle" fill="#52657A" fontSize="14" fontWeight="600">
           0
@@ -1324,7 +1438,7 @@ function MathExpandButton({
       whileTap={{ scale: 0.96 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#EAF7EF] text-[#108843] transition-colors duration-300 hover:bg-[#D8F0E0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#108843]/35"
-      aria-label={isOpen ? "Close See our math" : "Expand See our math"}
+      aria-label={isOpen ? "Close calculation details" : "View calculation details"}
       aria-expanded={Boolean(isOpen)}
       aria-controls="see-our-math-details"
     >
@@ -1403,7 +1517,7 @@ function SeeOurMathBento({
         <div className="flex items-center justify-between gap-4">
           <div className="min-w-0">
             <h3 className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
-              See our math
+              View calculation details
             </h3>
           </div>
           <MathExpandButton onClick={() => setExpanded(true)} />
@@ -1452,7 +1566,7 @@ function SeeOurMathBento({
               <Table2 className="h-4 w-4" strokeWidth={2.3} />
             </span>
             <div>
-              <p className="text-[11px] font-extrabold uppercase tracking-[0.18em]">See our math</p>
+              <p className="text-[11px] font-extrabold uppercase tracking-[0.18em]">View calculation details</p>
               <h3 id="see-our-math-title" className="mt-0.5 text-sm font-bold text-[#062B43]">
                 {formatCurrency(savings)} projected gap
               </h3>
@@ -2114,7 +2228,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-1.5 py-2 sm:mx-7 sm:px-2"
             aria-label="Portfolio value over time"
           >
-            <div className="h-[228px] w-full sm:h-[305px]">
+            <div className="h-[320px] w-full sm:h-[305px]">
               <FinalHomeLineChart
                 annualFeePercent={annualFeePercent}
                 chartActive={chartActive}
