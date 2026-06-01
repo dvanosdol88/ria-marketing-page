@@ -53,9 +53,10 @@ type QuizProps = {
   savings?: number;
   onShare?: () => void;
   shareButtonLabel?: string;
+  variant?: "card" | "bare";
 };
 
-export function Quiz({ savings = 0, onShare, shareButtonLabel }: QuizProps) {
+export function Quiz({ savings = 0, onShare, shareButtonLabel, variant = "card" }: QuizProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [isSubmittingOption, setIsSubmittingOption] = useState<string | null>(null);
@@ -166,39 +167,8 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel }: QuizProps) {
     return () => window.clearTimeout(timeout);
   }, [fallbackShareFeedback]);
 
-  if (!isExpanded) {
-    return (
-      <div className="text-center">
-        <button
-          type="button"
-          onClick={() => setIsExpanded(true)}
-          className="text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 transition-colors hover:text-brand-800"
-        >
-          Show Poll
-        </button>
-      </div>
-    );
-  }
-
-  return (
-    <section className="mx-auto w-full max-w-3xl rounded-2xl border border-brand-100 bg-[#E8F5E9] p-4 shadow-sm sm:p-6">
-      <div className="mb-4 flex items-start justify-between gap-4">
-        <div>
-          <h3 className="text-lg font-semibold text-neutral-900">Quick poll</h3>
-          <p className="mt-1 text-sm text-neutral-600">
-            What would you do with {hasSavingsValue ? `your ${formattedSavings}*` : "your savings"}?
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={() => setIsExpanded(false)}
-          className="text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-700"
-        >
-          Hide ✕
-        </button>
-      </div>
-
+  const pollBody = (
+    <>
       <div className="grid grid-cols-1 gap-2.5 min-[480px]:grid-cols-2">
         {quizOptions.map((option) => {
           const isSelected = selectedOption === option.id;
@@ -277,6 +247,47 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel }: QuizProps) {
           </button>
         </div>
       )}
+    </>
+  );
+
+  if (variant === "bare") {
+    return pollBody;
+  }
+
+  if (!isExpanded) {
+    return (
+      <div className="text-center">
+        <button
+          type="button"
+          onClick={() => setIsExpanded(true)}
+          className="text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 transition-colors hover:text-brand-800"
+        >
+          Show Poll
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <section className="mx-auto w-full max-w-3xl rounded-2xl border border-brand-100 bg-[#E8F5E9] p-4 shadow-sm sm:p-6">
+      <div className="mb-4 flex items-start justify-between gap-4">
+        <div>
+          <h3 className="text-lg font-semibold text-neutral-900">Quick poll</h3>
+          <p className="mt-1 text-sm text-neutral-600">
+            What would you do with {hasSavingsValue ? `your ${formattedSavings}*` : "your savings"}?
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIsExpanded(false)}
+          className="text-sm font-medium text-neutral-500 transition-colors hover:text-neutral-700"
+        >
+          Hide ✕
+        </button>
+      </div>
+
+      {pollBody}
     </section>
   );
 }

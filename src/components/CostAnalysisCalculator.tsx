@@ -8,9 +8,7 @@ import { buildFeeProjection } from "@/lib/feeProjection";
 import { CalculatorState, DEFAULT_STATE, buildQueryFromState } from "@/lib/calculatorState";
 import { formatCompactCurrency, formatCurrency, formatCurrencyFloored } from "@/lib/format";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
-import { Quiz } from "./Quiz";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
-import { ScrollReveal } from "@/components/ScrollReveal";
 import { AdvisorProofSections } from "@/components/AdvisorProofSections";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
@@ -441,12 +439,6 @@ function SavingsLeadHero({
             className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[#064B84] px-6 text-base font-bold !text-white !no-underline transition-colors duration-200 hover:bg-[#053E6D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:px-8 sm:text-lg"
           >
             Calculator
-          </a>
-          <a
-            href="#quick-poll"
-            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[#007A2F] px-6 text-base font-bold !text-white !no-underline transition-colors duration-200 hover:bg-[#00682B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007A2F] sm:px-8 sm:text-lg"
-          >
-            Vote
           </a>
         </div>
       </div>
@@ -1150,39 +1142,10 @@ export function CostAnalysisCalculator({
           onHighlightScenario={handleCardTap}
           onAssumptionChange={(patch) => updateCalculatorState(patch)}
         />
-
-        {usesOpeningMarketingHero && (
-          <div id="quick-poll" className="section-shell relative z-10 -mt-12 pb-20">
-            <ScrollReveal delay={0.1} className="mx-auto w-full max-w-3xl">
-              <Quiz
-                savings={projection.savings}
-                onShare={shareResult}
-                shareButtonLabel={shareButtonLabel}
-              />
-            </ScrollReveal>
-          </div>
-        )}
       </section>
 
       {isSavingsCalculatorUpgrade && (
         <AdvisorProofSections />
-      )}
-
-      {isSavingsCalculatorUpgrade && (
-        <section
-          id="quick-poll"
-          className="relative w-full overflow-hidden bg-[#EEF0F5] py-12 sm:py-16"
-        >
-          <div className="section-shell">
-            <ScrollReveal delay={0.1} className="mx-auto w-full max-w-3xl">
-              <Quiz
-                savings={projection.savings}
-                onShare={shareResult}
-                shareButtonLabel={shareButtonLabel}
-              />
-            </ScrollReveal>
-          </div>
-        </section>
       )}
 
       {usesOpeningMarketingHero && (

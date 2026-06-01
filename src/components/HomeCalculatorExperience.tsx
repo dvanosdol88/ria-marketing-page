@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
+  ChevronDown,
   Clock3,
   DollarSign,
   ExternalLink,
@@ -27,6 +28,7 @@ import type { ProjectionYear } from "@/lib/feeProjection";
 import { Odometer, RollingCurrencyOdometer } from "@/components/Odometer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { fitCta } from "@/config/fitCtaConfig";
+import { Quiz } from "./Quiz";
 
 type Scenario = "smarter" | "traditional";
 
@@ -1476,6 +1478,7 @@ function SeeOurMathBento({
   years: number;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [pollOpen, setPollOpen] = useState(false);
   const dialogBackdropRef = useRef<HTMLDivElement | null>(null);
   const expandedRef = useRef(expanded);
   const finalGap = Math.max(savings, 0);
@@ -1509,6 +1512,62 @@ function SeeOurMathBento({
 
   return (
     <>
+      <motion.section
+        whileHover={{ y: -3, scale: 1.004 }}
+        transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
+        className="mb-4 min-w-0 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
+      >
+        <button
+          type="button"
+          onClick={() => setPollOpen((open) => !open)}
+          aria-expanded={pollOpen}
+          aria-controls="calculation-poll-panel"
+          className="group flex w-full items-center justify-between gap-4 text-left"
+        >
+          <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+            <p className="min-w-0 text-base font-semibold leading-tight text-[#10233A] sm:text-lg">
+              <span className="block">What would you do with your</span>
+              <span className="block">
+                <span className="tabular-nums text-[#108843]">{formatCurrencyFloored(savings)}</span> savings
+              </span>
+            </p>
+            <span
+              aria-hidden="true"
+              className="shrink-0 text-[3.25rem] font-bold leading-none text-[#108843] sm:text-[3.75rem]"
+            >
+              ?
+            </span>
+          </div>
+          <div className="flex shrink-0 items-center gap-3">
+            <span className="hidden flex-col items-end leading-tight sm:flex">
+              <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#108843]">Vote</span>
+              <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#5B6B7B]">See results</span>
+            </span>
+            <ChevronDown
+              className={`h-6 w-6 text-[#108843] transition-transform duration-300 ${pollOpen ? "rotate-180" : ""}`}
+              strokeWidth={2.5}
+            />
+          </div>
+        </button>
+
+        <AnimatePresence initial={false}>
+          {pollOpen ? (
+            <motion.div
+              id="calculation-poll-panel"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.42, ease: [0.165, 0.84, 0.44, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="mt-5 border-t border-[#E4ECF2] pt-5">
+                <Quiz savings={savings} variant="bare" />
+              </div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      </motion.section>
+
       <motion.section
         whileHover={{ y: -3, scale: 1.004 }}
         transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
