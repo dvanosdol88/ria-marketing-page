@@ -2052,7 +2052,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             accentClassName="text-[#064B84]"
           />
           <div className="mx-auto flex min-h-0 items-center justify-center gap-4 py-0 md:mx-0 md:px-1 md:py-0.5">
-            <p className="whitespace-nowrap text-[13px] font-bold leading-tight text-[#D92D20]">
+            <p className="whitespace-nowrap text-base font-bold leading-tight text-[#D92D20]">
               Difference: {formatCurrencyFloored(savings)}
             </p>
             <button
