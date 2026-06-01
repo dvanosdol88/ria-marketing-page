@@ -800,15 +800,17 @@ function FinalHomeStatCard({
   value: ReactNode;
 }) {
   return (
-    <article className="min-h-[104px] overflow-hidden rounded-md border border-[#DFE6EE] bg-white text-center">
+    <article className="min-h-[92px] overflow-hidden rounded-md border border-[#DFE6EE] bg-white text-center">
       <div
-        className={`flex min-h-[34px] items-center justify-center px-4 py-1.5 text-[13px] font-bold text-white ${
+        className={`flex min-h-[26px] items-center justify-center px-3 py-1 text-[13px] font-bold leading-tight text-white ${
           tone === "blue" ? "bg-[#064B84]" : "bg-[#108843]"
         }`}
       >
         {ribbon}
       </div>
-      <strong className={`mt-4 block text-[clamp(1.6rem,3.5vw,2.5rem)] font-bold leading-none ${accentClassName}`}>
+      <strong
+        className={`block px-2 py-2 text-[clamp(1.375rem,3vw,2.125rem)] font-bold leading-none ${accentClassName}`}
+      >
         {value}
       </strong>
     </article>
@@ -1255,12 +1257,12 @@ function ComparisonBars({
             </div>
           ) : null}
           <div
-            className={`absolute inset-y-0 flex items-center justify-center overflow-hidden rounded-sm border-2 border-[#B42318] transition-opacity duration-300 ease-out ${
+            className={`absolute inset-y-0 flex items-center justify-center overflow-hidden border-y-2 border-r-2 border-[#B42318] transition-opacity duration-300 ease-out ${
               barActive ? "opacity-100" : "opacity-0"
             }`}
             style={{
-              left: `${blueWidthPct}%`,
-              width: `${redWidthPct}%`,
+              left: `calc(${blueWidthPct}% - 1px)`,
+              width: `calc(${redWidthPct}% + 1px)`,
               cursor: "pointer",
               backgroundColor: "#D92D20",
               backgroundImage:
@@ -2023,7 +2025,10 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         ) : assumptionGrid}
         </div>
 
-        <section className="grid gap-2 px-4 pt-3 sm:px-7 md:grid-cols-[1fr_auto_1fr]" aria-label="Ending value comparison">
+        <section
+          className="grid gap-1.5 px-4 pt-2 sm:px-7 md:grid-cols-[1fr_auto_1fr] md:items-stretch"
+          aria-label="Ending value comparison"
+        >
           <FinalHomeStatCard
             ribbon={`Paying asset-based fees (${annualFeePercent.toFixed(2)}%)`}
             value={
@@ -2041,27 +2046,32 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             tone="blue"
             accentClassName="text-[#064B84]"
           />
-          <button
-            type="button"
-            onClick={toggleAllGaps}
-            className={`relative mx-auto flex h-14 w-[4.5rem] items-center justify-center overflow-hidden rounded-md border-2 border-[#D92D20] bg-white transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_22px_rgba(16,35,58,0.18),inset_0_1px_0_rgba(255,255,255,0.95)] active:translate-y-0 active:shadow-[0_4px_10px_rgba(16,35,58,0.14),inset_0_2px_4px_rgba(16,35,58,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] md:mx-0 md:h-auto md:w-auto md:self-stretch md:aspect-square ${
-              vsActive
-                ? ""
-                : "fee-gap-view-pulse shadow-[0_8px_18px_rgba(16,35,58,0.16),inset_0_1px_0_rgba(255,255,255,0.95)]"
-            }`}
-            style={
-              vsActive
-                ? {
-                    boxShadow: "0 4px 10px rgba(16, 35, 58, 0.14), inset 0 2px 4px rgba(16, 35, 58, 0.08)",
-                    transform: "translateY(2px)",
-                  }
-                : undefined
-            }
-            aria-label={vsActive ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
-            aria-pressed={vsActive}
-          >
-            <span className="relative text-sm font-extrabold tracking-tight text-[#062B43] md:text-lg">View</span>
-          </button>
+          <div className="mx-auto flex min-h-0 w-full max-w-[18rem] items-center justify-between gap-2 py-0.5 sm:max-w-none md:mx-0 md:min-w-[12rem] md:px-1">
+            <p className="shrink text-left text-[13px] font-bold leading-tight text-[#D92D20]">
+              Difference: {formatCurrencyFloored(savings)}
+            </p>
+            <button
+              type="button"
+              onClick={toggleAllGaps}
+              className={`relative flex h-7 min-w-[4.25rem] items-center justify-center overflow-hidden rounded-md border-2 border-[#D92D20] bg-white px-3 transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_22px_rgba(16,35,58,0.18),inset_0_1px_0_rgba(255,255,255,0.95)] active:translate-y-0 active:shadow-[0_4px_10px_rgba(16,35,58,0.14),inset_0_2px_4px_rgba(16,35,58,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] md:h-7 ${
+                vsActive
+                  ? ""
+                  : "fee-gap-view-pulse shadow-[0_8px_18px_rgba(16,35,58,0.16),inset_0_1px_0_rgba(255,255,255,0.95)]"
+              }`}
+              style={
+                vsActive
+                  ? {
+                      boxShadow: "0 4px 10px rgba(16, 35, 58, 0.14), inset 0 2px 4px rgba(16, 35, 58, 0.08)",
+                      transform: "translateY(2px)",
+                    }
+                  : undefined
+              }
+              aria-label={vsActive ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
+              aria-pressed={vsActive}
+            >
+              <span className="relative text-xs font-extrabold tracking-tight text-[#062B43]">Show</span>
+            </button>
+          </div>
           <FinalHomeStatCard
             ribbon="Paying flat monthly fee ($100/mo)"
             value={
