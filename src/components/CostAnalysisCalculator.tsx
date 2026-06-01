@@ -434,7 +434,7 @@ function SavingsLeadHero({
           </p>
         </div>
       </div>
-      <div className="px-0 pt-14 sm:pt-20">
+      <div className="px-0 pt-6 pb-8 sm:pt-10 sm:pb-10">
         <div className="flex w-full sm:mx-auto sm:max-w-2xl sm:gap-4 sm:px-4">
           <a
             href="#calculator"
