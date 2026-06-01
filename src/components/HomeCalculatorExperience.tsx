@@ -800,16 +800,16 @@ function FinalHomeStatCard({
   value: ReactNode;
 }) {
   return (
-    <article className="min-h-[92px] overflow-hidden rounded-md border border-[#DFE6EE] bg-white text-center">
+    <article className="min-h-0 overflow-hidden rounded-md border border-[#DFE6EE] bg-white text-center md:min-h-[92px]">
       <div
-        className={`flex min-h-[26px] items-center justify-center px-3 py-1 text-[13px] font-bold leading-tight text-white ${
+        className={`flex min-h-[22px] items-center justify-center px-3 py-0.5 text-[13px] font-bold leading-tight text-white md:min-h-[26px] md:py-1 ${
           tone === "blue" ? "bg-[#064B84]" : "bg-[#108843]"
         }`}
       >
         {ribbon}
       </div>
       <strong
-        className={`block px-2 py-2 text-[clamp(1.375rem,3vw,2.125rem)] font-bold leading-none ${accentClassName}`}
+        className={`block px-2 py-0.5 text-[clamp(1.375rem,3vw,2.125rem)] font-bold leading-none md:py-2 ${accentClassName}`}
       >
         {value}
       </strong>
@@ -2031,7 +2031,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         </div>
 
         <section
-          className="grid gap-1.5 px-4 pt-2 sm:px-7 md:grid-cols-[1fr_auto_1fr] md:items-stretch"
+          className="grid gap-1 px-4 pt-1.5 sm:gap-1.5 sm:px-7 sm:pt-2 md:grid-cols-[1fr_auto_1fr] md:items-stretch"
           aria-label="Ending value comparison"
         >
           <FinalHomeStatCard
@@ -2051,7 +2051,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             tone="blue"
             accentClassName="text-[#064B84]"
           />
-          <div className="mx-auto flex min-h-0 w-full max-w-[18rem] items-center justify-between gap-2 py-0.5 sm:max-w-none md:mx-0 md:min-w-[12rem] md:px-1">
+          <div className="mx-auto flex min-h-0 w-full max-w-[18rem] items-center justify-between gap-2 py-0 sm:max-w-none md:mx-0 md:min-w-[12rem] md:px-1 md:py-0.5">
             <p className="shrink text-left text-[13px] font-bold leading-tight text-[#D92D20]">
               Difference: {formatCurrencyFloored(savings)}
             </p>
