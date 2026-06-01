@@ -876,11 +876,13 @@ function FinalHomeLineChart({
   const { w: width, h: height } = size;
   // Tight padding: Y-tick labels live inside the plot, x-axis labels live in
   // the bottom strip, and there is no right-side endpoint annotation anymore.
-  const pad = { top: 12, right: 10, bottom: 30, left: 10 };
+  const isNarrow = width < 640;
+  const pad = { top: 12, right: 10, bottom: isNarrow ? 24 : 30, left: 10 };
   const plotWidth = Math.max(1, width - pad.left - pad.right);
   const plotHeight = Math.max(1, height - pad.top - pad.bottom);
   const maxYear = Math.max(1, years, ...series.map((row) => row.year));
   const actualMaxValue = Math.max(finalValueWithoutFees, finalValueWithFees, ...series.map((row) => row.withoutFees));
+  const actualMinValue = Math.min(...series.flatMap((row) => [row.withoutFees, row.withFees]));
   const rawTickStep = actualMaxValue / 5;
   const tickExponent = Math.floor(Math.log10(Math.max(1, rawTickStep)));
   const tickMagnitude = 10 ** tickExponent;
@@ -888,7 +890,10 @@ function FinalHomeLineChart({
   const yTickStep =
     (tickBase <= 1 ? 1 : tickBase <= 2 ? 2 : tickBase <= 5 ? 5 : 10) * tickMagnitude;
   const maxValue = yTickStep * Math.ceil(actualMaxValue / yTickStep);
-  const minValue = 0;
+  // Don't anchor the Y axis at $0 when the portfolio already starts well above
+  // zero — that leaves a large dead band above the x-axis labels on mobile.
+  const valueSpan = Math.max(1, actualMaxValue - actualMinValue);
+  const minValue = Math.max(0, actualMinValue - valueSpan * 0.04);
   const valueRange = Math.max(1, maxValue - minValue);
 
   const point = (row: ProjectionYear, key: "withoutFees" | "withFees") => {
@@ -1195,7 +1200,7 @@ function ComparisonBars({
   // above so they visually align edge-to-edge with the line chart.
   return (
     <section
-      className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-3 py-3 sm:mx-7 sm:px-4 sm:py-4"
+      className="mx-4 mt-1.5 rounded-md border border-[#DFE6EE] bg-white px-3 py-3 sm:mx-7 sm:mt-3 sm:px-4 sm:py-4"
       aria-label="Asset-based vs flat fee ending value comparison"
     >
       {/* Caption sits directly above the bars and fades in with the red
@@ -2109,7 +2114,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             className="mx-4 mt-3 rounded-md border border-[#DFE6EE] bg-white px-1.5 py-2 sm:mx-7 sm:px-2"
             aria-label="Portfolio value over time"
           >
-            <div className="h-[255px] w-full sm:h-[305px]">
+            <div className="h-[228px] w-full sm:h-[305px]">
               <FinalHomeLineChart
                 annualFeePercent={annualFeePercent}
                 chartActive={chartActive}
