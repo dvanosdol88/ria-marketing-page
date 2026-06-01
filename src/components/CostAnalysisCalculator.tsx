@@ -434,6 +434,22 @@ function SavingsLeadHero({
           </p>
         </div>
       </div>
+      <div className="px-0 pt-14 sm:pt-20">
+        <div className="flex w-full sm:mx-auto sm:max-w-2xl sm:gap-4 sm:px-4">
+          <a
+            href="#calculator"
+            className="inline-flex min-h-14 flex-1 items-center justify-center rounded-none bg-[#064B84] text-base font-bold !text-white !no-underline transition-colors duration-200 hover:bg-[#053E6D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:w-[330px] sm:flex-none sm:rounded-lg sm:text-lg"
+          >
+            Go to Calculator
+          </a>
+          <a
+            href="#quick-poll"
+            className="inline-flex min-h-14 flex-1 items-center justify-center rounded-none bg-[#007A2F] text-base font-bold !text-white !no-underline transition-colors duration-200 hover:bg-[#00682B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007A2F] sm:w-[330px] sm:flex-none sm:rounded-lg sm:text-lg"
+          >
+            Take the Quiz
+          </a>
+        </div>
+      </div>
       <div className="mx-auto max-w-6xl px-4">
         {introBlock}
         <PremiumPromisePreview savings={savings} />
