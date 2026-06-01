@@ -435,18 +435,18 @@ function SavingsLeadHero({
         </div>
       </div>
       <div className="px-0 pt-6 pb-8 sm:pt-10 sm:pb-10">
-        <div className="flex w-full sm:mx-auto sm:max-w-2xl sm:gap-4 sm:px-4">
+        <div className="mx-auto flex w-full max-w-2xl flex-wrap items-center justify-center gap-3 px-4 sm:gap-4">
           <a
             href="#calculator"
-            className="inline-flex min-h-14 flex-1 items-center justify-center rounded-none bg-[#064B84] text-base font-bold !text-white !no-underline transition-colors duration-200 hover:bg-[#053E6D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:w-[330px] sm:flex-none sm:rounded-lg sm:text-lg"
+            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[#064B84] px-6 text-base font-bold !text-white !no-underline transition-colors duration-200 hover:bg-[#053E6D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:px-8 sm:text-lg"
           >
-            Go to Calculator
+            Calculator
           </a>
           <a
             href="#quick-poll"
-            className="inline-flex min-h-14 flex-1 items-center justify-center rounded-none bg-[#007A2F] text-base font-bold !text-white !no-underline transition-colors duration-200 hover:bg-[#00682B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007A2F] sm:w-[330px] sm:flex-none sm:rounded-lg sm:text-lg"
+            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[#007A2F] px-6 text-base font-bold !text-white !no-underline transition-colors duration-200 hover:bg-[#00682B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007A2F] sm:px-8 sm:text-lg"
           >
-            Take the Quiz
+            Vote
           </a>
         </div>
       </div>
