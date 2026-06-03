@@ -1525,7 +1525,7 @@ function SeeOurMathBento({
           className="group flex w-full items-center justify-between gap-4 text-left"
         >
           <div className="flex min-w-0 items-center gap-3 sm:gap-4">
-            <p className="min-w-0 text-base font-semibold leading-tight text-[#10233A] sm:text-lg">
+            <p className="min-w-0 text-xl font-semibold leading-tight text-[#10233A] sm:text-2xl">
               <span className="block">What would you do with your</span>
               <span className="block">
                 <span className="tabular-nums text-[#108843]">{formatCurrencyFloored(savings)}</span> savings
@@ -1540,8 +1540,8 @@ function SeeOurMathBento({
           </div>
           <div className="flex shrink-0 items-center gap-3">
             <span className="hidden flex-col items-end leading-tight sm:flex">
-              <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#108843]">Vote</span>
-              <span className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#5B6B7B]">See results</span>
+              <span className="text-base font-extrabold uppercase tracking-[0.18em] text-[#108843]">Vote</span>
+              <span className="text-base font-extrabold uppercase tracking-[0.18em] text-[#5B6B7B]">See results</span>
             </span>
             <ChevronDown
               className={`h-6 w-6 text-[#108843] transition-transform duration-300 ${pollOpen ? "rotate-180" : ""}`}

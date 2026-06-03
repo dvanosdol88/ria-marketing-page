@@ -643,10 +643,8 @@ function LowFrictionUpgradeSection() {
             </span>
           </span>
           <span>
-            <span className="block text-3xl font-black leading-none tracking-normal sm:text-4xl">
-              See if{" "}
-              <span className="whitespace-nowrap">Smarter Way Wealth</span> is a
-              good fit for you.
+            <span className="block text-balance text-3xl font-black leading-tight tracking-normal sm:text-4xl">
+              See if Smarter Way Wealth is a good fit for you.
             </span>
             <span className="mt-4 block text-sm font-bold leading-6 text-white/82">
               Talk to David at Smarter Way Wealth.

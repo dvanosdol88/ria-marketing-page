@@ -203,7 +203,7 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel, variant = "card" 
               )}
 
               <div className="relative z-10 flex w-full items-center justify-between gap-2">
-                <span className="flex items-center gap-2 font-semibold text-neutral-900">
+                <span className="flex items-center gap-2 text-xl font-semibold text-neutral-900">
                   {isSelected ? (
                     <span className="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#108843] text-white">
                       <Check className="h-3.5 w-3.5" strokeWidth={3} />
@@ -213,12 +213,12 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel, variant = "card" 
                 </span>
 
                 {isSubmitting ? (
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-700">
+                  <span className="inline-flex items-center gap-1 text-base font-semibold text-brand-700">
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
                     Submitting...
                   </span>
                 ) : hasAnyCounts ? (
-                  <span className={`text-sm font-bold tabular-nums ${isSelected ? "text-[#0A6E35]" : hasVoted ? "text-neutral-700" : "text-neutral-400"}`}>{percentage}%</span>
+                  <span className={`text-lg font-bold tabular-nums ${isSelected ? "text-[#0A6E35]" : hasVoted ? "text-neutral-700" : "text-neutral-400"}`}>{percentage}%</span>
                 ) : null}
               </div>
             </button>
@@ -226,11 +226,11 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel, variant = "card" 
         })}
       </div>
 
-      {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      {error && <p className="mt-3 text-lg text-red-600">{error}</p>}
 
       {hasVoted && (
         <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[#BFE3CC] bg-white/80 px-4 py-3">
-          <span className="inline-flex items-center gap-2 text-sm font-bold text-[#0A6E35]">
+          <span className="inline-flex items-center gap-2 text-lg font-bold text-[#0A6E35]">
             <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#108843] text-white">
               <Check className="h-4 w-4" strokeWidth={3} />
             </span>
@@ -239,7 +239,7 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel, variant = "card" 
           <button
             type="button"
             onClick={() => void handleShare()}
-            className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-brand-200 bg-white px-3.5 py-1.5 text-sm font-bold text-brand-700 transition hover:border-brand-300 hover:bg-[#F2FBF5] hover:text-brand-800"
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-brand-200 bg-white px-3.5 py-1.5 text-lg font-bold text-brand-700 transition hover:border-brand-300 hover:bg-[#F2FBF5] hover:text-brand-800"
             aria-label={hasSavingsValue ? `Share your ${formattedSavings} result` : "Share your result"}
           >
             <ShareIcon className="h-4 w-4" />
