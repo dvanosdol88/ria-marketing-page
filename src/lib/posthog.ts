@@ -1,3 +1,5 @@
+import posthog from "posthog-js";
+
 export type PostHogProperties = Record<string, unknown>;
 
 type BrowserPostHog = {
@@ -8,7 +10,7 @@ type BrowserPostHog = {
 
 function getBrowserPostHog() {
   if (typeof window === "undefined") return undefined;
-  return (window as Window & { posthog?: BrowserPostHog }).posthog;
+  return posthog as BrowserPostHog;
 }
 
 export function capturePostHogEvent(eventName: string, properties: PostHogProperties = {}) {
