@@ -1,0 +1,9 @@
+# Smarter Way Wealth - youarepayingtoomuch.com
+
+This site is a fee calculator and visualization tool showing the impact of investment fees over time.
+
+- `/`: The main fee calculator tool.
+- `/faq`: Frequently asked questions about RIA fees and the calculator.
+- `/how-it-works`: Explanation of the math and assumptions behind the calculator.
+- `/our-math`: Deep dive into the mathematical formulas used.
+- `/mailer-audit`: A visual roadmap and design brief for Smarter Way Wealth's mailer campaigns.
