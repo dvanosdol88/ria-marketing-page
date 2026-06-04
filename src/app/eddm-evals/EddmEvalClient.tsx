@@ -416,10 +416,21 @@ export function EddmEvalClient() {
     <main className="min-h-screen bg-[#F4F7F5] text-[#17231F]">
       <section className="mx-auto grid w-[min(1180px,calc(100%-28px))] gap-5 py-5">
         <header className="grid gap-4 rounded-lg border border-[#CBD8D2] bg-white p-4 shadow-[0_14px_35px_rgba(23,35,31,0.1)] sm:p-5">
-          <div>
-            <p className="text-xs font-black uppercase text-[#075C3E]">EDDM eval board</p>
-            <h1 className="mt-1 text-3xl font-black leading-tight sm:text-4xl">{catalog.title}</h1>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-[#5D6B66]">{catalog.description}</p>
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div>
+              <p className="text-xs font-black uppercase text-[#075C3E]">EDDM eval board</p>
+              <h1 className="mt-1 text-3xl font-black leading-tight sm:text-4xl">{catalog.title}</h1>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-[#5D6B66]">{catalog.description}</p>
+            </div>
+            <div className="max-w-xs shrink-0 rounded-lg border border-red-200 bg-red-50 p-3 text-xs leading-5 text-red-800">
+              <strong className="font-black text-red-900">NOTE:</strong> this language must be on the bottom of all mailers:
+              <br />
+              <br />
+              <span className="font-medium italic">
+                Smarter Way Wealth, LLC is a Registered Investment Adviser. Fee comparisons are hypothetical and do not
+                guarantee future results. Learn more at adviserinfo.sec.gov (CRD #342140).
+              </span>
+            </div>
           </div>
 
           <div className="flex flex-wrap gap-2">
