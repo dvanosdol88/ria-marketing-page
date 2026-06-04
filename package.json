@@ -6,7 +6,6 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "eddm:evals": "node scripts/eddm-evals-server.mjs",
     "eddm:catalog:add-round": "node scripts/eddm-catalog-add-round.mjs",
     "eddm:package:style-a-winner": "node scripts/build-eddm-style-a-winner-print-package.mjs",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"

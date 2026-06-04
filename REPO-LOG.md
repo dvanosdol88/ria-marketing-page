@@ -23,6 +23,13 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-06-04 - Consolidate eval boards to RIA Builder
+**Agent:** Gemini | **Surface:** eval tooling | **Duration:** 1 session
+- changed: deleted local Next.js eval routes (`/evals`, `/eddm-evals`, `/calculator-evals`, `/url-evals`) and the standalone node server (`scripts/eddm-evals-server.mjs`) to eliminate confusion.
+- changed: removed the `eddm:evals` command from `package.json`.
+- deployed: committed and pushed directly to `main` so the redundant routes are removed from the live `youarepayingtoomuch.com` domain.
+- note: the single source of truth for all eval boards (Calculators, EDDM, Legacy, URL) is now exclusively hosted in the `RIA-builder` repo at `https://riabuilder.dvo88.com/EVALS`.
+
 ### 2026-05-31 - Style B EDDM Mailer Round
 **Agent:** Codex | **Surface:** EDDM print layout + eval catalog | **Duration:** focused design/proof pass
 - changed: added `output/mailer-samples/codex/style-b-eddm/` with three new Style B EDDM proof concepts: `01 Hero Gap`, `02 Three Taps`, and `03 Advisor Proof`.
@@ -156,6 +163,15 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - reviewed: Superpowers-style spec review found and rechecked a wave timing issue; code-quality review found and rechecked the odometer accessibility fix. Both review gates passed after fixes.
 - verified locally: `npx tsc --noEmit` clean; `npx eslint . --ext .js,.jsx,.ts,.tsx` clean except the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning; Playwright desktop/mobile checks confirmed layout order, hint waves attach and clear, no range inputs, value updates, VS/line/bar toggles, reduced-motion no-animation, and no console errors beyond local dev HMR info.
 - deployed: pushed directly to `main` in commit `183ac9c`; production Playwright desktop/mobile checks passed at `https://youarepayingtoomuch.com/?codex_prod_motion=1779138943060` with zero console errors.
+
+### 2026-06-01 - Calculation details copy and inline assumptions
+**Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
+- changed: `src/components/HomeCalculatorExperience.tsx` renames the detail-modal breakdown label from "Actual fee gap" to "Actual fees", rewrites the two explanatory sentences, and bolds the key terms in the explanation.
+- changed: the detail modal's four assumption boxes are now text-only editable inputs for Portfolio, Growth, Fee load, and Flat fee, with the requested heading: "Change the assumptions (Note: assumptions on the main page will also change)".
+- changed: flat fee is now modeled as calculator state (`flat` query param, default `$1,200/yr`) and flows through `buildFeeProjection`, the main calculator ribbons/header text, share links, OG image, and save/how-it-works views.
+- fixed: deterministic compact currency formatting removes the local hydration mismatch where Node rendered values like `$5.00M` and the browser rendered `$5M`.
+- verified locally: `npx tsc --noEmit` clean; `npm run lint` clean except 3 pre-existing `<img>` warnings; `npm run build` passed with the existing Tailwind tokens/Turbopack warning; in-app browser mobile check opened calculation details, confirmed the new copy/heading/inputs, edited Portfolio/Growth/Flat fee, and confirmed URL/state updates; desktop check confirmed the main calculator reflects a changed `$200/mo` flat fee.
+- not deployed: the worktree had extensive pre-existing dirty changes and deleted artifacts, including overlapping edits in `src/components/HomeCalculatorExperience.tsx`, so this session did not commit/push to avoid bundling unrelated work.
 
 ### 2026-05-18 - Home calculator steppers and fee-gap toggles
 **Agent:** Codex | **Surface:** marketing/calculator | **Duration:** 1 session
