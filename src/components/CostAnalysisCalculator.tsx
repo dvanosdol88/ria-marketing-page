@@ -27,8 +27,17 @@ import {
 } from "@/config/homeMarketingVariants";
 import type { HomeTopBannerId } from "@/config/homeTopBanners";
 import { useSavingsBar } from "@/components/SavingsBarContext";
+import { capturePostHogEvent } from "@/lib/posthog";
 
 type IntroStyle = "rule" | "panel" | "quote";
+
+function getAssetTier(portfolioValue: number) {
+  if (portfolioValue < 500000) return "under_500k";
+  if (portfolioValue < 1000000) return "500k_1m";
+  if (portfolioValue < 2500000) return "1m_2_5m";
+  if (portfolioValue < 5000000) return "2_5m_5m";
+  return "5m_plus";
+}
 
 // ============================================================================
 // PILL SLIDER - Value-in-pill thumb with color-coded track
@@ -476,23 +485,66 @@ export function CostAnalysisCalculator({
     mergedState.mutualFundExpensePercent > 0
   );
   const [chartReady, setChartReady] = useState(false);
+  const calculatorStartedRef = useRef(false);
+  const calculatorSubmittedRef = useRef(false);
   const updateCalculatorState = useCallback((patch: Partial<CalculatorState>) => {
+    const changedFields = Object.keys(patch);
+    const nextState = { ...state, ...patch };
+
+    if (!calculatorStartedRef.current) {
+      calculatorStartedRef.current = true;
+      capturePostHogEvent("calculator_started", {
+        changed_fields: changedFields,
+        first_changed_field: changedFields[0],
+        experience_mode: experienceMode,
+        marketing_variant: marketingVariantId,
+        calculated_asset_tier: getAssetTier(nextState.portfolioValue),
+        portfolio_value: nextState.portfolioValue,
+        annual_fee_percent: nextState.annualFeePercent,
+        mutual_fund_expense_percent: nextState.mutualFundExpensePercent,
+        annual_growth_percent: nextState.annualGrowthPercent,
+        years: nextState.years,
+      });
+    }
+
     setAssumptionsCustomized(true);
     setState((prev) => ({ ...prev, ...patch }));
-  }, []);
+  }, [experienceMode, marketingVariantId, state]);
 
   const totalAnnualFeePercent = state.annualFeePercent + state.mutualFundExpensePercent;
 
   const projection = useMemo(
     () =>
       buildFeeProjection({
+        annualFlatFee: state.annualFlatFee,
         initialInvestment: state.portfolioValue,
         years: state.years,
         annualFeePercent: totalAnnualFeePercent,
         annualGrowthPercent: state.annualGrowthPercent,
       }),
-    [state.annualGrowthPercent, state.portfolioValue, state.years, totalAnnualFeePercent]
+    [state.annualFlatFee, state.annualGrowthPercent, state.portfolioValue, state.years, totalAnnualFeePercent]
   );
+
+  useEffect(() => {
+    if (!assumptionsCustomized || calculatorSubmittedRef.current) return;
+
+    calculatorSubmittedRef.current = true;
+    capturePostHogEvent("calculator_submitted", {
+      submission_type: "instant_result_rendered",
+      experience_mode: experienceMode,
+      marketing_variant: marketingVariantId,
+      calculated_asset_tier: getAssetTier(state.portfolioValue),
+      portfolio_value: state.portfolioValue,
+      annual_fee_percent: state.annualFeePercent,
+      mutual_fund_expense_percent: state.mutualFundExpensePercent,
+      total_annual_fee_percent: totalAnnualFeePercent,
+      annual_growth_percent: state.annualGrowthPercent,
+      years: state.years,
+      projected_savings: Math.round(projection.savings),
+      projected_total_asset_based_fees: Math.round(projection.totalFees),
+      projected_total_flat_fees: Math.round(projection.totalFlatFees),
+    });
+  }, [assumptionsCustomized, experienceMode, marketingVariantId, projection.savings, projection.totalFees, projection.totalFlatFees, state, totalAnnualFeePercent]);
 
   const { setData: setSavingsBarData } = useSavingsBar();
   useEffect(() => {
@@ -525,6 +577,7 @@ export function CostAnalysisCalculator({
       state.portfolioValue === DEFAULT_STATE.portfolioValue &&
       state.years === DEFAULT_STATE.years &&
       state.annualGrowthPercent === DEFAULT_STATE.annualGrowthPercent &&
+      state.annualFlatFee === DEFAULT_STATE.annualFlatFee &&
       state.annualFeePercent === DEFAULT_STATE.annualFeePercent &&
       state.mutualFundExpensePercent === DEFAULT_STATE.mutualFundExpensePercent;
 
@@ -538,6 +591,7 @@ export function CostAnalysisCalculator({
       params.delete("years");
       params.delete("growth");
       params.delete("fee");
+      params.delete("flat");
       params.delete("mfe");
       query = params.toString();
     } else {
@@ -559,6 +613,7 @@ export function CostAnalysisCalculator({
         "Smarter Way Wealth projection",
         `Potential savings: ${formatCurrencyFloored(projection.savings)}`,
         `Portfolio value: ${formatCurrency(state.portfolioValue)}`,
+        `Annual flat fee: ${formatCurrency(state.annualFlatFee)}`,
         `Advisory fee: ${state.annualFeePercent.toFixed(2)}%`,
         `Mutual fund expenses: ${state.mutualFundExpensePercent.toFixed(2)}%`,
         `Total annual fee load: ${totalAnnualFeePercent.toFixed(2)}%`,
@@ -572,6 +627,16 @@ export function CostAnalysisCalculator({
   );
 
   const shareResult = useCallback(async () => {
+    capturePostHogEvent("cta_clicked", {
+      cta_label: "Share your result",
+      cta_location: "calculator_share",
+      cta_type: "share_result",
+      experience_mode: experienceMode,
+      marketing_variant: marketingVariantId,
+      calculated_asset_tier: getAssetTier(state.portfolioValue),
+      projected_savings: Math.round(projection.savings),
+    });
+
     if (!shareUrl || typeof navigator === "undefined") {
       setShareFeedback("error");
       return;
@@ -605,7 +670,7 @@ export function CostAnalysisCalculator({
     }
 
     setShareFeedback("error");
-  }, [shareSummary, shareUrl]);
+  }, [experienceMode, marketingVariantId, projection.savings, shareSummary, shareUrl, state.portfolioValue]);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
@@ -671,7 +736,8 @@ export function CostAnalysisCalculator({
       ? Math.min(100, Math.max(0, (projection.savings / projection.finalValueWithoutFees) * 100))
       : 0;
 
-  const annualFlatFee = 100 * 12;
+  const annualFlatFee = state.annualFlatFee;
+  const monthlyFlatFee = annualFlatFee / 12;
   const annualAumFeeEstimate = state.portfolioValue * (totalAnnualFeePercent / 100);
 
   const collapseControl = (
@@ -718,7 +784,7 @@ export function CostAnalysisCalculator({
   const helperNotes = (
     <>
       <p className={`text-center text-xs ${calculatorTheme.helperTextClassName}`}>
-        Compares our $100/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
+        Compares our {formatCurrency(monthlyFlatFee)}/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
         <Link href="/our-math" className={calculatorTheme.linkClassName}>
           For finance nerds
         </Link>
@@ -1044,7 +1110,7 @@ export function CostAnalysisCalculator({
         >
           <div className="mx-auto flex h-11 max-w-5xl items-center justify-center gap-6 px-4 text-sm font-medium">
             <div className="flex items-center gap-2">
-              <span className="text-gray-500 dark:text-slate-400">SMARTER Way ($100/mo):</span>
+              <span className="text-gray-500 dark:text-slate-400">SMARTER Way ({formatCurrency(monthlyFlatFee)}/mo):</span>
               <Odometer
                 value={Math.floor(projection.finalValueWithoutFees / 1000) * 1000}
                 prefix="$"

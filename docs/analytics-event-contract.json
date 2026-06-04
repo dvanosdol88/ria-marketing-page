@@ -1,0 +1,185 @@
+{
+  "version": "2026-06-04",
+  "owner": "Smarter Way Wealth marketing analytics",
+  "posthog": {
+    "recommendedProjectShape": "Use one PostHog project for youarepayingtoomuch.com and smarterwaywealth.com so the cross-site journey can be analyzed in one place.",
+    "env": {
+      "NEXT_PUBLIC_POSTHOG_KEY": "Public PostHog project key used by both sites.",
+      "NEXT_PUBLIC_POSTHOG_HOST": "PostHog ingest host. Default: https://us.i.posthog.com"
+    },
+    "canonicalSiteProperty": "site_domain",
+    "campaignProperties": [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_content",
+      "utm_term",
+      "first_utm_source",
+      "first_utm_medium",
+      "first_utm_campaign",
+      "first_utm_content",
+      "first_utm_term",
+      "is_eddm_visitor"
+    ]
+  },
+  "sharedProperties": {
+    "site_domain": "Current hostname, used to split YAPTOM and SWW traffic.",
+    "site_path": "Current pathname.",
+    "site_origin": "Current origin.",
+    "first_landing_url": "First URL registered for the browser/person.",
+    "first_landing_domain": "First landing hostname registered for the browser/person."
+  },
+  "events": [
+    {
+      "name": "$pageview",
+      "site": "both",
+      "purpose": "Base traffic and path analysis.",
+      "requiredProperties": [
+        "$current_url",
+        "site_domain"
+      ],
+      "ownerFiles": [
+        "src/components/PostHogPageView.tsx",
+        "D:/smarter-way-wealth/src/components/PostHogPageView.js"
+      ]
+    },
+    {
+      "name": "calculator_started",
+      "site": "youarepayingtoomuch.com",
+      "purpose": "First active calculator interaction.",
+      "requiredProperties": [
+        "changed_fields",
+        "first_changed_field",
+        "experience_mode",
+        "marketing_variant",
+        "calculated_asset_tier",
+        "portfolio_value",
+        "annual_fee_percent",
+        "mutual_fund_expense_percent",
+        "annual_growth_percent",
+        "years"
+      ],
+      "ownerFiles": [
+        "src/components/CostAnalysisCalculator.tsx"
+      ]
+    },
+    {
+      "name": "calculator_submitted",
+      "site": "youarepayingtoomuch.com",
+      "purpose": "Instant result rendered after the visitor customizes calculator assumptions.",
+      "requiredProperties": [
+        "submission_type",
+        "experience_mode",
+        "marketing_variant",
+        "calculated_asset_tier",
+        "portfolio_value",
+        "annual_fee_percent",
+        "mutual_fund_expense_percent",
+        "annual_growth_percent",
+        "years"
+      ],
+      "ownerFiles": [
+        "src/components/CostAnalysisCalculator.tsx"
+      ]
+    },
+    {
+      "name": "cta_clicked",
+      "site": "both",
+      "purpose": "Shared catch-all for meaningful outbound, intro, contact, or explicitly tagged CTAs.",
+      "requiredProperties": [
+        "cta_label",
+        "cta_href",
+        "cta_host",
+        "cta_path",
+        "cta_location",
+        "opens_new_tab"
+      ],
+      "ownerFiles": [
+        "src/components/PostHogCtaTracker.tsx",
+        "D:/smarter-way-wealth/src/components/PostHogCtaTracker.js"
+      ]
+    },
+    {
+      "name": "firm_site_viewed",
+      "site": "smarterwaywealth.com",
+      "purpose": "SWW-specific pageview companion event for firm-site journey funnels.",
+      "requiredProperties": [
+        "$current_url",
+        "site_domain",
+        "site_path"
+      ],
+      "ownerFiles": [
+        "D:/smarter-way-wealth/src/components/PostHogPageView.js"
+      ]
+    },
+    {
+      "name": "calculator_cta_clicked",
+      "site": "smarterwaywealth.com",
+      "purpose": "Firm-site click back to the fee calculator.",
+      "requiredProperties": [
+        "cta_label",
+        "cta_href",
+        "cta_location"
+      ],
+      "ownerFiles": [
+        "D:/smarter-way-wealth/src/components/PostHogCtaTracker.js"
+      ]
+    },
+    {
+      "name": "intro_call_clicked",
+      "site": "smarterwaywealth.com",
+      "purpose": "Firm-site scheduling click, usually Calendly.",
+      "requiredProperties": [
+        "cta_label",
+        "cta_href",
+        "cta_location"
+      ],
+      "ownerFiles": [
+        "D:/smarter-way-wealth/src/components/PostHogCtaTracker.js"
+      ]
+    },
+    {
+      "name": "verify_firm_clicked",
+      "site": "smarterwaywealth.com",
+      "purpose": "Click to SEC/IAPD firm verification.",
+      "requiredProperties": [
+        "cta_label",
+        "cta_href",
+        "cta_location"
+      ],
+      "ownerFiles": [
+        "D:/smarter-way-wealth/src/components/PostHogCtaTracker.js"
+      ]
+    },
+    {
+      "name": "contact_clicked",
+      "site": "smarterwaywealth.com",
+      "purpose": "Email/contact link click.",
+      "requiredProperties": [
+        "cta_label",
+        "cta_href",
+        "cta_location"
+      ],
+      "ownerFiles": [
+        "D:/smarter-way-wealth/src/components/PostHogCtaTracker.js"
+      ]
+    },
+    {
+      "name": "pricing_or_model_viewed",
+      "site": "smarterwaywealth.com",
+      "purpose": "Future event for explicit pricing/model section exposure once SWW gets a durable section marker or route.",
+      "requiredProperties": [
+        "site_domain",
+        "site_path",
+        "section_id"
+      ],
+      "status": "planned"
+    }
+  ],
+  "privacyRules": [
+    "Do not capture Social Security numbers, account numbers, full phone numbers, email addresses typed into forms, or free-form personal financial notes.",
+    "Calculator numeric assumptions may be captured because they are anonymous modeling inputs, but do not combine them with identified user profiles without a new compliance/privacy review.",
+    "PostHog session replay may show calculator numbers. Password, email, and telephone inputs must stay masked.",
+    "Sentry should receive technical error context, not marketing funnel payloads or sensitive user-entered financial details."
+  ]
+}
