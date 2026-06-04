@@ -2,6 +2,7 @@
 export const RIA_MONTHLY_FEE = 100;
 
 export interface FeeProjectionInput {
+  annualFlatFee?: number;
   initialInvestment: number;
   annualFeePercent: number;
   annualGrowthPercent: number;
@@ -10,7 +11,7 @@ export interface FeeProjectionInput {
 
 export interface ProjectionYear {
   year: number;
-  /** Portfolio value under RIA's $100/mo flat fee. */
+  /** Portfolio value under the modeled flat fee. */
   withoutFees: number;
   /** Portfolio value under the user's AUM % fee. */
   withFees: number;
@@ -24,18 +25,18 @@ export interface FeeProjectionResult {
   series: ProjectionYear[];
   /** Total AUM-based fees paid over the full horizon. */
   totalFees: number;
-  /** Total flat fees paid ($100 × months). */
+  /** Total flat fees paid over the full horizon. */
   totalFlatFees: number;
   /** How much more wealth you keep with the flat fee vs AUM fee. */
   savings: number;
   /** Ending portfolio value under the AUM % fee. */
   finalValueWithFees: number;
-  /** Ending portfolio value under RIA's $100/mo flat fee. */
+  /** Ending portfolio value under the modeled flat fee. */
   finalValueWithoutFees: number;
 }
 
 /**
- * Monthly-compounding projection comparing RIA's $100/mo flat fee
+ * Monthly-compounding projection comparing a flat monthly fee
  * against a traditional AUM percentage fee.
  *
  * Both scenarios use the same gross annual return, converted to a
@@ -44,6 +45,7 @@ export interface FeeProjectionResult {
  * The AUM fee is divided linearly across 12 months (industry standard).
  */
 export function buildFeeProjection({
+  annualFlatFee = RIA_MONTHLY_FEE * 12,
   annualFeePercent,
   annualGrowthPercent,
   initialInvestment,
@@ -52,6 +54,7 @@ export function buildFeeProjection({
   const rAnnual = annualGrowthPercent / 100;
   const rMonthly = Math.pow(1 + rAnnual, 1 / 12) - 1;
   const aumMonthly = annualFeePercent / 100 / 12;
+  const monthlyFlatFee = Math.max(0, annualFlatFee / 12);
   const totalMonths = years * 12;
 
   let withFlatFee = initialInvestment;
@@ -77,8 +80,8 @@ export function buildFeeProjection({
     withAumFee *= 1 + rMonthly;
 
     // 2. Deduct flat fee from RIA track
-    withFlatFee = Math.max(0, withFlatFee - RIA_MONTHLY_FEE);
-    cumulativeFlatFees += RIA_MONTHLY_FEE;
+    withFlatFee = Math.max(0, withFlatFee - monthlyFlatFee);
+    cumulativeFlatFees += monthlyFlatFee;
 
     // 3. Deduct AUM fee from traditional advisor track
     const aumFeeThisMonth = withAumFee * aumMonthly;

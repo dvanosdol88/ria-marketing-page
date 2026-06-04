@@ -1,4 +1,5 @@
 export type CalculatorState = {
+  annualFlatFee: number;
   portfolioValue: number;
   years: number;
   annualGrowthPercent: number;
@@ -7,6 +8,7 @@ export type CalculatorState = {
 };
 
 export const DEFAULT_STATE: CalculatorState = {
+  annualFlatFee: 1200,
   portfolioValue: 1000000,
   years: 20,
   annualGrowthPercent: 8,
@@ -31,6 +33,7 @@ export function parseInteger(value: string | null, fallback: number, min: number
 
 export function parseCalculatorState(searchParams: URLSearchParams): CalculatorState {
   return {
+    annualFlatFee: parseNumber(searchParams.get("flat"), DEFAULT_STATE.annualFlatFee, 0, 12000),
     portfolioValue: parseNumber(searchParams.get("portfolio"), DEFAULT_STATE.portfolioValue, 250000, 10000000),
     years: parseInteger(searchParams.get("years"), DEFAULT_STATE.years, 1, 40),
     annualGrowthPercent: parseNumber(searchParams.get("growth"), DEFAULT_STATE.annualGrowthPercent, 3, 12),
@@ -42,6 +45,7 @@ export function parseCalculatorState(searchParams: URLSearchParams): CalculatorS
 export function buildQueryFromState(state: CalculatorState, existingSearchParams?: URLSearchParams): string {
   const params = new URLSearchParams(existingSearchParams ? existingSearchParams.toString() : undefined);
 
+  params.set("flat", state.annualFlatFee.toString());
   params.set("portfolio", state.portfolioValue.toString());
   params.set("years", state.years.toString());
   params.set("growth", state.annualGrowthPercent.toString());
