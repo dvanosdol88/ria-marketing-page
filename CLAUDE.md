@@ -47,3 +47,22 @@ This site will be read, summarized, and quoted by AI agents (ChatGPT, Claude, Pe
 - Repeating the same Organization JSON-LD across many pages — agents weight repetition down.
 
 When in doubt, check the canonical agent-readiness notes in the global write-up; surface gaps as backlog items.
+
+## EDDM Mailer Proofs Workflow
+
+**CRITICAL RULE:** If you ever make visible changes (like adjusting padding, styling, or text on mailers), you MUST verify them yourself (by checking the generated PNGs or running an automated visual check) before telling David the job was completed.
+
+Create revised EDDM mailer proof assets in a new folder under `output/mailer-samples/<round-name>`.
+
+- Do not edit, delete, or overwrite existing mailer folders or existing candidate IDs.
+- Use filenames that end in: `_Front_Proof.png` and `_Back_Proof.png`.
+
+After generating assets, run the catalog helper as a dry run first:
+`npm run eddm:catalog:add-round -- --source output/mailer-samples/<round-name> --group "G. <Round Name>" --id-prefix eddm-<short-round-name> --title-prefix "<Round Name>"`
+
+Only if the generated candidate IDs and asset paths look correct, rerun with `--write`.
+
+Then verify:
+- `npm run build`
+- `/eddm-evals` shows the new candidates
+- no existing candidates disappeared

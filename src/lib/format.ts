@@ -17,14 +17,26 @@ export function fmtPct(x: number) {
 export const formatCurrency = fmtMoney;
 
 export function formatCompactCurrency(value: number): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    notation: "compact",
-    maximumFractionDigits: value >= 1000000 ? 2 : 0,
-  })
-    .format(value || 0)
-    .replace("K", "k");
+  const amount = value || 0;
+  const absAmount = Math.abs(amount);
+
+  if (absAmount >= 1000000) {
+    const millions = amount / 1000000;
+    const formatted = Number.isInteger(millions)
+      ? millions.toFixed(0)
+      : millions.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+    return `$${formatted}M`;
+  }
+
+  if (absAmount >= 1000) {
+    const thousands = amount / 1000;
+    const formatted = Number.isInteger(thousands)
+      ? thousands.toFixed(0)
+      : thousands.toFixed(1).replace(/0+$/, "").replace(/\.$/, "");
+    return `$${formatted}k`;
+  }
+
+  return formatCurrency(amount);
 }
 
 /**

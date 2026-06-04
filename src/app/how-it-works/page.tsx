@@ -26,6 +26,7 @@ export default function HowItWorksPage({
   const totalAnnualFeePercent =
     calculatorState.annualFeePercent + calculatorState.mutualFundExpensePercent;
   const projection = buildFeeProjection({
+    annualFlatFee: calculatorState.annualFlatFee,
     initialInvestment: calculatorState.portfolioValue,
     years: calculatorState.years,
     annualFeePercent: totalAnnualFeePercent,

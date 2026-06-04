@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import ComplianceFooter from "@/components/ComplianceFooter";
 
 const IAPD_URL = "https://adviserinfo.sec.gov/firm/summary/342140";
@@ -9,6 +12,17 @@ const IAPD_URL = "https://adviserinfo.sec.gov/firm/summary/342140";
  * full regulatory compliance disclosures below it.
  */
 export function SiteFooter() {
+  const pathname = usePathname();
+
+  if (
+    pathname.startsWith("/evals") ||
+    pathname.startsWith("/calculator-evals") ||
+    pathname.startsWith("/url-evals") ||
+    pathname.startsWith("/gallery")
+  ) {
+    return null;
+  }
+
   return (
     <>
       <footer className="border-t border-neutral-200 bg-[#EEF0F5]">
@@ -53,6 +67,12 @@ export function SiteFooter() {
               >
                 Privacy
               </Link>
+              <a
+                href="https://smarterwaywealth.com/privacy"
+                className="hover:text-neutral-700 no-underline"
+              >
+                Privacy Policy
+              </a>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 {
   "name": "WINNER Style A - Advisor Green Band Printer Package",
-  "generatedAt": "2026-06-04T19:26:27.518Z",
+  "generatedAt": "2026-06-04T19:30:47.956Z",
   "generator": "scripts/build-eddm-style-a-winner-print-package.mjs",
   "sourceCandidateId": "eddm-finalists-01e-advisor-green-band",
   "sourceConcept": "FINALISTS 01E - Advisor Green Band",
@@ -41,8 +41,8 @@
       "role": "print-ready",
       "type": "pdf",
       "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/print-ready-style-a-winner/SWW_YAPTOM_StyleA_AdvisorGreenBand_PrintReady_8p75x6p5.pdf",
-      "bytes": 823551,
-      "sha256": "b52a674e2d4d9f723785721dfbf64c75b0d1e49d42c0f634152158d21e46c03c"
+      "bytes": 823559,
+      "sha256": "5393538ee4fee036dfc1c7ad8fed4dab33555fbe851e7026dcd0ae1a2c59b2ab"
     },
     {
       "label": "Front proof",
@@ -57,16 +57,16 @@
       "role": "back",
       "type": "image",
       "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/print-ready-style-a-winner/SWW_YAPTOM_StyleA_AdvisorGreenBand_Back_Proof.png",
-      "bytes": 313491,
-      "sha256": "84d5b27957c12f75eac8dd67cae074745733820190a68fc814d826ff2f7807d4"
+      "bytes": 309500,
+      "sha256": "5cb29c3116254da53eacf93f9941e7c7e315bb85d2e07ac820ef9e80e59f8117"
     },
     {
       "label": "Source proof HTML",
       "role": "source-proof",
       "type": "html",
       "path": "output/mailer-samples/codex/save-upgrade-tools-v2-finalists/print-ready-style-a-winner/SWW_YAPTOM_StyleA_AdvisorGreenBand_SourceProof.html",
-      "bytes": 25595,
-      "sha256": "6e7b21739582cee71d6313370ce80285571c14f6489ad188c2c45f938ba64a7a"
+      "bytes": 25593,
+      "sha256": "e9c005fd10007784bf90d40ec4496364ddc58b2b60cc76d3e00d000c5855d31e"
     },
     {
       "label": "Printer notes",

@@ -48,6 +48,7 @@ export type CalculatorSimpleControlNodes = {
 };
 
 type CalculatorAssumptionPatch = {
+  annualFlatFee?: number;
   annualFeePercent?: number;
   annualGrowthPercent?: number;
   portfolioValue?: number;
@@ -99,12 +100,26 @@ type HomeCalculatorExperienceProps = {
 };
 
 function formatCompactCurrency(value: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    notation: "compact",
-    maximumFractionDigits: value >= 1000000 ? 2 : 0,
-  }).format(value);
+  const amount = value || 0;
+  const absAmount = Math.abs(amount);
+
+  if (absAmount >= 1000000) {
+    const millions = amount / 1000000;
+    const formatted = Number.isInteger(millions)
+      ? millions.toFixed(0)
+      : millions.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
+    return `$${formatted}M`;
+  }
+
+  if (absAmount >= 1000) {
+    const thousands = amount / 1000;
+    const formatted = Number.isInteger(thousands)
+      ? thousands.toFixed(0)
+      : thousands.toFixed(1).replace(/0+$/, "").replace(/\.$/, "");
+    return `$${formatted}k`;
+  }
+
+  return formatCurrency(amount);
 }
 
 // Animates a numeric value from 0 → `target` over `durationMs` whenever `active`
@@ -415,6 +430,113 @@ function FinalHeaderNumberInput({
         </span>
       )}
     </span>
+  );
+}
+
+function MathAssumptionInputCard({
+  ariaLabel,
+  decimals,
+  inputMode,
+  label,
+  max,
+  min,
+  onChange,
+  prefix,
+  suffix,
+  useGrouping = false,
+  value,
+}: {
+  ariaLabel: string;
+  decimals: number;
+  inputMode: "decimal" | "numeric";
+  label: string;
+  max: number;
+  min: number;
+  onChange: (value: number) => void;
+  prefix?: string;
+  suffix?: string;
+  useGrouping?: boolean;
+  value: number;
+}) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [focused, setFocused] = useState(false);
+  const [draft, setDraft] = useState(() => formatHeaderInputValue(value, decimals, useGrouping));
+
+  useEffect(() => {
+    if (!focused) {
+      setDraft(formatHeaderInputValue(value, decimals, useGrouping));
+    }
+  }, [decimals, focused, useGrouping, value]);
+
+  const normalize = (raw: number) => clampHeaderInputValue(raw, min, max, decimals);
+  const commitDraft = (text: string) => {
+    const parsed = parseHeaderInputValue(text);
+    if (parsed === null) {
+      setDraft(formatHeaderInputValue(value, decimals, useGrouping));
+      return;
+    }
+
+    const nextValue = normalize(parsed);
+    onChange(nextValue);
+    setDraft(formatHeaderInputValue(nextValue, decimals, useGrouping));
+  };
+
+  const handleDraftChange = (nextDraft: string) => {
+    setDraft(nextDraft);
+    const parsed = parseHeaderInputValue(nextDraft);
+    if (parsed !== null && parsed >= min && parsed <= max) {
+      onChange(normalize(parsed));
+    }
+  };
+
+  return (
+    <label
+      className="block cursor-text rounded-md border border-[#DDE7EF] bg-white px-3 py-2 focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/20"
+      onMouseDown={(event) => {
+        if (event.target === inputRef.current) return;
+        event.preventDefault();
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }}
+    >
+      <span className="block text-xs font-bold uppercase tracking-[0.14em] text-[#667587]">
+        {label}
+      </span>
+      <span className="mt-1 flex min-h-6 items-baseline text-[#10233A]">
+        {prefix ? <span aria-hidden="true" className="font-semibold">{prefix}</span> : null}
+        <input
+          ref={inputRef}
+          aria-label={ariaLabel}
+          type="text"
+          inputMode={inputMode}
+          autoComplete="off"
+          spellCheck={false}
+          value={draft}
+          onBlur={(event) => {
+            setFocused(false);
+            commitDraft(event.currentTarget.value);
+          }}
+          onChange={(event) => handleDraftChange(event.target.value)}
+          onFocus={(event) => {
+            setFocused(true);
+            requestAnimationFrame(() => event.target.select());
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              commitDraft(event.currentTarget.value);
+              event.currentTarget.blur();
+            } else if (event.key === "Escape") {
+              event.preventDefault();
+              setDraft(formatHeaderInputValue(value, decimals, useGrouping));
+              event.currentTarget.blur();
+            }
+          }}
+          className="min-w-0 flex-1 border-0 bg-transparent p-0 text-base font-semibold leading-6 tabular-nums text-[#10233A] outline-none"
+        />
+        {suffix ? <span aria-hidden="true" className="ml-1 text-sm font-semibold text-[#10233A]">{suffix}</span> : null}
+      </span>
+    </label>
   );
 }
 
@@ -1283,6 +1405,7 @@ function FinalHomeLineChart({
  * region, plus a caption appears with the dollar/percentage gap.
  */
 function ComparisonBars({
+  annualFlatFee,
   finalValueWithFees,
   finalValueWithoutFees,
   savings,
@@ -1294,6 +1417,7 @@ function ComparisonBars({
   onGapLeave,
   onGapToggle,
 }: {
+  annualFlatFee: number;
   finalValueWithFees: number;
   finalValueWithoutFees: number;
   savings: number;
@@ -1345,7 +1469,7 @@ function ComparisonBars({
       <div
         className="overflow-hidden rounded-md"
         role="img"
-        aria-label={`Asset-based fee ending value ${formatCurrencyFloored(finalValueWithFees)} versus flat $100/month fee ending value ${formatCurrencyFloored(finalValueWithoutFees)}, a ${percentLost.toFixed(1)} percent gap.`}
+        aria-label={`Asset-based fee ending value ${formatCurrencyFloored(finalValueWithFees)} versus flat ${formatCurrency(annualFlatFee / 12)}/month fee ending value ${formatCurrencyFloored(finalValueWithoutFees)}, a ${percentLost.toFixed(1)} percent gap.`}
       >
         {/* Blue bar — asset-based ending value. White dollar label sits at the
            right edge of the blue fill. Red tail + % label fade in with VS. */}
@@ -1459,6 +1583,8 @@ function MathExpandButton({
 function SeeOurMathBento({
   annualFlatFee,
   annualGrowthPercent,
+  mutualFundExpensePercent,
+  onAssumptionChange,
   portfolioValue,
   savings,
   series,
@@ -1469,6 +1595,8 @@ function SeeOurMathBento({
 }: {
   annualFlatFee: number;
   annualGrowthPercent: number;
+  mutualFundExpensePercent: number;
+  onAssumptionChange: (patch: CalculatorAssumptionPatch) => void;
   portfolioValue: number;
   savings: number;
   series: ProjectionYear[];
@@ -1488,6 +1616,11 @@ function SeeOurMathBento({
   const compoundingShare = finalGap > 0 ? (compoundingGap / finalGap) * 100 : 0;
   const feeBarWidth = `${Math.min(Math.max(directFeeShare, 0), 100)}%`;
   const compoundingBarWidth = `${Math.min(Math.max(compoundingShare, 0), 100)}%`;
+  const handleFeeLoadChange = (value: number) => {
+    onAssumptionChange({
+      annualFeePercent: Math.max(0, Number((value - mutualFundExpensePercent).toFixed(2))),
+    });
+  };
 
   expandedRef.current = expanded;
 
@@ -1639,7 +1772,7 @@ function SeeOurMathBento({
             <div className="mt-3 space-y-3">
               <div>
                 <div className="flex items-baseline justify-between gap-3">
-                  <span className="text-sm font-bold text-[#10233A]">Actual fee gap</span>
+                  <span className="text-sm font-bold text-[#10233A]">Actual fees</span>
                   <span className="text-sm font-extrabold tabular-nums text-[#D92D20]">
                     {formatCurrency(directFeeGap)} · {directFeeShare.toFixed(0)}%
                   </span>
@@ -1661,28 +1794,65 @@ function SeeOurMathBento({
               </div>
             </div>
             <p className="mt-3 text-xs leading-5 text-[#52657A]">
-              Fees paid is the extra asset-based fee bill above the flat-fee bill. Lost compounding is the rest of the ending-value gap.
+              <strong className="font-bold text-[#10233A]">Actual fees</strong> is the cumulative amount of asset-based fees paid above the cumulative flat-fee amount for the life of the analysis.{" "}
+              <strong className="font-bold text-[#10233A]">Lost compounding</strong> is the &apos;opportunity cost&apos; of not having the extra asset-based fees invested over the life of the analysis.
             </p>
           </div>
 
-          <dl className="mt-4 grid grid-cols-2 gap-2 text-xs">
-            <div className="rounded-md border border-[#DDE7EF] bg-white px-3 py-2">
-              <dt className="font-bold uppercase tracking-[0.14em] text-[#667587]">Portfolio</dt>
-              <dd className="mt-1 font-semibold tabular-nums text-[#10233A]">{formatCurrency(portfolioValue)}</dd>
+          <div className="mt-4">
+            <h4 className="text-xs font-extrabold leading-5 text-[#10233A]">
+              Change the assumptions <span className="font-semibold text-[#52657A]">(Note: assumptions on the main page will also change)</span>
+            </h4>
+            <div className="mt-2 grid grid-cols-1 gap-2 text-xs min-[420px]:grid-cols-2">
+              <MathAssumptionInputCard
+                ariaLabel="Portfolio assumption"
+                label="Portfolio"
+                value={portfolioValue}
+                onChange={(value) => onAssumptionChange({ portfolioValue: value })}
+                prefix="$"
+                decimals={0}
+                inputMode="numeric"
+                min={250000}
+                max={5000000}
+                useGrouping
+              />
+              <MathAssumptionInputCard
+                ariaLabel="Annual growth assumption"
+                label="Growth"
+                value={annualGrowthPercent}
+                onChange={(value) => onAssumptionChange({ annualGrowthPercent: value })}
+                suffix="%"
+                decimals={1}
+                inputMode="decimal"
+                min={3}
+                max={12}
+              />
+              <MathAssumptionInputCard
+                ariaLabel="Fee load assumption"
+                label="Fee load"
+                value={totalAnnualFeePercent}
+                onChange={handleFeeLoadChange}
+                suffix="%"
+                decimals={2}
+                inputMode="decimal"
+                min={0}
+                max={3}
+              />
+              <MathAssumptionInputCard
+                ariaLabel="Annual flat fee assumption"
+                label="Flat fee"
+                value={annualFlatFee}
+                onChange={(value) => onAssumptionChange({ annualFlatFee: value })}
+                prefix="$"
+                suffix="/yr"
+                decimals={0}
+                inputMode="numeric"
+                min={0}
+                max={12000}
+                useGrouping
+              />
             </div>
-            <div className="rounded-md border border-[#DDE7EF] bg-white px-3 py-2">
-              <dt className="font-bold uppercase tracking-[0.14em] text-[#667587]">Growth</dt>
-              <dd className="mt-1 font-semibold tabular-nums text-[#10233A]">{annualGrowthPercent.toFixed(1)}%</dd>
-            </div>
-            <div className="rounded-md border border-[#DDE7EF] bg-white px-3 py-2">
-              <dt className="font-bold uppercase tracking-[0.14em] text-[#667587]">Fee load</dt>
-              <dd className="mt-1 font-semibold tabular-nums text-[#10233A]">{totalAnnualFeePercent.toFixed(2)}%</dd>
-            </div>
-            <div className="rounded-md border border-[#DDE7EF] bg-white px-3 py-2">
-              <dt className="font-bold uppercase tracking-[0.14em] text-[#667587]">Flat fee</dt>
-              <dd className="mt-1 font-semibold tabular-nums text-[#10233A]">{formatCurrency(annualFlatFee)}/yr</dd>
-            </div>
-          </dl>
+          </div>
 
         </div>
 
@@ -1780,6 +1950,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     disclosure,
     finalValueWithFees,
     finalValueWithoutFees,
+    mutualFundExpensePercent,
     onAssumptionChange,
     percentLost,
     portfolioValue,
@@ -2142,7 +2313,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
                       maxWidthCh={4.5}
                       className="font-semibold text-[#064B84]"
                     />
-                    <span>fee with a flat <span className="font-semibold text-[#108843]">$100/month</span>.</span>
+                    <span>fee with a flat <span className="font-semibold text-[#108843]">{formatCurrency(annualFlatFee / 12)}/month</span>.</span>
                   </motion.span>
                 ) : (
                   <motion.span
@@ -2163,7 +2334,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
                     >
                       your asset-based fee
                     </EditableHeaderButton>
-                    <span>with a flat <span className="font-semibold text-[#108843]">$100/month</span>.</span>
+                    <span>with a flat <span className="font-semibold text-[#108843]">{formatCurrency(annualFlatFee / 12)}/month</span>.</span>
                   </motion.span>
                 )}
               </AnimatePresence>
@@ -2251,7 +2422,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             </button>
           </div>
           <FinalHomeStatCard
-            ribbon="Paying flat monthly fee ($100/mo)"
+            ribbon={`Paying flat monthly fee (${formatCurrency(annualFlatFee / 12)}/mo)`}
             value={
               <>
                 <span className="sm:hidden">{formatCurrencyFloored(finalValueWithoutFees)}</span>
@@ -2306,6 +2477,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           </section>
 
           <ComparisonBars
+            annualFlatFee={annualFlatFee}
             finalValueWithFees={finalValueWithFees}
             finalValueWithoutFees={finalValueWithoutFees}
             savings={savings}
@@ -2335,6 +2507,8 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <SeeOurMathBento
             annualFlatFee={annualFlatFee}
             annualGrowthPercent={annualGrowthPercent}
+            mutualFundExpensePercent={mutualFundExpensePercent}
+            onAssumptionChange={onAssumptionChange}
             portfolioValue={portfolioValue}
             savings={savings}
             series={series}

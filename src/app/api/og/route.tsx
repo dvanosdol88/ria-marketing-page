@@ -16,6 +16,7 @@ export async function GET(request: Request) {
   const state = parseCalculatorState(url.searchParams);
   const totalAnnualFeePercent = state.annualFeePercent + state.mutualFundExpensePercent;
   const projection = buildFeeProjection({
+    annualFlatFee: state.annualFlatFee,
     initialInvestment: state.portfolioValue,
     years: state.years,
     annualFeePercent: totalAnnualFeePercent,
@@ -66,7 +67,7 @@ export async function GET(request: Request) {
               padding: "0 24px",
             }}
           >
-            $100/mo flat fee
+            {formatCurrency(state.annualFlatFee / 12)}/mo flat fee
           </div>
         </div>
 
