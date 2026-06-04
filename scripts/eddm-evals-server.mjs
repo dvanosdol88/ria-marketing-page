@@ -691,7 +691,14 @@ function pageHtml() {
     <section class="topbar">
       <h1>EDDM Eval Board</h1>
       <p class="lede">Local-only review board for mailer print proofs, A/B/C planning-copy references, missing proof packages, and QR landing fit. Scores and notes save to disk through the local server.</p>
-      <div class="meta-row" id="summaryPills"></div>
+        <div class="meta-row" id="summaryPills"></div>
+        <div style="margin-top: 14px; padding: 12px; border: 1px solid #fecaca; border-radius: 8px; background: #fef2f2; color: #991b1b; font-size: 0.75rem; line-height: 1.25rem; max-width: 320px;">
+          <strong style="font-weight: 900; color: #7f1d1d;">NOTE:</strong> this language must be on the bottom of all mailers:<br><br>
+          <span style="font-weight: 500; font-style: italic;">
+            Smarter Way Wealth, LLC is a Registered Investment Adviser. Fee comparisons are hypothetical and do not
+            guarantee future results. Learn more at adviserinfo.sec.gov (CRD #342140).
+          </span>
+        </div>
       <div class="toolbar">
         <input class="search-input" id="searchInput" type="search" placeholder="Search concepts, groups, notes, assets..." autocomplete="off">
         <div class="group-filters" id="groupFilters" aria-label="Candidate groups"></div>
