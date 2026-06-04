@@ -12,7 +12,7 @@ if (typeof window !== "undefined") {
       autocapture: true,
       capture_pageleave: true,
       enable_heatmaps: true,
-      person_profiles: 'identified_only',
+      person_profiles: 'always',
       capture_pageview: false, // handled by SuspensePostHogPageView
       request_batching: false,
       loaded: (ph) => {
