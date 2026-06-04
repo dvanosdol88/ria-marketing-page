@@ -14,6 +14,13 @@ if (typeof window !== "undefined") {
       enable_heatmaps: true,
       person_profiles: 'identified_only',
       capture_pageview: false, // handled by SuspensePostHogPageView
+      request_batching: false,
+      loaded: (ph) => {
+        ph.capture("posthog_client_loaded", {
+          site_domain: window.location.hostname,
+          site_path: window.location.pathname,
+        });
+      },
       session_recording: {
         maskAllInputs: false,
         maskInputOptions: {
