@@ -40,7 +40,7 @@ stamped in caps frame data cards with `001`/`002`/`003` index tags.
 
 ## Calculator scenario (QR target)
 
-- `https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=9&fee=1`
+- `https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code`
 - Portfolio $1,000,000 · 20 yr · 9% growth · 1% AUM vs. $100/mo flat.
 
 ## Hero figures used on the piece

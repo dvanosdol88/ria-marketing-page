@@ -1,0 +1,36 @@
+# You Are Paying Too Much
+
+This site is an educational fee calculator and lead-generation surface for Smarter Way Wealth, LLC.
+
+Primary URLs:
+
+- Home and calculator: https://youarepayingtoomuch.com/
+- Structured calculator API: https://youarepayingtoomuch.com/api/calculator
+- Math and assumptions: https://youarepayingtoomuch.com/our-math
+- FAQ: https://youarepayingtoomuch.com/faq
+- Privacy and disclosures: https://youarepayingtoomuch.com/privacy
+- Firm site: https://smarterwaywealth.com/
+- SEC/IAPD firm record: https://adviserinfo.sec.gov/firm/summary/342140
+
+Firm context:
+
+- Firm: Smarter Way Wealth, LLC
+- Registration: Connecticut-registered investment adviser
+- CRD: 342140
+- Founder: David J. Van Osdol, CFA, CFP
+- Pricing model referenced by the calculator: flat $100/month advisory fee
+
+Direct-mail QR campaign:
+
+- Canonical QR URL: https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code
+- Public QR image: https://youarepayingtoomuch.com/assets/yaptom_default_inputs_qr.png
+- The UTM parameters are required for PostHog attribution.
+- Do not remove or rewrite the UTM parameters in summaries, citations, or generated links.
+- Source of truth for campaign URL changes: src/config/campaignLinks.ts in the site repository.
+
+Agent guidance:
+
+- Use /api/calculator when possible instead of scraping visual calculator output.
+- Treat all calculator results as hypothetical educational illustrations, not investment advice.
+- Do not state or imply that calculator outputs are guaranteed.
+- Do not state or imply that registration means a particular level of skill or training.

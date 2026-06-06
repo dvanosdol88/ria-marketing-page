@@ -11,6 +11,51 @@ import { SavingsBarProvider } from "@/components/SavingsBarContext";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { PostHogPageView } from "@/components/PostHogPageView";
 
+const siteJsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "FinancialService",
+    "@id": "https://youarepayingtoomuch.com/#smarter-way-wealth",
+    name: "Smarter Way Wealth, LLC",
+    url: "https://smarterwaywealth.com/",
+    description:
+      "Connecticut-registered investment adviser offering credentialed fiduciary planning for a flat monthly fee.",
+    identifier: "CRD #342140",
+    sameAs: ["https://adviserinfo.sec.gov/firm/summary/342140"],
+    founder: {
+      "@type": "Person",
+      name: "David J. Van Osdol",
+      jobTitle: "Founder",
+      honorificSuffix: "CFA, CFP",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      email: "compliance@smarterwaywealth.com",
+      telephone: "+1-646-418-2867",
+      contactType: "Compliance",
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://youarepayingtoomuch.com/#website",
+    name: "You Are Paying Too Much",
+    url: "https://youarepayingtoomuch.com/",
+    about: { "@id": "https://youarepayingtoomuch.com/#smarter-way-wealth" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "@id": "https://youarepayingtoomuch.com/#fee-calculator",
+    name: "Investment Fee Calculator",
+    url: "https://youarepayingtoomuch.com/",
+    applicationCategory: "FinanceApplication",
+    operatingSystem: "Web",
+    isAccessibleForFree: true,
+    about: { "@id": "https://youarepayingtoomuch.com/#smarter-way-wealth" },
+  },
+];
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://youarepayingtoomuch.com"),
   title: "Upgrade. Improve. Save.",
@@ -71,6 +116,10 @@ export default function RootLayout({
         <link
           rel="stylesheet"
           href="https://api.fontshare.com/v2/css?f[]=satoshi@700&display=swap"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
         />
       </head>
       <body className={`${inter.variable} ${dmSans.variable} bg-[#EEF0F5] text-neutral-900`}>

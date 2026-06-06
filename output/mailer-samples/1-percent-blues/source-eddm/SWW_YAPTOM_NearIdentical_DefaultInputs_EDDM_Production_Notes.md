@@ -13,7 +13,7 @@
 - Asset-based advisory fee: 1%
 - Time horizon: 20 years
 - Flat fee comparison: $100/month
-- QR URL: https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1
+- QR URL: https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code
 
 ## Calculator values used
 - Flat-fee ending value: $4,604,057

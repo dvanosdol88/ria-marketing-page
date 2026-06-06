@@ -17,7 +17,7 @@ inline end-of-line labels).
 
 ## QR scenario (default calculator state)
 
-- https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1
+- https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code
 - Portfolio $1,000,000 · 20 yr · 8% growth · 1% AUM vs. $100/mo flat.
 
 ## Calculator values

@@ -138,7 +138,7 @@ Use these filters before the mailers land:
 Canonical QR URL:
 
 ```text
-https://youarepayingtoomuch.com/?utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code
+https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code
 ```
 
 ## Weekly Review Questions

@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+Disallow: /api/quiz/
+Disallow: /api/eddm-evals/
+Disallow: /gallery
+Disallow: /eddm-evals
+Disallow: /evals
+Disallow: /calculator-evals
+Disallow: /url-evals
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://youarepayingtoomuch.com/sitemap.xml

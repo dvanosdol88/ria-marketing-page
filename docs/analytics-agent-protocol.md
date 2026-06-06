@@ -23,6 +23,45 @@ Before touching any of these areas, read this protocol and `docs/analytics-event
 - privacy, contact, scheduling, or lead-capture flows
 - Smarter Way Wealth handoff links
 - EDDM/QR URLs
+- public agent-readable files (`public/llms.txt`, `public/agent-info.json`, `public/robots.txt`, `public/sitemap.xml`)
+- structured agent endpoints such as `/api/calculator`
+
+## Campaign QR Protocol
+
+The EDDM launch QR URL must remain traceable in PostHog. Its source of truth is `src/config/campaignLinks.ts`.
+
+Current canonical QR URL:
+
+```text
+https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code
+```
+
+Required campaign parameters:
+
+- `variant=direct-mail`
+- `utm_source=eddm`
+- `utm_medium=print`
+- `utm_campaign=launch_5k`
+- `utm_content=qr_code`
+
+Tracked QR image assets:
+
+- `public/assets/yaptom_default_inputs_qr.png`
+- `output/mailer-samples/1-percent-blues/source-eddm/yaptom_default_inputs_qr.png`
+- tracked copies under `output/mailer-samples/codex/**/brand-assets/yaptom_default_inputs_qr.png`
+
+If the QR URL changes, update `src/config/campaignLinks.ts`, regenerate the QR PNGs, update `public/llms.txt`, update `public/agent-info.json`, update `docs/posthog-two-site-dashboard.md`, and rerender any print-ready PDF/proof that will actually be sent to a printer. Already-rendered PDFs do not automatically inherit a changed PNG.
+
+## Agent-Readable Site Protocol
+
+The site intentionally exposes a small set of crawler/agent-readable surfaces:
+
+- `/llms.txt` for plain-English site, firm, campaign, and compliance context.
+- `/agent-info.json` for structured site, firm, campaign, endpoint, and disclosure data.
+- `/api/calculator` for structured calculator outputs from query parameters.
+- `/robots.txt` and `/sitemap.xml` for crawl guidance and discoverability.
+
+When changing firm identity, URLs, campaign links, disclosures, or calculator behavior, update these files/endpoints in the same change.
 
 ## Required Change Pattern
 

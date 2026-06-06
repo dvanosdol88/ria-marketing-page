@@ -17,7 +17,7 @@ Use these for review. These replace the yellow checkmark source-logo treatment w
 
 ## QR URL Shown In The Mailer Source
 
-- `https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1`
+- `https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code`
 
 ## Mailer Assumptions
 

@@ -1,0 +1,40 @@
+{
+  "site": {
+    "name": "You Are Paying Too Much",
+    "url": "https://youarepayingtoomuch.com/",
+    "purpose": "Educational calculator showing how asset-based advisory fees can compound over time."
+  },
+  "firm": {
+    "name": "Smarter Way Wealth, LLC",
+    "registration": "Connecticut-registered investment adviser",
+    "crd": "342140",
+    "iapdUrl": "https://adviserinfo.sec.gov/firm/summary/342140",
+    "firmUrl": "https://smarterwaywealth.com/",
+    "founder": "David J. Van Osdol, CFA, CFP"
+  },
+  "campaigns": {
+    "eddmLaunchQr": {
+      "url": "https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code",
+      "qrImageUrl": "https://youarepayingtoomuch.com/assets/yaptom_default_inputs_qr.png",
+      "utm_source": "eddm",
+      "utm_medium": "print",
+      "utm_campaign": "launch_5k",
+      "utm_content": "qr_code",
+      "requiredForAnalytics": true,
+      "sourceOfTruth": "src/config/campaignLinks.ts"
+    }
+  },
+  "agentEndpoints": {
+    "calculator": "https://youarepayingtoomuch.com/api/calculator",
+    "llms": "https://youarepayingtoomuch.com/llms.txt",
+    "qrImage": "https://youarepayingtoomuch.com/assets/yaptom_default_inputs_qr.png",
+    "sitemap": "https://youarepayingtoomuch.com/sitemap.xml"
+  },
+  "disclosures": [
+    "Educational only. Not investment advice.",
+    "Calculator outputs are hypothetical illustrations based on user-provided assumptions.",
+    "Actual investment results will vary.",
+    "Using the calculator does not establish an advisory relationship with Smarter Way Wealth, LLC.",
+    "Registration does not imply a certain level of skill or training."
+  ]
+}

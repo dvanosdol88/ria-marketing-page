@@ -18,7 +18,7 @@ Tracked items for youarepayingtoomuch.com. One-liner per item with enough contex
 
 - [ ] **#128** — Cursor Cloud dev-env section for AGENTS.md (newer/better version). Action: mark ready, merge. *(added 2026-05-17)*
 - [ ] **#127** — duplicate of #128, smaller. Action: close in favor of #128 (the cleanup agent's PAT lacked PR-close permission). *(added 2026-05-17)*
-- [ ] **#126** — feat: agent-ready site metadata (robots.txt, sitemap.xml, /llms.txt, Org/WebSite/WebApplication/FAQPage JSON-LD, /api/calculator). None of these files exist on `main` yet. Aligns directly with the CLAUDE.md "Agent-readiness" mandate. Action: review the diff, mark ready, merge. *(added 2026-05-17)*
+- [x] **#126** — feat: agent-ready site metadata (robots.txt, sitemap.xml, /llms.txt, Org/WebSite/WebApplication JSON-LD, /api/calculator). Implemented directly on `main` with root agent files, structured calculator endpoint, and campaign QR context. *(added 2026-05-17, completed 2026-06-06)*
 - [ ] **#112** — Vitest test infra + 2.6k-line unit-test addition (draft, 2026-04-20). User decision: adopt the framework now or defer. Decision required before this can be merged or closed. *(added 2026-05-17)*
 - [ ] **#62** — `recovery/calculator-clean-20260227`: 178 add / 553 del mobile redesign of sticky header + calculator. 11+ weeks old; calculator has been polished multiple times since (#129, etc.). Likely superseded — verify nothing useful remains, then close. *(added 2026-05-17)*
 - [ ] **#48** — `cursor/openclaw-installation-37e2`: 9.9k-line exploratory branch from 2026-02-16. `docs/openclaw-automation-ideas.md` already captures the concept. Action: close as exploratory unless there's specific code worth salvaging. *(added 2026-05-17)*
