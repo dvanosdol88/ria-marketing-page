@@ -15,13 +15,27 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - `/privacy` page with CT Data Privacy Act-aware notice, canonical disclosures, and a `#disclosures` anchor target.
 - Secondary surfaces: `/our-math`, `/faq`, `/how-it-works`, `/how-it-works/substitution`, `/save`, `/save-a-ton`, `/gallery`, `/improve-your-tools`, `/upgrade-your-advice`, `/meaning`, `/experiment`, `/mobile-calculator` (carries advisory-relationship disclosure near heading), `/components/calendar`. API routes for quiz vote.
 - OpenGraph + Twitter Card metadata defaults set in root layout.
+- Agent-readable launch surfaces are live: `/llms.txt`, `/agent-info.json`, `/robots.txt`, `/sitemap.xml`, `/api/calculator`, and JSON-LD in the root layout. The EDDM launch QR source of truth is `src/config/campaignLinks.ts`; public QR image is `/assets/yaptom_default_inputs_qr.png`.
 - Sentry error tracking wired (`@sentry/nextjs`), Renovate dep-update bot active.
+- PostHog launch telemetry is wired for the direct-mail funnel: SDK/autocapture/session replay plus direct capture for pageviews, calculator milestones, CTAs, and cross-site Smarter Way Wealth handoffs. Analytics maintenance rules live in `docs/analytics-agent-protocol.md` and event shape lives in `docs/analytics-event-contract.json`.
 - Stack: Next.js, React 19, TypeScript, Tailwind, Recharts. Build: `next build`. Lint: `eslint . --ext .js,.jsx,.ts,.tsx`. No test framework configured.
 - Project canon in `CLAUDE.md`: project description + per-page agent-readiness checklist (treats AI agents as primary audience for this lead-gen site).
 
 ---
 
 ## Sessions
+
+### 2026-06-06 - EDDM QR tracking and agent-readable launch metadata
+**Agent:** Codex | **Surface:** PostHog launch telemetry + agent-readiness + EDDM QR | **Duration:** focused ship/verify pass
+- changed: added `src/config/campaignLinks.ts` as the source of truth for the canonical direct-mail QR URL: `https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code`.
+- changed: regenerated tracked QR PNG assets and published the stable public QR image at `public/assets/yaptom_default_inputs_qr.png` / `https://youarepayingtoomuch.com/assets/yaptom_default_inputs_qr.png`.
+- changed: added agent-readable/crawler surfaces: `public/llms.txt`, `public/agent-info.json`, `public/robots.txt`, `public/sitemap.xml`, root JSON-LD for Smarter Way Wealth / website / calculator, and structured calculator endpoint `src/app/api/calculator/route.ts`.
+- changed: updated `docs/analytics-agent-protocol.md` so future agents know that QR/campaign changes must update `src/config/campaignLinks.ts`, QR assets, public agent files, the PostHog dashboard doc, and any print-ready PDF/proof that will actually go to a printer. Updated `docs/posthog-two-site-dashboard.md` with the full canonical QR URL and marked backlog item `#126` complete.
+- verified locally: `npx tsc --noEmit` passed; `npm run lint` passed with the existing 3 `<img>` warnings; `npm run build` passed with the known Tailwind/Turbopack warnings. Local production-server checks passed for `/llms.txt`, `/agent-info.json`, `/assets/yaptom_default_inputs_qr.png`, `/robots.txt`, `/sitemap.xml`, and `/api/calculator`.
+- verified QR: decoded `public/assets/yaptom_default_inputs_qr.png` with `pngjs` + `jsqr` from an isolated temp install; decoded URL exactly matched the canonical EDDM/PostHog URL. Production QR hash matched the decoded local asset (`SHA256 65CD9E7A20022F31C00899557B4CFEE79662EC4AC054BB7DB7C7E88DFB45813F`).
+- deployed: committed and pushed directly to `main` in commit `2368eb5` (`Add campaign QR and agent-ready metadata`). Vercel production deployment `dpl_5YfXXq5Y55vyNU1wcXdJ933YHvZM` was READY and aliased to `https://youarepayingtoomuch.com`.
+- verified production: custom-domain checks passed for `/llms.txt`, `/agent-info.json`, `/api/calculator` (`projectedSavings=$788,306`, CRD `342140`), `/assets/yaptom_default_inputs_qr.png`, `/robots.txt`, `/sitemap.xml`, and homepage JSON-LD.
+- note: already-rendered historical print PDFs/proof PNGs do not automatically inherit a changed QR PNG. If any specific historical PDF is sent to a printer, rerender that exact PDF from the updated QR asset first.
 
 ### 2026-06-04 - Consolidate eval boards to RIA Builder
 **Agent:** Gemini | **Surface:** eval tooling | **Duration:** 1 session
