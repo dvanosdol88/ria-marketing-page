@@ -18,9 +18,39 @@ Effective 2026-05-22, `youarepayingtoomuch.com` is mobile-first, not merely mobi
 
 ## Workflow
 
-**Ship by default:** After a task completes successfully (tsc/lint/build pass, user-requested work verified), commit and push to `main` and verify production unless the user explicitly said not to ship, said "wait" or "bundle later", or the change is exploratory/WIP. Do not ask "want me to ship?" when the task is done — ship it.
+**Ship by default:** After a task completes successfully (tsc/lint/build pass, user-requested work verified), commit and push to `main` and verify production unless the user explicitly said not to ship, said "wait" or "bundle later", or the change is exploratory/WIP. Do not ask "want me to ship?" when the task is done â€” ship it.
 
 ## Project Backlog
 - Tracked items live in docs/backlog.md
 - When encountering new issues or tech debt during a session, suggest adding them to the backlog
 - When completing work that resolves a backlog item, mark it done
+
+## Project Secrets
+
+Canonical vault: GCP Secret Manager, project `mg-dashboard-ee066`.
+
+Runtime mirror: Vercel Production env for `dvo/you-are-paying-too-much.com`.
+
+Known private/server secret names include:
+- `FIREBASE_SERVICE_ACCOUNT_KEY`
+- `INTERNAL_RESET_SECRET`
+- `SENTRY_AUTH_TOKEN` (agent/local inspection only; do not deploy unless a runtime route needs it)
+- `SENTRY_DSN`
+
+Known public deployment config names include:
+- `NEXT_PUBLIC_POSTHOG_KEY`
+- `NEXT_PUBLIC_POSTHOG_HOST`
+- `NEXT_PUBLIC_SENTRY_DSN`
+
+Safe verification commands:
+- `gcloud secrets describe <NAME> --project=mg-dashboard-ee066`
+- `vercel env ls --scope dvo`
+
+Safe mirror pattern:
+
+```powershell
+gcloud secrets versions access latest --secret=<NAME> --project=mg-dashboard-ee066 |
+  vercel env add <NAME> production --scope dvo
+```
+
+Do not store raw values in this file or commit `.env.local`. Public `NEXT_PUBLIC_*` values may live in Vercel, but provider/admin tokens belong in the vault.
