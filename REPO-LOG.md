@@ -25,6 +25,15 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-06-17 - Dependency audit remediation (cleared all High vulns)
+**Agent:** Claude (Opus) | **Surface:** security/deps | **Duration:** focused triage/verify pass
+- trigger: daily repo-hygiene scan at `D:/dvo88/dvo88-command-center` flagged this repo red ("CRITICAL / SECURITY LANES FAIL") — `npm audit` reported 28 vulns (2 low, 24 moderate, 2 high), "Build Simulation failed", diagnostic naming the "Next/PostCSS and Firebase/Admin uuid audit paths".
+- investigated: local `npm run build` passes (exit 0) and `npm ci --dry-run` is in sync (exit 0), so the clean-room build is not actually broken — the scan's red state was driven by the `npm audit` gate (2 High) plus the two named breaking-change audit paths. No real build defect found.
+- changed: ran non-breaking `npm audit fix` — updated `package-lock.json` only (no `package.json` changes; all bumps stayed inside existing `^` ranges). Notable transitive bumps: `next` 16.2.7→16.2.9, `@sentry/nextjs`→10.58.0, `posthog-js`→1.388.1 (clears the vulnerable `@opentelemetry/*` chain via posthog), `@opentelemetry/core`→2.8.0 (fixed). Lockfile shrank ~936 lines from deduped OpenTelemetry sub-trees.
+- result: vulns 28→10, **High 2→0** (cleared `@grpc/grpc-js` and `form-data` highs plus 14 moderates/lows).
+- NOT applied (breaking, out of scope — would touch production-facing deps): remaining 10 moderate are the two paths the scan named — `postcss <8.5.10` (bundled inside Next; `npm audit fix --force` would downgrade to `next@9.3.3`) and `uuid <11.1.1` (transitive via `firebase-admin`→`@google-cloud/*`/`google-gax`; fix requires `firebase-admin@14` major bump). Both deferred to a deliberate, separately-tested upgrade. Tracked as backlog `#deps-postcss-uuid`.
+- verified locally: `npm ci --dry-run` (exit 0, lockfile in sync), `npm run build` (exit 0), `npm run lint` (0 errors, same 3 pre-existing `<img>` warnings), `npm audit` (10 moderate, 0 high).
+
 ### 2026-06-06 - EDDM QR tracking and agent-readable launch metadata
 **Agent:** Codex | **Surface:** PostHog launch telemetry + agent-readiness + EDDM QR | **Duration:** focused ship/verify pass
 - changed: added `src/config/campaignLinks.ts` as the source of truth for the canonical direct-mail QR URL: `https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code`.
