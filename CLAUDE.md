@@ -4,7 +4,7 @@
 - Domain: youarepayingtoomuch.com (no dashes)
 - Purpose: Fee calculator/visualization tool showing the impact of investment fees over time
 
-For all architecture rules, safety rules, coding standards, tool usage, and workflow — follow your global ~/.claude/CLAUDE.md instructions.
+For shared rules, read `D:\AGENTS.md` first, then `D:\CLAUDE.md`, then this file. This repo is in the RIA surfaces lane: RIA Chief is the surface agent, Claude Code via desktop app is the primary outside coding agent, and Hermes RIA Chief is the resident reviewer / adversarial auditor.
 
 ## Design: mobile-first
 
