@@ -134,12 +134,7 @@ Example: `/?pv=1000000&fee=1&growth=7&years=30`
 
 ## Deployment
 
-The site is deployed on Vercel with automatic deployments from the `main` branch.
-
-```bash
-# Manual deployment
-vercel --prod
-```
+The site is deployed on Vercel from `main`. Production changes must follow `D:\AGENTS.md` deploy-truth rules: branch, PR, merge to `main`, then verify the apex production site. Do not use manual production deploy commands as the normal shipping path.
 
 ## Recent Design Updates
 
