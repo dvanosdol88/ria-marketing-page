@@ -25,6 +25,14 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-03 - Repo-hygiene "Build Simulation failed" — recurring false-positive, no defect
+**Agent:** Claude (Opus) | **Surface:** security/deps/build-integrity | **Duration:** focused diagnose/verify pass
+- trigger: daily repo-hygiene scan at `D:/dvo88/dvo88-command-center` reported this repo RED ("CRITICAL / SECURITY LANES FAIL", "Build Simulation failed") on commit `1220057`.
+- investigated: clean-tree `npm run build` passes (exit 0, full 24-route table generated). Reproduced the scanner's exact build-sim (`execSync 'npm run build'`, stdout-only) via node — it returns normally, stdout is 1446 bytes (no 1MB maxBuffer trip), and contains none of the scanner's failure triggers (`startsWith("ERROR")`, `includes("Failed")`, `includes("npm ERR!")`), so the scanner's own logic yields `buildStatus = "Success"`. The scanner's *current* `latest-repo-hygiene.html` already renders this repo GREEN "PASS / CLEAN" with Build "✅ Success" — the RED in the trigger was a stale prior scan. `npm ci --dry-run` exits 0 (lockfile ↔ package.json in sync; Vercel installs pinned `next@16.2.9`). No real build defect — same recurring false-positive pattern documented 2026-06-17.
+- audit: `npm audit` = 10 moderate, **0 high, 0 critical** (matches report). Both remaining moderates are the two known breaking-change paths already deferred + backlog-tracked (`postcss <8.5.10` bundled in Next; `uuid <11.1.1` transitive via `firebase-admin`→`@google-cloud/*`). Only fix npm offers is `npm audit fix --force` → `next@9.3.3` / `firebase-admin@10.3.0` **major breaking downgrades** — out of scope, not applied. The one safe non-major change available (`npm audit fix` → `next 16.2.9→16.2.10` patch) clears **none** of the 10 moderates (dry-run confirmed postcss/uuid unchanged), so it was not applied — no security or build benefit, and it would trigger an unwarranted production deploy.
+- changed: none to code/deps/config. Working tree left clean. This log entry only.
+- verified: `npm run build` (exit 0), `npm ci --dry-run` (exit 0, lockfile in sync), `npm audit` (10 moderate / 0 high / 0 critical).
+
 ### 2026-06-17 - Dependency audit remediation (cleared all High vulns)
 **Agent:** Claude (Opus) | **Surface:** security/deps | **Duration:** focused triage/verify pass
 - trigger: daily repo-hygiene scan at `D:/dvo88/dvo88-command-center` flagged this repo red ("CRITICAL / SECURITY LANES FAIL") — `npm audit` reported 28 vulns (2 low, 24 moderate, 2 high), "Build Simulation failed", diagnostic naming the "Next/PostCSS and Firebase/Admin uuid audit paths".
