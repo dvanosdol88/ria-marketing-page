@@ -25,6 +25,14 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-04 - Fix real Windows build failure: TS Debug Failure on incremental tsbuildinfo path
+**Agent:** Claude (Opus 4.8) | **Surface:** build-integrity / tooling | **Duration:** focused systematic-debug pass
+- trigger: daily repo-hygiene scan at `D:/dvo88/dvo88-command-center` marked this repo RED ("Build Simulation failed"). Unlike the 2026-07-03 entry, this was a **genuine defect**, not the scanner false-positive.
+- reproduced: `npm run build` on Windows compiles (Next 16.2.9 / Turbopack), then the TypeScript step aborts with `Debug Failure. Expected D:/ria-marketing-page/.next/cache/.tsbuildinfo === D:\ria-marketing-page\.next\cache\.tsbuildinfo.` and "Next.js build worker exited with code: 1".
+- root cause (traced through node_modules): `tsconfig.json` had `incremental: true`, so Next's `lib/typescript/runTypeCheck.js:107` takes the incremental branch and calls `createIncrementalProgram` with `tsBuildInfoFile: path.join(cacheDir, '.tsbuildinfo')`. On **Windows** `path.join` yields **backslashes**; TS 5.9.3's `getTsBuildInfoEmitOutputFilePath` returns that raw value verbatim, and an internal assertion compares it against the forward-slash-normalized path → crash. **Windows-only** (Linux `path.join` gives forward slashes, matching TS's normalized form) — which is why Vercel/CI passes but the local Windows scan fails. The assertion only fires once a `.tsbuildinfo` exists to read back, so the 2026-07-03 clean-tree build looked green.
+- changed: `tsconfig.json` — `incremental: true` → `incremental: false` (one line). This routes Next to the non-incremental `createProgram` branch (no `tsBuildInfoFile`, no assertion). Chosen over deleting the key because Next's `writeConfigurationDefaults.js:250-252` re-adds suggested options when the key is absent, so it must be explicitly `false`. Zero production/runtime impact — incremental only cached the build-time type-check (and never actually worked on Windows anyway; CI builds are fresh). No secrets/env touched.
+- verified: `npm run build` passes (exit 0, full 24-route table, "Finished TypeScript in ~4.8s", no Debug Failure/worker exit) on **both** cold and warm `.next` cache — two consecutive green builds. `npm run lint` = 0 errors (same 3 pre-existing `<img>` warnings).
+
 ### 2026-07-03 - Repo-hygiene "Build Simulation failed" — recurring false-positive, no defect
 **Agent:** Claude (Opus) | **Surface:** security/deps/build-integrity | **Duration:** focused diagnose/verify pass
 - trigger: daily repo-hygiene scan at `D:/dvo88/dvo88-command-center` reported this repo RED ("CRITICAL / SECURITY LANES FAIL", "Build Simulation failed") on commit `1220057`.
