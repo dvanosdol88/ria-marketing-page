@@ -25,6 +25,14 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-04 - Re-verify the incremental tsbuildinfo fix is live at HEAD (hygiene RED closeout)
+**Agent:** Claude (Opus 4.8, 1M) | **Surface:** build-integrity / tooling | **Duration:** focused re-verify pass
+- trigger: a fresh dispatch flagged the same hygiene RED ("Build Simulation failed") and reported the `Debug Failure ... .next/cache/.tsbuildinfo` crash — but that RED reflects the **pre-fix** state. The fix (`8461a22`, same day) is already HEAD; this session independently re-confirms it and closes the loop.
+- verified green at HEAD: `npm run build` on Windows now passes on **two consecutive runs** — cold `.next` and warm cache — both exit 0, full 24-route table, "Finished TypeScript in ~4.5s", no Debug Failure / worker exit. Crucially **0 `.tsbuildinfo` files are generated under `.next`**, proving Next takes the non-incremental path. `npm run lint` = 0 errors (same 3 pre-existing `<img>` warnings). Env: Next 16.2.9, TS 5.9.3, Node 24.15.
+- mechanism re-confirmed from source (not just symptom): `runTypeCheck.js:96` gates on `(options.incremental || options.composite)`. With `incremental:false` it falls to the `else` at `:110-111` → `typescript.createProgram(...)`, which never sets `tsBuildInfoFile` and never constructs the incremental buildinfo whose path assertion crashes. `writeConfigurationDefaults.js:122` marks `incremental` as `{ suggested: true }` — "suggested" keys are only written when **absent**, so the explicit `false` is preserved on disk and honored at runtime. The fix removes the entire failing code path; it is not invocation-dependent.
+- note on reproduction: with `incremental:true` restored, I could **not** reproduce the crash from a normal backslash-cwd PowerShell shell even on a warm cache — the assertion is sensitive to path-separator normalization, so it fires under the hygiene orchestrator's mixed-separator (forward-slash `D:/…`) Node invocation but not a direct interactive build. This is why the earlier clean-tree scan looked green and why the fix (removing the incremental branch outright) is the robust answer regardless of how the build is invoked. The same `incremental:false` also protects any direct `tsc -p tsconfig.json` the scanner might run.
+- housekeeping: deleted a stale month-old (6/6) gitignored `tsconfig.tsbuildinfo` (338 KB) left in the repo root; not tracked, no commit impact. No code changes this session (fix already committed); no secrets/env touched.
+
 ### 2026-07-04 - Fix real Windows build failure: TS Debug Failure on incremental tsbuildinfo path
 **Agent:** Claude (Opus 4.8) | **Surface:** build-integrity / tooling | **Duration:** focused systematic-debug pass
 - trigger: daily repo-hygiene scan at `D:/dvo88/dvo88-command-center` marked this repo RED ("Build Simulation failed"). Unlike the 2026-07-03 entry, this was a **genuine defect**, not the scanner false-positive.
