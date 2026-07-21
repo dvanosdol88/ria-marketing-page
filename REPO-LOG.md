@@ -25,6 +25,14 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-21 - Python Manim fee comparison animation script
+**Agent:** Gemini | **Surface:** `fee_comparison_manim.py` | **Duration:** 1 pass
+- Created `fee_comparison_manim.py` with Manim Community Edition syntax animating a 20-year investment fee comparison.
+- Parameters: $1,000,000 principal, 8.0% growth rate.
+- Line 1 (Blue, 1.00% AUM fee): portfolio reaches $3,815,000.
+- Line 2 (Green, $100/mo flat fee): portfolio reaches $4,604,000.
+- End-state highlight: Displays final totals, pulsing endpoint callout cards, and a $788,000 lost-growth difference highlight card.
+
 ### 2026-07-21 - Smooth David to Smarter Way Wealth promise handoff
 **Agent:** Codex | **Surface:** home promise animation | **Duration:** focused video-review and ship pass
 - trigger: David's 1094x1044 screen recording showed the final handoff crossfading `David` and `Smarter Way Wealth` from different anchors while the full sentence appeared, creating a visible collision and snap.
