@@ -370,11 +370,206 @@ function SavingsLeadHero({
   years: number;
 }) {
   const reducedMotion = useReducedMotion();
+  const introRef = useRef<HTMLDivElement>(null);
+  const brandSlotRef = useRef<HTMLSpanElement>(null);
+  const [motionPreferenceReady, setMotionPreferenceReady] = useState(false);
+  const [hasEnteredView, setHasEnteredView] = useState(false);
+  const [revealPhase, setRevealPhase] = useState<"waiting" | "human" | "david" | "complete">("waiting");
+  const [showScrollDavid, setShowScrollDavid] = useState(false);
+  const shouldReduceMotion = motionPreferenceReady && Boolean(reducedMotion);
+
+  useEffect(() => {
+    setMotionPreferenceReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+
+    const intro = introRef.current;
+    if (!intro) return;
+
+    let animationFrame = 0;
+    let hasTriggered = false;
+    let resizeObserver: ResizeObserver | null = null;
+
+    const stopWatching = () => {
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      resizeObserver?.disconnect();
+      window.removeEventListener("scroll", requestVisibilityCheck);
+      window.removeEventListener("resize", requestVisibilityCheck);
+    };
+
+    const checkVisibility = () => {
+      animationFrame = 0;
+      const rect = intro.getBoundingClientRect();
+      const revealBoundary = window.innerHeight * 0.92;
+      const visibleTop = Math.max(rect.top, 0);
+      const visibleBottom = Math.min(rect.bottom, revealBoundary);
+      const visibleHeight = Math.max(0, visibleBottom - visibleTop);
+
+      if (visibleHeight >= Math.min(rect.height * 0.18, 72)) {
+        hasTriggered = true;
+        setHasEnteredView(true);
+        stopWatching();
+      }
+    };
+
+    function requestVisibilityCheck() {
+      if (animationFrame || hasTriggered) return;
+      animationFrame = window.requestAnimationFrame(checkVisibility);
+    }
+
+    window.addEventListener("scroll", requestVisibilityCheck, { passive: true });
+    window.addEventListener("resize", requestVisibilityCheck);
+    if ("ResizeObserver" in window) {
+      resizeObserver = new ResizeObserver(requestVisibilityCheck);
+      resizeObserver.observe(intro);
+    }
+    requestVisibilityCheck();
+
+    return stopWatching;
+  }, [shouldReduceMotion]);
+
+  useEffect(() => {
+    if (!hasEnteredView || shouldReduceMotion) return;
+
+    const humanTimer = window.setTimeout(() => setRevealPhase("human"), 500);
+    const davidTimer = window.setTimeout(() => setRevealPhase("david"), 1500);
+    const completeTimer = window.setTimeout(() => setRevealPhase("complete"), 2000);
+
+    return () => {
+      window.clearTimeout(humanTimer);
+      window.clearTimeout(davidTimer);
+      window.clearTimeout(completeTimer);
+    };
+  }, [hasEnteredView, shouldReduceMotion]);
+
+  const visiblePhase = shouldReduceMotion ? "complete" : revealPhase;
+  const fullCopyVisible = visiblePhase === "complete";
+  const humanVisible = visiblePhase !== "waiting";
+  const davidVisible = visiblePhase === "david" || (fullCopyVisible && showScrollDavid);
+  const brandVisible = fullCopyVisible && !showScrollDavid;
+
+  useEffect(() => {
+    if (!fullCopyVisible || shouldReduceMotion) {
+      setShowScrollDavid(false);
+      return;
+    }
+
+    const brandSlot = brandSlotRef.current;
+    if (!brandSlot) return;
+
+    let animationFrame = 0;
+    let scrollSliceArmed = false;
+
+    const updateScrollSlice = () => {
+      animationFrame = 0;
+      const rect = brandSlot.getBoundingClientRect();
+      const viewportCenter = window.innerHeight / 2;
+      const sliceHalfHeight = Math.max(24, Math.min(34, window.innerHeight * 0.035));
+      const brandCenter = rect.top + rect.height / 2;
+      const isInScrollSlice = Math.abs(brandCenter - viewportCenter) <= sliceHalfHeight;
+
+      // Always let the first reveal finish on the firm name. The personal-name
+      // swap becomes available only after the visitor has moved beyond that
+      // initial center slice and later scrolls through it again.
+      if (!scrollSliceArmed) {
+        if (!isInScrollSlice) scrollSliceArmed = true;
+        setShowScrollDavid(false);
+        return;
+      }
+
+      setShowScrollDavid(isInScrollSlice);
+    };
+
+    const requestScrollSliceUpdate = () => {
+      if (animationFrame) return;
+      animationFrame = window.requestAnimationFrame(updateScrollSlice);
+    };
+
+    updateScrollSlice();
+    window.addEventListener("scroll", requestScrollSliceUpdate, { passive: true });
+    window.addEventListener("resize", requestScrollSliceUpdate);
+
+    return () => {
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", requestScrollSliceUpdate);
+      window.removeEventListener("resize", requestScrollSliceUpdate);
+    };
+  }, [fullCopyVisible, shouldReduceMotion]);
+
+  const revealTransition = {
+    duration: shouldReduceMotion ? 0 : 0.32,
+    ease: "easeOut",
+  } as const;
   const statement = (
     <>
-      Smarter Way Wealth delivers{" "}
-      <span className="text-[#007A2F]">personal, real human fiduciary advice and planning</span>
-      {" "}for a simple $100/month. Period.
+      <span className="sr-only">
+        Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.
+      </span>
+      <span aria-hidden="true">
+        <span
+          ref={brandSlotRef}
+          data-promise-name={davidVisible ? "david" : brandVisible ? "smarter-way-wealth" : "hidden"}
+          className="relative inline-block whitespace-nowrap"
+        >
+          <span className="invisible">Smarter Way Wealth</span>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: davidVisible ? 1 : 0 }}
+            transition={revealTransition}
+            className="absolute inset-y-0 left-0 whitespace-nowrap"
+          >
+            David
+          </motion.span>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: brandVisible ? 1 : 0 }}
+            transition={revealTransition}
+            className="absolute inset-y-0 left-0 whitespace-nowrap"
+          >
+            Smarter Way Wealth
+          </motion.span>
+        </span>
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: fullCopyVisible ? 1 : 0 }}
+          transition={revealTransition}
+        >
+          {" "}delivers{" "}
+        </motion.span>
+        <span className="text-[#007A2F]">
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: fullCopyVisible ? 1 : 0 }}
+            transition={revealTransition}
+          >
+            personal, real{" "}
+          </motion.span>
+          <motion.span
+            data-promise-human={humanVisible ? "visible" : "hidden"}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: humanVisible ? 1 : 0 }}
+            transition={revealTransition}
+          >
+            human
+          </motion.span>
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: fullCopyVisible ? 1 : 0 }}
+            transition={revealTransition}
+          >
+            {" "}fiduciary advice and planning
+          </motion.span>
+        </span>
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: fullCopyVisible ? 1 : 0 }}
+          transition={revealTransition}
+        >
+          {" "}for a simple $100/month. Period.
+        </motion.span>
+      </span>
     </>
   );
   const introContent =
@@ -384,10 +579,15 @@ function SavingsLeadHero({
         <p className="mx-auto max-w-3xl text-[clamp(1.55rem,3.8vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
           {statement}
         </p>
-        <p className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.35rem,3.15vw,2rem)] font-medium leading-[1.14] tracking-normal text-[#10233A] sm:mt-7">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: fullCopyVisible ? 1 : 0 }}
+          transition={revealTransition}
+          className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.35rem,3.15vw,2rem)] font-medium leading-[1.14] tracking-normal text-[#10233A] sm:mt-7"
+        >
           <span className="whitespace-nowrap">David Van Osdol,</span>{" "}
           <span className="whitespace-nowrap">CFA, CFP®</span>
-        </p>
+        </motion.p>
         <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
       </div>
     ) : introStyle === "quote" ? (
@@ -408,14 +608,15 @@ function SavingsLeadHero({
       </div>
     );
   const introBlock = (
-    <motion.div
+    <div
+      ref={introRef}
+      data-promise-reveal-phase={visiblePhase}
+      data-promise-entered-view={hasEnteredView ? "true" : "false"}
+      data-promise-reduced-motion={shouldReduceMotion ? "true" : "false"}
       className="mt-14 sm:mt-20"
-      initial={reducedMotion ? false : { opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut", delay: 0.25 }}
     >
       {introContent}
-    </motion.div>
+    </div>
   );
 
   return (
