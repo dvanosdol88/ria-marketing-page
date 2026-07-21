@@ -74,6 +74,11 @@ try {
   assert.deepEqual(await keywords.allTextContents(), ["CFA", "CFP®", "experience"]);
   assert.deepEqual(await keywords.evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).fontWeight)), ["700", "700", "700"]);
 
+  const mobileSentenceRows = await summary.locator("p").evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().toJSON()));
+  assert.ok(
+    mobileSentenceRows.slice(1).every((row, index) => Math.abs(row.y - (mobileSentenceRows[index].y + mobileSentenceRows[index].height) - 8) <= 1),
+    "mobile credential sentences should be separate rows with an 8px rhythm",
+  );
   const mobileSummary = await summary.boundingBox();
   const mobileBadges = await badges.boundingBox();
   assert.ok(mobileBadges.y >= mobileSummary.y + mobileSummary.height, "badges should sit below the summary on mobile");
