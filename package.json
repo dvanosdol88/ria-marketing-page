@@ -8,7 +8,8 @@
     "start": "next start",
     "eddm:catalog:add-round": "node scripts/eddm-catalog-add-round.mjs",
     "eddm:package:style-a-winner": "node scripts/build-eddm-style-a-winner-print-package.mjs",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "test:credentials-layout": "node tests/advisor-proof-credentials-layout.mjs"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.43.0",
