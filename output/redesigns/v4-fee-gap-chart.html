@@ -83,12 +83,12 @@
       const canvas = document.querySelector('#fee-chart'); const replay = document.querySelector('#replay'); const result = document.querySelector('#result'); const resultValue = document.querySelector('#result-value'); const drawStatus = document.querySelector('#draw-status');
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       let chart;
-      function reveal() { resultValue.textContent = '$788,000'; result.dataset.state = 'complete'; result.setAttribute('aria-hidden', 'false'); drawStatus.textContent = '20-year comparison complete'; replay.disabled = false; }
+      function reveal(status = '20-year comparison complete') { resultValue.textContent = '$788,000'; result.dataset.state = 'complete'; result.setAttribute('aria-hidden', 'false'); drawStatus.textContent = status; replay.disabled = false; }
       function reset() { resultValue.textContent = ''; result.dataset.state = 'pending'; result.setAttribute('aria-hidden', 'true'); drawStatus.textContent = 'Drawing 20 years'; replay.disabled = true; }
       function priorPoint(ctx) { if (ctx.index === 0) return ctx.chart.scales.y.getPixelForValue(STARTING_BALANCE); return ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y; }
       function createChart() {
         reset();
-        if (!window.Chart) { drawStatus.textContent = 'Chart unavailable. The comparison result is shown below.'; requestAnimationFrame(reveal); return; }
+        if (!window.Chart) { const unavailableStatus = 'Chart unavailable. The comparison result is shown below.'; drawStatus.textContent = unavailableStatus; requestAnimationFrame(() => reveal(unavailableStatus)); return; }
         let completed = false; const delayBetweenPoints = DRAW_DURATION_MS / flatSeries.length;
         const progressive = {
           x: { type: 'number', easing: 'linear', duration: delayBetweenPoints, from: NaN, delay(ctx) { if (ctx.type !== 'data' || ctx.xStarted) return 0; ctx.xStarted = true; return ctx.index * delayBetweenPoints; } },
@@ -98,7 +98,7 @@
           { label: 'Flat fee · $100/mo', data: flatSeries, borderColor: '#00A540', backgroundColor: 'rgba(0,165,64,.13)', borderWidth: 3, pointRadius: 0, pointHoverRadius: 0, cubicInterpolationMode: 'monotone', fill: '+1' },
           { label: 'Asset fee · 1%', data: aumSeries, borderColor: '#C84C3A', backgroundColor: 'rgba(200,76,58,.04)', borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 0, cubicInterpolationMode: 'monotone', fill: false }
         ] }, options: { responsive: true, maintainAspectRatio: false, parsing: false, animation: reducedMotion ? false : { ...progressive, onComplete() { if (!completed) { completed = true; reveal(); } } }, interaction: { intersect: false, mode: 'index' }, plugins: { legend: { display: false }, tooltip: { callbacks: { label(context) { return `${context.dataset.label}: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(context.parsed.y)}`; } } } }, scales: { x: { type: 'linear', min: 0, max: 20, title: { display: true, text: 'Years', color: '#64748B', font: { family: 'Inter', size: 11 } }, ticks: { stepSize: 5, color: '#64748B', font: { family: 'Inter', size: 10 }, callback(value) { return value === 0 ? 'Now' : `Year ${value}`; } }, grid: { color: 'rgba(15,23,42,.08)' }, border: { display: false } }, y: { ticks: { color: '#64748B', font: { family: 'Inter', size: 10 }, callback(value) { const millions = value / 1000000; return `$${Number.isInteger(millions) ? millions : millions.toFixed(1)}m`; } }, grid: { color: 'rgba(15,23,42,.08)' }, border: { display: false } } } } });
-        if (reducedMotion) requestAnimationFrame(reveal);
+        if (reducedMotion) requestAnimationFrame(() => reveal());
       }
       replay.addEventListener('click', () => { if (chart) chart.destroy(); createChart(); });
       createChart();
