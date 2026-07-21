@@ -422,10 +422,10 @@ function ProofAccordionCard({
             card.summary.every((summary): summary is SummaryLine => typeof summary !== "string") ? (
               <div
                 data-credential-summary
-                className="gap-y-2 text-lg leading-7 text-slate-600 md:grid md:grid-cols-[max-content_minmax(0,1fr)] md:gap-x-2"
+                className="space-y-2 gap-y-2 text-lg leading-7 text-slate-600 md:grid md:grid-cols-[max-content_minmax(0,1fr)] md:gap-x-2 md:space-y-0"
               >
                 {card.summary.map((sentence) => (
-                  <p key={sentence.emphasis} className="inline md:contents">
+                  <p key={sentence.emphasis} className="block md:contents">
                     <span>{sentence.lead}</span>
                     <span>
                       <strong data-credential-keyword>{sentence.emphasis}</strong>
