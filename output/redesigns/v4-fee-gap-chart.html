@@ -7,37 +7,37 @@
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root { color-scheme: light; --ink: #11231d; --muted: #60716a; --paper: #f7f7f2; --line: #d8ded7; --green: #126a50; --green-soft: #dceee5; --gold: #b7791f; --gold-soft: #f8ead2; }
+    :root { color-scheme: light; --ink: #0F172A; --muted: #64748B; --paper: #F8FAFC; --line: #E2E8F0; --green: #00A540; --green-soft: #E7F8ED; --aum: #C84C3A; }
     * { box-sizing: border-box; }
-    body { margin: 0; background: #e9ede7; color: var(--ink); font-family: "DM Sans", Arial, sans-serif; }
+    body { margin: 0; background: #EDF2F7; color: var(--ink); font-family: Inter, Arial, sans-serif; }
     .projection { min-height: 100vh; max-width: 1120px; margin: 0 auto; padding: 18px 18px 28px; background: var(--paper); }
     .masthead { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 34px; }
-    .brand { color: var(--ink); font-family: "Source Serif 4", Georgia, serif; font-size: 1.13rem; font-weight: 700; letter-spacing: -.04em; text-decoration: none; }
-    .brand span { color: var(--green); font-style: italic; }
-    #replay { min-height: 40px; border: 1px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; font: 500 .75rem/1 "DM Mono", monospace; letter-spacing: .06em; padding: 0 15px; text-transform: uppercase; }
+    .brand { color: var(--ink); font-family: "DM Sans", Arial, sans-serif; font-size: 1.13rem; font-weight: 700; letter-spacing: -.045em; text-decoration: none; }
+    .brand span { color: var(--green); }
+    #replay { min-height: 40px; border: 1px solid var(--ink); border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer; font: 600 .72rem/1 Inter, Arial, sans-serif; letter-spacing: .08em; padding: 0 15px; text-transform: uppercase; }
     #replay:hover:not(:disabled), #replay:focus-visible { background: var(--ink); color: var(--paper); }
     #replay:disabled { cursor: wait; opacity: .48; }
     .intro { max-width: 720px; }
-    .eyebrow, .result-kicker { color: var(--green); font: 500 .69rem/1.2 "DM Mono", monospace; letter-spacing: .09em; text-transform: uppercase; }
-    h1 { max-width: 650px; margin: 9px 0 15px; font-family: "Source Serif 4", Georgia, serif; font-size: clamp(2.45rem, 9vw, 5.8rem); font-weight: 600; letter-spacing: -.06em; line-height: .94; }
+    .eyebrow, .result-kicker { color: var(--green); font: 600 .69rem/1.2 Inter, Arial, sans-serif; letter-spacing: .09em; text-transform: uppercase; }
+    h1 { max-width: 650px; margin: 9px 0 15px; font-family: "DM Sans", Arial, sans-serif; font-size: clamp(2.45rem, 9vw, 5.8rem); font-weight: 700; letter-spacing: -.065em; line-height: .94; }
     .scenario { color: var(--muted); font-size: .93rem; line-height: 1.5; margin: 0; }
     .scenario span { color: var(--green); padding: 0 4px; }
     .chart-region { margin-top: 44px; padding-top: 15px; border-top: 1px solid var(--ink); }
     .chart-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
     h2 { font-size: .86rem; letter-spacing: -.01em; margin: 0; }
-    #draw-status { color: var(--muted); font: .67rem/1.3 "DM Mono", monospace; margin: 0; text-align: right; }
+    #draw-status { color: var(--muted); font: .67rem/1.3 Inter, Arial, sans-serif; margin: 0; text-align: right; }
     .legend { display: flex; flex-wrap: wrap; gap: 11px 18px; margin: 16px 0 11px; font-size: .73rem; }
     .legend-item { display: inline-flex; align-items: center; gap: 6px; }
     .legend-item::before { content: ""; width: 18px; height: 3px; border-radius: 3px; background: currentColor; }
-    .legend-flat { color: var(--green); }.legend-aum { color: var(--gold); }
+    .legend-flat { color: var(--green); }.legend-aum { color: var(--aum); }
     .chart-shell { height: min(72vw, 510px); min-height: 290px; position: relative; }
     canvas { display: block; max-width: 100%; }
     .result { margin-top: 27px; padding: 22px 18px; background: var(--green-soft); border-left: 4px solid var(--green); opacity: 0; transform: translateY(12px); transition: opacity .42s ease, transform .42s ease; }
     .result[data-state="complete"] { opacity: 1; transform: translateY(0); }
-    .result-kicker { margin: 0 0 5px; }.result-value { color: var(--green); font: 700 clamp(3.1rem, 16vw, 7.6rem)/.84 "Source Serif 4", Georgia, serif; letter-spacing: -.075em; margin: 0; }
-    .result-copy { font-size: .94rem; margin: 9px 0 18px; }.endpoints { display: grid; gap: 7px; color: #385047; font-size: .76rem; line-height: 1.35; }.endpoints strong { color: var(--ink); display: block; font-family: "DM Mono", monospace; font-size: .8rem; }
+    .result-kicker { margin: 0 0 5px; }.result-value { color: var(--green); font: 700 clamp(3.1rem, 16vw, 7.6rem)/.84 "DM Sans", Arial, sans-serif; letter-spacing: -.075em; margin: 0; }
+    .result-copy { font-size: .94rem; margin: 9px 0 18px; }.endpoints { display: grid; gap: 7px; color: #475569; font-size: .76rem; line-height: 1.35; }.endpoints strong { color: var(--ink); display: block; font-family: Inter, Arial, sans-serif; font-size: .8rem; }
     footer { border-top: 1px solid var(--line); color: var(--muted); font-size: .68rem; line-height: 1.45; margin-top: 32px; padding-top: 14px; }
     @media (min-width: 680px) { .projection { margin-top: 20px; padding: 30px 42px 34px; }.masthead { padding-bottom: 52px; }.scenario { font-size: 1rem; }.chart-region { margin-top: 64px; }.chart-shell { height: 430px; }.result { display: grid; grid-template-columns: minmax(250px, 1.2fr) 1fr; column-gap: 38px; align-items: end; padding: 30px; }.result-kicker { grid-column: 1 / -1; }.result-value { grid-row: 2 / span 2; }.result-copy { align-self: end; margin: 0 0 5px; }.endpoints { align-self: start; grid-column: 2; margin-top: 18px; } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; } }
@@ -90,14 +90,14 @@
         reset();
         if (!window.Chart) { drawStatus.textContent = 'Chart unavailable. The comparison result is shown below.'; requestAnimationFrame(reveal); return; }
         let completed = false; const delayBetweenPoints = DRAW_DURATION_MS / flatSeries.length;
-        const progressive = reducedMotion ? false : {
+        const progressive = {
           x: { type: 'number', easing: 'linear', duration: delayBetweenPoints, from: NaN, delay(ctx) { if (ctx.type !== 'data' || ctx.xStarted) return 0; ctx.xStarted = true; return ctx.index * delayBetweenPoints; } },
           y: { type: 'number', easing: 'linear', duration: delayBetweenPoints, from: priorPoint, delay(ctx) { if (ctx.type !== 'data' || ctx.yStarted) return 0; ctx.yStarted = true; return ctx.index * delayBetweenPoints; } }
         };
         chart = new Chart(canvas, { type: 'line', data: { datasets: [
-          { label: 'Flat fee · $100/mo', data: flatSeries, borderColor: '#126a50', backgroundColor: 'rgba(18,106,80,.13)', borderWidth: 3, pointRadius: 0, pointHoverRadius: 0, cubicInterpolationMode: 'monotone', fill: '+1' },
-          { label: 'Asset fee · 1%', data: aumSeries, borderColor: '#b7791f', backgroundColor: 'rgba(183,121,31,.04)', borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 0, cubicInterpolationMode: 'monotone', fill: false }
-        ] }, options: { responsive: true, maintainAspectRatio: false, parsing: false, animation: { ...(progressive || {}), onComplete() { if (!completed) { completed = true; reveal(); } } }, interaction: { intersect: false, mode: 'index' }, plugins: { legend: { display: false }, tooltip: { callbacks: { label(context) { return `${context.dataset.label}: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(context.parsed.y)}`; } } } }, scales: { x: { type: 'linear', min: 0, max: 20, title: { display: true, text: 'Years', color: '#60716a', font: { family: 'DM Mono', size: 11 } }, ticks: { stepSize: 5, color: '#60716a', font: { family: 'DM Mono', size: 10 }, callback(value) { return value === 0 ? 'Now' : `Year ${value}`; } }, grid: { color: 'rgba(17,35,29,.08)' }, border: { display: false } }, y: { ticks: { color: '#60716a', font: { family: 'DM Mono', size: 10 }, callback(value) { const millions = value / 1000000; return `$${Number.isInteger(millions) ? millions : millions.toFixed(1)}m`; } }, grid: { color: 'rgba(17,35,29,.08)' }, border: { display: false } } } } });
+          { label: 'Flat fee · $100/mo', data: flatSeries, borderColor: '#00A540', backgroundColor: 'rgba(0,165,64,.13)', borderWidth: 3, pointRadius: 0, pointHoverRadius: 0, cubicInterpolationMode: 'monotone', fill: '+1' },
+          { label: 'Asset fee · 1%', data: aumSeries, borderColor: '#C84C3A', backgroundColor: 'rgba(200,76,58,.04)', borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 0, cubicInterpolationMode: 'monotone', fill: false }
+        ] }, options: { responsive: true, maintainAspectRatio: false, parsing: false, animation: reducedMotion ? false : { ...progressive, onComplete() { if (!completed) { completed = true; reveal(); } } }, interaction: { intersect: false, mode: 'index' }, plugins: { legend: { display: false }, tooltip: { callbacks: { label(context) { return `${context.dataset.label}: ${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(context.parsed.y)}`; } } } }, scales: { x: { type: 'linear', min: 0, max: 20, title: { display: true, text: 'Years', color: '#64748B', font: { family: 'Inter', size: 11 } }, ticks: { stepSize: 5, color: '#64748B', font: { family: 'Inter', size: 10 }, callback(value) { return value === 0 ? 'Now' : `Year ${value}`; } }, grid: { color: 'rgba(15,23,42,.08)' }, border: { display: false } }, y: { ticks: { color: '#64748B', font: { family: 'Inter', size: 10 }, callback(value) { const millions = value / 1000000; return `$${Number.isInteger(millions) ? millions : millions.toFixed(1)}m`; } }, grid: { color: 'rgba(15,23,42,.08)' }, border: { display: false } } } } });
         if (reducedMotion) requestAnimationFrame(reveal);
       }
       replay.addEventListener('click', () => { if (chart) chart.destroy(); createChart(); });
