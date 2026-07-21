@@ -424,9 +424,9 @@ function ProofAccordionCard({
         ) : (
           <p className="text-sm leading-6 text-slate-600">{card.summary}</p>
         )}
-        <div className="relative mt-5 min-h-[108px] sm:min-h-[120px]">
+        <div className="mt-5">
           {card.stat ? (
-            <div className="absolute bottom-0 left-0 z-10">
+            <div>
               <p className="text-3xl font-black tracking-tight text-[#108843]">{card.stat}</p>
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
                 {card.statLabel}
@@ -434,7 +434,7 @@ function ProofAccordionCard({
             </div>
           ) : null}
           {card.logos ? (
-            <div className="absolute inset-x-0 bottom-0 flex justify-center gap-3 sm:gap-4" aria-hidden="true">
+            <div className="mx-auto mt-4 flex w-fit justify-center gap-3 sm:gap-4" aria-hidden="true">
               {card.logos.map((logo) => {
                 const isCfp = logo.src === "/CFP_Logomark_Primary.png";
                 return (
