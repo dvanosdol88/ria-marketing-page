@@ -25,6 +25,15 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-21 - Smooth David to Smarter Way Wealth promise handoff
+**Agent:** Codex | **Surface:** home promise animation | **Duration:** focused video-review and ship pass
+- trigger: David's 1094x1044 screen recording showed the final handoff crossfading `David` and `Smarter Way Wealth` from different anchors while the full sentence appeared, creating a visible collision and snap.
+- changed: `src/components/CostAnalysisCalculator.tsx` now uses a wait-mode name transition so David exits before the firm name enters; both names use a short soft vertical/blur transition, and the supporting copy follows after the firm name is established.
+- balanced: the dynamic name is centered on a first line by itself, while `Period.` occupies the final line by itself. The screen-reader sentence remains complete and unchanged.
+- verified locally: `npm run lint` passed with the same 3 pre-existing `<img>` warnings; `npm run build` passed; Playwright recordings at 375x812 and 1094x1044 plus a 20 fps frame review showed no overlapping names or layout snap; reduced-motion mode rendered the completed statement immediately; browser console had 0 errors and 0 warnings.
+- deployed: PR #148 merged to `main` at `460b0fb`; Vercel deployment `dpl_EmHYhzUZEyXZhLiybEXwaRhAZQrd` was `READY`, targeted production, matched the `main` SHA, and served the `youarepayingtoomuch.com` apex alias.
+- verified production: a fresh 375x812 recording on `https://youarepayingtoomuch.com` and a 20 fps review confirmed the sequenced David-to-firm handoff, name-only first line, standalone `Period.` last line, and 0 browser console errors or warnings.
+
 ### 2026-07-04 - Re-verify the incremental tsbuildinfo fix is live at HEAD (hygiene RED closeout)
 **Agent:** Claude (Opus 4.8, 1M) | **Surface:** build-integrity / tooling | **Duration:** focused re-verify pass
 - trigger: a fresh dispatch flagged the same hygiene RED ("Build Simulation failed") and reported the `Debug Failure ... .next/cache/.tsbuildinfo` crash — but that RED reflects the **pre-fix** state. The fix (`8461a22`, same day) is already HEAD; this session independently re-confirms it and closes the loop.
