@@ -18,7 +18,8 @@ import {
 type ProofCard = {
   title: string;
   eyebrow: string;
-  summary: string;
+  summary: string | string[];
+  summaryEmphasis?: boolean;
   details: string[];
   detailLink?: {
     href: string;
@@ -36,8 +37,12 @@ const adviceCards: ProofCard[] = [
   {
     eyebrow: "Credentials",
     title: "Highly Credentialed, Highly Experienced",
-    summary:
-      "The rigor and investment expertise of a CFA Charterholder. The planning and process of a CFP® professional. 20+ years of real advisory experience.",
+    summary: [
+      "The rigor and investment expertise of a CFA Charterholder.",
+      "The planning and process of a CFP® professional.",
+      "20+ years of real advisory experience.",
+    ],
+    summaryEmphasis: true,
     stat: "20+",
     statLabel: "years experience",
     logos: [
@@ -68,7 +73,7 @@ const adviceCards: ProofCard[] = [
     stat: "1",
     statLabel: "person we answer to: you",
     details: [
-      "A fiduciary standard means the advice process is constrained by your best interest.",
+      "A fiduciary is someone who is legally and ethically required to act in your best interest.",
       "A flat monthly fee keeps the incentive structure clean: the firm is paid for advice, not for collecting a larger percentage of your portfolio.",
       "The practical question becomes simple: what would we recommend if we were not trying to sell a product or gather assets?",
     ],
@@ -76,8 +81,11 @@ const adviceCards: ProofCard[] = [
   {
     eyebrow: "Model",
     title: "Advice Without the Old Playbook",
-    summary:
-      "No proprietary product agenda. No requirement that your assets move before the advice can start.",
+    summary: [
+      "No proprietary product agenda.",
+      "No requirement that your assets move before the advice can start.",
+      "See what it's like to get advice from an advisor who is truly independent.",
+    ],
     stat: "$100",
     statLabel: "per month flat fee",
     details: [
@@ -156,12 +164,10 @@ export function FitCtaDivider({
   eyebrow = "Next step",
   lead = "Ready to see whether this planning model fits your household?",
   support = "Bring your calculator result into a fuller conversation about goals, tax strategy, investment fit, and whether a flat monthly planning relationship makes sense.",
-  secondary,
 }: {
   eyebrow?: React.ReactNode;
   lead?: React.ReactNode;
   support?: React.ReactNode;
-  secondary?: React.ReactNode;
 }) {
   return (
     <section className="w-full py-3 sm:py-4">
@@ -200,9 +206,6 @@ export function FitCtaDivider({
             >
               {fitCta.label}
             </a>
-            {secondary ? (
-              <div className="text-center text-sm font-bold text-[#10233A]/70 lg:text-right">{secondary}</div>
-            ) : null}
           </div>
         </div>
       </div>
@@ -408,10 +411,22 @@ function ProofAccordionCard({
 
       {/* Always-visible summary + stat/logos preserve the card's identity. */}
       <div className="px-6 pb-2">
-        <p className="text-sm leading-6 text-slate-600">{card.summary}</p>
-        <div className="mt-5 flex items-end justify-between gap-4">
+        {Array.isArray(card.summary) ? (
+          <div
+            className={`space-y-3 text-slate-600 ${
+              card.summaryEmphasis ? "text-lg leading-7" : "text-sm leading-6"
+            }`}
+          >
+            {card.summary.map((sentence) => (
+              <p key={sentence}>{sentence}</p>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm leading-6 text-slate-600">{card.summary}</p>
+        )}
+        <div className="relative mt-5 min-h-[108px] sm:min-h-[120px]">
           {card.stat ? (
-            <div>
+            <div className="absolute bottom-0 left-0 z-10">
               <p className="text-3xl font-black tracking-tight text-[#108843]">{card.stat}</p>
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
                 {card.statLabel}
@@ -419,7 +434,7 @@ function ProofAccordionCard({
             </div>
           ) : null}
           {card.logos ? (
-            <div className="ml-auto flex shrink-0 items-center gap-5 sm:gap-6" aria-hidden="true">
+            <div className="absolute inset-x-0 bottom-0 flex justify-center gap-3 sm:gap-4" aria-hidden="true">
               {card.logos.map((logo) => {
                 const isCfp = logo.src === "/CFP_Logomark_Primary.png";
                 return (
@@ -427,8 +442,8 @@ function ProofAccordionCard({
                     key={logo.src}
                     className={
                       isCfp
-                        ? "relative block h-[90px] w-[90px] sm:h-[100px] sm:w-[100px]"
-                        : "relative block h-[72px] w-[72px] sm:h-20 sm:w-20"
+                        ? "relative block h-[108px] w-[108px] sm:h-[120px] sm:w-[120px]"
+                        : "relative block h-[86px] w-[86px] sm:h-24 sm:w-24"
                     }
                   >
                     <Image
@@ -436,7 +451,7 @@ function ProofAccordionCard({
                       alt=""
                       fill
                       className="object-contain drop-shadow-[0_8px_16px_rgba(17,33,52,0.12)]"
-                      sizes={isCfp ? "100px" : "80px"}
+                      sizes={isCfp ? "120px" : "96px"}
                     />
                   </span>
                 );
@@ -485,17 +500,7 @@ function ProofAccordionCard({
                 >
                   {card.detailLink.label}
                 </Link>
-              ) : (
-                <Link
-                  href={fitCta.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-5 inline-flex items-center gap-2 rounded-md bg-[#064B84] px-5 py-3 text-sm font-extrabold text-white shadow-[0_12px_26px_rgba(6,75,132,0.2)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#053E6D] hover:shadow-[0_16px_32px_rgba(6,75,132,0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84]"
-                >
-                  <span>See if you are a good fit</span>
-                  <span aria-hidden="true">-&gt;</span>
-                </Link>
-              )}
+              ) : null}
             </div>
           </motion.div>
         ) : null}
@@ -677,16 +682,6 @@ export function AdvisorProofSections() {
         eyebrow="Planning fit"
         lead="Ready to Learn More?"
         support="Smarter Way Wealth is built for households that want credentialed planning, better tools, and a fee model that does not grow just because the portfolio grows."
-        secondary={
-          <>
-            <Link
-              href="/improve-your-tools"
-              className="!text-[#31506D] underline decoration-[#8BBE9E] underline-offset-4 transition hover:!text-[#062417]"
-            >
-              View the tools page
-            </Link>
-          </>
-        }
       />
 
       <section className="px-4 pb-16 sm:px-6">
