@@ -110,10 +110,12 @@ class FeeComparisonScene(Scene):
             x_axis_config={
                 "numbers_to_include": [0, 5, 10, 15, 20],
                 "font_size": 20,
+                "label_constructor": Text,
             },
             y_axis_config={
                 "numbers_to_include": [0, 1, 2, 3, 4, 5],
                 "font_size": 20,
+                "label_constructor": Text,
             },
         )
         axes.shift(DOWN * 0.5 + LEFT * 0.3)
