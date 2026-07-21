@@ -582,9 +582,9 @@ function SavingsLeadHero({
   );
   const introContent =
     introStyle === "panel" ? (
-      <div className="relative mx-auto max-w-4xl px-5 py-8 sm:px-10 sm:py-10">
+      <div className="relative mx-auto max-w-4xl px-0 py-8 sm:px-10 sm:py-10">
         <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
-        <p className="mx-auto max-w-3xl text-[clamp(1.55rem,3.8vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
+        <p className="mx-auto max-w-3xl text-2xl font-semibold leading-[1.14] tracking-normal text-[#10233A] sm:text-[clamp(1.55rem,3.8vw,2.35rem)]">
           {statement}
         </p>
         <motion.p
