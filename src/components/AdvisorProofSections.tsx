@@ -15,10 +15,16 @@ import {
   STICKY_SECTION_SPRING,
 } from "@/config/stickyNavConfig";
 
+type SummaryLine = {
+  lead: string;
+  emphasis: string;
+  tail?: string;
+};
+
 type ProofCard = {
   title: string;
   eyebrow: string;
-  summary: string | string[];
+  summary: string | Array<string | SummaryLine>;
   summaryEmphasis?: boolean;
   details: string[];
   detailLink?: {
@@ -38,9 +44,9 @@ const adviceCards: ProofCard[] = [
     eyebrow: "Credentials",
     title: "Highly Credentialed, Highly Experienced",
     summary: [
-      "The rigor and investment expertise of a CFA Charterholder.",
-      "The planning and process of a CFP® professional.",
-      "20+ years of real advisory experience.",
+      { lead: "The rigor and investment expertise of a ", emphasis: "CFA", tail: " Charterholder." },
+      { lead: "The planning and process of a ", emphasis: "CFP®", tail: " professional." },
+      { lead: "20+ years of real advisory ", emphasis: "experience", tail: "." },
     ],
     summaryEmphasis: true,
     stat: "20+",
@@ -410,55 +416,85 @@ function ProofAccordionCard({
       </button>
 
       {/* Always-visible summary + stat/logos preserve the card's identity. */}
-      <div className="px-6 pb-2">
-        {Array.isArray(card.summary) ? (
-          <div
-            className={`space-y-3 text-slate-600 ${
-              card.summaryEmphasis ? "text-lg leading-7" : "text-sm leading-6"
-            }`}
-          >
-            {card.summary.map((sentence) => (
-              <p key={sentence}>{sentence}</p>
-            ))}
+      <div className={`px-6 pb-2 ${card.eyebrow === "Credentials" ? "pt-5 md:grid md:grid-cols-[minmax(0,1fr)_auto] md:gap-x-10 md:pt-6" : ""}`}>
+        <div>
+          {Array.isArray(card.summary) ? (
+            card.summary.every((summary): summary is SummaryLine => typeof summary !== "string") ? (
+              <div
+                data-credential-summary
+                className="gap-y-2 text-lg leading-7 text-slate-600 md:grid md:grid-cols-[max-content_minmax(0,1fr)] md:gap-x-2"
+              >
+                {card.summary.map((sentence) => (
+                  <p key={sentence.emphasis} className="inline md:contents">
+                    <span>{sentence.lead}</span>
+                    <span>
+                      <strong data-credential-keyword>{sentence.emphasis}</strong>
+                      {sentence.tail}
+                    </span>
+                  </p>
+                ))}
+              </div>
+            ) : (
+              <div
+                className={`space-y-3 text-slate-600 ${
+                  card.summaryEmphasis ? "text-lg leading-7" : "text-sm leading-6"
+                }`}
+              >
+                {card.summary.map((sentence) => (
+                  <p key={typeof sentence === "string" ? sentence : sentence.emphasis}>
+                    {typeof sentence === "string" ? sentence : `${sentence.lead}${sentence.emphasis}${sentence.tail ?? ""}`}
+                  </p>
+                ))}
+              </div>
+            )
+          ) : (
+            <p className="text-sm leading-6 text-slate-600">{card.summary}</p>
+          )}
+          <div className="mt-5">
+            {card.stat ? (
+              <div>
+                <p className="text-3xl font-black tracking-tight text-[#108843]">{card.stat}</p>
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
+                  {card.statLabel}
+                </p>
+              </div>
+            ) : null}
           </div>
-        ) : (
-          <p className="text-sm leading-6 text-slate-600">{card.summary}</p>
-        )}
-        <div className="mt-5">
-          {card.stat ? (
-            <div>
-              <p className="text-3xl font-black tracking-tight text-[#108843]">{card.stat}</p>
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
-                {card.statLabel}
-              </p>
-            </div>
-          ) : null}
-          {card.logos ? (
-            <div className="mx-auto mt-4 flex w-fit justify-center gap-3 sm:gap-4" aria-hidden="true">
-              {card.logos.map((logo) => {
-                const isCfp = logo.src === "/CFP_Logomark_Primary.png";
-                return (
-                  <span
-                    key={logo.src}
-                    className={
-                      isCfp
+        </div>
+        {card.logos ? (
+          <div
+            data-credential-badges={card.eyebrow === "Credentials" ? "" : undefined}
+            className="mx-auto mt-4 flex w-fit justify-center gap-3 sm:gap-4 md:mt-0"
+            aria-hidden="true"
+          >
+            {card.logos.map((logo) => {
+              const isCfp = logo.src === "/CFP_Logomark_Primary.png";
+              const isCredentials = card.eyebrow === "Credentials";
+              return (
+                <span
+                  key={logo.src}
+                  className={
+                    isCredentials
+                      ? isCfp
+                        ? "relative block h-[130px] w-[130px] md:h-36 md:w-36"
+                        : "relative block h-[103px] w-[103px] md:h-[115px] md:w-[115px]"
+                      : isCfp
                         ? "relative block h-[108px] w-[108px] sm:h-[120px] sm:w-[120px]"
                         : "relative block h-[86px] w-[86px] sm:h-24 sm:w-24"
-                    }
-                  >
-                    <Image
-                      src={logo.src}
-                      alt=""
-                      fill
-                      className="object-contain drop-shadow-[0_8px_16px_rgba(17,33,52,0.12)]"
-                      sizes={isCfp ? "120px" : "96px"}
-                    />
-                  </span>
-                );
-              })}
-            </div>
-          ) : null}
-        </div>
+                  }
+                >
+                  <Image
+                    src={logo.src}
+                    alt=""
+                    fill
+                    className="object-contain drop-shadow-[0_8px_16px_rgba(17,33,52,0.12)]"
+                    sizes={isCredentials ? (isCfp ? "144px" : "115px") : isCfp ? "120px" : "96px"}
+                  />
+                </span>
+              );
+            })}
+          </div>
+        ) : null}
       </div>
 
       <AnimatePresence initial={false}>
