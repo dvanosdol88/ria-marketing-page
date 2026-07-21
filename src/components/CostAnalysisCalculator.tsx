@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Check, ChevronDown, ChevronUp, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
@@ -30,6 +30,7 @@ import { useSavingsBar } from "@/components/SavingsBarContext";
 import { capturePostHogEvent } from "@/lib/posthog";
 
 type IntroStyle = "rule" | "panel" | "quote";
+type PromisePhase = "waiting" | "human" | "david" | "full-copy" | "full-copy-hold" | "brand";
 
 function getAssetTier(portfolioValue: number) {
   if (portfolioValue < 500000) return "under_500k";
@@ -372,9 +373,10 @@ function SavingsLeadHero({
   const reducedMotion = useReducedMotion();
   const introRef = useRef<HTMLDivElement>(null);
   const brandSlotRef = useRef<HTMLSpanElement>(null);
+  const showScrollDavidRef = useRef(false);
   const [motionPreferenceReady, setMotionPreferenceReady] = useState(false);
   const [hasEnteredView, setHasEnteredView] = useState(false);
-  const [revealPhase, setRevealPhase] = useState<"waiting" | "human" | "david" | "complete">("waiting");
+  const [revealPhase, setRevealPhase] = useState<PromisePhase>("waiting");
   const [showScrollDavid, setShowScrollDavid] = useState(false);
   const shouldReduceMotion = motionPreferenceReady && Boolean(reducedMotion);
 
@@ -433,26 +435,36 @@ function SavingsLeadHero({
   useEffect(() => {
     if (!hasEnteredView || shouldReduceMotion) return;
 
-    const humanTimer = window.setTimeout(() => setRevealPhase("human"), 500);
-    const davidTimer = window.setTimeout(() => setRevealPhase("david"), 1500);
-    const completeTimer = window.setTimeout(() => setRevealPhase("complete"), 2000);
-
-    return () => {
-      window.clearTimeout(humanTimer);
-      window.clearTimeout(davidTimer);
-      window.clearTimeout(completeTimer);
+    const transitions: Partial<Record<PromisePhase, { delay: number; next: PromisePhase }>> = {
+      waiting: { delay: 500, next: "human" },
+      human: { delay: 1000, next: "david" },
+      david: { delay: 700, next: "full-copy" },
+      "full-copy-hold": { delay: 1000, next: "brand" },
     };
-  }, [hasEnteredView, shouldReduceMotion]);
+    const transition = transitions[revealPhase];
+    if (!transition) return;
+    const timer = window.setTimeout(() => setRevealPhase(transition.next), transition.delay);
+    return () => window.clearTimeout(timer);
+  }, [hasEnteredView, revealPhase, shouldReduceMotion]);
 
-  const visiblePhase = shouldReduceMotion ? "complete" : revealPhase;
-  const fullCopyVisible = visiblePhase === "complete";
-  const humanVisible = visiblePhase !== "waiting";
-  const davidVisible = visiblePhase === "david" || (fullCopyVisible && showScrollDavid);
-  const brandVisible = fullCopyVisible && !showScrollDavid;
+  const visiblePhase: PromisePhase = shouldReduceMotion ? "brand" : revealPhase;
+  const fullCopyVisible = ["full-copy", "full-copy-hold", "brand"].includes(visiblePhase);
+  const humanVisible = visiblePhase === "human" || fullCopyVisible;
+  const davidVisible = visiblePhase === "david" || visiblePhase === "full-copy" || visiblePhase === "full-copy-hold" || (visiblePhase === "brand" && showScrollDavid);
+  const brandVisible = visiblePhase === "brand" && !showScrollDavid;
+
+  const completeCopyReveal = () => {
+    if (!shouldReduceMotion && revealPhase === "full-copy") {
+      setRevealPhase("full-copy-hold");
+    }
+  };
 
   useEffect(() => {
-    if (!fullCopyVisible || shouldReduceMotion) {
-      setShowScrollDavid(false);
+    if (visiblePhase !== "brand" || shouldReduceMotion) {
+      if (showScrollDavidRef.current) {
+        showScrollDavidRef.current = false;
+        setShowScrollDavid(false);
+      }
       return;
     }
 
@@ -462,24 +474,30 @@ function SavingsLeadHero({
     let animationFrame = 0;
     let scrollSliceArmed = false;
 
+    const updateShowScrollDavid = (next: boolean) => {
+      if (showScrollDavidRef.current === next) return;
+      showScrollDavidRef.current = next;
+      setShowScrollDavid(next);
+    };
+
     const updateScrollSlice = () => {
       animationFrame = 0;
       const rect = brandSlot.getBoundingClientRect();
       const viewportCenter = window.innerHeight / 2;
-      const sliceHalfHeight = Math.max(24, Math.min(34, window.innerHeight * 0.035));
       const brandCenter = rect.top + rect.height / 2;
-      const isInScrollSlice = Math.abs(brandCenter - viewportCenter) <= sliceHalfHeight;
+      const distanceFromCenter = Math.abs(brandCenter - viewportCenter);
 
-      // Always let the first reveal finish on the firm name. The personal-name
-      // swap becomes available only after the visitor has moved beyond that
-      // initial center slice and later scrolls through it again.
       if (!scrollSliceArmed) {
-        if (!isInScrollSlice) scrollSliceArmed = true;
-        setShowScrollDavid(false);
+        if (distanceFromCenter >= 48) scrollSliceArmed = true;
+        updateShowScrollDavid(false);
         return;
       }
 
-      setShowScrollDavid(isInScrollSlice);
+      if (distanceFromCenter <= 24) {
+        updateShowScrollDavid(true);
+      } else if (distanceFromCenter >= 48) {
+        updateShowScrollDavid(false);
+      }
     };
 
     const requestScrollSliceUpdate = () => {
@@ -496,23 +514,18 @@ function SavingsLeadHero({
       window.removeEventListener("scroll", requestScrollSliceUpdate);
       window.removeEventListener("resize", requestScrollSliceUpdate);
     };
-  }, [fullCopyVisible, shouldReduceMotion]);
+  }, [shouldReduceMotion, visiblePhase]);
 
   const nameTransition = {
-    duration: shouldReduceMotion ? 0 : 0.46,
+    duration: shouldReduceMotion ? 0 : 0.56,
     ease: [0.22, 1, 0.36, 1],
   } as const;
-  const nameExitTransition = {
-    duration: shouldReduceMotion ? 0 : 0.28,
-    ease: [0.4, 0, 1, 1],
-  } as const;
   const copyRevealTransition = {
-    duration: shouldReduceMotion ? 0 : 0.62,
-    delay: shouldReduceMotion ? 0 : 0.44,
+    duration: shouldReduceMotion ? 0 : 0.64,
     ease: [0.22, 1, 0.36, 1],
   } as const;
   const humanRevealTransition = {
-    duration: shouldReduceMotion ? 0 : 0.42,
+    duration: shouldReduceMotion ? 0 : 0.52,
     ease: [0.22, 1, 0.36, 1],
   } as const;
   const statement = (
@@ -520,56 +533,41 @@ function SavingsLeadHero({
       <span className="sr-only">
         Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.
       </span>
-      <span aria-hidden="true">
+      <span
+        aria-hidden="true"
+        data-promise-phase={visiblePhase}
+        data-promise-name={davidVisible ? "david" : brandVisible ? "smarter-way-wealth" : "hidden"}
+      >
         <span className="block text-center">
           <span
             ref={brandSlotRef}
-            data-promise-name={davidVisible ? "david" : brandVisible ? "smarter-way-wealth" : "hidden"}
             className="relative inline-block whitespace-nowrap"
           >
             <span className="invisible">Smarter Way Wealth</span>
-            <AnimatePresence initial={false} mode="wait">
-              {davidVisible ? (
-                <motion.span
-                  key="david"
-                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 5, filter: "blur(2px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{
-                    opacity: 0,
-                    y: shouldReduceMotion ? 0 : -4,
-                    filter: "blur(2px)",
-                    transition: nameExitTransition,
-                  }}
-                  transition={nameTransition}
-                  className="absolute inset-0 whitespace-nowrap text-center"
-                >
-                  David
-                </motion.span>
-              ) : brandVisible ? (
-                <motion.span
-                  key="smarter-way-wealth"
-                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 5, filter: "blur(2px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{
-                    opacity: 0,
-                    y: shouldReduceMotion ? 0 : -4,
-                    filter: "blur(2px)",
-                    transition: nameExitTransition,
-                  }}
-                  transition={nameTransition}
-                  className="absolute inset-0 whitespace-nowrap text-center"
-                >
-                  Smarter Way Wealth
-                </motion.span>
-              ) : null}
-            </AnimatePresence>
+            <motion.span
+              initial={false}
+              animate={{ opacity: davidVisible ? 1 : 0 }}
+              transition={nameTransition}
+              className="absolute inset-0 whitespace-nowrap text-center"
+            >
+              David
+            </motion.span>
+            <motion.span
+              initial={false}
+              animate={{ opacity: brandVisible ? 1 : 0 }}
+              transition={nameTransition}
+              className="absolute inset-0 whitespace-nowrap text-center"
+            >
+              Smarter Way Wealth
+            </motion.span>
           </span>
         </span>
-        <span className="block">
+        <span data-promise-copy={fullCopyVisible ? "visible" : "hidden"} className="block">
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: fullCopyVisible ? 1 : 0 }}
             transition={copyRevealTransition}
+            onAnimationComplete={completeCopyReveal}
           >
             delivers{" "}
           </motion.span>
@@ -602,17 +600,13 @@ function SavingsLeadHero({
             animate={{ opacity: fullCopyVisible ? 1 : 0 }}
             transition={copyRevealTransition}
           >
-            {" "}for a simple $100/month.
+            {" "}for a simple{" "}
+            <span data-promise-fee-ending className="whitespace-nowrap">
+              <span data-promise-fee>$100/month.</span>{" "}
+              <span data-promise-period>Period.</span>
+            </span>
           </motion.span>
         </span>
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-          transition={copyRevealTransition}
-          className="block"
-        >
-          Period.
-        </motion.span>
       </span>
     </>
   );
@@ -657,6 +651,7 @@ function SavingsLeadHero({
       data-promise-reveal-phase={visiblePhase}
       data-promise-entered-view={hasEnteredView ? "true" : "false"}
       data-promise-reduced-motion={shouldReduceMotion ? "true" : "false"}
+      data-promise-motion-ready={motionPreferenceReady ? "true" : "false"}
       className="mt-14 sm:mt-20"
     >
       {introContent}
