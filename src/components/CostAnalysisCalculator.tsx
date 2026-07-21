@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Check, ChevronDown, ChevronUp, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
@@ -499,11 +499,16 @@ function SavingsLeadHero({
   }, [fullCopyVisible, shouldReduceMotion]);
 
   const nameTransition = {
-    duration: shouldReduceMotion ? 0 : 0.5,
-    ease: [0.4, 0, 0.2, 1],
+    duration: shouldReduceMotion ? 0 : 0.46,
+    ease: [0.22, 1, 0.36, 1],
+  } as const;
+  const nameExitTransition = {
+    duration: shouldReduceMotion ? 0 : 0.28,
+    ease: [0.4, 0, 1, 1],
   } as const;
   const copyRevealTransition = {
-    duration: shouldReduceMotion ? 0 : 0.68,
+    duration: shouldReduceMotion ? 0 : 0.62,
+    delay: shouldReduceMotion ? 0 : 0.44,
     ease: [0.22, 1, 0.36, 1],
   } as const;
   const humanRevealTransition = {
@@ -516,66 +521,97 @@ function SavingsLeadHero({
         Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.
       </span>
       <span aria-hidden="true">
-        <span
-          ref={brandSlotRef}
-          data-promise-name={davidVisible ? "david" : brandVisible ? "smarter-way-wealth" : "hidden"}
-          className="relative inline-block whitespace-nowrap"
-        >
-          <span className="invisible">Smarter Way Wealth</span>
+        <span className="block text-center">
+          <span
+            ref={brandSlotRef}
+            data-promise-name={davidVisible ? "david" : brandVisible ? "smarter-way-wealth" : "hidden"}
+            className="relative inline-block whitespace-nowrap"
+          >
+            <span className="invisible">Smarter Way Wealth</span>
+            <AnimatePresence initial={false} mode="wait">
+              {davidVisible ? (
+                <motion.span
+                  key="david"
+                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 5, filter: "blur(2px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{
+                    opacity: 0,
+                    y: shouldReduceMotion ? 0 : -4,
+                    filter: "blur(2px)",
+                    transition: nameExitTransition,
+                  }}
+                  transition={nameTransition}
+                  className="absolute inset-0 whitespace-nowrap text-center"
+                >
+                  David
+                </motion.span>
+              ) : brandVisible ? (
+                <motion.span
+                  key="smarter-way-wealth"
+                  initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 5, filter: "blur(2px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={{
+                    opacity: 0,
+                    y: shouldReduceMotion ? 0 : -4,
+                    filter: "blur(2px)",
+                    transition: nameExitTransition,
+                  }}
+                  transition={nameTransition}
+                  className="absolute inset-0 whitespace-nowrap text-center"
+                >
+                  Smarter Way Wealth
+                </motion.span>
+              ) : null}
+            </AnimatePresence>
+          </span>
+        </span>
+        <span className="block">
           <motion.span
             initial={{ opacity: 0 }}
-            animate={{ opacity: davidVisible ? 1 : 0 }}
-            transition={nameTransition}
-            className="absolute inset-y-0 right-0 whitespace-nowrap"
+            animate={{ opacity: fullCopyVisible ? 1 : 0 }}
+            transition={copyRevealTransition}
           >
-            David
+            delivers{" "}
           </motion.span>
+          <span className="text-[#007A2F]">
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: fullCopyVisible ? 1 : 0 }}
+              transition={copyRevealTransition}
+            >
+              personal, real{" "}
+            </motion.span>
+            <motion.span
+              data-promise-human={humanVisible ? "visible" : "hidden"}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: humanVisible ? 1 : 0 }}
+              transition={humanRevealTransition}
+            >
+              human
+            </motion.span>
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={{ opacity: fullCopyVisible ? 1 : 0 }}
+              transition={copyRevealTransition}
+            >
+              {" "}fiduciary advice and planning
+            </motion.span>
+          </span>
           <motion.span
             initial={{ opacity: 0 }}
-            animate={{ opacity: brandVisible ? 1 : 0 }}
-            transition={nameTransition}
-            className="absolute inset-y-0 left-0 whitespace-nowrap"
+            animate={{ opacity: fullCopyVisible ? 1 : 0 }}
+            transition={copyRevealTransition}
           >
-            Smarter Way Wealth
+            {" "}for a simple $100/month.
           </motion.span>
         </span>
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: fullCopyVisible ? 1 : 0 }}
           transition={copyRevealTransition}
+          className="block"
         >
-          {" "}delivers{" "}
-        </motion.span>
-        <span className="text-[#007A2F]">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-            transition={copyRevealTransition}
-          >
-            personal, real{" "}
-          </motion.span>
-          <motion.span
-            data-promise-human={humanVisible ? "visible" : "hidden"}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: humanVisible ? 1 : 0 }}
-            transition={humanRevealTransition}
-          >
-            human
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-            transition={copyRevealTransition}
-          >
-            {" "}fiduciary advice and planning
-          </motion.span>
-        </span>
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-          transition={copyRevealTransition}
-        >
-          {" "}for a simple $100/month. Period.
+          Period.
         </motion.span>
       </span>
     </>
