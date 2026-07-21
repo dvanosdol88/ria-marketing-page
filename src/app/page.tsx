@@ -41,7 +41,7 @@ export async function generateMetadata({
   const query = buildQueryFromState(calculatorState, params);
   const image = `/api/og?${query}`;
   const savings = formatCurrency(projection.savings);
-  const title = "Fee calculator";
+  const title = "Smarter";
   const description = `A Smarter Way Wealth fee projection for ${formatCurrency(calculatorState.portfolioValue)} over ${calculatorState.years} years.`;
 
   return {

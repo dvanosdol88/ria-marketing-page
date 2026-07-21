@@ -58,7 +58,7 @@ const siteJsonLd = [
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://youarepayingtoomuch.com"),
-  title: "Upgrade. Improve. Save.",
+  title: "Smarter",
   description: "Landing calculator and proof for advisory fees.",
   manifest: "/site.webmanifest",
   openGraph: {
@@ -84,7 +84,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/brand/logo-icon.svg", type: "image/svg+xml" },
       { url: "/favicon.ico" },
       { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
       { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },

@@ -498,9 +498,17 @@ function SavingsLeadHero({
     };
   }, [fullCopyVisible, shouldReduceMotion]);
 
-  const revealTransition = {
-    duration: shouldReduceMotion ? 0 : 0.32,
-    ease: "easeOut",
+  const nameTransition = {
+    duration: shouldReduceMotion ? 0 : 0.5,
+    ease: [0.4, 0, 0.2, 1],
+  } as const;
+  const copyRevealTransition = {
+    duration: shouldReduceMotion ? 0 : 0.68,
+    ease: [0.22, 1, 0.36, 1],
+  } as const;
+  const humanRevealTransition = {
+    duration: shouldReduceMotion ? 0 : 0.42,
+    ease: [0.22, 1, 0.36, 1],
   } as const;
   const statement = (
     <>
@@ -517,15 +525,15 @@ function SavingsLeadHero({
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: davidVisible ? 1 : 0 }}
-            transition={revealTransition}
-            className="absolute inset-y-0 left-0 whitespace-nowrap"
+            transition={nameTransition}
+            className="absolute inset-y-0 right-0 whitespace-nowrap"
           >
             David
           </motion.span>
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: brandVisible ? 1 : 0 }}
-            transition={revealTransition}
+            transition={nameTransition}
             className="absolute inset-y-0 left-0 whitespace-nowrap"
           >
             Smarter Way Wealth
@@ -534,7 +542,7 @@ function SavingsLeadHero({
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-          transition={revealTransition}
+          transition={copyRevealTransition}
         >
           {" "}delivers{" "}
         </motion.span>
@@ -542,7 +550,7 @@ function SavingsLeadHero({
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-            transition={revealTransition}
+            transition={copyRevealTransition}
           >
             personal, real{" "}
           </motion.span>
@@ -550,14 +558,14 @@ function SavingsLeadHero({
             data-promise-human={humanVisible ? "visible" : "hidden"}
             initial={{ opacity: 0 }}
             animate={{ opacity: humanVisible ? 1 : 0 }}
-            transition={revealTransition}
+            transition={humanRevealTransition}
           >
             human
           </motion.span>
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-            transition={revealTransition}
+            transition={copyRevealTransition}
           >
             {" "}fiduciary advice and planning
           </motion.span>
@@ -565,7 +573,7 @@ function SavingsLeadHero({
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-          transition={revealTransition}
+          transition={copyRevealTransition}
         >
           {" "}for a simple $100/month. Period.
         </motion.span>
@@ -582,7 +590,7 @@ function SavingsLeadHero({
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-          transition={revealTransition}
+          transition={copyRevealTransition}
           className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.35rem,3.15vw,2rem)] font-medium leading-[1.14] tracking-normal text-[#10233A] sm:mt-7"
         >
           <span className="whitespace-nowrap">David Van Osdol,</span>{" "}
