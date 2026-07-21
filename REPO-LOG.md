@@ -25,6 +25,16 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-21 - Balance credentials proof copy and badges
+**Agent:** Codex | **Surface:** advisor proof credentials accordion | **Duration:** focused screenshot-review and ship pass
+- trigger: David's annotated desktop screenshot showed too much unused space, sentence emphasis without a clear visual axis, and CFA/CFP badges drifting beneath the copy instead of balancing it.
+- changed: the credentials summary now preserves the three approved sentences while bolding and vertically aligning `CFA`, `CFP®`, and `experience` at desktop widths; the sentence rhythm is 8px, with 20px mobile / 24px desktop padding below the green accordion header.
+- balanced: both badge containers are 20% larger again (CFA 103px mobile / 115px desktop; CFP 130px mobile / 144px desktop). The pair is centered below the copy on mobile and centered as a right-hand group beside the sentences/stat on desktop.
+- regression: added `npm run test:credentials-layout`, a real-browser check that starts the app on an unused local port and measures the requested 375px and 1405px geometry. An independent task review caught an initial mobile run-on defect; the test was strengthened first, the mobile rows were fixed, and re-review plus final whole-branch review returned no findings.
+- verified locally: focused browser regression passed; `npm run lint` passed with the same 3 pre-existing `<img>` warnings; `npm run build` passed with the existing module-type/NFT/edge-runtime warnings.
+- deployed: PR #150 merged to `main` at `406dfde`; GitHub's post-merge verify job passed, and Vercel production deployment `dpl_DZCnhgiJkJyW6AtQew8LXQ4ZZtFP` reached `READY` with the `youarepayingtoomuch.com` apex alias.
+- verified production: fresh 375px and 1405px browser measurements on `https://youarepayingtoomuch.com/upgrade-your-advice` confirmed exact sentence text, bold keyword weights, 8px row spacing, aligned desktop keyword x-coordinates, requested badge sizes/placement, zero horizontal overflow, and 0 browser console errors or warnings.
+
 ### 2026-07-21 - Python Manim fee comparison animation script
 **Agent:** Gemini | **Surface:** `fee_comparison_manim.py` | **Duration:** 1 pass
 - Created `fee_comparison_manim.py` with Manim Community Edition syntax animating a 20-year investment fee comparison.
