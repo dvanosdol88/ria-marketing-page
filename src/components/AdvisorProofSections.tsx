@@ -416,20 +416,31 @@ function ProofAccordionCard({
       </button>
 
       {/* Always-visible summary + stat/logos preserve the card's identity. */}
-      <div className={`px-6 pb-2 ${card.eyebrow === "Credentials" ? "pt-5 md:grid md:grid-cols-[minmax(0,1fr)_auto] md:gap-x-10 md:pt-6" : ""}`}>
+      <div className={`px-6 pb-2 ${card.eyebrow === "Credentials" ? "pt-5 md:pt-6 lg:grid lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-x-10" : ""}`}>
         <div>
           {Array.isArray(card.summary) ? (
             card.summary.every((summary): summary is SummaryLine => typeof summary !== "string") ? (
               <div
                 data-credential-summary
-                className="space-y-2 gap-y-2 text-lg leading-7 text-slate-600 md:grid md:grid-cols-[max-content_minmax(0,1fr)] md:gap-x-2 md:space-y-0"
+                className="space-y-2 text-base leading-6 text-slate-600"
               >
                 {card.summary.map((sentence) => (
-                  <p key={sentence.emphasis} className="block md:contents">
-                    <span>{sentence.lead}</span>
-                    <span>
-                      <strong data-credential-keyword>{sentence.emphasis}</strong>
-                      {sentence.tail}
+                  <p
+                    key={sentence.emphasis}
+                    className="block md:grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-baseline md:whitespace-nowrap"
+                  >
+                    <span className="md:justify-self-end md:pr-[0.25em]">
+                      {sentence.lead.trimEnd()}
+                      <span className="md:hidden"> </span>
+                    </span>
+                    <strong data-credential-keyword className="md:justify-self-center">
+                      {sentence.emphasis}
+                    </strong>
+                    <span
+                      className={sentence.tail?.startsWith(" ") ? "md:justify-self-start md:pl-[0.25em]" : "md:justify-self-start"}
+                    >
+                      {sentence.tail?.startsWith(" ") ? <span className="md:hidden"> </span> : null}
+                      {sentence.tail?.trimStart()}
                     </span>
                   </p>
                 ))}
@@ -464,7 +475,7 @@ function ProofAccordionCard({
         {card.logos ? (
           <div
             data-credential-badges={card.eyebrow === "Credentials" ? "" : undefined}
-            className="mx-auto mt-4 flex w-fit justify-center gap-3 sm:gap-4 md:mt-0"
+            className="mx-auto mt-4 flex w-fit justify-center gap-3 sm:gap-4 lg:mt-0"
             aria-hidden="true"
           >
             {card.logos.map((logo) => {

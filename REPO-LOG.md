@@ -25,6 +25,15 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-22 - Center credential keywords without sentence gaps
+**Agent:** Codex | **Surface:** advisor proof credentials accordion | **Duration:** focused screenshot refinement
+- trigger: David's annotated screenshot showed that the fixed lead column created artificial white space before `CFP®` and `experience`; he asked for the centers of `CFA`, `CFP®`, and `experience` to align and for the sentences to be one font size smaller.
+- changed: the credentials copy now uses natural single-word spacing, 16px type, and symmetric responsive rows that place the center of each bold keyword on one shared axis. The period follows `experience` without an inserted space.
+- responsive: mobile keeps natural sentence wrapping; tablet gives the sentences the full card width and centers the badges below; desktop retains the badges as a balanced right-hand group.
+- regression: `npm run test:credentials-layout` now verifies exact copy, 16px type, natural inter-word spacing, punctuation spacing, shared keyword centers, unclipped tablet sentence openings, badge placement, and overflow at 375px, 799px, and 1405px.
+- verified locally: the focused browser regression, lint, and production build passed; screenshot review at all three widths showed the intended composition with no console warnings or errors.
+- delivery note: this work journal entry travels with the feature PR; live status is established separately from the post-merge production deployment and apex browser proof.
+
 ### 2026-07-21 - Balance credentials proof copy and badges
 **Agent:** Codex | **Surface:** advisor proof credentials accordion | **Duration:** focused screenshot-review and ship pass
 - trigger: David's annotated desktop screenshot showed too much unused space, sentence emphasis without a clear visual axis, and CFA/CFP badges drifting beneath the copy instead of balancing it.
