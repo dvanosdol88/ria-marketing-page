@@ -25,6 +25,13 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-22 - Prevent calculator hash from hijacking page refresh
+**Agent:** Codex | **Surface:** home hero Calculator jump | **Duration:** focused recording-led diagnosis and fix
+- trigger: David's desktop recording showed both `Ctrl+R` and `Ctrl+F5` briefly render the top of the home page, then jump directly to `The Fee Calculator`.
+- root cause: the hero CTA wrote `#calculator` into the URL, and the site navigation intentionally replayed that hash target after hydration; returning to the top did not clear the retained anchor, so every subsequent refresh jumped back to the calculator.
+- changed: the CTA keeps its anchor fallback but intercepts normal clicks, performs the same reduced-motion-aware section scroll, and removes the transient hash from browser history without disturbing query parameters or direct external `/#calculator` links.
+- regression: added `npm run test:refresh-position`, which clicks the real CTA, returns to true page top, and verifies that both normal and cache-bypassed Chrome reloads stay at `scrollY = 0` with no persistent hash.
+
 ### 2026-07-22 - Center credential keywords without sentence gaps
 **Agent:** Codex | **Surface:** advisor proof credentials accordion | **Duration:** focused screenshot refinement
 - trigger: David's annotated screenshot showed that the fixed lead column created artificial white space before `CFP®` and `experience`; he asked for the centers of `CFA`, `CFP®`, and `experience` to align and for the sentences to be one font size smaller.

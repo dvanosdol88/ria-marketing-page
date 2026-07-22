@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { type MouseEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, ChevronDown, ChevronUp, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
@@ -380,6 +380,20 @@ function SavingsLeadHero({
   const [showScrollDavid, setShowScrollDavid] = useState(false);
   const shouldReduceMotion = motionPreferenceReady && Boolean(reducedMotion);
 
+  const handleCalculatorJump = (event: MouseEvent<HTMLAnchorElement>) => {
+    const calculator = document.getElementById("calculator");
+    if (!calculator) return;
+
+    event.preventDefault();
+    calculator.scrollIntoView({
+      behavior: shouldReduceMotion ? "auto" : "smooth",
+      block: "start",
+    });
+
+    const urlWithoutHash = `${window.location.pathname}${window.location.search}`;
+    window.history.replaceState(window.history.state, "", urlWithoutHash);
+  };
+
   useEffect(() => {
     setMotionPreferenceReady(true);
   }, []);
@@ -685,6 +699,7 @@ function SavingsLeadHero({
         <div className="mx-auto flex w-full max-w-2xl flex-wrap items-center justify-center gap-3 px-4 sm:gap-4">
           <a
             href="#calculator"
+            onClick={handleCalculatorJump}
             className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[#064B84] px-6 text-base font-bold !text-white !no-underline transition-colors duration-200 hover:bg-[#053E6D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:px-8 sm:text-lg"
           >
             Calculator
