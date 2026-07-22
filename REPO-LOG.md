@@ -35,6 +35,13 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - deployed: PR #150 merged to `main` at `406dfde`; GitHub's post-merge verify job passed, and Vercel production deployment `dpl_DZCnhgiJkJyW6AtQew8LXQ4ZZtFP` reached `READY` with the `youarepayingtoomuch.com` apex alias.
 - verified production: fresh 375px and 1405px browser measurements on `https://youarepayingtoomuch.com/upgrade-your-advice` confirmed exact sentence text, bold keyword weights, 8px row spacing, aligned desktop keyword x-coordinates, requested badge sizes/placement, zero horizontal overflow, and 0 browser console errors or warnings.
 
+### 2026-07-22 - 3D Manim fee comparison animation script
+**Agent:** Gemini | **Surface:** `fee_comparison_3d_manim.py` | **Duration:** 1 pass
+- Created `fee_comparison_3d_manim.py` with 3D Manim Community Edition syntax (`ThreeDScene` + `ThreeDAxes`).
+- Added dynamic camera orbiting & tilting tracking curve growth over 20 years.
+- Added semi-transparent 3D volume walls under each curve (Blue wall for 1% AUM fee, Green wall for $100/mo flat fee).
+- Added cinematic hero camera sweep at Year 20 showcasing a 3D glowing pillar for the +$788,000 wealth difference and end-state summary overlay card.
+
 ### 2026-07-21 - Python Manim fee comparison animation script
 **Agent:** Gemini | **Surface:** `fee_comparison_manim.py` | **Duration:** 1 pass
 - Created `fee_comparison_manim.py` with Manim Community Edition syntax animating a 20-year investment fee comparison.
