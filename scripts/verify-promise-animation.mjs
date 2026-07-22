@@ -9,21 +9,47 @@ const PORT = Number(process.env.PROMISE_TEST_PORT ?? 33000 + (process.pid % 1000
 const BASE_URL = `http://127.0.0.1:${PORT}`;
 const nextBin = path.join(ROOT, "node_modules", "next", "dist", "bin", "next");
 
-const server = spawn(process.execPath, [nextBin, "start", "-H", "127.0.0.1", "-p", String(PORT)], {
-  cwd: ROOT,
-  stdio: ["ignore", "pipe", "pipe"],
-  windowsHide: true,
-});
+async function buildProductionApp() {
+  const build = spawn(process.execPath, [nextBin, "build"], {
+    cwd: ROOT,
+    stdio: ["ignore", "pipe", "pipe"],
+    windowsHide: true,
+  });
+  let buildOutput = "";
+  const captureBuildOutput = (chunk) => {
+    buildOutput = `${buildOutput}${chunk}`.slice(-16_000);
+  };
+  build.stdout?.on("data", captureBuildOutput);
+  build.stderr?.on("data", captureBuildOutput);
+
+  const { code, signal } = await new Promise((resolve, reject) => {
+    build.once("error", reject);
+    build.once("exit", (exitCode, exitSignal) => resolve({ code: exitCode, signal: exitSignal }));
+  });
+  if (code !== 0) {
+    throw new Error(`Next production build failed (code=${code}, signal=${signal})\n${buildOutput}`);
+  }
+}
+
+let server;
 let serverOutput = "";
 const captureServerOutput = (chunk) => {
   serverOutput = `${serverOutput}${chunk}`.slice(-8_000);
 };
-server.stdout?.on("data", captureServerOutput);
-server.stderr?.on("data", captureServerOutput);
 let serverExitError;
-server.once("exit", (code, signal) => {
-  serverExitError = new Error(`Local Next server exited before verification (code=${code}, signal=${signal})\n${serverOutput}`);
-});
+
+function startProductionServer() {
+  server = spawn(process.execPath, [nextBin, "start", "-H", "127.0.0.1", "-p", String(PORT)], {
+    cwd: ROOT,
+    stdio: ["ignore", "pipe", "pipe"],
+    windowsHide: true,
+  });
+  server.stdout?.on("data", captureServerOutput);
+  server.stderr?.on("data", captureServerOutput);
+  server.once("exit", (code, signal) => {
+    serverExitError = new Error(`Local Next server exited before verification (code=${code}, signal=${signal})\n${serverOutput}`);
+  });
+}
 
 async function waitForServer() {
   const deadline = Date.now() + 45_000;
@@ -66,7 +92,7 @@ async function collectTimeline(page) {
 }
 
 async function stopServer() {
-  if (server.exitCode !== null || server.signalCode !== null) return;
+  if (!server || server.exitCode !== null || server.signalCode !== null) return;
 
   const exited = new Promise((resolve) => server.once("exit", resolve));
   server.kill();
@@ -86,6 +112,8 @@ async function stopServer() {
 
 let browser;
 try {
+  await buildProductionApp();
+  startProductionServer();
   browser = await chromium.launch();
   await waitForServer();
   const context = await browser.newContext({ viewport: { width: 375, height: 812 }, reducedMotion: "no-preference" });

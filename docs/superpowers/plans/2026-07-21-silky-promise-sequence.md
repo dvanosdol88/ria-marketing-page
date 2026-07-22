@@ -6,6 +6,8 @@
 
 **Architecture:** Keep the current reserved final geometry so no phase can reflow the paragraph. Replace serialized presence/translate/blur motion with chained phase state and opacity-only crossfades. The full-copy fade completes before the 1,000 ms hold begins; only then may the stable name slot crossfade from David to Smarter Way Wealth.
 
+**Verifier architecture:** `node scripts/verify-promise-animation.mjs` is standalone on a clean checkout with installed dependencies: it first runs a hidden `next build` and requires exit 0, then starts the built app with hidden `next start` on a per-process port. This avoids the broken HMR hydration path without requiring callers to prepare `.next` separately.
+
 **Tech Stack:** Next.js 16 App Router, React 18, TypeScript, Framer Motion 12, Tailwind CSS 4, Playwright 1.58.
 
 ## Global Constraints
@@ -20,6 +22,7 @@
 - Preserve reduced-motion behavior: visitors requesting reduced motion immediately see the settled full sentence with `Smarter Way Wealth` and do not get scroll-driven name swaps.
 - Preserve the later scroll-driven David/brand swap, but arm it only after the brand phase and use separate enter/exit thresholds to prevent boundary flicker.
 - Do not change dependencies, deployment configuration, calculator math, or unrelated homepage content.
+- Keep the regression command self-contained: it must produce its own production build before starting the browser server.
 
 ## Design Direction
 
@@ -64,7 +67,7 @@ Self-critique: adding new decoration, type, or color would turn a precise motion
 
 - [x] **Step 1: Write the failing Playwright regression verifier**
 
-Create `scripts/verify-promise-animation.mjs` with a hidden local Next dev server and these exact behavioral assertions:
+Create `scripts/verify-promise-animation.mjs` with these exact behavioral assertions. The initial RED used a hidden local Next dev server; the final verified harness must build and serve production output because HMR hydration is not reliable in this environment:
 
 ```js
 import assert from "node:assert/strict";
@@ -238,6 +241,8 @@ npm run build
 ```
 
 Expected: verifier prints `Promise animation verification passed`; typecheck/build exit 0; lint exits 0 with only the repository’s three pre-existing `<img>` warnings.
+
+The verifier command itself runs `next build` before `next start`, so this standalone invocation covers both production compilation and browser behavior without a pre-existing `.next` directory.
 
 - [x] **Step 7: Mobile-first visual critique and documentation**
 
