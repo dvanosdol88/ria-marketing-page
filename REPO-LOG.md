@@ -35,11 +35,14 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - delivery note: this work journal entry travels with the feature PR; live status is established separately from the post-merge production deployment and apex browser proof.
 
 ### 2026-07-22 - 3D Manim fee comparison animation script
-**Agent:** Gemini | **Surface:** `fee_comparison_3d_manim.py` | **Duration:** 1 pass
+**Agent:** Gemini | **Surface:** `fee_comparison_3d_manim.py` | **Duration:** 2 passes
 - Created `fee_comparison_3d_manim.py` with 3D Manim Community Edition syntax (`ThreeDScene` + `ThreeDAxes`).
 - Added dynamic camera orbiting & tilting tracking curve growth over 20 years.
-- Added semi-transparent 3D volume walls under each curve (Blue wall for 1% AUM fee, Green wall for $100/mo flat fee).
-- Added cinematic hero camera sweep at Year 20 showcasing a 3D glowing pillar for the +$788,000 wealth difference and end-state summary overlay card.
+- Enhanced Gap Highlighting:
+  1. Volumetric translucent red/amber gap polygon (`COLOR_GAP`) continuously filling between the 1% AUM curve and the flat fee curve as time advances.
+  2. Real-Time HUD counter (`CUMULATIVE FEE LOSS`) dynamically ticking up from $0 to $788,000 in the top-right corner.
+  3. Cinematic camera zoom directly into the $788,000 gap at Year 20 with glowing 3D pillar & endpoint spheres.
+  4. End-state callout card highlighting both dollar loss (**$788,000**) and percentage impact (**17.1% of total potential wealth lost to fees**).
 
 ### 2026-07-21 - Silky promise sequence and deterministic regression verifier
 **Agent:** Codex | **Surface:** home promise animation | **Duration:** focused implementation and verification pass
