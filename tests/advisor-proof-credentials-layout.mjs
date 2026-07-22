@@ -73,6 +73,11 @@ try {
   ]);
   assert.deepEqual(await keywords.allTextContents(), ["CFA", "CFP®", "experience"]);
   assert.deepEqual(await keywords.evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).fontWeight)), ["700", "700", "700"]);
+  assert.deepEqual(
+    await summary.locator("p").evaluateAll((nodes) => nodes.map((node) => getComputedStyle(node).fontSize)),
+    ["16px", "16px", "16px"],
+    "credential sentences should use the next smaller type size",
+  );
 
   const mobileSentenceRows = await summary.locator("p").evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().toJSON()));
   assert.ok(
@@ -86,6 +91,26 @@ try {
   approximately(mobileBadgeBoxes[0].width, 103);
   approximately(mobileBadgeBoxes[1].width, 130);
 
+  await page.setViewportSize({ width: 799, height: 900 });
+  await page.reload({ waitUntil: "networkidle" });
+  if ((await credentialsButton.getAttribute("aria-expanded")) !== "true") {
+    await credentialsButton.click();
+  }
+
+  const tabletLeadBoxes = await summary.locator("p > span:first-child").evaluateAll((nodes) =>
+    nodes.map((node) => node.getBoundingClientRect().toJSON()),
+  );
+  assert.ok(tabletLeadBoxes.every((box) => box.x >= 24), "credential sentence openings should stay inside the tablet card");
+  const tabletKeywordBoxes = await keywords.evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().toJSON()));
+  const tabletKeywordCenters = tabletKeywordBoxes.map((box) => box.x + box.width / 2);
+  assert.ok(
+    tabletKeywordCenters.every((center) => Math.abs(center - tabletKeywordCenters[0]) <= 1),
+    "credential keyword centers should share a tablet axis",
+  );
+  const tabletSummary = await summary.boundingBox();
+  const tabletBadges = await badges.boundingBox();
+  assert.ok(tabletBadges.y >= tabletSummary.y + tabletSummary.height, "badges should sit below the summary at tablet widths");
+
   await page.setViewportSize({ width: 1405, height: 900 });
   await page.reload({ waitUntil: "networkidle" });
   if ((await credentialsButton.getAttribute("aria-expanded")) !== "true") {
@@ -93,7 +118,38 @@ try {
   }
 
   const desktopKeywordBoxes = await keywords.evaluateAll((nodes) => nodes.map((node) => node.getBoundingClientRect().toJSON()));
-  assert.ok(desktopKeywordBoxes.every((box) => Math.abs(box.x - desktopKeywordBoxes[0].x) <= 1), "credential keywords should share a desktop column");
+  const keywordCenters = desktopKeywordBoxes.map((box) => box.x + box.width / 2);
+  assert.ok(
+    keywordCenters.every((center) => Math.abs(center - keywordCenters[0]) <= 1),
+    "credential keyword centers should share a desktop axis",
+  );
+
+  const desktopSentenceGeometry = await summary.locator("p").evaluateAll((nodes) =>
+    nodes.map((node) => {
+      const [lead, keyword, tail] = node.children;
+      const leadBox = lead.getBoundingClientRect();
+      const keywordBox = keyword.getBoundingClientRect();
+      const tailBox = tail.getBoundingClientRect();
+      return {
+        leadGap: keywordBox.x - (leadBox.x + leadBox.width),
+        tailGap: tailBox.x - (keywordBox.x + keywordBox.width),
+        leadSpace: Number.parseFloat(getComputedStyle(lead).paddingRight),
+        tailSpace: Number.parseFloat(getComputedStyle(tail).paddingLeft),
+      };
+    }),
+  );
+  assert.ok(
+    desktopSentenceGeometry.every(({ leadGap, leadSpace }) => Math.abs(leadGap) <= 1 && leadSpace >= 3 && leadSpace <= 5),
+    `each lead should have one natural word space before its keyword: ${JSON.stringify(desktopSentenceGeometry)}`,
+  );
+  assert.ok(
+    desktopSentenceGeometry.slice(0, 2).every(({ tailGap, tailSpace }) => Math.abs(tailGap) <= 1 && tailSpace >= 3 && tailSpace <= 5),
+    "word tails should have one natural word space after their keyword",
+  );
+  assert.ok(
+    Math.abs(desktopSentenceGeometry[2].tailGap) <= 1 && desktopSentenceGeometry[2].tailSpace === 0,
+    "the period should follow experience without an added space",
+  );
 
   const header = await credentialsButton.boundingBox();
   const summaryRows = summary.locator("p > span:first-child");
@@ -109,7 +165,7 @@ try {
   approximately(desktopBadgeBoxes[0].width, 115);
   approximately(desktopBadgeBoxes[1].width, 144);
 
-  console.log("Credentials layout regression passed at 375px and 1405px.");
+  console.log("Credentials layout regression passed at 375px, 799px, and 1405px.");
 } finally {
   await browser?.close();
   if (nextProcess?.pid && nextProcess.exitCode === null) {
