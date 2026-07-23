@@ -25,6 +25,29 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-23 - Daily npm audit hygiene scan
+**Agent:** Agentbus | **Surface:** `package.json` / `package-lock.json` | **Duration:** automated hygiene pass
+
+**Before:** Low 1 / Moderate 10 / High 4 / Critical 0
+
+**Fixed (non-breaking):**
+- `next 16.1.5 → 16.2.11` — patches SSRF (GHSA-89xv-2m56-2m9x), DoS via Server Actions (GHSA-m99w-x7hq-7vfj), Cache confusion (GHSA-68g3-v927-f742, GHSA-4633-3j49-mh5q), Proxy bypass (GHSA-6gpp-xcg3-4w24), unbounded payload (GHSA-4c39-4ccg-62r3), SSRF in rewrites (GHSA-p9j2-gv94-2wf4), Image DoS (GHSA-q8wf-6r8g-63ch), endpoint disclosure (GHSA-955p-x3mx-jcvp) — HIGH → resolved
+- `brace-expansion 1.1.15/2.1.1/5.0.6 → 1.1.16/2.1.2/5.0.7` — DoS via exponential expansion (GHSA-3jxr-9vmj-r5cp) — HIGH → resolved
+- `fast-uri 3.1.2 → 3.1.4` — host confusion via backslash/IDN (GHSA-v2hh-gcrm-f6hx, GHSA-4c8g-83qw-93j6) — HIGH → resolved
+- `dompurify → 3.4.12` — CUSTOM_ELEMENT_HANDLING bypass (GHSA-c2j3-45gr-mqc4) — LOW → resolved
+- `protobufjs → 7.6.5` — DoS in .proto option parsing (GHSA-j3f2-48v5-ccww) — MODERATE → resolved
+- `sharp` override added to `package.json` (`"sharp": ">=0.35.1"`) — forces next's optional sharp dep to 0.35.3 (was 0.34.5), resolving inherited libvips CVEs (CVE-2026-33327/33328/35590/35591) — HIGH → resolved
+
+**After:** Low 0 / Moderate 10 / High 0 / Critical 0
+
+**Cannot fix without breaking changes (stopped per policy):**
+- `firebase-admin ^13.7.0` chain (`uuid`, `gaxios`, `google-gax`, `@google-cloud/firestore`, `@google-cloud/storage`, `retry-request`, `teeny-request`) — 9 moderate items; fix requires `firebase-admin@14.x` (major breaking upgrade) — **backlog item**
+- `postcss 8.4.31` bundled inside `next 16.2.11` as an exact required dep (GHSA-qx2v-qp2m-jg93, CSS XSS stringify, moderate) — only fixable when next ships a new version with updated bundled postcss; build-time only, not a runtime web-server vulnerability — **no action required, low real-world risk**
+
+**Verified:** `npm run build` ✓, `npm run lint` ✓ (3 pre-existing `<img>` warnings, 0 errors)
+
+---
+
 ### 2026-07-22 - Prevent calculator hash from hijacking page refresh
 **Agent:** Codex | **Surface:** home hero Calculator jump | **Duration:** focused recording-led diagnosis and fix
 - trigger: David's desktop recording showed both `Ctrl+R` and `Ctrl+F5` briefly render the top of the home page, then jump directly to `The Fee Calculator`.
