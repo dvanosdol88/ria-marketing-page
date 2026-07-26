@@ -25,6 +25,10 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-26 - Adopted meaningful-work journal policy
+- Adopted a durable, public-safe journal policy for meaningful workstreams, material decisions, real blockers, and completed/paused/cancelled work orders; routine churn does not require an entry.
+- When applicable, meaningful multi-surface work coordinates an appropriate private company-level record while technical details remain in this local journal. Documentation-only policy change; no production behavior changed.
+
 ### 2026-07-22 - Prevent calculator hash from hijacking page refresh
 **Agent:** Codex | **Surface:** home hero Calculator jump | **Duration:** focused recording-led diagnosis and fix
 - trigger: David's desktop recording showed both `Ctrl+R` and `Ctrl+F5` briefly render the top of the home page, then jump directly to `The Fee Calculator`.
