@@ -25,7 +25,26 @@ Effective 2026-05-22, `youarepayingtoomuch.com` is mobile-first, not merely mobi
 - `REPO-LOG.md` is a durable work journal and handoff aid, not live task status or a substitute for the canonical Kanban/task source. Create one concise entry for each meaningful completed workstream, material decision, real blocker, or completed/cancelled work order, including as applicable what changed and why, verification/evidence, deployed status or `not deployed`, material decisions/limitations/blockers/next steps, and useful links.
 - Meaningful work includes user-visible behavior; material UI/workflow or production changes; security, privacy, compliance, auth, data, cost, infrastructure, or integration decisions; significant dependency/security updates; rollbacks; reusable failed-attempt learning; important blockers; and completed, paused, or cancelled work orders. Do not journal every tiny commit: formatting-only edits, ordinary intermediate commits, generated churn, narrow test-only changes without independent behavior, routine dependency-bot noise without security/behavior impact, and discarded local experiments usually do not merit their own entry.
 - Never include secrets, tokens, personal data, raw customer/tenant data, or credential-shaped information. Journal in the implementation PR or an immediately linked follow-up journal PR that identifies the workstream/implementation PR; do not leave a meaningful merged workstream without a journal disposition.
-- Every closeout must state exactly one `JOURNAL` disposition: `REPO-LOG updated: <heading or path>`; `Covered by existing entry: <heading/link>`; or `Not needed: <one-sentence reason>`.
+- Every agent closeout MUST use exactly one of these complete two-line blocks:
+
+```text
+JOURNAL:
+- REPO-LOG updated: <heading or path>
+```
+
+or
+
+```text
+JOURNAL:
+- Covered by existing entry: <heading/link>
+```
+
+or
+
+```text
+JOURNAL:
+- Not needed: <one-sentence reason>
+```
 - When meaningful work or decisions affect multiple Smarter Way Wealth company surfaces, coordinate an appropriate private company-level record while keeping technical details in the local `REPO-LOG.md`.
 
 ## Project Backlog
