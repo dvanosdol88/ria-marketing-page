@@ -31,7 +31,8 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - auditability: inferred events carry `campaign_attribution_method=legacy_qr_signature` and `legacy_eddm_qr=true`; attribution persists for later calculator and CTA events in the same browser tab after the default-input query is removed from the visible URL.
 - guardrail: explicit UTM parameters take precedence, and the fallback is limited to the exact printed `portfolio=1000000&years=20&growth=8&fee=1` signature.
 - verified locally: focused TypeScript and ESLint checks passed; the production build passed with existing warnings; the new mobile Playwright regression proved attributed `$pageview` and `cta_clicked` events before and after URL cleanup; the existing refresh-position regression also passed.
-- deployment: pending PR merge, production deployment, exact-URL browser smoke, and live PostHog event proof.
+- deployed: PR #159 merged as `bda43c75720ef18824057bf2a861e5ded2759bb0`; Vercel production deployment `dpl_57Lv8BeAUtSVhrWmLQHTmQBH2zRo` reached READY on the apex domain.
+- verified production: the exact printer-proof URL retained the default `$788,000` calculator experience, cleaned the visible query string, opened the live Smarter Way Wealth CTA, and produced zero browser console errors/warnings. Live PostHog evidence contained matching `$pageview` and `cta_clicked` events with all four `launch_5k` UTM fields, `campaign_attribution_method=legacy_qr_signature`, `legacy_eddm_qr=true`, and `is_eddm_visitor=true`.
 
 ### 2026-07-26 - Adopted meaningful-work journal policy
 - Adopted a durable, public-safe journal policy for meaningful workstreams, material decisions, real blockers, and completed/paused/cancelled work orders; routine churn does not require an entry.
