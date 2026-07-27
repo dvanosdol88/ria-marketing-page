@@ -36,6 +36,18 @@ Current canonical QR URL:
 https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code
 ```
 
+The printer-approved 2026 launch proofs contain this legacy URL:
+
+```text
+https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1
+```
+
+Production must recognize that exact four-value signature as the same EDDM
+`launch_5k` campaign without changing the visitor's default landing experience.
+Events inferred from the printer-proof URL must include
+`campaign_attribution_method=legacy_qr_signature` and
+`legacy_eddm_qr=true`. Explicit UTM parameters always take precedence.
+
 Required campaign parameters:
 
 - `variant=direct-mail`
@@ -51,6 +63,10 @@ Tracked QR image assets:
 - tracked copies under `output/mailer-samples/codex/**/brand-assets/yaptom_default_inputs_qr.png`
 
 If the QR URL changes, update `src/config/campaignLinks.ts`, regenerate the QR PNGs, update `public/llms.txt`, update `public/agent-info.json`, update `docs/posthog-two-site-dashboard.md`, and rerender any print-ready PDF/proof that will actually be sent to a printer. Already-rendered PDFs do not automatically inherit a changed PNG.
+
+Do not remove the legacy printer-proof fallback until all physical mail from
+that print run is outside its useful response window and the retirement is
+documented in the dashboard guide and `REPO-LOG.md`.
 
 ## Agent-Readable Site Protocol
 

@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import { capturePostHogEvent, registerPostHogProperties, registerPostHogPropertiesOnce } from "@/lib/posthog";
+import {
+  capturePostHogEvent,
+  getPostHogCampaignProperties,
+  registerPostHogProperties,
+  registerPostHogPropertiesOnce,
+} from "@/lib/posthog";
+import { POSTHOG_UTM_KEYS } from "@/lib/campaignAttribution";
 
 const CTA_HOSTS = new Set([
   "smarterwaywealth.com",
@@ -28,27 +34,21 @@ function isTrackedCta(anchor: HTMLAnchorElement) {
 
 export function PostHogCtaTracker() {
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const campaignProperties = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].reduce<Record<string, string>>(
-      (properties, key) => {
-        const value = searchParams.get(key);
-        if (value) properties[key] = value;
-        return properties;
-      },
-      {}
-    );
+    const campaignProperties = getPostHogCampaignProperties();
 
     registerPostHogProperties({
       site_domain: window.location.hostname,
       site_origin: window.location.origin,
-      is_eddm_visitor: campaignProperties.utm_source === "eddm",
       ...campaignProperties,
     });
     registerPostHogPropertiesOnce({
       first_landing_url: window.location.href,
       first_landing_domain: window.location.hostname,
       ...Object.fromEntries(
-        Object.entries(campaignProperties).map(([key, value]) => [`first_${key}`, value])
+        POSTHOG_UTM_KEYS.flatMap((key) => {
+          const value = campaignProperties[key];
+          return typeof value === "string" ? [[`first_${key}`, value]] : [];
+        }),
       ),
     });
   }, []);

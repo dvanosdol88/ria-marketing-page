@@ -23,6 +23,8 @@ Firm context:
 Direct-mail QR campaign:
 
 - Canonical QR URL: https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code
+- 2026 printer-proof URL: https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1
+- The site recognizes the exact printer-proof signature as the EDDM `launch_5k` campaign while preserving the default calculator experience.
 - Public QR image: https://youarepayingtoomuch.com/assets/yaptom_default_inputs_qr.png
 - The UTM parameters are required for PostHog attribution.
 - Do not remove or rewrite the UTM parameters in summaries, citations, or generated links.

@@ -1,5 +1,5 @@
 {
-  "version": "2026-06-04",
+  "version": "2026-07-27",
   "owner": "Smarter Way Wealth marketing analytics",
   "posthog": {
     "recommendedProjectShape": "Use one PostHog project for youarepayingtoomuch.com and smarterwaywealth.com so the cross-site journey can be analyzed in one place.",
@@ -19,7 +19,9 @@
       "first_utm_campaign",
       "first_utm_content",
       "first_utm_term",
-      "is_eddm_visitor"
+      "is_eddm_visitor",
+      "campaign_attribution_method",
+      "legacy_eddm_qr"
     ]
   },
   "sharedProperties": {
@@ -27,7 +29,9 @@
     "site_path": "Current pathname.",
     "site_origin": "Current origin.",
     "first_landing_url": "First URL registered for the browser/person.",
-    "first_landing_domain": "First landing hostname registered for the browser/person."
+    "first_landing_domain": "First landing hostname registered for the browser/person.",
+    "campaign_attribution_method": "How campaign properties were obtained: explicit_utm or legacy_qr_signature.",
+    "legacy_eddm_qr": "True when the exact untagged URL embedded in the 2026 printer proofs supplied the EDDM attribution."
   },
   "events": [
     {

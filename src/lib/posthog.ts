@@ -1,4 +1,8 @@
 import posthog from "posthog-js";
+import {
+  resolveCampaignAttribution,
+  type CampaignAttribution,
+} from "@/lib/campaignAttribution";
 
 export type PostHogProperties = Record<string, unknown>;
 
@@ -25,15 +29,45 @@ function getDistinctId() {
   return distinctId;
 }
 
-function getCampaignProperties() {
-  const searchParams = new URLSearchParams(window.location.search);
-  return ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].reduce<Record<string, string>>(
-    (properties, key) => {
-      const value = searchParams.get(key);
-      if (value) properties[key] = value;
-      return properties;
-    },
-    {}
+const CAMPAIGN_SESSION_STORAGE_KEY = "sww_campaign_attribution";
+
+function storeCampaignAttribution(attribution: CampaignAttribution) {
+  try {
+    window.sessionStorage.setItem(
+      CAMPAIGN_SESSION_STORAGE_KEY,
+      JSON.stringify(attribution),
+    );
+  } catch {
+    // Analytics attribution should never interfere with the visitor experience.
+  }
+}
+
+function readStoredCampaignAttribution(): CampaignAttribution | null {
+  try {
+    const stored = window.sessionStorage.getItem(CAMPAIGN_SESSION_STORAGE_KEY);
+    return stored ? (JSON.parse(stored) as CampaignAttribution) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function getPostHogCampaignProperties(
+  currentUrl = window.location.href,
+): PostHogProperties {
+  const attribution = resolveCampaignAttribution(
+    new URL(currentUrl, window.location.origin).searchParams,
+  );
+
+  if (attribution) {
+    storeCampaignAttribution(attribution);
+    return attribution;
+  }
+
+  return (
+    readStoredCampaignAttribution() ?? {
+      is_eddm_visitor: false,
+      legacy_eddm_qr: false,
+    }
   );
 }
 
@@ -42,16 +76,20 @@ function sendDirectPostHogEvent(eventName: string, properties: PostHogProperties
   if (!posthogKey) return;
 
   const apiHost = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
+  const currentUrl =
+    typeof properties.$current_url === "string"
+      ? properties.$current_url
+      : window.location.href;
   const body = JSON.stringify({
     api_key: posthogKey,
     event: eventName,
     properties: {
       distinct_id: getDistinctId(),
-      $current_url: window.location.href,
+      $current_url: currentUrl,
       $host: window.location.hostname,
       site_domain: window.location.hostname,
       site_path: window.location.pathname,
-      ...getCampaignProperties(),
+      ...getPostHogCampaignProperties(currentUrl),
       ...properties,
     },
     timestamp: new Date().toISOString(),
