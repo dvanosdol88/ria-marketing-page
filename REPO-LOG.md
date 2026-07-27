@@ -25,6 +25,14 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-27 — Legacy printer-proof QR attribution rescue
+**Agent:** Codex | **Surface:** marketing analytics
+- changed: the exact untagged calculator URL embedded in the approved 2026 EDDM printer proofs is recognized as `utm_source=eddm`, `utm_medium=print`, `utm_campaign=launch_5k`, and `utm_content=qr_code` without redirecting the visitor or changing the default calculator experience.
+- auditability: inferred events carry `campaign_attribution_method=legacy_qr_signature` and `legacy_eddm_qr=true`; attribution persists for later calculator and CTA events in the same browser tab after the default-input query is removed from the visible URL.
+- guardrail: explicit UTM parameters take precedence, and the fallback is limited to the exact printed `portfolio=1000000&years=20&growth=8&fee=1` signature.
+- verified locally: focused TypeScript and ESLint checks passed; the production build passed with existing warnings; the new mobile Playwright regression proved attributed `$pageview` and `cta_clicked` events before and after URL cleanup; the existing refresh-position regression also passed.
+- deployment: pending PR merge, production deployment, exact-URL browser smoke, and live PostHog event proof.
+
 ### 2026-07-26 - Adopted meaningful-work journal policy
 - Adopted a durable, public-safe journal policy for meaningful workstreams, material decisions, real blockers, and completed/paused/cancelled work orders; routine churn does not require an entry.
 - When applicable, meaningful multi-surface work coordinates an appropriate private company-level record while technical details remain in this local journal. Documentation-only policy change; no production behavior changed.

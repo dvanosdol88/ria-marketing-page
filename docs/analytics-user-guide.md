@@ -22,6 +22,8 @@ Together, they tell the story:
 Watch these numbers first:
 
 - Visits from the QR/mail campaign.
+- Visits from the physical 2026 mailer, identified by
+  `legacy_eddm_qr = true` even though its printed QR lacks UTMs.
 - Percent who start the calculator.
 - Percent who reach a result.
 - Percent who click through to Smarter Way Wealth.
@@ -128,5 +130,16 @@ Verification checklist:
 4. Trigger one event from each touched flow.
 5. Confirm events appear in PostHog with `site_domain`, UTM fields, and expected CTA/calculator properties.
 6. Check Sentry for new errors caused by the release.
+
+For the 2026 EDDM print run, also test the exact printer-proof URL:
+
+```text
+https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1
+```
+
+Its events must carry the standard `launch_5k` UTM properties plus
+`campaign_attribution_method=legacy_qr_signature` and
+`legacy_eddm_qr=true`. The visible landing experience must remain the default
+calculator journey.
 
 For production claims, local success is not enough. Production verification is required.

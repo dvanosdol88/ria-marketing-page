@@ -37,6 +37,7 @@ The live dashboard was created on 2026-06-04 with the following saved insights. 
    - Type: trend
    - Event: `$pageview`
    - Filter: `utm_source = eddm` OR `is_eddm_visitor = true`
+   - Audit breakdown: `campaign_attribution_method`; the mailed printer proofs should report `legacy_qr_signature`.
    - Breakdown: `site_domain`
    - Question answered: are mailer/QR scans arriving, and which site are they hitting?
 
@@ -134,6 +135,15 @@ Use these filters before the mailers land:
 - `utm_medium = print`
 - `utm_campaign = launch_5k`
 - `utm_content = qr_code`
+
+The 2026 printer-approved mailer proofs contain an earlier untagged URL. The
+site recognizes its exact calculator signature as the same campaign and adds:
+
+- `campaign_attribution_method = legacy_qr_signature`
+- `legacy_eddm_qr = true`
+
+Keep a launch-day view filtered by `legacy_eddm_qr = true` so scans from the
+physical mail piece are visible independently of explicitly tagged test visits.
 
 Canonical QR URL:
 
