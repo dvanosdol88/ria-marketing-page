@@ -25,6 +25,15 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-28 — Public launch metadata for the fee-awareness landing page
+**Agent:** Codex | **Surface:** home metadata and printed-mail landing journey
+- changed: replaced the generic `Smarter` browser/search title and placeholder description with `Investment Fee Calculator | You Are Paying Too Much` and calculator-specific descriptions.
+- changed: aligned Open Graph and Twitter metadata to the fee-awareness job of the site, named the site `You Are Paying Too Much`, and added a page-level canonical root so printed calculator parameters do not create duplicate searchable URLs without overriding secondary-route canonicals.
+- corrected after launch review: updated the privacy notice to accurately disclose PostHog analytics, calculator assumptions, campaign data, and session replay.
+- preserved: calculator math, default experience, printed QR parameter handling, Smarter Way Wealth handoffs, and the live legacy EDDM attribution fallback.
+- verified locally: legacy EDDM attribution regression, TypeScript, focused ESLint, production build, rendered metadata, desktop/mobile browser checks, no horizontal overflow, and zero console errors.
+- not deployed: pending PR merge and fresh production/analytics verification.
+
 ### 2026-07-27 — Advanced Calculator hand-off band above the home calculator
 **Agent:** Claude Code | **Surface:** home page top band
 - changed: a slim white band now sits at the very top of the home `<main>`, above `CostAnalysisCalculator`, with a single primary link labelled exactly `Go to Advanced Calculator` pointing at `https://smarterwaywealth.com/save`, plus one factual supporting line ("Model your own time horizon against 40 years of actual S&P 500 returns at smarterwaywealth.com."). New component: `src/components/AdvancedCalculatorBridge.tsx`.
