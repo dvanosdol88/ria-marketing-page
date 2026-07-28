@@ -20,6 +20,7 @@ import {
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { formatCurrency, formatCurrencyFloored } from "@/lib/format";
+import { MIN_HORIZON_YEARS } from "@/lib/calculatorState";
 import type {
   HomeCalculatorTheme,
   HomeCalculatorLayout,
@@ -2247,7 +2248,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
                       autoFocus={activeHeaderField === "years"}
                       decimals={0}
                       inputMode="numeric"
-                      min={1}
+                      min={MIN_HORIZON_YEARS}
                       max={40}
                       minWidthCh={1}
                       maxWidthCh={2.5}

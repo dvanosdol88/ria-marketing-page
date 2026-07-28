@@ -176,10 +176,13 @@ export default function OurMathPage() {
               financial advice. Past performance does not guarantee future results.
             </li>
             <li>
-              See the site&apos;s{" "}
-              <Link href="/privacy#disclosures" className="text-brand-700 underline underline-offset-2">
+              See the firm&apos;s{" "}
+              <a
+                href="https://smarterwaywealth.com/disclosures"
+                className="text-brand-700 underline underline-offset-2"
+              >
                 important disclosures
-              </Link>
+              </a>
               .
             </li>
           </ul>

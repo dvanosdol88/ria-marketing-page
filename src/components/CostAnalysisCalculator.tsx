@@ -5,7 +5,12 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Check, ChevronDown, ChevronUp, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
-import { CalculatorState, DEFAULT_STATE, buildQueryFromState } from "@/lib/calculatorState";
+import {
+  CalculatorState,
+  DEFAULT_STATE,
+  MIN_HORIZON_YEARS,
+  buildQueryFromState,
+} from "@/lib/calculatorState";
 import { formatCompactCurrency, formatCurrency, formatCurrencyFloored } from "@/lib/format";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
@@ -1171,7 +1176,7 @@ export function CostAnalysisCalculator({
         onChange={(value) => updateCalculatorState({ years: Math.round(value) })}
         formatter={(value) => `${Math.round(value)}`}
         boundsFormatter={(value) => `${Math.round(value)}`}
-        min={1}
+        min={MIN_HORIZON_YEARS}
         max={40}
         step={1}
       />

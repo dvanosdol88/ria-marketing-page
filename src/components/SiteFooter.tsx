@@ -7,6 +7,12 @@ import ComplianceFooter from "@/components/ComplianceFooter";
 
 const IAPD_URL = "https://adviserinfo.sec.gov/firm/summary/342140";
 
+// The firm keeps one set of disclosures and one privacy policy, both on the
+// firm site. These used to point at local copies on this domain, which is how
+// the two sites drifted apart on what "important disclosures" meant.
+const DISCLOSURES_URL = "https://smarterwaywealth.com/disclosures";
+const PRIVACY_URL = "https://smarterwaywealth.com/privacy";
+
 /**
  * Shared site-wide footer. Renders the marketing footer block and the
  * full regulatory compliance disclosures below it.
@@ -47,12 +53,12 @@ export function SiteFooter() {
 
             {/* Right: Legal links */}
             <div className="flex gap-6 text-sm text-neutral-500 shrink-0">
-              <Link
-                href={"/privacy#disclosures" as any}
+              <a
+                href={DISCLOSURES_URL}
                 className="hover:text-neutral-700 no-underline"
               >
                 Disclosures
-              </Link>
+              </a>
               <a
                 href={IAPD_URL}
                 target="_blank"
@@ -61,14 +67,14 @@ export function SiteFooter() {
               >
                 ADV
               </a>
-              <Link
-                href={"/privacy" as any}
+              <a
+                href={PRIVACY_URL}
                 className="hover:text-neutral-700 no-underline"
               >
                 Privacy
-              </Link>
+              </a>
               <a
-                href="https://smarterwaywealth.com/privacy"
+                href={PRIVACY_URL}
                 className="hover:text-neutral-700 no-underline"
               >
                 Privacy Policy
