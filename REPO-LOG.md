@@ -37,9 +37,15 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - verified locally: TypeScript, focused privacy-page lint, and the optimized
   production build pass; the build retains its existing NFT tracing and Edge
   static-generation warnings.
-- release state: the Meet David provider decision is complete and the event is
-  active; this aligned privacy change is ready for coordinated PR merge and
-  production proof.
+- deployed: PR `#165` merged as
+  `fd332fd944766e18caddd523604d080699a30868`; Vercel production
+  `dpl_AqLVbvZU7jNW7vNKpotBt32pLMpz` reached `READY` on that exact
+  `origin/main` commit.
+- verified production: `https://youarepayingtoomuch.com/privacy` returned 200
+  and disclosed the Calendly booking-data boundary, that Calendly form
+  responses are not sent to PostHog, and the warning not to submit sensitive
+  information. The fee-awareness site still does not embed or collect the
+  scheduling form.
 
 ### 2026-07-28 — Public launch metadata for the fee-awareness landing page
 **Agent:** Codex | **Surface:** home metadata and printed-mail landing journey
