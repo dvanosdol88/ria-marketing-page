@@ -67,12 +67,9 @@ export function SiteFooter() {
               >
                 ADV
               </a>
-              <a
-                href={PRIVACY_URL}
-                className="hover:text-neutral-700 no-underline"
-              >
-                Privacy
-              </a>
+              {/* One link, not two. "Privacy" and "Privacy Policy" sat side by
+                  side pointing at the same page once both were aimed at the
+                  firm site. */}
               <a
                 href={PRIVACY_URL}
                 className="hover:text-neutral-700 no-underline"

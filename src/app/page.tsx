@@ -107,7 +107,7 @@ export default async function Home({
 
   return (
     <main className="flex flex-col pb-16">
-      <AdvancedCalculatorBridge />
+      <AdvancedCalculatorBridge searchParams={resolvedSearchParams} />
       <CostAnalysisCalculator
         initialState={calculatorState}
         searchParams={resolvedSearchParams}
