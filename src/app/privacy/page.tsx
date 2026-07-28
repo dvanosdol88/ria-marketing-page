@@ -40,6 +40,15 @@ export default function PrivacyPolicy() {
           (such as your selection or contact details).
         </p>
         <p>
+          If you continue to smarterwaywealth.com and schedule a meeting
+          through its embedded Calendly scheduler, Calendly receives the
+          information needed to arrange the meeting, including your name,
+          email address, conferencing choice, and any optional note you choose
+          to provide. Please do not include account numbers, passwords, or
+          other sensitive information in that note. We do not send your
+          Calendly form responses to PostHog.
+        </p>
+        <p>
           Our hosting provider (Vercel), error-monitoring provider (Sentry), and
           analytics provider (PostHog) may receive standard technical and usage
           data &mdash; such as IP address, browser and device information,
@@ -69,9 +78,10 @@ export default function PrivacyPolicy() {
           Third parties
         </h2>
         <p>
-          The site is hosted on Vercel, uses Sentry for error monitoring, and
-          uses PostHog for product analytics and session replay. These providers
-          process data on our behalf under their own privacy practices.
+          Our sites are hosted on Vercel, use Sentry for error monitoring,
+          PostHog for product analytics and session replay, and Calendly for
+          meeting scheduling on smarterwaywealth.com. These providers process
+          data on our behalf under their own privacy practices.
         </p>
 
         <h2 id="disclosures" className="pt-4 text-lg font-semibold text-neutral-900">
