@@ -25,6 +25,22 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-28 — Cross-site Calendly privacy disclosure
+**Agent:** Codex | **Surface:** privacy
+- changed: the fee-awareness privacy notice now discloses that visitors who
+  continue to the Smarter Way Wealth firm site can schedule through Calendly,
+  what booking information Calendly receives, and that optional invitee notes
+  are not sent to PostHog.
+- bounded: YouArePayingTooMuch does not embed or collect Calendly form data;
+  the disclosure keeps the company’s two public notices aligned for the shared
+  funnel.
+- verified locally: TypeScript, focused privacy-page lint, and the optimized
+  production build pass; the build retains its existing NFT tracing and Edge
+  static-generation warnings.
+- not deployed: this change is isolated on
+  `codex/meet-scheduling-privacy` pending the Meet David provider decision and
+  coordinated PR.
+
 ### 2026-07-28 — Public launch metadata for the fee-awareness landing page
 **Agent:** Codex | **Surface:** home metadata and printed-mail landing journey
 - changed: replaced the generic `Smarter` browser/search title and placeholder description with `Investment Fee Calculator | You Are Paying Too Much` and calculator-specific descriptions.
