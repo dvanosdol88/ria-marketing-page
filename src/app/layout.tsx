@@ -58,15 +58,20 @@ const siteJsonLd = [
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://youarepayingtoomuch.com"),
-  title: "Smarter",
-  description: "Landing calculator and proof for advisory fees.",
+  title: "Investment Fee Calculator | You Are Paying Too Much",
+  description:
+    "See how asset-based advisory fees can compound over time and compare them with Smarter Way Wealth's flat $100 monthly fee.",
+  alternates: {
+    canonical: "/",
+  },
   manifest: "/site.webmanifest",
   openGraph: {
-    title: "Upgrade. Improve. Save.",
-    description: "Landing calculator and proof for advisory fees.",
+    title: "See What a 1% Advisory Fee Can Cost",
+    description:
+      "Run your numbers and compare an asset-based advisory fee with a flat $100 monthly fee.",
     type: "website",
-    url: "https://youarepayingtoomuch.com",
-    siteName: "Smarter Way Wealth",
+    url: "https://youarepayingtoomuch.com/",
+    siteName: "You Are Paying Too Much",
     images: [
       {
         url: "/brand/logo-800.png",
@@ -78,8 +83,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Upgrade. Improve. Save.",
-    description: "Landing calculator and proof for advisory fees.",
+    title: "See What a 1% Advisory Fee Can Cost",
+    description:
+      "Run your numbers and compare an asset-based advisory fee with a flat $100 monthly fee.",
     images: ["/brand/logo-800.png"],
   },
   icons: {
