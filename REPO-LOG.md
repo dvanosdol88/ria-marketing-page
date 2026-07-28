@@ -37,9 +37,9 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - verified locally: TypeScript, focused privacy-page lint, and the optimized
   production build pass; the build retains its existing NFT tracing and Edge
   static-generation warnings.
-- not deployed: this change is isolated on
-  `codex/meet-scheduling-privacy` pending the Meet David provider decision and
-  coordinated PR.
+- release state: the Meet David provider decision is complete and the event is
+  active; this aligned privacy change is ready for coordinated PR merge and
+  production proof.
 
 ### 2026-07-28 — Public launch metadata for the fee-awareness landing page
 **Agent:** Codex | **Surface:** home metadata and printed-mail landing journey
