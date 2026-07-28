@@ -1,3 +1,4 @@
+import { AdvancedCalculatorBridge } from "@/components/AdvancedCalculatorBridge";
 import { CostAnalysisCalculator } from "@/components/CostAnalysisCalculator";
 import type { Metadata } from "next";
 import type { CalculatorState } from "@/lib/calculatorState";
@@ -103,6 +104,7 @@ export default async function Home({
 
   return (
     <main className="flex flex-col pb-16">
+      <AdvancedCalculatorBridge />
       <CostAnalysisCalculator
         initialState={calculatorState}
         searchParams={resolvedSearchParams}

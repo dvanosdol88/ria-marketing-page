@@ -25,6 +25,16 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-27 — Advanced Calculator hand-off band above the home calculator
+**Agent:** Claude Code | **Surface:** home page top band
+- changed: a slim white band now sits at the very top of the home `<main>`, above `CostAnalysisCalculator`, with a single primary link labelled exactly `Go to Advanced Calculator` pointing at `https://smarterwaywealth.com/save`, plus one factual supporting line ("Model your own time horizon against 40 years of actual S&P 500 returns at smarterwaywealth.com."). New component: `src/components/AdvancedCalculatorBridge.tsx`.
+- placement: above the whole calculator rather than below a banner — the default home experience (`savings-calculator-upgrade`) never renders `HomeTopBanner`, so nothing was competing for the first paint. The band is fully visible under the sticky nav at 375px (button top 89px, bottom 137px) without scrolling.
+- design: reuses the established primary button pattern from `SavingsLeadHero` (`bg-[#064B84]`, `rounded-lg`, `min-h-12`, `!text-white !no-underline`, `focus-visible` outline in `#064B84`). No new tokens, colors, or radii. Same-tab navigation, no `target`, so the hand-off is deliberate.
+- analytics: server-rendered plain `<a>`; the site-wide `PostHogCtaTracker` already treats `smarterwaywealth.com` anchors as tracked CTAs, so the click emits the existing `cta_clicked` event with `cta_location=home_above_calculator_bridge` and `cta_label=Go to Advanced Calculator` via the documented `data-posthog-cta-*` attributes. No new event names or properties.
+- compliance: navigation copy only — no performance claim, projection, guarantee, or testimonial.
+- test fix: `tests/refresh-position.mjs` now waits for the document height to hold steady before each reload. Adding any content above the calculator made Chrome persist a scroll anchor from a still-settling layout, so scroll restoration landed ~5px below the top and failed an assertion that has nothing to do with the hash-replay regression the file guards. The hash and scroll-position assertions themselves are unchanged.
+- verified locally: `npx tsc --noEmit` clean; `npm run lint` unchanged at 3 pre-existing `<img>` warnings (the 11 errors reported locally come from untracked `design-candidates/`, not the repo); `npm run build` passed; `npm run test:refresh-position`, `npm run test:credentials-layout`, and `npm run test:eddm-attribution` all passed. A production-server browser check at 375px, 768px, and 1280px confirmed the exact accessible name, the `https://smarterwaywealth.com/save` href, a 48px tap target, no horizontal overflow, a visible 2px `#064B84` keyboard focus ring, and zero console errors or warnings. The link is present in the server-rendered HTML, so it works without JavaScript.
+
 ### 2026-07-27 — Legacy printer-proof QR attribution rescue
 **Agent:** Codex | **Surface:** marketing analytics
 - changed: the exact untagged calculator URL embedded in the approved 2026 EDDM printer proofs is recognized as `utm_source=eddm`, `utm_medium=print`, `utm_campaign=launch_5k`, and `utm_content=qr_code` without redirecting the visitor or changing the default calculator experience.
