@@ -37,6 +37,37 @@ async function returnToPageTop(page) {
     window.scrollTo(0, 0);
   });
   await page.waitForFunction(() => window.scrollY === 0);
+  await waitForStableLayout(page);
+}
+
+/**
+ * The home page keeps settling for a few hundred milliseconds after it is
+ * scrolled back to the top (the promise sequence and the media preview both
+ * change height). Reloading mid-settle makes Chrome persist a scroll anchor
+ * from a layout that no longer matches the fresh page, so scroll restoration
+ * lands a handful of pixels below the top for reasons unrelated to the hash
+ * regression this file guards. Waiting for the document height to hold steady
+ * keeps the assertions measuring the anchor/hash behavior instead of a
+ * restoration race.
+ */
+async function waitForStableLayout(page) {
+  await page.waitForFunction(
+    () =>
+      new Promise((resolve) => {
+        let stableFrames = 0;
+        let lastHeight = document.documentElement.scrollHeight;
+        const check = () => {
+          const height = document.documentElement.scrollHeight;
+          stableFrames = height === lastHeight ? stableFrames + 1 : 0;
+          lastHeight = height;
+          if (stableFrames >= 20) resolve(true);
+          else window.requestAnimationFrame(check);
+        };
+        window.requestAnimationFrame(check);
+      }),
+    null,
+    { timeout: 10_000 },
+  );
 }
 
 async function readPosition(page) {
