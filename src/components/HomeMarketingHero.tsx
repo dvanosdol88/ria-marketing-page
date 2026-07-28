@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowDown, Calculator, CheckCircle2, Share2 } from "lucide-react";
 import { HomeMarketingVariant } from "@/config/homeMarketingVariants";
-import type { CalculatorState } from "@/lib/calculatorState";
+import { MIN_HORIZON_YEARS, type CalculatorState } from "@/lib/calculatorState";
 import { formatCurrency } from "@/lib/format";
 
 type HomeMarketingHeroProps = {
@@ -286,7 +286,7 @@ function AdvisorMiniCalculator({
           />
           <MiniTextInput
             label="Years"
-            min={1}
+            min={MIN_HORIZON_YEARS}
             max={40}
             value={years}
             onValueChange={(value) => onCalculatorChange({ years: Math.round(value) })}

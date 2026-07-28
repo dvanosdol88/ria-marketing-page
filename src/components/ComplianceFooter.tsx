@@ -3,13 +3,21 @@
 // Mirror this file to the smarterwaywealth.com repo (smarter-way-wealth) when the text changes.
 // Disclosures last updated 2026-04-28.
 
-import Link from "next/link";
-
 const DISCLOSURES_LAST_UPDATED = "2026-04-28";
 const COMPLIANCE_EMAIL = "compliance@smarterwaywealth.com";
 const COMPLIANCE_PHONE_DISPLAY = "(646) 418-2867";
 const COMPLIANCE_PHONE_TEL = "+16464182867";
 const IAPD_URL = "https://adviserinfo.sec.gov/firm/summary/342140";
+
+/**
+ * Both documents live on the firm site and are pointed at absolutely from here.
+ * This footer used to send "For important disclosures" to a local privacy page,
+ * so the disclosure documents themselves were not reachable from this domain at
+ * all. The firm has one set of disclosures and one privacy policy; every site
+ * links to those, rather than keeping a copy that can drift out of step.
+ */
+const DISCLOSURES_URL = "https://smarterwaywealth.com/disclosures";
+const PRIVACY_URL = "https://smarterwaywealth.com/privacy";
 
 export default function ComplianceFooter() {
   return (
@@ -40,9 +48,13 @@ export default function ComplianceFooter() {
         </p>
         <p className="mt-3">
           For important disclosures, see our{" "}
-          <Link href="/privacy" className="underline hover:text-neutral-900">
+          <a href={DISCLOSURES_URL} className="underline hover:text-neutral-900">
+            disclosure documents
+          </a>
+          . For privacy information, see our{" "}
+          <a href={PRIVACY_URL} className="underline hover:text-neutral-900">
             Privacy Policy
-          </Link>
+          </a>
           . For questions or concerns, contact us at{" "}
           <a
             href={`mailto:${COMPLIANCE_EMAIL}`}
