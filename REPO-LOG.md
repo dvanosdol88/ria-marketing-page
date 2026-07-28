@@ -32,7 +32,15 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - corrected after launch review: updated the privacy notice to accurately disclose PostHog analytics, calculator assumptions, campaign data, and session replay.
 - preserved: calculator math, default experience, printed QR parameter handling, Smarter Way Wealth handoffs, and the live legacy EDDM attribution fallback.
 - verified locally: legacy EDDM attribution regression, TypeScript, focused ESLint, production build, rendered metadata, desktop/mobile browser checks, no horizontal overflow, and zero console errors.
-- not deployed: pending PR merge and fresh production/analytics verification.
+- deployed: PR `#162` merged as `ddf52c4`; Vercel production
+  `dpl_H7jckn3H7ypM9TkjimhxMky86U7h` reached `READY` and the apex served the
+  merged metadata/privacy change.
+- verified production: the exact printed URL resolved to the default
+  `$788,000` experience, cleaned the legacy query, retained six Smarter Way
+  Wealth handoffs, rendered the calculator-specific title and root canonical,
+  showed no mobile overflow or console errors, and produced a PostHog
+  `$pageview` with `campaign_attribution_method=legacy_qr_signature`,
+  `utm_source=eddm`, `utm_medium=print`, and `utm_campaign=launch_5k`.
 
 ### 2026-07-27 — Advanced Calculator hand-off band above the home calculator
 **Agent:** Claude Code | **Surface:** home page top band
