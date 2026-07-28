@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     "How Smarter Way Wealth, LLC collects, uses, and protects information from visitors to youarepayingtoomuch.com.",
 };
 
-const LAST_UPDATED = "2026-04-28";
+const LAST_UPDATED = "2026-07-28";
 
 export default function PrivacyPolicy() {
   return (
@@ -26,11 +26,13 @@ export default function PrivacyPolicy() {
           Information we collect
         </h2>
         <p>
-          The site offers a fee-savings calculator. The values you enter into
-          the calculator (portfolio value, fees, growth rate, time horizon) are
-          processed locally in your browser and may be reflected in the URL if
-          you copy or share a link. We do not store your calculator inputs on
-          our servers.
+          The site offers a fee-savings calculator. Calculator assumptions such
+          as portfolio value, fees, growth rate, and time horizon are processed
+          in your browser, may be reflected in the URL, and may be included in
+          analytics events so that we can understand how the tool is used.
+          Calculator results are hypothetical and are not an account
+          application. Do not enter confidential or personally identifying
+          information into the calculator.
         </p>
         <p>
           If you submit a vote on an interactive poll, contact us, or sign up
@@ -38,11 +40,19 @@ export default function PrivacyPolicy() {
           (such as your selection or contact details).
         </p>
         <p>
-          Our hosting provider (Vercel), our error-monitoring provider
-          (Sentry), and any analytics providers we use automatically receive
-          standard request data &mdash; such as IP address, browser type,
-          referring page, and timestamps &mdash; for the purpose of operating,
-          securing, and improving the site.
+          Our hosting provider (Vercel), error-monitoring provider (Sentry), and
+          analytics provider (PostHog) may receive standard technical and usage
+          data &mdash; such as IP address, browser and device information,
+          referring or campaign information, pages viewed, clicks, timestamps,
+          and an anonymous identifier stored in your browser &mdash; for the
+          purpose of operating, securing, and improving the site.
+        </p>
+        <p>
+          PostHog may also record a replay of a browsing session, including page
+          navigation and interactions. Password, email, and telephone input
+          fields are configured to be masked in these recordings. You should
+          still avoid entering sensitive financial or personal information into
+          ordinary website fields.
         </p>
 
         <h2 id="how-we-use-information" className="pt-4 text-lg font-semibold text-neutral-900">
@@ -50,18 +60,18 @@ export default function PrivacyPolicy() {
         </h2>
         <p>
           We use the information described above to operate and secure the
-          site, monitor and fix errors, understand aggregate usage, and
-          respond to inquiries you send us. We do not sell personal
-          information.
+          site, monitor and fix errors, understand site and campaign
+          performance, improve the visitor experience, and respond to inquiries
+          you send us. We do not sell personal information.
         </p>
 
         <h2 id="third-parties" className="pt-4 text-lg font-semibold text-neutral-900">
           Third parties
         </h2>
         <p>
-          The site is hosted on Vercel and uses Sentry for error monitoring.
-          These providers process technical request data on our behalf under
-          their own privacy practices.
+          The site is hosted on Vercel, uses Sentry for error monitoring, and
+          uses PostHog for product analytics and session replay. These providers
+          process data on our behalf under their own privacy practices.
         </p>
 
         <h2 id="disclosures" className="pt-4 text-lg font-semibold text-neutral-900">

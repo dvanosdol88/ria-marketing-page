@@ -61,9 +61,6 @@ export const metadata: Metadata = {
   title: "Investment Fee Calculator | You Are Paying Too Much",
   description:
     "See how asset-based advisory fees can compound over time and compare them with Smarter Way Wealth's flat $100 monthly fee.",
-  alternates: {
-    canonical: "/",
-  },
   manifest: "/site.webmanifest",
   openGraph: {
     title: "See What a 1% Advisory Fee Can Cost",
