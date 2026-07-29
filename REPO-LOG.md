@@ -33,8 +33,10 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - preserved: the shared event contract is unchanged; the measurement uses
   existing privacy-safe CTA location, label, and path metadata and collects no
   new personal information.
-- release state: companion documentation PR and production-site verification
-  remain.
+- released: companion documentation PR #169 merged as
+  `01fbfd73b1ae65965674b00f23deb131acb6595e`. The live insight was updated and
+  successfully queried; four deliberate production clicks later appeared with
+  the expected location, label, path, and no personal information.
 
 ### 2026-07-29 — Preserve Why Smarter Way intent measurement
 **Agent:** Codex | **Surface:** cross-site analytics documentation
