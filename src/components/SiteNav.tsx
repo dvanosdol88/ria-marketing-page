@@ -9,7 +9,9 @@ import { siteNavLinks } from "@/config/siteNavConfig";
 import {
   getSiteNavScrollTriggerY,
   isMobileViewport,
+  MOBILE_STICKY_BAR_HEIGHT,
   resolveActiveSection,
+  STICKY_BAR_HEIGHT,
 } from "@/config/stickyNavConfig";
 
 const COLLAPSE_SCROLL_Y = 158;
@@ -119,7 +121,9 @@ export function SiteNav() {
     const updateActiveSection = () => {
       ticking = false;
 
-      const triggerY = getSiteNavScrollTriggerY(collapsed, isMobileViewport());
+      const isMobile = isMobileViewport();
+      const stickyBarHeight = isMobile ? MOBILE_STICKY_BAR_HEIGHT : STICKY_BAR_HEIGHT;
+      const triggerY = getSiteNavScrollTriggerY(collapsed, isMobile, stickyBarHeight);
       setActiveSection(resolveActiveSection(sectionIds, triggerY, "calculator"));
     };
 

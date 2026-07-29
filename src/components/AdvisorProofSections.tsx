@@ -4,10 +4,19 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight, CalendarDays, ChevronDown, MapPin } from "lucide-react";
+import {
+  ArrowUpRight,
+  CalendarDays,
+  CheckCircle2,
+  ChevronDown,
+  ExternalLink,
+  MapPin,
+  XCircle,
+} from "lucide-react";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "framer-motion";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { fitCta } from "@/config/fitCtaConfig";
+import { goodFitCardConfig } from "@/config/goodFitCardConfig";
 import {
   getStickyScrollTriggerY,
   resolveActiveSection,
@@ -351,6 +360,102 @@ function AdvisorCard() {
         </div>
       </div>
     </aside>
+  );
+}
+
+function GoodFitCard() {
+  return (
+    <article
+      className="overflow-hidden rounded-lg border border-[#CBD8E4] bg-white shadow-[0_18px_44px_rgba(17,33,52,0.09)]"
+      aria-labelledby="good-fit-card-title"
+      data-good-fit-card
+    >
+      <div className="border-b border-[#D8E2EA] px-5 py-6 sm:px-7 sm:py-7">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-3xl">
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
+              {goodFitCardConfig.eyebrow}
+            </p>
+            <h2
+              id="good-fit-card-title"
+              className="mt-2 text-3xl font-black leading-tight tracking-normal text-[#062417] sm:text-4xl"
+            >
+              {goodFitCardConfig.title}
+            </h2>
+            <p className="mt-3 text-sm leading-6 text-slate-600 sm:text-base">
+              {goodFitCardConfig.description}
+            </p>
+          </div>
+          <a
+            href={goodFitCardConfig.link.href}
+            target="_blank"
+            rel="noreferrer"
+            data-posthog-cta-label={goodFitCardConfig.link.label}
+            data-posthog-cta-location="good_fit_card"
+            className="group inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-md border border-[#9CCBAE] bg-[#EDF8F1] px-4 py-2.5 text-sm font-extrabold !text-[#0A6E35] !no-underline transition-[background-color,border-color,transform] duration-200 hover:-translate-y-0.5 hover:border-[#6DAC84] hover:bg-[#E1F2E7] hover:!text-[#07552A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843]"
+          >
+            {goodFitCardConfig.link.label}
+            <ExternalLink
+              className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden="true"
+            />
+          </a>
+        </div>
+        <p className="mt-5 text-sm font-extrabold text-[#41556C]">
+          {goodFitCardConfig.representativeLead}
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-2">
+        <div className="bg-[#F1F9F4] p-5 sm:p-7">
+          <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.18em] text-[#0A6E35]">
+            <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
+            Planning relationship
+          </p>
+          <div className="mt-5 space-y-6">
+            {goodFitCardConfig.aligned.map((category) => (
+              <section key={category.title}>
+                <h3 className="text-xl font-black tracking-normal text-[#07552A]">
+                  {category.title}
+                </h3>
+                <ul className="mt-3 space-y-2.5">
+                  {category.items.map((item) => (
+                    <li key={item} className="flex gap-2.5 text-sm leading-6 text-[#284A38]">
+                      <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-[#108843]" aria-hidden="true" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </div>
+
+        <div className="border-t border-[#E3C8C5] bg-[#FFF4F2] p-5 sm:p-7 md:border-l md:border-t-0">
+          <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.18em] text-[#B42318]">
+            <XCircle className="h-5 w-5" aria-hidden="true" />
+            Not the service model
+          </p>
+          <div className="mt-5 space-y-6">
+            {goodFitCardConfig.notAligned.map((category) => (
+              <section key={category.title}>
+                <h3 className="text-xl font-black tracking-normal text-[#8F1F17]">
+                  {category.title}
+                </h3>
+                <ul className="mt-3 space-y-2.5">
+                  {category.items.map((item) => (
+                    <li key={item} className="flex gap-2.5 text-sm leading-6 text-[#70413D]">
+                      <XCircle className="mt-1 h-4 w-4 shrink-0 text-[#D92D20]" aria-hidden="true" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </div>
+      </div>
+    </article>
   );
 }
 
@@ -718,6 +823,7 @@ export function AdvisorProofSections() {
         <div className="space-y-5">
           <AdvisorCard />
           <ProofBento cards={adviceCards} />
+          <GoodFitCard />
         </div>
       </StorySection>
 

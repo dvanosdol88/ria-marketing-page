@@ -29,6 +29,7 @@ import type { ProjectionYear } from "@/lib/feeProjection";
 import { Odometer, RollingCurrencyOdometer } from "@/components/Odometer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { fitCta } from "@/config/fitCtaConfig";
+import { AdvancedCalculatorCta } from "@/components/AdvancedCalculatorCta";
 import { Quiz } from "./Quiz";
 
 type Scenario = "smarter" | "traditional";
@@ -92,6 +93,7 @@ type HomeCalculatorExperienceProps = {
   simpleControls: CalculatorSimpleControlNodes;
   renderChart: (className: string) => ReactNode;
   activeScenario: Scenario | null;
+  advancedCalculatorHref: string;
   assumptionsCustomized: boolean;
   showViewTabs?: boolean;
   initialView?: "header" | "inputs";
@@ -1582,6 +1584,7 @@ function MathExpandButton({
 }
 
 function SeeOurMathBento({
+  advancedCalculatorHref,
   annualFlatFee,
   annualGrowthPercent,
   mutualFundExpensePercent,
@@ -1594,6 +1597,7 @@ function SeeOurMathBento({
   totalFlatFees,
   years,
 }: {
+  advancedCalculatorHref: string;
   annualFlatFee: number;
   annualGrowthPercent: number;
   mutualFundExpensePercent: number;
@@ -1716,6 +1720,8 @@ function SeeOurMathBento({
           <MathExpandButton onClick={() => setExpanded(true)} />
         </div>
       </motion.section>
+
+      <AdvancedCalculatorCta href={advancedCalculatorHref} />
 
       {typeof document !== "undefined"
         ? createPortal(
@@ -1944,6 +1950,7 @@ function SeeOurMathBento({
 
 function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const {
+    advancedCalculatorHref,
     annualFeePercent,
     annualFlatFee,
     annualGrowthPercent,
@@ -2396,14 +2403,23 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             tone="blue"
             accentClassName="text-[#064B84]"
           />
-          <div className="mx-auto flex min-h-0 items-center justify-center gap-4 py-0 md:mx-0 md:px-1 md:py-0.5">
-            <p className="whitespace-nowrap text-base font-bold leading-tight text-[#D92D20]">
-              Difference: {formatCurrencyFloored(savings)}
+          <div
+            className="mx-auto flex min-h-0 flex-col items-center justify-center py-1 text-center md:mx-0 md:min-w-[7.5rem] md:px-1 md:py-0.5"
+            data-difference-summary
+          >
+            <p
+              className="whitespace-nowrap text-[clamp(1.5rem,5vw,2rem)] font-black leading-none tracking-tight text-[#D92D20]"
+              data-difference-amount
+            >
+              {formatCurrencyFloored(savings)}
+            </p>
+            <p className="mt-1 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#D92D20]">
+              Difference
             </p>
             <button
               type="button"
               onClick={toggleAllGaps}
-              className={`relative flex h-7 min-w-[4.25rem] items-center justify-center overflow-hidden rounded-md border-2 border-[#D92D20] bg-white px-3 transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_22px_rgba(16,35,58,0.18),inset_0_1px_0_rgba(255,255,255,0.95)] active:translate-y-0 active:shadow-[0_4px_10px_rgba(16,35,58,0.14),inset_0_2px_4px_rgba(16,35,58,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] md:h-7 ${
+              className={`relative mt-2 flex h-9 min-w-[5.1rem] items-center justify-center overflow-hidden rounded-md border-2 border-[#D92D20] bg-white px-4 transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_22px_rgba(16,35,58,0.18),inset_0_1px_0_rgba(255,255,255,0.95)] active:translate-y-0 active:shadow-[0_4px_10px_rgba(16,35,58,0.14),inset_0_2px_4px_rgba(16,35,58,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:h-10 sm:min-w-[5.35rem] ${
                 vsActive
                   ? ""
                   : "fee-gap-view-pulse shadow-[0_8px_18px_rgba(16,35,58,0.16),inset_0_1px_0_rgba(255,255,255,0.95)]"
@@ -2419,7 +2435,9 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
               aria-label={vsActive ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
               aria-pressed={vsActive}
             >
-              <span className="relative text-xs font-extrabold tracking-tight text-[#062B43]">Show</span>
+              <span className="relative text-[0.9rem] font-extrabold leading-none tracking-tight text-[#062B43] sm:text-base">
+                Show
+              </span>
             </button>
           </div>
           <FinalHomeStatCard
@@ -2506,6 +2524,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
 
         <div className="mx-4 mt-4 pb-5 sm:mx-7">
           <SeeOurMathBento
+            advancedCalculatorHref={advancedCalculatorHref}
             annualFlatFee={annualFlatFee}
             annualGrowthPercent={annualGrowthPercent}
             mutualFundExpensePercent={mutualFundExpensePercent}

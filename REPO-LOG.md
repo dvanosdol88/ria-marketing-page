@@ -25,6 +25,15 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-29 — Advisor calculator bridge and fit guide
+**Agent:** Codex | **Surface:** public home calculator + advisor proof | **Goal:** `019faf74-9d2d-7740-96aa-1ba7d0ba216d`
+- preserved: You Are Paying Too Much keeps its existing simple fee calculator and projection math. The advanced historical-return calculator remains on Smarter Way Wealth.
+- changed: lengthened the pause after the animated “David” reveal by 250ms; rebuilt the difference summary as amount → `Difference` → larger `Show`; aligned rolling currency symbols, commas, and digits; and refined the sticky savings header into a centered, closable `Potential savings` treatment with a prominent left close control.
+- added: a styled `Advanced Calculator` external link beneath the Fee Calculator description and a full-width Smarter Way Wealth advanced-calculator CTA directly below `View calculation details`. Both carry the reader's current calculator assumptions to `/save`; the animated preview uses the singular labels `Market return` and `Steady return`.
+- added: an `Are you a good fit?` advisor-proof card with representative-list language, a safe external Smarter Way Wealth link, and responsive green Financial Planning/Investment Planning versus red Stock Picks/Market Timing guidance.
+- verified locally: `npx tsc --noEmit`; `npm run lint` (only the same 3 pre-existing `<img>` warnings); `npm run build`; focused 375px/1440px Playwright regression; credential-layout, refresh-position, and legacy EDDM attribution regressions; built-app desktop/mobile visual checks with no browser warnings or horizontal overflow.
+- deployment status at commit: not deployed; release is proceeding through the required PR-to-`main` production path and live proof will be recorded in the PR/coordinator closeout.
+
 ### 2026-07-29 — Decision Fork intent measurement
 **Agent:** Codex | **Surface:** shared PostHog dashboard recipe
 - documented: `SWW Intent Actions` distinguishes the homepage and `/save`

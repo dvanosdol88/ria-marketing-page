@@ -2,7 +2,7 @@
 
 import { type MouseEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { Check, ChevronDown, ChevronUp, Minus, Plus, Share2 } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, ExternalLink, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import {
@@ -33,6 +33,10 @@ import {
 import type { HomeTopBannerId } from "@/config/homeTopBanners";
 import { useSavingsBar } from "@/components/SavingsBarContext";
 import { capturePostHogEvent } from "@/lib/posthog";
+import {
+  ADVANCED_CALCULATOR_LABEL,
+  buildAdvancedCalculatorHrefFromState,
+} from "@/config/advancedCalculator";
 
 type IntroStyle = "rule" | "panel" | "quote";
 type PromisePhase = "waiting" | "human" | "david" | "full-copy" | "full-copy-hold" | "brand";
@@ -457,7 +461,7 @@ function SavingsLeadHero({
     const transitions: Partial<Record<PromisePhase, { delay: number; next: PromisePhase }>> = {
       waiting: { delay: 500, next: "human" },
       human: { delay: 1000, next: "david" },
-      david: { delay: 700, next: "full-copy" },
+      david: { delay: 950, next: "full-copy" },
       "full-copy-hold": { delay: 1000, next: "brand" },
     };
     const transition = transitions[revealPhase];
@@ -783,6 +787,10 @@ export function CostAnalysisCalculator({
         annualGrowthPercent: state.annualGrowthPercent,
       }),
     [state.annualFlatFee, state.annualGrowthPercent, state.portfolioValue, state.years, totalAnnualFeePercent]
+  );
+  const advancedCalculatorHref = useMemo(
+    () => buildAdvancedCalculatorHrefFromState(state),
+    [state],
   );
 
   useEffect(() => {
@@ -1291,6 +1299,21 @@ export function CostAnalysisCalculator({
           <p className="mt-1 max-w-2xl text-base leading-6 text-[#52657A] sm:text-lg">
             Calculate your potential additional wealth using your own numbers.
           </p>
+          <p className="mt-3 text-sm leading-6 text-[#52657A]">
+            Want to compare historical return paths?{" "}
+            <a
+              href={advancedCalculatorHref}
+              target="_blank"
+              rel="noreferrer"
+              data-posthog-cta-label="Open Advanced Calculator"
+              data-posthog-cta-location="fee_calculator_description"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#B9D8C5] bg-[#F1F8F4] px-3 py-1 font-extrabold !text-[#0A6E35] !no-underline transition-[background-color,border-color,color] duration-200 hover:border-[#88B99A] hover:bg-[#E5F3EA] hover:!text-[#07552A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843]"
+            >
+              {ADVANCED_CALCULATOR_LABEL}
+              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+            </a>
+            .
+          </p>
         </div>
         <div className="flex w-full max-w-full flex-col items-start gap-2 sm:w-auto sm:items-end">
           <div className="inline-flex min-h-11 w-fit max-w-full items-center gap-2 rounded-md border border-[#BFD4C8] bg-white px-3 py-2 shadow-[0_10px_28px_rgba(17,33,52,0.08)] sm:px-4">
@@ -1462,6 +1485,7 @@ export function CostAnalysisCalculator({
           renderChart={renderChart}
           activeScenario={activeCard}
           assumptionsCustomized={assumptionsCustomized}
+          advancedCalculatorHref={advancedCalculatorHref}
           showViewTabs={!isSavingsCalculatorUpgrade}
           initialView={isSavingsCalculatorUpgrade ? "inputs" : "header"}
           showChartHeading={isSavingsCalculatorUpgrade}
