@@ -35,8 +35,8 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
   interest is not mislabeled.
 - verified: live PostHog insight `9074109` contains the filtered series and
   updated description; documentation diff passed `git diff --check`.
-- deployed: documentation-only companion to the Smarter Way Wealth approved
-  homepage and flagship Save release.
+- release: documentation-only companion in PR #168 for the Smarter Way Wealth
+  approved homepage and flagship Save release.
 
 ### 2026-07-28 — Cross-site Calendly privacy disclosure
 **Agent:** Codex | **Surface:** privacy
