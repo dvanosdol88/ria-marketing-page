@@ -25,6 +25,17 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-29 — Decision Fork intent measurement
+**Agent:** Codex | **Surface:** shared PostHog dashboard recipe
+- documented: `SWW Intent Actions` distinguishes the homepage and `/save`
+  Decision Forks and their `See How It Works` and `Meet David` choices through
+  four filtered `cta_clicked` series.
+- preserved: the shared event contract is unchanged; the measurement uses
+  existing privacy-safe CTA location, label, and path metadata and collects no
+  new personal information.
+- release state: companion documentation PR and production-site verification
+  remain.
+
 ### 2026-07-29 — Preserve Why Smarter Way intent measurement
 **Agent:** Codex | **Surface:** cross-site analytics documentation
 - changed: the canonical dashboard recipe now records the live

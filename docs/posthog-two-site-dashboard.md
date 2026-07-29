@@ -79,13 +79,29 @@ The live dashboard was created on 2026-06-04 with the following saved insights. 
      - `verify_firm_clicked`
      - `cta_clicked`, filtered to `cta_path` exactly `/save`, labeled
        `Why Smarter Way clicked`
+     - `cta_clicked`, filtered to `cta_location` exactly
+       `home_decision_fork` and `cta_label` exactly `See How It Works`, labeled
+       `Homepage fork — See How It Works`
+     - `cta_clicked`, filtered to `cta_location` exactly
+       `home_decision_fork` and `cta_label` exactly `Meet David`, labeled
+       `Homepage fork — Meet David`
+     - `cta_clicked`, filtered to `cta_location` exactly
+       `save_decision_fork` and `cta_label` exactly `See How It Works`, labeled
+       `Save fork — See How It Works`
+     - `cta_clicked`, filtered to `cta_location` exactly
+       `save_decision_fork` and `cta_label` exactly `Meet David`, labeled
+       `Save fork — Meet David`
      - `calculator_cta_clicked`
-   - Breakdown: event name
-   - Question answered: what do visitors do after they reach SWW?
+   - Breakdown: event name plus the explicit fork series labels above.
+   - Question answered: what do visitors do after they reach SWW, and do
+     homepage or `/save` visitors prefer self-guided details or a conversation?
    - Semantics: the filtered `/save` series measures internal interest in the
      flagship Smarter Way Wealth cost-model experience.
      `calculator_cta_clicked` remains limited to outbound clicks from the firm
      site back to `youarepayingtoomuch.com`.
+     The Decision Fork series reuse `cta_clicked`; they add no event and no
+     personal-information capture. Meet David clicks also retain the existing
+     `intro_call_clicked` event.
 
 5. `Intro-call conversion`
    - Live insight: `SWW Intro-Call Conversion`
