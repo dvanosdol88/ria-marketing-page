@@ -77,11 +77,11 @@ export function Odometer({ value, prefix = "$", className = "", duration = 1400 
 
   return (
     <span
-      className={`inline-block tabular-nums transition-transform duration-150 [transition-timing-function:cubic-bezier(0.25,1,0.5,1)] ${className}`}
+      className={`inline-flex items-baseline whitespace-nowrap tabular-nums transition-transform duration-150 [transition-timing-function:cubic-bezier(0.25,1,0.5,1)] ${className}`}
       aria-label={`${prefix}${formattedFinal}`}
     >
-      {prefix}
-      {formattedDisplay}
+      <span className="leading-none">{prefix}</span>
+      <span className="leading-none">{formattedDisplay}</span>
     </span>
   );
 }
@@ -134,12 +134,20 @@ export function RollingCurrencyOdometer({
   return (
     <span className={className}>
       <span className="sr-only">{finalText}</span>
-      <span aria-hidden="true" className="inline-flex items-baseline justify-center whitespace-nowrap tabular-nums">
+      <span
+        aria-hidden="true"
+        className="inline-flex h-[1em] items-start justify-center whitespace-nowrap align-baseline leading-none tabular-nums"
+        data-rolling-currency
+      >
         {Array.from(displayText).map((char, index) => {
           const digit = Number.parseInt(char, 10);
           if (Number.isNaN(digit)) {
             return (
-              <span className="inline-block leading-none" key={`${index}-${char}`}>
+              <span
+                className="inline-flex h-[1em] items-start leading-none"
+                data-rolling-currency-glyph={char === "$" ? "currency" : "separator"}
+                key={`${index}-${char}`}
+              >
                 {char}
               </span>
             );
@@ -147,7 +155,8 @@ export function RollingCurrencyOdometer({
 
           return (
             <span
-              className="relative inline-block h-[1em] w-[0.62em] overflow-hidden leading-none"
+              className="relative inline-block h-[1em] w-[0.62em] overflow-hidden align-top leading-none"
+              data-rolling-currency-glyph="digit"
               key={index}
             >
               <span
@@ -158,7 +167,7 @@ export function RollingCurrencyOdometer({
                 }}
               >
                 {"0123456789".split("").map((rollingDigit) => (
-                  <span className="block h-[1em] leading-none" key={rollingDigit}>
+                  <span className="block h-[1em] leading-[1]" key={rollingDigit}>
                     {rollingDigit}
                   </span>
                 ))}

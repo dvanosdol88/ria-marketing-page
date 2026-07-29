@@ -1,17 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { SMARTER_WAY_WEALTH_ORIGIN } from "@/config/campaignLinks";
-
-const ADVANCED_CALCULATOR_URL = `${SMARTER_WAY_WEALTH_ORIGIN}/save`;
-const ADVANCED_CALCULATOR_LABEL = "Go to Advanced Calculator";
-
-/**
- * The reader's own assumptions, and only those. Campaign and attribution
- * parameters deliberately stay behind: they describe how someone arrived at
- * THIS site, and forwarding them would misattribute traffic on the other one.
- */
-const CARRIED_PARAMS = ["portfolio", "years", "growth", "fee", "flat", "mfe"] as const;
+import {
+  ADVANCED_CALCULATOR_LABEL,
+  buildAdvancedCalculatorHref,
+} from "@/config/advancedCalculator";
 
 /**
  * Slim hand-off band that sits above the home fee calculator.
@@ -42,17 +35,6 @@ const CARRIED_PARAMS = ["portfolio", "years", "growth", "fee", "flat", "mfe"] as
  *
  * Same-tab navigation is deliberate: this is a hand-off, not a side trip.
  */
-/** Build the hand-off URL from whatever query string is in play. */
-function buildHandoffUrl(search: URLSearchParams): string {
-  const carried = new URLSearchParams();
-  for (const key of CARRIED_PARAMS) {
-    const value = search.get(key);
-    if (value !== null) carried.set(key, value);
-  }
-  const query = carried.toString();
-  return query ? `${ADVANCED_CALCULATOR_URL}?${query}` : ADVANCED_CALCULATOR_URL;
-}
-
 export function AdvancedCalculatorBridge({
   searchParams,
 }: {
@@ -67,12 +49,12 @@ export function AdvancedCalculatorBridge({
       const first = Array.isArray(value) ? value[0] : value;
       if (typeof first === "string") initial.set(key, first);
     }
-    return buildHandoffUrl(initial);
+    return buildAdvancedCalculatorHref(initial);
   });
 
   const syncHref = useCallback(() => {
     if (typeof window === "undefined") return;
-    setHref(buildHandoffUrl(new URLSearchParams(window.location.search)));
+    setHref(buildAdvancedCalculatorHref(new URLSearchParams(window.location.search)));
   }, []);
 
   useEffect(() => {
@@ -86,11 +68,11 @@ export function AdvancedCalculatorBridge({
           href={href}
           onPointerDown={syncHref}
           onFocus={syncHref}
-          data-posthog-cta-label={ADVANCED_CALCULATOR_LABEL}
+          data-posthog-cta-label={`Go to ${ADVANCED_CALCULATOR_LABEL}`}
           data-posthog-cta-location="home_above_calculator_bridge"
           className="inline-flex min-h-12 w-full max-w-sm items-center justify-center rounded-lg bg-[#064B84] px-6 text-base font-bold !text-white !no-underline transition-colors duration-200 hover:bg-[#053E6D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:w-auto sm:px-8"
         >
-          {ADVANCED_CALCULATOR_LABEL}
+          Go to {ADVANCED_CALCULATOR_LABEL}
         </a>
         <p className="text-[13px] font-medium leading-snug text-[#10233A]/70 sm:text-sm">
           Model your own time horizon against 40 years of actual S&amp;P 500

@@ -7,6 +7,7 @@ export const MOBILE_COLLAPSED_SITE_NAV_HEIGHT = 58;
 export const DESKTOP_EXPANDED_SITE_NAV_HEIGHT = 84;
 export const MOBILE_EXPANDED_SITE_NAV_HEIGHT = 77;
 export const STICKY_BAR_HEIGHT = 40;
+export const MOBILE_STICKY_BAR_HEIGHT = 72;
 export const SCROLL_SPY_BUFFER = 18;
 
 export const STICKY_BAR_OPACITY_MS = 300;
@@ -34,25 +35,32 @@ export function getExpandedSiteNavHeight(isMobile = isMobileViewport()): number 
 /** Viewport Y for SiteNav scroll-spy (desktop: nav only; mobile: nav + sticky bar). */
 export function getSiteNavScrollTriggerY(
   collapsed: boolean,
-  isMobile = isMobileViewport()
+  isMobile = isMobileViewport(),
+  stickyBarHeight = STICKY_BAR_HEIGHT
 ): number {
   const navHeight = collapsed
     ? getCollapsedSiteNavHeight(isMobile)
     : getExpandedSiteNavHeight(isMobile);
   if (isMobile) {
-    return navHeight + STICKY_BAR_HEIGHT + SCROLL_SPY_BUFFER;
+    return navHeight + stickyBarHeight + SCROLL_SPY_BUFFER;
   }
   return navHeight + SCROLL_SPY_BUFFER;
 }
 
 /** Top edge of the sticky stack (SiteNav + section bar). */
-export function getStickyStackHeight(isMobile = isMobileViewport()): number {
-  return getCollapsedSiteNavHeight(isMobile) + STICKY_BAR_HEIGHT;
+export function getStickyStackHeight(
+  isMobile = isMobileViewport(),
+  stickyBarHeight = STICKY_BAR_HEIGHT
+): number {
+  return getCollapsedSiteNavHeight(isMobile) + stickyBarHeight;
 }
 
 /** Viewport Y used to decide which pillar section is "current". */
-export function getStickyScrollTriggerY(isMobile = isMobileViewport()): number {
-  return getStickyStackHeight(isMobile) + SCROLL_SPY_BUFFER;
+export function getStickyScrollTriggerY(
+  isMobile = isMobileViewport(),
+  stickyBarHeight = STICKY_BAR_HEIGHT
+): number {
+  return getStickyStackHeight(isMobile, stickyBarHeight) + SCROLL_SPY_BUFFER;
 }
 
 /**
