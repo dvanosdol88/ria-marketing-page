@@ -25,6 +25,19 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-29 — Preserve Why Smarter Way intent measurement
+**Agent:** Codex | **Surface:** cross-site analytics documentation
+- changed: the canonical dashboard recipe now records the live
+  `Why Smarter Way clicked` series in `SWW Intent Actions`, using
+  `cta_clicked` filtered to `cta_path=/save`.
+- preserved: `calculator_cta_clicked` retains its narrower meaning of an
+  outbound firm-site click back to `youarepayingtoomuch.com`; internal `/save`
+  interest is not mislabeled.
+- verified: live PostHog insight `9074109` contains the filtered series and
+  updated description; documentation diff passed `git diff --check`.
+- release: documentation-only companion in PR #168 for the Smarter Way Wealth
+  approved homepage and flagship Save release.
+
 ### 2026-07-28 — Cross-site Calendly privacy disclosure
 **Agent:** Codex | **Surface:** privacy
 - changed: the fee-awareness privacy notice now discloses that visitors who
