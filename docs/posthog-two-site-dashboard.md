@@ -77,9 +77,15 @@ The live dashboard was created on 2026-06-04 with the following saved insights. 
      - `intro_call_clicked`
      - `contact_clicked`
      - `verify_firm_clicked`
+     - `cta_clicked`, filtered to `cta_path` exactly `/save`, labeled
+       `Why Smarter Way clicked`
      - `calculator_cta_clicked`
    - Breakdown: event name
    - Question answered: what do visitors do after they reach SWW?
+   - Semantics: the filtered `/save` series measures internal interest in the
+     flagship Smarter Way Wealth cost-model experience.
+     `calculator_cta_clicked` remains limited to outbound clicks from the firm
+     site back to `youarepayingtoomuch.com`.
 
 5. `Intro-call conversion`
    - Live insight: `SWW Intro-Call Conversion`
