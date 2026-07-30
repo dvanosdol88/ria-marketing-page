@@ -25,6 +25,37 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-30 — Claude Code harness hardening (hooks, wrap-up skill, verifier agent)
+**Agent:** Claude (Claude Code web) | **Surface:** agent workflow harness (no runtime/app changes)
+- added: `.claude/settings.json` wiring two Claude Code hooks — a PreToolUse
+  Bash hook (`.claude/hooks/pre-commit-secret-scan.mjs`) that blocks `git
+  commit` when the staged diff adds credential-shaped strings (Anthropic/
+  OpenAI-style keys, Google API keys, PLAID_SECRET assignments, private-key
+  blocks; patterns built via string concatenation so the scanner never flags
+  its own source), and a Stop hook (`.claude/hooks/wrap-up-check.mjs`) that
+  blocks ending a session with a dirty worktree or with commits today but no
+  REPO-LOG.md entry for today. Both fail open on internal errors.
+- added: `.claude/skills/wrap-up/SKILL.md` encoding this repo's closeout
+  ritual (commit per ship-by-default policy, newest-first REPO-LOG entry
+  using the repo template, push/PR, clean-tree check, JOURNAL closeout
+  block) and `.claude/agents/verifier.md` defining a verifier subagent whose
+  proof ladder is `npm run lint` then `npm run build` with fresh-evidence
+  reporting rules.
+- changed: narrowed the `.gitignore` rule `.claude/` to `.claude/*` plus
+  negations for `settings.json`, `hooks/`, `skills/`, and `agents/` — the
+  blanket ignore made the harness files uncommittable; local state such as
+  `.claude/settings.local.json` remains ignored (verified via
+  `git check-ignore`).
+- verified: `node --check` passes on both hook scripts; `settings.json`
+  parses via `node -e` JSON.parse; behavioral stdin tests — non-commit
+  command exit 0, clean commit exit 0, malformed stdin exit 0, staged fake
+  Anthropic-style key exit 2 with block message, `stop_hook_active` exit 0,
+  dirty worktree exit 2 with "Before ending the session:" message. `npm run
+  lint` / `npm run build` not run (no package installs permitted in this
+  session).
+- deployed: not deployed; committed on branch
+  `claude/workflow-optimization-ideas` for verifier push + PR.
+
 ### 2026-07-29 — Advisor calculator bridge and fit guide
 **Agent:** Codex | **Surface:** public home calculator + advisor proof | **Goal:** `019faf74-9d2d-7740-96aa-1ba7d0ba216d`
 - preserved: You Are Paying Too Much keeps its existing simple fee calculator and projection math. The advanced historical-return calculator remains on Smarter Way Wealth.
