@@ -25,12 +25,18 @@ interface RatePreset {
   apyPercent: number;
 }
 
+interface BankOption {
+  label: string;
+  apyPercent: number;
+}
+
 export function CashRateCalculator({
   topApyPercent,
   topApyLabel,
   defaultCurrentApyPercent,
   defaultBalance,
   presets,
+  bankOptions = [],
 }: {
   /** Highest verified APY in the dataset (the comparison benchmark). */
   topApyPercent: number;
@@ -40,9 +46,12 @@ export function CashRateCalculator({
   defaultCurrentApyPercent: number;
   defaultBalance: number;
   presets: RatePreset[];
+  /** Verified big-bank standard rates; picking one fills the current rate. */
+  bankOptions?: BankOption[];
 }) {
   const [balance, setBalance] = useState(defaultBalance);
   const [currentApy, setCurrentApy] = useState(defaultCurrentApyPercent);
+  const [selectedBank, setSelectedBank] = useState("");
 
   // Apply ?balance= and ?current= from the URL once, after hydration.
   useEffect(() => {
@@ -128,6 +137,7 @@ export function CashRateCalculator({
                 const next = Number(e.target.value);
                 if (Number.isFinite(next) && next >= 0 && next <= 25) {
                   setCurrentApy(next);
+                  setSelectedBank("");
                 }
               }}
               aria-label="Current annual percentage yield"
@@ -138,9 +148,12 @@ export function CashRateCalculator({
               <button
                 key={preset.label}
                 type="button"
-                onClick={() => setCurrentApy(preset.apyPercent)}
+                onClick={() => {
+                  setCurrentApy(preset.apyPercent);
+                  setSelectedBank("");
+                }}
                 className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
-                  currentApy === preset.apyPercent
+                  currentApy === preset.apyPercent && selectedBank === ""
                     ? "border-brand-600 bg-brand-600 text-white"
                     : "border-neutral-200 bg-white text-neutral-600 hover:border-neutral-300"
                 }`}
@@ -149,6 +162,33 @@ export function CashRateCalculator({
               </button>
             ))}
           </div>
+          {bankOptions.length > 0 ? (
+            <label className="mt-3 block">
+              <span className="text-sm font-medium text-neutral-700">
+                &hellip;or pick your bank
+              </span>
+              <select
+                className="mt-1 w-full rounded-xl border border-neutral-200 bg-white px-3 py-2.5 text-base"
+                value={selectedBank}
+                onChange={(e) => {
+                  const label = e.target.value;
+                  setSelectedBank(label);
+                  const option = bankOptions.find((b) => b.label === label);
+                  if (option) setCurrentApy(option.apyPercent);
+                }}
+                aria-label="Pick your bank to fill in its standard savings rate"
+              >
+                <option value="">
+                  Select a bank (fills in its standard savings rate)
+                </option>
+                {bankOptions.map((bank) => (
+                  <option key={bank.label} value={bank.label}>
+                    {bank.label} — {bank.apyPercent.toFixed(2)}%
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
         </div>
 
         <div className="rounded-xl bg-neutral-50 p-4 sm:p-5">

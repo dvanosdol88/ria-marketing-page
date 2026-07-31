@@ -25,6 +25,14 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-31 — "What the big banks pay" section on /savings-rates
+**Agent:** Claude (Fable) | **Surface:** marketing | **Duration:** 1 session
+- added: big-bank comparison table on `/savings-rates` — standard base savings APYs at the money-center four (Chase, BofA, Citi, Wells Fargo), the largest regionals by assets, and the top-5 deposit holders in CT and NY per the FDIC Summary of Deposits (June 30, 2025 vintage, pulled via the FDIC BankFind Suite API on 2026-07-31; each bank deduped and tagged with every reason it qualifies). BNY Mellon excluded (no retail savings product), noted on page.
+- calculator: "…or pick your bank" select fills the visitor's current rate from the verified big-bank list, personalizing the extra-dollars-per-year figure.
+- verification: same two-source discipline; promos excluded on inspection (E*TRADE 4.00% 6-month promo → standard 3.50% listed; Marcus referral boost excluded). Rows whose sites allow plain fetch are in the weekly auto-check (Webster, Marcus, + regionals where possible); ZIP-gated/PDF/JS-only sites are autoCheck=false with a 45-day manual re-verification flag in the weekly job. `/api/savings-rates` exposes the new `bigBanks` block.
+- honest wrinkles recorded in row notes/sources: Citi + Wells Fargo publish exact rates only behind ZIP lookups (dual independent sources used, noted); BofA rate sheets are state-specific (MD online sheet cited); Webster's only independent corroboration is old but matching (bank's own dated disclosure page is primary and machine-checked weekly).
+- final roster (14 rows): Chase 0.01 / BofA 0.04 / Citi 0.03 / Wells Fargo 0.01 / U.S. Bank 0.05 / PNC 0.02 / Truist 0.01 / Capital One 3.00 / TD 0.02 / Citizens 0.01 / Webster 0.01 / M&T 0.01 / Marcus (Goldman) 3.40 / Morgan Stanley Private Bank 3.50. DROPPED by fail-closed dual verification: Fifth Third and KeyBank (bank-site leg unreachable/unverifiable at check time) — listed in the on-page "Not shown" note alongside BNY Mellon (no retail savings product).
+
 ### 2026-07-31 — Top savings & money market rates page (/savings-rates)
 **Agent:** Claude (Fable) | **Surface:** marketing | **Duration:** 1 session
 - added: `/savings-rates` — verified, dated table of top standard nationally available HYSA + money market APYs, FDIC national-average context, "What is your cash earning?" calculator (balance + current rate → first-year extra dollars at the top verified rate, URL-shareable via `?balance=&current=`), methodology, and an advice hand-off to smarterwaywealth.com. Data lives in `src/data/savingsRates.json`; typed access + derived math in `src/lib/savingsRates.ts`; agent JSON endpoint at `/api/savings-rates`.

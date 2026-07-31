@@ -30,6 +30,51 @@ export interface RateRow {
   sources: RateSource[];
 }
 
+/** Why a bank appears in the big-bank comparison table. */
+export type BigBankTag = "money-center" | "regional" | "ct-top5" | "ny-top5";
+
+export interface BigBankRow {
+  institution: string;
+  product: string;
+  apyPercent: number;
+  verifyString: string;
+  /** Base-rate caveats, e.g. relationship tiers or state-specific sheets. */
+  apyNote: string;
+  tags: BigBankTag[];
+  /** FDIC SOD in-state deposit market share, percent (only for tagged banks). */
+  ctSharePercent?: number;
+  nySharePercent?: number;
+  institutionRateAsOf: string | null;
+  lastVerified: string;
+  verification: string;
+  /**
+   * Whether the weekly job can re-check this row against its primary
+   * source with a plain fetch. Rows behind ZIP gates, PDFs, or bot
+   * challenges are autoCheck=false and are flagged for a manual
+   * re-verification pass when their lastVerified date ages out.
+   */
+  autoCheck: boolean;
+  sources: RateSource[];
+}
+
+export interface BigBanksSection {
+  /** Selection criteria, stated on the page. */
+  criteria: {
+    moneyCenter: string;
+    regional: string;
+    statePresence: string;
+  };
+  sod: {
+    vintage: string;
+    sourceName: string;
+    sourceUrl: string;
+    retrieved: string;
+  };
+  /** Top-5 CT/NY deposit holders with no standard retail savings account. */
+  exclusions: { institution: string; reason: string }[];
+  rows: BigBankRow[];
+}
+
 export interface SavingsRatesData {
   meta: {
     datasetVersion: number;
@@ -57,6 +102,7 @@ export interface SavingsRatesData {
     savings: RateRow[];
     moneyMarket: RateRow[];
   };
+  bigBanks: BigBanksSection;
   excludedUnverifiable: {
     institution: string;
     product: string;
