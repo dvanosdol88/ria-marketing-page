@@ -32,6 +32,7 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - verified locally: clean `npm ci`; `npx tsc --noEmit`; `npm run lint` (0 errors and the same 3 existing `<img>` warnings); `npm run build`; and all four focused Playwright regressions for the calculator, credential layout, EDDM attribution, and refresh position.
 - post-remediation audit: 11 vulnerabilities (0 low, 8 moderate, 3 high, 0 critical), down from 15. The remaining high lane is brace-expansion plus Next.js/sharp; the remaining moderate lane is Firebase Admin's Google Cloud/uuid dependency chain. npm's available remediations require major or otherwise breaking dependency changes, so they were intentionally excluded from this safe non-major workstream.
 - deployment status at commit: not deployed; release is proceeding through the required PR-to-`main` production path.
+- released: PR #173 merged as `d280c2bb0279113cd55a4df31e8fdda2d185f534`; required CI and the Vercel production deployment passed. Production checks returned HTTP 200 from Vercel and browser-verified `/`, `/save`, and `/upgrade-your-advice` with rendered content, no horizontal overflow, and no console, page, or non-aborted same-origin network errors.
 
 ### 2026-07-30 — Claude Code harness hardening (hooks, wrap-up skill, verifier agent)
 **Agent:** Claude (Claude Code web) | **Surface:** agent workflow harness (no runtime/app changes)
