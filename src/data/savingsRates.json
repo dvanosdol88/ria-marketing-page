@@ -133,7 +133,7 @@
         "conditions": "Standard rate; a separate new-customer promotional boost is excluded from this table",
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "sources": [
           {
             "name": "Forbright Bank Growth Savings page",
