@@ -1,0 +1,248 @@
+{
+  "meta": {
+    "datasetVersion": 1,
+    "lastFullVerification": "2026-07-31",
+    "policy": "standard-rates-only",
+    "policyNotes": "Only standard, nationally available, no-strings APYs are listed. Promotional, new-customer, limited-time, and activity-conditioned rates are excluded. Every row must be verifiable against the institution's own published rate page plus at least one independent public source. If a row cannot be re-verified, it is marked stale and keeps its last verified figure and date; unverified numbers are never published."
+  },
+  "fdic": {
+    "sourceName": "FDIC National Rates and Rate Caps",
+    "sourceUrl": "https://www.fdic.gov/national-rates-and-rate-caps",
+    "ratesAsOf": "2026-07-20",
+    "updateCadence": "Published monthly, on the third Monday of each month",
+    "savingsApyPercent": 0.38,
+    "moneyMarketApyPercent": 0.65,
+    "interestCheckingApyPercent": 0.07,
+    "lastVerified": "2026-07-31"
+  },
+  "bigBankAnchor": {
+    "label": "Chase Savings (standard rate, all balance tiers)",
+    "apyPercent": 0.01,
+    "lastVerified": "2026-07-31",
+    "sources": [
+      {
+        "name": "Chase consumer deposit rate sheet (in effect July 10, 2026)",
+        "url": "https://www.chase.com/personal/savings/savings-account/interest-rates"
+      },
+      {
+        "name": "Forbes Advisor: Chase Savings Account Interest Rates",
+        "url": "https://www.forbes.com/advisor/banking/savings/chase-savings-rates/"
+      }
+    ]
+  },
+  "topRates": {
+    "savings": [
+      {
+        "institution": "Bread Savings",
+        "product": "High-Yield Savings",
+        "apyPercent": 3.95,
+        "verifyString": "3.95",
+        "minToOpen": "$100",
+        "conditions": "APY applies to all balances",
+        "institutionRateAsOf": null,
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "sources": [
+          {
+            "name": "Bread Savings rate page",
+            "url": "https://www.breadfinancial.com/en/bread-savings.html",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Best High-Yield Savings Accounts",
+            "url": "https://www.bankrate.com/banking/savings/best-high-yield-interests-savings-accounts/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "EverBank",
+        "product": "Performance Savings",
+        "apyPercent": 3.9,
+        "verifyString": "3.90",
+        "minToOpen": "$0",
+        "conditions": "APY applies to all balances",
+        "institutionRateAsOf": null,
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "sources": [
+          {
+            "name": "EverBank Performance Savings page",
+            "url": "https://www.everbank.com/banking/performance-savings",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Best High-Yield Savings Accounts",
+            "url": "https://www.bankrate.com/banking/savings/best-high-yield-interests-savings-accounts/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Popular Direct",
+        "product": "Exclusive Savings",
+        "apyPercent": 3.9,
+        "verifyString": "3.90",
+        "minToOpen": "$100",
+        "conditions": "APY applies to all balances",
+        "institutionRateAsOf": "2026-07-13",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "sources": [
+          {
+            "name": "Popular Direct rate page",
+            "url": "https://www.populardirect.com/",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Best High-Yield Savings Accounts",
+            "url": "https://www.bankrate.com/banking/savings/best-high-yield-interests-savings-accounts/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Zynlo Bank",
+        "product": "Tomorrow Savings",
+        "apyPercent": 3.85,
+        "verifyString": "3.85",
+        "minToOpen": "$0",
+        "conditions": "APY applies to all balances",
+        "institutionRateAsOf": null,
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "sources": [
+          {
+            "name": "Zynlo Bank rate page",
+            "url": "https://www.zynlobank.com/",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Best High-Yield Savings Accounts",
+            "url": "https://www.bankrate.com/banking/savings/best-high-yield-interests-savings-accounts/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Forbright Bank",
+        "product": "Growth Savings (standard rate)",
+        "apyPercent": 3.85,
+        "verifyString": "3.85",
+        "minToOpen": "$0",
+        "conditions": "Standard rate; a separate new-customer promotional boost is excluded from this table",
+        "institutionRateAsOf": "2026-07-31",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "sources": [
+          {
+            "name": "Forbright Bank Growth Savings page",
+            "url": "https://www.forbrightbank.com/personal-banking/growth-savings/",
+            "role": "primary"
+          },
+          {
+            "name": "Yahoo Finance: Forbright Bank review",
+            "url": "https://finance.yahoo.com/personal-finance/banking/review/forbright-bank-review-230634227.html",
+            "role": "cross-check"
+          }
+        ]
+      }
+    ],
+    "moneyMarket": [
+      {
+        "institution": "Zynlo Bank",
+        "product": "Money Market",
+        "apyPercent": 3.9,
+        "verifyString": "3.90",
+        "minToOpen": "$0",
+        "conditions": "APY applies to all balances",
+        "institutionRateAsOf": null,
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "sources": [
+          {
+            "name": "Zynlo Bank rate page",
+            "url": "https://www.zynlobank.com/",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Best Money Market Accounts",
+            "url": "https://www.bankrate.com/banking/money-market/rates/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Quontic Bank",
+        "product": "Money Market",
+        "apyPercent": 3.8,
+        "verifyString": "3.80",
+        "minToOpen": "$100",
+        "conditions": "APY applies to all balance tiers",
+        "institutionRateAsOf": "2026-04-14",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "sources": [
+          {
+            "name": "Quontic Bank Money Market page",
+            "url": "https://www.quontic.com/money-market-account/",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Best Money Market Accounts",
+            "url": "https://www.bankrate.com/banking/money-market/rates/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "CFG Bank",
+        "product": "High Yield Money Market",
+        "apyPercent": 3.8,
+        "verifyString": "3.80",
+        "minToOpen": "$1,000",
+        "conditions": "$1,000 daily minimum to earn APY and avoid a $10 monthly fee",
+        "institutionRateAsOf": "2026-07-27",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "sources": [
+          {
+            "name": "CFG Bank money market rate page",
+            "url": "https://www.cfg.bank/our-mma-deposit-rates/",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Best Money Market Accounts",
+            "url": "https://www.bankrate.com/banking/money-market/rates/",
+            "role": "cross-check"
+          }
+        ]
+      }
+    ]
+  },
+  "excludedUnverifiable": [
+    {
+      "institution": "Vio Bank",
+      "product": "High Yield Online Savings",
+      "advertised": "4.00% APY (confirmed manually 2026-07-31, effective 2026-07-17)",
+      "reason": "The institution's website blocks automated access, so the rate cannot participate in the weekly fail-closed re-verification. Listed rates must be re-checkable against the institution's own site on a schedule."
+    }
+  ],
+  "excludedPromotions": [
+    {
+      "institution": "Forbright Bank",
+      "advertised": "4.15% APY",
+      "reason": "New-customer promotional boost (+0.30%) through 12/31/2026 with a $1,000 funding condition; standard rate is 3.85%."
+    },
+    {
+      "institution": "CIT Bank",
+      "advertised": "4.10% APY",
+      "reason": "Six-month promotional boost with an enrollment code on balances of $5,000+; standard Platinum Savings rate is 3.75%."
+    },
+    {
+      "institution": "First National Bank of America",
+      "advertised": "4.00% APY",
+      "reason": "Limited-time six-month promotional rate with a $1,000 minimum."
+    }
+  ]
+}

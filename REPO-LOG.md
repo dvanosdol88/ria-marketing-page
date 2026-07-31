@@ -25,6 +25,15 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-31 — Top savings & money market rates page (/savings-rates)
+**Agent:** Claude (Fable) | **Surface:** marketing | **Duration:** 1 session
+- added: `/savings-rates` — verified, dated table of top standard nationally available HYSA + money market APYs, FDIC national-average context, "What is your cash earning?" calculator (balance + current rate → first-year extra dollars at the top verified rate, URL-shareable via `?balance=&current=`), methodology, and an advice hand-off to smarterwaywealth.com. Data lives in `src/data/savingsRates.json`; typed access + derived math in `src/lib/savingsRates.ts`; agent JSON endpoint at `/api/savings-rates`.
+- data integrity: fail-closed policy. Standard rates only (documented exclusions in the JSON: Forbright 4.15% promo, CIT 4.10% promo, FNBA 4.00% promo); every row verified against the institution's own rate page + one independent survey, each row dated; Vio Bank (4.00%) excluded because its site blocks automated re-verification (Incapsula), so it can't participate in the weekly check.
+- automation: `scripts/refresh-savings-rates.mjs` (npm run `rates:verify` / `rates:refresh`) re-parses FDIC national averages within sanity bounds and re-verifies each stored APY string on the institution's page — it never invents a rate; failures mark rows stale and keep last verified figures. `.github/workflows/refresh-savings-rates.yml` runs it Mondays 13:30 UTC, opens a PR when dates/values change, Slacks on verification failures. Page shows a stale notice if the dataset goes >21 days unverified (ISR daily).
+- integration: "Rates" secondary nav link, sitemap.xml + llms.txt entries, Dataset + BreadcrumbList JSON-LD, canonical `/savings-rates`, compliance-consistent disclosure copy (information not recommendation, no custody, no compensation from institutions).
+- verified locally: `node scripts/refresh-savings-rates.mjs --dry-run` all 8 rows + FDIC green against live sources; `npm run lint` (3 pre-existing img warnings); `npm run build`; Playwright prod-build checks (defaults $1,785/yr at 50k×(3.95−0.38)%, preset click, URL-state scenario, no 375px overflow, API scenario math) — this run also caught and fixed a `Number(null)=0` URL-param bug that silently zeroed the default rate.
+- deployed: via PR to main (Vercel auto-deploy); production verification recorded in the PR.
+
 ### 2026-07-31 — Non-major dependency-security remediation
 **Agent:** CTO | **Surface:** dependency and build hygiene
 - reproduced on a clean `origin/main` worktree: `npm audit` reported 15 vulnerabilities (1 low, 9 moderate, 5 high).

@@ -31,6 +31,7 @@ export const siteNavLinks: SiteNavLink[] = [
     activePaths: ["/improve-your-tools"],
     tier: "primary",
   },
+  { label: "Rates", href: "/savings-rates", tier: "secondary" },
   { label: "How?", href: "/how-it-works", tier: "secondary" },
   { label: "FAQ", href: "/faq", tier: "secondary" },
 ];

@@ -6,6 +6,8 @@ Primary URLs:
 
 - Home and calculator: https://youarepayingtoomuch.com/
 - Structured calculator API: https://youarepayingtoomuch.com/api/calculator
+- Top verified savings and money market rates (dated, double-sourced, with FDIC national averages): https://youarepayingtoomuch.com/savings-rates
+- Structured savings-rates API: https://youarepayingtoomuch.com/api/savings-rates
 - Math and assumptions: https://youarepayingtoomuch.com/our-math
 - FAQ: https://youarepayingtoomuch.com/faq
 - Privacy and disclosures: https://youarepayingtoomuch.com/privacy

@@ -1,0 +1,100 @@
+name: Refresh Savings Rates
+
+# Weekly re-verification of src/data/savingsRates.json.
+# Fail-closed: the script never invents a rate. It re-verifies each stored
+# figure against its primary source, advances lastVerified dates on success,
+# and flags rows it cannot confirm. If anything changed, this workflow opens
+# a PR (the normal road to production); nothing ships without the PR merging.
+# Verification failures are reported to Slack so a human/agent can re-source
+# the curated table.
+
+on:
+  schedule:
+    # Every Monday at 8:30 AM Eastern (13:30 UTC)
+    - cron: '30 13 * * 1'
+  workflow_dispatch: # Allows manual trigger for testing
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 'lts/*'
+
+      - name: Verify rates (fail closed)
+        id: verify
+        run: |
+          set +e
+          node scripts/refresh-savings-rates.mjs | tee refresh-report.txt
+          status=$?
+          set -e
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+          if [ "$status" -eq 1 ]; then
+            echo "Script error — aborting without changes."
+            exit 1
+          fi
+
+      - name: Detect changes
+        id: diff
+        run: |
+          if git diff --quiet -- src/data/savingsRates.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open PR with refreshed data
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          branch="chore/savings-rates-refresh-$(date -u +%Y%m%d-%H%M)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git add src/data/savingsRates.json
+          git commit -m "chore(rates): weekly savings-rates verification refresh"
+          git push origin "$branch"
+          {
+            echo "Automated weekly verification of the /savings-rates dataset."
+            echo ""
+            echo "Fail-closed policy: this job only advances verification dates for figures it re-confirmed against their primary sources, and updates FDIC national averages within sanity bounds. It never invents a rate. Rows it could not confirm are flagged stale and keep their last verified figure and date."
+            echo ""
+            echo '```'
+            cat refresh-report.txt
+            echo '```'
+          } > pr-body.txt
+          gh pr create \
+            --title "chore(rates): weekly savings-rates verification refresh" \
+            --body-file pr-body.txt \
+            --base main \
+            --head "$branch"
+
+      - name: Notify Slack of verification failures
+        if: steps.verify.outputs.exit_code == '2'
+        uses: slackapi/slack-github-action@v1.27.1
+        with:
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":warning: *Savings-rates verification failures* on youarepayingtoomuch.com/savings-rates\n\nSome published figures could not be re-verified this week. The page keeps the last verified numbers with their dates (fail closed), but the curated table needs a re-source pass.\n\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View verification report>"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

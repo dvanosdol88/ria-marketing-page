@@ -9,6 +9,8 @@
     "eddm:catalog:add-round": "node scripts/eddm-catalog-add-round.mjs",
     "eddm:package:style-a-winner": "node scripts/build-eddm-style-a-winner-print-package.mjs",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "rates:verify": "node scripts/refresh-savings-rates.mjs --dry-run",
+    "rates:refresh": "node scripts/refresh-savings-rates.mjs",
     "test:advisor-calculator-batch": "node tests/advisor-facing-calculator-batch.mjs",
     "test:credentials-layout": "node tests/advisor-proof-credentials-layout.mjs",
     "test:eddm-attribution": "node tests/legacy-eddm-attribution.mjs",
