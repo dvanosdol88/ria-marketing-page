@@ -23,7 +23,7 @@ export default function OurMathPage() {
         <div className="mt-6">
           <Link
             href="/"
-            className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
+            className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white no-underline shadow-sm transition hover:bg-brand-700"
           >
             Back to calculator
           </Link>
