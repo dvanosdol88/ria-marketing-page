@@ -55,6 +55,7 @@ export function GET(request: Request) {
       moneyMarketApyPercent: savingsRates.fdic.moneyMarketApyPercent,
     },
     topRates: savingsRates.topRates,
+    bigBanks: savingsRates.bigBanks,
     summary: {
       topSavingsApyPercent: getTopSavingsApy(),
       topMoneyMarketApyPercent: getTopMoneyMarketApy(),

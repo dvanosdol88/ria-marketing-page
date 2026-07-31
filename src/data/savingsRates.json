@@ -197,6 +197,413 @@
       }
     ]
   },
+  "bigBanks": {
+    "criteria": {
+      "moneyCenter": "The four U.S. money-center banks: JPMorgan Chase, Bank of America, Citibank, and Wells Fargo.",
+      "regional": "The largest U.S. regional banks by total assets (Federal Reserve ranking of large commercial banks): U.S. Bank, PNC, Truist, Capital One, TD Bank, Citizens, Fifth Third, and KeyBank.",
+      "statePresence": "Plus the five largest banks by deposit market share in Connecticut and in New York per the FDIC Summary of Deposits."
+    },
+    "sod": {
+      "vintage": "deposits as of June 30, 2025",
+      "sourceName": "FDIC Summary of Deposits",
+      "sourceUrl": "https://banks.data.fdic.gov/bankfind-suite/SOD",
+      "retrieved": "2026-07-31, via the FDIC BankFind Suite API (branch deposits aggregated by institution and state)"
+    },
+    "exclusions": [
+      {
+        "institution": "The Bank of New York Mellon",
+        "reason": "among New York's five largest deposit holders, but a custody/institutional bank with no standard retail savings account"
+      },
+      {
+        "institution": "Fifth Third Bank",
+        "reason": "a top-8 regional by assets, but its standard savings rate could not be verified against the bank's own published page at last check, so no figure is shown"
+      },
+      {
+        "institution": "KeyBank",
+        "reason": "a top-8 regional by assets, but its standard savings rate could not be verified against the bank's own published page at last check, so no figure is shown"
+      }
+    ],
+    "rows": [
+      {
+        "institution": "JPMorgan Chase",
+        "product": "Chase Savings",
+        "apyPercent": 0.01,
+        "verifyString": "0.01",
+        "apyNote": "Applies to all balance tiers; relationship rates are the same 0.01% on this account.",
+        "tags": [
+          "money-center",
+          "ct-top5",
+          "ny-top5"
+        ],
+        "ctSharePercent": 4.9,
+        "nySharePercent": 35.7,
+        "institutionRateAsOf": "2026-07-10",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": false,
+        "sources": [
+          {
+            "name": "Chase consumer deposit rate sheet (rates in effect July 10, 2026)",
+            "url": "https://www.chase.com/personal/savings/savings-account/interest-rates",
+            "role": "primary"
+          },
+          {
+            "name": "Forbes Advisor: Chase savings account rates",
+            "url": "https://www.forbes.com/advisor/banking/savings/chase-savings-rates/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Bank of America",
+        "product": "Advantage Savings",
+        "apyPercent": 0.04,
+        "verifyString": "0.04",
+        "apyNote": "Standard rate, all balance tiers, per the bank's state rate sheet (effective 2026-07-31); rate sheets are state-specific and can vary slightly by location.",
+        "tags": [
+          "money-center",
+          "ct-top5",
+          "ny-top5"
+        ],
+        "ctSharePercent": 23.0,
+        "nySharePercent": 4.9,
+        "institutionRateAsOf": "2026-07-31",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": false,
+        "sources": [
+          {
+            "name": "Bank of America deposit rate sheet PDF (effective July 31, 2026)",
+            "url": "https://media.bac-assets.com/DigitalDeposit_MD.pdf",
+            "role": "primary"
+          },
+          {
+            "name": "Arca savings comparison: Bank of America (as of July 30, 2026)",
+            "url": "https://arcasavings.com/compare/bank-of-america-savings",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Citibank",
+        "product": "Citi Savings",
+        "apyPercent": 0.03,
+        "verifyString": "0.03",
+        "apyNote": "Base tier; relationship tiers pay up to 0.12%. Citi publishes exact rates only behind a ZIP/market lookup; the higher-yield Citi Accelerate account is not offered in Citi's branch markets such as New York.",
+        "tags": [
+          "money-center"
+        ],
+        "institutionRateAsOf": null,
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": false,
+        "sources": [
+          {
+            "name": "Bankrate: Citibank savings rates (updated March 2, 2026)",
+            "url": "https://www.bankrate.com/banking/savings/citibank-savings-rates/",
+            "role": "primary"
+          },
+          {
+            "name": "Arca savings comparison: Citibank",
+            "url": "https://arcasavings.com/compare/citibank-savings",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Wells Fargo",
+        "product": "Way2Save Savings",
+        "apyPercent": 0.01,
+        "verifyString": "0.01",
+        "apyNote": "Flat rate on all balances. Wells Fargo publishes exact rates only behind a ZIP-code lookup; linked-account relationship rates on other products are excluded.",
+        "tags": [
+          "money-center"
+        ],
+        "institutionRateAsOf": null,
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": false,
+        "sources": [
+          {
+            "name": "Arca savings comparison: Wells Fargo (as of July 30, 2026)",
+            "url": "https://arcasavings.com/compare/wells-fargo-savings",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Wells Fargo savings rates (updated March 5, 2026)",
+            "url": "https://www.bankrate.com/banking/savings/wells-fargo-savings-rates/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "U.S. Bank",
+        "product": "Bank Smartly Savings",
+        "apyPercent": 0.05,
+        "verifyString": "0.05",
+        "apyNote": "Base rate without a linked checking relationship; relationship tiers can raise it. Rates are ZIP-personalized and may vary by region.",
+        "tags": [
+          "regional"
+        ],
+        "institutionRateAsOf": "2026-07-31",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": false,
+        "sources": [
+          {
+            "name": "U.S. Bank Smartly Savings rates page (effective July 31, 2026)",
+            "url": "https://www.usbank.com/bank-accounts/savings-accounts/bank-smartly-savings/savings-account-interest-rates.html",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: U.S. Bank savings rates",
+            "url": "https://www.bankrate.com/banking/savings/us-bank-savings-rates/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "PNC Bank",
+        "product": "Standard Savings",
+        "apyPercent": 0.02,
+        "verifyString": "0.02",
+        "apyNote": "Base tier (under $2,500); 0.03% at $2,500+; relationship tiers run to 0.06%. Rates are ZIP-personalized and may vary by region.",
+        "tags": [
+          "regional"
+        ],
+        "institutionRateAsOf": "2026-07-31",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": false,
+        "sources": [
+          {
+            "name": "PNC Standard Savings deposit rates (accurate as of July 31, 2026)",
+            "url": "https://www.pnc.com/en/personal-banking/banking/deposit-rates/standard-savings.html",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: PNC savings rates",
+            "url": "https://www.bankrate.com/banking/savings/pnc-bank-savings-rates/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Truist",
+        "product": "Truist One Savings",
+        "apyPercent": 0.01,
+        "verifyString": "0.01",
+        "apyNote": "Same 0.01% at every published balance tier.",
+        "tags": [
+          "regional"
+        ],
+        "institutionRateAsOf": null,
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": true,
+        "sources": [
+          {
+            "name": "Truist One Savings disclosures and fees",
+            "url": "https://www.truist.com/savings/truist-one-savings/disclosures-and-fees",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Truist savings rates",
+            "url": "https://www.bankrate.com/banking/savings/truist-savings-rates/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Capital One",
+        "product": "360 Performance Savings",
+        "apyPercent": 3.0,
+        "verifyString": "3.00",
+        "apyNote": "Capital One's mainline consumer savings is itself high-yield \u2014 flat rate on all balances, no minimums; there is no lower standard product.",
+        "tags": [
+          "regional"
+        ],
+        "institutionRateAsOf": "2026-07-31",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": false,
+        "sources": [
+          {
+            "name": "Capital One 360 Performance Savings page (effective July 31, 2026)",
+            "url": "https://www.capitalone.com/bank/savings-accounts/online-performance-savings-account/",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Capital One review (APY updated July 28, 2026)",
+            "url": "https://www.bankrate.com/banking/reviews/capital-one/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "TD Bank",
+        "product": "TD Simple Savings",
+        "apyPercent": 0.02,
+        "verifyString": "0.02",
+        "apyNote": "Flat rate on all balances; rates vary by location (checked with a Hartford, CT location).",
+        "tags": [
+          "regional",
+          "ct-top5"
+        ],
+        "ctSharePercent": 5.0,
+        "institutionRateAsOf": "2026-07-31",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": false,
+        "sources": [
+          {
+            "name": "TD Simple Savings page (APY accurate as of July 31, 2026)",
+            "url": "https://www.td.com/us/en/personal-banking/savings-accounts/simple",
+            "role": "primary"
+          },
+          {
+            "name": "GOBankingRates: TD Bank savings rates (February 10, 2026)",
+            "url": "https://www.gobankingrates.com/banking/savings-account/td-bank-savings-account-interest-rates/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Citizens Bank",
+        "product": "One Deposit Savings",
+        "apyPercent": 0.01,
+        "verifyString": "0.01",
+        "apyNote": "Same 0.01% at every published balance tier; page is ZIP-dependent (checked with a Connecticut ZIP). Citizens' separate online-only Citizens Access brand pays more and is a different product.",
+        "tags": [
+          "regional"
+        ],
+        "institutionRateAsOf": "2026-07-31",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": false,
+        "sources": [
+          {
+            "name": "Citizens One Deposit Savings rates page (accurate as of July 31, 2026)",
+            "url": "https://www.citizensbank.com/savings/savings-accounts/one-deposit-savings-rates.aspx",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Citizens Bank savings rates (updated September 15, 2025)",
+            "url": "https://www.bankrate.com/banking/savings/citizens-bank-savings-rates/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Webster Bank",
+        "product": "Personal Savings",
+        "apyPercent": 0.01,
+        "verifyString": "0.01",
+        "apyNote": "Same 0.01% across all published balance tiers. Webster also runs BrioDirect, a separate online-only brand with a much higher-yield savings product.",
+        "tags": [
+          "ct-top5"
+        ],
+        "ctSharePercent": 22.8,
+        "institutionRateAsOf": "2026-07-31",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": true,
+        "sources": [
+          {
+            "name": "Webster Bank consumer deposit rates (effective July 31, 2026)",
+            "url": "https://www.websterbank.com/security/protect-yourself/disclosure-fees/consumer-deposit-rates/",
+            "role": "primary"
+          },
+          {
+            "name": "GOBankingRates: Webster Bank review (older figure, matches)",
+            "url": "https://www.gobankingrates.com/banking/banking-reviews/webster-bank/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "M&T Bank",
+        "product": "Relationship Savings",
+        "apyPercent": 0.01,
+        "verifyString": "0.01",
+        "apyNote": "Single tier on published balances; rates can vary by region (checked with a New York ZIP).",
+        "tags": [
+          "ct-top5"
+        ],
+        "ctSharePercent": 11.0,
+        "institutionRateAsOf": "2026-07-31",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": false,
+        "sources": [
+          {
+            "name": "M&T Bank Relationship Savings page (viewed July 31, 2026)",
+            "url": "https://www.mtb.com/personal/savings-and-cds/relationship-savings",
+            "role": "primary"
+          },
+          {
+            "name": "WalletHub: M&T savings rate (updated June 24, 2026)",
+            "url": "https://wallethub.com/answers/sa/m-and-t-bank-savings-account-interest-rate-2140828904/",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Goldman Sachs Bank USA",
+        "product": "Marcus Online Savings",
+        "apyPercent": 3.4,
+        "verifyString": "3.40",
+        "apyNote": "No tiers or minimums; a separate 3-month referral rate boost is promotional and excluded.",
+        "tags": [
+          "ny-top5"
+        ],
+        "nySharePercent": 8.7,
+        "institutionRateAsOf": "2026-07-31",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": true,
+        "sources": [
+          {
+            "name": "Marcus by Goldman Sachs Online Savings page (APY as of July 31, 2026)",
+            "url": "https://www.marcus.com/us/en/savings/high-yield-savings",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Marcus review (APY updated July 28, 2026)",
+            "url": "https://www.bankrate.com/banking/reviews/marcus",
+            "role": "cross-check"
+          }
+        ]
+      },
+      {
+        "institution": "Morgan Stanley Private Bank",
+        "product": "Premium Savings (via E*TRADE)",
+        "apyPercent": 3.5,
+        "verifyString": "3.50",
+        "apyNote": "Standard base rate, open to the general public with no minimum; the advertised 4.00% is a 6-month promotional rate and is excluded.",
+        "tags": [
+          "ny-top5"
+        ],
+        "nySharePercent": 8.1,
+        "institutionRateAsOf": "2026-07-31",
+        "lastVerified": "2026-07-31",
+        "verification": "verified",
+        "autoCheck": false,
+        "sources": [
+          {
+            "name": "E*TRADE Premium Savings Account page (verified July 31, 2026)",
+            "url": "https://us.etrade.com/bank/premium-savings-account",
+            "role": "primary"
+          },
+          {
+            "name": "Bankrate: Morgan Stanley Private review (as of July 31, 2026)",
+            "url": "https://www.bankrate.com/banking/reviews/morgan-stanley-private",
+            "role": "cross-check"
+          }
+        ]
+      }
+    ]
+  },
   "excludedUnverifiable": [
     {
       "institution": "Vio Bank",

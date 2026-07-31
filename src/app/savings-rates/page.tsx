@@ -7,6 +7,8 @@ import {
   formatRateDate,
   getTopVerifiedApy,
   savingsRates,
+  type BigBankRow,
+  type BigBankTag,
   type RateRow,
 } from "@/lib/savingsRates";
 
@@ -136,6 +138,83 @@ function RateTable({ caption, rows }: { caption: string; rows: RateRow[] }) {
   );
 }
 
+const BIG_BANK_TAG_LABELS: Record<BigBankTag, string> = {
+  "money-center": "Money-center",
+  regional: "Large regional",
+  "ct-top5": "Top 5 in CT",
+  "ny-top5": "Top 5 in NY",
+};
+
+function BigBankTable({ rows }: { rows: BigBankRow[] }) {
+  return (
+    <div className="overflow-x-auto">
+      <table className="w-full text-left text-sm">
+        <caption className="sr-only">
+          Standard savings rates at the largest U.S. banks
+        </caption>
+        <thead className="border-b border-neutral-200 text-xs uppercase text-neutral-500">
+          <tr>
+            <th scope="col" className="py-2 pr-3">
+              Bank
+            </th>
+            <th scope="col" className="py-2 pr-3">
+              Standard savings APY
+            </th>
+            <th scope="col" className="py-2">
+              Verified
+            </th>
+          </tr>
+        </thead>
+        <tbody className="text-neutral-700">
+          {rows.map((row) => {
+            const primarySource =
+              row.sources.find((s) => s.role === "primary") ?? row.sources[0];
+            return (
+              <tr
+                key={row.institution}
+                className="border-b border-neutral-100"
+              >
+                <td className="py-3 pr-3">
+                  <span className="font-medium text-neutral-900">
+                    {row.institution}
+                  </span>
+                  <span className="block text-xs text-neutral-500">
+                    {row.product}
+                  </span>
+                  <span className="mt-1 flex flex-wrap gap-1">
+                    {row.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-neutral-500"
+                      >
+                        {BIG_BANK_TAG_LABELS[tag]}
+                      </span>
+                    ))}
+                  </span>
+                </td>
+                <td className="py-3 pr-3 font-semibold text-neutral-900">
+                  {row.apyPercent.toFixed(2)}%
+                </td>
+                <td className="py-3 text-xs text-neutral-500">
+                  <a
+                    href={primarySource.url}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="underline underline-offset-2 hover:text-neutral-800"
+                    title={`Source: ${primarySource.name}`}
+                  >
+                    {formatRateDate(row.lastVerified)}
+                  </a>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 export default function SavingsRatesPage() {
   const topApy = getTopVerifiedApy();
   const topRow = [
@@ -206,6 +285,12 @@ export default function SavingsRatesPage() {
                 apyPercent: savingsRates.fdic.moneyMarketApyPercent,
               },
             ]}
+            bankOptions={[...savingsRates.bigBanks.rows]
+              .sort((a, b) => a.institution.localeCompare(b.institution))
+              .map((row) => ({
+                label: row.institution,
+                apyPercent: row.apyPercent,
+              }))}
           />
           <p className="mt-3 text-xs text-neutral-500">
             Defaults are sourced, not invented: the national average savings
@@ -270,6 +355,63 @@ export default function SavingsRatesPage() {
             caption="Top verified money market account rates"
             rows={savingsRates.topRates.moneyMarket}
           />
+        </section>
+
+        {/* Big-bank comparison */}
+        <section className="card p-5 sm:p-8" aria-labelledby="big-banks-heading">
+          <h2
+            id="big-banks-heading"
+            className="mb-1 text-xl font-semibold text-neutral-900"
+          >
+            What the big banks pay
+          </h2>
+          <p className="mb-4 text-sm text-neutral-600">
+            The standard savings rate at the largest U.S. banks &mdash; the
+            base rate on each bank&apos;s everyday savings account, not
+            promotional or relationship-tier rates &mdash; next to the
+            verified top rates above. Same dollars, same FDIC insurance,
+            different number.
+          </p>
+          <BigBankTable rows={savingsRates.bigBanks.rows} />
+          <div className="mt-4 space-y-2 text-xs text-neutral-500">
+            <p>
+              <span className="font-medium text-neutral-600">
+                Who is listed and why:
+              </span>{" "}
+              {savingsRates.bigBanks.criteria.moneyCenter}{" "}
+              {savingsRates.bigBanks.criteria.regional}{" "}
+              {savingsRates.bigBanks.criteria.statePresence} Deposit market
+              share is from the{" "}
+              <a
+                href={savingsRates.bigBanks.sod.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2"
+              >
+                {savingsRates.bigBanks.sod.sourceName}
+              </a>{" "}
+              ({savingsRates.bigBanks.sod.vintage}). Each bank appears once,
+              tagged with every reason it qualifies.
+            </p>
+            {savingsRates.bigBanks.exclusions.length > 0 ? (
+              <p>
+                <span className="font-medium text-neutral-600">
+                  Not shown:
+                </span>{" "}
+                {savingsRates.bigBanks.exclusions
+                  .map((e) => `${e.institution} (${e.reason})`)
+                  .join("; ")}
+                .
+              </p>
+            ) : null}
+            <p>
+              Some banks vary rates by location or publish them only through
+              ZIP-code lookups or rate-sheet PDFs; those figures are verified
+              manually against two public sources and dated individually.
+              Relationship and preferred-tier boosts, where offered, are noted
+              in the data but not shown here.
+            </p>
+          </div>
         </section>
 
         {/* FDIC context */}
@@ -343,12 +485,19 @@ export default function SavingsRatesPage() {
             </li>
             <li>
               An automated job re-checks each figure against the
-              institution&apos;s own site on a weekly schedule, and we only
-              list accounts that can be re-checked that way. If a figure
-              can&apos;t be re-verified, we keep the last verified number with
-              its date and flag it &mdash; we never publish a number we
-              couldn&apos;t check. A stale-but-dated table is acceptable; a
-              wrong number is not.
+              institution&apos;s own site on a weekly schedule, and the top-rate
+              tables only list accounts that can be re-checked that way. If a
+              figure can&apos;t be re-verified, we keep the last verified
+              number with its date and flag it &mdash; we never publish a
+              number we couldn&apos;t check. A stale-but-dated table is
+              acceptable; a wrong number is not.
+            </li>
+            <li>
+              Big-bank rows follow the same two-source rule. Where a bank
+              publishes rates only behind a ZIP-code lookup or a rate-sheet
+              PDF, the automated job cannot re-check it; those rows are
+              re-verified manually on a schedule and each shows its own
+              verified date.
             </li>
             <li>
               Accounts listed are offered by FDIC-member institutions. Confirm

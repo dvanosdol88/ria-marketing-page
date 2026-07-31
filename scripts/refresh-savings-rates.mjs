@@ -185,6 +185,37 @@ async function main() {
     if (!ok) allRowsVerified = false;
   }
 
+  // Big-bank comparison rows. autoCheck rows get the same page check.
+  // Rows whose sites block automated access (ZIP gates, PDFs, bot
+  // challenges) are autoCheck=false: they keep their manually verified
+  // figure + date, and are flagged for a manual re-verification pass
+  // once the date ages past MANUAL_RECHECK_DAYS. Big-bank standard
+  // rates move rarely, so a longer manual cadence is acceptable; the
+  // page itself always shows each row's own verified date.
+  const MANUAL_RECHECK_DAYS = 45;
+  console.log("Verifying big-bank rows...");
+  for (const row of data.bigBanks?.rows ?? []) {
+    if (row.autoCheck) {
+      const ok = await verifyRow(row, failures);
+      if (!ok) allRowsVerified = false;
+    } else {
+      const ageDays = Math.floor(
+        (Date.now() - new Date(`${row.lastVerified}T00:00:00Z`).getTime()) /
+          86_400_000,
+      );
+      if (ageDays > MANUAL_RECHECK_DAYS) {
+        allRowsVerified = false;
+        failures.push(
+          `${row.institution} ${row.product}: manual re-verification due — last verified ${row.lastVerified} (${ageDays} days ago; site blocks automated checks)`,
+        );
+      } else {
+        console.log(
+          `  SKIP  ${row.institution} ${row.product}: manual-only source, last verified ${row.lastVerified} (${ageDays}d, within ${MANUAL_RECHECK_DAYS}d window)`,
+        );
+      }
+    }
+  }
+
   const fdicVerified = !failures.some((f) => f.startsWith("FDIC"));
   if (allRowsVerified && fdicVerified) {
     data.meta.lastFullVerification = today;
