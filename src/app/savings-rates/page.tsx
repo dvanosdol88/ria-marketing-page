@@ -366,13 +366,30 @@ export default function SavingsRatesPage() {
             What the big banks pay
           </h2>
           <p className="mb-4 text-sm text-neutral-600">
-            The standard savings rate at the largest U.S. banks &mdash; the
-            base rate on each bank&apos;s everyday savings account, not
-            promotional or relationship-tier rates &mdash; next to the
-            verified top rates above. Same dollars, same FDIC insurance,
-            different number.
+            The standard savings rate at the largest traditional branch banks
+            &mdash; the base rate on each bank&apos;s everyday savings
+            account, not promotional or relationship-tier rates &mdash; next
+            to the verified top rates above. Same dollars, same FDIC
+            insurance, different number.
           </p>
-          <BigBankTable rows={savingsRates.bigBanks.rows} />
+          <BigBankTable
+            rows={savingsRates.bigBanks.rows.filter(
+              (row) => row.group === "branch",
+            )}
+          />
+          <h3 className="mt-8 mb-1 text-base font-semibold text-neutral-900">
+            Online-only arms of big institutions
+          </h3>
+          <p className="mb-4 text-sm text-neutral-600">
+            These are branchless, online-only savings products from large
+            institutions; operating without branch networks is part of how
+            they pay rates near the top of this page.
+          </p>
+          <BigBankTable
+            rows={savingsRates.bigBanks.rows.filter(
+              (row) => row.group === "online-arm",
+            )}
+          />
           <div className="mt-4 space-y-2 text-xs text-neutral-500">
             <p>
               <span className="font-medium text-neutral-600">
