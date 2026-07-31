@@ -33,6 +33,13 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-31 — Fixed invisible button-links: layered global link CSS so utilities win
+**Agent:** Claude (Fable) | **Surface:** marketing | **Duration:** 1 session
+- fixed: `src/app/globals.css` — bare `a`/`a:hover` rules sat OUTSIDE any CSS `@layer`, so they outranked Tailwind v4's layered utilities; `text-white`/`no-underline` on anchors were silently overridden and button-styled links rendered brand-green text on a brand-green pill (invisible; confirmed live on `/our-math` "Back to calculator" before fixing). Wrapped the rules in `@layer base`.
+- changed: added the now-effective `no-underline` to 9 button-styled anchors that never carried it (`/our-math`, `/faq` ×2 incl. gray back-home pill, `/save` ×2 incl. dark "How it works" pill, `/save-a-ton` ×2, `error.tsx`, `not-found.tsx`); improve pages already had it; `/savings-rates` keeps its `!` important variants from #178 (verified still fine). Also `.eslintrc.json` +`"root": true` so lint runs inside nested git worktrees without double-loading plugins from the parent checkout.
+- deployed: PR #183 squash-merged (`6b06b86`); verified live on apex — computed-style audit of `/our-math`, `/faq`, `/savings-rates` shows zero anchors with color==background and zero underlines on filled buttons; plain body links keep brand green + underline; nav (self-scoped styles) and footer intact. Production screenshot of `/our-math` captured post-verification.
+- next: `src/components/CostAnalysisCalculator.original.tsx` is an unused backup (no imports) still carrying the old pattern — see backlog cleanup item.
+
 ### 2026-07-31 — "What the big banks pay" section on /savings-rates
 **Agent:** Claude (Fable) | **Surface:** marketing | **Duration:** 1 session
 - added: big-bank comparison table on `/savings-rates` — standard base savings APYs at the money-center four (Chase, BofA, Citi, Wells Fargo), the largest regionals by assets, and the top-5 deposit holders in CT and NY per the FDIC Summary of Deposits (June 30, 2025 vintage, pulled via the FDIC BankFind Suite API on 2026-07-31; each bank deduped and tagged with every reason it qualifies). BNY Mellon excluded (no retail savings product), noted on page.
