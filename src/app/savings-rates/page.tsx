@@ -382,9 +382,12 @@ export default function SavingsRatesPage() {
             from a CFA Charterholder and CFP&reg; Practitioner.
           </p>
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+            {/* The global unlayered `a` rule (globals.css) outranks layered
+                Tailwind utilities, so button-styled links need the important
+                variant to keep their own text color / no-underline. */}
             <a
               href="https://smarterwaywealth.com/"
-              className="rounded-full bg-brand-600 px-5 py-2.5 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
+              className="rounded-full bg-brand-600 px-5 py-2.5 text-center text-sm font-semibold text-white! no-underline! shadow-sm transition hover:bg-brand-700 hover:text-white!"
               data-posthog-cta-label="Savings rates advice hand-off"
               data-posthog-cta-location="savings-rates-page"
             >
@@ -392,7 +395,7 @@ export default function SavingsRatesPage() {
             </a>
             <Link
               href="/"
-              className="rounded-full border border-neutral-300 bg-white px-5 py-2.5 text-center text-sm font-semibold text-neutral-700 transition hover:border-neutral-400"
+              className="rounded-full border border-neutral-300 bg-white px-5 py-2.5 text-center text-sm font-semibold text-neutral-700! no-underline! transition hover:border-neutral-400 hover:text-neutral-900!"
             >
               See what advisory fees cost you
             </Link>

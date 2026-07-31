@@ -123,29 +123,6 @@
             "role": "cross-check"
           }
         ]
-      },
-      {
-        "institution": "Forbright Bank",
-        "product": "Growth Savings (standard rate)",
-        "apyPercent": 3.85,
-        "verifyString": "3.85",
-        "minToOpen": "$0",
-        "conditions": "Standard rate; a separate new-customer promotional boost is excluded from this table",
-        "institutionRateAsOf": "2026-07-31",
-        "lastVerified": "2026-07-31",
-        "verification": "verified",
-        "sources": [
-          {
-            "name": "Forbright Bank Growth Savings page",
-            "url": "https://www.forbrightbank.com/personal-banking/growth-savings/",
-            "role": "primary"
-          },
-          {
-            "name": "Yahoo Finance: Forbright Bank review",
-            "url": "https://finance.yahoo.com/personal-finance/banking/review/forbright-bank-review-230634227.html",
-            "role": "cross-check"
-          }
-        ]
       }
     ],
     "moneyMarket": [
@@ -226,6 +203,12 @@
       "product": "High Yield Online Savings",
       "advertised": "4.00% APY (confirmed manually 2026-07-31, effective 2026-07-17)",
       "reason": "The institution's website blocks automated access, so the rate cannot participate in the weekly fail-closed re-verification. Listed rates must be re-checkable against the institution's own site on a schedule."
+    },
+    {
+      "institution": "Forbright Bank",
+      "product": "Growth Savings",
+      "advertised": "3.85% APY standard (confirmed manually 2026-07-31; separate 4.15% new-customer promo also excluded)",
+      "reason": "The institution's rate page does not render the APY to the automated verifier running from CI, so the figure cannot participate in the weekly fail-closed re-verification."
     }
   ],
   "excludedPromotions": [
