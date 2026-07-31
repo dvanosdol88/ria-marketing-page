@@ -9,7 +9,8 @@
 - preserved: the main fee calculator, its calculation behavior, and the deeper contextual Advanced Calculator handoffs remain unchanged. The advanced calculator itself continues to live on Smarter Way Wealth.
 - regression: the production-style refresh-position browser test now asserts that the exact removed link and sentence stay absent before exercising the existing calculator scroll/refresh behavior.
 - verified locally: the refresh-position browser regression and TypeScript check passed; ESLint completed with 0 errors and 3 inherited `<img>` warnings; the production build and `git diff --check` passed.
-- deployment status at commit: not deployed; release is proceeding through the required PR-to-`main` production path.
+- released: [PR #182](https://github.com/dvanosdol88/ria-marketing-page/pull/182) passed CI, Cubic review, and Vercel checks and squash-merged to main as e065f09813a4683abade7f28828cf84a7bb60d54. Production deployment dpl_7P9n3Ej8999d3PaqiYDYRAg75Est reached READY and owns youarepayingtoomuch.com.
+- verified in production: cache-bypassed apex checks at 1440px and 390px found zero instances of the removed button and sentence, confirmed the main Fee Calculator and deeper Advanced Calculator handoffs remain, measured 0px horizontal overflow and zero console errors, and produced output/playwright/marketing-home-desktop.png and marketing-home-mobile.png.
 
 ## Current Capabilities
 
