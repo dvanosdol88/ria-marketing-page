@@ -25,6 +25,14 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 ## Sessions
 
+### 2026-07-31 — Non-major dependency-security remediation
+**Agent:** CTO | **Surface:** dependency and build hygiene
+- reproduced on a clean `origin/main` worktree: `npm audit` reported 15 vulnerabilities (1 low, 9 moderate, 5 high).
+- updated only non-major-compatible packages in the lockfile: Next.js 16.2.10 → 16.2.12, DOMPurify 3.4.11 → 3.4.12, fast-uri 3.1.2 → 3.1.5, and protobufjs 7.6.4 → 7.6.5. Raised the PostCSS development floor to 8.5.20 and used npm's `$postcss` override so Next.js no longer installs its vulnerable nested PostCSS 8.4.31; the resolved shared version is 8.5.25.
+- verified locally: clean `npm ci`; `npx tsc --noEmit`; `npm run lint` (0 errors and the same 3 existing `<img>` warnings); `npm run build`; and all four focused Playwright regressions for the calculator, credential layout, EDDM attribution, and refresh position.
+- post-remediation audit: 11 vulnerabilities (0 low, 8 moderate, 3 high, 0 critical), down from 15. The remaining high lane is brace-expansion plus Next.js/sharp; the remaining moderate lane is Firebase Admin's Google Cloud/uuid dependency chain. npm's available remediations require major or otherwise breaking dependency changes, so they were intentionally excluded from this safe non-major workstream.
+- deployment status at commit: not deployed; release is proceeding through the required PR-to-`main` production path.
+
 ### 2026-07-30 — Claude Code harness hardening (hooks, wrap-up skill, verifier agent)
 **Agent:** Claude (Claude Code web) | **Surface:** agent workflow harness (no runtime/app changes)
 - added: `.claude/settings.json` wiring two Claude Code hooks — a PreToolUse

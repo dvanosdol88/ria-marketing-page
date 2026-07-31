@@ -40,11 +40,12 @@
     "autoprefixer": "^10.4.17",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.4",
-    "postcss": "^8.4.33",
+    "postcss": "^8.5.20",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.4.5"
   },
   "overrides": {
-    "glob": "^11.1.0"
+    "glob": "^11.1.0",
+    "postcss": "$postcss"
   }
 }
