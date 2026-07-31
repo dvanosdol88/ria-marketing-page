@@ -13,12 +13,15 @@ body {
   @apply bg-[#EEF0F5] text-neutral-900 font-sans antialiased dark:bg-slate-950 dark:text-slate-100;
 }
 
-a {
-  @apply text-brand-600 underline underline-offset-2 transition-colors duration-150;
-}
+/* Layered so utility classes (text-white, no-underline, ...) can override these defaults */
+@layer base {
+  a {
+    @apply text-brand-600 underline underline-offset-2 transition-colors duration-150;
+  }
 
-a:hover {
-  @apply text-brand-700;
+  a:hover {
+    @apply text-brand-700;
+  }
 }
 
 .section-shell {

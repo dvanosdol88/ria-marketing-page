@@ -37,13 +37,13 @@ export default function FAQPage() {
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/"
-              className="rounded-full bg-neutral-200 px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-300"
+              className="rounded-full bg-neutral-200 px-4 py-2 text-sm font-semibold text-neutral-700 no-underline transition hover:bg-neutral-300"
             >
               ← Back to home
             </Link>
             <Link
               href="/how-it-works"
-              className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700"
+              className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white no-underline transition hover:bg-brand-700"
             >
               How it works →
             </Link>
