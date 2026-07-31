@@ -101,6 +101,22 @@ try {
   const page = await context.newPage();
   await page.goto(url, { waitUntil: "networkidle" });
 
+  assert.equal(
+    await page.getByRole("link", { name: "Go to Advanced Calculator", exact: true }).count(),
+    0,
+    "the removed top-of-page Advanced Calculator bridge must stay absent",
+  );
+  assert.equal(
+    await page
+      .getByText(
+        "Model your own time horizon against 40 years of actual S&P 500 returns at smarterwaywealth.com.",
+        { exact: true },
+      )
+      .count(),
+    0,
+    "the removed Advanced Calculator supporting copy must stay absent",
+  );
+
   await page.getByRole("link", { name: "Calculator", exact: true }).click();
   await page.waitForFunction(() => window.scrollY > 1_000);
   await page.waitForTimeout(1_200);

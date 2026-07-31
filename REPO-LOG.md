@@ -3,6 +3,14 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-07-31 — Removed the top Advanced Calculator homepage bridge
+**Agent:** Codex | **Surface:** marketing homepage above the fee calculator
+- removed: the pictured full-width “Go to Advanced Calculator” button and its “Model your own time horizon…” supporting sentence no longer render above the homepage calculator; the now-unused dedicated bridge component was deleted.
+- preserved: the main fee calculator, its calculation behavior, and the deeper contextual Advanced Calculator handoffs remain unchanged. The advanced calculator itself continues to live on Smarter Way Wealth.
+- regression: the production-style refresh-position browser test now asserts that the exact removed link and sentence stay absent before exercising the existing calculator scroll/refresh behavior.
+- verified locally: the refresh-position browser regression and TypeScript check passed; ESLint completed with 0 errors and 3 inherited `<img>` warnings; the production build and `git diff --check` passed.
+- deployment status at commit: not deployed; release is proceeding through the required PR-to-`main` production path.
+
 ## Current Capabilities
 
 Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepayingtoomuch.com via Vercel.
