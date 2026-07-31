@@ -40,6 +40,13 @@ export interface BigBankRow {
   verifyString: string;
   /** Base-rate caveats, e.g. relationship tiers or state-specific sheets. */
   apyNote: string;
+  /**
+   * "branch" = traditional branch bank (the 0.01%-0.05% story);
+   * "online-arm" = branchless online-only product of a large
+   * institution — shown in a separate labeled subgroup so the two are
+   * never mixed.
+   */
+  group: "branch" | "online-arm";
   tags: BigBankTag[];
   /** FDIC SOD in-state deposit market share, percent (only for tagged banks). */
   ctSharePercent?: number;

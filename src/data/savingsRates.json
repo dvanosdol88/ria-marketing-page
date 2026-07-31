@@ -230,6 +230,7 @@
         "apyPercent": 0.01,
         "verifyString": "0.01",
         "apyNote": "Applies to all balance tiers; relationship rates are the same 0.01% on this account.",
+        "group": "branch",
         "tags": [
           "money-center",
           "ct-top5",
@@ -260,6 +261,7 @@
         "apyPercent": 0.04,
         "verifyString": "0.04",
         "apyNote": "Standard rate, all balance tiers, per the bank's state rate sheet (effective 2026-07-31); rate sheets are state-specific and can vary slightly by location.",
+        "group": "branch",
         "tags": [
           "money-center",
           "ct-top5",
@@ -290,6 +292,7 @@
         "apyPercent": 0.03,
         "verifyString": "0.03",
         "apyNote": "Base tier; relationship tiers pay up to 0.12%. Citi publishes exact rates only behind a ZIP/market lookup; the higher-yield Citi Accelerate account is not offered in Citi's branch markets such as New York.",
+        "group": "branch",
         "tags": [
           "money-center"
         ],
@@ -316,6 +319,7 @@
         "apyPercent": 0.01,
         "verifyString": "0.01",
         "apyNote": "Flat rate on all balances. Wells Fargo publishes exact rates only behind a ZIP-code lookup; linked-account relationship rates on other products are excluded.",
+        "group": "branch",
         "tags": [
           "money-center"
         ],
@@ -342,6 +346,7 @@
         "apyPercent": 0.05,
         "verifyString": "0.05",
         "apyNote": "Base rate without a linked checking relationship; relationship tiers can raise it. Rates are ZIP-personalized and may vary by region.",
+        "group": "branch",
         "tags": [
           "regional"
         ],
@@ -368,6 +373,7 @@
         "apyPercent": 0.02,
         "verifyString": "0.02",
         "apyNote": "Base tier (under $2,500); 0.03% at $2,500+; relationship tiers run to 0.06%. Rates are ZIP-personalized and may vary by region.",
+        "group": "branch",
         "tags": [
           "regional"
         ],
@@ -394,6 +400,7 @@
         "apyPercent": 0.01,
         "verifyString": "0.01",
         "apyNote": "Same 0.01% at every published balance tier.",
+        "group": "branch",
         "tags": [
           "regional"
         ],
@@ -420,6 +427,7 @@
         "apyPercent": 3.0,
         "verifyString": "3.00",
         "apyNote": "Capital One's mainline consumer savings is itself high-yield \u2014 flat rate on all balances, no minimums; there is no lower standard product.",
+        "group": "online-arm",
         "tags": [
           "regional"
         ],
@@ -446,6 +454,7 @@
         "apyPercent": 0.02,
         "verifyString": "0.02",
         "apyNote": "Flat rate on all balances; rates vary by location (checked with a Hartford, CT location).",
+        "group": "branch",
         "tags": [
           "regional",
           "ct-top5"
@@ -474,6 +483,7 @@
         "apyPercent": 0.01,
         "verifyString": "0.01",
         "apyNote": "Same 0.01% at every published balance tier; page is ZIP-dependent (checked with a Connecticut ZIP). Citizens' separate online-only Citizens Access brand pays more and is a different product.",
+        "group": "branch",
         "tags": [
           "regional"
         ],
@@ -500,6 +510,7 @@
         "apyPercent": 0.01,
         "verifyString": "0.01",
         "apyNote": "Same 0.01% across all published balance tiers. Webster also runs BrioDirect, a separate online-only brand with a much higher-yield savings product.",
+        "group": "branch",
         "tags": [
           "ct-top5"
         ],
@@ -527,6 +538,7 @@
         "apyPercent": 0.01,
         "verifyString": "0.01",
         "apyNote": "Single tier on published balances; rates can vary by region (checked with a New York ZIP).",
+        "group": "branch",
         "tags": [
           "ct-top5"
         ],
@@ -554,6 +566,7 @@
         "apyPercent": 3.4,
         "verifyString": "3.40",
         "apyNote": "No tiers or minimums; a separate 3-month referral rate boost is promotional and excluded.",
+        "group": "online-arm",
         "tags": [
           "ny-top5"
         ],
@@ -581,6 +594,7 @@
         "apyPercent": 3.5,
         "verifyString": "3.50",
         "apyNote": "Standard base rate, open to the general public with no minimum; the advertised 4.00% is a 6-month promotional rate and is excluded.",
+        "group": "online-arm",
         "tags": [
           "ny-top5"
         ],
