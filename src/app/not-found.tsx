@@ -14,7 +14,7 @@ export default function NotFound() {
       </div>
       <Link
         href="/"
-        className="inline-flex items-center gap-2 rounded-full bg-brand-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700"
+        className="inline-flex items-center gap-2 rounded-full bg-brand-600 px-5 py-2 text-sm font-semibold text-white no-underline shadow-sm transition hover:bg-brand-700"
       >
         Back to the calculator
       </Link>
