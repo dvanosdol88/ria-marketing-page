@@ -19,6 +19,11 @@
             "type": "command",
             "command": "node .claude/hooks/wrap-up-check.mjs",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node .claude/hooks/screenshot-check.mjs",
+            "timeout": 30
           }
         ]
       }
