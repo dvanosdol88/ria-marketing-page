@@ -12,6 +12,7 @@ Primary URLs:
 - FAQ: https://youarepayingtoomuch.com/faq
 - Privacy and disclosures: https://youarepayingtoomuch.com/privacy
 - Firm site: https://smarterwaywealth.com/
+- Sister calculator (savings interest gap, same verified dataset): https://youareearningtoolittle.com/
 - SEC/IAPD firm record: https://adviserinfo.sec.gov/firm/summary/342140
 
 Firm context:
