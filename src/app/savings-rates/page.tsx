@@ -258,6 +258,28 @@ export default function SavingsRatesPage() {
       </header>
 
       <div className="section-shell flex max-w-3xl flex-col gap-10">
+        {/* Sister-site hand-off. The global unlayered `a` rule (globals.css)
+            outranks layered Tailwind utilities, so this card-styled link needs
+            important variants to keep its own colors / no-underline. */}
+        <a
+          href="https://youareearningtoolittle.com/"
+          className="card block border-brand-100 bg-brand-50/40 p-5 no-underline! transition hover:border-brand-300 sm:p-6"
+          data-posthog-cta-label="Sister site hand-off"
+          data-posthog-cta-location="savings-rates-page"
+        >
+          <span className="block text-xs font-semibold uppercase tracking-tightish text-brand-600">
+            New &mdash; our sister calculator
+          </span>
+          <span className="mt-1 block text-lg font-semibold text-neutral-900">
+            You Are Earning Too Little: the one-screen interest receipt &rarr;
+          </span>
+          <span className="mt-1 block text-sm text-neutral-600">
+            Pick your balance and your bank, see the yearly interest
+            you&apos;re missing. Same verified data as this page, always in
+            sync &mdash; at youareearningtoolittle.com.
+          </span>
+        </a>
+
         {/* Calculator */}
         <section aria-labelledby="cash-calculator-heading">
           <h2
