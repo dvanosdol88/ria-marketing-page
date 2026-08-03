@@ -17,6 +17,21 @@ export interface RateSource {
   role?: string;
 }
 
+/**
+ * Bank contact facts, each verified against the bank's own site and
+ * dated. Slow-changing by nature; `verified` records the check date.
+ * `rateUrl` is the consumer-facing page where the rate is visible —
+ * kept separate from `sources` so display links can improve without
+ * touching the URLs the weekly verifier depends on.
+ */
+export interface BankContact {
+  phone: string;
+  phoneSource: string;
+  hq: string;
+  rateUrl: string;
+  verified: string;
+}
+
 export interface RateRow {
   institution: string;
   product: string;
@@ -28,6 +43,7 @@ export interface RateRow {
   lastVerified: string;
   verification: string;
   sources: RateSource[];
+  contact?: BankContact;
 }
 
 /** Why a bank appears in the big-bank comparison table. */
@@ -62,6 +78,7 @@ export interface BigBankRow {
    */
   autoCheck: boolean;
   sources: RateSource[];
+  contact?: BankContact;
 }
 
 export interface BigBanksSection {

@@ -107,12 +107,35 @@ function RateTable({ caption, rows }: { caption: string; rows: RateRow[] }) {
                 className="border-b border-neutral-100"
               >
                 <td className="py-3 pr-3">
-                  <span className="font-medium text-neutral-900">
-                    {row.institution}
-                  </span>
+                  {row.contact ? (
+                    <a
+                      href={row.contact.rateUrl}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      className="font-medium text-neutral-900! underline underline-offset-2 hover:text-brand-700!"
+                      title={`See ${row.institution}'s published rate`}
+                    >
+                      {row.institution}
+                    </a>
+                  ) : (
+                    <span className="font-medium text-neutral-900">
+                      {row.institution}
+                    </span>
+                  )}
                   <span className="block text-xs text-neutral-500">
                     {row.product}
                   </span>
+                  {row.contact ? (
+                    <span className="mt-0.5 block text-xs text-neutral-500">
+                      {row.contact.hq} ·{" "}
+                      <a
+                        href={`tel:${row.contact.phone.replace(/[^0-9+]/g, "")}`}
+                        className="underline underline-offset-2 hover:text-neutral-800"
+                      >
+                        {row.contact.phone}
+                      </a>
+                    </span>
+                  ) : null}
                 </td>
                 <td className="py-3 pr-3 font-semibold text-brand-700">
                   {row.apyPercent.toFixed(2)}%
@@ -175,12 +198,35 @@ function BigBankTable({ rows }: { rows: BigBankRow[] }) {
                 className="border-b border-neutral-100"
               >
                 <td className="py-3 pr-3">
-                  <span className="font-medium text-neutral-900">
-                    {row.institution}
-                  </span>
+                  {row.contact ? (
+                    <a
+                      href={row.contact.rateUrl}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow"
+                      className="font-medium text-neutral-900! underline underline-offset-2 hover:text-brand-700!"
+                      title={`See ${row.institution}'s published rate`}
+                    >
+                      {row.institution}
+                    </a>
+                  ) : (
+                    <span className="font-medium text-neutral-900">
+                      {row.institution}
+                    </span>
+                  )}
                   <span className="block text-xs text-neutral-500">
                     {row.product}
                   </span>
+                  {row.contact ? (
+                    <span className="mt-0.5 block text-xs text-neutral-500">
+                      {row.contact.hq} ·{" "}
+                      <a
+                        href={`tel:${row.contact.phone.replace(/[^0-9+]/g, "")}`}
+                        className="underline underline-offset-2 hover:text-neutral-800"
+                      >
+                        {row.contact.phone}
+                      </a>
+                    </span>
+                  ) : null}
                   <span className="mt-1 flex flex-wrap gap-1">
                     {row.tags.map((tag) => (
                       <span
