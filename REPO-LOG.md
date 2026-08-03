@@ -3,6 +3,13 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-03 — Direct QR visitors to the existing fee calculator
+**Agent:** Codex | **Surface:** YAPT EDDM QR landing and analytics
+- changed: the exact legacy printer-proof QR signature and the canonical tagged EDDM QR signature now open the existing `#calculator` section directly without reordering the home page or changing QR artwork.
+- preserved: explicit UTM parameters retain precedence, unrelated campaign and ordinary homepage visits stay at the top, legacy attribution is captured before default calculator parameters are removed from the visible URL, and the existing Calculator button still clears its temporary hash so refreshes return to the top.
+- verified locally: legacy and canonical QR landing browser regression passed, including a negative foreign-UTM case and retained pageview/CTA attribution; refresh-position browser regression, TypeScript, lint (0 errors; 3 inherited `<img>` warnings), production build, and `git diff --check` passed.
+- not deployed: implementation is on `codex/yapt-qr-direct-calculator-20260803`; PR-to-main checks, merge, and production apex verification remain required.
+
 ### 2026-07-31 — Removed the top Advanced Calculator homepage bridge
 **Agent:** Codex | **Surface:** marketing homepage above the fee calculator
 - removed: the pictured full-width “Go to Advanced Calculator” button and its “Model your own time horizon…” supporting sentence no longer render above the homepage calculator; the now-unused dedicated bridge component was deleted.

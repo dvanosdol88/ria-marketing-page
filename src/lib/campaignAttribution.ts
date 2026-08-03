@@ -21,6 +21,35 @@ const LEGACY_EDDM_QR_SIGNATURE = {
   fee: EDDM_LAUNCH_QR_PARAMS.fee,
 } as const;
 
+function matchesSearchSignature(
+  searchParams: URLSearchParams,
+  signature: Record<string, string>,
+) {
+  return Object.entries(signature).every(
+    ([key, value]) => searchParams.get(key) === value,
+  );
+}
+
+export function shouldOpenCalculatorForEddmQr(
+  search: string | URLSearchParams,
+) {
+  const searchParams =
+    typeof search === "string" ? new URLSearchParams(search) : search;
+  const hasExplicitUtm = POSTHOG_UTM_KEYS.some((key) =>
+    Boolean(searchParams.get(key)),
+  );
+  const matchesLegacyMailerQr =
+    matchesSearchSignature(searchParams, LEGACY_EDDM_QR_SIGNATURE) &&
+    !searchParams.has("variant") &&
+    !hasExplicitUtm;
+  const matchesCanonicalMailerQr = matchesSearchSignature(
+    searchParams,
+    EDDM_LAUNCH_QR_PARAMS,
+  );
+
+  return matchesLegacyMailerQr || matchesCanonicalMailerQr;
+}
+
 export function resolveCampaignAttribution(
   search: string | URLSearchParams,
 ): CampaignAttribution | null {
@@ -44,10 +73,9 @@ export function resolveCampaignAttribution(
     };
   }
 
-  const matchesLegacyMailerQr = Object.entries(
-    LEGACY_EDDM_QR_SIGNATURE,
-  ).every(([key, value]) => searchParams.get(key) === value)
-    && !searchParams.has("variant");
+  const matchesLegacyMailerQr =
+    matchesSearchSignature(searchParams, LEGACY_EDDM_QR_SIGNATURE) &&
+    !searchParams.has("variant");
 
   if (!matchesLegacyMailerQr) return null;
 

@@ -139,7 +139,8 @@ https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1
 
 Its events must carry the standard `launch_5k` UTM properties plus
 `campaign_attribution_method=legacy_qr_signature` and
-`legacy_eddm_qr=true`. The visible landing experience must remain the default
-calculator journey.
+`legacy_eddm_qr=true`. Both the legacy printer-proof URL and the canonical
+tagged EDDM QR URL must open the existing fee calculator directly without
+reordering the home page.
 
 For production claims, local success is not enough. Production verification is required.
