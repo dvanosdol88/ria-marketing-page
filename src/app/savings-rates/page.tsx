@@ -620,7 +620,7 @@ export default function SavingsRatesPage() {
                 Tailwind utilities, so button-styled links need the important
                 variant to keep their own text color / no-underline. */}
             <a
-              href="https://smarterwaywealth.com/"
+              href="https://smarterwaywealth.com/meet"
               className="rounded-full bg-brand-600 px-5 py-2.5 text-center text-sm font-semibold text-white! no-underline! shadow-sm transition hover:bg-brand-700 hover:text-white!"
               data-posthog-cta-label="Savings rates advice hand-off"
               data-posthog-cta-location="savings-rates-page"

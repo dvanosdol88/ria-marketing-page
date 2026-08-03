@@ -1,6 +1,11 @@
 export const SITE_ORIGIN = "https://youarepayingtoomuch.com";
 export const SMARTER_WAY_WEALTH_ORIGIN = "https://smarterwaywealth.com";
 
+// The single booking destination for the whole funnel. Every "talk to David"
+// CTA on this site points here — never at the firm-site homepage, which costs
+// an extra hop before the scheduler.
+export const SMARTER_WAY_WEALTH_MEET_URL = `${SMARTER_WAY_WEALTH_ORIGIN}/meet`;
+
 export const EDDM_LAUNCH_QR_PARAMS = {
   portfolio: "1000000",
   years: "20",

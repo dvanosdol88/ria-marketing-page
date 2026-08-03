@@ -19,6 +19,7 @@ import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
 import { HomeTopBanner } from "@/components/HomeTopBanner";
+import { MeetDavidCta } from "@/components/MeetDavidCta";
 import { PremiumPromisePreview } from "@/components/PremiumPromisePreview";
 import {
   HomeCalculatorExperience,
@@ -1529,6 +1530,10 @@ export function CostAnalysisCalculator({
       )}
 
       {usesOpeningMarketingHero && (
+        <MeetDavidCta location="marketing_post_calculator" />
+      )}
+
+      {usesOpeningMarketingHero && (
         <section
           className="relative w-full overflow-hidden py-12 sm:py-16"
           style={quoteSectionStyle}
@@ -1538,6 +1543,10 @@ export function CostAnalysisCalculator({
             subLabel={homeCalculatorConfig.quoteTicker.subLabel}
           />
         </section>
+      )}
+
+      {usesOpeningMarketingHero && (
+        <MeetDavidCta location="marketing_page_bottom" />
       )}
     </>
   );
