@@ -80,12 +80,14 @@ try {
     problem =
       `this session changed a human-visible surface (${sample}${more}) but captured no screenshot. ` +
       'If the change is live, show David a picture of it on the production site. ' +
-      'If it is NOT live yet, say "not live yet" and show nothing - never a local capture.';
+      'If it is NOT live yet, say "not live yet" and show nothing - never a local capture. ' +
+      'Standing camera (do not improvise): ~/.claude/skills/gstack/browse/dist/browse goto <production-url> && ~/.claude/skills/gstack/browse/dist/browse screenshot <path>, then Read the PNG. It is headless - no window, extension or connected Chrome required.';
   } else if (sawLocal && !sawProd) {
     problem =
       `a screenshot was captured but only local/preview URLs appear in this session, and ${sample}${more} changed. ` +
       'A local or preview capture must never be shown as evidence of finished work (deploy-truth, CRITICAL-RULES rule 2). ' +
-      'Capture the production URL after confirming live, or show nothing and say why.';
+      'Capture the production URL after confirming live, or show nothing and say why. ' +
+      'Standing camera (do not improvise): ~/.claude/skills/gstack/browse/dist/browse goto <production-url> && ~/.claude/skills/gstack/browse/dist/browse screenshot <path>, then Read the PNG. It is headless - no window, extension or connected Chrome required.';
   }
 
   if (problem) {
