@@ -39,7 +39,8 @@ Tracked items for youarepayingtoomuch.com. One-liner per item with enough contex
 - [ ] **Tag internal/test traffic.** Agent verification runs + David's devices should carry an internal-traffic marker PostHog filters can exclude; don't init PostHog on localhost. *(added 2026-08-03)*
 - [ ] **Verify `calculator_submitted` payload on production** — the 2026-08-03 event carried null portfolio/savings/years while 7 prior ones had values; check the PR190-era submit handler before real scans arrive. *(added 2026-08-03)*
 - [ ] **UTM passthrough on cross-domain CTAs.** `ADVANCED_CALCULATOR_CARRIED_PARAMS` whitelists only calculator state; utm_* and variant are dropped at the youarepayingtoomuch.com → smarterwaywealth.com hop, so EDDM visitors arrive at SWW indistinguishable from organic. *(added 2026-08-03)*
-- [x] **2b content pending David's sign-off (regulatory wording):** account-minimum FAQ answer and state-eligibility sentence. David approved the drafts verbatim 2026-08-03; shipped to both sites same day (this repo: FAQ entries `account-minimum` + `out-of-state`, eligibility sentence in ComplianceFooter; sister repo mirrored). *(added 2026-08-03, done 2026-08-03)*
+- [x] **2b content pending David's sign-off (regulatory wording):** account-minimum FAQ answer and state-eligibility sentence. David approved the drafts verbatim 2026-08-03; shipped on THIS site (FAQ entries `account-minimum` + `out-of-state`, eligibility sentence in ComplianceFooter). *(added 2026-08-03, done 2026-08-03)*
+- [ ] **Mirror the 2b answers + footer eligibility sentence to smarter-way-wealth — HELD for David's explicit go.** ComplianceFooter's mirror rule applies; the sister site's FAQ lacks both answers. Do not ship without his confirmation (2026-08-03 scope correction limited work to this site). *(added 2026-08-03)*
 
 ## Content & Pages
 
