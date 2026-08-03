@@ -2,10 +2,9 @@
  * FAQ data. Plain-string answers (no JSX) so this file is portable
  * straight into smarterwaywealth.com without changing imports.
  *
- * IMPORTANT — answers below are FIRST DRAFTS. Items flagged "[REVIEW]"
- * make specific claims about contract terms, custody, staffing, or
- * service scope that need David's confirmation before public launch.
- * Edit in place; the FAQ page reads from this file.
+ * Factual claims (custody, registration, first-call format, disclosures)
+ * are aligned with the published wording on smarterwaywealth.com and the
+ * firm's Form ADV Part 2A. Keep the two sites in sync when either changes.
  *
  * Paragraph breaks: separate paragraphs with a blank line (\n\n).
  */
@@ -38,10 +37,16 @@ export const faqItems: FaqItem[] = [
       "No lock-in. Period. No minimum term, no exit fees, no surrender charges. (Like every registered advisor, we sign a short advisory agreement so the SEC paperwork is clean — you can end it any time.)\n\nI am confident you will find the advice and relationship of great value, and we will build a long-term relationship. That is the Goal.",
   },
   {
+    id: "what-happens-on-the-first-call",
+    question: "What happens on the first call?",
+    answer:
+      "A focused 15-minute conversation to understand what you're looking for and see whether Smarter Way Wealth is a good fit. It happens over Zoom or Google Meet — whichever you prefer — and there is nothing to prepare.\n\nNo obligation: personalized investment advice begins only after becoming a client. You can pick a time at smarterwaywealth.com/meet, and you'll receive the meeting link with your calendar invitation.",
+  },
+  {
     id: "do-i-have-to-move-my-assets",
     question: "Do I have to move my assets?",
     answer:
-      "No. Your assets are held at a qualified third-party custodian (such as Schwab or Fidelity). Smarter Way Wealth never takes custody of client funds — the firm has the authority to advise and, with your standing limited power of attorney, to place trades, but the assets remain in your name at the custodian. [REVIEW: confirm custodian arrangement.]",
+      "No. You keep the custodian you already know — Fidelity, Schwab, or another brokerage you choose. You select and maintain your own accounts, the assets stay in your name, and Smarter Way Wealth never takes custody of client funds or securities. You receive account statements directly from your custodian.",
   },
   {
     id: "hidden-fees",
@@ -53,7 +58,7 @@ export const faqItems: FaqItem[] = [
     id: "estate-planning-taxes",
     question: "Do you do estate planning or taxes?",
     answer:
-      "Smarter Way Wealth coordinates with your estate attorney and CPA, models tax-aware withdrawal and Roth-conversion strategies, and reviews estate documents for advisory implications. The firm does not draft wills, trusts, or other estate documents (that requires an attorney), and does not file tax returns (that requires a CPA or enrolled agent).\n\nIf you do not already have an estate attorney or CPA, the firm can refer you to qualified professionals. [REVIEW: confirm service scope and any referral arrangements.]",
+      "Smarter Way Wealth coordinates with your estate attorney and CPA, models tax-aware withdrawal and Roth-conversion strategies, and reviews estate documents for advisory implications. The firm does not draft wills, trusts, or other estate documents (that requires an attorney), and does not file tax returns (that requires a CPA or enrolled agent).",
   },
   {
     id: "whats-the-catch",
@@ -65,13 +70,13 @@ export const faqItems: FaqItem[] = [
     id: "who-manages-the-money",
     question: "Who manages the money?",
     answer:
-      "David Van Osdol, CFA, CFP®, directly and personally. Smarter Way Wealth is a solo fiduciary practice — there is no team of junior associates handling your account, and no hand-off chain. The credentialed advisor you speak with on the first call is the same credentialed advisor managing your portfolio. [REVIEW: confirm structure remains solo as the firm grows.]",
+      "David Van Osdol, CFA, CFP®, directly and personally. Smarter Way Wealth is a solo fiduciary practice — there is no team of junior associates handling your account, and no hand-off chain. The credentialed advisor you speak with on the first call is the same credentialed advisor managing your portfolio.",
   },
   {
     id: "who-makes-trades",
     question: "Who makes trades?",
     answer:
-      "Trades are placed through your custodian using portfolio-management software, and are reviewed and approved by David before execution. Rebalancing and tax-loss-harvesting decisions follow the Investment Policy Statement (IPS) we develop together at the start of the engagement. [REVIEW: confirm exact workflow and software stack.]",
+      "Trades are placed through your custodian, and are reviewed and approved by David before execution. Rebalancing and tax-loss-harvesting decisions follow the Investment Policy Statement (IPS) we develop together at the start of the engagement.",
   },
   {
     id: "are-you-qualified",
@@ -83,7 +88,13 @@ export const faqItems: FaqItem[] = [
     id: "credentials",
     question: "What are your credentials?",
     answer:
-      "Chartered Financial Analyst (CFA) Charterholder — issued by the CFA Institute. Requires passing three sequential, multi-hour exams covering ethics, economics, financial reporting, equity and fixed-income analysis, derivatives, portfolio management, and wealth planning, plus a minimum of four years of qualified investment experience.\n\nCertified Financial Planner (CFP®) Practitioner — issued by the CFP Board. Requires education, a comprehensive exam, experience, and adherence to a fiduciary code of ethics, focused on comprehensive financial planning across investments, taxes, insurance, retirement, and estate.\n\nState-registered Investment Advisor Representative. [REVIEW: list specific state(s) of registration.]\n\n20+ years of experience in financial markets and advisory.",
+      "Chartered Financial Analyst (CFA) Charterholder — issued by the CFA Institute. Requires passing three sequential, multi-hour exams covering ethics, economics, financial reporting, equity and fixed-income analysis, derivatives, portfolio management, and wealth planning, plus a minimum of four years of qualified investment experience.\n\nCertified Financial Planner (CFP®) Practitioner — issued by the CFP Board. Requires education, a comprehensive exam, experience, and adherence to a fiduciary code of ethics, focused on comprehensive financial planning across investments, taxes, insurance, retirement, and estate.\n\nSmarter Way Wealth, LLC is a registered investment adviser in the State of Connecticut (CRD #342140 — verifiable on the SEC's adviser search at adviserinfo.sec.gov).\n\n20+ years of experience in financial markets and advisory.",
+  },
+  {
+    id: "official-disclosures",
+    question: "Where can I read your official disclosures?",
+    answer:
+      "The firm's Form ADV Part 2A brochure — the regulatory document describing services, fees, and conflicts in plain English — is available for download at smarterwaywealth.com/disclosures, along with the firm's other disclosures and privacy policy.\n\nYou can independently verify Smarter Way Wealth's registration (CRD #342140) on the SEC's Investment Adviser Public Disclosure site at adviserinfo.sec.gov.",
   },
   {
     id: "do-you-use-ai",
@@ -95,7 +106,7 @@ export const faqItems: FaqItem[] = [
     id: "how-do-you-use-ai",
     question: "How?",
     answer:
-      "On the operational side: AI tools draft meeting notes, summarize new research and regulatory updates, prepare quarterly review materials, and handle routine compliance reporting. This is the work that absorbs most of a traditional advisor's day, and it is the work that scales well with AI.\n\nOn the client-work side: AI surfaces relevant tax, planning, and portfolio considerations across each client's specific situation — for example, flagging Roth-conversion opportunities, identifying tax-loss-harvesting candidates, or modeling withdrawal-sequencing scenarios. But AI never makes a recommendation directly to a client. Every recommendation comes from David personally, after he has reviewed the AI's analysis and applied his own judgment.\n\nClient data is handled in accordance with the firm's privacy policy and regulatory requirements. [REVIEW: link to /privacy and confirm the specific AI tool stack you want disclosed.]",
+      "On the operational side: AI tools draft meeting notes, summarize new research and regulatory updates, prepare quarterly review materials, and handle routine compliance reporting. This is the work that absorbs most of a traditional advisor's day, and it is the work that scales well with AI.\n\nOn the client-work side: AI surfaces relevant tax, planning, and portfolio considerations across each client's specific situation — for example, flagging Roth-conversion opportunities, identifying tax-loss-harvesting candidates, or modeling withdrawal-sequencing scenarios. But AI never makes a recommendation directly to a client. Every recommendation comes from David personally, after he has reviewed the AI's analysis and applied his own judgment.\n\nClient data is handled in accordance with the firm's privacy policy (available at smarterwaywealth.com/privacy) and regulatory requirements.",
   },
   {
     id: "are-you-a-roboadvisor",

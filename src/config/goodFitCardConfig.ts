@@ -1,4 +1,4 @@
-import { SMARTER_WAY_WEALTH_ORIGIN } from "@/config/campaignLinks";
+import { SMARTER_WAY_WEALTH_MEET_URL } from "@/config/campaignLinks";
 
 export const goodFitCardConfig = {
   eyebrow: "Planning fit",
@@ -7,8 +7,8 @@ export const goodFitCardConfig = {
     "Smarter Way Wealth is designed for households seeking an ongoing planning and investment relationship, not predictions or trading tips.",
   representativeLead: "Includes, among other things:",
   link: {
-    href: SMARTER_WAY_WEALTH_ORIGIN,
-    label: "Explore Smarter Way Wealth",
+    href: SMARTER_WAY_WEALTH_MEET_URL,
+    label: "Meet David for 15 minutes",
   },
   aligned: [
     {

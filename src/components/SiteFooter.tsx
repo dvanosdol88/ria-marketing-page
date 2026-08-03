@@ -11,6 +11,7 @@ const IAPD_URL = "https://adviserinfo.sec.gov/firm/summary/342140";
 // firm site. These used to point at local copies on this domain, which is how
 // the two sites drifted apart on what "important disclosures" meant.
 const DISCLOSURES_URL = "https://smarterwaywealth.com/disclosures";
+const ADV_BROCHURE_URL = "https://smarterwaywealth.com/disclosures/ADV-Part-2A.pdf";
 const PRIVACY_URL = "https://smarterwaywealth.com/privacy";
 
 /**
@@ -52,7 +53,7 @@ export function SiteFooter() {
             </div>
 
             {/* Right: Legal links */}
-            <div className="flex gap-6 text-sm text-neutral-500 shrink-0">
+            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-neutral-500 shrink-0">
               <a
                 href={DISCLOSURES_URL}
                 className="hover:text-neutral-700 no-underline"
@@ -60,12 +61,20 @@ export function SiteFooter() {
                 Disclosures
               </a>
               <a
+                href={ADV_BROCHURE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-neutral-700 no-underline"
+              >
+                ADV Brochure (PDF)
+              </a>
+              <a
                 href={IAPD_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-neutral-700 no-underline"
               >
-                ADV
+                Verify on IAPD
               </a>
               {/* One link, not two. "Privacy" and "Privacy Policy" sat side by
                   side pointing at the same page once both were aimed at the

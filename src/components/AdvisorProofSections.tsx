@@ -76,7 +76,7 @@ const adviceCards: ProofCard[] = [
       "David's experience includes Morgan Stanley Smith Barney and Fidelity, plus the perspective that comes from seeing what large-firm advice can and cannot deliver.",
     ],
     detailLink: {
-      href: "https://smarterwaywealth.com/",
+      href: "https://smarterwaywealth.com/faq",
       label: "Learn more about CFA and CFP® at smarterwaywealth.com",
     },
   },
