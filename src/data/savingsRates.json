@@ -53,7 +53,14 @@
             "url": "https://www.bankrate.com/banking/savings/best-high-yield-interests-savings-accounts/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-833-755-4354",
+          "phoneSource": "https://www.breadfinancial.com/en/help-center/getintouch-savings.html",
+          "hq": "Columbus, OH",
+          "rateUrl": "https://www.breadfinancial.com/en/bread-savings.html",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "EverBank",
@@ -76,7 +83,14 @@
             "url": "https://www.bankrate.com/banking/savings/best-high-yield-interests-savings-accounts/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-888-882-3837",
+          "phoneSource": "https://www.everbank.com/contact",
+          "hq": "Jacksonville, FL",
+          "rateUrl": "https://www.everbank.com/banking/performance-savings",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "Popular Direct",
@@ -99,7 +113,14 @@
             "url": "https://www.bankrate.com/banking/savings/best-high-yield-interests-savings-accounts/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-800-274-5696",
+          "phoneSource": "https://www.populardirect.com/contact-us/",
+          "hq": "New York, NY",
+          "rateUrl": "https://www.populardirect.com/products/savings/",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "Zynlo Bank",
@@ -122,7 +143,14 @@
             "url": "https://www.bankrate.com/banking/savings/best-high-yield-interests-savings-accounts/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-844-996-5622",
+          "phoneSource": "https://www.zynlobank.com/resources/faqs",
+          "hq": "Holyoke, MA",
+          "rateUrl": "https://www.zynlobank.com/",
+          "verified": "2026-08-01"
+        }
       }
     ],
     "moneyMarket": [
@@ -147,7 +175,14 @@
             "url": "https://www.bankrate.com/banking/money-market/rates/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-844-996-5622",
+          "phoneSource": "https://www.zynlobank.com/resources/faqs",
+          "hq": "Holyoke, MA",
+          "rateUrl": "https://www.zynlobank.com/",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "Quontic Bank",
@@ -170,7 +205,14 @@
             "url": "https://www.bankrate.com/banking/money-market/rates/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-800-908-6600",
+          "phoneSource": "https://www.quontic.com/contact-us/",
+          "hq": "Astoria, NY",
+          "rateUrl": "https://www.quontic.com/money-market-account/",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "CFG Bank",
@@ -193,7 +235,14 @@
             "url": "https://www.bankrate.com/banking/money-market/rates/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-888-205-8388",
+          "phoneSource": "https://www.cfg.bank/contact-us/",
+          "hq": "Baltimore, MD",
+          "rateUrl": "https://www.cfg.bank/our-mma-deposit-rates/",
+          "verified": "2026-08-01"
+        }
       }
     ]
   },
@@ -253,7 +302,14 @@
             "url": "https://www.forbes.com/advisor/banking/savings/chase-savings-rates/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-800-935-9935",
+          "phoneSource": "https://www.chase.com/personal/personal-banking-contact-information",
+          "hq": "New York, NY",
+          "rateUrl": "https://www.chase.com/personal/savings/savings-account/interest-rates",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "Bank of America",
@@ -284,7 +340,14 @@
             "url": "https://arcasavings.com/compare/bank-of-america-savings",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-800-432-1000",
+          "phoneSource": "https://www.bankofamerica.com/customer-service/contact-us/checking-savings/",
+          "hq": "Charlotte, NC",
+          "rateUrl": "https://www.bankofamerica.com/deposits/bank-account-interest-rates/",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "Citibank",
@@ -311,7 +374,14 @@
             "url": "https://arcasavings.com/compare/citibank-savings",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-888-248-4226",
+          "phoneSource": "https://online.citi.com/JRS/popups/ao/CDAA.pdf",
+          "hq": "New York, NY",
+          "rateUrl": "https://www.citi.com/banking/current-interest-rates/savings-accounts",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "Wells Fargo",
@@ -338,7 +408,14 @@
             "url": "https://www.bankrate.com/banking/savings/wells-fargo-savings-rates/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-800-869-3557",
+          "phoneSource": "https://www.wellsfargo.com/help/contact-us/",
+          "hq": "San Francisco, CA",
+          "rateUrl": "https://www.wellsfargo.com/savings-cds/way2save/",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "U.S. Bank",
@@ -365,7 +442,14 @@
             "url": "https://www.bankrate.com/banking/savings/us-bank-savings-rates/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-800-872-2657",
+          "phoneSource": "https://www.usbank.com/customer-service.html",
+          "hq": "Minneapolis, MN",
+          "rateUrl": "https://www.usbank.com/bank-accounts/savings-accounts/bank-smartly-savings/savings-account-interest-rates.html",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "PNC Bank",
@@ -392,7 +476,14 @@
             "url": "https://www.bankrate.com/banking/savings/pnc-bank-savings-rates/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-888-762-2265",
+          "phoneSource": "https://www.pnc.com/en/customer-service.html",
+          "hq": "Pittsburgh, PA",
+          "rateUrl": "https://www.pnc.com/en/personal-banking/banking/savings/standard-savings.html",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "Truist",
@@ -419,7 +510,14 @@
             "url": "https://www.bankrate.com/banking/savings/truist-savings-rates/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-844-487-8478",
+          "phoneSource": "https://www.truist.com/contact",
+          "hq": "Charlotte, NC",
+          "rateUrl": "https://www.truist.com/savings/truist-one-savings/disclosures-and-fees",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "Capital One",
@@ -446,7 +544,14 @@
             "url": "https://www.bankrate.com/banking/reviews/capital-one/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-800-655-2265",
+          "phoneSource": "https://www.capitalone.com/bank/customer-service/",
+          "hq": "McLean, VA",
+          "rateUrl": "https://www.capitalone.com/bank/savings-accounts/online-performance-savings-account/",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "TD Bank",
@@ -475,7 +580,14 @@
             "url": "https://www.gobankingrates.com/banking/savings-account/td-bank-savings-account-interest-rates/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-888-751-9000",
+          "phoneSource": "https://www.td.com/us/en/personal-banking/contact-us",
+          "hq": "Mount Laurel, NJ",
+          "rateUrl": "https://www.td.com/us/en/personal-banking/savings-accounts/simple",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "Citizens Bank",
@@ -502,7 +614,14 @@
             "url": "https://www.bankrate.com/banking/savings/citizens-bank-savings-rates/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-800-922-9999",
+          "phoneSource": "https://www.citizensbank.com/customer-service/contact-us.aspx",
+          "hq": "Providence, RI",
+          "rateUrl": "https://www.citizensbank.com/savings/savings-accounts/one-deposit-savings-rates.aspx",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "Webster Bank",
@@ -530,7 +649,14 @@
             "url": "https://www.gobankingrates.com/banking/banking-reviews/webster-bank/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-800-325-2424",
+          "phoneSource": "https://www.websterbank.com/contact-us/",
+          "hq": "Stamford, CT",
+          "rateUrl": "https://www.websterbank.com/security/protect-yourself/disclosure-fees/consumer-deposit-rates/",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "M&T Bank",
@@ -558,7 +684,14 @@
             "url": "https://wallethub.com/answers/sa/m-and-t-bank-savings-account-interest-rate-2140828904/",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-800-724-2440",
+          "phoneSource": "https://www.mtb.com/personal/savings-and-cds/relationship-savings",
+          "hq": "Buffalo, NY",
+          "rateUrl": "https://www.mtb.com/personal/savings-and-cds/relationship-savings",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "Goldman Sachs Bank USA",
@@ -586,7 +719,14 @@
             "url": "https://www.bankrate.com/banking/reviews/marcus",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-855-730-7283",
+          "phoneSource": "https://www.marcus.com/us/en/banking-with-us/contact-marcus",
+          "hq": "New York, NY",
+          "rateUrl": "https://www.marcus.com/us/en/savings/high-yield-savings",
+          "verified": "2026-08-01"
+        }
       },
       {
         "institution": "Morgan Stanley Private Bank",
@@ -614,7 +754,14 @@
             "url": "https://www.bankrate.com/banking/reviews/morgan-stanley-private",
             "role": "cross-check"
           }
-        ]
+        ],
+        "contact": {
+          "phone": "1-800-387-2331",
+          "phoneSource": "https://us.etrade.com/bank/premium-savings-account",
+          "hq": "Purchase, NY",
+          "rateUrl": "https://us.etrade.com/bank/premium-savings-account",
+          "verified": "2026-08-01"
+        }
       }
     ]
   },
