@@ -31,6 +31,12 @@ export const faqItems: FaqItem[] = [
       "For most clients, nothing material. Smarter Way Wealth uses the same low-cost index funds and ETFs (Vanguard, iShares, and similar) that elite firms use. You are not giving up portfolio quality, fiduciary protection, or planning depth.\n\nWhat you do not get with a flat-fee model: a glossy downtown office, a layer of junior associates between you and the credentialed advisor, or a fee that scales up with your assets regardless of how much actual advice you need.",
   },
   {
+    id: "account-minimum",
+    question: "Is there an account minimum?",
+    answer:
+      "Yes. As disclosed in the firm's Form ADV Part 2A, the standard minimum is $250,000 in investable assets (liquid financial accounts; excludes real estate, business interests, and illiquid holdings). The firm may waive or reduce the minimum at its sole discretion — if you're close, ask on the intro call.",
+  },
+  {
     id: "is-there-a-contract",
     question: "Is there a contract?",
     answer:
@@ -41,6 +47,12 @@ export const faqItems: FaqItem[] = [
     question: "What happens on the first call?",
     answer:
       "A focused 15-minute conversation to understand what you're looking for and see whether Smarter Way Wealth is a good fit. It happens over Zoom or Google Meet — whichever you prefer — and there is nothing to prepare.\n\nNo obligation: personalized investment advice begins only after becoming a client. You can pick a time at smarterwaywealth.com/meet, and you'll receive the meeting link with your calendar invitation.",
+  },
+  {
+    id: "out-of-state",
+    question: "Can I hire you if I don't live in Connecticut?",
+    answer:
+      "Possibly. Smarter Way Wealth is registered in Connecticut, and most states allow an out-of-state adviser to serve a limited number of their residents without separate registration. Ask on the intro call and we'll confirm before any engagement.",
   },
   {
     id: "do-i-have-to-move-my-assets",

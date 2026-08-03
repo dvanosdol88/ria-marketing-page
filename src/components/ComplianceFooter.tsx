@@ -38,6 +38,9 @@ export default function ComplianceFooter() {
             verify on IAPD
           </a>
           ). Registration does not imply a certain level of skill or training.
+          Smarter Way Wealth transacts advisory business only with residents of
+          states in which it is registered, or where it is excluded or exempted
+          from registration.
         </p>
         <p className="mt-3">
           Information provided is for educational purposes only and does not
