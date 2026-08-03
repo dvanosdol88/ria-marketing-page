@@ -5,6 +5,8 @@ import { chromium } from "playwright";
 
 const LEGACY_MAILER_QUERY =
   "portfolio=1000000&years=20&growth=8&fee=1";
+const CANONICAL_MAILER_QUERY =
+  `${LEGACY_MAILER_QUERY}&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code`;
 
 async function getUnusedPort() {
   const server = createServer();
@@ -56,6 +58,33 @@ function assertLegacyAttribution(event) {
     event.properties.campaign_attribution_method,
     "legacy_qr_signature",
   );
+}
+
+async function waitForCalculatorLanding(page) {
+  await page.waitForFunction(() => {
+    const calculator = document.getElementById("calculator");
+    if (!calculator) return false;
+    const top = calculator.getBoundingClientRect().top;
+    return window.scrollY > 50 && top >= 0 && top < 160;
+  });
+
+  return page.evaluate(() => {
+    const calculator = document.getElementById("calculator");
+    return {
+      scrollY: window.scrollY,
+      calculatorTop: calculator?.getBoundingClientRect().top ?? null,
+    };
+  });
+}
+
+async function readCalculatorPosition(page) {
+  return page.evaluate(() => {
+    const calculator = document.getElementById("calculator");
+    return {
+      scrollY: window.scrollY,
+      calculatorTop: calculator?.getBoundingClientRect().top ?? null,
+    };
+  });
 }
 
 let nextProcess;
@@ -120,6 +149,11 @@ try {
     "",
     "the visible URL should still be cleaned after attribution is captured",
   );
+  const legacyLanding = await waitForCalculatorLanding(page);
+  assert.ok(
+    legacyLanding.calculatorTop !== null && legacyLanding.calculatorTop < 160,
+    `legacy printer QR should land at the calculator: ${JSON.stringify(legacyLanding)}`,
+  );
 
   await page.evaluate(() => {
     const link = document.querySelector(
@@ -137,8 +171,34 @@ try {
   const ctaEvent = await waitForCapturedEvent(capturedEvents, "cta_clicked");
   assertLegacyAttribution(ctaEvent);
 
+  await page.goto(`${baseUrl}/?${CANONICAL_MAILER_QUERY}`, {
+    waitUntil: "domcontentloaded",
+  });
+  await page.locator("#calculator").waitFor();
+  const canonicalLanding = await waitForCalculatorLanding(page);
+  assert.ok(
+    canonicalLanding.calculatorTop !== null && canonicalLanding.calculatorTop < 160,
+    `canonical EDDM QR should land at the calculator: ${JSON.stringify(canonicalLanding)}`,
+  );
+
+  const unrelatedPage = await context.newPage();
+  await unrelatedPage.goto(
+    `${baseUrl}/?${LEGACY_MAILER_QUERY}&utm_source=google`,
+    { waitUntil: "domcontentloaded" },
+  );
+  await unrelatedPage.locator("#calculator").waitFor();
+  await unrelatedPage.waitForTimeout(800);
+  const unrelatedLanding = await readCalculatorPosition(unrelatedPage);
+  assert.ok(
+    unrelatedLanding.scrollY < 50 &&
+      unrelatedLanding.calculatorTop !== null &&
+      unrelatedLanding.calculatorTop > 160,
+    `foreign explicit UTM traffic must keep the normal top-of-page landing: ${JSON.stringify(unrelatedLanding)}`,
+  );
+  await unrelatedPage.close();
+
   console.log(
-    "Legacy EDDM printer-proof URL is attributed on pageview and remains attributed after URL cleanup.",
+    "Legacy and canonical EDDM QR URLs land at the calculator; foreign explicit UTM traffic stays at the page top; legacy attribution survives URL cleanup and the later CTA.",
   );
 } finally {
   await browser?.close();

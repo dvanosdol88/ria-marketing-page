@@ -43,7 +43,9 @@ https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1
 ```
 
 Production must recognize that exact four-value signature as the same EDDM
-`launch_5k` campaign without changing the visitor's default landing experience.
+`launch_5k` campaign and open the existing fee calculator directly without
+reordering the home page. The canonical tagged QR URL follows the same landing
+behavior.
 Events inferred from the printer-proof URL must include
 `campaign_attribution_method=legacy_qr_signature` and
 `legacy_eddm_qr=true`. Explicit UTM parameters always take precedence.

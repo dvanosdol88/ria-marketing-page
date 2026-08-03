@@ -33,6 +33,7 @@ import {
 import type { HomeTopBannerId } from "@/config/homeTopBanners";
 import { useSavingsBar } from "@/components/SavingsBarContext";
 import { capturePostHogEvent } from "@/lib/posthog";
+import { shouldOpenCalculatorForEddmQr } from "@/lib/campaignAttribution";
 import {
   ADVANCED_CALCULATOR_LABEL,
   buildAdvancedCalculatorHrefFromState,
@@ -731,6 +732,10 @@ export function CostAnalysisCalculator({
   marketingVariantId,
 }: Props) {
   const paramsFromServer = useMemo(() => normalizeSearchParams(searchParams), [searchParams]);
+  const shouldOpenQrCalculator = useMemo(
+    () => shouldOpenCalculatorForEddmQr(paramsFromServer),
+    [paramsFromServer],
+  );
   const mergedState = useMemo(
     () => ({
       ...DEFAULT_STATE,
@@ -837,6 +842,31 @@ export function CostAnalysisCalculator({
     const base = `${window.location.origin}${window.location.pathname}`;
     return `${base}?${query}`;
   }, [paramsFromServer, state]);
+
+  useEffect(() => {
+    if (!shouldOpenQrCalculator) return;
+
+    let animationFrame = 0;
+    const timeoutIds: number[] = [];
+    const scrollToCalculator = () => {
+      const hash = window.location.hash;
+      if (hash && hash !== "#calculator") return;
+
+      document.getElementById("calculator")?.scrollIntoView({
+        behavior: "auto",
+        block: "start",
+      });
+    };
+
+    animationFrame = window.requestAnimationFrame(scrollToCalculator);
+    timeoutIds.push(window.setTimeout(scrollToCalculator, 180));
+    timeoutIds.push(window.setTimeout(scrollToCalculator, 650));
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
+    };
+  }, [shouldOpenQrCalculator]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
