@@ -96,9 +96,19 @@ export default async function Home({
     : resolvedSearchParams.mode;
   let experienceMode: "marketing" | "calculator-first" | "savings-calculator-upgrade";
 
+  // The mailed QR code carries variant=direct-mail, but that URL must serve
+  // the standard production experience — the stripped marketing variant is
+  // internal-preview only (David, 2026-08-03: "This should not go to
+  // production"). The param still flows to analytics for attribution.
+  const isDirectMailVariant = explicitVariant === "direct-mail";
+
   if (mode === "calculator-first") {
     experienceMode = "calculator-first";
-  } else if (sequence === "savings-calculator-upgrade" || !hasExplicitVariant) {
+  } else if (
+    sequence === "savings-calculator-upgrade" ||
+    !hasExplicitVariant ||
+    isDirectMailVariant
+  ) {
     experienceMode = "savings-calculator-upgrade";
   } else {
     experienceMode = "marketing";
