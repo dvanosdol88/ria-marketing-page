@@ -3,6 +3,12 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-03 — Leaving-site icon on booking block + real Advanced Calculator preview loop
+**Agent:** Claude (Fable) | **Surface:** marketing | **Duration:** same session
+- changed: `MeetDavidCta` gains an external-link icon (upper-right) signaling the hop to smarterwaywealth.com (David request, from screenshot). `AdvancedCalculatorCta`'s hand-drawn "Return path" mock replaced with real captured frames of the smarterwaywealth.com/save market replay: steady-view poster + 5 replay frames crossfading on a 10s CSS loop (`.adv-preview-frame` in globals.css; reduced-motion shows the poster only).
+- added: `public/advanced-calculator-preview/frame-1..6.jpg` (~440KB total, lazy-loaded) and `scripts/capture-advanced-calculator.mjs` — headless Playwright capture that re-generates the frames when the firm site's calculator design changes (per-view crops, scrolls below the sticky header, re-measures after scroll).
+- note: local `next start` in this nested worktree serves unstyled pages (workspace-root/lockfile inference); visual verification done against the dev server. Production builds from a clean checkout are unaffected.
+
 ### 2026-08-03 — 2b: account-minimum + state-eligibility answers (David-approved wording)
 **Agent:** Claude (Fable) | **Surface:** marketing | **Duration:** same session as PR #191
 - changed: `src/data/faq.ts` adds `account-minimum` ("Is there an account minimum?" — $250k investable per ADV Part 2A Item 7, waivable) and `out-of-state` ("Can I hire you if I don't live in Connecticut?" — de minimis, confirm on intro call). `src/components/ComplianceFooter.tsx` adds the eligibility sentence after the CRD line ("transacts advisory business only with residents of states in which it is registered, or where it is excluded or exempted from registration") — mirrored to the sister repo per the file's mirror rule.

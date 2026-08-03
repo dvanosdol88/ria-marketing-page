@@ -1,3 +1,4 @@
+import { ExternalLink } from "lucide-react";
 import { meetDavidCta } from "@/config/meetDavidCta";
 
 type MeetDavidCtaProps = {
@@ -13,7 +14,11 @@ type MeetDavidCtaProps = {
 export function MeetDavidCta({ location }: MeetDavidCtaProps) {
   return (
     <section className="w-full bg-[#EEF0F5] px-4 py-10 sm:px-6 sm:py-14">
-      <div className="mx-auto max-w-3xl rounded-2xl bg-[#064B84] p-6 text-white shadow-[0_18px_44px_rgba(6,75,132,0.22)] sm:p-10">
+      <div className="relative mx-auto max-w-3xl rounded-2xl bg-[#064B84] p-6 text-white shadow-[0_18px_44px_rgba(6,75,132,0.22)] sm:p-10">
+        <ExternalLink
+          aria-hidden="true"
+          className="absolute right-6 top-6 h-5 w-5 text-white/60 sm:right-10 sm:top-10"
+        />
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">
           {meetDavidCta.eyebrow}
         </p>

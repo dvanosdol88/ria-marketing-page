@@ -297,3 +297,36 @@ body {
     animation: none;
   }
 }
+
+/* Advanced Calculator preview loop (AdvancedCalculatorCta): real frames of
+   the smarterwaywealth.com/save market replay, crossfading in sequence over
+   a static steady-view poster. Frames come from
+   scripts/capture-advanced-calculator.mjs. */
+.adv-preview-frame {
+  opacity: 0;
+  animation: adv-preview-fade 10s linear infinite;
+}
+
+@keyframes adv-preview-fade {
+  0% {
+    opacity: 0;
+  }
+  3% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 1;
+  }
+  24% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adv-preview-frame {
+    animation: none;
+  }
+}
