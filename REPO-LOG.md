@@ -6,7 +6,7 @@
 ### 2026-08-03 — 2b: account-minimum + state-eligibility answers (David-approved wording)
 **Agent:** Claude (Fable) | **Surface:** marketing | **Duration:** same session as PR #191
 - changed: `src/data/faq.ts` adds `account-minimum` ("Is there an account minimum?" — $250k investable per ADV Part 2A Item 7, waivable) and `out-of-state` ("Can I hire you if I don't live in Connecticut?" — de minimis, confirm on intro call). `src/components/ComplianceFooter.tsx` adds the eligibility sentence after the CRD line ("transacts advisory business only with residents of states in which it is registered, or where it is excluded or exempted from registration") — mirrored to the sister repo per the file's mirror rule.
-- context: David approved the drafted wording verbatim ("approve", 2026-08-03). Same change shipped to smarter-way-wealth (FAQ + compliance footer) in its own PR.
+- context: David approved the drafted wording verbatim ("approve", 2026-08-03). The smarter-way-wealth mirror is HELD pending David's explicit go — after the variant-scope correction he limited work to "the existing production site" (this one). The eligibility sentence in ComplianceFooter triggers the file's mirror rule when he green-lights it.
 - deployed: see PR link in git history; production verification recorded in the session transcript.
 
 ### 2026-08-03 — Funnel-to-booking alignment + FAQ trust cleanup (PR #191)
