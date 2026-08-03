@@ -32,6 +32,15 @@ Tracked items for youarepayingtoomuch.com. One-liner per item with enough contex
 - [x] **Dependabot version-update PRs silenced** (#131). `.github/dependabot.yml` caps open PRs per ecosystem at 0; `docs/DEPENDENCY_STRATEGY.md` updated with the "One bot, not two" section. Renovate is now the documented sole bot. *(2026-05-17)*
 - [x] **Sister repo `smarter-way-wealth` brought under the same dep policy** (PR open at `smarter-way-wealth#14`, not yet merged — needs Renovate App install on that repo first; see SWW PR body). *(2026-05-17)*
 
+## Pre-mail-drop checklist (do BEFORE the EDDM drop; David confirmed mailers not yet sent as of 2026-08-03)
+
+- [ ] **Unify PostHog capture through posthog-js.** `src/lib/posthog.ts` (`sendDirectPostHogEvent`) POSTs `$pageview`/`cta_clicked`/`calculator_*` to `/capture/` with a homemade localStorage distinct_id, bypassing the loaded posthog-js client → 100% of pageviews classified as Automation/bot, humans double-counted across two identity spaces, sessions unstitchable. Fix: route `capturePostHogEvent` through `posthog.capture()`; keep custom campaign properties. *(added 2026-08-03, from 6-dimension audit)*
+- [ ] **Track booked calls.** Wire a Calendly `invitee.created` webhook to a server-side PostHog `call_booked` event so mailer → scan → calculator → booked-call is attributable. *(added 2026-08-03)*
+- [ ] **Tag internal/test traffic.** Agent verification runs + David's devices should carry an internal-traffic marker PostHog filters can exclude; don't init PostHog on localhost. *(added 2026-08-03)*
+- [ ] **Verify `calculator_submitted` payload on production** — the 2026-08-03 event carried null portfolio/savings/years while 7 prior ones had values; check the PR190-era submit handler before real scans arrive. *(added 2026-08-03)*
+- [ ] **UTM passthrough on cross-domain CTAs.** `ADVANCED_CALCULATOR_CARRIED_PARAMS` whitelists only calculator state; utm_* and variant are dropped at the youarepayingtoomuch.com → smarterwaywealth.com hop, so EDDM visitors arrive at SWW indistinguishable from organic. *(added 2026-08-03)*
+- [ ] **2b content pending David's sign-off (regulatory wording):** account-minimum FAQ answer (ADV Part 2A Item 7 discloses a $250k investable-asset minimum, waivable — currently on NEITHER website) and a state-eligibility sentence ("who can hire us" — absent on both sites and in the ADV). Draft delivered 2026-08-03; ship on both sites once approved. *(added 2026-08-03)*
+
 ## Content & Pages
 
 - [ ] **Decide on default hero at unparameterized root.** `youarepayingtoomuch.com/` currently renders the "savings-calculator-upgrade" experience ("What would you do with $788,000?" hero). Campaign URLs like `?variant=fiduciary-upgrade` and `?variant=final-home` render the "Upgrade the advice, not the fee" portrait hero. Direct-mail QR codes presumably carry the variant param, so the question only affects organic root traffic. Loop in RIA Chief on riabuilder.dvo88.com for input. **Target check-in: Monday 2026-05-18 10:00 AM CT.** (Originally planned as an iOS reminder for that time; reminder tool was unresponsive during the 2026-05-16 session, so logging here as the durable record.) *(added 2026-05-16)*
@@ -42,7 +51,7 @@ Tracked items for youarepayingtoomuch.com. One-liner per item with enough contex
 
 - [ ] Logo refinement: continue Venn diagram concept exploration with dollar sign symbols and text arrangements around "The SMARTER way to wealth" tagline. *(added 2025-02-11)*
 - [ ] Confirm design token coverage: ensure `src/styles/tokens.ts` covers all brand colors, typography, and spacing values used across production pages. *(added 2025-02-11)*
-- [ ] **Hero `?` watermark vs. small-mobile heading collision.** The Satoshi `?` is `text-[13rem]` on mobile and the heading sits at `clamp(2.25rem, 4.8vw, 4rem)`. On 320–375px viewports the `?` can crowd the right edge and feel oversized relative to the 36–48px heading. Options surfaced during a session: (A) drop the mobile `?` to ~`11rem`; (B) keep size but tighten section horizontal padding to give the `?` more breathing room. Decide which after eyeballing on a real phone. Code: `src/components/CostAnalysisCalculator.tsx` ~line 406. *(added 2026-05-22)*
+- [x] **Hero `?` watermark vs. small-mobile heading collision.** Verified NOT reproducing on the live production site at 320px and 375px widths (2026-08-03 mobile audit, headless-browser screenshots): watermark renders faint, centered, non-colliding. Closing without change; reopen only if a real-device report contradicts. *(added 2026-05-22, closed 2026-08-03)*
 
 ## Declined / Won't Do
 

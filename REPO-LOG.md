@@ -3,6 +3,16 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-03 — Funnel-to-booking alignment + FAQ trust cleanup (PR #191)
+**Agent:** Claude (Fable) | **Surface:** marketing | **Duration:** ~1 session
+- changed: every `smarterwaywealth.com` CTA now deep-links `https://smarterwaywealth.com/meet` via new `SMARTER_WAY_WEALTH_MEET_URL` in `src/config/campaignLinks.ts` (`fitCtaConfig`, `goodFitCardConfig`, `homeTopBanners` ×3, `savings-rates` page); `AdvisorProofSections` credentials detail link → SWW `/faq` (where the CFA/CFP explainers live); `SiteFooter` adds a direct ADV Part 2A PDF link and relabels the IAPD link "Verify on IAPD".
+- added: `src/components/MeetDavidCta.tsx` + `src/config/meetDavidCta.ts` — booking block on the marketing/QR (direct-mail) variant, rendered post-calculator and at page bottom. Copy mirrors smarterwaywealth.com/meet (15 minutes · Zoom or Google Meet · none required · no obligation); PostHog CTA locations `marketing_post_calculator` / `marketing_page_bottom`. Fixes the audit's top finding: the EDDM QR landing previously had ZERO conversion CTA.
+- changed: `src/data/faq.ts` — all six `[REVIEW: …]` placeholders (visible to prospects on the live /faq) replaced with wording aligned to smarterwaywealth.com and Form ADV Part 2A (keep-your-custodian custody, solo structure, trade approval, CT registration CRD #342140, AI/privacy). New entries: `what-happens-on-the-first-call`, `official-disclosures`.
+- deployed: PR #191 squash-merged to `main` (`00cfd17`); Vercel platform read confirms production deployment READY on that exact SHA; exercised on apex: EDDM QR-variant HTML serves both meet CTAs, /faq serves the new entries with zero `REVIEW:` strings, homepage footer serves the ADV-Part-2A.pdf link.
+- screenshot: could not capture — the standing camera's server hung on hidden launch and David's no-pop-up-window rule (2026-08-03, this session) rules out window-dependent cameras; production links given in the David-facing answer instead.
+- context: driven by a 6-dimension site audit + smarterwaywealth.com alignment study. David approved 1a (booking path) + 2a (trust content) + 2b (drafts only), declined 1b (video-page CTA relabel + Calendly 30-min event cleanup). 2b — account-minimum and state-eligibility FAQ answers — drafted for David's sign-off, NOT shipped. Note for 2b: the ADV Part 2A Item 7 discloses a $250k investable-asset minimum (waivable) that neither website mentions.
+- next: 2b wording sign-off → ship on both sites; pre-mail-drop analytics repair (unify PostHog capture through posthog-js, Calendly `invitee.created` webhook → `call_booked`, internal-traffic tagging); consider UTM passthrough on cross-domain CTAs.
+
 ### 2026-08-03 — Direct QR visitors to the existing fee calculator
 **Agent:** Codex | **Surface:** YAPT EDDM QR landing and analytics
 - changed: the exact legacy printer-proof QR signature and the canonical tagged EDDM QR signature now open the existing `#calculator` section directly without reordering the home page or changing QR artwork.
