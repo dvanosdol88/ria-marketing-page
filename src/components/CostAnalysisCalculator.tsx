@@ -1526,6 +1526,10 @@ export function CostAnalysisCalculator({
       </section>
 
       {isSavingsCalculatorUpgrade && (
+        <MeetDavidCta location="home_post_calculator" />
+      )}
+
+      {isSavingsCalculatorUpgrade && (
         <AdvisorProofSections />
       )}
 
