@@ -145,7 +145,7 @@ export function ProgressiveStickyBar() {
     <>
       {/* Desktop: tucks under collapsed SiteNav (52px). */}
       <div
-        className={`fixed inset-x-0 top-[52px] z-40 hidden h-10 transition-opacity ease-out md:block ${
+        className={`fixed inset-x-0 top-[52px] z-40 hidden h-10 transition-opacity ease-out xl:block ${
           desktopVisible ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         style={{ transitionDuration: `${STICKY_BAR_OPACITY_MS}ms` }}
@@ -155,7 +155,7 @@ export function ProgressiveStickyBar() {
       </div>
       {/* Mobile: tucks under collapsed SiteNav (58px). Savings + section nav. */}
       <div
-        className={`fixed inset-x-0 top-[58px] z-40 h-[72px] transition-opacity ease-out md:hidden ${
+        className={`fixed inset-x-0 top-[58px] z-40 h-[72px] transition-opacity ease-out xl:hidden ${
           mobileVisible ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         style={{ transitionDuration: `${STICKY_BAR_OPACITY_MS}ms` }}

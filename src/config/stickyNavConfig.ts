@@ -9,6 +9,8 @@ export const MOBILE_EXPANDED_SITE_NAV_HEIGHT = 77;
 export const STICKY_BAR_HEIGHT = 40;
 export const MOBILE_STICKY_BAR_HEIGHT = 72;
 export const SCROLL_SPY_BUFFER = 18;
+export const DESKTOP_SITE_NAV_BREAKPOINT_PX = 1280;
+export const DESKTOP_SITE_NAV_MEDIA_QUERY = `(min-width: ${DESKTOP_SITE_NAV_BREAKPOINT_PX}px)`;
 
 export const STICKY_BAR_OPACITY_MS = 300;
 
@@ -21,7 +23,7 @@ export const STICKY_SECTION_SPRING = {
 
 export function isMobileViewport(): boolean {
   if (typeof window === "undefined") return false;
-  return window.matchMedia("(max-width: 767px)").matches;
+  return !window.matchMedia(DESKTOP_SITE_NAV_MEDIA_QUERY).matches;
 }
 
 export function getCollapsedSiteNavHeight(isMobile = isMobileViewport()): number {

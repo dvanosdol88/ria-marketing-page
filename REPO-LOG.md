@@ -3,6 +3,16 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-04 — Post-calculator WHAT / WHY / WHO / HOW handoff
+**Agent:** Codex | **Surface:** YAPTM homepage and navigation
+- changed: added the approved cardless WHAT / WHY / WHO / HOW explanation immediately after the complete calculator and its state-carrying Advanced Calculator handoff, followed by the three-link next-step divider and then the existing Meet David/advisor-proof flow.
+- navigation: preserved every existing item, added `Fee Calculator` -> `/#calculator`, and added distinct tracked `Smarter Way Wealth` outbound links at the far right of desktop navigation and in the mobile drawer.
+- preserved: calculator math and state, the Advanced Calculator query handoff, campaign attribution, analytics event/property contracts, privacy boundaries, and the existing advisor-proof content.
+- verified locally: focused WWWH contract tests passed 7/7; credentials-layout, EDDM attribution, refresh-position, lint (0 errors; 3 inherited warnings), and the production build passed. Production-build browser checks at 390px first and 1440px confirmed exact copy/order/targets, 0px overflow, 44px+ targets, accessible 8.95–12.77 CTA contrast, correct spine orientation, visible focus, reduced-motion behavior, preserved handoff state, and zero console issues. The inherited advisor-calculator batch still fails its existing line-70 `0 !== 1` assertion and was not masked or repaired.
+- final-review repairs: stabilized hydration for the reduced-motion Advanced Calculator handoff, restored the WWWH spine to the approved inherited Inter/sans role, moved the complete navigation row to the measured 1280px breakpoint, and made the closed drawer native-`inert` with Escape, focus return, and same-breakpoint resize auto-close behavior.
+- final verification: focused WWWH/navigation regressions passed 10/10; lint passed with 0 errors and 3 inherited warnings; the production build passed with inherited warnings; and production-mode browser checks at 390, 768, 1024, 1280, and 1440px confirmed the intended header mode, 0px overflow, 44px targets, exact WWWH placement/copy/CTAs, 127.33px row clearance at 1280px with no wrap, closed-drawer Tab exclusion, open focus access, Escape/focus return, resize close, and 0 console/page errors.
+- not deployed: Task 3 is committed on the isolated `codex/wwwh-yaptm` worktree for parent integration and release.
+
 ### 2026-08-03 — Leaving-site icon on booking block + real Advanced Calculator preview loop
 **Agent:** Claude (Fable) | **Surface:** marketing | **Duration:** same session
 - changed: `MeetDavidCta` gains an external-link icon (upper-right) signaling the hop to smarterwaywealth.com (David request, from screenshot). `AdvancedCalculatorCta`'s hand-drawn "Return path" mock replaced with real captured frames of the smarterwaywealth.com/save market replay: steady-view poster + 5 replay frames crossfading on a 10s CSS loop (`.adv-preview-frame` in globals.css; reduced-motion shows the poster only).
