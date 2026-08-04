@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ExternalLink, Menu, X } from "lucide-react";
 import { siteNavLinks } from "@/config/siteNavConfig";
 import {
+  DESKTOP_SITE_NAV_MEDIA_QUERY,
   getSiteNavScrollTriggerY,
   isMobileViewport,
   MOBILE_STICKY_BAR_HEIGHT,
@@ -43,6 +44,15 @@ export function SiteNav() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("calculator");
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  const toggleDrawer = useCallback(() => setDrawerOpen((p) => !p), []);
+  const closeDrawer = useCallback(() => {
+    if (document.activeElement?.closest('nav[aria-label="Mobile navigation"]')) {
+      menuButtonRef.current?.focus();
+    }
+    setDrawerOpen(false);
+  }, []);
 
   /* Track scroll to toggle collapsed state */
   useEffect(() => {
@@ -107,6 +117,35 @@ export function SiteNav() {
     return () => { document.body.style.overflow = ""; };
   }, [drawerOpen]);
 
+  /* Keep the drawer state aligned with the same 1280px breakpoint that swaps
+     the mobile and desktop header layouts. */
+  useEffect(() => {
+    const desktopQuery = window.matchMedia(DESKTOP_SITE_NAV_MEDIA_QUERY);
+    const closeAtDesktop = (event: MediaQueryListEvent) => {
+      if (!event.matches) return;
+      if (document.activeElement?.closest('nav[aria-label="Mobile navigation"]')) {
+        (document.activeElement as HTMLElement).blur();
+      }
+      setDrawerOpen(false);
+    };
+
+    desktopQuery.addEventListener("change", closeAtDesktop);
+    return () => desktopQuery.removeEventListener("change", closeAtDesktop);
+  }, []);
+
+  useEffect(() => {
+    if (!drawerOpen) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      closeDrawer();
+    };
+
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [closeDrawer, drawerOpen]);
+
   /* On the homepage, make nav state follow the section currently in view. */
   useEffect(() => {
     if (pathname !== "/") {
@@ -144,9 +183,6 @@ export function SiteNav() {
       window.removeEventListener("hashchange", onScroll);
     };
   }, [collapsed, pathname]);
-
-  const toggleDrawer = useCallback(() => setDrawerOpen((p) => !p), []);
-  const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
   const isLinkActive = useCallback(
     (link: (typeof siteNavLinks)[number]) => {
@@ -211,14 +247,15 @@ export function SiteNav() {
 
         <div className="site-nav mx-auto max-w-[1200px] px-4 transition-all duration-500 ease-out sm:px-6">
           {/* ── Mobile Layout ── */}
-          <div className={`flex items-center justify-between md:hidden transition-all duration-500 ease-out transform-gpu ${
+          <div className={`flex items-center justify-between xl:hidden transition-all duration-500 ease-out transform-gpu ${
             collapsed ? "h-[58px]" : "h-[77px]"
           }`}>
             <button
+              ref={menuButtonRef}
               onClick={toggleDrawer}
               aria-label={drawerOpen ? "Close menu" : "Open menu"}
               aria-expanded={drawerOpen}
-              className="relative z-10 flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-800 shadow-sm transition-colors duration-300 hover:bg-neutral-100 active:bg-neutral-200"
+              className="relative z-10 flex h-11 w-11 items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-800 shadow-sm transition-colors duration-300 hover:bg-neutral-100 active:bg-neutral-200"
             >
               {drawerOpen ? <X className="h-5 w-5" strokeWidth={2.2} /> : <Menu className="h-6 w-6" strokeWidth={2.2} />}
             </button>
@@ -226,7 +263,7 @@ export function SiteNav() {
             {/* Mobile logo — tiered implementation */}
             <Link
               href={"/" as any}
-              className="absolute left-1/2 -translate-x-1/2 flex items-center transform-gpu"
+              className="absolute left-1/2 flex min-h-11 -translate-x-1/2 items-center transform-gpu"
               aria-label="Smarter Way Wealth home"
             >
               <Logo
@@ -237,17 +274,17 @@ export function SiteNav() {
             </Link>
 
             {/* Right slot — reserved for future CTA */}
-            <div className="w-10" aria-hidden="true" />
+            <div className="w-11" aria-hidden="true" />
           </div>
 
           {/* ── Desktop Layout ── */}
-          <div className={`hidden items-center justify-between md:flex transition-all duration-500 ease-out transform-gpu ${
+          <div className={`hidden items-center justify-between xl:flex transition-all duration-500 ease-out transform-gpu ${
             collapsed ? "h-[52px]" : "h-[84px]"
           }`}>
             {/* Desktop logo — tiered implementation */}
             <Link
               href={"/" as any}
-              className="shrink-0 rounded-md transition-opacity duration-300 hover:opacity-90"
+              className="inline-flex min-h-11 shrink-0 items-center rounded-md transition-opacity duration-300 hover:opacity-90"
               aria-label="Smarter Way Wealth home"
             >
               <Logo 
@@ -315,7 +352,7 @@ export function SiteNav() {
       {/* ── Mobile Drawer (always in DOM, toggled via CSS) ── */}
       {/* Backdrop */}
       <div
-        className={`fixed inset-0 z-[60] bg-black/40 transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 z-[60] bg-black/40 transition-opacity duration-300 xl:hidden ${
           drawerOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={closeDrawer}
@@ -324,11 +361,12 @@ export function SiteNav() {
 
       {/* Panel */}
       <nav
-        className={`site-nav fixed inset-y-0 left-0 z-[70] flex w-[280px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out md:hidden ${
+        className={`site-nav fixed inset-y-0 left-0 z-[70] flex w-[280px] flex-col bg-white shadow-2xl transition-transform duration-300 ease-out xl:hidden ${
           drawerOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         aria-label="Mobile navigation"
         aria-hidden={!drawerOpen}
+        inert={!drawerOpen}
       >
         {/* Drawer Header */}
         <div className="flex h-[77px] items-center justify-between px-4">
@@ -336,6 +374,7 @@ export function SiteNav() {
             href={"/" as any}
             aria-label="Smarter Way Wealth home"
             onClick={closeDrawer}
+            className="inline-flex min-h-11 items-center"
           >
             <Logo 
               heightClass="h-10" 
@@ -345,7 +384,7 @@ export function SiteNav() {
           <button
             onClick={closeDrawer}
             aria-label="Close menu"
-            className="flex h-10 w-10 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-100"
+            className="flex h-11 w-11 items-center justify-center rounded-lg text-neutral-600 transition-colors hover:bg-neutral-100"
           >
             <X className="h-5 w-5" strokeWidth={2} />
           </button>

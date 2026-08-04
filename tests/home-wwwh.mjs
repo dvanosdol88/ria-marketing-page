@@ -13,6 +13,7 @@ const [
   stylesSource,
   navConfigSource,
   navSource,
+  stickyNavConfigSource,
   advancedCalculatorCtaSource,
 ] = await Promise.all([
   readSource("../src/components/CostAnalysisCalculator.tsx"),
@@ -22,6 +23,7 @@ const [
   readSource("../src/components/WhatWhyWhoHow.module.css"),
   readSource("../src/config/siteNavConfig.ts"),
   readSource("../src/components/SiteNav.tsx"),
+  readSource("../src/config/stickyNavConfig.ts"),
   readSource("../src/components/AdvancedCalculatorCta.tsx"),
 ]);
 
@@ -137,6 +139,8 @@ test("WWWH uses semantic cardless fields with responsive spine and reduced motio
   assert.match(stylesSource, /writing-mode: horizontal-tb/);
   assert.match(stylesSource, /transform: none/);
   assert.match(stylesSource, /font-size: clamp\(2\.6rem, 6\.9vw, 6\.2rem\)/);
+  assert.match(stylesSource, /\.label \{[^}]*font-family: inherit/s);
+  assert.doesNotMatch(stylesSource, /Georgia|Times New Roman/i);
   assert.match(stylesSource, /@media \(max-width: 700px\)/);
   assert.match(answersSource, /useReducedMotion\(\)/);
   assert.match(stylesSource, /@media \(prefers-reduced-motion: reduce\)/);
@@ -269,4 +273,27 @@ test("desktop and mobile nav expose the branded outbound firm link with tracking
   );
   assert.match(navSource, /min-h-11/);
   assert.match(navSource, /min-h-12/);
+  assert.doesNotMatch(navSource, /\bh-10 w-10\b/);
+});
+
+test("navigation uses one safe 1280px breakpoint across rendering and viewport logic", () => {
+  assert.match(stickyNavConfigSource, /DESKTOP_SITE_NAV_BREAKPOINT_PX = 1280/);
+  assert.match(
+    stickyNavConfigSource,
+    /!window\.matchMedia\(DESKTOP_SITE_NAV_MEDIA_QUERY\)\.matches/,
+  );
+  assert.match(navSource, /window\.matchMedia\(DESKTOP_SITE_NAV_MEDIA_QUERY\)/);
+  assert.match(navSource, /xl:hidden/);
+  assert.match(navSource, /xl:flex/);
+  assert.doesNotMatch(navSource, /\b(?:md|lg):(?:hidden|flex)\b/);
+  assert.match(navSource, /desktopQuery\.addEventListener\("change", closeAtDesktop\)/);
+});
+
+test("drawer state keeps closed navigation inert and open navigation keyboard-accessible", () => {
+  assert.match(navSource, /aria-hidden=\{!drawerOpen\}/);
+  assert.match(navSource, /inert=\{!drawerOpen\}/);
+  assert.match(navSource, /drawerOpen \? "translate-x-0" : "-translate-x-full"/);
+  assert.match(navSource, /event\.key !== "Escape"/);
+  assert.match(navSource, /menuButtonRef\.current\?\.focus\(\)/);
+  assert.doesNotMatch(navSource, /tabIndex=\{-1\}/);
 });
