@@ -7,6 +7,8 @@ export interface SiteNavLink {
   href: string;
   sectionId?: string;
   activePaths?: string[];
+  track?: boolean;
+  ctaLocation?: string;
   /**
    * Visual weight. "primary" = three pillars (Save / Upgrade / Improve);
    * "secondary" = ancillary nav (How? / FAQ). Secondary items render muted
@@ -17,6 +19,13 @@ export interface SiteNavLink {
 
 export const siteNavLinks: SiteNavLink[] = [
   { label: "Save", href: "/", sectionId: "calculator", tier: "primary" },
+  {
+    label: "Fee Calculator",
+    href: "/#calculator",
+    tier: "primary",
+    track: true,
+    ctaLocation: "site_nav",
+  },
   {
     label: "Upgrade",
     href: "/#upgrade-your-advice",

@@ -21,6 +21,8 @@ import { HomeMarketingHero } from "@/components/HomeMarketingHero";
 import { HomeTopBanner } from "@/components/HomeTopBanner";
 import { MeetDavidCta } from "@/components/MeetDavidCta";
 import { PremiumPromisePreview } from "@/components/PremiumPromisePreview";
+import { WhatWhyWhoHow } from "@/components/WhatWhyWhoHow";
+import { WwwhCtaDivider } from "@/components/WwwhCtaDivider";
 import {
   HomeCalculatorExperience,
   type CalculatorSimpleControlNodes,
@@ -1524,6 +1526,13 @@ export function CostAnalysisCalculator({
           onAssumptionChange={(patch) => updateCalculatorState(patch)}
         />
       </section>
+
+      {isSavingsCalculatorUpgrade && (
+        <>
+          <WhatWhyWhoHow />
+          <WwwhCtaDivider />
+        </>
+      )}
 
       {isSavingsCalculatorUpgrade && (
         <MeetDavidCta location="home_post_calculator" />

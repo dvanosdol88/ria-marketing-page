@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { ExternalLink, Menu, X } from "lucide-react";
 import { siteNavLinks } from "@/config/siteNavConfig";
 import {
   getSiteNavScrollTriggerY,
@@ -16,6 +16,7 @@ import {
 
 const COLLAPSE_SCROLL_Y = 158;
 const EXPAND_SCROLL_Y = 104;
+const SMARTER_WAY_WEALTH_URL = "https://smarterwaywealth.com/";
 
 /**
  * Site-wide navigation bar — "Authority" style with collapsing behavior.
@@ -259,6 +260,7 @@ export function SiteNav() {
               {siteNavLinks.map((link, idx) => {
                 const isActive = isLinkActive(link);
                 const isSecondary = link.tier === "secondary";
+                const isTracked = link.track === true;
                 const isFirstSecondary =
                   isSecondary && siteNavLinks[idx - 1]?.tier !== "secondary";
 
@@ -266,7 +268,10 @@ export function SiteNav() {
                   <Link
                     key={link.href}
                     href={link.href as any}
-                    className={`relative px-3 py-2 text-sm rounded-md transition-[color,font-weight] duration-300 ease-out ${
+                    data-posthog-cta={isTracked ? "true" : undefined}
+                    data-posthog-cta-label={isTracked ? link.label : undefined}
+                    data-posthog-cta-location={isTracked ? link.ctaLocation : undefined}
+                    className={`relative inline-flex min-h-11 items-center rounded-md px-3 py-2 text-sm transition-[color,font-weight] duration-300 ease-out ${
                       isFirstSecondary ? "ml-4" : ""
                     } ${
                       isActive
@@ -285,6 +290,23 @@ export function SiteNav() {
                   </Link>
                 );
               })}
+              <a
+                href={SMARTER_WAY_WEALTH_URL}
+                target="_blank"
+                rel="noreferrer"
+                data-posthog-cta="true"
+                data-posthog-cta-label="Smarter Way Wealth"
+                data-posthog-cta-location="site_nav"
+                className="ml-3 inline-flex min-h-11 items-center gap-2 rounded-md px-4 py-2 text-sm font-extrabold transition-[background-color,border-color,color] duration-200 hover:bg-[#D6F5E2] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#007A2F]"
+                style={{
+                  border: "1px solid #007A2F",
+                  background: "#EAF7EF",
+                  color: "#062B43",
+                }}
+              >
+                Smarter Way Wealth
+                <ExternalLink className="h-4 w-4" aria-hidden="true" />
+              </a>
             </nav>
           </div>
         </div>
@@ -336,6 +358,7 @@ export function SiteNav() {
           {siteNavLinks.map((link, idx) => {
             const isActive = isLinkActive(link);
             const isSecondary = link.tier === "secondary";
+            const isTracked = link.track === true;
             const isFirstSecondary =
               isSecondary && siteNavLinks[idx - 1]?.tier !== "secondary";
 
@@ -344,6 +367,9 @@ export function SiteNav() {
                 key={link.href}
                 href={link.href as any}
                 onClick={closeDrawer}
+                data-posthog-cta={isTracked ? "true" : undefined}
+                data-posthog-cta-label={isTracked ? link.label : undefined}
+                data-posthog-cta-location={isTracked ? "site_nav_mobile" : undefined}
                 className={`flex items-center gap-3 rounded-lg px-3 py-3.5 text-base underline-offset-8 transition-[color,font-weight,text-decoration-color] duration-300 ${
                   isFirstSecondary ? "mt-3 border-t border-neutral-100 pt-4" : ""
                 } ${
@@ -358,6 +384,24 @@ export function SiteNav() {
               </Link>
             );
           })}
+          <a
+            href={SMARTER_WAY_WEALTH_URL}
+            target="_blank"
+            rel="noreferrer"
+            onClick={closeDrawer}
+            data-posthog-cta="true"
+            data-posthog-cta-label="Smarter Way Wealth"
+            data-posthog-cta-location="site_nav_mobile"
+            className="mt-3 flex min-h-12 items-center justify-between gap-3 rounded-lg px-3 py-3.5 text-base font-extrabold transition-colors duration-200 hover:bg-[#D6F5E2] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#007A2F]"
+            style={{
+              border: "1px solid #007A2F",
+              background: "#EAF7EF",
+              color: "#062B43",
+            }}
+          >
+            Smarter Way Wealth
+            <ExternalLink className="h-5 w-5" aria-hidden="true" />
+          </a>
         </div>
 
         <div className="border-t border-neutral-100 px-4 py-4">

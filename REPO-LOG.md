@@ -3,6 +3,14 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-04 — Post-calculator WHAT / WHY / WHO / HOW handoff
+**Agent:** Codex | **Surface:** YAPTM homepage and navigation
+- changed: added the approved cardless WHAT / WHY / WHO / HOW explanation immediately after the complete calculator and its state-carrying Advanced Calculator handoff, followed by the three-link next-step divider and then the existing Meet David/advisor-proof flow.
+- navigation: preserved every existing item, added `Fee Calculator` -> `/#calculator`, and added distinct tracked `Smarter Way Wealth` outbound links at the far right of desktop navigation and in the mobile drawer.
+- preserved: calculator math and state, the Advanced Calculator query handoff, campaign attribution, analytics event/property contracts, privacy boundaries, and the existing advisor-proof content.
+- verified locally: focused WWWH contract tests passed 7/7; credentials-layout, EDDM attribution, refresh-position, lint (0 errors; 3 inherited warnings), and the production build passed. Production-build browser checks at 390px first and 1440px confirmed exact copy/order/targets, 0px overflow, 44px+ targets, accessible 8.95–12.77 CTA contrast, correct spine orientation, visible focus, reduced-motion behavior, preserved handoff state, and zero console issues. The inherited advisor-calculator batch still fails its existing line-70 `0 !== 1` assertion and was not masked or repaired.
+- not deployed: Task 3 is committed on the isolated `codex/wwwh-yaptm` worktree for parent integration and release.
+
 ### 2026-08-03 — Leaving-site icon on booking block + real Advanced Calculator preview loop
 **Agent:** Claude (Fable) | **Surface:** marketing | **Duration:** same session
 - changed: `MeetDavidCta` gains an external-link icon (upper-right) signaling the hop to smarterwaywealth.com (David request, from screenshot). `AdvancedCalculatorCta`'s hand-drawn "Return path" mock replaced with real captured frames of the smarterwaywealth.com/save market replay: steady-view poster + 5 replay frames crossfading on a 10s CSS loop (`.adv-preview-frame` in globals.css; reduced-motion shows the poster only).
