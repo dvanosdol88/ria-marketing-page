@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Calculator, ExternalLink } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 // Real captures of the smarterwaywealth.com/save market replay
 // (scripts/capture-advanced-calculator.mjs): frame 1 is the steady-view
@@ -13,6 +14,12 @@ const PREVIEW_SIZES = "(min-width: 768px) 40vw, 90vw";
 
 export function AdvancedCalculatorCta({ href }: { href: string }) {
   const reduceMotion = useReducedMotion();
+  const [motionPreferenceReady, setMotionPreferenceReady] = useState(false);
+  const shouldReduceMotion = motionPreferenceReady && Boolean(reduceMotion);
+
+  useEffect(() => {
+    setMotionPreferenceReady(true);
+  }, []);
 
   return (
     <motion.a
@@ -22,9 +29,9 @@ export function AdvancedCalculatorCta({ href }: { href: string }) {
       data-posthog-cta-label="Open Advanced Calculator"
       data-posthog-cta-location="below_calculation_details"
       data-advanced-calculator-cta
-      initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
-      whileHover={reduceMotion ? undefined : { y: -3 }}
+      whileHover={shouldReduceMotion ? undefined : { y: -3 }}
       viewport={{ once: true, margin: "-36px" }}
       transition={{ duration: 0.48, ease: [0.16, 1, 0.3, 1] }}
       className="group mt-4 grid w-full overflow-hidden rounded-lg border border-[#0A5633] bg-[#062B43] !text-white !no-underline shadow-[0_18px_44px_rgba(6,43,67,0.18)] transition-[border-color,box-shadow] duration-300 hover:border-[#108843] hover:!text-white hover:shadow-[0_24px_54px_rgba(6,43,67,0.24)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843] md:grid-cols-[minmax(0,1fr)_minmax(300px,0.82fr)]"
@@ -64,7 +71,7 @@ export function AdvancedCalculatorCta({ href }: { href: string }) {
               sizes={PREVIEW_SIZES}
               className="object-cover object-top"
             />
-            {!reduceMotion &&
+            {!shouldReduceMotion &&
               REPLAY_FRAMES.map((frame, idx) => (
                 <Image
                   key={frame}

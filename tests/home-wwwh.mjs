@@ -13,6 +13,7 @@ const [
   stylesSource,
   navConfigSource,
   navSource,
+  advancedCalculatorCtaSource,
 ] = await Promise.all([
   readSource("../src/components/CostAnalysisCalculator.tsx"),
   readSource("../src/components/HomeCalculatorExperience.tsx"),
@@ -21,6 +22,7 @@ const [
   readSource("../src/components/WhatWhyWhoHow.module.css"),
   readSource("../src/config/siteNavConfig.ts"),
   readSource("../src/components/SiteNav.tsx"),
+  readSource("../src/components/AdvancedCalculatorCta.tsx"),
 ]);
 
 const flatten = (source) => source.replace(/\s+/g, " ");
@@ -138,6 +140,21 @@ test("WWWH uses semantic cardless fields with responsive spine and reduced motio
   assert.match(stylesSource, /@media \(max-width: 700px\)/);
   assert.match(answersSource, /useReducedMotion\(\)/);
   assert.match(stylesSource, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.match(stylesSource, /\.answer,\s*\.labelSettle\s*\{[^}]*opacity: 1 !important/s);
+  assert.match(stylesSource, /\.answer,\s*\.labelSettle\s*\{[^}]*transform: none !important/s);
+});
+
+test("advanced calculator motion preference is gated until after hydration", () => {
+  assert.match(
+    advancedCalculatorCtaSource,
+    /const \[motionPreferenceReady, setMotionPreferenceReady\] = useState\(false\)/,
+  );
+  assert.match(
+    advancedCalculatorCtaSource,
+    /const shouldReduceMotion = motionPreferenceReady && Boolean\(reduceMotion\)/,
+  );
+  assert.match(advancedCalculatorCtaSource, /setMotionPreferenceReady\(true\)/);
+  assert.match(advancedCalculatorCtaSource, /\{!shouldReduceMotion &&/);
 });
 
 test("inline FAQ and equal divider links retain exact targets and analytics attributes", () => {

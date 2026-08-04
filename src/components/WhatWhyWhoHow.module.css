@@ -250,6 +250,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .answer,
+  .labelSettle {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
   .dividerLink,
   .dividerLink::after {
     transition-duration: 0.01ms;
