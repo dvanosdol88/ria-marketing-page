@@ -1,6 +1,5 @@
 .surface {
   isolation: isolate;
-  border-top: 1px solid #dfe6ee;
   background: #eef0f5;
 }
 
@@ -8,7 +7,6 @@
   position: relative;
   display: flex;
   min-height: clamp(420px, 42vw, 620px);
-  border-bottom: 1px solid rgba(16, 35, 58, 0.12);
 }
 
 .why {
@@ -24,30 +22,49 @@
 }
 
 .what {
-  background: #eef0f5;
+  background: linear-gradient(
+    180deg,
+    #eef0f5 0%,
+    #eef0f5 62%,
+    #d6f5e2 100%
+  );
 }
 
 .why {
-  background: #d6f5e2;
+  background: linear-gradient(
+    180deg,
+    #d6f5e2 0%,
+    #d6f5e2 60%,
+    #d9e9f3 100%
+  );
 }
 
 .who {
-  background: #d9e9f3;
+  background: linear-gradient(
+    180deg,
+    #d9e9f3 0%,
+    #d9e9f3 60%,
+    #c8ddea 100%
+  );
 }
 
 .how {
-  background: #c8ddea;
+  background: linear-gradient(
+    180deg,
+    #c8ddea 0%,
+    #c8ddea 62%,
+    #d9e9f3 100%
+  );
 }
 
 .spine {
   display: flex;
   flex: 0 0 clamp(132px, 16vw, 236px);
   min-width: 0;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   overflow: hidden;
   padding: clamp(42px, 5vw, 72px) 0;
-  border-right: 1px solid rgba(16, 35, 58, 0.13);
 }
 
 .labelSettle {
@@ -169,8 +186,6 @@
 .accountNote {
   width: fit-content;
   margin-top: 1.1em;
-  padding-top: 0.7em;
-  border-top: 2px solid #007a2f;
   color: #007a2f;
   font-weight: 780;
 }
@@ -292,7 +307,6 @@
     min-height: 0;
     justify-content: flex-start;
     padding: 46px 22px 0;
-    border-right: 0;
   }
 
   .label {

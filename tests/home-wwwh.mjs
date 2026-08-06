@@ -134,6 +134,13 @@ test("WWWH uses semantic cardless fields with responsive spine and reduced motio
   assert.match(answersSource, /<h2 className=\{styles\.label\}/);
   assert.doesNotMatch(answersSource, /<article|card|rounded|shadow/i);
   assert.doesNotMatch(stylesSource, /border-radius|box-shadow/);
+  assert.doesNotMatch(stylesSource, /\.answer \{[^}]*border-bottom/s);
+  assert.doesNotMatch(stylesSource, /\.spine \{[^}]*border-right/s);
+  assert.match(stylesSource, /\.spine \{[^}]*align-items: center/s);
+  assert.match(stylesSource, /\.what \{\s*background: linear-gradient/s);
+  assert.match(stylesSource, /\.why \{\s*background: linear-gradient/s);
+  assert.match(stylesSource, /\.who \{\s*background: linear-gradient/s);
+  assert.match(stylesSource, /\.how \{\s*background: linear-gradient/s);
   assert.match(stylesSource, /writing-mode: vertical-rl/);
   assert.match(stylesSource, /transform: rotate\(180deg\)/);
   assert.match(stylesSource, /writing-mode: horizontal-tb/);
@@ -143,6 +150,7 @@ test("WWWH uses semantic cardless fields with responsive spine and reduced motio
   assert.doesNotMatch(stylesSource, /\.statement \{[^}]*font-size: clamp\(2\.6rem, 6\.9vw, 6\.2rem\)/s);
   assert.match(answersSource, /className=\{styles\.personName\}/);
   assert.match(answersSource, /className=\{styles\.accountNote\}/);
+  assert.doesNotMatch(stylesSource, /\.accountNote \{[^}]*border-top/s);
   assert.match(stylesSource, /\.reasonStatement \{[^}]*margin-left: auto/s);
   assert.match(stylesSource, /\.label \{[^}]*font-family: inherit/s);
   assert.doesNotMatch(stylesSource, /Georgia|Times New Roman/i);
