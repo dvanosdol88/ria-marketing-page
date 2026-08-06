@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ComplianceFooter from "@/components/ComplianceFooter";
+import { isSuppressedRoute } from "@/config/suppressedRoutePrefixes";
 
 const IAPD_URL = "https://adviserinfo.sec.gov/firm/summary/342140";
 
@@ -21,12 +22,7 @@ const PRIVACY_URL = "https://smarterwaywealth.com/privacy";
 export function SiteFooter() {
   const pathname = usePathname();
 
-  if (
-    pathname.startsWith("/evals") ||
-    pathname.startsWith("/calculator-evals") ||
-    pathname.startsWith("/url-evals") ||
-    pathname.startsWith("/gallery")
-  ) {
+  if (isSuppressedRoute(pathname)) {
     return null;
   }
 
