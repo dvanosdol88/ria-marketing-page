@@ -14,7 +14,11 @@ const dividerLinks = [
   { label: "FAQ", href: "/faq", external: false },
 ] as const;
 
-export function WwwhCtaDivider() {
+export function WwwhCtaDivider({
+  location = "home_wwwh_divider",
+}: {
+  location?: string;
+}) {
   return (
     <nav className={styles.divider} aria-label="Next steps">
       {dividerLinks.map((link) => (
@@ -26,7 +30,7 @@ export function WwwhCtaDivider() {
           rel={link.external ? "noreferrer" : undefined}
           data-posthog-cta="true"
           data-posthog-cta-label={link.label}
-          data-posthog-cta-location="home_wwwh_divider"
+          data-posthog-cta-location={location}
         >
           {link.label}
         </a>
