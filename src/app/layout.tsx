@@ -5,6 +5,7 @@ import "./globals.css";
 import { inter, dmSans } from "./fonts";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { SiteCtaDivider } from "@/components/SiteCtaDivider";
 import { ProgressiveStickyBar } from "@/components/ProgressiveStickyBar";
 import { PostHogCtaTracker } from "@/components/PostHogCtaTracker";
 import { SavingsBarProvider } from "@/components/SavingsBarContext";
@@ -136,6 +137,7 @@ export default function RootLayout({
                 <PostHogPageView />
               </Suspense>
               <div className="min-h-screen">{children}</div>
+              <SiteCtaDivider />
               <SiteFooter />
             </SavingsBarProvider>
           </ViewTransitions>

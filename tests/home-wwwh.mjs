@@ -190,7 +190,8 @@ test("inline FAQ and equal divider links retain exact targets and analytics attr
   assert.match(dividerSource, /rel=\{link\.external \? "noreferrer" : undefined\}/);
   assert.match(dividerSource, /data-posthog-cta="true"/);
   assert.match(dividerSource, /data-posthog-cta-label=\{link\.label\}/);
-  assert.match(dividerSource, /data-posthog-cta-location="home_wwwh_divider"/);
+  assert.match(dividerSource, /location = "home_wwwh_divider"/);
+  assert.match(dividerSource, /data-posthog-cta-location=\{location\}/);
   assert.match(stylesSource, /grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
   assert.match(stylesSource, /min-height: 88px/);
   assert.match(stylesSource, /linear-gradient/);
