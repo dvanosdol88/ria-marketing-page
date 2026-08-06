@@ -41,8 +41,14 @@ async function waitForPage(url, child) {
   throw new Error(`Timed out waiting for ${url}: ${lastError?.message ?? "no response"}`);
 }
 
+// Next.js accepts any of these extensions for a route's page file. Matching
+// only "page.tsx" would let a future page.jsx/page.js/page.mdx route build
+// and ship silently uncovered by this walker while the vacuity guards below
+// still pass, quietly falsifying the "every public route" promise.
+const PAGE_FILE_PATTERN = /^page\.(tsx|ts|jsx|js|mdx)$/;
+
 /**
- * Walk src/app for page.tsx files and translate directory paths into URL
+ * Walk src/app for page.* files and translate directory paths into URL
  * routes. Dynamic segments ([slug], [...path]) and route groups ((group))
  * are skipped by not descending into them at all. This repo has neither
  * today (verified against the current tree), so skipping the whole subtree
@@ -54,7 +60,7 @@ async function discoverPageRoutes(dir, segments) {
   const entries = await readdir(dir, { withFileTypes: true });
   const routes = [];
 
-  if (entries.some((entry) => entry.isFile() && entry.name === "page.tsx")) {
+  if (entries.some((entry) => entry.isFile() && PAGE_FILE_PATTERN.test(entry.name))) {
     routes.push(segments.length === 0 ? "/" : `/${segments.join("/")}`);
   }
 
@@ -120,7 +126,7 @@ async function fetchRoute(baseUrl, route) {
  * divider" is proven by the unique aria-label marker, not by the location
  * count.
  */
-function assertExactlyOneDivider(html, route, expectedLocation, otherLocation) {
+function assertExactlyOneDivider(html, route, expectedLocation, otherLocation, { checkFooterOrder = false } = {}) {
   const ariaCount = countOccurrences(html, 'aria-label="Next steps"');
   assert.equal(
     ariaCount,
@@ -148,6 +154,40 @@ function assertExactlyOneDivider(html, route, expectedLocation, otherLocation) {
     assert.ok(
       block.includes(`data-posthog-cta-label="${label}"`),
       `[${route}] divider is missing the "${label}" link`,
+    );
+  }
+
+  // Proves placement, not just presence: the plan requires the site-wide
+  // <SiteCtaDivider /> to sit immediately above <SiteFooter />. Comparing
+  // index positions catches a mount-order regression in layout.tsx (e.g.
+  // <SiteFooter /> rendered before <SiteCtaDivider />) that the counts above
+  // would miss entirely, since they only prove the right tags exist
+  // somewhere on the page, not where.
+  //
+  // Only meaningful for standard routes (checkFooterOrder=true from the
+  // caller). src/app/loading.tsx wraps every route's page content in a root
+  // Suspense boundary; on the home route the divider being checked here is
+  // WwwhCtaDivider embedded deep inside that suspended {children} tree
+  // (via CostAnalysisCalculator), not the shell-level <SiteCtaDivider />.
+  // Once that boundary's content resolves, React/Next flushes it as an
+  // out-of-order streamed chunk appended near the end of the raw HTML - so a
+  // naive index comparison on the raw string reports a false "footer first"
+  // on "/" even though the resolved DOM has the divider well above the
+  // footer (confirmed by inspecting a captured "/" response: the streamed
+  // WWWH chunk lands after <footer> in the raw text). <SiteCtaDivider /> and
+  // <SiteFooter /> are both shell-level siblings of {children} in
+  // layout.tsx, outside that boundary, so their relative order IS reliably
+  // checkable via raw string index on standard routes - confirmed by
+  // inspecting a captured standard-route response, where the divider
+  // consistently precedes <footer>.
+  if (checkFooterOrder) {
+    const footerIndex = html.indexOf("<footer");
+    assert.ok(footerIndex >= 0, `[${route}] expected a <footer> element in the rendered HTML`);
+    const dividerIndex = html.indexOf(block);
+    assert.ok(
+      dividerIndex >= 0 && dividerIndex < footerIndex,
+      `[${route}] divider must precede the footer in server-rendered HTML ` +
+        `(divider at index ${dividerIndex}, footer at index ${footerIndex})`,
     );
   }
 }
@@ -230,8 +270,8 @@ try {
 
   for (const route of standardRoutes) {
     const html = await fetchRoute(baseUrl, route);
-    assertExactlyOneDivider(html, route, SITE_LOCATION, HOME_LOCATION);
-    console.log(`[standard]   ${route} - OK (site_footer_divider x3, home_wwwh_divider x0)`);
+    assertExactlyOneDivider(html, route, SITE_LOCATION, HOME_LOCATION, { checkFooterOrder: true });
+    console.log(`[standard]   ${route} - OK (site_footer_divider x3, home_wwwh_divider x0, precedes footer)`);
   }
 
   console.log(
