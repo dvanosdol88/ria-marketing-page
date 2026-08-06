@@ -1,13 +1,26 @@
 .surface {
+  isolation: isolate;
   border-top: 1px solid #dfe6ee;
   background: #eef0f5;
 }
 
 .answer {
-  display: grid;
-  grid-template-columns: clamp(82px, 9vw, 144px) minmax(0, 1fr);
-  min-height: min(880px, 70vw);
+  position: relative;
+  display: flex;
+  min-height: clamp(420px, 42vw, 620px);
   border-bottom: 1px solid rgba(16, 35, 58, 0.12);
+}
+
+.why {
+  min-height: clamp(380px, 36vw, 520px);
+}
+
+.who {
+  min-height: clamp(420px, 40vw, 580px);
+}
+
+.how {
+  min-height: clamp(500px, 46vw, 680px);
 }
 
 .what {
@@ -28,11 +41,12 @@
 
 .spine {
   display: flex;
+  flex: 0 0 clamp(132px, 16vw, 236px);
   min-width: 0;
   align-items: flex-end;
   justify-content: center;
   overflow: hidden;
-  padding: 42px 0;
+  padding: clamp(42px, 5vw, 72px) 0;
   border-right: 1px solid rgba(16, 35, 58, 0.13);
 }
 
@@ -44,10 +58,10 @@
   margin: 0;
   color: #064b84;
   font-family: inherit;
-  font-size: clamp(3.15rem, 6.2vw, 6.8rem);
-  font-weight: 400;
+  font-size: clamp(2.6rem, 6.9vw, 6.2rem);
+  font-weight: 760;
   letter-spacing: -0.06em;
-  line-height: 0.8;
+  line-height: 0.86;
   transform: rotate(180deg);
   writing-mode: vertical-rl;
 }
@@ -59,20 +73,106 @@
 
 .copy {
   display: flex;
-  max-width: 1280px;
+  flex: 1 1 auto;
+  min-width: 0;
   align-items: center;
-  padding: clamp(56px, 8vw, 120px) clamp(28px, 7vw, 104px);
+  padding: clamp(58px, 7vw, 104px) clamp(36px, 8vw, 132px);
+}
+
+.what .copy {
+  padding-left: clamp(42px, 8vw, 138px);
+}
+
+.why .copy {
+  justify-content: flex-end;
+  padding-right: clamp(52px, 12vw, 188px);
+}
+
+.who .copy {
+  padding-left: clamp(54px, 11vw, 176px);
+}
+
+.how .copy {
+  padding-left: clamp(42px, 7vw, 118px);
+  padding-right: clamp(36px, 9vw, 148px);
 }
 
 .statement {
-  max-width: 13.5ch;
+  max-width: 24ch;
   margin: 0;
   color: #10233a;
-  font-size: clamp(2.6rem, 6.9vw, 6.2rem);
-  font-weight: 730;
-  letter-spacing: -0.062em;
-  line-height: 0.99;
-  text-wrap: balance;
+  font-size: clamp(1.7rem, 3.1vw, 3.15rem);
+  font-weight: 610;
+  letter-spacing: -0.038em;
+  line-height: 1.12;
+  text-wrap: pretty;
+}
+
+.offer,
+.priceLine,
+.personName,
+.credentials,
+.method,
+.accountNote {
+  display: block;
+}
+
+.offerStatement {
+  max-width: 25ch;
+}
+
+.priceLine {
+  margin-top: 0.72em;
+  color: #064b84;
+  font-size: 0.76em;
+  font-weight: 560;
+  letter-spacing: -0.025em;
+}
+
+.priceLine strong {
+  color: #007a2f;
+  font-size: 1.32em;
+  font-weight: 820;
+}
+
+.reasonStatement {
+  max-width: 18ch;
+  margin-left: auto;
+}
+
+.personStatement {
+  max-width: 24ch;
+}
+
+.personName {
+  font-size: clamp(2.35rem, 4.6vw, 4.7rem);
+  font-weight: 760;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+.credentials {
+  max-width: 29ch;
+  margin-top: 0.8em;
+  font-size: clamp(1.2rem, 1.8vw, 1.9rem);
+  font-weight: 560;
+  letter-spacing: -0.02em;
+  line-height: 1.34;
+}
+
+.methodStatement {
+  max-width: 34ch;
+  font-size: clamp(1.35rem, 2.3vw, 2.35rem);
+  line-height: 1.26;
+}
+
+.accountNote {
+  width: fit-content;
+  margin-top: 1.1em;
+  padding-top: 0.7em;
+  border-top: 2px solid #007a2f;
+  color: #007a2f;
+  font-weight: 780;
 }
 
 .inlineLink {
@@ -81,15 +181,14 @@
   min-height: 44px;
   align-items: center;
   justify-content: center;
-  margin-left: 0.18em;
+  margin-top: 1em;
   color: #064b84;
-  font-size: 0.26em;
+  font-size: 1rem;
   font-weight: 820;
-  letter-spacing: 0;
+  letter-spacing: 0.02em;
   line-height: 1;
   text-decoration-thickness: 2px;
   text-underline-offset: 0.14em;
-  vertical-align: 0.28em;
   white-space: nowrap;
 }
 
@@ -192,37 +291,60 @@
   .spine {
     min-height: 0;
     justify-content: flex-start;
-    padding: 26px 22px 0;
+    padding: 46px 22px 0;
     border-right: 0;
   }
 
   .label {
     font-family: inherit;
-    font-size: 0.76rem;
-    font-weight: 850;
-    letter-spacing: 0.2em;
-    line-height: 1;
+    font-weight: 780;
+    letter-spacing: -0.065em;
+    line-height: 0.9;
     transform: none;
     writing-mode: horizontal-tb;
   }
 
-  .copy {
+  .copy,
+  .what .copy,
+  .why .copy,
+  .who .copy,
+  .how .copy {
     align-items: flex-start;
-    padding: 18px 22px 54px;
+    justify-content: flex-start;
+    padding: 28px 22px 66px;
   }
 
   .statement {
-    max-width: 15ch;
-    font-size: clamp(2.6rem, 6.9vw, 6.2rem);
-    letter-spacing: -0.055em;
-    line-height: 1.02;
+    max-width: 28ch;
+    margin-left: 0;
+    font-size: clamp(1.4rem, 6vw, 1.8rem);
+    letter-spacing: -0.032em;
+    line-height: 1.22;
     text-wrap: pretty;
   }
 
+  .offerStatement,
+  .reasonStatement,
+  .personStatement,
+  .methodStatement {
+    max-width: 28ch;
+  }
+
+  .personName {
+    font-size: clamp(2.15rem, 10vw, 3rem);
+  }
+
+  .credentials {
+    font-size: clamp(1.2rem, 5vw, 1.45rem);
+  }
+
+  .methodStatement {
+    font-size: clamp(1.25rem, 5.35vw, 1.55rem);
+    line-height: 1.34;
+  }
+
   .inlineLink {
-    margin-left: 0;
-    font-size: 0.38em;
-    vertical-align: 0.2em;
+    font-size: 0.95rem;
   }
 
   .divider {

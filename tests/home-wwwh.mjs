@@ -138,7 +138,12 @@ test("WWWH uses semantic cardless fields with responsive spine and reduced motio
   assert.match(stylesSource, /transform: rotate\(180deg\)/);
   assert.match(stylesSource, /writing-mode: horizontal-tb/);
   assert.match(stylesSource, /transform: none/);
-  assert.match(stylesSource, /font-size: clamp\(2\.6rem, 6\.9vw, 6\.2rem\)/);
+  assert.match(stylesSource, /\.label \{[^}]*font-size: clamp\(2\.6rem, 6\.9vw, 6\.2rem\)/s);
+  assert.match(stylesSource, /\.statement \{[^}]*font-size: clamp\(1\.7rem, 3\.1vw, 3\.15rem\)/s);
+  assert.doesNotMatch(stylesSource, /\.statement \{[^}]*font-size: clamp\(2\.6rem, 6\.9vw, 6\.2rem\)/s);
+  assert.match(answersSource, /className=\{styles\.personName\}/);
+  assert.match(answersSource, /className=\{styles\.accountNote\}/);
+  assert.match(stylesSource, /\.reasonStatement \{[^}]*margin-left: auto/s);
   assert.match(stylesSource, /\.label \{[^}]*font-family: inherit/s);
   assert.doesNotMatch(stylesSource, /Georgia|Times New Roman/i);
   assert.match(stylesSource, /@media \(max-width: 700px\)/);

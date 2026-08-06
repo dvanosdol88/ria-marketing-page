@@ -26,6 +26,56 @@ export const WWWH_ANSWERS = [
   },
 ] as const;
 
+type WwwhAnswer = (typeof WWWH_ANSWERS)[number];
+
+function AnswerStatement({ answer }: { answer: WwwhAnswer }) {
+  if (answer.key === "what") {
+    const [relationship, price] = answer.body.split(", for just ");
+
+    return (
+      <p className={`${styles.statement} ${styles.offerStatement}`}>
+        <span className={styles.offer}>{relationship},</span>
+        <span className={styles.priceLine}>
+          for just <strong>{price}</strong>
+        </span>
+      </p>
+    );
+  }
+
+  if (answer.key === "who") {
+    const [name, credentials] = answer.body.split(", CFA");
+
+    return (
+      <p className={`${styles.statement} ${styles.personStatement}`}>
+        <span className={styles.personName}>{name},</span>
+        <span className={styles.credentials}>CFA{credentials}</span>
+      </p>
+    );
+  }
+
+  if (answer.key === "how") {
+    const [method, accountControl] = answer.body.split(" No need");
+
+    return (
+      <p className={`${styles.statement} ${styles.methodStatement}`}>
+        <span className={styles.method}>{method}</span>
+        <span className={styles.accountNote}>No need{accountControl}</span>
+        <a
+          className={styles.inlineLink}
+          href="/faq"
+          data-posthog-cta="true"
+          data-posthog-cta-label="FAQ"
+          data-posthog-cta-location="home_wwwh_how"
+        >
+          FAQ
+        </a>
+      </p>
+    );
+  }
+
+  return <p className={`${styles.statement} ${styles.reasonStatement}`}>{answer.body}</p>;
+}
+
 export function WhatWhyWhoHow() {
   const reduceMotion = useReducedMotion();
 
@@ -65,23 +115,7 @@ export function WhatWhyWhoHow() {
             </motion.div>
           </div>
           <div className={styles.copy}>
-            <p className={styles.statement}>
-              {answer.body}
-              {answer.key === "how" ? (
-                <>
-                  {" "}
-                  <a
-                    className={styles.inlineLink}
-                    href="/faq"
-                    data-posthog-cta="true"
-                    data-posthog-cta-label="FAQ"
-                    data-posthog-cta-location="home_wwwh_how"
-                  >
-                    FAQ
-                  </a>
-                </>
-              ) : null}
-            </p>
+            <AnswerStatement answer={answer} />
           </div>
         </motion.section>
       ))}
