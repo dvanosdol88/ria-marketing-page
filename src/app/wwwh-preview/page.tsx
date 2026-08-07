@@ -13,7 +13,7 @@ const ANSWERS = [
   {
     key: "what",
     word: "WHAT",
-    body: "SmarterWay Wealth provides an investment and financial planning relationship with an experienced, highly credentialed advisor, for just $100 a month.",
+    body: "An investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
   },
   {
     key: "why",
