@@ -1,26 +1,26 @@
-import { Check, X } from "lucide-react";
+import { Check, DollarSign } from "lucide-react";
 
 export const WWWH_ANSWERS = [
   {
     key: "what",
-    label: "WHAT",
+    label: "What",
     body: "An investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
   },
   {
     key: "why",
-    label: "WHY",
+    label: "Why",
     body: "Because not everyone needs to be paying massive, asset-based fees to get good advice.",
   },
   {
     key: "who",
-    label: "WHO",
+    label: "Who",
     body: "David Van Osdol, CFA Charter Holder and CFP Professional with over 20 years’ experience.",
   },
 ] as const;
 
 export const WWWH_HOW = {
   key: "how",
-  label: "HOW",
+  label: "How",
   uses: [
     "Technology to automate admin work",
     "Published model portfolios from top firms",
@@ -79,9 +79,12 @@ export function WhatWhyWhoHow() {
                   key={item}
                   className="flex gap-3 text-lg leading-7 text-[#10233A]/70 sm:text-xl sm:leading-8"
                 >
-                  <X
+                  {/* A red dollar sign, not a gray X — these are the costs a
+                      traditional firm passes on, so the icon says "this is
+                      what you'd be paying for" rather than merely "absent". */}
+                  <DollarSign
                     aria-hidden="true"
-                    className="mt-1.5 h-5 w-5 shrink-0 text-[#10233A]/45 sm:mt-2"
+                    className="mt-1.5 h-5 w-5 shrink-0 text-[#C62828] sm:mt-2"
                     strokeWidth={3}
                   />
                   <span>{item}</span>

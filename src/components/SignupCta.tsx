@@ -14,8 +14,14 @@ type SignupCtaProps = {
   savingsLabel?: string | null;
 };
 
+/**
+ * Deliberately off-palette. David asked for "a brighter, almost fluorescent
+ * shade of blue" so the primary ask stands out against the brand navy — an
+ * intentional exception to the site's color scheme, not a drift from it.
+ * Dark-navy label on the bright fill measures ~8.3:1, well past AA.
+ */
 const PRIMARY_BUTTON_CLASS =
-  "flex min-h-[48px] w-full items-center justify-center rounded-full bg-white px-6 text-center text-base font-bold !text-[#064B84] !no-underline shadow-sm transition hover:bg-white/90 hover:!text-[#053E6D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
+  "flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#00D8FF] px-6 text-center text-base font-bold !text-[#052E45] !no-underline shadow-sm transition hover:bg-[#3FE3FF] hover:!text-[#052E45] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D8FF]";
 
 /**
  * Secondary next step. Deliberately a plain underlined link, never a second

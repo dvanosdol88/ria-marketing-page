@@ -27,7 +27,7 @@ export const signupCta = {
   secondary: {
     /** Names the doubt on purpose — see the note above. */
     prompt: "Not sure yet?",
-    label: "Talk to David for 15 minutes first",
+    label: "Talk to David first for 15 minutes to see if you are a good fit",
     href: SMARTER_WAY_WEALTH_MEET_URL,
     reassurance: "No obligation. Nobody will try to sell you anything.",
   },
@@ -36,7 +36,7 @@ export const signupCta = {
   block: {
     eyebrow: "Ready when you are",
     headline: "One flat fee, whatever your balance does.",
-    body: "No commissions, no products, and no percentage of your money. $100 a month, and your fee stays put as your portfolio grows.",
+    body: "No commissions, no products, and no percentage of your money.",
   },
   /** Kept verbatim from the previous booking block — this line is required
    *  wherever an engagement is offered. */
