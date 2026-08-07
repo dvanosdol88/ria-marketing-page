@@ -27,8 +27,6 @@ const [
   readSource("../src/components/AdvancedCalculatorCta.tsx"),
 ]);
 
-const flatten = (source) => source.replace(/\s+/g, " ");
-
 const relativeLuminance = (hex) => {
   const channels = hex
     .slice(1)
@@ -56,31 +54,27 @@ const contrastRatio = (foreground, background) => {
 
 test("homepage WWWH keeps the locked order and exact approved answers", () => {
   const expected = [
-    [
-      'label: "WHAT"',
-      "Smarter Way Wealth provides an investment and financial planning relationship with an experienced, highly credentialed advisor, for just $100 a month.",
-    ],
-    [
-      'label: "WHY"',
-      "Because not everyone needs to be paying massive, asset-based fees to get good advice.",
-    ],
-    [
-      'label: "WHO"',
-      "David Van Osdol, CFA charterholder and CFP® professional, with over 20 years’ experience.",
-    ],
-    [
-      'label: "HOW"',
-      "We use technology to automate back-office functions, have no corporate overhead, and use published asset allocation models from firms like Goldman Sachs, Fidelity, and Schwab, with low-to-no-cost mutual funds and ETFs. No need to move your accounts.",
-    ],
+    'label: "WHAT"',
+    "An investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
+    'label: "WHY"',
+    "Because not everyone needs to be paying massive, asset-based fees to get good advice.",
+    'label: "WHO"',
+    "David Van Osdol, CFA Charter Holder and CFP Professional with over 20 years’ experience.",
+    'label: "HOW"',
+    "Technology to automate admin work",
+    "Published model portfolios from top firms",
+    "Virtual meetings",
+    "Layers of corporate overhead",
+    "Massive marketing budgets",
+    "A large real estate footprint",
+    "No need to move your accounts.",
   ];
 
   let priorIndex = -1;
-  for (const [label, body] of expected) {
-    const labelIndex = answersSource.indexOf(label);
-    const bodyIndex = answersSource.indexOf(body);
-    assert.ok(labelIndex > priorIndex, `${label} must stay in locked order`);
-    assert.ok(bodyIndex > labelIndex, `${label} must keep its approved answer`);
-    priorIndex = bodyIndex;
+  for (const marker of expected) {
+    const index = answersSource.indexOf(marker);
+    assert.ok(index > priorIndex, `"${marker}" must appear in locked order`);
+    priorIndex = index;
   }
 });
 
@@ -129,23 +123,51 @@ test("WWWH follows the complete calculation-details handoff and precedes advisor
   );
 });
 
-test("WWWH uses semantic cardless fields with responsive spine and reduced motion", () => {
-  assert.match(answersSource, /<motion\.section/);
-  assert.match(answersSource, /<h2 className=\{styles\.label\}/);
+test("WWWH renders each question word as a real heading with no card chrome or rotated type", () => {
+  assert.match(answersSource, /WWWH_ANSWERS\.map\(/);
+  assert.equal(
+    answersSource.match(/<h2\b/g)?.length,
+    2,
+    "expected one <h2> call site mapped over WHAT/WHY/WHO plus one for HOW",
+  );
+  assert.match(answersSource, /<h2[^>]*>\s*\{answer\.label\}\s*<\/h2>/);
+  assert.match(answersSource, /<h2[^>]*>\s*\{WWWH_HOW\.label\}\s*<\/h2>/);
   assert.doesNotMatch(answersSource, /<article|card|rounded|shadow/i);
+  assert.doesNotMatch(
+    answersSource,
+    /writing-mode|rotate\(|vertical-rl|horizontal-tb/i,
+  );
+});
+
+test("WWWH ships as a plain server component with no scroll animation and neutral HOW icons", () => {
+  assert.doesNotMatch(answersSource, /use client/);
+  assert.doesNotMatch(answersSource, /framer-motion/);
+  assert.doesNotMatch(answersSource, /useReducedMotion|motion\./);
+  assert.doesNotMatch(answersSource, /WhatWhyWhoHow\.module\.css/);
+  assert.doesNotMatch(answersSource, /home_wwwh_how/);
+  assert.match(answersSource, /from "lucide-react"/);
+  assert.match(answersSource, /<Check\b/);
+  assert.match(answersSource, /<X\b/);
+  assert.doesNotMatch(
+    answersSource,
+    /\bred\b|text-red-|stroke-red-|fill-red-/i,
+  );
+  assert.match(answersSource, /className="fit-cta-band"/);
+  assert.match(
+    answersSource,
+    /aria-label="What, why, who and how Smarter Way Wealth works"/,
+  );
+});
+
+test("WWWH module CSS is pruned to only the CTA divider rules it still serves", () => {
+  assert.doesNotMatch(stylesSource, /\.(surface|answer)\s*\{/);
+  assert.doesNotMatch(stylesSource, /\.(what|why|who|how)\s*\{/);
+  assert.doesNotMatch(stylesSource, /\.(spine|labelSettle|label)\s*\{/);
+  assert.doesNotMatch(stylesSource, /\.(statement|inlineLink)/);
+  assert.doesNotMatch(stylesSource, /fit-cta-band/);
   assert.doesNotMatch(stylesSource, /border-radius|box-shadow/);
-  assert.match(stylesSource, /writing-mode: vertical-rl/);
-  assert.match(stylesSource, /transform: rotate\(180deg\)/);
-  assert.match(stylesSource, /writing-mode: horizontal-tb/);
-  assert.match(stylesSource, /transform: none/);
-  assert.match(stylesSource, /font-size: clamp\(2\.6rem, 6\.9vw, 6\.2rem\)/);
-  assert.match(stylesSource, /\.label \{[^}]*font-family: inherit/s);
-  assert.doesNotMatch(stylesSource, /Georgia|Times New Roman/i);
-  assert.match(stylesSource, /@media \(max-width: 700px\)/);
-  assert.match(answersSource, /useReducedMotion\(\)/);
-  assert.match(stylesSource, /@media \(prefers-reduced-motion: reduce\)/);
-  assert.match(stylesSource, /\.answer,\s*\.labelSettle\s*\{[^}]*opacity: 1 !important/s);
-  assert.match(stylesSource, /\.answer,\s*\.labelSettle\s*\{[^}]*transform: none !important/s);
+  assert.match(stylesSource, /\.divider\s*\{/);
+  assert.match(stylesSource, /\.dividerLink\s*\{/);
 });
 
 test("advanced calculator motion preference is gated until after hydration", () => {
@@ -161,13 +183,7 @@ test("advanced calculator motion preference is gated until after hydration", () 
   assert.match(advancedCalculatorCtaSource, /\{!shouldReduceMotion &&/);
 });
 
-test("inline FAQ and equal divider links retain exact targets and analytics attributes", () => {
-  const flatAnswers = flatten(answersSource);
-  assert.match(
-    flatAnswers,
-    /href="\/faq" data-posthog-cta="true" data-posthog-cta-label="FAQ" data-posthog-cta-location="home_wwwh_how"/,
-  );
-
+test("equal divider links retain exact targets and analytics attributes", () => {
   const expectedLinks = [
     ['label: "Get started"', 'href: "https://smarterwaywealth.com/meet"'],
     [
