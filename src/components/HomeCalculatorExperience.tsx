@@ -28,8 +28,9 @@ import type {
 import type { ProjectionYear } from "@/lib/feeProjection";
 import { Odometer, RollingCurrencyOdometer } from "@/components/Odometer";
 import { ScrollReveal } from "@/components/ScrollReveal";
-import { fitCta } from "@/config/fitCtaConfig";
+import { SMARTER_WAY_WEALTH_ORIGIN } from "@/config/campaignLinks";
 import { AdvancedCalculatorCta } from "@/components/AdvancedCalculatorCta";
+import { SignupCta } from "@/components/SignupCta";
 import { Quiz } from "./Quiz";
 
 type Scenario = "smarter" | "traditional";
@@ -1721,6 +1722,16 @@ function SeeOurMathBento({
         </div>
       </motion.section>
 
+      {/* The ask fires while the number is still on screen, and carries it.
+          The Advanced Calculator now sits below this rather than above it —
+          it sends people to the firm site, which is the wrong direction at
+          the moment a visitor is most persuaded. */}
+      <SignupCta
+        location="calculator_result"
+        variant="inline"
+        savingsLabel={savings > 0 ? formatCurrencyFloored(savings) : null}
+      />
+
       <AdvancedCalculatorCta href={advancedCalculatorHref} />
 
       {typeof document !== "undefined"
@@ -1927,8 +1938,12 @@ function SeeOurMathBento({
               before taxes, and exclude inflation, trading costs, bid/ask spreads, cash flows, market volatility, and
               other expenses unless entered above.
             </p>
+            {/* Informational, not a conversion ask — it stays pointed at the
+                firm site so it doesn't compete with the primary CTA above. */}
             <a
-              href={fitCta.href}
+              href={SMARTER_WAY_WEALTH_ORIGIN}
+              target="_blank"
+              rel="noreferrer"
               className="inline-flex items-center gap-1 font-extrabold text-[#108843] underline underline-offset-4 hover:text-[#0A6E35]"
             >
               Learn about Smarter Way Wealth

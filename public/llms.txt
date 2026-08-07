@@ -5,6 +5,7 @@ This site is an educational fee calculator and lead-generation surface for Smart
 Primary URLs:
 
 - Home and calculator: https://youarepayingtoomuch.com/
+- Become a client (sign-up, flat $100/month): https://youarepayingtoomuch.com/become-a-client
 - Structured calculator API: https://youarepayingtoomuch.com/api/calculator
 - Top verified savings and money market rates (dated, double-sourced, with FDIC national averages): https://youarepayingtoomuch.com/savings-rates
 - Structured savings-rates API: https://youarepayingtoomuch.com/api/savings-rates
@@ -22,6 +23,8 @@ Firm context:
 - CRD: 342140
 - Founder: David J. Van Osdol, CFA, CFP
 - Pricing model referenced by the calculator: flat $100/month advisory fee
+- Standard account minimum: $250,000 in investable assets, waivable at the firm's discretion
+- Smarter Way Wealth never takes custody of client funds
 
 Direct-mail QR campaign:
 

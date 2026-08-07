@@ -210,8 +210,6 @@ export function FitCtaDivider({
           <div className="flex flex-col items-start gap-3 lg:items-stretch">
             <a
               href={fitCta.href}
-              target="_blank"
-              rel="noreferrer"
               className="fit-cta-action inline-flex min-h-14 w-full items-center justify-center rounded-md px-5 py-3 text-center text-base font-extrabold !text-white !no-underline shadow-[0_12px_28px_rgba(6,36,23,0.14)] transition-transform duration-200 ease-out hover:!text-white hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(6,36,23,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10233A]/60 sm:w-auto sm:px-8 sm:text-lg lg:w-full"
               style={{
                 background: "#064B84",
@@ -784,8 +782,6 @@ function LowFrictionUpgradeSection() {
 
         <a
           href={fitCta.href}
-          target="_blank"
-          rel="noreferrer"
           className="group flex min-h-[224px] flex-col justify-between bg-[#064B84] p-6 !text-white !no-underline shadow-[0_18px_44px_rgba(6,75,132,0.22)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#053E6D] hover:!text-white hover:shadow-[0_24px_58px_rgba(6,75,132,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84] sm:min-h-[260px] lg:min-h-0"
         >
           <span className="flex items-center justify-between gap-4">
@@ -801,10 +797,10 @@ function LowFrictionUpgradeSection() {
           </span>
           <span>
             <span className="block text-balance text-3xl font-black leading-tight tracking-normal sm:text-4xl">
-              See if Smarter Way Wealth is a good fit for you.
+              One flat fee. $100 a month.
             </span>
             <span className="mt-4 block text-sm font-bold leading-6 text-white/82">
-              Talk to David at Smarter Way Wealth.
+              {fitCta.label}
             </span>
           </span>
         </a>
