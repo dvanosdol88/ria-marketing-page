@@ -1,13 +1,10 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
-import styles from "./WhatWhyWhoHow.module.css";
+import { Check, X } from "lucide-react";
 
 export const WWWH_ANSWERS = [
   {
     key: "what",
     label: "WHAT",
-    body: "Smarter Way Wealth provides an investment and financial planning relationship with an experienced, highly credentialed advisor, for just $100 a month.",
+    body: "An investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
   },
   {
     key: "why",
@@ -17,74 +14,86 @@ export const WWWH_ANSWERS = [
   {
     key: "who",
     label: "WHO",
-    body: "David Van Osdol, CFA charterholder and CFP® professional, with over 20 years’ experience.",
-  },
-  {
-    key: "how",
-    label: "HOW",
-    body: "We use technology to automate back-office functions, have no corporate overhead, and use published asset allocation models from firms like Goldman Sachs, Fidelity, and Schwab, with low-to-no-cost mutual funds and ETFs. No need to move your accounts.",
+    body: "David Van Osdol, CFA Charter Holder and CFP Professional with over 20 years’ experience.",
   },
 ] as const;
 
-export function WhatWhyWhoHow() {
-  const reduceMotion = useReducedMotion();
+export const WWWH_HOW = {
+  key: "how",
+  label: "HOW",
+  uses: [
+    "Technology to automate admin work",
+    "Published model portfolios from top firms",
+    "Virtual meetings",
+  ],
+  skips: [
+    "Layers of corporate overhead",
+    "Massive marketing budgets",
+    "A large real estate footprint",
+  ],
+  closing: "No need to move your accounts.",
+} as const;
 
+export function WhatWhyWhoHow() {
   return (
     <section
-      className={styles.surface}
-      aria-label="What, why, who, and how Smarter Way Wealth works"
+      aria-label="What, why, who and how Smarter Way Wealth works"
+      className="fit-cta-band"
     >
-      {WWWH_ANSWERS.map((answer, index) => (
-        <motion.section
-          key={answer.key}
-          className={`${styles.answer} ${styles[answer.key]}`}
-          aria-labelledby={`wwwh-${answer.key}`}
-          initial={reduceMotion ? false : { opacity: 0, y: 22 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "0px 0px -8%" }}
-          transition={{
-            duration: reduceMotion ? 0 : 0.56,
-            delay: reduceMotion ? 0 : index * 0.03,
-            ease: [0.2, 0.75, 0.25, 1],
-          }}
-        >
-          <div className={styles.spine}>
-            <motion.div
-              className={styles.labelSettle}
-              initial={reduceMotion ? false : { y: 10 }}
-              whileInView={{ y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: reduceMotion ? 0 : 0.7,
-                ease: [0.2, 0.75, 0.25, 1],
-              }}
-            >
-              <h2 className={styles.label} id={`wwwh-${answer.key}`}>
-                {answer.label}
-              </h2>
-            </motion.div>
-          </div>
-          <div className={styles.copy}>
-            <p className={styles.statement}>
+      <div className="mx-auto max-w-5xl space-y-9 px-5 py-12 sm:space-y-10 sm:px-8 sm:py-14">
+        {WWWH_ANSWERS.map((answer) => (
+          <div key={answer.key}>
+            <h2 className="text-3xl font-black tracking-tight text-[#10233A] sm:text-4xl">
+              {answer.label}
+            </h2>
+            <p className="mt-3 max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">
               {answer.body}
-              {answer.key === "how" ? (
-                <>
-                  {" "}
-                  <a
-                    className={styles.inlineLink}
-                    href="/faq"
-                    data-posthog-cta="true"
-                    data-posthog-cta-label="FAQ"
-                    data-posthog-cta-location="home_wwwh_how"
-                  >
-                    FAQ
-                  </a>
-                </>
-              ) : null}
             </p>
           </div>
-        </motion.section>
-      ))}
+        ))}
+
+        <div>
+          <h2 className="text-3xl font-black tracking-tight text-[#10233A] sm:text-4xl">
+            {WWWH_HOW.label}
+          </h2>
+          {/* gap-y separates the two groups when they stack on a phone */}
+          <div className="mt-4 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+            <ul className="space-y-3">
+              {WWWH_HOW.uses.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-3 text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8"
+                >
+                  <Check
+                    aria-hidden="true"
+                    className="mt-1.5 h-5 w-5 shrink-0 text-[#108843] sm:mt-2"
+                    strokeWidth={3}
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <ul className="space-y-3">
+              {WWWH_HOW.skips.map((item) => (
+                <li
+                  key={item}
+                  className="flex gap-3 text-lg leading-7 text-[#10233A]/70 sm:text-xl sm:leading-8"
+                >
+                  <X
+                    aria-hidden="true"
+                    className="mt-1.5 h-5 w-5 shrink-0 text-[#10233A]/45 sm:mt-2"
+                    strokeWidth={3}
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p className="mt-6 text-lg font-bold leading-7 text-[#10233A] sm:text-xl">
+            {WWWH_HOW.closing}
+          </p>
+        </div>
+      </div>
     </section>
   );
 }
