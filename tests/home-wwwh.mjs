@@ -27,19 +27,20 @@ const flatten = (source) => source.replace(/\s+/g, " ");
 
 test("homepage WWWH keeps the locked order and exact approved answers", () => {
   const expected = [
+    // Camel Case, not all-caps — David's call, 2026-08-07.
     [
-      'label: "WHAT"',
+      'label: "What"',
       "An investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
     ],
     [
-      'label: "WHY"',
+      'label: "Why"',
       "Because not everyone needs to be paying massive, asset-based fees to get good advice.",
     ],
     [
-      'label: "WHO"',
+      'label: "Who"',
       "David Van Osdol, CFA Charter Holder and CFP Professional with over 20 years’ experience.",
     ],
-    ['label: "HOW"', "No need to move your accounts."],
+    ['label: "How"', "No need to move your accounts."],
   ];
 
   let priorIndex = -1;
@@ -150,14 +151,24 @@ test("WWWH is one plain panel of headed answers, with no rotated type or cards",
   assert.doesNotMatch(answersSource, /framer-motion|useReducedMotion/);
 });
 
-test("HOW's crosses stay neutral — they are costs not carried, not hazards", () => {
+// DECISION CHANGED, 2026-08-07 — read before "fixing" this back.
+//
+// This test previously locked the skipped-cost marks as NEUTRAL grey crosses,
+// on the reasoning that red reads as hazard while these items are savings.
+// David overruled that directly: "Instead of a gray X, put a red dollar sign."
+//
+// The red dollar sign carries a different claim than the cross did. A grey X
+// says merely "absent"; a red $ says "this is what you would be paying for at
+// a traditional firm" — which is the argument for the $100 price, made in one
+// glyph. The earlier rationale was sound but was not David's call to make.
+test("HOW's skipped costs are red dollar signs — what you'd be paying for", () => {
   const flatAnswers = flatten(answersSource);
   assert.match(flatAnswers, /<Check[^>]*text-\[#108843\]/);
-  assert.match(flatAnswers, /<X[^>]*text-\[#10233A\]\/45/);
+  assert.match(flatAnswers, /<DollarSign[^>]*text-\[#C62828\]/);
   assert.doesNotMatch(
     flatAnswers,
-    /<X[^>]*(#B42318|#D92D20|text-red)/i,
-    "crosses must not be styled as warnings",
+    /<X[^>]/,
+    "the neutral cross was replaced by a red dollar sign (David, 2026-08-07)",
   );
 });
 
