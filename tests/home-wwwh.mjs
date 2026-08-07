@@ -9,8 +9,6 @@ const [
   calculatorSource,
   calculatorExperienceSource,
   answersSource,
-  dividerSource,
-  stylesSource,
   navConfigSource,
   navSource,
   stickyNavConfigSource,
@@ -19,8 +17,6 @@ const [
   readSource("../src/components/CostAnalysisCalculator.tsx"),
   readSource("../src/components/HomeCalculatorExperience.tsx"),
   readSource("../src/components/WhatWhyWhoHow.tsx"),
-  readSource("../src/components/WwwhCtaDivider.tsx"),
-  readSource("../src/components/WhatWhyWhoHow.module.css"),
   readSource("../src/config/siteNavConfig.ts"),
   readSource("../src/components/SiteNav.tsx"),
   readSource("../src/config/stickyNavConfig.ts"),
@@ -29,36 +25,11 @@ const [
 
 const flatten = (source) => source.replace(/\s+/g, " ");
 
-const relativeLuminance = (hex) => {
-  const channels = hex
-    .slice(1)
-    .match(/.{2}/g)
-    .map((channel) => Number.parseInt(channel, 16) / 255)
-    .map((channel) =>
-      channel <= 0.04045
-        ? channel / 12.92
-        : ((channel + 0.055) / 1.055) ** 2.4,
-    );
-  return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
-};
-
-const contrastRatio = (foreground, background) => {
-  const lighter = Math.max(
-    relativeLuminance(foreground),
-    relativeLuminance(background),
-  );
-  const darker = Math.min(
-    relativeLuminance(foreground),
-    relativeLuminance(background),
-  );
-  return (lighter + 0.05) / (darker + 0.05);
-};
-
 test("homepage WWWH keeps the locked order and exact approved answers", () => {
   const expected = [
     [
       'label: "WHAT"',
-      "Smarter Way Wealth provides an investment and financial planning relationship with an experienced, highly credentialed advisor, for just $100 a month.",
+      "An investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
     ],
     [
       'label: "WHY"',
@@ -66,12 +37,9 @@ test("homepage WWWH keeps the locked order and exact approved answers", () => {
     ],
     [
       'label: "WHO"',
-      "David Van Osdol, CFA charterholder and CFP® professional, with over 20 years’ experience.",
+      "David Van Osdol, CFA Charter Holder and CFP Professional with over 20 years’ experience.",
     ],
-    [
-      'label: "HOW"',
-      "We use technology to automate back-office functions, have no corporate overhead, and use published asset allocation models from firms like Goldman Sachs, Fidelity, and Schwab, with low-to-no-cost mutual funds and ETFs. No need to move your accounts.",
-    ],
+    ['label: "HOW"', "No need to move your accounts."],
   ];
 
   let priorIndex = -1;
@@ -81,6 +49,38 @@ test("homepage WWWH keeps the locked order and exact approved answers", () => {
     assert.ok(labelIndex > priorIndex, `${label} must stay in locked order`);
     assert.ok(bodyIndex > labelIndex, `${label} must keep its approved answer`);
     priorIndex = bodyIndex;
+  }
+});
+
+test("HOW states what the firm uses and what it does not carry, in order", () => {
+  const uses = [
+    "Technology to automate admin work",
+    "Published model portfolios from top firms",
+    "Virtual meetings",
+  ];
+  const skips = [
+    "Layers of corporate overhead",
+    "Massive marketing budgets",
+    "A large real estate footprint",
+  ];
+
+  const usesIndex = answersSource.indexOf("uses: [");
+  const skipsIndex = answersSource.indexOf("skips: [");
+  assert.ok(usesIndex >= 0 && skipsIndex > usesIndex, "uses must precede skips");
+
+  let priorIndex = usesIndex;
+  for (const item of uses) {
+    const index = answersSource.indexOf(item);
+    assert.ok(index > priorIndex, `"${item}" must stay in the uses list, in order`);
+    assert.ok(index < skipsIndex, `"${item}" must sit in uses, not skips`);
+    priorIndex = index;
+  }
+
+  priorIndex = skipsIndex;
+  for (const item of skips) {
+    const index = answersSource.indexOf(item);
+    assert.ok(index > priorIndex, `"${item}" must stay in the skips list, in order`);
+    priorIndex = index;
   }
 });
 
@@ -97,7 +97,6 @@ test("WWWH follows the complete calculation-details handoff and precedes advisor
     calculatorIndex,
   );
   const answersIndex = calculatorSource.indexOf("<WhatWhyWhoHow />");
-  const dividerIndex = calculatorSource.indexOf("<WwwhCtaDivider />");
   const advisorIndex = calculatorSource.indexOf("<AdvisorProofSections />");
 
   for (const [marker, index] of [
@@ -106,7 +105,6 @@ test("WWWH follows the complete calculation-details handoff and precedes advisor
     ["calculator experience", calculatorIndex],
     ["calculator section end", calculatorSectionEndIndex],
     ["WWWH component", answersIndex],
-    ["CTA divider", dividerIndex],
     ["advisor proof", advisorIndex],
   ]) {
     assert.ok(index >= 0, `${marker} must exist before placement is compared`);
@@ -120,8 +118,7 @@ test("WWWH follows the complete calculation-details handoff and precedes advisor
     calculatorSectionEndIndex < answersIndex,
     "WWWH must start after the complete calculator and its full-width handoff",
   );
-  assert.ok(answersIndex < dividerIndex, "the action divider must follow HOW");
-  assert.ok(dividerIndex < advisorIndex, "advisor proof must remain after the divider");
+  assert.ok(answersIndex < advisorIndex, "advisor proof must remain after HOW");
   assert.equal(
     calculatorSource.match(/<WhatWhyWhoHow \/>/g)?.length,
     1,
@@ -129,23 +126,39 @@ test("WWWH follows the complete calculation-details handoff and precedes advisor
   );
 });
 
-test("WWWH uses semantic cardless fields with responsive spine and reduced motion", () => {
-  assert.match(answersSource, /<motion\.section/);
-  assert.match(answersSource, /<h2 className=\{styles\.label\}/);
-  assert.doesNotMatch(answersSource, /<article|card|rounded|shadow/i);
-  assert.doesNotMatch(stylesSource, /border-radius|box-shadow/);
-  assert.match(stylesSource, /writing-mode: vertical-rl/);
-  assert.match(stylesSource, /transform: rotate\(180deg\)/);
-  assert.match(stylesSource, /writing-mode: horizontal-tb/);
-  assert.match(stylesSource, /transform: none/);
-  assert.match(stylesSource, /font-size: clamp\(2\.6rem, 6\.9vw, 6\.2rem\)/);
-  assert.match(stylesSource, /\.label \{[^}]*font-family: inherit/s);
-  assert.doesNotMatch(stylesSource, /Georgia|Times New Roman/i);
-  assert.match(stylesSource, /@media \(max-width: 700px\)/);
-  assert.match(answersSource, /useReducedMotion\(\)/);
-  assert.match(stylesSource, /@media \(prefers-reduced-motion: reduce\)/);
-  assert.match(stylesSource, /\.answer,\s*\.labelSettle\s*\{[^}]*opacity: 1 !important/s);
-  assert.match(stylesSource, /\.answer,\s*\.labelSettle\s*\{[^}]*transform: none !important/s);
+test("WWWH is one plain panel of headed answers, with no rotated type or cards", () => {
+  // each question word is the real heading for its answer
+  assert.equal(
+    answersSource.match(/<h2 className="text-3xl font-black/g)?.length,
+    2,
+    "both the mapped answers and HOW must render the question word as an h2",
+  );
+  assert.match(answersSource, /className="fit-cta-band"/);
+  assert.match(answersSource, /aria-label="What, why, who and how/);
+
+  // the design David rejected must not creep back
+  assert.doesNotMatch(answersSource, /writing-mode|vertical-rl|rotate\(/i);
+  assert.doesNotMatch(answersSource, /<article|rounded-|shadow-/i);
+  assert.doesNotMatch(
+    answersSource,
+    /Read the full FAQ/,
+    "the FAQ link was removed from HOW on purpose",
+  );
+
+  // static server component: no client directive, no animation runtime
+  assert.doesNotMatch(answersSource, /"use client"/);
+  assert.doesNotMatch(answersSource, /framer-motion|useReducedMotion/);
+});
+
+test("HOW's crosses stay neutral — they are costs not carried, not hazards", () => {
+  const flatAnswers = flatten(answersSource);
+  assert.match(flatAnswers, /<Check[^>]*text-\[#108843\]/);
+  assert.match(flatAnswers, /<X[^>]*text-\[#10233A\]\/45/);
+  assert.doesNotMatch(
+    flatAnswers,
+    /<X[^>]*(#B42318|#D92D20|text-red)/i,
+    "crosses must not be styled as warnings",
+  );
 });
 
 test("advanced calculator motion preference is gated until after hydration", () => {
@@ -159,72 +172,6 @@ test("advanced calculator motion preference is gated until after hydration", () 
   );
   assert.match(advancedCalculatorCtaSource, /setMotionPreferenceReady\(true\)/);
   assert.match(advancedCalculatorCtaSource, /\{!shouldReduceMotion &&/);
-});
-
-test("inline FAQ and equal divider links retain exact targets and analytics attributes", () => {
-  const flatAnswers = flatten(answersSource);
-  assert.match(
-    flatAnswers,
-    /href="\/faq" data-posthog-cta="true" data-posthog-cta-label="FAQ" data-posthog-cta-location="home_wwwh_how"/,
-  );
-
-  const expectedLinks = [
-    ['label: "Get started"', 'href: "https://smarterwaywealth.com/meet"'],
-    [
-      'label: "See if SWW is a good fit"',
-      'href: "https://smarterwaywealth.com/#fit"',
-    ],
-    ['label: "FAQ"', 'href: "/faq"'],
-  ];
-  let priorIndex = -1;
-  for (const markers of expectedLinks) {
-    const indexes = markers.map((marker) => dividerSource.indexOf(marker));
-    assert.ok(
-      indexes.every((index) => index > priorIndex),
-      `${markers[0]} target must remain exact`,
-    );
-    priorIndex = Math.max(...indexes);
-  }
-
-  assert.match(dividerSource, /target=\{link\.external \? "_blank" : undefined\}/);
-  assert.match(dividerSource, /rel=\{link\.external \? "noreferrer" : undefined\}/);
-  assert.match(dividerSource, /data-posthog-cta="true"/);
-  assert.match(dividerSource, /data-posthog-cta-label=\{link\.label\}/);
-  assert.match(dividerSource, /data-posthog-cta-location="home_wwwh_divider"/);
-  assert.match(stylesSource, /grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
-  assert.match(stylesSource, /min-height: 88px/);
-  assert.match(stylesSource, /linear-gradient/);
-});
-
-test("divider palette uses only approved token pairs with accessible contrast", () => {
-  const approvedPairs = [
-    ["#10233a", "#d9e9f3", "first link"],
-    ["#10233a", "#c8ddea", "middle link"],
-    ["#ffffff", "#064b84", "final link"],
-    ["#10233a", "#eef0f5", "first hover"],
-    ["#10233a", "#d9e9f3", "middle hover"],
-    ["#ffffff", "#062b43", "final hover"],
-  ];
-
-  for (const [foreground, background, label] of approvedPairs) {
-    assert.ok(
-      contrastRatio(foreground, background) >= 4.5,
-      `${label} must meet WCAG AA text contrast`,
-    );
-  }
-
-  assert.doesNotMatch(stylesSource, /#b8d8ec|#357ead|#8fc0de|#1f6797/i);
-  assert.match(stylesSource, /\.dividerLink:first-child \{\s*background: #d9e9f3/);
-  assert.match(stylesSource, /\.dividerLink:nth-child\(2\) \{\s*background: #c8ddea/);
-  assert.match(stylesSource, /\.dividerLink:last-child \{[^}]*background: #064b84/);
-  assert.match(
-    stylesSource,
-    /\.dividerLink:first-child:focus-visible \{\s*background: #eef0f5;\s*color: #10233a/,
-  );
-  assert.match(
-    stylesSource,
-    /\.dividerLink:nth-child\(2\):focus-visible \{\s*background: #d9e9f3;\s*color: #10233a/,
-  );
 });
 
 test("site navigation preserves every existing item and adds tracked Fee Calculator", () => {
