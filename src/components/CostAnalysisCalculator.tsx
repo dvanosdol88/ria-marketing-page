@@ -19,10 +19,9 @@ import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
 import { HomeTopBanner } from "@/components/HomeTopBanner";
-import { MeetDavidCta } from "@/components/MeetDavidCta";
+import { SignupCta } from "@/components/SignupCta";
 import { PremiumPromisePreview } from "@/components/PremiumPromisePreview";
 import { WhatWhyWhoHow } from "@/components/WhatWhyWhoHow";
-import { WwwhCtaDivider } from "@/components/WwwhCtaDivider";
 import {
   HomeCalculatorExperience,
   type CalculatorSimpleControlNodes,
@@ -1527,15 +1526,10 @@ export function CostAnalysisCalculator({
         />
       </section>
 
-      {isSavingsCalculatorUpgrade && (
-        <>
-          <WhatWhyWhoHow />
-          <WwwhCtaDivider />
-        </>
-      )}
+      {isSavingsCalculatorUpgrade && <WhatWhyWhoHow />}
 
       {isSavingsCalculatorUpgrade && (
-        <MeetDavidCta location="home_post_calculator" />
+        <SignupCta location="home_post_calculator" />
       )}
 
       {isSavingsCalculatorUpgrade && (
@@ -1543,7 +1537,7 @@ export function CostAnalysisCalculator({
       )}
 
       {usesOpeningMarketingHero && (
-        <MeetDavidCta location="marketing_post_calculator" />
+        <SignupCta location="marketing_post_calculator" />
       )}
 
       {usesOpeningMarketingHero && (
@@ -1559,7 +1553,7 @@ export function CostAnalysisCalculator({
       )}
 
       {usesOpeningMarketingHero && (
-        <MeetDavidCta location="marketing_page_bottom" />
+        <SignupCta location="marketing_page_bottom" />
       )}
     </>
   );
