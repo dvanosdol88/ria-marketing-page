@@ -48,6 +48,10 @@ Tracked items for youarepayingtoomuch.com. One-liner per item with enough contex
 - [ ] Continue pillar consolidation: `/upgrade-your-advice` consolidation is complete. Apply same pattern to remaining pillars (`/save-a-ton`, `/improve-your-tools`, `/meaning`, `/how-it-works`). *(added 2025-02-11)*
 - [ ] Gallery page: verify all route thumbnails render correctly after cleanup of deleted-route entries and removed sections. *(added 2025-02-11)*
 
+## Tests
+
+- [ ] **`npm run test:advisor-calculator-batch` fails on `main`.** It asserts the Advanced Calculator CTA shows "Market return" and "Steady return"; neither string exists in `src` any more (copy changed around #195/#196), so the test has been red independently of any current work. Re-lock it against the CTA's real copy or drop the assertion. *(added 2026-08-07)*
+
 ## Design & Branding
 
 - [ ] Logo refinement: continue Venn diagram concept exploration with dollar sign symbols and text arrangements around "The SMARTER way to wealth" tagline. *(added 2025-02-11)*

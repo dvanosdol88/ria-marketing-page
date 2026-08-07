@@ -708,13 +708,16 @@ function SavingsLeadHero({
         </div>
       </div>
       <div className="px-0 pt-6 pb-8 sm:pt-10 sm:pb-10">
-        <div className="mx-auto flex w-full max-w-2xl flex-wrap items-center justify-center gap-3 px-4 sm:gap-4">
+        {/* A plain link, not a button: the calculator is already the page the
+            visitor landed on, so this is a shortcut past the intro rather than
+            the primary ask. Kept on one line at every width. */}
+        <div className="mx-auto flex w-full max-w-2xl items-center justify-center px-4">
           <a
             href="#calculator"
             onClick={handleCalculatorJump}
-            className="inline-flex min-h-12 items-center justify-center rounded-lg bg-[#064B84] px-6 text-base font-bold !text-white !no-underline transition-colors duration-200 hover:bg-[#053E6D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:px-8 sm:text-lg"
+            className="inline-flex min-h-11 items-center whitespace-nowrap text-base font-semibold text-[#064B84] underline underline-offset-4 transition-colors duration-200 hover:text-[#053E6D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:text-lg"
           >
-            Calculator
+            Go directly to the fee calculator
           </a>
         </div>
       </div>

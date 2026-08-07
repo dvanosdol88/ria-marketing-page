@@ -117,7 +117,9 @@ try {
     "the removed Advanced Calculator supporting copy must stay absent",
   );
 
-  await page.getByRole("link", { name: "Calculator", exact: true }).click();
+  await page
+    .getByRole("link", { name: "Go directly to the fee calculator", exact: true })
+    .click();
   await page.waitForFunction(() => window.scrollY > 1_000);
   await page.waitForTimeout(1_200);
   await returnToPageTop(page);

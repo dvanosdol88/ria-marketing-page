@@ -432,21 +432,23 @@ function GoodFitCard() {
           </div>
         </div>
 
-        <div className="border-t border-[#E3C8C5] bg-[#FFF4F2] p-5 sm:p-7 md:border-l md:border-t-0">
-          <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.18em] text-[#B42318]">
+        {/* Neutral slate, not red. Green-beside-red read as Christmas, and the
+            point of this column is "not what we do", not "danger". */}
+        <div className="border-t border-[#D8E2EA] bg-[#F3F6FA] p-5 sm:p-7 md:border-l md:border-t-0">
+          <p className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-[0.18em] text-[#5A6B80]">
             <XCircle className="h-5 w-5" aria-hidden="true" />
             Not the service model
           </p>
           <div className="mt-5 space-y-6">
             {goodFitCardConfig.notAligned.map((category) => (
               <section key={category.title}>
-                <h3 className="text-xl font-black tracking-normal text-[#8F1F17]">
+                <h3 className="text-xl font-black tracking-normal text-[#41556C]">
                   {category.title}
                 </h3>
                 <ul className="mt-3 space-y-2.5">
                   {category.items.map((item) => (
-                    <li key={item} className="flex gap-2.5 text-sm leading-6 text-[#70413D]">
-                      <XCircle className="mt-1 h-4 w-4 shrink-0 text-[#D92D20]" aria-hidden="true" />
+                    <li key={item} className="flex gap-2.5 text-sm leading-6 text-[#5A6B80]">
+                      <XCircle className="mt-1 h-4 w-4 shrink-0 text-[#8A99AC]" aria-hidden="true" />
                       <span>{item}</span>
                     </li>
                   ))}
