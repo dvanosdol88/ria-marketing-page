@@ -210,10 +210,13 @@ export function FitCtaDivider({
           <div className="flex flex-col items-start gap-3 lg:items-stretch">
             <a
               href={fitCta.href}
-              className="fit-cta-action inline-flex min-h-14 w-full items-center justify-center rounded-md px-5 py-3 text-center text-base font-extrabold !text-white !no-underline shadow-[0_12px_28px_rgba(6,36,23,0.14)] transition-transform duration-200 ease-out hover:!text-white hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(6,36,23,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10233A]/60 sm:w-auto sm:px-8 sm:text-lg lg:w-full"
+              /* Matches the primary ask's deliberately off-palette fluorescent
+                 blue (see SignupCta) so the same button reads the same way
+                 everywhere on the site. */
+              className="fit-cta-action inline-flex min-h-14 w-full items-center justify-center rounded-md px-5 py-3 text-center text-base font-extrabold !text-[#052E45] !no-underline shadow-[0_12px_28px_rgba(6,36,23,0.14)] transition-transform duration-200 ease-out hover:!text-[#052E45] hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(6,36,23,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#10233A]/60 sm:w-auto sm:px-8 sm:text-lg lg:w-full"
               style={{
-                background: "#064B84",
-                border: "1px solid rgba(6, 75, 132, 0.92)",
+                background: "#00D8FF",
+                border: "1px solid #00C2E6",
                 textDecoration: "none",
               }}
             >
