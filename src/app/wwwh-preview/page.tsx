@@ -44,7 +44,7 @@ export default function WwwhPreviewPage() {
 
       <section aria-label="What, why, who and how Smarter Way Wealth works">
         {ANSWERS.map((answer) => (
-          <div key={answer.key} className={`band band--${answer.key}`}>
+          <div key={answer.key} className="fit-cta-band">
             <div className="mx-auto max-w-5xl px-5 py-14 sm:px-8 sm:py-20">
               <div className="max-w-3xl">
                 <h2 className="text-3xl font-black tracking-tight text-[#10233A] sm:text-4xl">
@@ -80,12 +80,6 @@ const css = `
 header { display: none !important; }
 footer { display: none !important; }
 [class*="WhatWhyWhoHow-module"] { display: none !important; }
-
-/* one blue, four steps, running into the CTA bar */
-.band--what { background: #F1F4F8; }
-.band--why  { background: #DFE9F2; }
-.band--who  { background: #C6DAE9; }
-.band--how  { background: #A9C6DC; }
 
 .wwwh-faq {
   display: inline-flex; align-items: center; gap: 10px;
