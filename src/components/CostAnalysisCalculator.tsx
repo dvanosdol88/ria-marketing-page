@@ -1,6 +1,6 @@
 "use client";
 
-import { type MouseEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, ChevronDown, ChevronUp, ExternalLink, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
@@ -42,7 +42,6 @@ import {
 } from "@/config/advancedCalculator";
 
 type IntroStyle = "rule" | "panel" | "quote";
-type PromisePhase = "waiting" | "human" | "david" | "full-copy" | "full-copy-hold" | "brand";
 
 function getAssetTier(portfolioValue: number) {
   if (portfolioValue < 500000) return "under_500k";
@@ -382,257 +381,22 @@ function SavingsLeadHero({
   savings: number;
   years: number;
 }) {
-  const reducedMotion = useReducedMotion();
-  const introRef = useRef<HTMLDivElement>(null);
-  const brandSlotRef = useRef<HTMLSpanElement>(null);
-  const showScrollDavidRef = useRef(false);
-  const [motionPreferenceReady, setMotionPreferenceReady] = useState(false);
-  const [hasEnteredView, setHasEnteredView] = useState(false);
-  const [revealPhase, setRevealPhase] = useState<PromisePhase>("waiting");
-  const [showScrollDavid, setShowScrollDavid] = useState(false);
-  const shouldReduceMotion = motionPreferenceReady && Boolean(reducedMotion);
-
-  const handleCalculatorJump = (event: MouseEvent<HTMLAnchorElement>) => {
-    const calculator = document.getElementById("calculator");
-    if (!calculator) return;
-
-    event.preventDefault();
-    calculator.scrollIntoView({
-      behavior: shouldReduceMotion ? "auto" : "smooth",
-      block: "start",
-    });
-
-    const urlWithoutHash = `${window.location.pathname}${window.location.search}`;
-    window.history.replaceState(window.history.state, "", urlWithoutHash);
-  };
-
-  useEffect(() => {
-    setMotionPreferenceReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (shouldReduceMotion) return;
-
-    const intro = introRef.current;
-    if (!intro) return;
-
-    let animationFrame = 0;
-    let hasTriggered = false;
-    let resizeObserver: ResizeObserver | null = null;
-
-    const stopWatching = () => {
-      if (animationFrame) window.cancelAnimationFrame(animationFrame);
-      resizeObserver?.disconnect();
-      window.removeEventListener("scroll", requestVisibilityCheck);
-      window.removeEventListener("resize", requestVisibilityCheck);
-    };
-
-    const checkVisibility = () => {
-      animationFrame = 0;
-      const rect = intro.getBoundingClientRect();
-      const revealBoundary = window.innerHeight * 0.92;
-      const visibleTop = Math.max(rect.top, 0);
-      const visibleBottom = Math.min(rect.bottom, revealBoundary);
-      const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-
-      if (visibleHeight >= Math.min(rect.height * 0.18, 72)) {
-        hasTriggered = true;
-        setHasEnteredView(true);
-        stopWatching();
-      }
-    };
-
-    function requestVisibilityCheck() {
-      if (animationFrame || hasTriggered) return;
-      animationFrame = window.requestAnimationFrame(checkVisibility);
-    }
-
-    window.addEventListener("scroll", requestVisibilityCheck, { passive: true });
-    window.addEventListener("resize", requestVisibilityCheck);
-    if ("ResizeObserver" in window) {
-      resizeObserver = new ResizeObserver(requestVisibilityCheck);
-      resizeObserver.observe(intro);
-    }
-    requestVisibilityCheck();
-
-    return stopWatching;
-  }, [shouldReduceMotion]);
-
-  useEffect(() => {
-    if (!hasEnteredView || shouldReduceMotion) return;
-
-    const transitions: Partial<Record<PromisePhase, { delay: number; next: PromisePhase }>> = {
-      waiting: { delay: 500, next: "human" },
-      human: { delay: 1000, next: "david" },
-      david: { delay: 950, next: "full-copy" },
-      "full-copy-hold": { delay: 1000, next: "brand" },
-    };
-    const transition = transitions[revealPhase];
-    if (!transition) return;
-    const timer = window.setTimeout(() => setRevealPhase(transition.next), transition.delay);
-    return () => window.clearTimeout(timer);
-  }, [hasEnteredView, revealPhase, shouldReduceMotion]);
-
-  const visiblePhase: PromisePhase = shouldReduceMotion ? "brand" : revealPhase;
-  const fullCopyVisible = ["full-copy", "full-copy-hold", "brand"].includes(visiblePhase);
-  const humanVisible = visiblePhase === "human" || fullCopyVisible;
-  const davidVisible = visiblePhase === "david" || visiblePhase === "full-copy" || visiblePhase === "full-copy-hold" || (visiblePhase === "brand" && showScrollDavid);
-  const brandVisible = visiblePhase === "brand" && !showScrollDavid;
-
-  const completeCopyReveal = () => {
-    if (!shouldReduceMotion && revealPhase === "full-copy") {
-      setRevealPhase("full-copy-hold");
-    }
-  };
-
-  useEffect(() => {
-    if (visiblePhase !== "brand" || shouldReduceMotion) {
-      if (showScrollDavidRef.current) {
-        showScrollDavidRef.current = false;
-        setShowScrollDavid(false);
-      }
-      return;
-    }
-
-    const brandSlot = brandSlotRef.current;
-    if (!brandSlot) return;
-
-    let animationFrame = 0;
-    let scrollSliceArmed = false;
-
-    const updateShowScrollDavid = (next: boolean) => {
-      if (showScrollDavidRef.current === next) return;
-      showScrollDavidRef.current = next;
-      setShowScrollDavid(next);
-    };
-
-    const updateScrollSlice = () => {
-      animationFrame = 0;
-      const rect = brandSlot.getBoundingClientRect();
-      const viewportCenter = window.innerHeight / 2;
-      const brandCenter = rect.top + rect.height / 2;
-      const distanceFromCenter = Math.abs(brandCenter - viewportCenter);
-
-      if (!scrollSliceArmed) {
-        if (distanceFromCenter >= 48) scrollSliceArmed = true;
-        updateShowScrollDavid(false);
-        return;
-      }
-
-      if (distanceFromCenter <= 24) {
-        updateShowScrollDavid(true);
-      } else if (distanceFromCenter >= 48) {
-        updateShowScrollDavid(false);
-      }
-    };
-
-    const requestScrollSliceUpdate = () => {
-      if (animationFrame) return;
-      animationFrame = window.requestAnimationFrame(updateScrollSlice);
-    };
-
-    updateScrollSlice();
-    window.addEventListener("scroll", requestScrollSliceUpdate, { passive: true });
-    window.addEventListener("resize", requestScrollSliceUpdate);
-
-    return () => {
-      if (animationFrame) window.cancelAnimationFrame(animationFrame);
-      window.removeEventListener("scroll", requestScrollSliceUpdate);
-      window.removeEventListener("resize", requestScrollSliceUpdate);
-    };
-  }, [shouldReduceMotion, visiblePhase]);
-
-  const nameTransition = {
-    duration: shouldReduceMotion ? 0 : 0.56,
-    ease: [0.22, 1, 0.36, 1],
-  } as const;
-  const copyRevealTransition = {
-    duration: shouldReduceMotion ? 0 : 0.64,
-    ease: [0.22, 1, 0.36, 1],
-  } as const;
-  const humanRevealTransition = {
-    duration: shouldReduceMotion ? 0 : 0.52,
-    ease: [0.22, 1, 0.36, 1],
-  } as const;
+  /* The promise reads in full the moment the page paints. It used to fade in
+     one clause at a time and swap the name between "David" and "Smarter Way
+     Wealth" on scroll; that sequence was retired (David, 2026-08-10) because
+     the statement now sits on the first mobile screen, where a line that
+     rewrites itself under the visitor reads as distracting rather than
+     deliberate. */
   const statement = (
     <>
-      <span className="sr-only">
-        Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.
-      </span>
-      <span
-        aria-hidden="true"
-        data-promise-phase={visiblePhase}
-        data-promise-name={davidVisible ? "david" : brandVisible ? "smarter-way-wealth" : "hidden"}
-      >
-        <span className="block text-center">
-          <span
-            ref={brandSlotRef}
-            className="relative inline-block whitespace-nowrap"
-          >
-            <span className="invisible">Smarter Way Wealth</span>
-            <motion.span
-              initial={false}
-              animate={{ opacity: davidVisible ? 1 : 0 }}
-              transition={nameTransition}
-              className="absolute inset-0 whitespace-nowrap text-center"
-            >
-              David
-            </motion.span>
-            <motion.span
-              initial={false}
-              animate={{ opacity: brandVisible ? 1 : 0 }}
-              transition={nameTransition}
-              className="absolute inset-0 whitespace-nowrap text-center"
-            >
-              Smarter Way Wealth
-            </motion.span>
-          </span>
-        </span>
-        <span data-promise-copy={fullCopyVisible ? "visible" : "hidden"} className="block">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-            transition={copyRevealTransition}
-            onAnimationComplete={completeCopyReveal}
-          >
-            delivers{" "}
-          </motion.span>
-          <span className="text-[#007A2F]">
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-              transition={copyRevealTransition}
-            >
-              personal, real{" "}
-            </motion.span>
-            <motion.span
-              data-promise-human={humanVisible ? "visible" : "hidden"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: humanVisible ? 1 : 0 }}
-              transition={humanRevealTransition}
-            >
-              human
-            </motion.span>
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-              transition={copyRevealTransition}
-            >
-              {" "}fiduciary advice and planning
-            </motion.span>
-          </span>
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-            transition={copyRevealTransition}
-          >
-            {" "}for a simple{" "}
-            <span data-promise-fee-ending className="whitespace-nowrap">
-              <span data-promise-fee>$100/month.</span>{" "}
-              <span data-promise-period>Period.</span>
-            </span>
-          </motion.span>
-        </span>
+      <span className="block text-center">Smarter Way Wealth</span>
+      <span className="block">
+        delivers{" "}
+        <span className="text-[#007A2F]">
+          personal, real human fiduciary advice and planning
+        </span>{" "}
+        for a simple{" "}
+        <span className="whitespace-nowrap">$100/month. Period.</span>
       </span>
     </>
   );
@@ -643,15 +407,10 @@ function SavingsLeadHero({
         <p className="mx-auto max-w-3xl text-2xl font-semibold leading-[1.14] tracking-normal text-[#10233A] sm:text-[clamp(1.55rem,3.8vw,2.35rem)]">
           {statement}
         </p>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-          transition={copyRevealTransition}
-          className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.35rem,3.15vw,2rem)] font-medium leading-[1.14] tracking-normal text-[#10233A] sm:mt-7"
-        >
+        <p className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.35rem,3.15vw,2rem)] font-medium leading-[1.14] tracking-normal text-[#10233A] sm:mt-7">
           <span className="whitespace-nowrap">David Van Osdol,</span>{" "}
           <span className="whitespace-nowrap">CFA, CFP®</span>
-        </motion.p>
+        </p>
         <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
       </div>
     ) : introStyle === "quote" ? (
@@ -671,18 +430,7 @@ function SavingsLeadHero({
         <div className="mx-auto mt-7 h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
       </div>
     );
-  const introBlock = (
-    <div
-      ref={introRef}
-      data-promise-reveal-phase={visiblePhase}
-      data-promise-entered-view={hasEnteredView ? "true" : "false"}
-      data-promise-reduced-motion={shouldReduceMotion ? "true" : "false"}
-      data-promise-motion-ready={motionPreferenceReady ? "true" : "false"}
-      className="mt-14 sm:mt-20"
-    >
-      {introContent}
-    </div>
-  );
+  const introBlock = <div className="mt-8 sm:mt-20">{introContent}</div>;
 
   return (
     <section
@@ -698,27 +446,20 @@ function SavingsLeadHero({
           ?
         </div>
         <div className="relative z-10 mx-auto max-w-6xl">
-          <h1 className="text-[clamp(2.25rem,4.8vw,4rem)] font-semibold leading-[1.06] tracking-normal">
-            <span className="block">What would you do with</span>
-            <span className="block text-[#007A2F] tabular-nums">{formatCurrencyFloored(savings)}*</span>
+          {/* Two lines, always. The question line carries a smaller floor than
+              the dollar line so it stays unbroken at 375px instead of orphaning
+              "with" on a third line; both lines converge on the same size once
+              the viewport is wide enough for the fluid step to take over. */}
+          <h1 className="font-semibold leading-[1.06] tracking-normal">
+            <span className="block text-[clamp(1.7rem,4.8vw,4rem)]">What would you do with</span>
+            <span className="block text-[clamp(2.25rem,4.8vw,4rem)] text-[#007A2F] tabular-nums">
+              {formatCurrencyFloored(savings)}
+              <span className="align-super text-[0.36em] leading-none">*</span>
+            </span>
           </h1>
           <p className="mt-3 text-base font-medium leading-snug text-[#10233A]/80 sm:text-lg">
             * potential savings over {years} years.
           </p>
-        </div>
-      </div>
-      <div className="px-0 pt-6 pb-8 sm:pt-10 sm:pb-10">
-        {/* A plain link, not a button: the calculator is already the page the
-            visitor landed on, so this is a shortcut past the intro rather than
-            the primary ask. Kept on one line at every width. */}
-        <div className="mx-auto flex w-full max-w-2xl items-center justify-center px-4">
-          <a
-            href="#calculator"
-            onClick={handleCalculatorJump}
-            className="inline-flex min-h-11 items-center whitespace-nowrap text-base font-semibold text-[#064B84] underline underline-offset-4 transition-colors duration-200 hover:text-[#053E6D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:text-lg"
-          >
-            Go directly to the fee calculator
-          </a>
         </div>
       </div>
       <div className="mx-auto max-w-6xl px-4">

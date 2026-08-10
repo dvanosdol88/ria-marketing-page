@@ -117,9 +117,17 @@ try {
     "the removed Advanced Calculator supporting copy must stay absent",
   );
 
-  await page
-    .getByRole("link", { name: "Go directly to the fee calculator", exact: true })
-    .click();
+  assert.equal(
+    await page
+      .getByRole("link", { name: "Go directly to the fee calculator", exact: true })
+      .count(),
+    0,
+    "the retired in-page calculator shortcut link must stay absent",
+  );
+
+  // The calculator shortcut now lives in the header, where it is visible on the
+  // first screen without opening the menu.
+  await page.locator('[data-posthog-cta-location="site_nav_mobile_header"]').click();
   await page.waitForFunction(() => window.scrollY > 1_000);
   await page.waitForTimeout(1_200);
   await returnToPageTop(page);
