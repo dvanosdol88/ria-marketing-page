@@ -5,7 +5,6 @@ import "./globals.css";
 import { inter, dmSans } from "./fonts";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
-import { ProgressiveStickyBar } from "@/components/ProgressiveStickyBar";
 import { PostHogCtaTracker } from "@/components/PostHogCtaTracker";
 import { SavingsBarProvider } from "@/components/SavingsBarContext";
 import { PostHogProvider } from "@/components/PostHogProvider";
@@ -131,7 +130,11 @@ export default function RootLayout({
             <SavingsBarProvider>
               <PostHogCtaTracker />
               <SiteNav />
-              <ProgressiveStickyBar />
+              {/* ProgressiveStickyBar (the pinned "Potential savings" line and
+                  the Save / Upgrade / Improve strip under it) is deliberately
+                  not rendered. It covered 72px of every scrolled screen and cut
+                  against the simplification pass (David, 2026-08-10).
+                  Deprecated, not deleted — the component is kept for reuse. */}
               <Suspense fallback={null}>
                 <PostHogPageView />
               </Suspense>

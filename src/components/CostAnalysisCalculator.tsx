@@ -87,7 +87,6 @@ interface PillSliderProps {
 }
 
 interface SimpleRangeControlProps {
-  boundsFormatter: (value: number) => string;
   formatter: (value: number) => string;
   label: string;
   labelAsterisk?: boolean;
@@ -98,8 +97,37 @@ interface SimpleRangeControlProps {
   value: number;
 }
 
+/**
+ * Returns the run of characters inserted into `previous` to produce `next`,
+ * or null when the edit was not a simple insertion.
+ *
+ * This backs the "typing replaces the whole number" behaviour. Selecting the
+ * field's text on focus is the first line of defence, but iOS Safari routinely
+ * collapses a programmatic selection to a caret right after focus, which is
+ * what makes phone editing feel broken: the visitor taps 2000000, types "5",
+ * and gets 5000000 or 20000005 instead of 5. When the selection did not
+ * survive, the first keystroke arrives as an insertion into the old text —
+ * this extracts what they actually typed so it can stand alone.
+ */
+function extractInsertedText(previous: string, next: string) {
+  if (next.length <= previous.length) return null;
+
+  let prefix = 0;
+  while (prefix < previous.length && previous[prefix] === next[prefix]) prefix += 1;
+
+  let suffix = 0;
+  while (
+    suffix < previous.length - prefix &&
+    previous[previous.length - 1 - suffix] === next[next.length - 1 - suffix]
+  ) {
+    suffix += 1;
+  }
+
+  const inserted = next.slice(prefix, next.length - suffix);
+  return inserted.length > 0 ? inserted : null;
+}
+
 function SimpleRangeControl({
-  boundsFormatter,
   formatter,
   label,
   labelAsterisk,
@@ -129,6 +157,18 @@ function SimpleRangeControl({
   // derived from props; a string = the user is editing.
   const [draft, setDraft] = useState<string | null>(null);
   const displayValue = draft ?? formatter(value);
+  // True between focus and the first keystroke: the whole value is meant to be
+  // selected, so the next thing typed should replace it rather than join it.
+  const replaceOnNextKeyRef = useRef(false);
+
+  const selectAll = useCallback((input: HTMLInputElement) => {
+    try {
+      input.setSelectionRange(0, input.value.length);
+    } catch {
+      // Some browsers reject setSelectionRange on certain input types; the
+      // insertion fallback in onChange covers this case.
+    }
+  }, []);
   const parseTextValue = useCallback((text: string) => {
     const cleaned = text.replace(/[^0-9.\-]/g, "");
     const numeric = Number.parseFloat(cleaned);
@@ -160,26 +200,27 @@ function SimpleRangeControl({
   const canDecrease = value > min;
   const canIncrease = value < max;
 
+  /* Label and stepper share one row at every width, and the min\u2013max hint is
+     gone: the +/- buttons and clamping already refuse out-of-range values, so
+     the hint cost a line of height on a phone to restate what the control
+     enforces anyway. Together this took each row from 95px to roughly 52px
+     (David, 2026-08-10). */
   return (
-    <div className="flex flex-col gap-2 min-[430px]:flex-row min-[430px]:items-center min-[430px]:justify-between min-[430px]:gap-3">
-      <div className="min-w-0">
-        <label htmlFor={inputId} className="block text-[13px] font-bold leading-tight text-[#213B56]">
-          <span>
-            {label}
-            {labelAsterisk ? "*" : ""}{" "}
-            <span className="ml-1.5 whitespace-nowrap text-[12px] font-semibold text-[#5E6F80]">
-              ({boundsFormatter(min)}{"\u2013"}{boundsFormatter(max)})
-            </span>
-          </span>
-        </label>
-      </div>
-      <div className="flex w-full shrink-0 items-stretch overflow-hidden rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30 min-[430px]:w-auto">
+    <div className="flex items-center justify-between gap-2">
+      <label
+        htmlFor={inputId}
+        className="min-w-0 flex-1 text-[13px] font-bold leading-tight text-[#213B56]"
+      >
+        {label}
+        {labelAsterisk ? "*" : ""}
+      </label>
+      <div className="flex shrink-0 items-stretch overflow-hidden rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30">
         <button
           type="button"
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => stepValue(-step)}
           disabled={!canDecrease}
-          className="grid h-11 w-11 place-items-center border-r border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
+          className="grid h-9 w-9 place-items-center border-r border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
           aria-label={`Decrease ${label}`}
         >
           <Minus aria-hidden="true" size={14} strokeWidth={2.5} />
@@ -192,7 +233,17 @@ function SimpleRangeControl({
           spellCheck={false}
           value={displayValue}
           onChange={(event) => {
-            const nextDraft = event.target.value;
+            let nextDraft = event.target.value;
+
+            if (replaceOnNextKeyRef.current) {
+              replaceOnNextKeyRef.current = false;
+              // Selection survived: nextDraft is already only what was typed.
+              // Selection was collapsed (iOS): recover the typed run so it
+              // replaces the old number instead of merging into it.
+              const inserted = extractInsertedText(displayValue, nextDraft);
+              if (inserted) nextDraft = inserted;
+            }
+
             setDraft(nextDraft);
             const numeric = parseTextValue(nextDraft);
             if (numeric !== null) {
@@ -200,11 +251,18 @@ function SimpleRangeControl({
             }
           }}
           onFocus={(event) => {
+            const input = event.currentTarget;
             setDraft(formatter(value));
-            // Defer so the value is in the DOM before selection.
-            requestAnimationFrame(() => event.target.select());
+            replaceOnNextKeyRef.current = true;
+            // Defer so the value is in the DOM before selection, then retry:
+            // iOS collapses the first attempt often enough to be worth it.
+            requestAnimationFrame(() => selectAll(input));
+            window.setTimeout(() => selectAll(input), 60);
           }}
-          onBlur={(event) => commitDraft(event.currentTarget.value)}
+          onBlur={(event) => {
+            replaceOnNextKeyRef.current = false;
+            commitDraft(event.currentTarget.value);
+          }}
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.preventDefault();
@@ -212,12 +270,13 @@ function SimpleRangeControl({
               event.currentTarget.blur();
             } else if (event.key === "Escape") {
               event.preventDefault();
+              replaceOnNextKeyRef.current = false;
               setDraft(null);
               event.currentTarget.blur();
             }
           }}
-          className="h-11 min-w-[7ch] flex-1 border-0 bg-transparent px-2.5 text-right text-base font-bold leading-none text-[#10233A] tabular-nums outline-none min-[430px]:flex-none"
-          style={{ width: `${Math.max(7, displayValue.length + 3)}ch` }}
+          className="h-9 min-w-[6ch] border-0 bg-transparent px-2 text-right text-base font-bold leading-none text-[#10233A] tabular-nums outline-none"
+          style={{ width: `${Math.max(6, displayValue.length + 2)}ch` }}
           aria-label={`${label} value`}
         />
         <button
@@ -225,7 +284,7 @@ function SimpleRangeControl({
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => stepValue(step)}
           disabled={!canIncrease}
-          className="grid h-11 w-11 place-items-center border-l border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
+          className="grid h-9 w-9 place-items-center border-l border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
           aria-label={`Increase ${label}`}
         >
           <Plus aria-hidden="true" size={14} strokeWidth={2.5} />
@@ -952,7 +1011,6 @@ export function CostAnalysisCalculator({
         value={state.portfolioValue}
         onChange={(value) => updateCalculatorState({ portfolioValue: value })}
         formatter={(value) => formatCurrency(value)}
-        boundsFormatter={(value) => formatCompactCurrency(value)}
         min={250000}
         max={5000000}
         step={100000}
@@ -964,7 +1022,6 @@ export function CostAnalysisCalculator({
         value={state.years}
         onChange={(value) => updateCalculatorState({ years: Math.round(value) })}
         formatter={(value) => `${Math.round(value)}`}
-        boundsFormatter={(value) => `${Math.round(value)}`}
         min={MIN_HORIZON_YEARS}
         max={40}
         step={1}
@@ -976,7 +1033,6 @@ export function CostAnalysisCalculator({
         value={state.annualGrowthPercent}
         onChange={(value) => updateCalculatorState({ annualGrowthPercent: value })}
         formatter={(value) => `${value.toFixed(2)}%`}
-        boundsFormatter={(value) => `${Math.round(value)}%`}
         min={3}
         max={12}
         step={0.25}
@@ -989,7 +1045,6 @@ export function CostAnalysisCalculator({
         value={state.annualFeePercent}
         onChange={(value) => updateCalculatorState({ annualFeePercent: value })}
         formatter={(value) => `${value.toFixed(2)}%`}
-        boundsFormatter={(value) => `${value.toFixed(2)}%`}
         min={0.25}
         max={2.5}
         step={0.1}
@@ -1080,21 +1135,6 @@ export function CostAnalysisCalculator({
           <p className="mt-1 max-w-2xl text-base leading-6 text-[#52657A] sm:text-lg">
             Calculate your potential additional wealth using your own numbers.
           </p>
-          <p className="mt-3 text-sm leading-6 text-[#52657A]">
-            Want to compare historical return paths?{" "}
-            <a
-              href={advancedCalculatorHref}
-              target="_blank"
-              rel="noreferrer"
-              data-posthog-cta-label="Open Advanced Calculator"
-              data-posthog-cta-location="fee_calculator_description"
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#B9D8C5] bg-[#F1F8F4] px-3 py-1 font-extrabold !text-[#0A6E35] !no-underline transition-[background-color,border-color,color] duration-200 hover:border-[#88B99A] hover:bg-[#E5F3EA] hover:!text-[#07552A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843]"
-            >
-              {ADVANCED_CALCULATOR_LABEL}
-              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-            </a>
-            .
-          </p>
         </div>
         <div className="flex w-full max-w-full flex-col items-start gap-2 sm:w-auto sm:items-end">
           <div className="inline-flex min-h-11 w-fit max-w-full items-center gap-2 rounded-md border border-[#BFD4C8] bg-white px-3 py-2 shadow-[0_10px_28px_rgba(17,33,52,0.08)] sm:px-4">
@@ -1105,11 +1145,35 @@ export function CostAnalysisCalculator({
               {formatCurrencyFloored(projection.savings)}
             </span>
           </div>
-          <div className="max-w-[22rem] text-left sm:text-right [&_p]:mt-0">
-            {disclosure}
-          </div>
         </div>
       </motion.div>
+    </div>
+  ) : null;
+
+  /* The Advanced Calculator handoff and the "Illustrative calculator only"
+     line both used to sit in the header above, where they pushed the actual
+     calculator down and asked the visitor to consider leaving before they had
+     touched anything. They now close the section instead (David, 2026-08-10). */
+  const calculatorFooter = isSavingsCalculatorUpgrade ? (
+    <div className="section-shell relative z-10 pb-10">
+      <div className="mx-auto flex w-full max-w-[1380px] flex-col gap-3 text-left">
+        <p className="text-sm leading-6 text-[#52657A]">
+          Want to compare historical return paths?{" "}
+          <a
+            href={advancedCalculatorHref}
+            target="_blank"
+            rel="noreferrer"
+            data-posthog-cta-label="Open Advanced Calculator"
+            data-posthog-cta-location="fee_calculator_footer"
+            className="inline-flex items-center gap-1.5 rounded-full border border-[#B9D8C5] bg-[#F1F8F4] px-3 py-1 font-extrabold !text-[#0A6E35] !no-underline transition-[background-color,border-color,color] duration-200 hover:border-[#88B99A] hover:bg-[#E5F3EA] hover:!text-[#07552A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843]"
+          >
+            {ADVANCED_CALCULATOR_LABEL}
+            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
+          .
+        </p>
+        <div className="[&_p]:mt-0">{disclosure}</div>
+      </div>
     </div>
   ) : null;
 
@@ -1273,6 +1337,8 @@ export function CostAnalysisCalculator({
           onHighlightScenario={handleCardTap}
           onAssumptionChange={(patch) => updateCalculatorState(patch)}
         />
+
+        {calculatorFooter}
       </section>
 
       {isSavingsCalculatorUpgrade && <WhatWhyWhoHow />}
