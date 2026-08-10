@@ -2394,7 +2394,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         </motion.div>
         )}
         </AnimatePresence>
-        ) : assumptionGrid}
+        ) : null}
         </div>
 
         <section
@@ -2524,6 +2524,15 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
             onGapToggle={toggleBarGap}
           />
         </div>
+
+        {/* The chart is the money shot, so nothing precedes it but the ending
+            values. The assumptions used to open the card and pushed the chart
+            most of a phone screen down; they now follow the visual, for
+            visitors who want to swap in their own figures (David, 2026-08-10).
+            Tabbed variants keep the grid in their view slot above. */}
+        {showViewTabs ? null : (
+          <div className="mt-3 border-t border-[#DFE6EE] pt-1">{assumptionGrid}</div>
+        )}
 
         <div className="mx-4 mt-3 space-y-1.5 rounded-md border border-[#D7E0E8] bg-[#F8FAFC] px-3 py-2 sm:mx-7">
           <p className="text-[12px] font-semibold leading-relaxed text-[#42556C] sm:text-[13px]">

@@ -1,6 +1,6 @@
 "use client";
 
-import { type MouseEvent, type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { Check, ChevronDown, ChevronUp, ExternalLink, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
@@ -20,7 +20,11 @@ import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
 import { HomeTopBanner } from "@/components/HomeTopBanner";
 import { SignupCta } from "@/components/SignupCta";
-import { PremiumPromisePreview } from "@/components/PremiumPromisePreview";
+/* PremiumPromisePreview (the Save / Upgrade / Improve video panel) is
+   deliberately not imported here. It sat between the promise block and the
+   calculator, which kept the calculator heading off the first mobile screen.
+   Deprecated rather than deleted — the component still builds and is kept for
+   reuse here or on smarterwaywealth.com (David, 2026-08-10). */
 import { WhatWhyWhoHow } from "@/components/WhatWhyWhoHow";
 import {
   HomeCalculatorExperience,
@@ -42,7 +46,6 @@ import {
 } from "@/config/advancedCalculator";
 
 type IntroStyle = "rule" | "panel" | "quote";
-type PromisePhase = "waiting" | "human" | "david" | "full-copy" | "full-copy-hold" | "brand";
 
 function getAssetTier(portfolioValue: number) {
   if (portfolioValue < 500000) return "under_500k";
@@ -84,7 +87,6 @@ interface PillSliderProps {
 }
 
 interface SimpleRangeControlProps {
-  boundsFormatter: (value: number) => string;
   formatter: (value: number) => string;
   label: string;
   labelAsterisk?: boolean;
@@ -95,8 +97,37 @@ interface SimpleRangeControlProps {
   value: number;
 }
 
+/**
+ * Returns the run of characters inserted into `previous` to produce `next`,
+ * or null when the edit was not a simple insertion.
+ *
+ * This backs the "typing replaces the whole number" behaviour. Selecting the
+ * field's text on focus is the first line of defence, but iOS Safari routinely
+ * collapses a programmatic selection to a caret right after focus, which is
+ * what makes phone editing feel broken: the visitor taps 2000000, types "5",
+ * and gets 5000000 or 20000005 instead of 5. When the selection did not
+ * survive, the first keystroke arrives as an insertion into the old text —
+ * this extracts what they actually typed so it can stand alone.
+ */
+function extractInsertedText(previous: string, next: string) {
+  if (next.length <= previous.length) return null;
+
+  let prefix = 0;
+  while (prefix < previous.length && previous[prefix] === next[prefix]) prefix += 1;
+
+  let suffix = 0;
+  while (
+    suffix < previous.length - prefix &&
+    previous[previous.length - 1 - suffix] === next[next.length - 1 - suffix]
+  ) {
+    suffix += 1;
+  }
+
+  const inserted = next.slice(prefix, next.length - suffix);
+  return inserted.length > 0 ? inserted : null;
+}
+
 function SimpleRangeControl({
-  boundsFormatter,
   formatter,
   label,
   labelAsterisk,
@@ -126,6 +157,18 @@ function SimpleRangeControl({
   // derived from props; a string = the user is editing.
   const [draft, setDraft] = useState<string | null>(null);
   const displayValue = draft ?? formatter(value);
+  // True between focus and the first keystroke: the whole value is meant to be
+  // selected, so the next thing typed should replace it rather than join it.
+  const replaceOnNextKeyRef = useRef(false);
+
+  const selectAll = useCallback((input: HTMLInputElement) => {
+    try {
+      input.setSelectionRange(0, input.value.length);
+    } catch {
+      // Some browsers reject setSelectionRange on certain input types; the
+      // insertion fallback in onChange covers this case.
+    }
+  }, []);
   const parseTextValue = useCallback((text: string) => {
     const cleaned = text.replace(/[^0-9.\-]/g, "");
     const numeric = Number.parseFloat(cleaned);
@@ -157,26 +200,27 @@ function SimpleRangeControl({
   const canDecrease = value > min;
   const canIncrease = value < max;
 
+  /* Label and stepper share one row at every width, and the min\u2013max hint is
+     gone: the +/- buttons and clamping already refuse out-of-range values, so
+     the hint cost a line of height on a phone to restate what the control
+     enforces anyway. Together this took each row from 95px to roughly 52px
+     (David, 2026-08-10). */
   return (
-    <div className="flex flex-col gap-2 min-[430px]:flex-row min-[430px]:items-center min-[430px]:justify-between min-[430px]:gap-3">
-      <div className="min-w-0">
-        <label htmlFor={inputId} className="block text-[13px] font-bold leading-tight text-[#213B56]">
-          <span>
-            {label}
-            {labelAsterisk ? "*" : ""}{" "}
-            <span className="ml-1.5 whitespace-nowrap text-[12px] font-semibold text-[#5E6F80]">
-              ({boundsFormatter(min)}{"\u2013"}{boundsFormatter(max)})
-            </span>
-          </span>
-        </label>
-      </div>
-      <div className="flex w-full shrink-0 items-stretch overflow-hidden rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30 min-[430px]:w-auto">
+    <div className="flex items-center justify-between gap-2">
+      <label
+        htmlFor={inputId}
+        className="min-w-0 flex-1 text-[13px] font-bold leading-tight text-[#213B56]"
+      >
+        {label}
+        {labelAsterisk ? "*" : ""}
+      </label>
+      <div className="flex shrink-0 items-stretch overflow-hidden rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30">
         <button
           type="button"
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => stepValue(-step)}
           disabled={!canDecrease}
-          className="grid h-11 w-11 place-items-center border-r border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
+          className="grid h-9 w-9 place-items-center border-r border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
           aria-label={`Decrease ${label}`}
         >
           <Minus aria-hidden="true" size={14} strokeWidth={2.5} />
@@ -189,7 +233,17 @@ function SimpleRangeControl({
           spellCheck={false}
           value={displayValue}
           onChange={(event) => {
-            const nextDraft = event.target.value;
+            let nextDraft = event.target.value;
+
+            if (replaceOnNextKeyRef.current) {
+              replaceOnNextKeyRef.current = false;
+              // Selection survived: nextDraft is already only what was typed.
+              // Selection was collapsed (iOS): recover the typed run so it
+              // replaces the old number instead of merging into it.
+              const inserted = extractInsertedText(displayValue, nextDraft);
+              if (inserted) nextDraft = inserted;
+            }
+
             setDraft(nextDraft);
             const numeric = parseTextValue(nextDraft);
             if (numeric !== null) {
@@ -197,11 +251,18 @@ function SimpleRangeControl({
             }
           }}
           onFocus={(event) => {
+            const input = event.currentTarget;
             setDraft(formatter(value));
-            // Defer so the value is in the DOM before selection.
-            requestAnimationFrame(() => event.target.select());
+            replaceOnNextKeyRef.current = true;
+            // Defer so the value is in the DOM before selection, then retry:
+            // iOS collapses the first attempt often enough to be worth it.
+            requestAnimationFrame(() => selectAll(input));
+            window.setTimeout(() => selectAll(input), 60);
           }}
-          onBlur={(event) => commitDraft(event.currentTarget.value)}
+          onBlur={(event) => {
+            replaceOnNextKeyRef.current = false;
+            commitDraft(event.currentTarget.value);
+          }}
           onKeyDown={(event) => {
             if (event.key === "Enter") {
               event.preventDefault();
@@ -209,12 +270,13 @@ function SimpleRangeControl({
               event.currentTarget.blur();
             } else if (event.key === "Escape") {
               event.preventDefault();
+              replaceOnNextKeyRef.current = false;
               setDraft(null);
               event.currentTarget.blur();
             }
           }}
-          className="h-11 min-w-[7ch] flex-1 border-0 bg-transparent px-2.5 text-right text-base font-bold leading-none text-[#10233A] tabular-nums outline-none min-[430px]:flex-none"
-          style={{ width: `${Math.max(7, displayValue.length + 3)}ch` }}
+          className="h-9 min-w-[6ch] border-0 bg-transparent px-2 text-right text-base font-bold leading-none text-[#10233A] tabular-nums outline-none"
+          style={{ width: `${Math.max(6, displayValue.length + 2)}ch` }}
           aria-label={`${label} value`}
         />
         <button
@@ -222,7 +284,7 @@ function SimpleRangeControl({
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => stepValue(step)}
           disabled={!canIncrease}
-          className="grid h-11 w-11 place-items-center border-l border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
+          className="grid h-9 w-9 place-items-center border-l border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
           aria-label={`Increase ${label}`}
         >
           <Plus aria-hidden="true" size={14} strokeWidth={2.5} />
@@ -382,257 +444,22 @@ function SavingsLeadHero({
   savings: number;
   years: number;
 }) {
-  const reducedMotion = useReducedMotion();
-  const introRef = useRef<HTMLDivElement>(null);
-  const brandSlotRef = useRef<HTMLSpanElement>(null);
-  const showScrollDavidRef = useRef(false);
-  const [motionPreferenceReady, setMotionPreferenceReady] = useState(false);
-  const [hasEnteredView, setHasEnteredView] = useState(false);
-  const [revealPhase, setRevealPhase] = useState<PromisePhase>("waiting");
-  const [showScrollDavid, setShowScrollDavid] = useState(false);
-  const shouldReduceMotion = motionPreferenceReady && Boolean(reducedMotion);
-
-  const handleCalculatorJump = (event: MouseEvent<HTMLAnchorElement>) => {
-    const calculator = document.getElementById("calculator");
-    if (!calculator) return;
-
-    event.preventDefault();
-    calculator.scrollIntoView({
-      behavior: shouldReduceMotion ? "auto" : "smooth",
-      block: "start",
-    });
-
-    const urlWithoutHash = `${window.location.pathname}${window.location.search}`;
-    window.history.replaceState(window.history.state, "", urlWithoutHash);
-  };
-
-  useEffect(() => {
-    setMotionPreferenceReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (shouldReduceMotion) return;
-
-    const intro = introRef.current;
-    if (!intro) return;
-
-    let animationFrame = 0;
-    let hasTriggered = false;
-    let resizeObserver: ResizeObserver | null = null;
-
-    const stopWatching = () => {
-      if (animationFrame) window.cancelAnimationFrame(animationFrame);
-      resizeObserver?.disconnect();
-      window.removeEventListener("scroll", requestVisibilityCheck);
-      window.removeEventListener("resize", requestVisibilityCheck);
-    };
-
-    const checkVisibility = () => {
-      animationFrame = 0;
-      const rect = intro.getBoundingClientRect();
-      const revealBoundary = window.innerHeight * 0.92;
-      const visibleTop = Math.max(rect.top, 0);
-      const visibleBottom = Math.min(rect.bottom, revealBoundary);
-      const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-
-      if (visibleHeight >= Math.min(rect.height * 0.18, 72)) {
-        hasTriggered = true;
-        setHasEnteredView(true);
-        stopWatching();
-      }
-    };
-
-    function requestVisibilityCheck() {
-      if (animationFrame || hasTriggered) return;
-      animationFrame = window.requestAnimationFrame(checkVisibility);
-    }
-
-    window.addEventListener("scroll", requestVisibilityCheck, { passive: true });
-    window.addEventListener("resize", requestVisibilityCheck);
-    if ("ResizeObserver" in window) {
-      resizeObserver = new ResizeObserver(requestVisibilityCheck);
-      resizeObserver.observe(intro);
-    }
-    requestVisibilityCheck();
-
-    return stopWatching;
-  }, [shouldReduceMotion]);
-
-  useEffect(() => {
-    if (!hasEnteredView || shouldReduceMotion) return;
-
-    const transitions: Partial<Record<PromisePhase, { delay: number; next: PromisePhase }>> = {
-      waiting: { delay: 500, next: "human" },
-      human: { delay: 1000, next: "david" },
-      david: { delay: 950, next: "full-copy" },
-      "full-copy-hold": { delay: 1000, next: "brand" },
-    };
-    const transition = transitions[revealPhase];
-    if (!transition) return;
-    const timer = window.setTimeout(() => setRevealPhase(transition.next), transition.delay);
-    return () => window.clearTimeout(timer);
-  }, [hasEnteredView, revealPhase, shouldReduceMotion]);
-
-  const visiblePhase: PromisePhase = shouldReduceMotion ? "brand" : revealPhase;
-  const fullCopyVisible = ["full-copy", "full-copy-hold", "brand"].includes(visiblePhase);
-  const humanVisible = visiblePhase === "human" || fullCopyVisible;
-  const davidVisible = visiblePhase === "david" || visiblePhase === "full-copy" || visiblePhase === "full-copy-hold" || (visiblePhase === "brand" && showScrollDavid);
-  const brandVisible = visiblePhase === "brand" && !showScrollDavid;
-
-  const completeCopyReveal = () => {
-    if (!shouldReduceMotion && revealPhase === "full-copy") {
-      setRevealPhase("full-copy-hold");
-    }
-  };
-
-  useEffect(() => {
-    if (visiblePhase !== "brand" || shouldReduceMotion) {
-      if (showScrollDavidRef.current) {
-        showScrollDavidRef.current = false;
-        setShowScrollDavid(false);
-      }
-      return;
-    }
-
-    const brandSlot = brandSlotRef.current;
-    if (!brandSlot) return;
-
-    let animationFrame = 0;
-    let scrollSliceArmed = false;
-
-    const updateShowScrollDavid = (next: boolean) => {
-      if (showScrollDavidRef.current === next) return;
-      showScrollDavidRef.current = next;
-      setShowScrollDavid(next);
-    };
-
-    const updateScrollSlice = () => {
-      animationFrame = 0;
-      const rect = brandSlot.getBoundingClientRect();
-      const viewportCenter = window.innerHeight / 2;
-      const brandCenter = rect.top + rect.height / 2;
-      const distanceFromCenter = Math.abs(brandCenter - viewportCenter);
-
-      if (!scrollSliceArmed) {
-        if (distanceFromCenter >= 48) scrollSliceArmed = true;
-        updateShowScrollDavid(false);
-        return;
-      }
-
-      if (distanceFromCenter <= 24) {
-        updateShowScrollDavid(true);
-      } else if (distanceFromCenter >= 48) {
-        updateShowScrollDavid(false);
-      }
-    };
-
-    const requestScrollSliceUpdate = () => {
-      if (animationFrame) return;
-      animationFrame = window.requestAnimationFrame(updateScrollSlice);
-    };
-
-    updateScrollSlice();
-    window.addEventListener("scroll", requestScrollSliceUpdate, { passive: true });
-    window.addEventListener("resize", requestScrollSliceUpdate);
-
-    return () => {
-      if (animationFrame) window.cancelAnimationFrame(animationFrame);
-      window.removeEventListener("scroll", requestScrollSliceUpdate);
-      window.removeEventListener("resize", requestScrollSliceUpdate);
-    };
-  }, [shouldReduceMotion, visiblePhase]);
-
-  const nameTransition = {
-    duration: shouldReduceMotion ? 0 : 0.56,
-    ease: [0.22, 1, 0.36, 1],
-  } as const;
-  const copyRevealTransition = {
-    duration: shouldReduceMotion ? 0 : 0.64,
-    ease: [0.22, 1, 0.36, 1],
-  } as const;
-  const humanRevealTransition = {
-    duration: shouldReduceMotion ? 0 : 0.52,
-    ease: [0.22, 1, 0.36, 1],
-  } as const;
+  /* The promise reads in full the moment the page paints. It used to fade in
+     one clause at a time and swap the name between "David" and "Smarter Way
+     Wealth" on scroll; that sequence was retired (David, 2026-08-10) because
+     the statement now sits on the first mobile screen, where a line that
+     rewrites itself under the visitor reads as distracting rather than
+     deliberate. */
   const statement = (
     <>
-      <span className="sr-only">
-        Smarter Way Wealth delivers personal, real human fiduciary advice and planning for a simple $100/month. Period.
-      </span>
-      <span
-        aria-hidden="true"
-        data-promise-phase={visiblePhase}
-        data-promise-name={davidVisible ? "david" : brandVisible ? "smarter-way-wealth" : "hidden"}
-      >
-        <span className="block text-center">
-          <span
-            ref={brandSlotRef}
-            className="relative inline-block whitespace-nowrap"
-          >
-            <span className="invisible">Smarter Way Wealth</span>
-            <motion.span
-              initial={false}
-              animate={{ opacity: davidVisible ? 1 : 0 }}
-              transition={nameTransition}
-              className="absolute inset-0 whitespace-nowrap text-center"
-            >
-              David
-            </motion.span>
-            <motion.span
-              initial={false}
-              animate={{ opacity: brandVisible ? 1 : 0 }}
-              transition={nameTransition}
-              className="absolute inset-0 whitespace-nowrap text-center"
-            >
-              Smarter Way Wealth
-            </motion.span>
-          </span>
-        </span>
-        <span data-promise-copy={fullCopyVisible ? "visible" : "hidden"} className="block">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-            transition={copyRevealTransition}
-            onAnimationComplete={completeCopyReveal}
-          >
-            delivers{" "}
-          </motion.span>
-          <span className="text-[#007A2F]">
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-              transition={copyRevealTransition}
-            >
-              personal, real{" "}
-            </motion.span>
-            <motion.span
-              data-promise-human={humanVisible ? "visible" : "hidden"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: humanVisible ? 1 : 0 }}
-              transition={humanRevealTransition}
-            >
-              human
-            </motion.span>
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-              transition={copyRevealTransition}
-            >
-              {" "}fiduciary advice and planning
-            </motion.span>
-          </span>
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-            transition={copyRevealTransition}
-          >
-            {" "}for a simple{" "}
-            <span data-promise-fee-ending className="whitespace-nowrap">
-              <span data-promise-fee>$100/month.</span>{" "}
-              <span data-promise-period>Period.</span>
-            </span>
-          </motion.span>
-        </span>
+      <span className="block text-center">Smarter Way Wealth</span>
+      <span className="block">
+        delivers{" "}
+        <span className="text-[#007A2F]">
+          personal, real human fiduciary advice and planning
+        </span>{" "}
+        for a simple{" "}
+        <span className="whitespace-nowrap">$100/month. Period.</span>
       </span>
     </>
   );
@@ -643,15 +470,10 @@ function SavingsLeadHero({
         <p className="mx-auto max-w-3xl text-2xl font-semibold leading-[1.14] tracking-normal text-[#10233A] sm:text-[clamp(1.55rem,3.8vw,2.35rem)]">
           {statement}
         </p>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: fullCopyVisible ? 1 : 0 }}
-          transition={copyRevealTransition}
-          className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.35rem,3.15vw,2rem)] font-medium leading-[1.14] tracking-normal text-[#10233A] sm:mt-7"
-        >
+        <p className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.35rem,3.15vw,2rem)] font-medium leading-[1.14] tracking-normal text-[#10233A] sm:mt-7">
           <span className="whitespace-nowrap">David Van Osdol,</span>{" "}
           <span className="whitespace-nowrap">CFA, CFP®</span>
-        </motion.p>
+        </p>
         <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
       </div>
     ) : introStyle === "quote" ? (
@@ -671,25 +493,18 @@ function SavingsLeadHero({
         <div className="mx-auto mt-7 h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
       </div>
     );
-  const introBlock = (
-    <div
-      ref={introRef}
-      data-promise-reveal-phase={visiblePhase}
-      data-promise-entered-view={hasEnteredView ? "true" : "false"}
-      data-promise-reduced-motion={shouldReduceMotion ? "true" : "false"}
-      data-promise-motion-ready={motionPreferenceReady ? "true" : "false"}
-      className="mt-14 sm:mt-20"
-    >
-      {introContent}
-    </div>
-  );
+  const introBlock = <div className="mt-6 sm:mt-20">{introContent}</div>;
 
+  /* Mobile padding below is tuned so the calculator's own heading clears the
+     fold on a 375px phone: hero, promise, and "The Fee Calculator" are the
+     three things a QR-code visitor should land on (David, 2026-08-10). Desktop
+     keeps its original breathing room through the sm: steps. */
   return (
     <section
       data-url-eval-section="opening-promise"
-      className="w-full bg-[#EEF0F5] pb-[94px] text-center text-[#10233A] sm:pb-[110px]"
+      className="w-full bg-[#EEF0F5] pb-10 text-center text-[#10233A] sm:pb-[110px]"
     >
-      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-16 pb-16 sm:pt-20 sm:pb-20">
+      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-8 pb-6 sm:pt-20 sm:pb-20">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-[47%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
@@ -698,33 +513,23 @@ function SavingsLeadHero({
           ?
         </div>
         <div className="relative z-10 mx-auto max-w-6xl">
-          <h1 className="text-[clamp(2.25rem,4.8vw,4rem)] font-semibold leading-[1.06] tracking-normal">
-            <span className="block">What would you do with</span>
-            <span className="block text-[#007A2F] tabular-nums">{formatCurrencyFloored(savings)}*</span>
+          {/* Two lines, always. The question line carries a smaller floor than
+              the dollar line so it stays unbroken at 375px instead of orphaning
+              "with" on a third line; both lines converge on the same size once
+              the viewport is wide enough for the fluid step to take over. */}
+          <h1 className="font-semibold leading-[1.06] tracking-normal">
+            <span className="block text-[clamp(1.7rem,4.8vw,4rem)]">What would you do with</span>
+            <span className="block text-[clamp(2.25rem,4.8vw,4rem)] text-[#007A2F] tabular-nums">
+              {formatCurrencyFloored(savings)}
+              <span className="align-super text-[0.36em] leading-none">*</span>
+            </span>
           </h1>
           <p className="mt-3 text-base font-medium leading-snug text-[#10233A]/80 sm:text-lg">
             * potential savings over {years} years.
           </p>
         </div>
       </div>
-      <div className="px-0 pt-6 pb-8 sm:pt-10 sm:pb-10">
-        {/* A plain link, not a button: the calculator is already the page the
-            visitor landed on, so this is a shortcut past the intro rather than
-            the primary ask. Kept on one line at every width. */}
-        <div className="mx-auto flex w-full max-w-2xl items-center justify-center px-4">
-          <a
-            href="#calculator"
-            onClick={handleCalculatorJump}
-            className="inline-flex min-h-11 items-center whitespace-nowrap text-base font-semibold text-[#064B84] underline underline-offset-4 transition-colors duration-200 hover:text-[#053E6D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:text-lg"
-          >
-            Go directly to the fee calculator
-          </a>
-        </div>
-      </div>
-      <div className="mx-auto max-w-6xl px-4">
-        {introBlock}
-        <PremiumPromisePreview savings={savings} />
-      </div>
+      <div className="mx-auto max-w-6xl px-4">{introBlock}</div>
     </section>
   );
 }
@@ -1206,7 +1011,6 @@ export function CostAnalysisCalculator({
         value={state.portfolioValue}
         onChange={(value) => updateCalculatorState({ portfolioValue: value })}
         formatter={(value) => formatCurrency(value)}
-        boundsFormatter={(value) => formatCompactCurrency(value)}
         min={250000}
         max={5000000}
         step={100000}
@@ -1218,7 +1022,6 @@ export function CostAnalysisCalculator({
         value={state.years}
         onChange={(value) => updateCalculatorState({ years: Math.round(value) })}
         formatter={(value) => `${Math.round(value)}`}
-        boundsFormatter={(value) => `${Math.round(value)}`}
         min={MIN_HORIZON_YEARS}
         max={40}
         step={1}
@@ -1230,7 +1033,6 @@ export function CostAnalysisCalculator({
         value={state.annualGrowthPercent}
         onChange={(value) => updateCalculatorState({ annualGrowthPercent: value })}
         formatter={(value) => `${value.toFixed(2)}%`}
-        boundsFormatter={(value) => `${Math.round(value)}%`}
         min={3}
         max={12}
         step={0.25}
@@ -1243,7 +1045,6 @@ export function CostAnalysisCalculator({
         value={state.annualFeePercent}
         onChange={(value) => updateCalculatorState({ annualFeePercent: value })}
         formatter={(value) => `${value.toFixed(2)}%`}
-        boundsFormatter={(value) => `${value.toFixed(2)}%`}
         min={0.25}
         max={2.5}
         step={0.1}
@@ -1334,21 +1135,6 @@ export function CostAnalysisCalculator({
           <p className="mt-1 max-w-2xl text-base leading-6 text-[#52657A] sm:text-lg">
             Calculate your potential additional wealth using your own numbers.
           </p>
-          <p className="mt-3 text-sm leading-6 text-[#52657A]">
-            Want to compare historical return paths?{" "}
-            <a
-              href={advancedCalculatorHref}
-              target="_blank"
-              rel="noreferrer"
-              data-posthog-cta-label="Open Advanced Calculator"
-              data-posthog-cta-location="fee_calculator_description"
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#B9D8C5] bg-[#F1F8F4] px-3 py-1 font-extrabold !text-[#0A6E35] !no-underline transition-[background-color,border-color,color] duration-200 hover:border-[#88B99A] hover:bg-[#E5F3EA] hover:!text-[#07552A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843]"
-            >
-              {ADVANCED_CALCULATOR_LABEL}
-              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-            </a>
-            .
-          </p>
         </div>
         <div className="flex w-full max-w-full flex-col items-start gap-2 sm:w-auto sm:items-end">
           <div className="inline-flex min-h-11 w-fit max-w-full items-center gap-2 rounded-md border border-[#BFD4C8] bg-white px-3 py-2 shadow-[0_10px_28px_rgba(17,33,52,0.08)] sm:px-4">
@@ -1359,11 +1145,35 @@ export function CostAnalysisCalculator({
               {formatCurrencyFloored(projection.savings)}
             </span>
           </div>
-          <div className="max-w-[22rem] text-left sm:text-right [&_p]:mt-0">
-            {disclosure}
-          </div>
         </div>
       </motion.div>
+    </div>
+  ) : null;
+
+  /* The Advanced Calculator handoff and the "Illustrative calculator only"
+     line both used to sit in the header above, where they pushed the actual
+     calculator down and asked the visitor to consider leaving before they had
+     touched anything. They now close the section instead (David, 2026-08-10). */
+  const calculatorFooter = isSavingsCalculatorUpgrade ? (
+    <div className="section-shell relative z-10 pb-10">
+      <div className="mx-auto flex w-full max-w-[1380px] flex-col gap-3 text-left">
+        <p className="text-sm leading-6 text-[#52657A]">
+          Want to compare historical return paths?{" "}
+          <a
+            href={advancedCalculatorHref}
+            target="_blank"
+            rel="noreferrer"
+            data-posthog-cta-label="Open Advanced Calculator"
+            data-posthog-cta-location="fee_calculator_footer"
+            className="inline-flex items-center gap-1.5 rounded-full border border-[#B9D8C5] bg-[#F1F8F4] px-3 py-1 font-extrabold !text-[#0A6E35] !no-underline transition-[background-color,border-color,color] duration-200 hover:border-[#88B99A] hover:bg-[#E5F3EA] hover:!text-[#07552A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843]"
+          >
+            {ADVANCED_CALCULATOR_LABEL}
+            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
+          .
+        </p>
+        <div className="[&_p]:mt-0">{disclosure}</div>
+      </div>
     </div>
   ) : null;
 
@@ -1527,6 +1337,8 @@ export function CostAnalysisCalculator({
           onHighlightScenario={handleCardTap}
           onAssumptionChange={(patch) => updateCalculatorState(patch)}
         />
+
+        {calculatorFooter}
       </section>
 
       {isSavingsCalculatorUpgrade && <WhatWhyWhoHow />}

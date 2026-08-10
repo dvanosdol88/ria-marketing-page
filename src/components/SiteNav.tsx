@@ -247,6 +247,10 @@ export function SiteNav() {
 
         <div className="site-nav mx-auto max-w-[1200px] px-4 transition-all duration-500 ease-out sm:px-6">
           {/* ── Mobile Layout ── */}
+          {/* The right slot stays empty on purpose. A "Fee Calculator" button
+              lived here briefly; with the promise block now sitting directly
+              above the calculator, the calculator is the very next thing a
+              visitor sees, so the button was redundant (David, 2026-08-10). */}
           <div className={`flex items-center justify-between xl:hidden transition-all duration-500 ease-out transform-gpu ${
             collapsed ? "h-[58px]" : "h-[77px]"
           }`}>

@@ -117,10 +117,22 @@ try {
     "the removed Advanced Calculator supporting copy must stay absent",
   );
 
-  await page
-    .getByRole("link", { name: "Go directly to the fee calculator", exact: true })
-    .click();
-  await page.waitForFunction(() => window.scrollY > 1_000);
+  assert.equal(
+    await page
+      .getByRole("link", { name: "Go directly to the fee calculator", exact: true })
+      .count(),
+    0,
+    "the retired in-page calculator shortcut link must stay absent",
+  );
+
+  // The in-page shortcut link is gone: the calculator now sits directly under
+  // the promise block, so visitors reach it by scrolling rather than by a CTA.
+  // The regression guarded here — a refresh landing mid-page instead of at the
+  // top — does not depend on how the visitor got down the page.
+  await page.evaluate(() => {
+    document.getElementById("calculator")?.scrollIntoView({ behavior: "auto", block: "start" });
+  });
+  await page.waitForFunction(() => window.scrollY > 300);
   await page.waitForTimeout(1_200);
   await returnToPageTop(page);
 
