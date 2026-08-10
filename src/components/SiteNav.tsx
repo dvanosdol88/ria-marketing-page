@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef, type MouseEvent as ReactMouseEvent } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -18,7 +18,6 @@ import {
 const COLLAPSE_SCROLL_Y = 158;
 const EXPAND_SCROLL_Y = 104;
 const SMARTER_WAY_WEALTH_URL = "https://smarterwaywealth.com/";
-const FEE_CALCULATOR_HREF = "/#calculator";
 
 /**
  * Site-wide navigation bar — "Authority" style with collapsing behavior.
@@ -48,29 +47,6 @@ export function SiteNav() {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   const toggleDrawer = useCallback(() => setDrawerOpen((p) => !p), []);
-
-  /* Scroll to the calculator without leaving "#calculator" in the address bar:
-     a persisted hash replays on refresh and drops the visitor mid-page instead
-     of at the top. Guarded by tests/refresh-position.mjs. */
-  const handleFeeCalculatorJump = useCallback(
-    (event: ReactMouseEvent<HTMLAnchorElement>) => {
-      if (pathname !== "/") return;
-
-      const calculator = document.getElementById("calculator");
-      if (!calculator) return;
-
-      event.preventDefault();
-      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      calculator.scrollIntoView({
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-        block: "start",
-      });
-
-      const urlWithoutHash = `${window.location.pathname}${window.location.search}`;
-      window.history.replaceState(window.history.state, "", urlWithoutHash);
-    },
-    [pathname],
-  );
   const closeDrawer = useCallback(() => {
     if (document.activeElement?.closest('nav[aria-label="Mobile navigation"]')) {
       menuButtonRef.current?.focus();
@@ -271,11 +247,11 @@ export function SiteNav() {
 
         <div className="site-nav mx-auto max-w-[1200px] px-4 transition-all duration-500 ease-out sm:px-6">
           {/* ── Mobile Layout ── */}
-          {/* Three slots in normal flow: menu | logo | calculator. The logo used
-              to be absolutely centered on the full bar, which is fine with an
-              empty right slot but collides with a real CTA. It now centers
-              inside the space actually left over. */}
-          <div className={`flex items-center gap-2 xl:hidden transition-all duration-500 ease-out transform-gpu ${
+          {/* The right slot stays empty on purpose. A "Fee Calculator" button
+              lived here briefly; with the promise block now sitting directly
+              above the calculator, the calculator is the very next thing a
+              visitor sees, so the button was redundant (David, 2026-08-10). */}
+          <div className={`flex items-center justify-between xl:hidden transition-all duration-500 ease-out transform-gpu ${
             collapsed ? "h-[58px]" : "h-[77px]"
           }`}>
             <button
@@ -283,7 +259,7 @@ export function SiteNav() {
               onClick={toggleDrawer}
               aria-label={drawerOpen ? "Close menu" : "Open menu"}
               aria-expanded={drawerOpen}
-              className="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-800 shadow-sm transition-colors duration-300 hover:bg-neutral-100 active:bg-neutral-200"
+              className="relative z-10 flex h-11 w-11 items-center justify-center rounded-lg border border-neutral-300 bg-white text-neutral-800 shadow-sm transition-colors duration-300 hover:bg-neutral-100 active:bg-neutral-200"
             >
               {drawerOpen ? <X className="h-5 w-5" strokeWidth={2.2} /> : <Menu className="h-6 w-6" strokeWidth={2.2} />}
             </button>
@@ -291,37 +267,18 @@ export function SiteNav() {
             {/* Mobile logo — tiered implementation */}
             <Link
               href={"/" as any}
-              className="flex min-h-11 min-w-0 flex-1 items-center justify-center transform-gpu"
+              className="absolute left-1/2 flex min-h-11 -translate-x-1/2 items-center transform-gpu"
               aria-label="Smarter Way Wealth home"
             >
               <Logo
-                heightClass={collapsed ? "h-[30px]" : "h-[44px]"}
-                fontSizeBase={collapsed ? "0.95rem" : "1.1rem"}
+                heightClass={collapsed ? "h-[34px]" : "h-[58px]"}
+                fontSizeBase={collapsed ? "1.1rem" : "1.4rem"}
                 isCentered={true}
               />
             </Link>
 
-            {/* Right slot — the calculator shortcut. On mobile every nav item
-                is otherwise sealed behind the hamburger, so a visitor landing
-                from the mailed QR code had no visible route to the calculator
-                without opening the menu first (David, 2026-08-10). */}
-            <Link
-              href={FEE_CALCULATOR_HREF as any}
-              onClick={handleFeeCalculatorJump}
-              data-posthog-cta="true"
-              data-posthog-cta-label="Fee Calculator"
-              data-posthog-cta-location="site_nav_mobile_header"
-              className="relative z-10 inline-flex min-h-11 shrink-0 items-center rounded-lg px-2.5 text-center text-[13px] font-extrabold leading-[1.1] transition-colors duration-200 hover:bg-[#D6F5E2] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#007A2F]"
-              style={{
-                border: "1px solid #007A2F",
-                background: "#EAF7EF",
-                color: "#062B43",
-              }}
-            >
-              Fee
-              <br />
-              Calculator
-            </Link>
+            {/* Right slot — reserved for future CTA */}
+            <div className="w-11" aria-hidden="true" />
           </div>
 
           {/* ── Desktop Layout ── */}

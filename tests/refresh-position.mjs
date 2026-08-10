@@ -125,10 +125,14 @@ try {
     "the retired in-page calculator shortcut link must stay absent",
   );
 
-  // The calculator shortcut now lives in the header, where it is visible on the
-  // first screen without opening the menu.
-  await page.locator('[data-posthog-cta-location="site_nav_mobile_header"]').click();
-  await page.waitForFunction(() => window.scrollY > 1_000);
+  // The in-page shortcut link is gone: the calculator now sits directly under
+  // the promise block, so visitors reach it by scrolling rather than by a CTA.
+  // The regression guarded here — a refresh landing mid-page instead of at the
+  // top — does not depend on how the visitor got down the page.
+  await page.evaluate(() => {
+    document.getElementById("calculator")?.scrollIntoView({ behavior: "auto", block: "start" });
+  });
+  await page.waitForFunction(() => window.scrollY > 300);
   await page.waitForTimeout(1_200);
   await returnToPageTop(page);
 
