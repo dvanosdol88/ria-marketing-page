@@ -35,6 +35,8 @@ export const signupCta = {
    *  supplies its own headline built from the visitor's own number. */
   block: {
     eyebrow: "Ready when you are",
+    // Deprecated from the full CTA card on the YAPT root. The headline remains
+    // the inline calculator-result fallback; review the retired fee body with it.
     headline: "One flat fee, whatever your balance does.",
     body: "No commissions, no products, and no percentage of your money.",
   },

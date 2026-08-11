@@ -3,6 +3,21 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-11 — Kept the YAPT client CTA, removed its duplicate fee pitch
+
+- David kept the current `Become a client — $100/month` behavior and its
+  secondary 15-minute conversation path, but removed the repeated full-card
+  "One flat fee" headline and fee-description copy. The card now leads with
+  its existing eyebrow and the single action.
+- The full-card primary pill is white with dark text; the inline
+  calculator-result CTA remains blue. Its retired headline remains the inline
+  fallback; the retired body is marked for later review rather than deleted.
+- Verification: `npx tsc --noEmit`, `npm run lint` (0 errors; 3 existing
+  image warnings), `npm run test:home-wwwh` (13/13), and `npm run build` all
+  passed. Local 375px and 1440px reviews confirmed the headline/body are
+  absent, only the full-card pill is white, and the retained button still
+  opens `/become-a-client`. Not deployed.
+
 ### 2026-08-11 — Results as arithmetic, one short disclaimer, and a three-agent pre-publish review that earned its keep
 **Agent:** Claude (Opus 5) | **Surface:** marketing | **Duration:** ~1 session
 - context: continuation of the simplification pass. David asked for a mock-up to replace "the pxl-hogging Blue/Green/Red graphics of the results", picked option B from three variants, then ran a series of copy and layout calls through to publication.
