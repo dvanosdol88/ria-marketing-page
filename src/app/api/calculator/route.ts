@@ -3,7 +3,7 @@ import { EDDM_LAUNCH_QR_URL, SMARTER_WAY_WEALTH_ORIGIN } from "@/config/campaign
 import { buildQueryFromState, parseCalculatorState } from "@/lib/calculatorState";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { formatCompactCurrency, formatCurrency } from "@/lib/format";
-import { CALCULATOR_DISCLAIMER, CALCULATOR_NOTES_ANCHOR } from "@/config/calculatorNotes";
+import { CALCULATOR_DISCLAIMER_TEXT, CALCULATOR_NOTES_ANCHOR } from "@/config/calculatorNotes";
 
 export const dynamic = "force-dynamic";
 
@@ -69,7 +69,7 @@ export function GET(request: Request) {
          source as the page's disclaimer, plus the standing firm-level
          statements that are not tied to a figure. */
       disclosures: [
-        ...CALCULATOR_DISCLAIMER.map((line) => `${line.lead} ${line.body}`),
+        CALCULATOR_DISCLAIMER_TEXT,
         "Using the calculator does not establish an advisory relationship with Smarter Way Wealth, LLC.",
         "Registration does not imply a certain level of skill or training.",
       ],

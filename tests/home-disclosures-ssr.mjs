@@ -55,8 +55,12 @@ const configSource = await readFile(
   new URL("../src/config/calculatorNotes.ts", import.meta.url),
   "utf8",
 );
-const leads = [...configSource.matchAll(/lead:\s*"([^"]+)"/g)].map((match) => match[1]);
+const leads = [...configSource.matchAll(/bold:\s*"([^"]+)"/g)].map((match) => match[1]);
 assert.ok(leads.length >= 3, "expected at least three bolded lead-ins in the disclaimer config");
+const phrases = [
+  "should not be relied on for a precise cost analysis",
+  "Actual results will vary and your fees may change",
+];
 
 const ANCHOR = "calculator-notes";
 
@@ -83,7 +87,7 @@ try {
       `${path}: the disclaimer must be in the server-rendered HTML`,
     );
 
-    for (const lead of leads) {
+    for (const lead of [...leads, ...phrases]) {
       assert.ok(
         html.includes(lead),
         `${path}: the server-rendered HTML must contain "${lead}"`,
@@ -112,9 +116,9 @@ try {
 
   // The machine-readable endpoint must not carry a weaker set than the page.
   const api = await (await fetch(`${base}/api/calculator`)).json();
-  for (const lead of leads) {
+  for (const lead of [...leads, ...phrases]) {
     assert.ok(
-      api.disclosures.some((entry) => entry.startsWith(lead)),
+      api.disclosures.some((entry) => entry.includes(lead)),
       `the calculator endpoint must serve the "${lead}" statement`,
     );
   }

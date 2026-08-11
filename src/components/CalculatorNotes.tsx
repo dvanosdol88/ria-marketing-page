@@ -45,14 +45,17 @@ export function CalculatorNotes() {
         <h2 id={`${CALCULATOR_NOTES_ANCHOR}-heading`} className="sr-only">
           Calculator disclaimer
         </h2>
-        <div className="space-y-2">
-          {CALCULATOR_DISCLAIMER.map((line) => (
-            <p key={line.lead} className="text-[13px] leading-6 text-[#52657A]">
-              <span className="font-bold text-[#10233A]">{line.lead}</span>{" "}
-              {line.body}
-            </p>
-          ))}
-        </div>
+        <p className="text-[13px] leading-6 text-[#52657A]">
+          {CALCULATOR_DISCLAIMER.map((segment, index) =>
+            "bold" in segment ? (
+              <span key={index} className="font-bold text-[#10233A]">
+                {segment.bold}
+              </span>
+            ) : (
+              <span key={index}>{segment.text}</span>
+            ),
+          )}
+        </p>
       </div>
     </section>
   );
