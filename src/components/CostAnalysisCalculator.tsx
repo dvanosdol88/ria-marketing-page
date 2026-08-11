@@ -2,7 +2,7 @@
 
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { Check, ChevronDown, ChevronUp, ExternalLink, Minus, Plus, Share2 } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import {
@@ -13,10 +13,8 @@ import {
 } from "@/lib/calculatorState";
 import { formatCompactCurrency, formatCurrency, formatCurrencyFloored } from "@/lib/format";
 import { CalculatorNotes, NoteMarker } from "@/components/CalculatorNotes";
-import { CALCULATOR_NOTES_ANCHOR } from "@/config/calculatorNotes";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
-import { AdvisorProofSections } from "@/components/AdvisorProofSections";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
@@ -43,7 +41,6 @@ import { useSavingsBar } from "@/components/SavingsBarContext";
 import { capturePostHogEvent } from "@/lib/posthog";
 import { shouldOpenCalculatorForEddmQr } from "@/lib/campaignAttribution";
 import {
-  ADVANCED_CALCULATOR_LABEL,
   buildAdvancedCalculatorHrefFromState,
 } from "@/config/advancedCalculator";
 
@@ -1157,45 +1154,6 @@ export function CostAnalysisCalculator({
     </div>
   ) : null;
 
-  /* The Advanced Calculator handoff used to sit in the header above, where it
-     pushed the calculator down and asked the visitor to consider leaving before
-     they had touched anything. It closes the section instead (David,
-     2026-08-10). The "Illustrative calculator only" line that sat beside it has
-     moved into the numbered notes at the foot of the page (David, 2026-08-11);
-     what remains here is a pointer to them. */
-  const calculatorFooter = isSavingsCalculatorUpgrade ? (
-    <div className="section-shell relative z-10 pb-10">
-      <div className="mx-auto flex w-full max-w-[1380px] flex-col gap-3 text-left">
-        <p className="text-sm leading-6 text-[#52657A]">
-          Want to compare historical return paths?{" "}
-          <a
-            href={advancedCalculatorHref}
-            target="_blank"
-            rel="noreferrer"
-            data-posthog-cta-label="Open Advanced Calculator"
-            data-posthog-cta-location="fee_calculator_footer"
-            className="inline-flex items-center gap-1.5 rounded-full border border-[#B9D8C5] bg-[#F1F8F4] px-3 py-1 font-extrabold !text-[#0A6E35] !no-underline transition-[background-color,border-color,color] duration-200 hover:border-[#88B99A] hover:bg-[#E5F3EA] hover:!text-[#07552A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#108843]"
-          >
-            {ADVANCED_CALCULATOR_LABEL}
-            <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-          </a>
-          .
-        </p>
-        <p className="text-xs leading-5 text-[#7A8899]">
-          Illustrative calculator only. Not investment advice or an advisory
-          relationship. See{" "}
-          <a
-            href={`#${CALCULATOR_NOTES_ANCHOR}`}
-            className="font-semibold underline underline-offset-2 hover:text-[#52657A]"
-          >
-            notes on the numbers
-          </a>
-          .
-        </p>
-      </div>
-    </div>
-  ) : null;
-
   return (
     <>
       {isSavingsCalculatorUpgrade && (
@@ -1357,18 +1315,13 @@ export function CostAnalysisCalculator({
           onAssumptionChange={(patch) => updateCalculatorState(patch)}
         />
 
-        {calculatorFooter}
       </section>
 
+      {/* The lean root flow is calculator, WWWH, one CTA, then notes. Legacy
+          proof and repeated conversion sections remain reusable off-root. */}
       {isSavingsCalculatorUpgrade && <WhatWhyWhoHow />}
 
-      {isSavingsCalculatorUpgrade && (
-        <SignupCta location="home_post_calculator" />
-      )}
-
-      {isSavingsCalculatorUpgrade && (
-        <AdvisorProofSections />
-      )}
+      {isSavingsCalculatorUpgrade && <SignupCta location="home_post_calculator" />}
 
       {usesOpeningMarketingHero && (
         <SignupCta location="marketing_post_calculator" />

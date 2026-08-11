@@ -3,6 +3,16 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-11 — Lean YAPT homepage regression alignment
+
+- The approved root flow now retains the fee calculator, WWWH, one
+  `/become-a-client` CTA, and disclosures while retiring the homepage Advanced
+  Calculator handoff, advisor-proof sections, and duplicate conversion content.
+  Focused local regressions preserve physical-mail QR attribution, query
+  cleanup, the `cta_clicked` event and attribution properties, the sole CTA
+  target, SSR disclosures, and refresh positioning. Not deployed at commit
+  time; next step is PR merge followed by production verification.
+
 ### 2026-08-11 — Kept the YAPT client CTA, removed its duplicate fee pitch
 
 - David kept the current `Become a client — $100/month` behavior and its

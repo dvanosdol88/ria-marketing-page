@@ -155,16 +155,13 @@ try {
     `legacy printer QR should land at the calculator: ${JSON.stringify(legacyLanding)}`,
   );
 
-  await page.evaluate(() => {
-    const link = document.querySelector(
-      'a[href^="https://smarterwaywealth.com"]',
-    );
-    if (!(link instanceof HTMLAnchorElement)) {
-      throw new Error("Smarter Way Wealth CTA not found");
-    }
-    link.addEventListener("click", (event) => event.preventDefault(), {
-      once: true,
-    });
+  const retainedCta = page.locator(
+    'a[data-posthog-cta-location="home_post_calculator_primary"]',
+  );
+  assert.equal(await retainedCta.count(), 1, "the homepage must retain one primary CTA");
+  assert.equal(await retainedCta.getAttribute("href"), "/become-a-client");
+  await retainedCta.evaluate((link) => {
+    link.addEventListener("click", (event) => event.preventDefault(), { once: true });
     link.click();
   });
 
@@ -198,7 +195,7 @@ try {
   await unrelatedPage.close();
 
   console.log(
-    "Legacy and canonical EDDM QR URLs land at the calculator; foreign explicit UTM traffic stays at the page top; legacy attribution survives URL cleanup and the later CTA.",
+    "Legacy and canonical EDDM QR URLs land at the calculator; foreign explicit UTM traffic stays at the page top; legacy attribution survives URL cleanup and the retained /become-a-client CTA.",
   );
 } finally {
   await browser?.close();

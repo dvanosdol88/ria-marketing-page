@@ -6,6 +6,7 @@ const readSource = (relativePath) =>
   readFile(new URL(relativePath, import.meta.url), "utf8");
 
 const [
+  pageSource,
   calculatorSource,
   calculatorExperienceSource,
   answersSource,
@@ -14,6 +15,7 @@ const [
   stickyNavConfigSource,
   advancedCalculatorCtaSource,
 ] = await Promise.all([
+  readSource("../src/app/page.tsx"),
   readSource("../src/components/CostAnalysisCalculator.tsx"),
   readSource("../src/components/HomeCalculatorExperience.tsx"),
   readSource("../src/components/WhatWhyWhoHow.tsx"),
@@ -24,6 +26,23 @@ const [
 ]);
 
 const flatten = (source) => source.replace(/\s+/g, " ");
+
+test("the default root caller selects the lean savings-calculator-upgrade path", () => {
+  const selectionStart = pageSource.indexOf("let experienceMode");
+  const selectionEnd = pageSource.indexOf("return (", selectionStart);
+  const rootSelection = pageSource.slice(selectionStart, selectionEnd);
+
+  assert.match(
+    rootSelection,
+    /else if \(\s*sequence === "savings-calculator-upgrade" \|\|\s*!hasExplicitVariant \|\|\s*isDirectMailVariant\s*\) \{\s*experienceMode = "savings-calculator-upgrade";/,
+    "the default root request must select the lean homepage composition",
+  );
+  assert.match(
+    pageSource,
+    /<CostAnalysisCalculator[\s\S]*experienceMode=\{experienceMode\}/,
+    "the root must pass its selected composition mode to the calculator",
+  );
+});
 
 test("homepage WWWH keeps the locked order and exact approved answers", () => {
   const expected = [
@@ -85,45 +104,74 @@ test("HOW states what the firm uses and what it does not carry, in order", () =>
   }
 });
 
-test("WWWH follows the complete calculation-details handoff and precedes advisor proof", () => {
+test("lean root composition retains the approved homepage order", () => {
   const detailLabelIndex = calculatorExperienceSource.indexOf(
     "View calculation details",
   );
-  const advancedHandoffIndex = calculatorExperienceSource.indexOf(
-    "<AdvancedCalculatorCta",
-  );
+  const savingsHeroIndex = calculatorSource.indexOf("<SavingsLeadHero");
+  const calculatorHandoffIndex = calculatorSource.indexOf("{calculatorHandoff}");
   const calculatorIndex = calculatorSource.indexOf("<HomeCalculatorExperience");
   const calculatorSectionEndIndex = calculatorSource.indexOf(
     "</section>",
     calculatorIndex,
   );
   const answersIndex = calculatorSource.indexOf("<WhatWhyWhoHow />");
-  const advisorIndex = calculatorSource.indexOf("<AdvisorProofSections />");
+  const homeSignupIndex = calculatorSource.indexOf(
+    '<SignupCta location="home_post_calculator" />',
+  );
+  const notesIndex = calculatorSource.indexOf("<CalculatorNotes />");
 
   for (const [marker, index] of [
     ["calculation-details label", detailLabelIndex],
-    ["advanced-calculator handoff", advancedHandoffIndex],
+    ["Savings lead hero", savingsHeroIndex],
+    ["Fee Calculator handoff", calculatorHandoffIndex],
     ["calculator experience", calculatorIndex],
     ["calculator section end", calculatorSectionEndIndex],
     ["WWWH component", answersIndex],
-    ["advisor proof", advisorIndex],
+    ["homepage CTA", homeSignupIndex],
+    ["calculator notes", notesIndex],
   ]) {
     assert.ok(index >= 0, `${marker} must exist before placement is compared`);
   }
 
   assert.ok(
-    detailLabelIndex < advancedHandoffIndex,
-    "the state-carrying advanced calculator handoff must remain after calculation details",
+    savingsHeroIndex < calculatorHandoffIndex,
+    "the Savings lead must precede the Fee Calculator handoff",
   );
   assert.ok(
-    calculatorSectionEndIndex < answersIndex,
-    "WWWH must start after the complete calculator and its full-width handoff",
+    calculatorHandoffIndex < calculatorIndex,
+    "the Fee Calculator handoff must precede the calculator experience",
   );
-  assert.ok(answersIndex < advisorIndex, "advisor proof must remain after HOW");
+  assert.ok(calculatorSectionEndIndex < answersIndex, "WWWH must follow the calculator");
+  assert.ok(answersIndex < homeSignupIndex, "the single homepage CTA must follow WWWH");
+  assert.ok(homeSignupIndex < notesIndex, "CalculatorNotes must finish the root flow");
   assert.equal(
     calculatorSource.match(/<WhatWhyWhoHow \/>/g)?.length,
     1,
     "WWWH must render exactly once",
+  );
+  assert.equal(
+    calculatorSource.match(/<SignupCta location="home_post_calculator" \/>/g)?.length,
+    1,
+    "the root must retain exactly one homepage CTA",
+  );
+});
+
+test("retired homepage conversion placements do not remain wired into the root", () => {
+  assert.doesNotMatch(
+    calculatorExperienceSource,
+    /<(?:SignupCta|AdvancedCalculatorCta)\b/,
+    "the calculator experience must not duplicate the homepage CTA or advanced promotion",
+  );
+  assert.doesNotMatch(
+    calculatorSource,
+    /AdvisorProofSections|calculatorFooter|fee_calculator_footer/,
+    "advisor proof and the footer Advanced Calculator promotion must stay off-root",
+  );
+  assert.doesNotMatch(
+    navConfigSource,
+    /label: "(?:Upgrade|Improve)"|href: "\/#(?:upgrade-your-advice|improve-your-tools)"/,
+    "retired root-anchor choices must not remain in site navigation",
   );
 });
 
@@ -254,8 +302,8 @@ test("advanced calculator motion preference is gated until after hydration", () 
   assert.match(advancedCalculatorCtaSource, /\{!shouldReduceMotion &&/);
 });
 
-test("site navigation preserves every existing item and adds tracked Fee Calculator", () => {
-  const labels = ["Save", "Upgrade", "Improve", "Rates", "How?", "FAQ"];
+test("site navigation preserves working items and adds tracked Fee Calculator", () => {
+  const labels = ["Save", "Rates", "How?", "FAQ"];
   for (const label of labels) {
     assert.ok(
       navConfigSource.includes(`label: "${label}"`),

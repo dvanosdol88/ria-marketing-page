@@ -29,9 +29,7 @@ import type { ProjectionYear } from "@/lib/feeProjection";
 import { Odometer, RollingCurrencyOdometer } from "@/components/Odometer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { SMARTER_WAY_WEALTH_ORIGIN } from "@/config/campaignLinks";
-import { AdvancedCalculatorCta } from "@/components/AdvancedCalculatorCta";
 import { NoteMarker } from "@/components/CalculatorNotes";
-import { SignupCta } from "@/components/SignupCta";
 import { Quiz } from "./Quiz";
 
 type Scenario = "smarter" | "traditional";
@@ -1651,17 +1649,8 @@ function SeeOurMathBento({
         </div>
       </motion.section>
 
-      {/* The ask fires while the number is still on screen, and carries it.
-          The Advanced Calculator now sits below this rather than above it —
-          it sends people to the firm site, which is the wrong direction at
-          the moment a visitor is most persuaded. */}
-      <SignupCta
-        location="calculator_result"
-        variant="inline"
-        savingsLabel={savings > 0 ? formatCurrencyFloored(savings) : null}
-      />
-
-      <AdvancedCalculatorCta href={advancedCalculatorHref} />
+      {/* The homepage keeps its single conversion CTA after WWWH; reusable
+          calculator CTAs remain available to their standalone experiences. */}
 
       {typeof document !== "undefined"
         ? createPortal(
