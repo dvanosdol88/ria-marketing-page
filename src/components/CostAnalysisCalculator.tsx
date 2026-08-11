@@ -465,7 +465,7 @@ function SavingsLeadHero({
   );
   const introContent =
     introStyle === "panel" ? (
-      <div className="relative mx-auto max-w-4xl px-0 py-8 sm:px-10 sm:py-10">
+      <div className="relative mx-auto max-w-4xl px-0 py-6 sm:px-10 sm:py-8">
         <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
         <p className="mx-auto max-w-3xl text-2xl font-semibold leading-[1.14] tracking-normal text-[#10233A] sm:text-[clamp(1.55rem,3.8vw,2.35rem)]">
           {statement}
@@ -493,18 +493,21 @@ function SavingsLeadHero({
         <div className="mx-auto mt-7 h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
       </div>
     );
-  const introBlock = <div className="mt-6 sm:mt-20">{introContent}</div>;
+  const introBlock = <div className="mt-9 sm:mt-20">{introContent}</div>;
 
-  /* Mobile padding below is tuned so the calculator's own heading clears the
-     fold on a 375px phone: hero, promise, and "The Fee Calculator" are the
-     three things a QR-code visitor should land on (David, 2026-08-10). Desktop
-     keeps its original breathing room through the sm: steps. */
+  /* Mobile spacing here is a fixed budget, not a free choice. Two rules
+     compete: the page must breathe, and "The Fee Calculator" must still be on
+     the first screen (David, 2026-08-10 and 2026-08-11). The pre-simplification
+     padding totals about 158px more than fits above the fold on a phone, so
+     these values give back 56px of it — the most the heading can absorb — split
+     in proportion to the original three gaps. Desktop was never tightened and
+     keeps its original values through the sm: steps. */
   return (
     <section
       data-url-eval-section="opening-promise"
-      className="w-full bg-[#EEF0F5] pb-10 text-center text-[#10233A] sm:pb-[110px]"
+      className="w-full bg-[#EEF0F5] pb-[60px] text-center text-[#10233A] sm:pb-[110px]"
     >
-      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-8 pb-6 sm:pt-20 sm:pb-20">
+      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-11 pb-10 sm:pt-20 sm:pb-20">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-[47%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
