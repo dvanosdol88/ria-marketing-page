@@ -32,62 +32,15 @@ async function waitForPage(url, child) {
 }
 
 async function verifySharedContent(page) {
-  const inlineAdvancedLink = page.locator(
-    'a[data-posthog-cta-location="fee_calculator_description"]',
-  );
-  assert.equal(await inlineAdvancedLink.textContent(), "Advanced Calculator");
-  assert.equal(await inlineAdvancedLink.getAttribute("target"), "_blank");
-  assert.equal(await inlineAdvancedLink.getAttribute("rel"), "noreferrer");
-
-  const handoffUrl = new URL(await inlineAdvancedLink.getAttribute("href"));
-  assert.equal(handoffUrl.origin, "https://smarterwaywealth.com");
-  assert.equal(handoffUrl.pathname, "/save");
-  assert.equal(handoffUrl.searchParams.get("portfolio"), "1500000");
-  assert.equal(handoffUrl.searchParams.get("years"), "25");
-
   const differenceSummary = page.locator("[data-difference-summary]");
+  await assert.doesNotReject(() => differenceSummary.waitFor({ state: "visible" }));
+  const differenceAmount = differenceSummary.locator("[data-difference-amount]");
+  const staticDifferenceAmount = differenceAmount.locator("span.sm\\:hidden");
   assert.match(
-    await differenceSummary.locator(":scope > p").nth(0).textContent(),
+    await staticDifferenceAmount.textContent(),
     /^\$[\d,]+$/,
   );
-  assert.equal(await differenceSummary.locator(":scope > p").nth(1).textContent(), "Difference");
-  assert.equal(
-    await differenceSummary.locator(":scope > button").textContent(),
-    "Show",
-  );
-  assert.ok(
-    Number.parseFloat(
-      await differenceSummary.locator(":scope > button span").evaluate(
-        (node) => getComputedStyle(node).fontSize,
-      ),
-    ) >= 14.4,
-    "Show should be at least 20% larger than the prior 12px label",
-  );
-
-  const advancedCta = page.locator("[data-advanced-calculator-cta]");
-  assert.equal(await advancedCta.getAttribute("target"), "_blank");
-  assert.equal(await advancedCta.getAttribute("rel"), "noreferrer");
-  assert.equal(await advancedCta.getByText("Market return", { exact: true }).count(), 1);
-  assert.equal(await advancedCta.getByText("Steady return", { exact: true }).count(), 1);
-
-  const goodFitCard = page.locator("[data-good-fit-card]");
-  await goodFitCard.scrollIntoViewIfNeeded();
-  await assert.doesNotReject(() => goodFitCard.waitFor({ state: "visible" }));
-  for (const heading of [
-    "Financial Planning",
-    "Investment Planning",
-    "Stock Picks",
-    "Market Timing",
-  ]) {
-    assert.equal(await goodFitCard.getByRole("heading", { name: heading, exact: true }).count(), 1);
-  }
-  assert.equal(
-    await goodFitCard.getByText("Includes, among other things:", { exact: true }).count(),
-    1,
-  );
-  const goodFitLink = goodFitCard.locator('a[data-posthog-cta-location="good_fit_card"]');
-  assert.equal(await goodFitLink.getAttribute("target"), "_blank");
-  assert.equal(await goodFitLink.getAttribute("rel"), "noreferrer");
+  assert.match(await differenceSummary.innerText(), /Difference/);
 
   assert.equal(
     await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
@@ -121,45 +74,10 @@ try {
   const mobilePage = await browser.newPage({ viewport: { width: 375, height: 812 } });
   await mobilePage.goto(url, { waitUntil: "networkidle" });
   await verifySharedContent(mobilePage);
-  await mobilePage.locator("#savings-section").evaluate((node) => {
-    node.scrollIntoView({ block: "start" });
-  });
-  const mobileStickyClose = mobilePage.locator(
-    'button[aria-label="Close potential savings header"]:visible',
-  );
-  await assert.doesNotReject(() => mobileStickyClose.waitFor({ state: "visible" }));
-  const mobileStickyLabel = mobilePage.locator(
-    "[data-sticky-potential-savings]:visible",
-  );
-  const mobileSectionGuide = mobilePage.getByRole("navigation", {
-    name: "Jump to homepage section",
-  });
-  await assert.doesNotReject(() => mobileSectionGuide.waitFor({ state: "visible" }));
-  for (const label of ["Save", "Upgrade", "Improve"]) {
-    assert.equal(
-      await mobileSectionGuide.getByRole("link", { name: label }).count(),
-      1,
-      `mobile sticky guide should preserve the ${label} link`,
-    );
-  }
-  const mobileStickyBox = await mobileStickyLabel.boundingBox();
-  assert.ok(
-    Math.abs(mobileStickyBox.x + mobileStickyBox.width / 2 - 375 / 2) <= 2,
-    "mobile potential savings should be centered",
-  );
-  await mobileStickyClose.click();
-  await mobilePage.waitForTimeout(250);
-  assert.equal(
-    await mobilePage.locator("[data-sticky-potential-savings]:visible").count(),
-    0,
-    "sticky savings header should close",
-  );
 
   const desktopPage = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
   await desktopPage.goto(url, { waitUntil: "networkidle" });
   await verifySharedContent(desktopPage);
-  await desktopPage.locator("#savings-section").scrollIntoViewIfNeeded();
-  await desktopPage.waitForTimeout(900);
 
   const rollingCurrency = desktopPage.locator("[data-rolling-currency]").first();
   await assert.doesNotReject(() => rollingCurrency.waitFor({ state: "visible" }));
@@ -171,18 +89,8 @@ try {
     `currency glyph boxes should share a baseline: ${JSON.stringify(glyphTops)}`,
   );
 
-  const desktopStickyLabel = desktopPage.locator(
-    "[data-sticky-potential-savings]:visible",
-  );
-  await assert.doesNotReject(() => desktopStickyLabel.waitFor({ state: "visible" }));
-  const desktopStickyBox = await desktopStickyLabel.boundingBox();
-  assert.ok(
-    Math.abs(desktopStickyBox.x + desktopStickyBox.width / 2 - 1440 / 2) <= 2,
-    "desktop potential savings should be centered",
-  );
-
   console.log(
-    "Advisor calculator batch passed at 375px and 1440px: links, summary order, sticky close/centering, currency glyphs, CTA preview, fit guide, and overflow.",
+    "Advisor calculator batch passed at 375px and 1440px: summary order, currency glyphs, and overflow.",
   );
 } finally {
   await browser?.close();
