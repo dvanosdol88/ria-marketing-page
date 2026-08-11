@@ -14,14 +14,13 @@ type SignupCtaProps = {
   savingsLabel?: string | null;
 };
 
-/**
- * Deliberately off-palette. David asked for "a brighter, almost fluorescent
- * shade of blue" so the primary ask stands out against the brand navy — an
- * intentional exception to the site's color scheme, not a drift from it.
- * Dark-navy label on the bright fill measures ~8.3:1, well past AA.
- */
-const PRIMARY_BUTTON_CLASS =
+const INLINE_PRIMARY_BUTTON_CLASS =
   "flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#00D8FF] px-6 text-center text-base font-bold !text-[#052E45] !no-underline shadow-sm transition hover:bg-[#3FE3FF] hover:!text-[#052E45] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D8FF]";
+
+/** The retained full-card CTA is intentionally quiet: the white pill is the
+ * single primary action after the headline/body were deprecated. */
+const BLOCK_PRIMARY_BUTTON_CLASS =
+  "flex min-h-[48px] w-full items-center justify-center rounded-full bg-white px-6 text-center text-base font-bold !text-[#052E45] !no-underline shadow-sm transition hover:bg-white/90 hover:!text-[#052E45] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
 
 /**
  * Secondary next step. Deliberately a plain underlined link, never a second
@@ -53,10 +52,13 @@ export function SignupCta({
   variant = "block",
   savingsLabel = null,
 }: SignupCtaProps) {
+  const primaryButtonClass =
+    variant === "block" ? BLOCK_PRIMARY_BUTTON_CLASS : INLINE_PRIMARY_BUTTON_CLASS;
+
   const primary = (
     <Link
       href={signupCta.primary.href}
-      className={PRIMARY_BUTTON_CLASS}
+      className={primaryButtonClass}
       data-posthog-cta="true"
       data-posthog-cta-label={signupCta.primary.label}
       data-posthog-cta-location={`${location}_primary`}
@@ -90,14 +92,8 @@ export function SignupCta({
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">
           {signupCta.block.eyebrow}
         </p>
-        <h2 className="mt-3 text-balance text-3xl font-black leading-tight tracking-normal sm:text-4xl">
-          {signupCta.block.headline}
-        </h2>
-        <p className="mt-4 text-sm leading-6 text-white/85 sm:text-base sm:leading-7">
-          {signupCta.block.body}
-        </p>
 
-        <div className="mt-7 sm:mx-auto sm:max-w-md">{primary}</div>
+        <div className="mt-6 sm:mx-auto sm:max-w-md">{primary}</div>
 
         <div className="mt-6 border-t border-white/20 pt-6">
           <SecondaryLink location={location} />
