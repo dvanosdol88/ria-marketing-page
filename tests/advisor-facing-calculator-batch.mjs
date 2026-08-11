@@ -40,7 +40,13 @@ async function verifySharedContent(page) {
     await staticDifferenceAmount.textContent(),
     /^\$[\d,]+$/,
   );
-  assert.match(await differenceSummary.innerText(), /Difference/);
+  assert.equal(
+    await differenceAmount.evaluate(
+      (amount) => amount.previousElementSibling?.textContent?.startsWith("Difference") === true,
+    ),
+    true,
+    "the visible difference amount must immediately follow its Difference label",
+  );
 
   assert.equal(
     await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
