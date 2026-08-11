@@ -12,6 +12,8 @@ import {
   buildQueryFromState,
 } from "@/lib/calculatorState";
 import { formatCompactCurrency, formatCurrency, formatCurrencyFloored } from "@/lib/format";
+import { CalculatorNotes, NoteMarker } from "@/components/CalculatorNotes";
+import { CALCULATOR_NOTES_ANCHOR } from "@/config/calculatorNotes";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { AdvisorProofSections } from "@/components/AdvisorProofSections";
@@ -89,7 +91,8 @@ interface PillSliderProps {
 interface SimpleRangeControlProps {
   formatter: (value: number) => string;
   label: string;
-  labelAsterisk?: boolean;
+  /** Show the superscript disclaimer marker beside the label. */
+  showNote?: boolean;
   max: number;
   min: number;
   onChange: (value: number) => void;
@@ -130,7 +133,7 @@ function extractInsertedText(previous: string, next: string) {
 function SimpleRangeControl({
   formatter,
   label,
-  labelAsterisk,
+  showNote,
   max,
   min,
   onChange,
@@ -212,7 +215,7 @@ function SimpleRangeControl({
         className="min-w-0 flex-1 text-[13px] font-bold leading-tight text-[#213B56]"
       >
         {label}
-        {labelAsterisk ? "*" : ""}
+        {showNote ? <NoteMarker /> : null}
       </label>
       <div className="flex shrink-0 items-stretch overflow-hidden rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30">
         <button
@@ -465,7 +468,7 @@ function SavingsLeadHero({
   );
   const introContent =
     introStyle === "panel" ? (
-      <div className="relative mx-auto max-w-4xl px-0 py-8 sm:px-10 sm:py-10">
+      <div className="relative mx-auto max-w-4xl px-0 py-6 sm:px-10 sm:py-8">
         <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
         <p className="mx-auto max-w-3xl text-2xl font-semibold leading-[1.14] tracking-normal text-[#10233A] sm:text-[clamp(1.55rem,3.8vw,2.35rem)]">
           {statement}
@@ -493,18 +496,21 @@ function SavingsLeadHero({
         <div className="mx-auto mt-7 h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
       </div>
     );
-  const introBlock = <div className="mt-6 sm:mt-20">{introContent}</div>;
+  const introBlock = <div className="mt-9 sm:mt-20">{introContent}</div>;
 
-  /* Mobile padding below is tuned so the calculator's own heading clears the
-     fold on a 375px phone: hero, promise, and "The Fee Calculator" are the
-     three things a QR-code visitor should land on (David, 2026-08-10). Desktop
-     keeps its original breathing room through the sm: steps. */
+  /* Mobile spacing here is a fixed budget, not a free choice. Two rules
+     compete: the page must breathe, and "The Fee Calculator" must still be on
+     the first screen (David, 2026-08-10 and 2026-08-11). The pre-simplification
+     padding totals about 158px more than fits above the fold on a phone, so
+     these values give back 56px of it — the most the heading can absorb — split
+     in proportion to the original three gaps. Desktop was never tightened and
+     keeps its original values through the sm: steps. */
   return (
     <section
       data-url-eval-section="opening-promise"
-      className="w-full bg-[#EEF0F5] pb-10 text-center text-[#10233A] sm:pb-[110px]"
+      className="w-full bg-[#EEF0F5] pb-[62px] text-center text-[#10233A] sm:pb-[110px]"
     >
-      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-8 pb-6 sm:pt-20 sm:pb-20">
+      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-12 pb-11 sm:pt-20 sm:pb-20">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-[47%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
@@ -521,11 +527,11 @@ function SavingsLeadHero({
             <span className="block text-[clamp(1.7rem,4.8vw,4rem)]">What would you do with</span>
             <span className="block text-[clamp(2.25rem,4.8vw,4rem)] text-[#007A2F] tabular-nums">
               {formatCurrencyFloored(savings)}
-              <span className="align-super text-[0.36em] leading-none">*</span>
+              <NoteMarker />
             </span>
           </h1>
           <p className="mt-3 text-base font-medium leading-snug text-[#10233A]/80 sm:text-lg">
-            * potential savings over {years} years.
+            Potential savings over {years} years.
           </p>
         </div>
       </div>
@@ -1041,7 +1047,7 @@ export function CostAnalysisCalculator({
     advisoryFee: (
       <SimpleRangeControl
         label="Asset-based fee"
-        labelAsterisk
+        showNote
         value={state.annualFeePercent}
         onChange={(value) => updateCalculatorState({ annualFeePercent: value })}
         formatter={(value) => `${value.toFixed(2)}%`}
@@ -1143,6 +1149,7 @@ export function CostAnalysisCalculator({
             </span>
             <span className="text-xl font-bold leading-none text-[#007A2F] tabular-nums sm:text-2xl">
               {formatCurrencyFloored(projection.savings)}
+              <NoteMarker />
             </span>
           </div>
         </div>
@@ -1150,10 +1157,12 @@ export function CostAnalysisCalculator({
     </div>
   ) : null;
 
-  /* The Advanced Calculator handoff and the "Illustrative calculator only"
-     line both used to sit in the header above, where they pushed the actual
-     calculator down and asked the visitor to consider leaving before they had
-     touched anything. They now close the section instead (David, 2026-08-10). */
+  /* The Advanced Calculator handoff used to sit in the header above, where it
+     pushed the calculator down and asked the visitor to consider leaving before
+     they had touched anything. It closes the section instead (David,
+     2026-08-10). The "Illustrative calculator only" line that sat beside it has
+     moved into the numbered notes at the foot of the page (David, 2026-08-11);
+     what remains here is a pointer to them. */
   const calculatorFooter = isSavingsCalculatorUpgrade ? (
     <div className="section-shell relative z-10 pb-10">
       <div className="mx-auto flex w-full max-w-[1380px] flex-col gap-3 text-left">
@@ -1172,7 +1181,17 @@ export function CostAnalysisCalculator({
           </a>
           .
         </p>
-        <div className="[&_p]:mt-0">{disclosure}</div>
+        <p className="text-xs leading-5 text-[#7A8899]">
+          Illustrative calculator only. Not investment advice or an advisory
+          relationship. See{" "}
+          <a
+            href={`#${CALCULATOR_NOTES_ANCHOR}`}
+            className="font-semibold underline underline-offset-2 hover:text-[#52657A]"
+          >
+            notes on the numbers
+          </a>
+          .
+        </p>
       </div>
     </div>
   ) : null;
@@ -1220,7 +1239,7 @@ export function CostAnalysisCalculator({
               }}
             >
               <Odometer value={Math.floor(projection.savings / 1000) * 1000} prefix="$" duration={1000} className="text-lg font-bold" />
-              <span aria-hidden="true" className="text-lg font-bold">*</span>
+              <NoteMarker />
               <span className="text-xs font-bold uppercase tracking-wider">
                 lost to asset-based fees!
               </span>
@@ -1263,7 +1282,7 @@ export function CostAnalysisCalculator({
                 duration={800}
                 className="font-bold"
               />
-              <span aria-hidden="true" className="font-bold">*</span>
+              <NoteMarker />
             </div>
 
             <div className="flex items-center gap-2">
@@ -1370,6 +1389,18 @@ export function CostAnalysisCalculator({
       {usesOpeningMarketingHero && (
         <SignupCta location="marketing_page_bottom" />
       )}
+
+      {/* Last thing on the page, directly above the site-wide compliance
+          footer, so every disclosure reads as one block instead of being
+          scattered through the calculator (David, 2026-08-11).
+
+          Rendered unconditionally. The note markers live in the calculator
+          layout, which is selected by variant, while this block used to be
+          gated on experience mode — so /?mode=calculator-first and
+          /?variant=final-home rendered superscripts whose anchors led nowhere,
+          on pages that were making the claims the notes govern. There is no
+          reason to withhold four static paragraphs from any variant. */}
+      <CalculatorNotes />
     </>
   );
 }

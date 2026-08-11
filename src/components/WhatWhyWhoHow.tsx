@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Check, DollarSign } from "lucide-react";
 
 export const WWWH_ANSWERS = [
@@ -14,9 +15,15 @@ export const WWWH_ANSWERS = [
   {
     key: "who",
     label: "Who",
-    body: "David Van Osdol, CFA Charter Holder and CFP Professional with over 20 years’ experience.",
+    body: "David Van Osdol, CFA Charter Holder and CFP Professional with over 20 years’ experience. You will work directly with him.",
   },
 ] as const;
+
+/* The question word is the firm's own affirmative answer, so it carries the
+   brand green rather than the blue reserved for the asset-based-fee side of
+   every comparison on this page (David, 2026-08-11). */
+const WWWH_LABEL_CLASS =
+  "text-3xl font-black tracking-tight text-[#007A2F] sm:text-4xl";
 
 export const WWWH_HOW = {
   key: "how",
@@ -43,22 +50,48 @@ export function WhatWhyWhoHow() {
       <div className="mx-auto max-w-5xl space-y-9 px-5 py-12 sm:space-y-10 sm:px-8 sm:py-14">
         {WWWH_ANSWERS.map((answer) => (
           <div key={answer.key}>
-            <h2 className="text-3xl font-black tracking-tight text-[#10233A] sm:text-4xl">
-              {answer.label}
-            </h2>
-            <p className="mt-3 max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">
-              {answer.body}
-            </p>
+            <h2 className={WWWH_LABEL_CLASS}>{answer.label}</h2>
+            {answer.key === "who" ? (
+              /* WHO is the only answer about a person, so it gets the face that
+                 goes with the name — photo left, answer beside it (David,
+                 2026-08-11). */
+              <div className="mt-1.5 flex items-start gap-4 sm:gap-5">
+                {/* Decorative: the sentence beside it opens with the same name,
+                    so alt text here would announce "David Van Osdol" twice. */}
+                <Image
+                  src="/DVO Head Shot picture.jpg"
+                  alt=""
+                  width={112}
+                  height={112}
+                  className="h-20 w-20 shrink-0 rounded-full object-cover object-top sm:h-28 sm:w-28"
+                />
+                <p className="max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">
+                  {answer.body}
+                </p>
+              </div>
+            ) : (
+              <p className="mt-1.5 max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">
+                {answer.body}
+              </p>
+            )}
           </div>
         ))}
 
         <div>
-          <h2 className="text-3xl font-black tracking-tight text-[#10233A] sm:text-4xl">
-            {WWWH_HOW.label}
-          </h2>
-          {/* gap-y separates the two groups when they stack on a phone */}
-          <div className="mt-4 grid gap-x-10 gap-y-6 sm:grid-cols-2">
-            <ul className="space-y-3">
+          <h2 className={WWWH_LABEL_CLASS}>{WWWH_HOW.label}</h2>
+          {/* Lines within each list sit close together so each list reads as one
+              block; gap-y keeps the two groups clearly apart when they stack on
+              a phone (David, 2026-08-11). */}
+          <div className="mt-2 grid gap-x-10 gap-y-6 sm:grid-cols-2">
+            {/* The green check and the red dollar sign are the only thing
+                separating "what we use" from "what we skip", and both icons are
+                aria-hidden. Without these names a screen reader — and any agent
+                summarising the page — announces six undifferentiated items and
+                comes away believing the firm HAS massive marketing budgets and
+                layers of corporate overhead, the exact opposite of the claim.
+                role="list" is required alongside: Tailwind's reset removes the
+                list marker, and Safari/VoiceOver drops list semantics with it. */}
+            <ul role="list" aria-label="What Smarter Way Wealth uses" className="space-y-1.5">
               {WWWH_HOW.uses.map((item) => (
                 <li
                   key={item}
@@ -73,7 +106,11 @@ export function WhatWhyWhoHow() {
                 </li>
               ))}
             </ul>
-            <ul className="space-y-3">
+            <ul
+              role="list"
+              aria-label="Costs Smarter Way Wealth does not carry"
+              className="space-y-1.5"
+            >
               {WWWH_HOW.skips.map((item) => (
                 <li
                   key={item}

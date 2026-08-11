@@ -128,9 +128,17 @@ test("WWWH follows the complete calculation-details handoff and precedes advisor
 });
 
 test("WWWH is one plain panel of headed answers, with no rotated type or cards", () => {
-  // each question word is the real heading for its answer
+  // each question word is the real heading for its answer. The class moved to a
+  // shared constant when the labels went green (2026-08-11); what matters is
+  // that both headings are h2 and share one treatment, not that the class sits
+  // inline.
+  assert.match(
+    answersSource,
+    /const WWWH_LABEL_CLASS =\s*\n?\s*"text-3xl font-black/,
+    "the shared question-word treatment must stay a black 3xl heading",
+  );
   assert.equal(
-    answersSource.match(/<h2 className="text-3xl font-black/g)?.length,
+    answersSource.match(/<h2 className=\{WWWH_LABEL_CLASS\}>/g)?.length,
     2,
     "both the mapped answers and HOW must render the question word as an h2",
   );
@@ -139,7 +147,10 @@ test("WWWH is one plain panel of headed answers, with no rotated type or cards",
 
   // the design David rejected must not creep back
   assert.doesNotMatch(answersSource, /writing-mode|vertical-rl|rotate\(/i);
-  assert.doesNotMatch(answersSource, /<article|rounded-|shadow-/i);
+  assert.doesNotMatch(answersSource, /<article|shadow-/i);
+  // `rounded-full` is the WHO portrait, added 2026-08-11. Every other rounded
+  // utility would be the card treatment David rejected.
+  assert.doesNotMatch(answersSource, /rounded-(?!full)/i);
   assert.doesNotMatch(
     answersSource,
     /Read the full FAQ/,
@@ -169,6 +180,64 @@ test("HOW's skipped costs are red dollar signs — what you'd be paying for", ()
     flatAnswers,
     /<X[^>]/,
     "the neutral cross was replaced by a red dollar sign (David, 2026-08-07)",
+  );
+});
+
+// DECISION CHANGED, 2026-08-11 — read before "fixing" this back.
+//
+// The four question words previously shared the body ink (#10233A), on the
+// reasoning from the 2026-08-07 redesign that header and body reading as one
+// colour is what let the section collapse from five screens to about one.
+//
+// David asked for them in blue or green and chose one treatment for all four.
+// Green (#007A2F) rather than blue (#064B84): every comparison on this page
+// uses blue for the asset-based-fee side, and these are the firm's own
+// affirmative answers, so blue would have read as the thing being argued
+// against.
+test("WWWH question words carry the brand green, not the AUM blue", () => {
+  assert.match(answersSource, /WWWH_LABEL_CLASS =\s*\n?\s*"[^"]*text-\[#007A2F\]/);
+  assert.doesNotMatch(
+    answersSource,
+    /WWWH_LABEL_CLASS =\s*\n?\s*"[^"]*text-\[#064B84\]/,
+    "blue is reserved for the asset-based-fee side of the comparison",
+  );
+});
+
+test("WHO shows David's photo beside the answer and says he does the work", () => {
+  const flatAnswers = flatten(answersSource);
+  assert.match(
+    flatAnswers,
+    /You will work directly with him\./,
+    "David's addition, 2026-08-11",
+  );
+  assert.match(flatAnswers, /src="\/DVO Head Shot picture\.jpg"/);
+  // Decorative alt on purpose: the paragraph beside the portrait opens with
+  // "David Van Osdol", so descriptive alt text made a screen reader announce
+  // the name twice in a row (accessibility review, 2026-08-11).
+  assert.match(flatAnswers, /src="\/DVO Head Shot picture\.jpg" alt=""/);
+  assert.match(
+    flatAnswers,
+    /answer\.key === "who" \?/,
+    "only WHO carries a portrait — it is the one answer about a person",
+  );
+});
+
+// Without accessible names on these two lists, a screen reader and any agent
+// summarising the page announce six undifferentiated items and come away
+// believing the firm HAS massive marketing budgets and layers of corporate
+// overhead — the exact opposite of the claim, on the page's core
+// differentiator. The icons that carry the distinction visually are
+// aria-hidden, correctly, so the names have to live here.
+test("HOW's two lists say which is which to assistive tech", () => {
+  const flatAnswers = flatten(answersSource);
+  assert.match(flatAnswers, /aria-label="What Smarter Way Wealth uses"/);
+  assert.match(flatAnswers, /aria-label="Costs Smarter Way Wealth does not carry"/);
+  // Tailwind's reset strips the list marker, and Safari/VoiceOver drops list
+  // semantics along with it unless the role is explicit.
+  assert.equal(
+    flatAnswers.match(/<ul\s+role="list"/g)?.length,
+    2,
+    "both lists must keep explicit list semantics",
   );
 });
 

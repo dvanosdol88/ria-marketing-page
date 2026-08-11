@@ -30,6 +30,7 @@ import { Odometer, RollingCurrencyOdometer } from "@/components/Odometer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { SMARTER_WAY_WEALTH_ORIGIN } from "@/config/campaignLinks";
 import { AdvancedCalculatorCta } from "@/components/AdvancedCalculatorCta";
+import { NoteMarker } from "@/components/CalculatorNotes";
 import { SignupCta } from "@/components/SignupCta";
 import { Quiz } from "./Quiz";
 
@@ -63,7 +64,6 @@ type EditableHeaderField = "portfolio" | "years" | "fee";
 const FEE_GAP_HINT_INITIAL_DELAY_MS = 1200;
 const FEE_GAP_HINT_VISIBLE_MS = 3000;
 const FEE_GAP_HINT_REDUCED_VISIBLE_MS = 1400;
-const FEE_GAP_HINT_BAR_DELAY_MS = 450;
 const FEE_GAP_HINT_REPEAT_MS = 10000;
 const FEE_GAP_HINT_MAX_PLAYS = 5;
 
@@ -916,34 +916,6 @@ function FeeReceiptCalculatorExperience(props: HomeCalculatorExperienceProps) {
   );
 }
 
-function FinalHomeStatCard({
-  accentClassName,
-  ribbon,
-  tone,
-  value,
-}: {
-  accentClassName: string;
-  ribbon: string;
-  tone: "blue" | "green";
-  value: ReactNode;
-}) {
-  return (
-    <article className="min-h-0 overflow-hidden rounded-md border border-[#DFE6EE] bg-white text-center md:min-h-[92px]">
-      <div
-        className={`flex min-h-[22px] items-center justify-center px-3 py-0.5 text-[13px] font-bold leading-tight text-white md:min-h-[26px] md:py-1 ${
-          tone === "blue" ? "bg-[#064B84]" : "bg-[#108843]"
-        }`}
-      >
-        {ribbon}
-      </div>
-      <strong
-        className={`block px-2 py-0.5 text-[clamp(1.375rem,3vw,2.125rem)] font-bold leading-none md:py-2 ${accentClassName}`}
-      >
-        {value}
-      </strong>
-    </article>
-  );
-}
 
 function FinalHomeLineChart({
   annualFeePercent,
@@ -1235,7 +1207,12 @@ function FinalHomeLineChart({
             fontSize="18"
             fontWeight="500"
           >
-            {formatCurrencyFloored(animatedSavings)}* lost to fees
+            {/* No note number here. SVG text concatenates with no separator, so
+                a digit after the amount fuses onto it — "$666,000" + "1" reads
+                as "$666,0001" to a screen reader and to every text extractor.
+                The same claim already carries note 1 in the results grid
+                directly above, so the marker is redundant here anyway. */}
+            {formatCurrencyFloored(animatedSavings)} lost to fees
           </text>
           <text
             x={feeGapLabelX + feeGapLabelWidth / 2}
@@ -1408,148 +1385,100 @@ function FinalHomeLineChart({
  * overlay fades in on top of the green bar covering only the differential
  * region, plus a caption appears with the dollar/percentage gap.
  */
-function ComparisonBars({
+/**
+ * The results, as arithmetic.
+ *
+ * This replaced a blue card, a green card, a red "Difference" figure, a red
+ * "Show" button and a pair of stacked bars — about 440px of coloured rectangles
+ * on a 375px phone, to state two numbers and their difference (David,
+ * 2026-08-11). Four lines in two columns do the same work in roughly a third of
+ * the height.
+ *
+ * No rules anywhere except one: a short line under the second amount, so the
+ * block reads as a subtraction rather than a list. Colour appears exactly once,
+ * on the number the visitor should leave with.
+ */
+function SimpleMathResults({
+  annualFeePercent,
   annualFlatFee,
   finalValueWithFees,
   finalValueWithoutFees,
   savings,
-  percentLost,
-  barActive,
-  barHintActive,
-  barPinned,
-  onGapEnter,
-  onGapLeave,
-  onGapToggle,
 }: {
+  annualFeePercent: number;
   annualFlatFee: number;
   finalValueWithFees: number;
   finalValueWithoutFees: number;
   savings: number;
-  percentLost: number;
-  barActive: boolean;
-  barHintActive: boolean;
-  barPinned: boolean;
-  onGapEnter: () => void;
-  onGapLeave: () => void;
-  onGapToggle: () => void;
 }) {
-  // The flat-fee value is always >= the asset-based value, so we
-  // normalize the bar widths against finalValueWithoutFees.
-  const denominator = Math.max(finalValueWithoutFees, 1);
-  const blueWidthPct = Math.max(0, Math.min(100, (finalValueWithFees / denominator) * 100));
-  const redWidthPct = Math.max(0, Math.min(100, 100 - blueWidthPct));
-  const barHintOnly = barHintActive && !barActive;
+  /* The odometer rolls the figure as assumptions change, but only where there
+     is room for the animation to read as motion rather than jitter. */
+  const amount = (value: number) => (
+    <>
+      <span className="sm:hidden">{formatCurrencyFloored(value)}</span>
+      <RollingCurrencyOdometer
+        value={value}
+        formatter={formatCurrencyFloored}
+        duration={650}
+        debounceMs={180}
+        className="hidden sm:inline"
+      />
+    </>
+  );
 
-  // Bars use the same px-1.5 sm:px-2 outer padding as the chart card
-  // above so they visually align edge-to-edge with the line chart.
   return (
     <section
-      className="mx-4 mt-1.5 rounded-md border border-[#DFE6EE] bg-white px-3 py-3 sm:mx-7 sm:mt-3 sm:px-4 sm:py-4"
-      aria-label="Asset-based vs flat fee ending value comparison"
+      className="mx-4 mt-2 sm:mx-7 sm:mt-3"
+      aria-label="Ending value comparison"
+      data-difference-summary
     >
-      {/* Caption sits directly above the bars and fades in with the red
-         differential overlay. Reframes the gap as a percentage of wealth
-         surrendered to asset-based fees. */}
-      <p
-        className={`mb-1.5 text-center text-base leading-tight transition-opacity duration-300 ease-out sm:text-lg ${
-          barActive ? "opacity-100" : "opacity-0"
-        }`}
-        aria-hidden={!barActive}
-      >
-        <span className="font-bold text-[#D92D20]">
-          {percentLost.toFixed(1)}%
-        </span>
-        <span className="font-semibold text-[#41556C]">
-          {" "}of wealth lost to asset-based fees
-        </span>
-      </p>
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-4">
+        {/* #52657A rather than #7A8899: at 11px bold the lighter grey scored
+            3.61:1 on white, under the 4.5:1 bar for normal text. */}
+        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#52657A]">
+          Portfolio value
+        </p>
+        <p className="text-right text-[11px] font-bold uppercase tracking-[0.14em] text-[#52657A]">
+          Amount
+        </p>
 
-      {/* Stacked thick bars, abutting with no gap.
-         Top: asset-based (blue) — when VS active, the missing-from-100% tail
-              fills with red and shows the percent-lost label, since that gap
-              IS the magnitude lost to fees.
-         Bottom: flat fee (green) — always solid full-width.
-         Per-bar labels removed; the stat cards above already display these numbers. */}
-      <div
-        className="overflow-hidden rounded-md"
-        role="img"
-        aria-label={`Asset-based fee ending value ${formatCurrencyFloored(finalValueWithFees)} versus flat ${formatCurrency(annualFlatFee / 12)}/month fee ending value ${formatCurrencyFloored(finalValueWithoutFees)}, a ${percentLost.toFixed(1)} percent gap.`}
-      >
-        {/* Blue bar — asset-based ending value. White dollar label sits at the
-           right edge of the blue fill. Red tail + % label fade in with VS. */}
-        <div className="relative h-9 w-full bg-[#F0F4F8] sm:h-10">
-          <div
-            className="absolute inset-y-0 left-0 flex items-center justify-end bg-[#064B84] pr-3 transition-[width] duration-500 ease-out sm:pr-4"
-            style={{ width: `${blueWidthPct}%` }}
-          >
-            <span className="text-xs font-extrabold leading-none text-white tabular-nums sm:text-sm">
-              {formatCurrencyFloored(finalValueWithFees)}
-            </span>
-          </div>
-          {barHintOnly ? (
-            <div
-              className="fee-gap-hint-layer pointer-events-none absolute inset-y-0 overflow-hidden"
-              style={{
-                left: `${blueWidthPct}%`,
-                width: `${redWidthPct}%`,
-                backgroundColor: "rgba(217, 45, 32, 0.08)",
-              }}
-              aria-hidden="true"
-            >
-              <span
-                className="fee-gap-bar-wave absolute inset-y-0 left-0 w-2/3"
-                style={{
-                  background:
-                    "linear-gradient(90deg, rgba(217,45,32,0) 0%, rgba(217,45,32,0.28) 48%, rgba(217,45,32,0) 100%)",
-                }}
-              />
-            </div>
-          ) : null}
-          <div
-            className={`absolute inset-y-0 flex items-center justify-center overflow-hidden border-y-2 border-r-2 border-[#B42318] transition-opacity duration-300 ease-out ${
-              barActive ? "opacity-100" : "opacity-0"
-            }`}
-            style={{
-              left: `calc(${blueWidthPct}% - 1px)`,
-              width: `calc(${redWidthPct}% + 1px)`,
-              cursor: "pointer",
-              backgroundColor: "#D92D20",
-              backgroundImage:
-                "radial-gradient(circle at 24% 18%, rgba(255,255,255,0.22), transparent 31%), repeating-linear-gradient(135deg, rgba(255,255,255,0.08) 0 1px, rgba(255,255,255,0) 1px 7px)",
-            }}
-            role="button"
-            tabIndex={0}
-            aria-label={barPinned ? "Hide bar chart fee gap" : "Show bar chart fee gap"}
-            aria-pressed={barPinned}
-            onMouseEnter={onGapEnter}
-            onMouseLeave={onGapLeave}
-            onPointerDown={(event) => {
-              event.preventDefault();
-              onGapToggle();
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                onGapToggle();
-              }
-            }}
-          >
-            <span className="relative text-base font-extrabold leading-none text-white sm:text-xl">
-              {percentLost.toFixed(1)}%
-            </span>
-          </div>
-        </div>
-        {/* Green bar — flat-fee ending value, always solid full-width.
-           White dollar label sits at the right edge of the green fill. */}
-        <div className="flex h-9 w-full items-center justify-end bg-[#108843] pr-3 sm:h-10 sm:pr-4">
-          <span className="text-xs font-extrabold leading-none text-white tabular-nums sm:text-sm">
-            {formatCurrencyFloored(finalValueWithoutFees)}
-          </span>
-        </div>
+        <p className="mt-4 text-[15px] leading-snug text-[#10233A] sm:text-base">
+          Paying {formatCurrency(annualFlatFee / 12)} a month
+          <NoteMarker />
+        </p>
+        <p className="mt-4 text-right text-[19px] font-bold leading-none tabular-nums text-[#10233A] sm:text-2xl">
+          {amount(finalValueWithoutFees)}
+        </p>
+
+        <p className="mt-3 text-[15px] leading-snug text-[#10233A] sm:text-base">
+          Paying {annualFeePercent.toFixed(2)}% of assets
+          <NoteMarker />
+        </p>
+        <p className="mt-3 text-right text-[19px] font-bold leading-none tabular-nums text-[#10233A] sm:text-2xl">
+          {amount(finalValueWithFees)}
+        </p>
+
+        {/* The one line in the block: an arithmetic rule under the second
+            operand, so the figure beneath it reads as the result of a
+            subtraction rather than a third free-standing number. */}
+        <div aria-hidden="true" />
+        <div className="mt-2 h-px w-full bg-[#10233A]" />
+
+        <p className="mt-3 text-[15px] font-bold leading-snug text-[#10233A] sm:text-base">
+          Difference
+          <NoteMarker />
+        </p>
+        <p
+          className="mt-3 text-right text-[22px] font-bold leading-none tabular-nums text-[#007A2F] sm:text-3xl"
+          data-difference-amount
+        >
+          {amount(savings)}
+        </p>
       </div>
     </section>
   );
 }
+
 
 function MathExpandButton({
   isOpen,
@@ -1975,7 +1904,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     finalValueWithoutFees,
     mutualFundExpensePercent,
     onAssumptionChange,
-    percentLost,
     portfolioValue,
     series,
     simpleControls,
@@ -1989,11 +1917,8 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     initialView = "header",
   } = props;
   const [chartPinned, setChartPinned] = useState(false);
-  const [barPinned, setBarPinned] = useState(false);
   const [hoverChart, setHoverChart] = useState(false);
-  const [hoverBar, setHoverBar] = useState(false);
   const [chartGapHintActive, setChartGapHintActive] = useState(false);
-  const [barGapHintActive, setBarGapHintActive] = useState(false);
   const [headerInputsVisible, setHeaderInputsVisible] = useState(assumptionsCustomized);
   const [activeHeaderField, setActiveHeaderField] = useState<EditableHeaderField | null>(null);
   // Two-tab swap in the title-bar slot: "header" shows the title/subtitle/growth
@@ -2005,7 +1930,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const gapHintPlayCountRef = useRef(0);
   const gapHintTimeoutsRef = useRef<number[]>([]);
   const prefersReducedMotion = useReducedMotion();
-  const vsActive = chartPinned && barPinned;
   const showHeaderInputs = headerInputsVisible || assumptionsCustomized;
   const headerSwapTransition = prefersReducedMotion
     ? { duration: 0 }
@@ -2051,39 +1975,25 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     gapHintCancelledRef.current = true;
     clearGapHintTimers();
     setChartGapHintActive(false);
-    setBarGapHintActive(false);
   };
-  const toggleAllGaps = () => {
-    cancelGapHint();
-    const nextPinned = !vsActive;
-    setChartPinned(nextPinned);
-    setBarPinned(nextPinned);
-    setHoverChart(false);
-    setHoverBar(false);
-  };
+  /* The bars are gone, so the fee gap lives on the chart alone: tap or hover it
+     to pin the overlay. The red "Show" button that used to drive both is
+     retired with them (David, 2026-08-11). */
   const toggleChartGap = () => {
     cancelGapHint();
     setChartPinned((prev) => !prev);
     setHoverChart(false);
   };
-  const toggleBarGap = () => {
-    cancelGapHint();
-    setBarPinned((prev) => !prev);
-    setHoverBar(false);
-  };
   const chartActive = chartPinned || hoverChart;
-  const barActive = barPinned || hoverBar;
-  const chartGapHintVisible = chartGapHintActive && !chartPinned && !barPinned;
-  const barGapHintVisible = barGapHintActive && !chartPinned && !barPinned;
+  const chartGapHintVisible = chartGapHintActive && !chartPinned;
   useEffect(() => {
-    if (gapHintCancelledRef.current || chartPinned || barPinned) return;
+    if (gapHintCancelledRef.current || chartPinned) return;
 
     const element = visualizationRef.current;
     if (!element) return;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const visibleMs = prefersReducedMotion ? FEE_GAP_HINT_REDUCED_VISIBLE_MS : FEE_GAP_HINT_VISIBLE_MS;
-    const barDelayMs = prefersReducedMotion ? 0 : FEE_GAP_HINT_BAR_DELAY_MS;
 
     const queueTimeout = (callback: () => void, delay: number) => {
       const timeoutId = window.setTimeout(callback, delay);
@@ -2094,7 +2004,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
       if (
         gapHintCancelledRef.current ||
         chartPinned ||
-        barPinned ||
         gapHintPlayCountRef.current >= FEE_GAP_HINT_MAX_PLAYS
       ) {
         return;
@@ -2104,25 +2013,15 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
       setChartGapHintActive(true);
 
       queueTimeout(() => {
-        setBarGapHintActive(true);
-      }, barDelayMs);
-
-      queueTimeout(() => {
         setChartGapHintActive(false);
       }, visibleMs);
 
       queueTimeout(() => {
-        setBarGapHintActive(false);
-      }, visibleMs + barDelayMs);
-
-      queueTimeout(() => {
         setChartGapHintActive(false);
-        setBarGapHintActive(false);
 
         if (
           gapHintCancelledRef.current ||
           chartPinned ||
-          barPinned ||
           gapHintPlayCountRef.current >= FEE_GAP_HINT_MAX_PLAYS
         ) {
           return;
@@ -2134,7 +2033,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (!entry?.isIntersecting || gapHintCancelledRef.current || chartPinned || barPinned) return;
+        if (!entry?.isIntersecting || gapHintCancelledRef.current || chartPinned) return;
 
         queueTimeout(playHint, FEE_GAP_HINT_INITIAL_DELAY_MS);
         observer.disconnect();
@@ -2148,14 +2047,13 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
       observer.disconnect();
       clearGapHintTimers();
     };
-  }, [barPinned, chartPinned]);
+  }, [chartPinned]);
 
   useEffect(() => {
-    if ((chartPinned || barPinned) && (chartGapHintActive || barGapHintActive)) {
+    if (chartPinned && chartGapHintActive) {
       setChartGapHintActive(false);
-      setBarGapHintActive(false);
     }
-  }, [barGapHintActive, barPinned, chartGapHintActive, chartPinned]);
+  }, [chartGapHintActive, chartPinned]);
 
   return (
     <div className={`section-shell relative z-10 pb-16 ${showChartHeading ? "pt-1 sm:pt-2" : "pt-5 sm:pt-6"}`}>
@@ -2397,89 +2295,22 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         ) : null}
         </div>
 
-        <section
-          className="grid gap-1 px-4 pt-1.5 sm:gap-1.5 sm:px-7 sm:pt-2 md:grid-cols-[1fr_auto_1fr] md:items-stretch"
-          aria-label="Ending value comparison"
-        >
-          <FinalHomeStatCard
-            ribbon={`Paying asset-based fees (${annualFeePercent.toFixed(2)}%)`}
-            value={
-              <>
-                <span className="sm:hidden">{formatCurrencyFloored(finalValueWithFees)}</span>
-                <RollingCurrencyOdometer
-                  value={finalValueWithFees}
-                  formatter={formatCurrencyFloored}
-                  duration={650}
-                  debounceMs={180}
-                  className="hidden sm:inline"
-                />
-              </>
-            }
-            tone="blue"
-            accentClassName="text-[#064B84]"
-          />
-          <div
-            className="mx-auto flex min-h-0 flex-col items-center justify-center py-1 text-center md:mx-0 md:min-w-[7.5rem] md:px-1 md:py-0.5"
-            data-difference-summary
-          >
-            <p
-              className="whitespace-nowrap text-[clamp(1.5rem,5vw,2rem)] font-black leading-none tracking-tight text-[#D92D20]"
-              data-difference-amount
-            >
-              {formatCurrencyFloored(savings)}
-            </p>
-            <p className="mt-1 text-[11px] font-extrabold uppercase tracking-[0.16em] text-[#D92D20]">
-              Difference
-            </p>
-            <button
-              type="button"
-              onClick={toggleAllGaps}
-              className={`relative mt-2 flex h-9 min-w-[5.1rem] items-center justify-center overflow-hidden rounded-md border-2 border-[#D92D20] bg-white px-4 transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_22px_rgba(16,35,58,0.18),inset_0_1px_0_rgba(255,255,255,0.95)] active:translate-y-0 active:shadow-[0_4px_10px_rgba(16,35,58,0.14),inset_0_2px_4px_rgba(16,35,58,0.08)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:h-10 sm:min-w-[5.35rem] ${
-                vsActive
-                  ? ""
-                  : "fee-gap-view-pulse shadow-[0_8px_18px_rgba(16,35,58,0.16),inset_0_1px_0_rgba(255,255,255,0.95)]"
-              }`}
-              style={
-                vsActive
-                  ? {
-                      boxShadow: "0 4px 10px rgba(16, 35, 58, 0.14), inset 0 2px 4px rgba(16, 35, 58, 0.08)",
-                      transform: "translateY(2px)",
-                    }
-                  : undefined
-              }
-              aria-label={vsActive ? "Hide fee gap overlays" : "Show fee gap on chart and bar"}
-              aria-pressed={vsActive}
-            >
-              <span className="relative text-[0.9rem] font-extrabold leading-none tracking-tight text-[#062B43] sm:text-base">
-                Show
-              </span>
-            </button>
-          </div>
-          <FinalHomeStatCard
-            ribbon={`Paying flat monthly fee (${formatCurrency(annualFlatFee / 12)}/mo)`}
-            value={
-              <>
-                <span className="sm:hidden">{formatCurrencyFloored(finalValueWithoutFees)}</span>
-                <RollingCurrencyOdometer
-                  value={finalValueWithoutFees}
-                  formatter={formatCurrencyFloored}
-                  duration={650}
-                  debounceMs={180}
-                  className="hidden sm:inline"
-                />
-              </>
-            }
-            tone="green"
-            accentClassName="text-[#108843]"
-          />
-        </section>
+        <SimpleMathResults
+          annualFeePercent={annualFeePercent}
+          annualFlatFee={annualFlatFee}
+          finalValueWithFees={finalValueWithFees}
+          finalValueWithoutFees={finalValueWithoutFees}
+          savings={savings}
+        />
 
         {showChartHeading ? (
           <ScrollReveal delay={0.08} className="mx-4 mt-5 sm:mx-7">
             <div className="border-t border-[#D7E0E8] pt-4">
-              <h3 className="text-xl font-bold leading-tight tracking-normal text-[#10233A] sm:text-2xl">
+              {/* h2, not h3: in this layout the card's own h2 never renders, so
+                  an h3 here skipped a level in the page outline. */}
+              <h2 className="text-xl font-bold leading-tight tracking-normal text-[#10233A] sm:text-2xl">
                 Your Portfolio Over Time
-              </h3>
+              </h2>
               <p className="mt-1 text-sm leading-6 text-[#52657A]">
                 Same portfolio. Same market assumption. Different fee structure.
               </p>
@@ -2509,20 +2340,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
               />
             </div>
           </section>
-
-          <ComparisonBars
-            annualFlatFee={annualFlatFee}
-            finalValueWithFees={finalValueWithFees}
-            finalValueWithoutFees={finalValueWithoutFees}
-            savings={savings}
-            percentLost={percentLost}
-            barActive={barActive}
-            barHintActive={barGapHintVisible}
-            barPinned={barPinned}
-            onGapEnter={() => setHoverBar(true)}
-            onGapLeave={() => setHoverBar(false)}
-            onGapToggle={toggleBarGap}
-          />
         </div>
 
         {/* The chart is the money shot, so nothing precedes it but the ending
@@ -2534,17 +2351,10 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <div className="mt-3 border-t border-[#DFE6EE] pt-1">{assumptionGrid}</div>
         )}
 
-        <div className="mx-4 mt-3 space-y-1.5 rounded-md border border-[#D7E0E8] bg-[#F8FAFC] px-3 py-2 sm:mx-7">
-          <p className="text-[12px] font-semibold leading-relaxed text-[#42556C] sm:text-[13px]">
-            <span className="text-[#213B56]">Asset-based fee*</span> is modeled as an average over the selected time period.
-            It may start above the selected average and decrease as the portfolio grows. This calculator is illustrative
-            only and should not be relied on for a precise cost analysis.
-          </p>
-          <p className="text-[11px] leading-relaxed text-[#667587] sm:text-xs">
-            This calculator is for illustrative purposes only and does not represent actual performance.
-            Values are nominal and before taxes.
-          </p>
-        </div>
+        {/* The two paragraphs that used to sit here — how the asset-based fee is
+            modeled, and the illustrative-only caveat — are now notes 2 and 1 at
+            the foot of the page, reachable from the superscript beside each
+            figure they actually govern (David, 2026-08-11). */}
 
         <div className="mx-4 mt-4 pb-5 sm:mx-7">
           <SeeOurMathBento
