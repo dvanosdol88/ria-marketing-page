@@ -6,6 +6,7 @@ const readSource = (relativePath) =>
   readFile(new URL(relativePath, import.meta.url), "utf8");
 
 const [
+  pageSource,
   calculatorSource,
   calculatorExperienceSource,
   answersSource,
@@ -14,6 +15,7 @@ const [
   stickyNavConfigSource,
   advancedCalculatorCtaSource,
 ] = await Promise.all([
+  readSource("../src/app/page.tsx"),
   readSource("../src/components/CostAnalysisCalculator.tsx"),
   readSource("../src/components/HomeCalculatorExperience.tsx"),
   readSource("../src/components/WhatWhyWhoHow.tsx"),
@@ -24,6 +26,23 @@ const [
 ]);
 
 const flatten = (source) => source.replace(/\s+/g, " ");
+
+test("the default root caller selects the lean savings-calculator-upgrade path", () => {
+  const selectionStart = pageSource.indexOf("let experienceMode");
+  const selectionEnd = pageSource.indexOf("return (", selectionStart);
+  const rootSelection = pageSource.slice(selectionStart, selectionEnd);
+
+  assert.match(
+    rootSelection,
+    /else if \(\s*sequence === "savings-calculator-upgrade" \|\|\s*!hasExplicitVariant \|\|\s*isDirectMailVariant\s*\) \{\s*experienceMode = "savings-calculator-upgrade";/,
+    "the default root request must select the lean homepage composition",
+  );
+  assert.match(
+    pageSource,
+    /<CostAnalysisCalculator[\s\S]*experienceMode=\{experienceMode\}/,
+    "the root must pass its selected composition mode to the calculator",
+  );
+});
 
 test("homepage WWWH keeps the locked order and exact approved answers", () => {
   const expected = [
