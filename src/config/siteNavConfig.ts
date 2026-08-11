@@ -10,14 +10,16 @@ export interface SiteNavLink {
   track?: boolean;
   ctaLocation?: string;
   /**
-   * Visual weight. "primary" = three pillars (Save / Upgrade / Improve);
-   * "secondary" = ancillary nav (How? / FAQ). Secondary items render muted
-   * with extra left margin so the pillars read as the core message.
+   * Visual weight. "primary" = main root actions; "secondary" = ancillary
+   * navigation (How? / FAQ). Secondary items render muted with extra left
+   * margin so the primary actions read as the core message.
    */
   tier?: "primary" | "secondary";
 }
 
 export const siteNavLinks: SiteNavLink[] = [
+  // Retired root anchors are omitted because the lean homepage no longer
+  // renders those sections; their standalone reusable experiences remain.
   { label: "Save", href: "/", sectionId: "calculator", tier: "primary" },
   {
     label: "Fee Calculator",
@@ -25,20 +27,6 @@ export const siteNavLinks: SiteNavLink[] = [
     tier: "primary",
     track: true,
     ctaLocation: "site_nav",
-  },
-  {
-    label: "Upgrade",
-    href: "/#upgrade-your-advice",
-    sectionId: "upgrade-your-advice",
-    activePaths: ["/upgrade-your-advice"],
-    tier: "primary",
-  },
-  {
-    label: "Improve",
-    href: "/#improve-your-tools",
-    sectionId: "improve-your-tools",
-    activePaths: ["/improve-your-tools"],
-    tier: "primary",
   },
   { label: "Rates", href: "/savings-rates", tier: "secondary" },
   { label: "How?", href: "/how-it-works", tier: "secondary" },
