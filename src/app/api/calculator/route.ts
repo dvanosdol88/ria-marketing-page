@@ -3,6 +3,7 @@ import { EDDM_LAUNCH_QR_URL, SMARTER_WAY_WEALTH_ORIGIN } from "@/config/campaign
 import { buildQueryFromState, parseCalculatorState } from "@/lib/calculatorState";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { formatCompactCurrency, formatCurrency } from "@/lib/format";
+import { CALCULATOR_NOTES, CALCULATOR_NOTES_ANCHOR } from "@/config/calculatorNotes";
 
 export const dynamic = "force-dynamic";
 
@@ -61,11 +62,14 @@ export function GET(request: Request) {
         canonicalEddmQrUrl: EDDM_LAUNCH_QR_URL,
         smarterWayWealth: SMARTER_WAY_WEALTH_ORIGIN,
         iapd: "https://adviserinfo.sec.gov/firm/summary/342140",
+        disclosureNotes: `https://youarepayingtoomuch.com/#${CALCULATOR_NOTES_ANCHOR}`,
       },
+      /* llms.txt tells agents to prefer this endpoint over reading the page, so
+         it must not carry a weaker disclosure set than the page does. These are
+         the same four notes the page renders, from the same source, plus the
+         standing firm-level statements that are not tied to a figure. */
       disclosures: [
-        "Educational only. Not investment advice.",
-        "Calculator outputs are hypothetical illustrations based on user-provided assumptions.",
-        "Actual investment results will vary.",
+        ...CALCULATOR_NOTES.map((note) => `${note.title}. ${note.body}`),
         "Using the calculator does not establish an advisory relationship with Smarter Way Wealth, LLC.",
         "Registration does not imply a certain level of skill or training.",
       ],

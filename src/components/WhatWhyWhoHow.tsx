@@ -56,9 +56,11 @@ export function WhatWhyWhoHow() {
                  goes with the name — photo left, answer beside it (David,
                  2026-08-11). */
               <div className="mt-1.5 flex items-start gap-4 sm:gap-5">
+                {/* Decorative: the sentence beside it opens with the same name,
+                    so alt text here would announce "David Van Osdol" twice. */}
                 <Image
                   src="/DVO Head Shot picture.jpg"
-                  alt="David Van Osdol"
+                  alt=""
                   width={112}
                   height={112}
                   className="h-20 w-20 shrink-0 rounded-full object-cover object-top sm:h-28 sm:w-28"
@@ -81,7 +83,15 @@ export function WhatWhyWhoHow() {
               block; gap-y keeps the two groups clearly apart when they stack on
               a phone (David, 2026-08-11). */}
           <div className="mt-2 grid gap-x-10 gap-y-6 sm:grid-cols-2">
-            <ul className="space-y-1.5">
+            {/* The green check and the red dollar sign are the only thing
+                separating "what we use" from "what we skip", and both icons are
+                aria-hidden. Without these names a screen reader — and any agent
+                summarising the page — announces six undifferentiated items and
+                comes away believing the firm HAS massive marketing budgets and
+                layers of corporate overhead, the exact opposite of the claim.
+                role="list" is required alongside: Tailwind's reset removes the
+                list marker, and Safari/VoiceOver drops list semantics with it. */}
+            <ul role="list" aria-label="What Smarter Way Wealth uses" className="space-y-1.5">
               {WWWH_HOW.uses.map((item) => (
                 <li
                   key={item}
@@ -96,7 +106,11 @@ export function WhatWhyWhoHow() {
                 </li>
               ))}
             </ul>
-            <ul className="space-y-1.5">
+            <ul
+              role="list"
+              aria-label="Costs Smarter Way Wealth does not carry"
+              className="space-y-1.5"
+            >
               {WWWH_HOW.skips.map((item) => (
                 <li
                   key={item}

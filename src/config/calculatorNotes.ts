@@ -32,25 +32,25 @@ export const CALCULATOR_NOTES: readonly CalculatorNote[] = [
     id: 1,
     title: "Projected figures",
     body:
-      "Every dollar figure on this page is a hypothetical illustration produced from the assumptions you enter — portfolio value, time horizon, asset-based fee, and annual growth rate. Both scenarios are compounded monthly from the same gross return, so the only difference between them is the fee. Figures are nominal, before taxes, and do not represent actual performance. They are not a forecast, a guarantee of savings, investment advice, or an advisory relationship. Actual results will vary.",
+      "The dollar figures in this calculator are hypothetical illustrations produced from the assumptions entered on this page — portfolio value, time horizon, asset-based fee, annual growth rate, and the flat fee itself. Both scenarios are compounded monthly from the same gross return. Figures are nominal: they are not adjusted for inflation, are shown before taxes, and assume no contributions or withdrawals at any point in the period. They do not represent actual performance, are not a forecast or a guarantee of savings, and are not investment advice or an advisory relationship. Actual results will vary.",
   },
   {
     id: 2,
     title: "The asset-based fee",
     body:
-      "The asset-based fee is modeled as a single average rate, applied evenly across the whole period and deducted monthly. A real advisory fee may start above that average and decline as the portfolio grows, or step down at breakpoints, so this comparison is illustrative only and should not be relied on for a precise cost analysis. Where fund expenses are included, they are added to the advisory rate and treated the same way.",
+      "The asset-based fee is modeled as a single average rate, applied evenly across the whole period and deducted monthly. A real advisory fee may start above that average and decline as the portfolio grows, or step down at breakpoints, so this comparison is illustrative only and should not be relied on for a precise cost analysis. The rate used is the one entered on this page; it is not a quote and may differ from what any particular advisor charges. If fund expenses are added to the comparison, they are combined with that rate and charged only to the asset-based scenario — a flat-fee client would pay fund expenses too, so in that case the gap shown is wider than the difference in advisory fees alone.",
   },
   {
     id: 3,
-    title: "The $100 monthly fee",
+    title: "The flat monthly fee",
     body:
-      "Smarter Way Wealth charges a flat $100 per month. In this projection it is deducted monthly and does not change as the portfolio grows. It does not include fund expenses, custodian charges, or trading costs charged by third parties. Advisory services carry a $250,000 investable-asset minimum, which the firm may waive at its discretion.",
+      "Smarter Way Wealth's standard advisory fee is $100 per month. The projection deducts the flat fee entered on this page, monthly, and does not increase it as the portfolio grows; changing that input changes the comparison. The fee does not cover fund expenses, custodian charges, or trading costs charged by third parties. The standard account minimum is $250,000 in investable assets — liquid financial accounts, excluding real estate, business interests, and illiquid holdings — which the firm may waive or reduce at its sole discretion, as disclosed in its Form ADV Part 2A.",
   },
   {
     id: 4,
     title: "The growth rate",
     body:
-      "The annual growth rate is an assumption you choose, not a forecast or a recommendation. The same rate is applied to both scenarios, so the gap shown reflects fee drag alone. Markets do not deliver a constant return — a real path would vary year to year and could be negative. All investing involves risk, including possible loss of principal.",
+      "The annual growth rate is an assumption you choose from a limited range, not a forecast or a recommendation, and it starts at a rate the firm selected. The same rate is applied to both scenarios. Markets do not deliver a constant return — a real path would vary year to year and could be negative. All investing involves risk, including possible loss of principal.",
   },
 ] as const;
 

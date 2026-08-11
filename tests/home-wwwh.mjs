@@ -211,11 +211,33 @@ test("WHO shows David's photo beside the answer and says he does the work", () =
     "David's addition, 2026-08-11",
   );
   assert.match(flatAnswers, /src="\/DVO Head Shot picture\.jpg"/);
-  assert.match(flatAnswers, /alt="David Van Osdol"/);
+  // Decorative alt on purpose: the paragraph beside the portrait opens with
+  // "David Van Osdol", so descriptive alt text made a screen reader announce
+  // the name twice in a row (accessibility review, 2026-08-11).
+  assert.match(flatAnswers, /src="\/DVO Head Shot picture\.jpg" alt=""/);
   assert.match(
     flatAnswers,
     /answer\.key === "who" \?/,
     "only WHO carries a portrait — it is the one answer about a person",
+  );
+});
+
+// Without accessible names on these two lists, a screen reader and any agent
+// summarising the page announce six undifferentiated items and come away
+// believing the firm HAS massive marketing budgets and layers of corporate
+// overhead — the exact opposite of the claim, on the page's core
+// differentiator. The icons that carry the distinction visually are
+// aria-hidden, correctly, so the names have to live here.
+test("HOW's two lists say which is which to assistive tech", () => {
+  const flatAnswers = flatten(answersSource);
+  assert.match(flatAnswers, /aria-label="What Smarter Way Wealth uses"/);
+  assert.match(flatAnswers, /aria-label="Costs Smarter Way Wealth does not carry"/);
+  // Tailwind's reset strips the list marker, and Safari/VoiceOver drops list
+  // semantics along with it unless the role is explicit.
+  assert.equal(
+    flatAnswers.match(/<ul\s+role="list"/g)?.length,
+    2,
+    "both lists must keep explicit list semantics",
   );
 });
 

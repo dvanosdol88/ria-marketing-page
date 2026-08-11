@@ -1240,7 +1240,7 @@ export function CostAnalysisCalculator({
               }}
             >
               <Odometer value={Math.floor(projection.savings / 1000) * 1000} prefix="$" duration={1000} className="text-lg font-bold" />
-              <span aria-hidden="true" className="text-lg font-bold">*</span>
+              <NoteMarker id={NOTE.projection} />
               <span className="text-xs font-bold uppercase tracking-wider">
                 lost to asset-based fees!
               </span>
@@ -1283,7 +1283,7 @@ export function CostAnalysisCalculator({
                 duration={800}
                 className="font-bold"
               />
-              <span aria-hidden="true" className="font-bold">*</span>
+              <NoteMarker id={NOTE.projection} />
             </div>
 
             <div className="flex items-center gap-2">
@@ -1393,8 +1393,15 @@ export function CostAnalysisCalculator({
 
       {/* Last thing on the page, directly above the site-wide compliance
           footer, so every disclosure reads as one block instead of being
-          scattered through the calculator (David, 2026-08-11). */}
-      {isSavingsCalculatorUpgrade && <CalculatorNotes />}
+          scattered through the calculator (David, 2026-08-11).
+
+          Rendered unconditionally. The note markers live in the calculator
+          layout, which is selected by variant, while this block used to be
+          gated on experience mode — so /?mode=calculator-first and
+          /?variant=final-home rendered superscripts whose anchors led nowhere,
+          on pages that were making the claims the notes govern. There is no
+          reason to withhold four static paragraphs from any variant. */}
+      <CalculatorNotes />
     </>
   );
 }

@@ -1208,11 +1208,12 @@ function FinalHomeLineChart({
             fontSize="18"
             fontWeight="500"
           >
-            {/* An SVG label cannot carry a link, so it takes the note number as
-                plain text rather than the tappable superscript used elsewhere. */}
-            {formatCurrencyFloored(animatedSavings)}
-            <tspan fontSize="11" baselineShift="super">{NOTE.projection}</tspan>
-            <tspan> lost to fees</tspan>
+            {/* No note number here. SVG text concatenates with no separator, so
+                a digit after the amount fuses onto it — "$666,000" + "1" reads
+                as "$666,0001" to a screen reader and to every text extractor.
+                The same claim already carries note 1 in the results grid
+                directly above, so the marker is redundant here anyway. */}
+            {formatCurrencyFloored(animatedSavings)} lost to fees
           </text>
           <text
             x={feeGapLabelX + feeGapLabelWidth / 2}
@@ -1433,10 +1434,12 @@ function SimpleMathResults({
       data-difference-summary
     >
       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-4">
-        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#7A8899]">
+        {/* #52657A rather than #7A8899: at 11px bold the lighter grey scored
+            3.61:1 on white, under the 4.5:1 bar for normal text. */}
+        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#52657A]">
           Portfolio value
         </p>
-        <p className="text-right text-[11px] font-bold uppercase tracking-[0.14em] text-[#7A8899]">
+        <p className="text-right text-[11px] font-bold uppercase tracking-[0.14em] text-[#52657A]">
           Amount
         </p>
 
@@ -2304,9 +2307,11 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         {showChartHeading ? (
           <ScrollReveal delay={0.08} className="mx-4 mt-5 sm:mx-7">
             <div className="border-t border-[#D7E0E8] pt-4">
-              <h3 className="text-xl font-bold leading-tight tracking-normal text-[#10233A] sm:text-2xl">
+              {/* h2, not h3: in this layout the card's own h2 never renders, so
+                  an h3 here skipped a level in the page outline. */}
+              <h2 className="text-xl font-bold leading-tight tracking-normal text-[#10233A] sm:text-2xl">
                 Your Portfolio Over Time
-              </h3>
+              </h2>
               <p className="mt-1 text-sm leading-6 text-[#52657A]">
                 Same portfolio. Same market assumption. Different fee structure.
               </p>

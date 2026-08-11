@@ -13,6 +13,7 @@
     "rates:refresh": "node scripts/refresh-savings-rates.mjs",
     "test:advisor-calculator-batch": "node tests/advisor-facing-calculator-batch.mjs",
     "test:calculator-input-typing": "node tests/calculator-input-typing.mjs",
+    "test:home-disclosures-ssr": "node tests/home-disclosures-ssr.mjs",
     "test:credentials-layout": "node tests/advisor-proof-credentials-layout.mjs",
     "test:eddm-attribution": "node tests/legacy-eddm-attribution.mjs",
     "test:refresh-position": "node tests/refresh-position.mjs",
