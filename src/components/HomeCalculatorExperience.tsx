@@ -30,6 +30,8 @@ import { Odometer, RollingCurrencyOdometer } from "@/components/Odometer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { SMARTER_WAY_WEALTH_ORIGIN } from "@/config/campaignLinks";
 import { AdvancedCalculatorCta } from "@/components/AdvancedCalculatorCta";
+import { NoteMarker } from "@/components/CalculatorNotes";
+import { NOTE } from "@/config/calculatorNotes";
 import { SignupCta } from "@/components/SignupCta";
 import { Quiz } from "./Quiz";
 
@@ -1206,7 +1208,11 @@ function FinalHomeLineChart({
             fontSize="18"
             fontWeight="500"
           >
-            {formatCurrencyFloored(animatedSavings)}* lost to fees
+            {/* An SVG label cannot carry a link, so it takes the note number as
+                plain text rather than the tappable superscript used elsewhere. */}
+            {formatCurrencyFloored(animatedSavings)}
+            <tspan fontSize="11" baselineShift="super">{NOTE.projection}</tspan>
+            <tspan> lost to fees</tspan>
           </text>
           <text
             x={feeGapLabelX + feeGapLabelWidth / 2}
@@ -1436,6 +1442,7 @@ function SimpleMathResults({
 
         <p className="mt-4 text-[15px] leading-snug text-[#10233A] sm:text-base">
           Paying {formatCurrency(annualFlatFee / 12)} a month
+          <NoteMarker id={NOTE.flatFee} />
         </p>
         <p className="mt-4 text-right text-[19px] font-bold leading-none tabular-nums text-[#10233A] sm:text-2xl">
           {amount(finalValueWithoutFees)}
@@ -1443,6 +1450,7 @@ function SimpleMathResults({
 
         <p className="mt-3 text-[15px] leading-snug text-[#10233A] sm:text-base">
           Paying {annualFeePercent.toFixed(2)}% of assets
+          <NoteMarker id={NOTE.assetBasedFee} />
         </p>
         <p className="mt-3 text-right text-[19px] font-bold leading-none tabular-nums text-[#10233A] sm:text-2xl">
           {amount(finalValueWithFees)}
@@ -1456,6 +1464,7 @@ function SimpleMathResults({
 
         <p className="mt-3 text-[15px] font-bold leading-snug text-[#10233A] sm:text-base">
           Difference
+          <NoteMarker id={NOTE.projection} />
         </p>
         <p
           className="mt-3 text-right text-[22px] font-bold leading-none tabular-nums text-[#007A2F] sm:text-3xl"
@@ -2338,17 +2347,10 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
           <div className="mt-3 border-t border-[#DFE6EE] pt-1">{assumptionGrid}</div>
         )}
 
-        <div className="mx-4 mt-3 space-y-1.5 rounded-md border border-[#D7E0E8] bg-[#F8FAFC] px-3 py-2 sm:mx-7">
-          <p className="text-[12px] font-semibold leading-relaxed text-[#42556C] sm:text-[13px]">
-            <span className="text-[#213B56]">Asset-based fee*</span> is modeled as an average over the selected time period.
-            It may start above the selected average and decrease as the portfolio grows. This calculator is illustrative
-            only and should not be relied on for a precise cost analysis.
-          </p>
-          <p className="text-[11px] leading-relaxed text-[#667587] sm:text-xs">
-            This calculator is for illustrative purposes only and does not represent actual performance.
-            Values are nominal and before taxes.
-          </p>
-        </div>
+        {/* The two paragraphs that used to sit here — how the asset-based fee is
+            modeled, and the illustrative-only caveat — are now notes 2 and 1 at
+            the foot of the page, reachable from the superscript beside each
+            figure they actually govern (David, 2026-08-11). */}
 
         <div className="mx-4 mt-4 pb-5 sm:mx-7">
           <SeeOurMathBento
