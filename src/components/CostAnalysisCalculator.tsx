@@ -13,7 +13,7 @@ import {
 } from "@/lib/calculatorState";
 import { formatCompactCurrency, formatCurrency, formatCurrencyFloored } from "@/lib/format";
 import { CalculatorNotes, NoteMarker } from "@/components/CalculatorNotes";
-import { CALCULATOR_NOTES_ANCHOR, NOTE } from "@/config/calculatorNotes";
+import { CALCULATOR_NOTES_ANCHOR } from "@/config/calculatorNotes";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { AdvisorProofSections } from "@/components/AdvisorProofSections";
@@ -91,8 +91,8 @@ interface PillSliderProps {
 interface SimpleRangeControlProps {
   formatter: (value: number) => string;
   label: string;
-  /** Superscript note number shown beside the label, if this input needs one. */
-  noteId?: number;
+  /** Show the superscript disclaimer marker beside the label. */
+  showNote?: boolean;
   max: number;
   min: number;
   onChange: (value: number) => void;
@@ -133,7 +133,7 @@ function extractInsertedText(previous: string, next: string) {
 function SimpleRangeControl({
   formatter,
   label,
-  noteId,
+  showNote,
   max,
   min,
   onChange,
@@ -215,7 +215,7 @@ function SimpleRangeControl({
         className="min-w-0 flex-1 text-[13px] font-bold leading-tight text-[#213B56]"
       >
         {label}
-        {noteId ? <NoteMarker id={noteId} /> : null}
+        {showNote ? <NoteMarker /> : null}
       </label>
       <div className="flex shrink-0 items-stretch overflow-hidden rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30">
         <button
@@ -527,7 +527,7 @@ function SavingsLeadHero({
             <span className="block text-[clamp(1.7rem,4.8vw,4rem)]">What would you do with</span>
             <span className="block text-[clamp(2.25rem,4.8vw,4rem)] text-[#007A2F] tabular-nums">
               {formatCurrencyFloored(savings)}
-              <NoteMarker id={NOTE.projection} />
+              <NoteMarker />
             </span>
           </h1>
           <p className="mt-3 text-base font-medium leading-snug text-[#10233A]/80 sm:text-lg">
@@ -1036,7 +1036,6 @@ export function CostAnalysisCalculator({
     growth: (
       <SimpleRangeControl
         label="Annualized growth"
-        noteId={NOTE.growthRate}
         value={state.annualGrowthPercent}
         onChange={(value) => updateCalculatorState({ annualGrowthPercent: value })}
         formatter={(value) => `${value.toFixed(2)}%`}
@@ -1048,7 +1047,7 @@ export function CostAnalysisCalculator({
     advisoryFee: (
       <SimpleRangeControl
         label="Asset-based fee"
-        noteId={NOTE.assetBasedFee}
+        showNote
         value={state.annualFeePercent}
         onChange={(value) => updateCalculatorState({ annualFeePercent: value })}
         formatter={(value) => `${value.toFixed(2)}%`}
@@ -1150,7 +1149,7 @@ export function CostAnalysisCalculator({
             </span>
             <span className="text-xl font-bold leading-none text-[#007A2F] tabular-nums sm:text-2xl">
               {formatCurrencyFloored(projection.savings)}
-              <NoteMarker id={NOTE.projection} />
+              <NoteMarker />
             </span>
           </div>
         </div>
@@ -1240,7 +1239,7 @@ export function CostAnalysisCalculator({
               }}
             >
               <Odometer value={Math.floor(projection.savings / 1000) * 1000} prefix="$" duration={1000} className="text-lg font-bold" />
-              <NoteMarker id={NOTE.projection} />
+              <NoteMarker />
               <span className="text-xs font-bold uppercase tracking-wider">
                 lost to asset-based fees!
               </span>
@@ -1283,7 +1282,7 @@ export function CostAnalysisCalculator({
                 duration={800}
                 className="font-bold"
               />
-              <NoteMarker id={NOTE.projection} />
+              <NoteMarker />
             </div>
 
             <div className="flex items-center gap-2">

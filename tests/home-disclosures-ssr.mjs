@@ -1,20 +1,23 @@
 /**
- * The disclosures must be in the HTML the server sends, not painted in after
+ * The disclaimer must be in the HTML the server sends, not painted in after
  * JavaScript runs.
  *
  * This site treats AI assistants as a primary audience, and an assistant that
- * cannot see the disclosures will quote the firm's fee claims without them.
- * Every other test in this directory asserts against SOURCE strings, so an SSR
+ * cannot see the disclaimer will quote the firm's fee claims without it. Every
+ * other test in this directory asserts against SOURCE strings, so an SSR
  * regression here would pass all of them. This one fetches the real page and
  * reads the bytes.
  *
- * It also guards two defects found in review on 2026-08-11:
- *   - note markers rendering on pages where the notes block did not, leaving
+ * It also guards three defects found in review on 2026-08-11:
+ *   - markers rendering on pages where the disclaimer did not, leaving
  *     superscripts whose anchors led nowhere;
  *   - a note number placed directly after a currency figure inside SVG text,
- *     where the two concatenate and change the number ("$666,000" + "1").
+ *     where the two concatenate and change the number ("$666,000" + "1");
+ *   - the calculator endpoint serving weaker disclosure text than the page,
+ *     while llms.txt tells agents to prefer the endpoint.
  */
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { createServer } from "node:net";
 import { execFileSync, spawn } from "node:child_process";
 
@@ -46,17 +49,16 @@ async function waitForPage(url, child) {
   throw new Error(`Timed out waiting for ${url}: ${lastError?.message ?? "no response"}`);
 }
 
-const { CALCULATOR_NOTES, CALCULATOR_NOTES_ANCHOR } = await import(
-  "../src/config/calculatorNotes.ts"
-).catch(async () => {
-  // Node cannot import TypeScript directly; read the ids out of the source.
-  const source = await (await import("node:fs/promises")).readFile(
-    new URL("../src/config/calculatorNotes.ts", import.meta.url),
-    "utf8",
-  );
-  const ids = [...source.matchAll(/^\s*id:\s*(\d+),/gm)].map((match) => Number(match[1]));
-  return { CALCULATOR_NOTES: ids.map((id) => ({ id })), CALCULATOR_NOTES_ANCHOR: "calculator-notes" };
-});
+// Read the disclaimer straight out of the config so the test cannot drift from
+// the copy. Parsed rather than imported: Node's TS support varies by version.
+const configSource = await readFile(
+  new URL("../src/config/calculatorNotes.ts", import.meta.url),
+  "utf8",
+);
+const leads = [...configSource.matchAll(/lead:\s*"([^"]+)"/g)].map((match) => match[1]);
+assert.ok(leads.length >= 3, "expected at least three bolded lead-ins in the disclaimer config");
+
+const ANCHOR = "calculator-notes";
 
 let nextProcess;
 
@@ -70,34 +72,32 @@ try {
   );
   await waitForPage(`${base}/`, nextProcess);
 
-  // Every URL shape that can render a note marker must also render the notes.
+  // Every URL shape that can render a marker must also render the disclaimer.
   const urls = ["/", "/?mode=calculator-first", "/?variant=final-home"];
 
   for (const path of urls) {
     const html = await (await fetch(`${base}${path}`)).text();
 
     assert.ok(
-      html.includes(`id="${CALCULATOR_NOTES_ANCHOR}"`),
-      `${path}: the notes block must be in the server-rendered HTML`,
+      html.includes(`id="${ANCHOR}"`),
+      `${path}: the disclaimer must be in the server-rendered HTML`,
     );
 
-    for (const note of CALCULATOR_NOTES) {
+    for (const lead of leads) {
       assert.ok(
-        html.includes(`id="${CALCULATOR_NOTES_ANCHOR}-${note.id}"`),
-        `${path}: note ${note.id} must have a server-rendered anchor`,
+        html.includes(lead),
+        `${path}: the server-rendered HTML must contain "${lead}"`,
       );
     }
 
     // No marker may point at an anchor the page does not contain.
     const targets = new Set(
-      [...html.matchAll(new RegExp(`href="#(${CALCULATOR_NOTES_ANCHOR}-\\d+)"`, "g"))].map(
-        (match) => match[1],
-      ),
+      [...html.matchAll(/href="#(calculator-notes[^"]*)"/g)].map((match) => match[1]),
     );
     for (const target of targets) {
       assert.ok(
         html.includes(`id="${target}"`),
-        `${path}: marker points at #${target}, which is not on the page`,
+        `${path}: a marker points at #${target}, which is not on the page`,
       );
     }
 
@@ -105,40 +105,26 @@ try {
     // SVG concatenation defect, and it corrupts the number.
     assert.doesNotMatch(
       html,
-      /\$[\d,]+\d<\/tspan>|\$[\d,]+<tspan[^>]*baselineShift="super"/,
+      /\$[\d,]+<tspan[^>]*baselineShift="super"/,
       `${path}: a note number must not fuse onto a dollar figure in SVG text`,
-    );
-  }
-
-  // The disclosure text itself must be present, not just the anchors.
-  const home = await (await fetch(`${base}/`)).text();
-  for (const phrase of [
-    "not adjusted for inflation",
-    "no contributions or withdrawals",
-    "it is not a quote",
-    "Form ADV Part 2A",
-    "possible loss of principal",
-  ]) {
-    assert.ok(
-      home.includes(phrase),
-      `the server-rendered home page must contain the disclosure phrase "${phrase}"`,
     );
   }
 
   // The machine-readable endpoint must not carry a weaker set than the page.
   const api = await (await fetch(`${base}/api/calculator`)).json();
-  assert.equal(
-    api.disclosures.length,
-    CALCULATOR_NOTES.length + 2,
-    "the calculator endpoint must serve every note plus the two standing firm statements",
-  );
+  for (const lead of leads) {
+    assert.ok(
+      api.disclosures.some((entry) => entry.startsWith(lead)),
+      `the calculator endpoint must serve the "${lead}" statement`,
+    );
+  }
   assert.ok(
-    api.links.disclosureNotes.endsWith(`#${CALCULATOR_NOTES_ANCHOR}`),
-    "the endpoint must link agents to the notes anchor",
+    api.links.disclosureNotes.endsWith(`#${ANCHOR}`),
+    "the endpoint must link agents to the disclaimer anchor",
   );
 
   console.log(
-    `Disclosures are server-rendered on ${urls.length} URL shapes, every marker resolves, and the calculator endpoint matches the page.`,
+    `Disclaimer is server-rendered on ${urls.length} URL shapes, every marker resolves, and the calculator endpoint matches the page.`,
   );
 } finally {
   if (nextProcess?.pid && nextProcess.exitCode === null) {

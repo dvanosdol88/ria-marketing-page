@@ -3,7 +3,7 @@ import { EDDM_LAUNCH_QR_URL, SMARTER_WAY_WEALTH_ORIGIN } from "@/config/campaign
 import { buildQueryFromState, parseCalculatorState } from "@/lib/calculatorState";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { formatCompactCurrency, formatCurrency } from "@/lib/format";
-import { CALCULATOR_NOTES, CALCULATOR_NOTES_ANCHOR } from "@/config/calculatorNotes";
+import { CALCULATOR_DISCLAIMER, CALCULATOR_NOTES_ANCHOR } from "@/config/calculatorNotes";
 
 export const dynamic = "force-dynamic";
 
@@ -65,11 +65,11 @@ export function GET(request: Request) {
         disclosureNotes: `https://youarepayingtoomuch.com/#${CALCULATOR_NOTES_ANCHOR}`,
       },
       /* llms.txt tells agents to prefer this endpoint over reading the page, so
-         it must not carry a weaker disclosure set than the page does. These are
-         the same four notes the page renders, from the same source, plus the
-         standing firm-level statements that are not tied to a figure. */
+         it must not carry a weaker disclosure set than the page does. Same
+         source as the page's disclaimer, plus the standing firm-level
+         statements that are not tied to a figure. */
       disclosures: [
-        ...CALCULATOR_NOTES.map((note) => `${note.title}. ${note.body}`),
+        ...CALCULATOR_DISCLAIMER.map((line) => `${line.lead} ${line.body}`),
         "Using the calculator does not establish an advisory relationship with Smarter Way Wealth, LLC.",
         "Registration does not imply a certain level of skill or training.",
       ],

@@ -31,7 +31,6 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { SMARTER_WAY_WEALTH_ORIGIN } from "@/config/campaignLinks";
 import { AdvancedCalculatorCta } from "@/components/AdvancedCalculatorCta";
 import { NoteMarker } from "@/components/CalculatorNotes";
-import { NOTE } from "@/config/calculatorNotes";
 import { SignupCta } from "@/components/SignupCta";
 import { Quiz } from "./Quiz";
 
@@ -1445,7 +1444,7 @@ function SimpleMathResults({
 
         <p className="mt-4 text-[15px] leading-snug text-[#10233A] sm:text-base">
           Paying {formatCurrency(annualFlatFee / 12)} a month
-          <NoteMarker id={NOTE.flatFee} />
+          <NoteMarker />
         </p>
         <p className="mt-4 text-right text-[19px] font-bold leading-none tabular-nums text-[#10233A] sm:text-2xl">
           {amount(finalValueWithoutFees)}
@@ -1453,7 +1452,7 @@ function SimpleMathResults({
 
         <p className="mt-3 text-[15px] leading-snug text-[#10233A] sm:text-base">
           Paying {annualFeePercent.toFixed(2)}% of assets
-          <NoteMarker id={NOTE.assetBasedFee} />
+          <NoteMarker />
         </p>
         <p className="mt-3 text-right text-[19px] font-bold leading-none tabular-nums text-[#10233A] sm:text-2xl">
           {amount(finalValueWithFees)}
@@ -1467,7 +1466,7 @@ function SimpleMathResults({
 
         <p className="mt-3 text-[15px] font-bold leading-snug text-[#10233A] sm:text-base">
           Difference
-          <NoteMarker id={NOTE.projection} />
+          <NoteMarker />
         </p>
         <p
           className="mt-3 text-right text-[22px] font-bold leading-none tabular-nums text-[#007A2F] sm:text-3xl"
