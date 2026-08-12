@@ -507,17 +507,32 @@ function SavingsLeadHero({
      the mobile header. 8px was tried first and rendered fine at 393px wide, but
      tests/home-first-screen.mjs measures 390px too — where the layout runs a
      few pixels taller and the heading's letterforms crossed the fold on an
-     iPhone 14. Trust that test, not a screenshot at one width. Do not add
-     mobile padding above the calculator without re-running it. */
+     iPhone 14. Trust that test, not a screenshot at one width.
+
+     Later the same day David asked for 5px more between the header and the top
+     of the "?" (44px → 49px), with everything below pushed down in turn. Done,
+     and it spends the budget exactly: the heading's letters now end at 659px on
+     an iPhone 14, which is the fold — zero margin — and 8px above it on an
+     iPhone 15/16. THERE IS NOTHING LEFT. The next pixel added anywhere above
+     the calculator cuts the words on an iPhone 14, and the only remaining place
+     to buy room is the header, already down to a 58px logo in a 70px bar.
+     Re-run the geometry test before touching anything here. */
   return (
     <section
       data-url-eval-section="opening-promise"
       className="w-full bg-[#EEF0F5] pb-[68px] text-center text-[#10233A] sm:pb-[110px]"
     >
-      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[54px] pb-11 sm:pt-20 sm:pb-20">
+      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[59px] pb-11 sm:pt-20 sm:pb-20">
+        {/* 48.3% rather than 47% on mobile. The mark is centred as a share of
+            the hero's height, so growing the hero above it only moves it down
+            by that fraction — 5px of new padding would have opened the gap
+            David measured by about 2px. The extra 1.3 points makes up the
+            difference, so the visible gap between the header and the top of the
+            "?" grows the full 5px he asked for (David, 2026-08-12). Desktop is
+            untouched. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-[47%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
+          className="pointer-events-none absolute left-1/2 top-[48.3%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
           style={{ fontFamily: '"Satoshi", var(--font-sans), sans-serif' }}
         >
           ?

@@ -112,6 +112,13 @@ async function settle(read, label) {
    heading rather than a sliver. */
 const MIN_VISIBLE_HEADING_PX = 24;
 
+/* David asked for this gap by eye and by number — 44px was too tight, 49px is
+   what he approved (2026-08-12). It is not a free value: the "?" is centred as
+   a share of the hero's height, so anything that changes the hero's padding
+   moves it by a fraction and quietly reopens the question. */
+const MARK_GAP_PX = 49;
+const MARK_GAP_TOLERANCE_PX = 1;
+
 let nextProcess;
 let browser;
 const measurements = [];
@@ -162,11 +169,35 @@ try {
       const baseline =
         headingBox.top + window.scrollY + halfLeading + metrics.fontBoundingBoxAscent;
 
+      /* The gap David actually looks at: header to the top of the decorative
+         "?". Its line box tucks up under the header, so the box is the wrong
+         thing to measure — only the ink is visible. Same method as above, plus
+         the scaleY the mark carries. */
+      const mark = [...document.querySelectorAll('div[aria-hidden="true"]')].find(
+        (node) => node.textContent.trim() === "?",
+      );
+      if (!mark) throw new Error("the decorative ? is gone from the hero");
+      const markStyle = getComputedStyle(mark);
+      const markBox = mark.getBoundingClientRect();
+      const markFontSize = parseFloat(markStyle.fontSize);
+      const markLineHeight =
+        markStyle.lineHeight === "normal" ? markFontSize * 1.2 : parseFloat(markStyle.lineHeight);
+      context.font = `${markStyle.fontStyle} ${markStyle.fontWeight} ${markStyle.fontSize} ${markStyle.fontFamily}`;
+      const markMetrics = context.measureText("?");
+      const markInkTopUnscaled =
+        (markLineHeight - markFontSize) / 2 +
+        markMetrics.fontBoundingBoxAscent -
+        markMetrics.actualBoundingBoxAscent;
+      const markScale = markBox.height / markLineHeight;
+      const markCentre = markBox.top + window.scrollY + markBox.height / 2;
+      const markInkTop = markCentre + (markInkTopUnscaled - markLineHeight / 2) * markScale;
+
       return {
         headerHeight: Math.round(header.getBoundingClientRect().height),
         headingTop: Math.round(headingBox.top + window.scrollY),
         headingBottom: Math.round(headingBox.bottom + window.scrollY),
         inkBottom: Math.round(baseline + metrics.actualBoundingBoxDescent),
+        markGap: Math.round(markInkTop - (header.getBoundingClientRect().bottom + window.scrollY)),
       };
     });
 
@@ -182,8 +213,16 @@ try {
       `${profile.name}: expanded mobile header should be 70px, the 7px trimmed from it pays for the gaps below`,
     );
 
+    assert.ok(
+      Math.abs(geometry.markGap - MARK_GAP_PX) <= MARK_GAP_TOLERANCE_PX,
+      `${profile.name}: the gap between the header and the top of the "?" is ${geometry.markGap}px,` +
+        ` not the ${MARK_GAP_PX}px David approved. The hero's padding or the mark's anchor has moved.`,
+    );
+
     const shortfall = geometry.inkBottom - profile.usable;
-    measurements.push(`${profile.name}: ink ends ${geometry.inkBottom}px vs ${profile.usable}px usable`);
+    measurements.push(
+      `${profile.name}: ink ends ${geometry.inkBottom}px vs ${profile.usable}px usable, ? gap ${geometry.markGap}px`,
+    );
 
     if (profile.inkMustClear) {
       assert.ok(
