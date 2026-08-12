@@ -334,16 +334,21 @@ test("the Difference label is set larger than the operand labels", () => {
   );
 });
 
-// The first screen is a fixed budget: header + three gaps must still leave "The
-// Fee Calculator" above the fold on a phone. Measured on the live page at
-// 393px wide, the heading's box ends at 660px against roughly 667px of usable
-// Safari height on an iPhone 15/16. These four numbers are the whole budget —
-// changing any one of them without re-measuring pushes the heading under.
-test("the mobile first-screen spacing budget holds", () => {
+// Locks the four spacing CONSTANTS so they cannot be nudged casually — it does
+// not, and cannot, prove the heading still clears the fold. String matching is
+// blind to a font-size change, a line-height change, or a new element anywhere
+// above the calculator, any of which would push "The Fee Calculator" under
+// while leaving these four literals untouched.
+//
+// The actual guarantee is measured in tests/home-first-screen.mjs, which
+// renders the page at two iPhone widths and asserts the heading's bounding box
+// against the usable Safari height. If you change a number here, re-measure
+// there — that is the test that can fail honestly.
+test("the mobile first-screen spacing constants are the measured ones", () => {
   assert.match(navSource, /collapsed \? "h-\[58px\]" : "h-\[70px\]"/, "expanded mobile header is 70px");
-  assert.match(calculatorSource, /px-4 pt-14 pb-11 sm:pt-20 sm:pb-20/, "gap above the headline");
-  assert.match(calculatorSource, /<div className="mt-11 sm:mt-20">\{introContent\}<\/div>/, "gap above the promise");
-  assert.match(calculatorSource, /pb-\[70px\] text-center/, "gap below the promise");
+  assert.match(calculatorSource, /px-4 pt-\[54px\] pb-11 sm:pt-20 sm:pb-20/, "gap above the headline");
+  assert.match(calculatorSource, /<div className="mt-\[42px\] sm:mt-20">\{introContent\}<\/div>/, "gap above the promise");
+  assert.match(calculatorSource, /pb-\[68px\] text-center/, "gap below the promise");
 });
 
 test("advanced calculator motion preference is gated until after hydration", () => {

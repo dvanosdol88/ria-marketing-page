@@ -1392,9 +1392,12 @@ function FinalHomeLineChart({
  * 2026-08-11). Four lines in two columns do the same work in roughly a third of
  * the height.
  *
- * No rules anywhere except one: a short line under the second amount, so the
- * block reads as a subtraction rather than a list. Colour appears exactly once,
- * on the number the visitor should leave with.
+ * Two rules, both spanning the full grid: one above the column labels and one
+ * under the second amount, so the block reads as a bounded subtraction rather
+ * than a list. (It carried a single half-width rule until 2026-08-12, when
+ * David asked for the line to run all the way across and for the column labels
+ * to be given a matching edge.) Colour appears exactly once, on the number the
+ * visitor should leave with.
  */
 function SimpleMathResults({
   annualFeePercent,

@@ -16,6 +16,7 @@
     "test:home-disclosures-ssr": "node tests/home-disclosures-ssr.mjs",
     "test:credentials-layout": "node tests/advisor-proof-credentials-layout.mjs",
     "test:eddm-attribution": "node tests/legacy-eddm-attribution.mjs",
+    "test:home-first-screen": "node tests/home-first-screen.mjs",
     "test:refresh-position": "node tests/refresh-position.mjs",
     "test:home-wwwh": "node --test tests/home-wwwh.mjs"
   },
