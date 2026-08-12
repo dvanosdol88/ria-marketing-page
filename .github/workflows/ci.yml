@@ -10,6 +10,9 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    # Roughly 1 minute in practice. The cap is here so a stall fails fast
+    # instead of running to GitHub's 6-hour default.
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -39,6 +42,10 @@ jobs:
   # the wait stays close to the slower of the pair rather than their sum.
   test:
     runs-on: ubuntu-latest
+    # Roughly 2 minutes in practice. These suites drive a real browser against a
+    # real dev server, so a stuck page or a settle loop that never converges
+    # would otherwise hold the PR for GitHub's 6-hour default.
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v6
