@@ -532,6 +532,7 @@ function SavingsLeadHero({
             untouched. */}
         <div
           aria-hidden="true"
+          data-hero-mark
           className="pointer-events-none absolute left-1/2 top-[48.3%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
           style={{ fontFamily: '"Satoshi", var(--font-sans), sans-serif' }}
         >

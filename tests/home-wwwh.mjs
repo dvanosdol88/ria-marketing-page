@@ -348,6 +348,9 @@ test("the mobile first-screen spacing constants are the measured ones", () => {
   assert.match(navSource, /collapsed \? "h-\[58px\]" : "h-\[70px\]"/, "expanded mobile header is 70px");
   assert.match(calculatorSource, /px-4 pt-\[59px\] pb-11 sm:pt-20 sm:pb-20/, "gap above the headline");
   assert.match(calculatorSource, /absolute left-1\/2 top-\[48\.3%\]/, "the decorative ? sits with the headline, not 5px above it");
+  // The geometry test measures this element; without the hook it would fall
+  // back to guessing which node is the mark.
+  assert.match(calculatorSource, /data-hero-mark/, "the decorative ? keeps its stable test hook");
   assert.match(calculatorSource, /<div className="mt-\[42px\] sm:mt-20">\{introContent\}<\/div>/, "gap above the promise");
   assert.match(calculatorSource, /pb-\[68px\] text-center/, "gap below the promise");
 });

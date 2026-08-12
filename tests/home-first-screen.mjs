@@ -173,10 +173,8 @@ try {
          "?". Its line box tucks up under the header, so the box is the wrong
          thing to measure — only the ink is visible. Same method as above, plus
          the scaleY the mark carries. */
-      const mark = [...document.querySelectorAll('div[aria-hidden="true"]')].find(
-        (node) => node.textContent.trim() === "?",
-      );
-      if (!mark) throw new Error("the decorative ? is gone from the hero");
+      const mark = document.querySelector("[data-hero-mark]");
+      if (!mark) throw new Error("no [data-hero-mark] — the hero's decorative ? is gone or unhooked");
       const markStyle = getComputedStyle(mark);
       const markBox = mark.getBoundingClientRect();
       const markFontSize = parseFloat(markStyle.fontSize);
