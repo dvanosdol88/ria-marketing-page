@@ -14,6 +14,7 @@ const [
   navSource,
   stickyNavConfigSource,
   advancedCalculatorCtaSource,
+  footerSource,
 ] = await Promise.all([
   readSource("../src/app/page.tsx"),
   readSource("../src/components/CostAnalysisCalculator.tsx"),
@@ -23,9 +24,15 @@ const [
   readSource("../src/components/SiteNav.tsx"),
   readSource("../src/config/stickyNavConfig.ts"),
   readSource("../src/components/AdvancedCalculatorCta.tsx"),
+  readSource("../src/components/SiteFooter.tsx"),
 ]);
 
 const flatten = (source) => source.replace(/\s+/g, " ");
+
+/* Block comments only — `//` would eat the rest of any line holding a URL.
+   Needed where a comment deliberately quotes copy that was removed, which is
+   otherwise indistinguishable from the copy still being there. */
+const stripComments = (source) => source.replace(/\/\*[\s\S]*?\*\//g, "");
 
 test("the default root caller selects the lean savings-calculator-upgrade path", () => {
   const selectionStart = pageSource.indexOf("let experienceMode");
@@ -119,8 +126,6 @@ test("lean root composition retains the approved homepage order", () => {
   const homeSignupIndex = calculatorSource.indexOf(
     '<SignupCta location="home_post_calculator" />',
   );
-  const notesIndex = calculatorSource.indexOf("<CalculatorNotes />");
-
   for (const [marker, index] of [
     ["calculation-details label", detailLabelIndex],
     ["Savings lead hero", savingsHeroIndex],
@@ -129,7 +134,6 @@ test("lean root composition retains the approved homepage order", () => {
     ["calculator section end", calculatorSectionEndIndex],
     ["WWWH component", answersIndex],
     ["homepage CTA", homeSignupIndex],
-    ["calculator notes", notesIndex],
   ]) {
     assert.ok(index >= 0, `${marker} must exist before placement is compared`);
   }
@@ -144,7 +148,6 @@ test("lean root composition retains the approved homepage order", () => {
   );
   assert.ok(calculatorSectionEndIndex < answersIndex, "WWWH must follow the calculator");
   assert.ok(answersIndex < homeSignupIndex, "the single homepage CTA must follow WWWH");
-  assert.ok(homeSignupIndex < notesIndex, "CalculatorNotes must finish the root flow");
   assert.equal(
     calculatorSource.match(/<WhatWhyWhoHow \/>/g)?.length,
     1,
@@ -154,6 +157,33 @@ test("lean root composition retains the approved homepage order", () => {
     calculatorSource.match(/<SignupCta location="home_post_calculator" \/>/g)?.length,
     1,
     "the root must retain exactly one homepage CTA",
+  );
+});
+
+// DECISION CHANGED, 2026-08-12 — read before "fixing" this back.
+//
+// The disclaimer used to be the last block the home page rendered, and this
+// suite asserted that ordering. It now lives inside the site footer, beneath
+// the grey logo, where it replaced a weaker paraphrase of itself ("Calculator
+// projections are hypothetical and for illustrative purposes only") that had
+// been sitting there saying the same thing in softer words.
+//
+// Rendering it in BOTH places is the failure mode this locks against: two
+// disclaimers, neither obviously the operative one, on a page whose whole
+// argument is about being straight with people on fees.
+test("the calculator disclaimer renders once, in the footer", () => {
+  assert.match(footerSource, /<CalculatorNotes \/>/, "the footer carries the disclaimer");
+  assert.doesNotMatch(
+    calculatorSource,
+    /<CalculatorNotes \/>/,
+    "the page must not render a second copy above the footer",
+  );
+  // Comments stripped: the code comment there quotes the removed copy on
+  // purpose, so the next person can see exactly what this replaced.
+  assert.doesNotMatch(
+    stripComments(footerSource),
+    /Calculator projections are hypothetical/,
+    "the weaker paraphrase it replaced must not come back alongside it",
   );
 });
 
@@ -297,10 +327,19 @@ test("HOW's two columns are headed by a green Yes and a red No", () => {
   const flatAnswers = flatten(answersSource);
   assert.match(flatAnswers, /WWWH_VERDICT_CLASS\}\s*text-\[#108843\]`}>Yes</);
   assert.match(flatAnswers, /WWWH_VERDICT_CLASS\}\s*text-\[#C62828\]`}>No</);
-  // Centred over its own column, and Camel Case to match What/Why/Who/How
-  // rather than shouting in caps (David, 2026-08-07 and -12).
-  assert.match(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*text-center/);
+  // DECISION CHANGED, 2026-08-12 (same day) — read before "fixing" this back.
+  // These were centred over each column when they landed that morning. David
+  // asked for them moved left: dead-centre left them adrift above left-aligned
+  // list items, most visibly in the wide desktop column. They now sit indented
+  // over the list's own text.
+  assert.match(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*text-left/);
+  assert.match(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*pl-8/);
+  assert.doesNotMatch(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*text-center/);
+  // Camel Case to match What/Why/Who/How rather than shouting in caps.
   assert.doesNotMatch(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*uppercase/);
+  // The closing line carries the verdicts' weight but keeps the body's ink —
+  // David asked for the weight, not the colour.
+  assert.match(answersSource, /text-lg font-black leading-7 text-\[#10233A\] sm:text-xl">\s*\{WWWH_HOW\.closing\}/);
   // The verdicts must carry the same greens and reds as the icons beneath them.
   assert.match(flatAnswers, /<Check[^>]*text-\[#108843\]/);
   assert.match(flatAnswers, /<DollarSign[^>]*text-\[#C62828\]/);
@@ -345,14 +384,21 @@ test("the Difference label is set larger than the operand labels", () => {
 // against the usable Safari height. If you change a number here, re-measure
 // there — that is the test that can fail honestly.
 test("the mobile first-screen spacing constants are the measured ones", () => {
-  assert.match(navSource, /collapsed \? "h-\[58px\]" : "h-\[70px\]"/, "expanded mobile header is 70px");
-  assert.match(calculatorSource, /px-4 pt-\[59px\] pb-11 sm:pt-20 sm:pb-20/, "gap above the headline");
+  assert.match(navSource, /collapsed \? "h-\[58px\]" : "h-\[62px\]"/, "expanded mobile header is 62px");
+  // David chose to shrink the brand mark 10% rather than lose the calculator
+  // heading off the first screen. That trade is what pays for the gaps below.
+  assert.match(
+    navSource,
+    /heightClass=\{collapsed \? "h-\[34px\]" : "h-\[52px\]"\}/,
+    "the 10% smaller mobile logo",
+  );
+  assert.match(calculatorSource, /px-4 pt-\[64px\] pb-11 sm:pt-20 sm:pb-20/, "gap above the headline");
   assert.match(calculatorSource, /absolute left-1\/2 top-\[48\.3%\]/, "the decorative ? sits with the headline, not 5px above it");
   // The geometry test measures this element; without the hook it would fall
   // back to guessing which node is the mark.
   assert.match(calculatorSource, /data-hero-mark/, "the decorative ? keeps its stable test hook");
-  assert.match(calculatorSource, /<div className="mt-\[42px\] sm:mt-20">\{introContent\}<\/div>/, "gap above the promise");
-  assert.match(calculatorSource, /pb-\[68px\] text-center/, "gap below the promise");
+  assert.match(calculatorSource, /<div className="mt-\[47px\] sm:mt-20">\{introContent\}<\/div>/, "gap above the promise");
+  assert.match(calculatorSource, /pb-\[73px\] text-center/, "gap below the promise");
 });
 
 test("advanced calculator motion preference is gated until after hydration", () => {

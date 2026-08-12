@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ComplianceFooter from "@/components/ComplianceFooter";
+import { CalculatorNotes } from "@/components/CalculatorNotes";
 
 const IAPD_URL = "https://adviserinfo.sec.gov/firm/summary/342140";
 
@@ -46,10 +47,14 @@ export function SiteFooter() {
                   className="h-6 w-auto opacity-75 grayscale"
                 />
               </Link>
-              <p className="text-sm leading-relaxed text-neutral-500">
-                Calculator projections are hypothetical and for illustrative purposes only.
-                They are not a guarantee of future returns.
-              </p>
+              {/* The calculator disclaimer itself, not a paraphrase of it. This
+                  slot used to hold "Calculator projections are hypothetical and
+                  for illustrative purposes only. They are not a guarantee of
+                  future returns." — a weaker restatement of the real disclaimer
+                  that sat further up the page, so the site said the same thing
+                  twice and neither one was clearly the operative version
+                  (David, 2026-08-12). */}
+              <CalculatorNotes />
             </div>
 
             {/* Right: Legal links */}

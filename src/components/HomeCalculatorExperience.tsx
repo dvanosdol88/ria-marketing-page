@@ -1434,23 +1434,27 @@ function SimpleMathResults({
       data-difference-summary
     >
       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-4">
-        {/* A header rule mirroring the subtraction rule below, so the figures
-            read as a bounded column of arithmetic rather than three floating
-            numbers (David, 2026-08-12). */}
-        <div className="col-span-2 h-px w-full bg-[#10233A]" />
-
         {/* #52657A rather than #7A8899: at this size and weight the lighter grey
             scored 3.61:1 on white, under the 4.5:1 bar for normal text. */}
-        <p className="mt-1.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[#52657A]">
+        <p className="text-[12px] font-bold uppercase tracking-[0.14em] text-[#52657A]">
           Portfolio value
         </p>
-        <p className="mt-1.5 text-right text-[12px] font-bold uppercase tracking-[0.14em] text-[#52657A]">
+        {/* The block's one marker. It sat on all three rows and on the savings
+            pill above — four in a column, for a single disclosure. Heading the
+            Amount column instead marks every figure beneath it once (David,
+            2026-08-12). */}
+        <p className="text-right text-[12px] font-bold uppercase tracking-[0.14em] text-[#52657A]">
           Amount
+          <NoteMarker />
         </p>
+
+        {/* The rule sits under the labels, not over them, so it separates the
+            headings from the figures rather than fencing the block off from the
+            chart above it. */}
+        <div className="col-span-2 mt-1.5 h-px w-full bg-[#10233A]" />
 
         <p className="mt-4 text-[15px] leading-snug text-[#10233A] sm:text-base">
           Paying {formatCurrency(annualFlatFee / 12)} a month
-          <NoteMarker />
         </p>
         <p className="mt-4 text-right text-[19px] font-bold leading-none tabular-nums text-[#10233A] sm:text-2xl">
           {amount(finalValueWithoutFees)}
@@ -1458,23 +1462,20 @@ function SimpleMathResults({
 
         <p className="mt-3 text-[15px] leading-snug text-[#10233A] sm:text-base">
           Paying {annualFeePercent.toFixed(2)}% of assets
-          <NoteMarker />
         </p>
         <p className="mt-3 text-right text-[19px] font-bold leading-none tabular-nums text-[#10233A] sm:text-2xl">
           {amount(finalValueWithFees)}
         </p>
 
-        {/* The arithmetic rule, spanning both columns so it closes the block the
-            same way the header rule opens it. It sits under the second operand,
-            so the figure beneath reads as the result of a subtraction rather
-            than a third free-standing number. */}
+        {/* The arithmetic rule, spanning both columns. It sits under the second
+            operand, so the figure beneath reads as the result of a subtraction
+            rather than a third free-standing number. */}
         <div className="col-span-2 mt-2 h-px w-full bg-[#10233A]" />
 
         {/* Set larger than the two operand labels above it: this is the line the
             visitor is meant to leave with (David, 2026-08-12). */}
         <p className="mt-3 text-[18px] font-bold leading-snug text-[#10233A] sm:text-xl">
           Difference
-          <NoteMarker />
         </p>
         <p
           className="mt-3 text-right text-[22px] font-bold leading-none tabular-nums text-[#007A2F] sm:text-3xl"
@@ -1940,11 +1941,15 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
       className="grid overflow-hidden border-b border-[#DFE6EE] bg-white px-3 py-3 sm:px-7"
       aria-label="Calculator assumptions"
     >
+      {/* py-1, not p-3. Each row is a 36px stepper; 12px of padding above and
+          below it added roughly 100px across the four rows to say nothing the
+          dividing borders were not already saying (David, 2026-08-12, second
+          time asking). */}
       <div className="grid overflow-hidden rounded-md border border-[#DFE6EE] bg-white md:grid-cols-2">
-        <div className="border-b border-[#DFE6EE] p-3 md:border-r">{simpleControls.portfolio}</div>
-        <div className="border-b border-[#DFE6EE] p-3">{simpleControls.advisoryFee}</div>
-        <div className="border-b border-[#DFE6EE] p-3 md:border-b-0 md:border-r">{simpleControls.years}</div>
-        <div className="p-3">{simpleControls.growth}</div>
+        <div className="border-b border-[#DFE6EE] px-3 py-1 md:border-r">{simpleControls.portfolio}</div>
+        <div className="border-b border-[#DFE6EE] px-3 py-1">{simpleControls.advisoryFee}</div>
+        <div className="border-b border-[#DFE6EE] px-3 py-1 md:border-b-0 md:border-r">{simpleControls.years}</div>
+        <div className="px-3 py-1">{simpleControls.growth}</div>
       </div>
     </section>
   );

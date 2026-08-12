@@ -26,9 +26,13 @@ const WWWH_LABEL_CLASS =
   "text-3xl font-black tracking-tight text-[#007A2F] sm:text-4xl";
 
 /* The Yes/No verdicts over the two "How" columns. Colour is set per column at
-   the call site; everything else is shared so the pair always match. */
+   the call site; everything else is shared so the pair always match.
+
+   Indented to sit over the list's own text rather than centred on the column:
+   dead-centre put them adrift above left-aligned items, especially in the wide
+   desktop column (David, 2026-08-12). */
 const WWWH_VERDICT_CLASS =
-  "mb-2 text-center text-xl font-black tracking-tight sm:text-2xl";
+  "mb-2 pl-8 text-left text-xl font-black tracking-tight sm:pl-10 sm:text-2xl";
 
 export const WWWH_HOW = {
   key: "how",
@@ -55,7 +59,20 @@ export function WhatWhyWhoHow() {
       <div className="mx-auto max-w-5xl space-y-9 px-5 py-12 sm:space-y-10 sm:px-8 sm:py-14">
         {WWWH_ANSWERS.map((answer) => (
           <div key={answer.key}>
-            <h2 className={WWWH_LABEL_CLASS}>{answer.label}</h2>
+            {/* Only WHAT is completed into a question. It is the first of the
+                four, so it sets up the pattern the other three inherit without
+                having to repeat it (David, 2026-08-12). The completion is set
+                in the body's size, weight and ink so the question word still
+                carries the heading. */}
+            <h2 className={WWWH_LABEL_CLASS}>
+              {answer.label}
+              {answer.key === "what" ? (
+                <span className="text-lg font-normal tracking-normal text-[#10233A] sm:text-xl">
+                  {" "}
+                  is Smarter Way Wealth
+                </span>
+              ) : null}
+            </h2>
             {answer.key === "who" ? (
               /* WHO is the only answer about a person, so it gets the face that
                  goes with the name — photo left, answer beside it (David,
@@ -145,7 +162,11 @@ export function WhatWhyWhoHow() {
               </ul>
             </div>
           </div>
-          <p className="mt-6 text-lg font-bold leading-7 text-[#10233A] sm:text-xl">
+          {/* Same weight as the Yes/No verdicts above it, so the closing line
+              lands as a third verdict rather than as body copy. Its ink stays
+              the body's — David asked for the weight, not the colour
+              (2026-08-12). */}
+          <p className="mt-6 text-lg font-black leading-7 text-[#10233A] sm:text-xl">
             {WWWH_HOW.closing}
           </p>
         </div>

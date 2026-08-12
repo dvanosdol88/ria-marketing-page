@@ -12,7 +12,7 @@ import {
   buildQueryFromState,
 } from "@/lib/calculatorState";
 import { formatCompactCurrency, formatCurrency, formatCurrencyFloored } from "@/lib/format";
-import { CalculatorNotes, NoteMarker } from "@/components/CalculatorNotes";
+import { NoteMarker } from "@/components/CalculatorNotes";
 import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
 import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
@@ -470,7 +470,7 @@ function SavingsLeadHero({
         <p className="mx-auto max-w-3xl text-2xl font-semibold leading-[1.14] tracking-normal text-[#10233A] sm:text-[clamp(1.55rem,3.8vw,2.35rem)]">
           {statement}
         </p>
-        <p className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.35rem,3.15vw,2rem)] font-medium leading-[1.14] tracking-normal text-[#10233A] sm:mt-7">
+        <p className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.15rem,3.15vw,2rem)] font-medium leading-[1.14] tracking-normal text-[#10233A] sm:mt-7">
           <span className="whitespace-nowrap">David Van Osdol,</span>{" "}
           <span className="whitespace-nowrap">CFA, CFP®</span>
         </p>
@@ -493,7 +493,7 @@ function SavingsLeadHero({
         <div className="mx-auto mt-7 h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
       </div>
     );
-  const introBlock = <div className="mt-[42px] sm:mt-20">{introContent}</div>;
+  const introBlock = <div className="mt-[47px] sm:mt-20">{introContent}</div>;
 
   /* Mobile spacing here is a fixed budget, not a free choice. Two rules
      compete: the page must breathe, and "The Fee Calculator" must still be on
@@ -520,9 +520,9 @@ function SavingsLeadHero({
   return (
     <section
       data-url-eval-section="opening-promise"
-      className="w-full bg-[#EEF0F5] pb-[68px] text-center text-[#10233A] sm:pb-[110px]"
+      className="w-full bg-[#EEF0F5] pb-[73px] text-center text-[#10233A] sm:pb-[110px]"
     >
-      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[59px] pb-11 sm:pt-20 sm:pb-20">
+      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[64px] pb-11 sm:pt-20 sm:pb-20">
         {/* 48.3% rather than 47% on mobile. The mark is centred as a share of
             the hero's height, so growing the hero above it only moves it down
             by that fraction — 5px of new padding would have opened the gap
@@ -550,7 +550,10 @@ function SavingsLeadHero({
               <NoteMarker />
             </span>
           </h1>
-          <p className="mt-3 text-base font-medium leading-snug text-[#10233A]/80 sm:text-lg">
+          {/* One step down, and the attribution line below the promise with it:
+              the two of them paid for the 5px David added to each of the three
+              gaps on 2026-08-12. */}
+          <p className="mt-3 text-sm font-medium leading-snug text-[#10233A]/80 sm:text-base">
             Potential savings over {years} years.
           </p>
         </div>
@@ -1147,10 +1150,23 @@ export function CostAnalysisCalculator({
 
   const calculatorHandoff = isSavingsCalculatorUpgrade ? (
     <div className="section-shell relative z-10 pt-2 sm:pt-3">
+      {/* Animates on mount, NOT on scroll into view.
+          This block holds "The Fee Calculator" — the one thing besides the hero
+          and the promise that David wants on the first screen. It used to fade
+          in via whileInView with a -40px margin, meaning it had to be 40px
+          inside the viewport before it would paint. On a phone it never is: at
+          an iPhone 14's real height the heading sat at rest with opacity 0, so
+          a visitor arriving from the mailed QR code saw blank space where the
+          heading should be and only got it after scrolling. It measured as
+          comfortably above the fold the whole time, which is why three rounds
+          of spacing work never caught it — the geometry test was measuring
+          every profile at 852px tall, where the trigger always fires.
+          (Found 2026-08-12; tests/home-first-screen.mjs now measures each
+          profile at its own height and asserts the heading is actually
+          painted.) */}
       <motion.div
         initial={reducedMotion ? false : { opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-40px" }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: "easeOut" }}
         className="mx-auto flex w-full max-w-[1380px] flex-col gap-3 text-left sm:flex-row sm:items-end sm:justify-between"
       >
@@ -1167,9 +1183,10 @@ export function CostAnalysisCalculator({
             <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#5E6F80]">
               Potential savings
             </span>
+            {/* No marker here. The results block carries exactly one, on its
+                Amount column (David, 2026-08-12). */}
             <span className="text-xl font-bold leading-none text-[#007A2F] tabular-nums sm:text-2xl">
               {formatCurrencyFloored(projection.savings)}
-              <NoteMarker />
             </span>
           </div>
         </div>
@@ -1366,17 +1383,17 @@ export function CostAnalysisCalculator({
         <SignupCta location="marketing_page_bottom" />
       )}
 
-      {/* Last thing on the page, directly above the site-wide compliance
-          footer, so every disclosure reads as one block instead of being
-          scattered through the calculator (David, 2026-08-11).
+      {/* The disclaimer used to render here, as the last block before the site
+          footer. It now lives INSIDE that footer, beneath the grey logo, where
+          it replaced a weaker paraphrase of itself (David, 2026-08-12) — see
+          SiteFooter. Rendering it in both places is what made the page say the
+          same thing twice, so it must not come back here.
 
-          Rendered unconditionally. The note markers live in the calculator
-          layout, which is selected by variant, while this block used to be
-          gated on experience mode — so /?mode=calculator-first and
-          /?variant=final-home rendered superscripts whose anchors led nowhere,
-          on pages that were making the claims the notes govern. There is no
-          reason to withhold four static paragraphs from any variant. */}
-      <CalculatorNotes />
+          It reaches every variant by virtue of being in the site footer, which
+          matters: the markers live in the calculator layout and are selected by
+          variant, and when this block was gated on experience mode instead,
+          /?mode=calculator-first and /?variant=final-home rendered markers whose
+          anchors led nowhere. */}
     </>
   );
 }
