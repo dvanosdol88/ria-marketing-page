@@ -76,15 +76,35 @@ const MAX_LINE_BOX_OVERRUN_PX = 12;
    identical, so a font swap or a recompile mid-measurement cannot hand back a
    number that was true for one frame. */
 async function settle(read, label) {
-  let previous = await read();
+  let previous = null;
+  let lastError = null;
+
   for (let attempt = 0; attempt < 12; attempt += 1) {
-    await new Promise((resolve) => setTimeout(resolve, 300));
-    const current = await read();
-    if (JSON.stringify(current) === JSON.stringify(previous)) return current;
+    let current = null;
+    try {
+      current = await read();
+      lastError = null;
+    } catch (error) {
+      /* A read can land on a frame where the dev server has torn the DOM down
+         mid-recompile and the heading genuinely is not there. That is the
+         transient this helper exists to ride out, so keep waiting rather than
+         failing the run — but remember the error, in case it turns out the
+         element is missing permanently rather than momentarily. */
+      lastError = error;
+      previous = null;
+    }
+
+    if (current && previous && JSON.stringify(current) === JSON.stringify(previous)) {
+      return current;
+    }
     previous = current;
+    await new Promise((resolve) => setTimeout(resolve, 300));
   }
+
   throw new Error(
-    `${label}: page geometry never settled — it is still reflowing after 12 reads, so no measurement here is trustworthy`,
+    lastError
+      ? `${label}: never got a readable first screen — last error: ${lastError.message}`
+      : `${label}: page geometry never settled — still reflowing after 12 reads, so no measurement here is trustworthy`,
   );
 }
 
