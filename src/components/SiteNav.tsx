@@ -251,8 +251,12 @@ export function SiteNav() {
               lived here briefly; with the promise block now sitting directly
               above the calculator, the calculator is the very next thing a
               visitor sees, so the button was redundant (David, 2026-08-10). */}
+          {/* 70px, not 77px: the expanded bar is a 58px logo plus its breathing
+              room, and the 7px trimmed here is spent on the three gaps below the
+              header so "The Fee Calculator" still clears the fold on a phone.
+              The logo itself is untouched (David, 2026-08-12). */}
           <div className={`flex items-center justify-between xl:hidden transition-all duration-500 ease-out transform-gpu ${
-            collapsed ? "h-[58px]" : "h-[77px]"
+            collapsed ? "h-[58px]" : "h-[70px]"
           }`}>
             <button
               ref={menuButtonRef}

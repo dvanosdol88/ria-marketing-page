@@ -493,21 +493,28 @@ function SavingsLeadHero({
         <div className="mx-auto mt-7 h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
       </div>
     );
-  const introBlock = <div className="mt-9 sm:mt-20">{introContent}</div>;
+  const introBlock = <div className="mt-[42px] sm:mt-20">{introContent}</div>;
 
   /* Mobile spacing here is a fixed budget, not a free choice. Two rules
      compete: the page must breathe, and "The Fee Calculator" must still be on
-     the first screen (David, 2026-08-10 and 2026-08-11). The pre-simplification
+     the first screen (David, 2026-08-10, -11 and -12). The pre-simplification
      padding totals about 158px more than fits above the fold on a phone, so
      these values give back 56px of it — the most the heading can absorb — split
      in proportion to the original three gaps. Desktop was never tightened and
-     keeps its original values through the sm: steps. */
+     keeps its original values through the sm: steps.
+
+     2026-08-12: each of the three gaps gained 6px, paid for by 7px trimmed from
+     the mobile header. 8px was tried first and rendered fine at 393px wide, but
+     tests/home-first-screen.mjs measures 390px too — where the layout runs a
+     few pixels taller and the heading's letterforms crossed the fold on an
+     iPhone 14. Trust that test, not a screenshot at one width. Do not add
+     mobile padding above the calculator without re-running it. */
   return (
     <section
       data-url-eval-section="opening-promise"
-      className="w-full bg-[#EEF0F5] pb-[62px] text-center text-[#10233A] sm:pb-[110px]"
+      className="w-full bg-[#EEF0F5] pb-[68px] text-center text-[#10233A] sm:pb-[110px]"
     >
-      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-12 pb-11 sm:pt-20 sm:pb-20">
+      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[54px] pb-11 sm:pt-20 sm:pb-20">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute left-1/2 top-[47%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
