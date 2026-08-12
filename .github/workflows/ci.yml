@@ -10,6 +10,9 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    # Roughly 1 minute in practice. The cap is here so a stall fails fast
+    # instead of running to GitHub's 6-hour default.
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -29,8 +32,66 @@ jobs:
       - name: Build
         run: npm run build
 
+  # Until 2026-08-12 this workflow ran lint and build only, and the eight test
+  # suites gated nothing. On that day a newly written geometry test immediately
+  # caught a heading falling below the fold on an iPhone 14 — a change that had
+  # already passed lint and build and looked correct in a screenshot. David
+  # approved wiring them in.
+  #
+  # A separate job, not extra steps on `verify`, so the two run in parallel and
+  # the wait stays close to the slower of the pair rather than their sum.
+  test:
+    runs-on: ubuntu-latest
+    # Roughly 2 minutes in practice. These suites drive a real browser against a
+    # real dev server, so a stuck page or a settle loop that never converges
+    # would otherwise hold the PR for GitHub's 6-hour default.
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      # Every suite but the first starts its own Next dev server on a free port
+      # and drives Chromium. They share one .next directory, so they run one at
+      # a time. Named separately so a failure says which check failed without
+      # opening the log.
+      - name: Source locks (WWWH, nav, spacing constants)
+        run: npm run test:home-wwwh
+
+      - name: First-screen geometry
+        run: npm run test:home-first-screen
+
+      - name: Disclosures are server-rendered
+        run: npm run test:home-disclosures-ssr
+
+      - name: Refresh lands in the right place
+        run: npm run test:refresh-position
+
+      - name: Calculator input typing
+        run: npm run test:calculator-input-typing
+
+      - name: Advisor calculator batch
+        run: npm run test:advisor-calculator-batch
+
+      - name: Credentials layout
+        run: npm run test:credentials-layout
+
+      - name: Mailer QR attribution
+        run: npm run test:eddm-attribution
+
   notify-failure:
-    needs: [verify]
+    needs: [verify, test]
     if: failure()
     runs-on: ubuntu-latest
     steps:
