@@ -1431,12 +1431,17 @@ function SimpleMathResults({
       data-difference-summary
     >
       <div className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-4">
-        {/* #52657A rather than #7A8899: at 11px bold the lighter grey scored
-            3.61:1 on white, under the 4.5:1 bar for normal text. */}
-        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#52657A]">
+        {/* A header rule mirroring the subtraction rule below, so the figures
+            read as a bounded column of arithmetic rather than three floating
+            numbers (David, 2026-08-12). */}
+        <div className="col-span-2 h-px w-full bg-[#10233A]" />
+
+        {/* #52657A rather than #7A8899: at this size and weight the lighter grey
+            scored 3.61:1 on white, under the 4.5:1 bar for normal text. */}
+        <p className="mt-1.5 text-[12px] font-bold uppercase tracking-[0.14em] text-[#52657A]">
           Portfolio value
         </p>
-        <p className="text-right text-[11px] font-bold uppercase tracking-[0.14em] text-[#52657A]">
+        <p className="mt-1.5 text-right text-[12px] font-bold uppercase tracking-[0.14em] text-[#52657A]">
           Amount
         </p>
 
@@ -1456,13 +1461,15 @@ function SimpleMathResults({
           {amount(finalValueWithFees)}
         </p>
 
-        {/* The one line in the block: an arithmetic rule under the second
-            operand, so the figure beneath it reads as the result of a
-            subtraction rather than a third free-standing number. */}
-        <div aria-hidden="true" />
-        <div className="mt-2 h-px w-full bg-[#10233A]" />
+        {/* The arithmetic rule, spanning both columns so it closes the block the
+            same way the header rule opens it. It sits under the second operand,
+            so the figure beneath reads as the result of a subtraction rather
+            than a third free-standing number. */}
+        <div className="col-span-2 mt-2 h-px w-full bg-[#10233A]" />
 
-        <p className="mt-3 text-[15px] font-bold leading-snug text-[#10233A] sm:text-base">
+        {/* Set larger than the two operand labels above it: this is the line the
+            visitor is meant to leave with (David, 2026-08-12). */}
+        <p className="mt-3 text-[18px] font-bold leading-snug text-[#10233A] sm:text-xl">
           Difference
           <NoteMarker />
         </p>

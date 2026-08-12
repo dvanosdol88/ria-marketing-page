@@ -25,6 +25,11 @@ export const WWWH_ANSWERS = [
 const WWWH_LABEL_CLASS =
   "text-3xl font-black tracking-tight text-[#007A2F] sm:text-4xl";
 
+/* The Yes/No verdicts over the two "How" columns. Colour is set per column at
+   the call site; everything else is shared so the pair always match. */
+const WWWH_VERDICT_CLASS =
+  "mb-2 text-center text-xl font-black tracking-tight sm:text-2xl";
+
 export const WWWH_HOW = {
   key: "how",
   label: "How",
@@ -91,43 +96,54 @@ export function WhatWhyWhoHow() {
                 layers of corporate overhead, the exact opposite of the claim.
                 role="list" is required alongside: Tailwind's reset removes the
                 list marker, and Safari/VoiceOver drops list semantics with it. */}
-            <ul role="list" aria-label="What Smarter Way Wealth uses" className="space-y-1.5">
-              {WWWH_HOW.uses.map((item) => (
-                <li
-                  key={item}
-                  className="flex gap-3 text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8"
-                >
-                  <Check
-                    aria-hidden="true"
-                    className="mt-1.5 h-5 w-5 shrink-0 text-[#108843] sm:mt-2"
-                    strokeWidth={3}
-                  />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <ul
-              role="list"
-              aria-label="Costs Smarter Way Wealth does not carry"
-              className="space-y-1.5"
-            >
-              {WWWH_HOW.skips.map((item) => (
-                <li
-                  key={item}
-                  className="flex gap-3 text-lg leading-7 text-[#10233A]/70 sm:text-xl sm:leading-8"
-                >
-                  {/* A red dollar sign, not a gray X — these are the costs a
-                      traditional firm passes on, so the icon says "this is
-                      what you'd be paying for" rather than merely "absent". */}
-                  <DollarSign
-                    aria-hidden="true"
-                    className="mt-1.5 h-5 w-5 shrink-0 text-[#C62828] sm:mt-2"
-                    strokeWidth={3}
-                  />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+            {/* "Yes" and "No" centred over each column give the two lists a
+                visible verdict, so the green/red distinction no longer rests
+                entirely on icon colour — which is invisible to a colour-blind
+                reader and to anyone skimming (David, 2026-08-12). Camel Case,
+                matching What/Why/Who/How. */}
+            <div>
+              <p className={`${WWWH_VERDICT_CLASS} text-[#108843]`}>Yes</p>
+              <ul role="list" aria-label="What Smarter Way Wealth uses" className="space-y-1.5">
+                {WWWH_HOW.uses.map((item) => (
+                  <li
+                    key={item}
+                    className="flex gap-3 text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8"
+                  >
+                    <Check
+                      aria-hidden="true"
+                      className="mt-1.5 h-5 w-5 shrink-0 text-[#108843] sm:mt-2"
+                      strokeWidth={3}
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p className={`${WWWH_VERDICT_CLASS} text-[#C62828]`}>No</p>
+              <ul
+                role="list"
+                aria-label="Costs Smarter Way Wealth does not carry"
+                className="space-y-1.5"
+              >
+                {WWWH_HOW.skips.map((item) => (
+                  <li
+                    key={item}
+                    className="flex gap-3 text-lg leading-7 text-[#10233A]/70 sm:text-xl sm:leading-8"
+                  >
+                    {/* A red dollar sign, not a gray X — these are the costs a
+                        traditional firm passes on, so the icon says "this is
+                        what you'd be paying for" rather than merely "absent". */}
+                    <DollarSign
+                      aria-hidden="true"
+                      className="mt-1.5 h-5 w-5 shrink-0 text-[#C62828] sm:mt-2"
+                      strokeWidth={3}
+                    />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
           <p className="mt-6 text-lg font-bold leading-7 text-[#10233A] sm:text-xl">
             {WWWH_HOW.closing}

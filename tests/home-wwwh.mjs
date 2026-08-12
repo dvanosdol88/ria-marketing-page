@@ -289,6 +289,63 @@ test("HOW's two lists say which is which to assistive tech", () => {
   );
 });
 
+// The two HOW columns were distinguished only by icon colour — green check vs
+// red dollar sign. That is invisible to a red/green colour-blind reader (about
+// 1 in 12 men, and this page sells to households), and it is the page's core
+// differentiator. The word carries the verdict now; the colour reinforces it.
+test("HOW's two columns are headed by a green Yes and a red No", () => {
+  const flatAnswers = flatten(answersSource);
+  assert.match(flatAnswers, /WWWH_VERDICT_CLASS\}\s*text-\[#108843\]`}>Yes</);
+  assert.match(flatAnswers, /WWWH_VERDICT_CLASS\}\s*text-\[#C62828\]`}>No</);
+  // Centred over its own column, and Camel Case to match What/Why/Who/How
+  // rather than shouting in caps (David, 2026-08-07 and -12).
+  assert.match(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*text-center/);
+  assert.doesNotMatch(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*uppercase/);
+  // The verdicts must carry the same greens and reds as the icons beneath them.
+  assert.match(flatAnswers, /<Check[^>]*text-\[#108843\]/);
+  assert.match(flatAnswers, /<DollarSign[^>]*text-\[#C62828\]/);
+});
+
+// The results block is arithmetic, not a list. Both rules span the full grid so
+// the figures sit inside a bounded column: one opens the block above the
+// labels, one closes it under the second operand (David, 2026-08-12).
+test("the results grid is ruled top and bottom, full width", () => {
+  const flatCalc = flatten(calculatorExperienceSource);
+  const rules = flatCalc.match(/<div className="col-span-2[^"]*h-px w-full bg-\[#10233A\]" \/>/g);
+  assert.equal(rules?.length, 2, "a header rule and a subtraction rule, both spanning both columns");
+  // The old half-width rule left an empty spacer cell beside it.
+  assert.doesNotMatch(
+    flatCalc,
+    /<div aria-hidden="true" \/>\s*<div className="mt-2 h-px/,
+    "the subtraction rule spans the grid now — no spacer cell",
+  );
+});
+
+// "Difference" is the line the visitor is meant to leave with, so it outranks
+// the two operand labels above it instead of matching them (David, 2026-08-12).
+test("the Difference label is set larger than the operand labels", () => {
+  const flatCalc = flatten(calculatorExperienceSource);
+  assert.match(flatCalc, /text-\[18px\] font-bold leading-snug text-\[#10233A\] sm:text-xl">\s*Difference/);
+  assert.match(flatCalc, /Paying \{formatCurrency\(annualFlatFee \/ 12\)\} a month/);
+  const operandSizes = flatCalc.match(/mt-\d\s+text-\[15px\] leading-snug/g);
+  assert.ok(
+    (operandSizes?.length ?? 0) >= 2,
+    "the two operand rows stay at 15px so Difference reads as the conclusion",
+  );
+});
+
+// The first screen is a fixed budget: header + three gaps must still leave "The
+// Fee Calculator" above the fold on a phone. Measured on the live page at
+// 393px wide, the heading's box ends at 660px against roughly 667px of usable
+// Safari height on an iPhone 15/16. These four numbers are the whole budget —
+// changing any one of them without re-measuring pushes the heading under.
+test("the mobile first-screen spacing budget holds", () => {
+  assert.match(navSource, /collapsed \? "h-\[58px\]" : "h-\[70px\]"/, "expanded mobile header is 70px");
+  assert.match(calculatorSource, /px-4 pt-14 pb-11 sm:pt-20 sm:pb-20/, "gap above the headline");
+  assert.match(calculatorSource, /<div className="mt-11 sm:mt-20">\{introContent\}<\/div>/, "gap above the promise");
+  assert.match(calculatorSource, /pb-\[70px\] text-center/, "gap below the promise");
+});
+
 test("advanced calculator motion preference is gated until after hydration", () => {
   assert.match(
     advancedCalculatorCtaSource,
