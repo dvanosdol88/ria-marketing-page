@@ -1150,22 +1150,31 @@ export function CostAnalysisCalculator({
 
   const calculatorHandoff = isSavingsCalculatorUpgrade ? (
     <div className="section-shell relative z-10 pt-2 sm:pt-3">
-      {/* Animates on mount, NOT on scroll into view.
-          This block holds "The Fee Calculator" — the one thing besides the hero
-          and the promise that David wants on the first screen. It used to fade
-          in via whileInView with a -40px margin, meaning it had to be 40px
-          inside the viewport before it would paint. On a phone it never is: at
-          an iPhone 14's real height the heading sat at rest with opacity 0, so
-          a visitor arriving from the mailed QR code saw blank space where the
-          heading should be and only got it after scrolling. It measured as
-          comfortably above the fold the whole time, which is why three rounds
-          of spacing work never caught it — the geometry test was measuring
-          every profile at 852px tall, where the trigger always fires.
+      {/* NEVER hide this block behind an entrance animation. `initial={false}`
+          means it renders in its final state — visible — in the server HTML and
+          stays visible whether or not JavaScript ever arrives.
+
+          It holds "The Fee Calculator", the one thing besides the hero and the
+          promise that David wants on the first screen. It used to fade in via
+          whileInView with a -40px margin, meaning it had to be 40px inside the
+          viewport before it would paint. On a phone it never is: at an iPhone
+          14's real height the heading sat at rest with opacity 0, so a visitor
+          arriving from the mailed QR code saw blank space where the heading
+          should be, and only got it after scrolling. It measured as comfortably
+          above the fold the whole time, which is why three rounds of spacing
+          work never caught it — the geometry test was sizing every profile's
+          viewport at 852px tall, where the trigger always fires.
+
+          Animating on mount instead was the first fix and was still wrong: an
+          `initial` of opacity 0 puts opacity 0 in the server HTML, so a slow
+          hydration or no JavaScript leaves the heading invisible for exactly
+          the visitors least able to wait for it.
+
           (Found 2026-08-12; tests/home-first-screen.mjs now measures each
           profile at its own height and asserts the heading is actually
           painted.) */}
       <motion.div
-        initial={reducedMotion ? false : { opacity: 0, y: 18 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: "easeOut" }}
         className="mx-auto flex w-full max-w-[1380px] flex-col gap-3 text-left sm:flex-row sm:items-end sm:justify-between"

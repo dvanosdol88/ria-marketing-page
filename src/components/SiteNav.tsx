@@ -251,7 +251,7 @@ export function SiteNav() {
               lived here briefly; with the promise block now sitting directly
               above the calculator, the calculator is the very next thing a
               visitor sees, so the button was redundant (David, 2026-08-10). */}
-          {/* 64px, not 77px: the expanded bar is the logo plus its breathing
+          {/* 62px, not 77px: the expanded bar is the logo plus its breathing
               room, and every pixel trimmed here is spent on the three gaps below
               the header so "The Fee Calculator" still clears the fold on a
               phone. 70px on 2026-08-12 with the logo untouched; then David

@@ -30,9 +30,13 @@ const WWWH_LABEL_CLASS =
 
    Indented to sit over the list's own text rather than centred on the column:
    dead-centre put them adrift above left-aligned items, especially in the wide
-   desktop column (David, 2026-08-12). */
+   desktop column (David, 2026-08-12).
+
+   pl-8 at both widths, and it is not a round number chosen by eye: the list
+   items indent their text by the icon (h-5 = 20px) plus gap-3 (12px) = 32px.
+   If either of those changes, this has to change with them. */
 const WWWH_VERDICT_CLASS =
-  "mb-2 pl-8 text-left text-xl font-black tracking-tight sm:pl-10 sm:text-2xl";
+  "mb-2 pl-8 text-left text-xl font-black tracking-tight sm:text-2xl";
 
 export const WWWH_HOW = {
   key: "how",

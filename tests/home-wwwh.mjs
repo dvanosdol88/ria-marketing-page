@@ -173,6 +173,15 @@ test("lean root composition retains the approved homepage order", () => {
 // argument is about being straight with people on fees.
 test("the calculator disclaimer renders once, in the footer", () => {
   assert.match(footerSource, /<CalculatorNotes \/>/, "the footer carries the disclaimer");
+  // The footer is site-wide but this text speaks of "the assumptions entered
+  // here". On /faq or /privacy that refers to assumptions the page gives no way
+  // to enter, so it is gated to the one route that renders the calculator.
+  assert.match(
+    footerSource,
+    /const isCalculatorPage = pathname === "\/";/,
+    "the disclaimer is gated to the calculator route",
+  );
+  assert.match(footerSource, /\{isCalculatorPage \? <CalculatorNotes \/> : null\}/);
   assert.doesNotMatch(
     calculatorSource,
     /<CalculatorNotes \/>/,
@@ -399,6 +408,40 @@ test("the mobile first-screen spacing constants are the measured ones", () => {
   assert.match(calculatorSource, /data-hero-mark/, "the decorative ? keeps its stable test hook");
   assert.match(calculatorSource, /<div className="mt-\[47px\] sm:mt-20">\{introContent\}<\/div>/, "gap above the promise");
   assert.match(calculatorSource, /pb-\[73px\] text-center/, "gap below the promise");
+});
+
+// The single worst defect found on 2026-08-12, and it was invisible to every
+// check that existed. The block holding "The Fee Calculator" faded in via
+// whileInView with a -40px margin, so it had to be 40px inside the viewport
+// before it would paint. On a phone it never is — the heading sat at rest at
+// opacity 0 while measuring as comfortably above the fold, and a visitor
+// arriving from the mailed QR code saw blank space until they scrolled.
+//
+// Animating on mount was the first fix and still wrong: an `initial` of
+// opacity 0 puts opacity 0 in the server HTML, so slow hydration or no
+// JavaScript leaves the heading invisible for the visitors least able to wait.
+//
+// `initial={false}` renders it in its final state. The geometry test proves it
+// is painted; this proves nobody reintroduces the mechanism.
+test("the calculator heading is never hidden behind an entrance animation", () => {
+  // Comments stripped: the comment there names the mechanism on purpose, so the
+  // next person knows what was removed and why it must not come back.
+  const source = stripComments(calculatorSource);
+  const handoffStart = source.indexOf("const calculatorHandoff =");
+  assert.ok(handoffStart >= 0, "the calculator handoff block must exist");
+  const handoff = source.slice(handoffStart, handoffStart + 700);
+
+  assert.match(handoff, /initial=\{false\}/, "the block must render in its final, visible state");
+  assert.doesNotMatch(
+    handoff,
+    /whileInView|viewport=\{/,
+    "this heading must not wait to be scrolled into view before it paints",
+  );
+  assert.doesNotMatch(
+    handoff,
+    /initial=\{[^}]*opacity:\s*0/,
+    "an initial opacity of 0 ships opacity 0 in the server HTML",
+  );
 });
 
 test("advanced calculator motion preference is gated until after hydration", () => {
