@@ -251,12 +251,14 @@ export function SiteNav() {
               lived here briefly; with the promise block now sitting directly
               above the calculator, the calculator is the very next thing a
               visitor sees, so the button was redundant (David, 2026-08-10). */}
-          {/* 70px, not 77px: the expanded bar is a 58px logo plus its breathing
-              room, and the 7px trimmed here is spent on the three gaps below the
-              header so "The Fee Calculator" still clears the fold on a phone.
-              The logo itself is untouched (David, 2026-08-12). */}
+          {/* 62px, not 77px: the expanded bar is the logo plus its breathing
+              room, and every pixel trimmed here is spent on the three gaps below
+              the header so "The Fee Calculator" still clears the fold on a
+              phone. 70px on 2026-08-12 with the logo untouched; then David
+              chose to shrink the logo 10% (58px → 52px) to buy the last round
+              of spacing rather than lose the heading off the first screen. */}
           <div className={`flex items-center justify-between xl:hidden transition-all duration-500 ease-out transform-gpu ${
-            collapsed ? "h-[58px]" : "h-[70px]"
+            collapsed ? "h-[58px]" : "h-[62px]"
           }`}>
             <button
               ref={menuButtonRef}
@@ -275,8 +277,8 @@ export function SiteNav() {
               aria-label="Smarter Way Wealth home"
             >
               <Logo
-                heightClass={collapsed ? "h-[34px]" : "h-[58px]"}
-                fontSizeBase={collapsed ? "1.1rem" : "1.4rem"}
+                heightClass={collapsed ? "h-[34px]" : "h-[52px]"}
+                fontSizeBase={collapsed ? "1.1rem" : "1.26rem"}
                 isCentered={true}
               />
             </Link>

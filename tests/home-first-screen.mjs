@@ -136,8 +136,16 @@ try {
   browser = await chromium.launch({ headless: true });
 
   for (const profile of PROFILES) {
+    /* The profile's REAL usable height, not a tall stand-in.
+       This file measured every profile at 852px until 2026-08-12, which quietly
+       defeated its own purpose: the calculator heading fades in only once it is
+       40px inside the viewport, and at 852px it always is. The test therefore
+       measured the animated-in state on every profile and reported the heading
+       comfortably above the fold while, at an iPhone 14's actual height, it sat
+       at rest with opacity 0 — invisible on the first screen. Measure the
+       viewport the visitor has. */
     const page = await browser.newPage({
-      viewport: { width: profile.width, height: 852 },
+      viewport: { width: profile.width, height: profile.usable },
     });
     await page.goto(url, { waitUntil: "networkidle" });
     /* Every number below comes from the heading's font metrics. Until the
@@ -190,12 +198,22 @@ try {
       const markCentre = markBox.top + window.scrollY + markBox.height / 2;
       const markInkTop = markCentre + (markInkTopUnscaled - markLineHeight / 2) * markScale;
 
+      /* Position is not visibility. The heading sits inside a block that fades
+         in from opacity 0 once it is far enough into the viewport, so it can be
+         measured comfortably above the fold and still be invisible to the
+         visitor at rest. Multiply the chain. */
+      let painted = 1;
+      for (let node = heading; node && node !== document.body; node = node.parentElement) {
+        painted *= parseFloat(getComputedStyle(node).opacity);
+      }
+
       return {
         headerHeight: Math.round(header.getBoundingClientRect().height),
         headingTop: Math.round(headingBox.top + window.scrollY),
         headingBottom: Math.round(headingBox.bottom + window.scrollY),
         inkBottom: Math.round(baseline + metrics.actualBoundingBoxDescent),
         markGap: Math.round(markInkTop - (header.getBoundingClientRect().bottom + window.scrollY)),
+        headingOpacity: Number(painted.toFixed(3)),
       };
     });
 
@@ -207,8 +225,8 @@ try {
 
     assert.equal(
       geometry.headerHeight,
-      70,
-      `${profile.name}: expanded mobile header should be 70px, the 7px trimmed from it pays for the gaps below`,
+      62,
+      `${profile.name}: expanded mobile header should be 62px — a 52px logo plus its breathing room. Every pixel trimmed here is already spent on the gaps below it.`,
     );
 
     assert.ok(
@@ -223,6 +241,16 @@ try {
     );
 
     if (profile.inkMustClear) {
+      /* Checked before position, because a heading that is above the fold and
+         painted at opacity 0 is not on the first screen in any sense the
+         visitor cares about. */
+      assert.ok(
+        geometry.headingOpacity > 0.99,
+        `${profile.name}: "The Fee Calculator" is on the first screen but painted at opacity ${geometry.headingOpacity} —` +
+          ` its entrance animation has not fired, so a visitor landing here sees blank space where the heading should be.` +
+          ` It only appears once they scroll.`,
+      );
+
       assert.ok(
         shortfall <= 0,
         `${profile.name}: the letters of "The Fee Calculator" end at ${geometry.inkBottom}px against ${profile.usable}px` +
@@ -302,7 +330,7 @@ try {
   console.log(
     `First-screen geometry passed on ${PROFILES.length} iPhone profiles (${cleared} must clear the fold, ` +
       `${PROFILES.length - cleared} accepted below it):\n  ${measurements.join("\n  ")}\n` +
-      "Header 70px; results bounded by two equal full-width rules; Yes/No centred over their columns.",
+      "Header 62px; results bounded by two equal full-width rules; Yes/No over their own columns.",
   );
 } finally {
   await browser?.close();

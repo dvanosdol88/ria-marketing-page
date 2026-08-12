@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ComplianceFooter from "@/components/ComplianceFooter";
+import { CalculatorNotes } from "@/components/CalculatorNotes";
 
 const IAPD_URL = "https://adviserinfo.sec.gov/firm/summary/342140";
 
@@ -30,6 +31,11 @@ export function SiteFooter() {
     return null;
   }
 
+  /* Query strings do not reach pathname, so the calculator's variant URLs
+     (/?mode=calculator-first, /?variant=final-home) are covered by this too —
+     which matters, because they render the markers that link to the notes. */
+  const isCalculatorPage = pathname === "/";
+
   return (
     <>
       <footer className="border-t border-neutral-200 bg-[#EEF0F5]">
@@ -46,10 +52,21 @@ export function SiteFooter() {
                   className="h-6 w-auto opacity-75 grayscale"
                 />
               </Link>
-              <p className="text-sm leading-relaxed text-neutral-500">
-                Calculator projections are hypothetical and for illustrative purposes only.
-                They are not a guarantee of future returns.
-              </p>
+              {/* The calculator disclaimer itself, not a paraphrase of it. This
+                  slot used to hold "Calculator projections are hypothetical and
+                  for illustrative purposes only. They are not a guarantee of
+                  future returns." — a weaker restatement of the real disclaimer
+                  that sat further up the page, so the site said the same thing
+                  twice and neither one was clearly the operative version
+                  (David, 2026-08-12).
+
+                  Only where the calculator is. The footer is site-wide, and
+                  this text speaks of "the assumptions entered here" — which on
+                  /faq or /privacy would refer to assumptions the page gives the
+                  reader no way to enter. The home page is the only route that
+                  renders the calculator, and therefore the only one carrying
+                  the markers that link down to this. */}
+              {isCalculatorPage ? <CalculatorNotes /> : null}
             </div>
 
             {/* Right: Legal links */}
