@@ -1,0 +1,19 @@
+# Calculator canon register (CALCULATOR-CANON.md) — these files must stay
+# byte-identical with the sister repo (smarterwaywealth.com,
+# D:\smarter-way-wealth). A CRLF/LF mismatch changes the SHA-256 hash even
+# when the text content is identical, which is exactly what happened
+# mid-task on this machine (core.autocrlf=true rewrote a stash/pop round
+# trip to CRLF). Force LF on checkout AND commit for these four paths so
+# git.autocrlf can never reintroduce that drift again — the sister repo
+# needs the equivalent rule (its checkout is CRLF-autocrlf too).
+#
+# Note: the review that requested this rule named CalculationDetailsPanel.tsx
+# as the fourth path; that file isn't part of this repo's register (see
+# CALCULATOR-CANON.md's "Narrowed scope" — this repo has its own inline
+# "View calculation details" experience instead) and doesn't exist here.
+# shareSummary.ts is this repo's actual fourth register entry, substituted
+# below.
+src/components/Quiz.tsx text eol=lf
+src/components/calculator/ShareMyResults.tsx text eol=lf
+src/components/calculator/SocialShareRow.tsx text eol=lf
+src/lib/shareSummary.ts text eol=lf

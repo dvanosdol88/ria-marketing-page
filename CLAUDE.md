@@ -6,6 +6,25 @@
 
 For shared rules, read `D:\AGENTS.md` first, then `D:\CLAUDE.md`, then this file. This repo is in the RIA surfaces lane: RIA Chief is the surface agent, Claude Code via desktop app is the primary outside coding agent, and Hermes RIA Chief is the resident reviewer / adversarial auditor.
 
+## Calculator canon (share/poll stack)
+
+`src/components/Quiz.tsx`, `src/components/calculator/ShareMyResults.tsx`,
+`src/components/calculator/SocialShareRow.tsx`, and `src/lib/shareSummary.ts`
+are shared verbatim with the sister repo (smarterwaywealth.com,
+`D:\smarter-way-wealth`) — see `CALCULATOR-CANON.md` at the repo root for
+the register, and that repo's `docs/plans/2026-08-12-calculator-canon.md`
+for the full design. Edit these files in both repos in the same working
+session; `npm run test:calculator-canon-manifest` (wired into CI) fails
+otherwise. `src/lib/siteCalculatorConfig.ts` holds this site's per-site
+values (domain, share-card route, brand line, analytics tags) for that
+stack — its shape must match the sister repo's copy, but its VALUES are
+this site's own. `CostAnalysisCalculator.tsx` and
+`HomeCalculatorExperience.tsx` share the same calculator *design* with the
+sister repo but are NOT hash-locked (see CALCULATOR-CANON.md's "Mirrored
+files" section) — this repo's versions carry EDDM/QR mailer attribution,
+the Advanced Calculator handoff link, and other marketing-only composition
+the sister repo's leaner calculator-only files don't have.
+
 ## Design: mobile-first
 
 Effective 2026-05-22, this site is **mobile-first**, not mobile-aware. Design and build for the smallest viewport first, then scale up to tablet and desktop via responsive utilities — not the other way around. This applies to every new component, section, copy block, and visual treatment.

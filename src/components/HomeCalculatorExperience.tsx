@@ -20,7 +20,7 @@ import {
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { formatCurrency, formatCurrencyFloored } from "@/lib/format";
-import { MIN_HORIZON_YEARS } from "@/lib/calculatorState";
+import { MIN_HORIZON_YEARS, buildQueryFromState } from "@/lib/calculatorState";
 import type {
   HomeCalculatorTheme,
   HomeCalculatorLayout,
@@ -30,6 +30,10 @@ import { Odometer, RollingCurrencyOdometer } from "@/components/Odometer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { SMARTER_WAY_WEALTH_ORIGIN } from "@/config/campaignLinks";
 import { NoteMarker } from "@/components/CalculatorNotes";
+import { buildShareSummary } from "@/lib/shareSummary";
+import { siteCalculatorConfig } from "@/lib/siteCalculatorConfig";
+import { ShareMyResults } from "@/components/calculator/ShareMyResults";
+import { SocialShareRow } from "@/components/calculator/SocialShareRow";
 import { Quiz } from "./Quiz";
 
 type Scenario = "smarter" | "traditional";
@@ -1524,8 +1528,11 @@ function MathExpandButton({
 
 function SeeOurMathBento({
   advancedCalculatorHref,
+  annualFeePercent,
   annualFlatFee,
   annualGrowthPercent,
+  finalValueWithFees,
+  finalValueWithoutFees,
   mutualFundExpensePercent,
   onAssumptionChange,
   portfolioValue,
@@ -1537,8 +1544,11 @@ function SeeOurMathBento({
   years,
 }: {
   advancedCalculatorHref: string;
+  annualFeePercent: number;
   annualFlatFee: number;
   annualGrowthPercent: number;
+  finalValueWithFees: number;
+  finalValueWithoutFees: number;
   mutualFundExpensePercent: number;
   onAssumptionChange: (patch: CalculatorAssumptionPatch) => void;
   portfolioValue: number;
@@ -1551,6 +1561,8 @@ function SeeOurMathBento({
 }) {
   const [expanded, setExpanded] = useState(false);
   const [pollOpen, setPollOpen] = useState(false);
+  const [sharePanelOpen, setSharePanelOpen] = useState(false);
+  const [origin, setOrigin] = useState("");
   const dialogBackdropRef = useRef<HTMLDivElement | null>(null);
   const expandedRef = useRef(expanded);
   const finalGap = Math.max(savings, 0);
@@ -1560,6 +1572,53 @@ function SeeOurMathBento({
   const compoundingShare = finalGap > 0 ? (compoundingGap / finalGap) * 100 : 0;
   const feeBarWidth = `${Math.min(Math.max(directFeeShare, 0), 100)}%`;
   const compoundingBarWidth = `${Math.min(Math.max(compoundingShare, 0), 100)}%`;
+
+  // Share stack wiring (canon program Phase B1, docs/plans/2026-08-12-
+  // calculator-canon.md in the sister repo). This site's calculator has no
+  // market-mode/tiered-fee state (that's a smarterwaywealth.com-only
+  // "advanced add-on"), so returnLabel/feeLabel are always the single-rate,
+  // steady-growth phrasing — the same shape buildShareSummary's regexes
+  // already recognize on the canon side.
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
+
+  const monthlyFlatFee = annualFlatFee / 12;
+  const returnLabel = `${annualGrowthPercent}% steady annual return`;
+  const feeLabel = `${annualFeePercent.toFixed(2)}% asset-based fee`;
+
+  const summaryInput = {
+    savings,
+    flatEndingValue: finalValueWithoutFees,
+    traditionalEndingValue: finalValueWithFees,
+    portfolioValue,
+    years,
+    monthlyFlatFee,
+    returnLabel,
+    feeLabel,
+    returnMode: "steady" as const,
+    growthPercent: annualGrowthPercent,
+  };
+
+  const shareQuery = buildQueryFromState({
+    annualFlatFee,
+    portfolioValue,
+    years,
+    annualGrowthPercent,
+    annualFeePercent,
+    mutualFundExpensePercent,
+  });
+  const shareCardPath = siteCalculatorConfig.buildShareCardPath(shareQuery);
+  const canonicalUrl = origin ? siteCalculatorConfig.buildCanonicalUrl(origin, shareQuery) : "";
+  const shareSummary = canonicalUrl
+    ? buildShareSummary({
+        ...summaryInput,
+        firmDisplayName: siteCalculatorConfig.firmDisplayName,
+        url: canonicalUrl,
+        pollUrl: `${canonicalUrl.replace(/#calculator$/, "")}#poll`,
+      })
+    : null;
+  const openSharePanel = () => setSharePanelOpen(true);
   const handleFeeLoadChange = (value: number) => {
     onAssumptionChange({
       annualFeePercent: Math.max(0, Number((value - mutualFundExpensePercent).toFixed(2))),
@@ -1590,9 +1649,10 @@ function SeeOurMathBento({
   return (
     <>
       <motion.section
+        id="poll"
         whileHover={{ y: -3, scale: 1.004 }}
         transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
-        className="mb-4 min-w-0 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
+        className="mb-4 min-w-0 scroll-mt-24 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
       >
         <button
           type="button"
@@ -1638,11 +1698,64 @@ function SeeOurMathBento({
               className="overflow-hidden"
             >
               <div className="mt-5 border-t border-[#E4ECF2] pt-5">
-                <Quiz savings={savings} variant="bare" />
+                <Quiz
+                  savings={savings}
+                  variant="bare"
+                  onShare={openSharePanel}
+                  shareButtonLabel="Share my results"
+                />
               </div>
             </motion.div>
           ) : null}
         </AnimatePresence>
+      </motion.section>
+
+      {/* Share & results — canon share stack (docs/plans/2026-08-12-
+          calculator-canon.md, Phase B1). Same component set as the sister
+          site (smarterwaywealth.com): ShareMyResults + SocialShareRow, wired
+          to this component's own live state via siteCalculatorConfig.
+          Placed below the poll and above "View calculation details", per
+          the plan. */}
+      <motion.section
+        whileHover={{ y: -3, scale: 1.004 }}
+        transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
+        aria-labelledby="home-share-results-heading"
+        className="mb-4 min-w-0 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
+      >
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">Share &amp; results</p>
+            <h3 id="home-share-results-heading" className="mt-1 text-lg font-semibold text-[#10233A]">
+              Share this comparison
+            </h3>
+          </div>
+          <p className="text-xs font-semibold text-neutral-500">Nothing entered here is sent to PostHog.</p>
+        </div>
+
+        <div className="mt-4 flex flex-wrap gap-3">
+          <ShareMyResults
+            summary={shareSummary}
+            summaryInput={summaryInput}
+            shareCardPath={shareCardPath}
+            canonicalUrl={canonicalUrl}
+            open={sharePanelOpen}
+            onOpenChange={setSharePanelOpen}
+            tone="light"
+          />
+        </div>
+
+        <div className="mt-5 border-t border-[#E4ECF2] pt-4">
+          <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#52657A]">Share this comparison:</p>
+          <div className="mt-3">
+            <SocialShareRow
+              url={canonicalUrl || null}
+              socialText={shareSummary?.socialText ?? ""}
+              redditTitle={shareSummary?.redditTitle ?? ""}
+              location={siteCalculatorConfig.analytics.detailedCalculatorResultsSocialLocation}
+              variant="light"
+            />
+          </div>
+        </div>
       </motion.section>
 
       <motion.section
@@ -1720,8 +1833,21 @@ function SeeOurMathBento({
               <div>
                 <div className="flex items-baseline justify-between gap-3">
                   <span className="text-sm font-bold text-[#10233A]">Actual fees</span>
-                  <span className="text-sm font-extrabold tabular-nums text-[#D92D20]">
-                    {formatCurrency(directFeeGap)} · {directFeeShare.toFixed(0)}%
+                  {/* Canon addition (docs/plans/2026-08-12-calculator-canon.md,
+                      Phase B1): the gray derivation annotation, guarded so it
+                      only renders when the clamp above didn't actually change
+                      the value — i.e. when directFeeGap really does equal the
+                      simple subtraction, so the parenthetical is never shown
+                      next to a number it doesn't explain. */}
+                  <span className="flex flex-col items-end min-[480px]:flex-row min-[480px]:items-baseline min-[480px]:gap-2">
+                    {directFeeGap === totalAssetBasedFees - totalFlatFees ? (
+                      <span className="text-xs font-semibold tabular-nums text-[#667587]">
+                        ({formatCurrency(totalAssetBasedFees)} − {formatCurrency(totalFlatFees)})
+                      </span>
+                    ) : null}
+                    <span className="text-sm font-extrabold tabular-nums text-[#D92D20]">
+                      {formatCurrency(directFeeGap)} · {directFeeShare.toFixed(0)}%
+                    </span>
                   </span>
                 </div>
                 <div className="mt-1 h-2 overflow-hidden rounded-full bg-[#EDF2F7]">
@@ -2363,8 +2489,11 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         <div className="mx-4 mt-4 pb-5 sm:mx-7">
           <SeeOurMathBento
             advancedCalculatorHref={advancedCalculatorHref}
+            annualFeePercent={annualFeePercent}
             annualFlatFee={annualFlatFee}
             annualGrowthPercent={annualGrowthPercent}
+            finalValueWithFees={finalValueWithFees}
+            finalValueWithoutFees={finalValueWithoutFees}
             mutualFundExpensePercent={mutualFundExpensePercent}
             onAssumptionChange={onAssumptionChange}
             portfolioValue={portfolioValue}
