@@ -6,6 +6,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Check, Copy, Download, Link2, Mail, Share2 } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
 import { siteCalculatorConfig } from "@/lib/siteCalculatorConfig";
 import type { ShareSummary, ShareSummaryInput } from "@/lib/shareSummary";
@@ -24,40 +25,54 @@ const lightFocusRing =
 /**
  * Presentation of the expanded panel only (the "Share my results" toggle
  * button reads fine on either background unchanged). "dark" is the
- * original, byte-identical glass-on-navy treatment every existing caller
- * gets by default. "light" is additive — a white-card family matching
- * CalculationDetailsPanel, for callers that mount this panel outside a dark
- * section (docs/plans/2026-08-12-calculator-canon.md, Task A2.2).
+ * original glass-on-navy treatment every existing caller gets by default.
+ * "light" is a white-card family matching CalculationDetailsPanel, for
+ * callers that mount this panel outside a dark section
+ * (docs/plans/2026-08-12-calculator-canon.md, Task A2.2). The share-card
+ * PREVIEW inside the panel is tone-independent — it depicts the actual
+ * card artifact, which is always light.
  */
 type ShareMyResultsTone = "dark" | "light";
+
+const nativeTileBase =
+  "flex min-h-11 w-[76px] flex-col items-center gap-1.5 rounded-2xl border px-1.5 pb-2 pt-2.5 text-center transition-all duration-200 hover:-translate-y-0.5";
 
 const TONE_CLASSES: Record<
   ShareMyResultsTone,
   {
     panel: string;
+    microLabel: string;
     pollLabel: string;
     checkbox: string;
-    panelButton: string;
+    utilityButton: string;
+    nativeTile: string;
+    nativeTileLabel: string;
     disclaimer: string;
     socialVariant: "dark" | "light";
   }
 > = {
   dark: {
-    panel: "mt-3 rounded-lg bg-white/8 p-4",
+    panel: "mt-3 rounded-xl bg-white/8 p-4 sm:p-5",
+    microLabel: "text-[11px] font-extrabold uppercase tracking-[0.18em] text-white/60",
     pollLabel: "mt-4 flex min-h-11 items-center gap-2 text-sm font-semibold text-white/85",
     checkbox:
       "h-4 w-4 shrink-0 rounded border-white/40 bg-white/10 text-[#66F0AC] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#66F0AC]",
-    panelButton:
-      `flex min-h-11 items-center justify-center rounded-md border border-white/25 bg-white/5 px-3 text-center text-sm font-bold text-white hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-45 ${focusRing}`,
+    utilityButton:
+      `inline-flex min-h-10 items-center gap-1.5 rounded-lg border border-white/25 bg-white/5 px-3 text-[13px] font-bold text-white hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-45 ${focusRing}`,
+    nativeTile: `${nativeTileBase} border-white/15 bg-white/5 hover:bg-white/10 ${focusRing}`,
+    nativeTileLabel: "text-[11px] font-bold leading-none text-white/80",
     disclaimer: "mt-4 text-xs leading-5 text-white/70",
     socialVariant: "dark",
   },
   light: {
-    panel: "mt-3 rounded-lg border border-[#DDE7EF] bg-[#F7F9FB] p-4",
+    panel: "mt-3 rounded-xl border border-[#DDE7EF] bg-[#F7F9FB] p-4 sm:p-5",
+    microLabel: "text-[11px] font-extrabold uppercase tracking-[0.18em] text-[#52657A]",
     pollLabel: "mt-4 flex min-h-11 items-center gap-2 text-sm font-semibold text-[#10233A]",
     checkbox: `h-4 w-4 shrink-0 rounded border-[#AFC2D0] bg-white text-[#007A2F] ${lightFocusRing}`,
-    panelButton:
-      `flex min-h-11 items-center justify-center rounded-md border border-[#C9D8E4] bg-white px-3 text-center text-sm font-bold text-[#10233A] hover:bg-[#F4F7FA] disabled:cursor-not-allowed disabled:opacity-45 ${lightFocusRing}`,
+    utilityButton:
+      `inline-flex min-h-10 items-center gap-1.5 rounded-lg border border-[#C9D8E4] bg-white px-3 text-[13px] font-bold text-[#10233A] hover:bg-[#F4F7FA] disabled:cursor-not-allowed disabled:opacity-45 ${lightFocusRing}`,
+    nativeTile: `${nativeTileBase} border-[#E3EAF1] bg-white shadow-[0_2px_10px_rgba(17,33,52,0.05)] hover:border-[#C9D8E4] hover:shadow-[0_10px_24px_rgba(17,33,52,0.12)] ${lightFocusRing}`,
+    nativeTileLabel: "text-[11px] font-bold leading-none text-[#33465A]",
     disclaimer: "mt-4 text-xs leading-5 text-[#52657A]",
     socialVariant: "light",
   },
@@ -148,7 +163,9 @@ function drawChip(
  * Hand-rolled 1200x630 share card. Mirrors the brand mark in
  * src/app/opengraph-image.tsx. Task 4 ports this same layout to a
  * server-rendered ImageResponse for the /calculator/share-card route, so
- * keep this the single source of truth for the design.
+ * keep this the single source of truth for the design. The in-panel
+ * preview below (ShareCardPreview) is a responsive DOM replica of this
+ * exact layout — change them together.
  */
 function drawShareCard(ctx: CanvasRenderingContext2D, data: ShareCardData) {
   const PAD_X = 80;
@@ -274,6 +291,76 @@ function drawShareCard(ctx: CanvasRenderingContext2D, data: ShareCardData) {
   ctx.fillText(siteCalculatorConfig.brandAttributionLine, PAD_X, footerY);
 }
 
+/**
+ * Responsive DOM replica of drawShareCard's 1200x630 layout. The old
+ * approach — an <img> of the rendered canvas — shrank the whole 1200px
+ * design to the panel's width, which on a phone left every line but the
+ * savings figure illegible. Real text reflows instead of scaling, so the
+ * preview stays readable at any width while depicting the same artifact
+ * the download and the link's unfurl card carry. Change alongside
+ * drawShareCard.
+ */
+function ShareCardPreview({
+  data,
+}: {
+  data: ShareCardData;
+}) {
+  const isPositive = data.savings >= 0;
+  const accentText = isPositive ? "text-[#007A2F]" : "text-[#B42318]";
+
+  return (
+    <div className="mt-2 overflow-hidden rounded-xl border border-[#D8DEE8] bg-[#EEF0F5] p-4 shadow-sm sm:p-6">
+      <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
+        <div className="flex items-end gap-2">
+          <span className="flex items-end gap-[3px]" aria-hidden="true">
+            <span className="h-[13px] w-[7px] rounded-[2px] bg-[#7ADCA6]" />
+            <span className="h-[19px] w-[7px] rounded-[2px] bg-[#00A540]" />
+            <span className="h-[25px] w-[7px] rounded-[2px] bg-[#007A2F]" />
+          </span>
+          <span className="leading-none">
+            <span className="block text-[13px] font-bold tracking-[0.18em] text-[#10233A]">SMARTER</span>
+            <span className="mt-[3px] block text-[8px] font-bold tracking-[0.3em] text-[#007A2F]">WAY WEALTH</span>
+          </span>
+        </div>
+        <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#53606A]">
+          Fee comparison · Educational illustration
+        </p>
+      </div>
+
+      <p className={`mt-5 text-[11px] font-extrabold uppercase tracking-[0.1em] ${accentText}`}>
+        {isPositive ? "Potential difference" : "Difference in this scenario"}
+      </p>
+      <p className={`mt-1.5 text-4xl font-extrabold leading-none tabular-nums sm:text-5xl ${accentText}`}>
+        {formatCurrency(data.savings)}
+      </p>
+      <p className="mt-2.5 text-[13px] font-semibold leading-5 text-[#33465A]">
+        over {data.years} years · {formatCurrency(data.portfolioValue)} starting portfolio · {data.returnLabel}
+      </p>
+
+      <div className="mt-4 grid gap-2.5 min-[480px]:grid-cols-2">
+        <div className="rounded-lg border border-[#BFE7D1] bg-[#E8F7EE] px-3.5 py-3">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-[#0A6E35]">Flat-fee ending value</p>
+          <p className="mt-1 text-lg font-extrabold tabular-nums text-[#0A6E35]">{formatCurrency(data.flatEndingValue)}</p>
+        </div>
+        <div className="rounded-lg border border-[#C9D8E4] bg-[#EAF1F8] px-3.5 py-3">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-[#064B84]">Traditional ending value</p>
+          <p className="mt-1 text-lg font-extrabold tabular-nums text-[#062B43]">
+            {formatCurrency(data.traditionalEndingValue)}
+          </p>
+        </div>
+      </div>
+
+      <p className="mt-3 text-[11px] font-semibold text-[#53606A]">{data.feeLabel}</p>
+
+      <div className="mt-4 border-t border-[#C9D8E4] pt-3">
+        <p className="text-[11px] font-bold text-[#53606A]">{siteCalculatorConfig.displayDomain}</p>
+        <p className="mt-1 text-[10px] leading-4 text-[#53606A]">{data.disclosure}</p>
+        <p className="mt-1.5 text-[10px] font-bold text-[#53606A]">{siteCalculatorConfig.brandAttributionLine}</p>
+      </div>
+    </div>
+  );
+}
+
 export function ShareMyResults({
   summary,
   summaryInput,
@@ -290,8 +377,8 @@ export function ShareMyResults({
    * canonicalUrl resolves. */
   summary: ShareSummary | null;
   /** Raw inputs behind `summary`, still needed here for the canvas share
-   * card, which draws from the individual figures rather than the
-   * assembled text. */
+   * card and the DOM preview, which draw from the individual figures rather
+   * than the assembled text. */
   summaryInput: Omit<ShareSummaryInput, "url">;
   shareCardPath: string;
   /** origin + /calculator?<buildDetailedCalculatorQuery(state)> from the
@@ -322,6 +409,7 @@ export function ShareMyResults({
   const [copySummaryStatus, setCopySummaryStatus] = useState("Copy summary");
   const [includePoll, setIncludePoll] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const panelRef = useRef<HTMLDivElement | null>(null);
 
   // Determined post-mount so server and first client render agree (no
   // hydration mismatch) — navigator.share is undefined during SSR.
@@ -329,6 +417,8 @@ export function ShareMyResults({
     setCanNativeShare(typeof navigator !== "undefined" && typeof navigator.share === "function");
   }, []);
 
+  // The canvas exists solely to produce the downloadable PNG now — the
+  // visible preview is the DOM replica (ShareCardPreview) above it.
   useEffect(() => {
     if (!open || !summary) return;
     const canvas = document.createElement("canvas");
@@ -336,9 +426,8 @@ export function ShareMyResults({
     canvas.height = CARD_HEIGHT;
     const ctx = canvas.getContext("2d");
     if (!ctx) {
-      // No canvas support (or a test/SSR environment without one) — fall
-      // back to the server-rendered share-card route below instead of
-      // crashing or showing a blank preview.
+      // No canvas support (or a test/SSR environment without one) — the
+      // download button falls back to the server-rendered share-card route.
       canvasRef.current = null;
       setPreviewUrl(null);
       return;
@@ -356,6 +445,19 @@ export function ShareMyResults({
     canvasRef.current = canvas;
     setPreviewUrl(canvas.toDataURL("image/png"));
   }, [open, summary, summaryInput]);
+
+  // On a phone, the tapped toggle button often sits near the bottom of the
+  // viewport, so the panel expands entirely below the fold — the exact
+  // "I pressed Share and can barely see anything" failure. Once the expand
+  // animation is underway, nudge the panel into view; block:"nearest" makes
+  // this a no-op whenever it is already visible (desktop).
+  useEffect(() => {
+    if (!open) return;
+    const timeout = window.setTimeout(() => {
+      panelRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 160);
+    return () => window.clearTimeout(timeout);
+  }, [open]);
 
   // The poll toggle only has an effect when this scenario actually produced
   // a poll line (positive savings + a resolved pollUrl) — pollIncluded is
@@ -388,26 +490,35 @@ export function ShareMyResults({
   };
 
   const downloadImage = () => {
+    if (!summary) return;
     const canvas = canvasRef.current;
-    if (!canvas || !summary) return;
-    canvas.toBlob((blob) => {
-      if (!blob) return;
-      const url = URL.createObjectURL(blob);
-      const anchor = document.createElement("a");
-      anchor.href = url;
-      anchor.download = summary.imageFileName;
-      anchor.click();
-      URL.revokeObjectURL(url);
-    }, "image/png");
+    if (canvas) {
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = summary.imageFileName;
+        anchor.click();
+        URL.revokeObjectURL(url);
+      }, "image/png");
+      return;
+    }
+    // No canvas on this engine — hand the browser the server-rendered
+    // share-card route instead so the download still works.
+    if (!shareCardPath) return;
+    const anchor = document.createElement("a");
+    anchor.href = shareCardPath;
+    anchor.download = summary.imageFileName;
+    anchor.click();
   };
 
   const mailtoHref = summary
     ? `mailto:?subject=${encodeURIComponent(summary.emailSubject)}&body=${encodeURIComponent(shareBodyText)}`
     : "mailto:";
 
-  // Client-rendered canvas preview is the primary source; fall back to the
-  // (Task 4) server-rendered share-card route when canvas isn't available.
-  const previewSrc = previewUrl ?? shareCardPath;
+  const CopyLinkIcon = copyLinkStatus === "Copied" ? Check : Link2;
+  const CopySummaryIcon = copySummaryStatus === "Copied" ? Check : Copy;
 
   return (
     <>
@@ -419,8 +530,9 @@ export function ShareMyResults({
         data-posthog-cta="true"
         data-posthog-cta-label="Share my results"
         data-posthog-cta-location={siteCalculatorConfig.analytics.detailedCalculatorResultsLocation}
-        className={`min-h-11 rounded-md bg-[#66F0AC] px-4 text-sm font-bold text-[#062B43] ${focusRing}`}
+        className={`inline-flex min-h-11 items-center gap-2 rounded-md bg-[#66F0AC] px-4 text-sm font-bold text-[#062B43] ${focusRing}`}
       >
+        <Share2 className="h-4 w-4" aria-hidden="true" />
         Share my results
       </button>
 
@@ -434,14 +546,19 @@ export function ShareMyResults({
             transition={{ duration: 0.42, ease: [0.165, 0.84, 0.44, 1] }}
             className="w-full overflow-hidden"
           >
-            <div className={toneClasses.panel}>
-              {/* eslint-disable-next-line @next/next/no-img-element -- runtime canvas/data-URL preview is not eligible for next/image optimization */}
-              <img
-                src={previewSrc}
-                alt="Preview of your shareable results card"
-                className="w-full rounded-md"
-                width={CARD_WIDTH}
-                height={CARD_HEIGHT}
+            <div ref={panelRef} className={toneClasses.panel}>
+              <p className={toneClasses.microLabel}>Your share card</p>
+              <ShareCardPreview
+                data={{
+                  savings: summaryInput.savings,
+                  flatEndingValue: summaryInput.flatEndingValue,
+                  traditionalEndingValue: summaryInput.traditionalEndingValue,
+                  portfolioValue: summaryInput.portfolioValue,
+                  years: summaryInput.years,
+                  returnLabel: summaryInput.returnLabel,
+                  feeLabel: summaryInput.feeLabel,
+                  disclosure: summary?.disclosure ?? "",
+                }}
               />
 
               {summary?.pollLine ? (
@@ -456,71 +573,95 @@ export function ShareMyResults({
                 </label>
               ) : null}
 
-              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {canNativeShare ? (
-                  <button
-                    type="button"
-                    onClick={shareNative}
-                    data-posthog-cta="true"
-                    data-posthog-cta-label="Share native"
-                    data-posthog-cta-location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
-                    className={toneClasses.panelButton}
-                  >
-                    Share…
-                  </button>
-                ) : null}
-                <button
-                  type="button"
-                  onClick={() => copyText(canonicalUrl, setCopyLinkStatus, "Copy link")}
-                  disabled={!canonicalUrl}
-                  data-posthog-cta="true"
-                  data-posthog-cta-label="Copy share link"
-                  data-posthog-cta-location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
-                  className={toneClasses.panelButton}
-                >
-                  {copyLinkStatus}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => summary && copyText(shareBodyText, setCopySummaryStatus, "Copy summary")}
-                  disabled={!summary}
-                  data-posthog-cta="true"
-                  data-posthog-cta-label="Copy summary"
-                  data-posthog-cta-location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
-                  className={toneClasses.panelButton}
-                >
-                  {copySummaryStatus}
-                </button>
-                <a
-                  href={mailtoHref}
-                  data-posthog-cta="true"
-                  data-posthog-cta-label="Email results"
-                  data-posthog-cta-location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
-                  className={toneClasses.panelButton}
-                >
-                  Email results
-                </a>
-                <button
-                  type="button"
-                  onClick={downloadImage}
-                  disabled={!previewUrl}
-                  data-posthog-cta="true"
-                  data-posthog-cta-label="Download share image"
-                  data-posthog-cta-location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
-                  className={toneClasses.panelButton}
-                >
-                  Download image
-                </button>
+              <div className="mt-5">
+                <p className={toneClasses.microLabel}>Share it</p>
+                {/* Column below 480px so the three brand tiles keep one tidy
+                    row and the native tile drops underneath, instead of the
+                    flex split squeezing them into a 2/1/1 stagger. */}
+                <div className="mt-2.5 flex flex-col items-start gap-3 min-[480px]:flex-row min-[480px]:flex-wrap">
+                  <SocialShareRow
+                    url={canonicalUrl || null}
+                    socialText={summary?.socialText ?? ""}
+                    redditTitle={summary?.redditTitle ?? ""}
+                    location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
+                    variant={toneClasses.socialVariant}
+                  />
+                  {canNativeShare ? (
+                    <button
+                      type="button"
+                      onClick={shareNative}
+                      data-posthog-cta="true"
+                      data-posthog-cta-label="Share native"
+                      data-posthog-cta-location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
+                      className={toneClasses.nativeTile}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="flex h-9 w-9 items-center justify-center rounded-full bg-[#007A2F]"
+                      >
+                        <Share2 className="h-4 w-4 text-white" />
+                      </span>
+                      <span className={toneClasses.nativeTileLabel}>More</span>
+                    </button>
+                  ) : null}
+                </div>
               </div>
 
-              <div className="mt-4">
-                <SocialShareRow
-                  url={canonicalUrl || null}
-                  socialText={summary?.socialText ?? ""}
-                  redditTitle={summary?.redditTitle ?? ""}
-                  location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
-                  variant={toneClasses.socialVariant}
-                />
+              <div className="mt-5">
+                <p className={toneClasses.microLabel}>Copy or save</p>
+                <div className="mt-2.5 flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => copyText(canonicalUrl, setCopyLinkStatus, "Copy link")}
+                    disabled={!canonicalUrl}
+                    data-posthog-cta="true"
+                    data-posthog-cta-label="Copy share link"
+                    data-posthog-cta-location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
+                    className={toneClasses.utilityButton}
+                  >
+                    <CopyLinkIcon className="h-4 w-4" aria-hidden="true" />
+                    {copyLinkStatus}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => summary && copyText(shareBodyText, setCopySummaryStatus, "Copy summary")}
+                    disabled={!summary}
+                    data-posthog-cta="true"
+                    data-posthog-cta-label="Copy summary"
+                    data-posthog-cta-location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
+                    className={toneClasses.utilityButton}
+                  >
+                    <CopySummaryIcon className="h-4 w-4" aria-hidden="true" />
+                    {copySummaryStatus}
+                  </button>
+                  <a
+                    href={mailtoHref}
+                    data-posthog-cta="true"
+                    data-posthog-cta-label="Email results"
+                    data-posthog-cta-location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
+                    className={toneClasses.utilityButton}
+                    // One host site styles bare `a` elements outside any
+                    // cascade layer (underline + green), which outranks every
+                    // layered utility class — inline is the only
+                    // cross-site-safe override for a canon file.
+                    style={{ textDecoration: "none", color: tone === "light" ? "#10233A" : "#FFFFFF" }}
+                  >
+                    <Mail className="h-4 w-4" aria-hidden="true" />
+                    Email results
+                  </a>
+                  <button
+                    type="button"
+                    onClick={downloadImage}
+                    disabled={!summary || (!previewUrl && !shareCardPath)}
+                    data-posthog-cta="true"
+                    data-posthog-cta-label="Download share image"
+                    data-posthog-cta-location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
+                    className={toneClasses.utilityButton}
+                  >
+                    <Download className="h-4 w-4" aria-hidden="true" />
+                    Download image
+                  </button>
+                </div>
               </div>
 
               <p className={toneClasses.disclaimer}>
