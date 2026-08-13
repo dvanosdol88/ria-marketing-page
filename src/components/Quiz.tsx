@@ -1,8 +1,14 @@
 "use client";
 
+// CANON: shared verbatim with the sister repo (youarepayingtoomuch.com,
+// D:\ria-marketing-page). Edit both repos in the same session or CI fails.
+// See CALCULATOR-CANON.md.
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Check, Loader2, Share2 } from "lucide-react";
 import { formatCurrencyFloored } from "@/lib/format";
+import { capturePostHogEvent } from "@/lib/posthog";
+import { siteCalculatorConfig } from "@/lib/siteCalculatorConfig";
 
 interface QuizOption {
   id: string;
@@ -125,6 +131,18 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel, variant = "card" 
       const counts = await submitVoteToApi(optionId);
       setVoteCounts(counts);
       setSelectedOption(optionId);
+      // Fixed-option click only — never the savings amount or any
+      // assumption. Quiz renders on surfaces without PostHog wired up, so
+      // guard the capture util's absence rather than assume it is always
+      // callable.
+      try {
+        capturePostHogEvent?.(siteCalculatorConfig.analytics.pollVotedEvent, {
+          poll: siteCalculatorConfig.analytics.pollId,
+          option: optionId,
+        });
+      } catch {
+        // Best-effort analytics; a capture failure must never block voting UX.
+      }
     } catch (voteError) {
       console.error("Vote submission error:", voteError);
       setError("Could not submit vote. Please try again.");
@@ -142,13 +160,13 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel, variant = "card" 
     if (typeof window === "undefined" || typeof navigator === "undefined") return;
 
     const shareText = hasSavingsValue
-      ? `My Smarter Way Wealth calculator result: ${formattedSavings}\n${window.location.href}`
+      ? `My ${siteCalculatorConfig.firmDisplayName} calculator result: ${formattedSavings}\n${window.location.href}`
       : window.location.href;
 
     try {
       if (typeof navigator.share === "function") {
         await navigator.share({
-          title: "Smarter Way Wealth projection",
+          title: `${siteCalculatorConfig.firmDisplayName} projection`,
           text: shareText,
         });
       } else {

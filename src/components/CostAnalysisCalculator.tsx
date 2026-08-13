@@ -88,6 +88,10 @@ interface PillSliderProps {
 
 interface SimpleRangeControlProps {
   formatter: (value: number) => string;
+  /** Formats the min/max range hint beside the label. Defaults to
+   *  `formatter` — pass a compact formatter (e.g. formatCompactCurrency)
+   *  when the plain formatter would make the hint too wide for one line. */
+  boundsFormatter?: (value: number) => string;
   label: string;
   /** Show the superscript disclaimer marker beside the label. */
   showNote?: boolean;
@@ -130,6 +134,7 @@ function extractInsertedText(previous: string, next: string) {
 
 function SimpleRangeControl({
   formatter,
+  boundsFormatter = formatter,
   label,
   showNote,
   max,
@@ -201,11 +206,15 @@ function SimpleRangeControl({
   const canDecrease = value > min;
   const canIncrease = value < max;
 
-  /* Label and stepper share one row at every width, and the min\u2013max hint is
-     gone: the +/- buttons and clamping already refuse out-of-range values, so
-     the hint cost a line of height on a phone to restate what the control
-     enforces anyway. Together this took each row from 95px to roughly 52px
-     (David, 2026-08-10). */
+  /* Label and stepper share one row at every width. The separate min-max
+     hint LINE is gone (David, 2026-08-10) \u2014 that was its own row below the
+     label, costing a line of height on a phone to restate what the +/-
+     buttons and clamping already enforce. The hint text itself came back
+     inline, same line as the label (canon range-hint fold-in,
+     docs/plans/2026-08-12-calculator-canon.md in the sister repo, Phase
+     B1) \u2014 same placement smarterwaywealth.com's AssumptionStepper uses, so
+     it costs no extra row and keeps each control's footprint at the ~52px
+     David's fix landed. */
   return (
     <div className="flex items-center justify-between gap-2">
       <label
@@ -213,7 +222,10 @@ function SimpleRangeControl({
         className="min-w-0 flex-1 text-[13px] font-bold leading-tight text-[#213B56]"
       >
         {label}
-        {showNote ? <NoteMarker /> : null}
+        {showNote ? <NoteMarker /> : null}{" "}
+        <span className="whitespace-nowrap text-[11px] font-semibold text-[#7C8CA0]">
+          ({boundsFormatter(min)}&ndash;{boundsFormatter(max)})
+        </span>
       </label>
       <div className="flex shrink-0 items-stretch overflow-hidden rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30">
         <button
@@ -1041,6 +1053,7 @@ export function CostAnalysisCalculator({
         value={state.portfolioValue}
         onChange={(value) => updateCalculatorState({ portfolioValue: value })}
         formatter={(value) => formatCurrency(value)}
+        boundsFormatter={(value) => formatCompactCurrency(value)}
         min={250000}
         max={5000000}
         step={100000}

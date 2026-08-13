@@ -90,6 +90,9 @@ jobs:
       - name: Mailer QR attribution
         run: npm run test:eddm-attribution
 
+      - name: Calculator canon register
+        run: npm run test:calculator-canon-manifest
+
   notify-failure:
     needs: [verify, test]
     if: failure()

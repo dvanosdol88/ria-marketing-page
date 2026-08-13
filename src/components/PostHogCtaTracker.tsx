@@ -59,9 +59,17 @@ export function PostHogCtaTracker() {
       if (!anchor || !isTrackedCta(anchor)) return;
 
       const url = new URL(anchor.href, window.location.href);
+      // Canon privacy invariant (docs/plans/2026-08-12-calculator-canon.md
+      // in the sister repo, Phase B1): the share-stack's social anchors
+      // (SocialShareRow) embed the visitor's personalized calculator URL —
+      // portfolio value, years, fee assumptions — inside their own
+      // Facebook/X/Reddit share-intent query string. data-posthog-redact-query
+      // marks any anchor whose href must never reach analytics intact;
+      // origin+pathname still identifies which platform/page was clicked.
+      const isRedacted = anchor.dataset.posthogRedactQuery === "true";
       capturePostHogEvent("cta_clicked", {
         cta_label: anchor.dataset.posthogCtaLabel ?? anchor.textContent?.trim().replace(/\s+/g, " ").slice(0, 120) ?? "",
-        cta_href: anchor.href,
+        cta_href: isRedacted ? `${url.origin}${url.pathname}` : anchor.href,
         cta_host: url.hostname,
         cta_path: url.pathname,
         cta_location: anchor.dataset.posthogCtaLocation ?? "global_link",
