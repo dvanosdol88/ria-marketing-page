@@ -3,6 +3,15 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-13 — Calculator canon Phase B: shared share stack, unified live poll, drift register
+**Agent:** Claude (Fable 5, Claude Code desktop, cross-repo canon program) | **Surface:** homepage calculator section, analytics tracker, canon register | **Duration:** ~1 session
+- context: cross-repo calculator-canon program (plan of record: smarter-way-wealth `docs/plans/2026-08-12-calculator-canon.md`). This repo's PR #221 (merged e8ba2c5) installed the canon share stack below the homepage calculator (Share my results panel + Facebook/X/Reddit intents wired to live calculator state, round-trip verified against this repo's own OG card), hand-ported the canon additions into this repo's own files (gray fee-derivation annotation with strict-equality guard, range hints), and landed `CALCULATOR-CANON.md` (4 hash-locked canon files, syncVersion 2) + the manifest tripwire and mailto-redaction lock in CI. Poll caption removed — counts were always real here; the sister site now shares this pool via a server-side proxy (its PR #103).
+- review pipeline (recorded in the sister repo's session artifacts): task review found the mailto analytics leak this repo's tracker still had (the sister repo had fixed it a day earlier) — `isMailto` redaction ported + behavioral lock test; `.gitattributes eol=lf` on canon paths after renormalization exposed a wrong register hash (corrected; committed-blob verification is now the standard).
+- EDDM/QR attribution, variant testing, and the SWW handoff were explicitly protected (register narrowed rather than overwriting this repo's homepage composition; `test:eddm-attribution` green throughout).
+- evidence: CI 10/10 suites; production verified post-merge — share row live with redacted analytics anchors, poll pool serving real counts (39 votes at verification), sister-site proxy returning identical counts.
+- deployed: merged e8ba2c5 -> production youarepayingtoomuch.com verified 2026-08-13.
+- note for Codex/local sessions: fast-forward this repo's local `main` to activate the cross-repo register tripwire (layer 2 reads `CALCULATOR-CANON.md` from the working tree).
+
 ### 2026-08-13 — Solid-green Smarter Way Wealth handoff after the primary CTA
 **Agent:** Codex | **Surface:** marketing | **Status:** not deployed at time of entry
 - Replaced the light whole-card firm promotion with one unified solid brand-green
