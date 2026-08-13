@@ -1,6 +1,9 @@
 import Image from "next/image";
 import { Check, DollarSign } from "lucide-react";
 
+export const WWWH_WHAT_INTRO =
+  "A registered investment advisor that offers...";
+
 export const WWWH_ANSWERS = [
   {
     key: "what",
@@ -96,9 +99,18 @@ export function WhatWhyWhoHow() {
                 </p>
               </div>
             ) : (
-              <p className="mt-1.5 max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">
-                {answer.body}
-              </p>
+              <>
+                {answer.key === "what" ? (
+                  <p className="mt-1.5 max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">
+                    {WWWH_WHAT_INTRO}
+                  </p>
+                ) : null}
+                <p
+                  className={`${answer.key === "what" ? "mt-1" : "mt-1.5"} max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8`}
+                >
+                  {answer.body}
+                </p>
+              </>
             )}
           </div>
         ))}
