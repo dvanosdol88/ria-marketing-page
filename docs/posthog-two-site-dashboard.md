@@ -64,6 +64,10 @@ The live dashboard was created on 2026-06-04 with the following saved insights. 
    - Event: `cta_clicked`
    - Filter: `cta_host` contains `smarterwaywealth.com`
    - Breakdown: `cta_location`
+   - The prominent post-calculator firm card uses
+     `cta_location=home_firm_visit_card` and
+     `cta_label=Visit Smarter Way Wealth`, so it can be compared directly with
+     navigation and other firm-site handoffs.
    - Question answered: which page/CTA is sending visitors to the firm site?
 
 4. `Firm-site intent`

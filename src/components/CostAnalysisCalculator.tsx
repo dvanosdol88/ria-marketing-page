@@ -20,6 +20,7 @@ import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
 import { HomeTopBanner } from "@/components/HomeTopBanner";
 import { SignupCta } from "@/components/SignupCta";
+import { SmarterWayWealthVisitCard } from "@/components/SmarterWayWealthVisitCard";
 /* PremiumPromisePreview (the Save / Upgrade / Improve video panel) is
    deliberately not imported here. It sat between the promise block and the
    calculator, which kept the calculator heading off the first mobile screen.
@@ -1366,11 +1367,14 @@ export function CostAnalysisCalculator({
 
       </section>
 
-      {/* The lean root flow is calculator, WWWH, one CTA, then notes. Legacy
-          proof and repeated conversion sections remain reusable off-root. */}
+      {/* The lean root flow is calculator, WWWH, one primary conversion CTA,
+          one broad firm handoff, then notes. Legacy proof and repeated
+          conversion sections remain reusable off-root. */}
       {isSavingsCalculatorUpgrade && <WhatWhyWhoHow />}
 
       {isSavingsCalculatorUpgrade && <SignupCta location="home_post_calculator" />}
+
+      {isSavingsCalculatorUpgrade && <SmarterWayWealthVisitCard />}
 
       {usesOpeningMarketingHero && (
         <SignupCta location="marketing_post_calculator" />

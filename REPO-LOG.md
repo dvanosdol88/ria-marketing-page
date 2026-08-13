@@ -3,6 +3,20 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-13 — Stronger Smarter Way Wealth homepage handoff
+**Agent:** Codex | **Surface:** marketing | **Status:** not deployed at time of entry
+- Added David's “A registered investment advisor that offers...” lead beneath
+  the “What is Smarter Way Wealth” heading while preserving the approved
+  What / Why / Who / How answers and order.
+- Added one large, whole-card Smarter Way Wealth link after the existing client
+  conversion card. It uses the established wordmark and names the advanced
+  calculator, process, David, and FAQ paths without changing the current
+  `/become-a-client` or 15-minute conversation actions.
+- Reused `cta_clicked` with the new static
+  `cta_location=home_firm_visit_card`; no new event or personal-information
+  capture was introduced. Focused code, mobile/desktop, PR, and live evidence
+  are recorded on the implementation PR.
+
 ### 2026-08-12 (latest) — Eight refinements, and the heading that was never painted
 **Agent:** Claude (Opus 5) | **Surface:** marketing | **PR:** #217 (`193115b`) | **Deployed and verified on the apex**
 - context: David opened the site in the browser pane to work on it together and gave eight numbered items, with instructions to ask before starting if anything was ambiguous. Two were: the spacing collided with the fold budget, and items 1 and 8 both touched the reference marks. He answered both, and proposed a better fix for the spacing than any of the options offered — shrink the logo 10% and the two smallest text lines, rather than lose the heading or clip it.

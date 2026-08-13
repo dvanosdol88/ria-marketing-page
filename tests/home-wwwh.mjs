@@ -10,6 +10,7 @@ const [
   calculatorSource,
   calculatorExperienceSource,
   answersSource,
+  firmVisitCardSource,
   navConfigSource,
   navSource,
   stickyNavConfigSource,
@@ -20,6 +21,7 @@ const [
   readSource("../src/components/CostAnalysisCalculator.tsx"),
   readSource("../src/components/HomeCalculatorExperience.tsx"),
   readSource("../src/components/WhatWhyWhoHow.tsx"),
+  readSource("../src/components/SmarterWayWealthVisitCard.tsx"),
   readSource("../src/config/siteNavConfig.ts"),
   readSource("../src/components/SiteNav.tsx"),
   readSource("../src/config/stickyNavConfig.ts"),
@@ -126,6 +128,9 @@ test("lean root composition retains the approved homepage order", () => {
   const homeSignupIndex = calculatorSource.indexOf(
     '<SignupCta location="home_post_calculator" />',
   );
+  const firmVisitCardIndex = calculatorSource.indexOf(
+    "<SmarterWayWealthVisitCard />",
+  );
   for (const [marker, index] of [
     ["calculation-details label", detailLabelIndex],
     ["Savings lead hero", savingsHeroIndex],
@@ -133,7 +138,8 @@ test("lean root composition retains the approved homepage order", () => {
     ["calculator experience", calculatorIndex],
     ["calculator section end", calculatorSectionEndIndex],
     ["WWWH component", answersIndex],
-    ["homepage CTA", homeSignupIndex],
+    ["homepage primary CTA", homeSignupIndex],
+    ["homepage firm visit card", firmVisitCardIndex],
   ]) {
     assert.ok(index >= 0, `${marker} must exist before placement is compared`);
   }
@@ -147,7 +153,11 @@ test("lean root composition retains the approved homepage order", () => {
     "the Fee Calculator handoff must precede the calculator experience",
   );
   assert.ok(calculatorSectionEndIndex < answersIndex, "WWWH must follow the calculator");
-  assert.ok(answersIndex < homeSignupIndex, "the single homepage CTA must follow WWWH");
+  assert.ok(answersIndex < homeSignupIndex, "the primary homepage CTA must follow WWWH");
+  assert.ok(
+    homeSignupIndex < firmVisitCardIndex,
+    "the firm visit card must follow the existing primary CTA",
+  );
   assert.equal(
     calculatorSource.match(/<WhatWhyWhoHow \/>/g)?.length,
     1,
@@ -158,6 +168,50 @@ test("lean root composition retains the approved homepage order", () => {
     1,
     "the root must retain exactly one homepage CTA",
   );
+  assert.equal(
+    calculatorSource.match(/<SmarterWayWealthVisitCard \/>/g)?.length,
+    1,
+    "the root must render exactly one broad firm visit card",
+  );
+});
+
+test("the firm visit card is one tracked whole-card link with the requested lines", () => {
+  const flatCard = flatten(firmVisitCardSource);
+  const lines = [
+    "use the advanced calculator and see how we do the math",
+    "find out how we work.",
+    "learn more about David.",
+    "see our frequently asked questions.",
+  ];
+
+  assert.match(flatCard, /href="https:\/\/smarterwaywealth\.com\/"/);
+  assert.match(flatCard, /src="\/brand\/logo\.svg"/);
+  assert.match(flatCard, /alt="Smarter Way Wealth"/);
+  assert.match(flatCard, /data-posthog-cta="true"/);
+  assert.match(flatCard, /data-posthog-cta-label="Visit Smarter Way Wealth"/);
+  assert.match(flatCard, /data-posthog-cta-location="home_firm_visit_card"/);
+  assert.match(flatCard, /target="_blank"/);
+  assert.match(flatCard, /rel="noreferrer"/);
+  assert.match(flatCard, /> Visit <\/span>/);
+  assert.equal(flatCard.match(/<a\b/g)?.length, 1, "the entire card is the one link");
+
+  let priorIndex = -1;
+  for (const line of lines) {
+    const index = firmVisitCardSource.indexOf(line);
+    assert.ok(index > priorIndex, `"${line}" must appear in the requested order`);
+    priorIndex = index;
+  }
+});
+
+test("WHAT opens with the requested registered-advisor line before its answer", () => {
+  const introIndex = answersSource.indexOf(
+    "A registered investment advisor that offers...",
+  );
+  const answerIndex = answersSource.indexOf(
+    "An investment and financial planning relationship with an experienced",
+  );
+  assert.ok(introIndex >= 0, "the registered-advisor introduction must be present");
+  assert.ok(introIndex < answerIndex, "the introduction must precede WHAT's existing answer");
 });
 
 // DECISION CHANGED, 2026-08-12 — read before "fixing" this back.
