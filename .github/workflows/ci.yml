@@ -93,6 +93,9 @@ jobs:
       - name: Calculator canon register
         run: npm run test:calculator-canon-manifest
 
+      - name: Mailto CTA redaction
+        run: npm run test:posthog-cta-tracker-mailto
+
   notify-failure:
     needs: [verify, test]
     if: failure()

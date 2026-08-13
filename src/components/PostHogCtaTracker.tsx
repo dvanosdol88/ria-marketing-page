@@ -66,12 +66,23 @@ export function PostHogCtaTracker() {
       // Facebook/X/Reddit share-intent query string. data-posthog-redact-query
       // marks any anchor whose href must never reach analytics intact;
       // origin+pathname still identifies which platform/page was clicked.
+      //
+      // mailto hrefs (ShareMyResults.tsx's "Email results" anchor) can carry
+      // visitor-entered assumptions (dollar figures, the full share URL)
+      // inside their subject/body query values. data-posthog-redact-query
+      // only strips a URL's top-level query, and a mailto's top-level params
+      // ARE "subject"/"body" — so those (and anything encoded inside them)
+      // would otherwise survive intact. Redact the whole href instead of
+      // trying to sanitize it piecemeal. Ported verbatim from the sister
+      // repo's PostHogCtaTracker.js (this file is site-specific, not
+      // canon-registered, but the fix itself must match exactly).
+      const isMailto = url.protocol === "mailto:";
       const isRedacted = anchor.dataset.posthogRedactQuery === "true";
       capturePostHogEvent("cta_clicked", {
         cta_label: anchor.dataset.posthogCtaLabel ?? anchor.textContent?.trim().replace(/\s+/g, " ").slice(0, 120) ?? "",
-        cta_href: isRedacted ? `${url.origin}${url.pathname}` : anchor.href,
-        cta_host: url.hostname,
-        cta_path: url.pathname,
+        cta_href: isMailto ? "mailto:" : isRedacted ? `${url.origin}${url.pathname}` : anchor.href,
+        cta_host: isMailto ? "" : url.hostname,
+        cta_path: isMailto ? "" : url.pathname,
         cta_location: anchor.dataset.posthogCtaLocation ?? "global_link",
         opens_new_tab: anchor.target === "_blank",
       });
