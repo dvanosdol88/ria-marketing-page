@@ -93,9 +93,24 @@ investigation.
 | Path | SHA-256 |
 |---|---|
 | src/components/Quiz.tsx | 9792DA77EE3DB89A5CE74A65E7506632D106B4D83FAF30BB1E6EB03EF353B227 |
-| src/components/calculator/ShareMyResults.tsx | 773CB711CEE842D65DF959145FBBA1D94AC2191B9BCA5436873DD4D6011FE1E3 |
+| src/components/calculator/ShareMyResults.tsx | 23767A947D889085DCDCBA6135530B434ABE969A28BA94460EE07600915DE5B6 |
 | src/components/calculator/SocialShareRow.tsx | EEACB43E402629A1C851B0BC2B7B64711B4175848B014F90F3542DB9CB1F4504 |
 | src/lib/shareSummary.ts | F2562529515C5C851CD57380899D2D4C19C60A54921EA7FD67128CE903295E42 |
+
+**Line endings (review fix round, 2026-08-13):** `.gitattributes` now forces
+`text eol=lf` on all four paths above, closing a real drift: this repo's
+`core.autocrlf=true` had round-tripped `ShareMyResults.tsx`'s committed
+CRLF content back onto disk unchanged during a `git stash`/rebase cycle,
+and forcing it to LF changed ITS hash (was `773CB711CEE842D65DF959145FBBA1D94AC2191B9BCA5436873DD4D6011FE1E3`,
+the value that matched the sister repo's own CRLF copy at the time — now
+`23767A947D889085DCDCBA6135530B434ABE969A28BA94460EE07600915DE5B6`). Quiz.tsx,
+SocialShareRow.tsx, and shareSummary.ts were already LF and are unchanged.
+**The sister repo (`D:\smarter-way-wealth`) must add the equivalent
+`.gitattributes` rule and renormalize its own `ShareMyResults.tsx` to LF**
+so both repos converge on the new hash above — until then, Layer 2's
+same-syncVersion comparison would flag `ShareMyResults.tsx` as drifted for
+that one file even though nothing meaningful changed, only its line
+endings became deterministic.
 
 ## Mirrored files (review discipline, not hash-locked)
 
