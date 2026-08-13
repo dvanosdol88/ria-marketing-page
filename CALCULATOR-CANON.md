@@ -20,7 +20,7 @@ plan's "Improvement flow"). This register is enforced by
 
 Counterpart repo: `D:\smarter-way-wealth` (smarterwaywealth.com)
 Last synced: 2026-08-13
-syncVersion: 2
+syncVersion: 3
 
 ## Narrowed scope (Phase B1 adjudication — read before editing this file)
 
@@ -43,6 +43,20 @@ investigation.
 
 ## Why these files, and not others
 
+- **v3 (2026-08-13, poll & share redesign, David's direct feedback)**: same
+  behavior, new presentation across Quiz.tsx, ShareMyResults.tsx, and
+  SocialShareRow.tsx. Poll: results (percentages/bars/total) now REVEAL
+  after voting — a clean ballot first, animated result bars after. Share
+  panel: the scaled 1200×630 canvas `<img>` preview (illegible on phones)
+  is replaced by a responsive DOM replica of the same card (the canvas
+  remains solely for "Download image", with the server share-card route as
+  fallback), the panel scrolls itself into view on open, and actions are
+  grouped ("Share it" / "Copy or save"). Social row: official Facebook/X/
+  Reddit brand logos (Simple Icons CC0 path data, inlined — no icon-lib
+  dependency) as app-style tiles. Both compositions dropped their
+  page-level duplicate SocialShareRow (it now lives only inside the
+  panel); PostHog CTA labels/locations are unchanged except that the
+  page-level `detailed_calculator_results_social` surface no longer exists.
 - **Quiz.tsx (v2)**: unified in Phase B1. Built by merging this repo's
   existing API-backed voting UI (real `/api/quiz/vote` counts, no seeded
   numbers, no "Sample responses" caption, silent degradation on fetch
@@ -92,9 +106,9 @@ investigation.
 
 | Path | SHA-256 |
 |---|---|
-| src/components/Quiz.tsx | 9792DA77EE3DB89A5CE74A65E7506632D106B4D83FAF30BB1E6EB03EF353B227 |
-| src/components/calculator/ShareMyResults.tsx | 23767A947D889085DCDCBA6135530B434ABE969A28BA94460EE07600915DE5B6 |
-| src/components/calculator/SocialShareRow.tsx | EEACB43E402629A1C851B0BC2B7B64711B4175848B014F90F3542DB9CB1F4504 |
+| src/components/Quiz.tsx | 769737A1B4482CB775F4829C883BC8D79EE09632CCAC61AAFF1ED1D1EC3551C4 |
+| src/components/calculator/ShareMyResults.tsx | 47F1856970B1F096270C12281FD4F012C2A20FB6E3A05DA6821BB6E631781596 |
+| src/components/calculator/SocialShareRow.tsx | DA2A83E48EA9F543203223E1E7448F5031F1E8979EDB565899EAC87B757FCAF8 |
 | src/lib/shareSummary.ts | F2562529515C5C851CD57380899D2D4C19C60A54921EA7FD67128CE903295E42 |
 
 **Line endings (review fix round, 2026-08-13):** `.gitattributes` now forces
@@ -123,7 +137,7 @@ above).
 | This repo | Sister repo equivalent | What must stay in sync |
 |---|---|---|
 | `src/components/CostAnalysisCalculator.tsx` | `src/components/CostAnalysisCalculator.tsx` | Control layout below the chart, 3-row results shape, range-hint presentation, share-button treatment |
-| `src/components/HomeCalculatorExperience.tsx` (`SeeOurMathBento`'s gap-breakdown block) | `src/components/HomeCalculatorExperience.tsx` | Gray fee-derivation annotation wording/guard, "Actual fees"/"Lost compounding" bar-breakdown copy and colors, canon share-stack mount (ShareMyResults + SocialShareRow) placement relative to the poll and the details entry point |
+| `src/components/HomeCalculatorExperience.tsx` (`SeeOurMathBento`'s gap-breakdown block) | `src/components/HomeCalculatorExperience.tsx` | Gray fee-derivation annotation wording/guard, "Actual fees"/"Lost compounding" bar-breakdown copy and colors, canon share-stack mount (ShareMyResults; since v3 the SocialShareRow renders only inside its panel, with no page-level duplicate) placement relative to the poll and the details entry point |
 
 ## Register semantics (mirrors the sister repo's, same one-version-grace)
 

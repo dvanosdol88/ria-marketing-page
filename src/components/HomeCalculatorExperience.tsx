@@ -33,7 +33,6 @@ import { NoteMarker } from "@/components/CalculatorNotes";
 import { buildShareSummary } from "@/lib/shareSummary";
 import { siteCalculatorConfig } from "@/lib/siteCalculatorConfig";
 import { ShareMyResults } from "@/components/calculator/ShareMyResults";
-import { SocialShareRow } from "@/components/calculator/SocialShareRow";
 import { Quiz } from "./Quiz";
 
 type Scenario = "smarter" | "traditional";
@@ -1744,18 +1743,9 @@ function SeeOurMathBento({
           />
         </div>
 
-        <div className="mt-5 border-t border-[#E4ECF2] pt-4">
-          <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#52657A]">Share this comparison:</p>
-          <div className="mt-3">
-            <SocialShareRow
-              url={canonicalUrl || null}
-              socialText={shareSummary?.socialText ?? ""}
-              redditTitle={shareSummary?.redditTitle ?? ""}
-              location={siteCalculatorConfig.analytics.detailedCalculatorResultsSocialLocation}
-              variant="light"
-            />
-          </div>
-        </div>
+        {/* The Facebook/X/Reddit row lives ONLY inside the ShareMyResults
+            panel now — it used to render a second time here, which put two
+            identical social rows within one viewport. */}
       </motion.section>
 
       <motion.section
