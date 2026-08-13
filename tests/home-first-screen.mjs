@@ -282,7 +282,8 @@ try {
   }
 
   /* Today's other two asks, measured rather than matched: both rules bound the
-     same column, and each verdict sits over its own list. */
+     same column, and each verdict deliberately sits three spacing units right
+     of its own list. */
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await page.goto(url, { waitUntil: "networkidle" });
 
@@ -309,7 +310,7 @@ try {
       return {
         text: verdict.textContent.trim(),
         colour: getComputedStyle(verdict).color,
-        offset: Math.abs(centre(verdict) - centre(list)),
+        offset: centre(verdict) - centre(list),
       };
     });
   });
@@ -321,8 +322,8 @@ try {
   assert.equal(verdicts[1].colour, "rgb(198, 40, 40)", "No carries the same red as the dollar signs beneath it");
   for (const verdict of verdicts) {
     assert.ok(
-      verdict.offset <= 2,
-      `"${verdict.text}" should sit centred over its own column, off by ${verdict.offset}px`,
+      verdict.offset >= 10 && verdict.offset <= 14,
+      `"${verdict.text}" should sit 12px right of its list, off by ${verdict.offset}px`,
     );
   }
 
@@ -330,7 +331,7 @@ try {
   console.log(
     `First-screen geometry passed on ${PROFILES.length} iPhone profiles (${cleared} must clear the fold, ` +
       `${PROFILES.length - cleared} accepted below it):\n  ${measurements.join("\n  ")}\n` +
-      "Header 62px; results bounded by two equal full-width rules; Yes/No over their own columns.",
+      "Header 62px; results bounded by two equal full-width rules; Yes/No 12px right of their lists.",
   );
 } finally {
   await browser?.close();

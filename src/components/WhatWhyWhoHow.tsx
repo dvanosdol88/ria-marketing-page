@@ -1,14 +1,11 @@
 import Image from "next/image";
 import { Check, DollarSign } from "lucide-react";
 
-export const WWWH_WHAT_INTRO =
-  "A registered investment advisor that offers...";
-
 export const WWWH_ANSWERS = [
   {
     key: "what",
     label: "What",
-    body: "An investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
+    body: "A registered investment advisor that offers an investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
   },
   {
     key: "why",
@@ -35,11 +32,12 @@ const WWWH_LABEL_CLASS =
    dead-centre put them adrift above left-aligned items, especially in the wide
    desktop column (David, 2026-08-12).
 
-   pl-8 at both widths, and it is not a round number chosen by eye: the list
-   items indent their text by the icon (h-5 = 20px) plus gap-3 (12px) = 32px.
-   If either of those changes, this has to change with them. */
+   pl-8 anchors each label to the list text: icon (h-5 = 20px) plus gap-3
+   (12px) = 32px. The intentional translate-x-3 then moves only Yes and No
+   three spacing units (12px) right, per David's 2026-08-13 mobile review.
+   If either list geometry changes, re-check the anchored padding first. */
 const WWWH_VERDICT_CLASS =
-  "mb-2 pl-8 text-left text-xl font-black tracking-tight sm:text-2xl";
+  "mb-2 translate-x-3 pl-8 text-left text-xl font-black tracking-tight sm:text-2xl";
 
 export const WWWH_HOW = {
   key: "how",
@@ -100,13 +98,8 @@ export function WhatWhyWhoHow() {
               </div>
             ) : (
               <>
-                {answer.key === "what" ? (
-                  <p className="mt-1.5 max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">
-                    {WWWH_WHAT_INTRO}
-                  </p>
-                ) : null}
                 <p
-                  className={`${answer.key === "what" ? "mt-1" : "mt-1.5"} max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8`}
+                  className="mt-1.5 max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8"
                 >
                   {answer.body}
                 </p>

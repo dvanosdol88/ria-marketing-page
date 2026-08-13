@@ -1368,13 +1368,18 @@ export function CostAnalysisCalculator({
       </section>
 
       {/* The lean root flow is calculator, WWWH, one primary conversion CTA,
-          one broad firm handoff, then notes. Legacy proof and repeated
-          conversion sections remain reusable off-root. */}
+          an intentional small-iPhone-height pause, one unified firm handoff,
+          then notes. Legacy proof and repeated conversion sections remain
+          reusable off-root. */}
       {isSavingsCalculatorUpgrade && <WhatWhyWhoHow />}
 
       {isSavingsCalculatorUpgrade && <SignupCta location="home_post_calculator" />}
 
-      {isSavingsCalculatorUpgrade && <SmarterWayWealthVisitCard />}
+      {isSavingsCalculatorUpgrade && (
+        <SmarterWayWealthVisitCard
+          advancedCalculatorHref={advancedCalculatorHref}
+        />
+      )}
 
       {usesOpeningMarketingHero && (
         <SignupCta location="marketing_post_calculator" />

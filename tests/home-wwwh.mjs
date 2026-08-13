@@ -58,7 +58,7 @@ test("homepage WWWH keeps the locked order and exact approved answers", () => {
     // Camel Case, not all-caps — David's call, 2026-08-07.
     [
       'label: "What"',
-      "An investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
+      "A registered investment advisor that offers an investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
     ],
     [
       'label: "Why"',
@@ -129,7 +129,7 @@ test("lean root composition retains the approved homepage order", () => {
     '<SignupCta location="home_post_calculator" />',
   );
   const firmVisitCardIndex = calculatorSource.indexOf(
-    "<SmarterWayWealthVisitCard />",
+    "<SmarterWayWealthVisitCard",
   );
   for (const [marker, index] of [
     ["calculation-details label", detailLabelIndex],
@@ -169,19 +169,32 @@ test("lean root composition retains the approved homepage order", () => {
     "the root must retain exactly one homepage CTA",
   );
   assert.equal(
-    calculatorSource.match(/<SmarterWayWealthVisitCard \/>/g)?.length,
+    calculatorSource.match(/<SmarterWayWealthVisitCard\b/g)?.length,
     1,
     "the root must render exactly one broad firm visit card",
   );
+  assert.match(
+    calculatorSource,
+    /<SmarterWayWealthVisitCard\s+advancedCalculatorHref=\{advancedCalculatorHref\}/,
+    "the secondary card must carry the visitor's calculator assumptions to Save",
+  );
 });
 
-test("the firm visit card is one tracked whole-card link with the requested lines", () => {
+test("the firm visit card is one solid green visual unit with separate tracked destinations", () => {
   const flatCard = flatten(firmVisitCardSource);
-  const lines = [
-    "use the advanced calculator and see how we do the math",
-    "find out how we work.",
-    "learn more about David.",
-    "see our frequently asked questions.",
+  const destinations = [
+    [
+      "Use the advanced calculator and see how we do the math",
+      "home_firm_visit_card_calculator",
+      "advancedCalculatorHref",
+    ],
+    ["Find out how we work", "home_firm_visit_card_how", "https://smarterwaywealth.com/how"],
+    ["Learn more about David", "home_firm_visit_card_david", "https://smarterwaywealth.com/#david"],
+    [
+      "See our frequently asked questions",
+      "home_firm_visit_card_faq",
+      "https://smarterwaywealth.com/faq",
+    ],
   ];
 
   assert.match(flatCard, /href="https:\/\/smarterwaywealth\.com\/"/);
@@ -190,28 +203,31 @@ test("the firm visit card is one tracked whole-card link with the requested line
   assert.match(flatCard, /data-posthog-cta="true"/);
   assert.match(flatCard, /data-posthog-cta-label="Visit Smarter Way Wealth"/);
   assert.match(flatCard, /data-posthog-cta-location="home_firm_visit_card"/);
+  assert.match(flatCard, /pt-\[667px\]/, "the card follows a small-iPhone-height pause");
+  assert.match(flatCard, /bg-\[#007A2F\]/, "the visual unit uses solid brand green");
+  assert.doesNotMatch(flatCard, /gradient/, "the visual unit stays solid rather than decorative");
   assert.match(flatCard, /target="_blank"/);
   assert.match(flatCard, /rel="noreferrer"/);
-  assert.match(flatCard, /> Visit <\/span>/);
-  assert.equal(flatCard.match(/<a\b/g)?.length, 1, "the entire card is the one link");
+  assert.match(flatCard, />Visit<\/span>/);
+  assert.equal(
+    flatCard.match(/<a\b/g)?.length,
+    2,
+    "the source has one home link and one mapped row link, never nested links",
+  );
 
-  let priorIndex = -1;
-  for (const line of lines) {
-    const index = firmVisitCardSource.indexOf(line);
-    assert.ok(index > priorIndex, `"${line}" must appear in the requested order`);
-    priorIndex = index;
+  for (const [label, location, href] of destinations) {
+    assert.ok(firmVisitCardSource.includes(label), `"${label}" must remain a destination`);
+    assert.ok(firmVisitCardSource.includes(location), `"${label}" needs its own CTA location`);
+    assert.ok(firmVisitCardSource.includes(href), `"${label}" must keep its direct destination`);
   }
 });
 
-test("WHAT opens with the requested registered-advisor line before its answer", () => {
-  const introIndex = answersSource.indexOf(
-    "A registered investment advisor that offers...",
+test("WHAT presents the registered-advisor explanation as one sentence", () => {
+  assert.match(
+    answersSource,
+    /A registered investment advisor that offers an investment and financial planning relationship with an experienced, highly credentialed advisor — for just \$100 a month\./,
   );
-  const answerIndex = answersSource.indexOf(
-    "An investment and financial planning relationship with an experienced",
-  );
-  assert.ok(introIndex >= 0, "the registered-advisor introduction must be present");
-  assert.ok(introIndex < answerIndex, "the introduction must precede WHAT's existing answer");
+  assert.doesNotMatch(answersSource, /offers\.\.\./, "the explanation is not split by an ellipsis");
 });
 
 // DECISION CHANGED, 2026-08-12 — read before "fixing" this back.
@@ -390,13 +406,12 @@ test("HOW's two columns are headed by a green Yes and a red No", () => {
   const flatAnswers = flatten(answersSource);
   assert.match(flatAnswers, /WWWH_VERDICT_CLASS\}\s*text-\[#108843\]`}>Yes</);
   assert.match(flatAnswers, /WWWH_VERDICT_CLASS\}\s*text-\[#C62828\]`}>No</);
-  // DECISION CHANGED, 2026-08-12 (same day) — read before "fixing" this back.
-  // These were centred over each column when they landed that morning. David
-  // asked for them moved left: dead-centre left them adrift above left-aligned
-  // list items, most visibly in the wide desktop column. They now sit indented
-  // over the list's own text.
+  // DECISION CHANGED, 2026-08-13 — read before "fixing" this back. Each label
+  // remains anchored to its list text, then David asked to move the verdicts
+  // three spacing units (12px) right on the mobile review.
   assert.match(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*text-left/);
   assert.match(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*pl-8/);
+  assert.match(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*translate-x-3/);
   assert.doesNotMatch(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*text-center/);
   // Camel Case to match What/Why/Who/How rather than shouting in caps.
   assert.doesNotMatch(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*uppercase/);
