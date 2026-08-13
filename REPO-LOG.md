@@ -3,19 +3,21 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
-### 2026-08-13 — Stronger Smarter Way Wealth homepage handoff
+### 2026-08-13 — Solid-green Smarter Way Wealth handoff after the primary CTA
 **Agent:** Codex | **Surface:** marketing | **Status:** not deployed at time of entry
-- Added David's “A registered investment advisor that offers...” lead beneath
-  the “What is Smarter Way Wealth” heading while preserving the approved
-  What / Why / Who / How answers and order.
-- Added one large, whole-card Smarter Way Wealth link after the existing client
-  conversion card. It uses the established wordmark and names the advanced
-  calculator, process, David, and FAQ paths without changing the current
-  `/become-a-client` or 15-minute conversation actions.
-- Reused `cta_clicked` with the new static
-  `cta_location=home_firm_visit_card`; no new event or personal-information
-  capture was introduced. Focused code, mobile/desktop, PR, and live evidence
-  are recorded on the implementation PR.
+- Replaced the light whole-card firm promotion with one unified solid brand-green
+  handoff, intentionally beginning 667px after the primary client CTA — the
+  CSS height of a small iPhone screen.
+- The wordmark doorway goes to the firm home page; the four divider rows keep
+  their own destinations: carried-assumption advanced calculator, `/how`,
+  David's `#david` biography anchor, and `/faq`. The current
+  `/become-a-client` and 15-minute conversation actions remain untouched.
+- Folded the registered-advisor wording into one WHAT sentence and moved the
+  Yes/No verdicts 12px right, leaving the list geometry unchanged.
+- Reused `cta_clicked` without personal-information capture. New row locations
+  are documented in the shared dashboard guide. Local proof: 23 focused
+  homepage checks, four iPhone geometry profiles, type-check, lint with three
+  inherited image warnings, production build, and 589px mobile render.
 
 ### 2026-08-12 (latest) — Eight refinements, and the heading that was never painted
 **Agent:** Claude (Opus 5) | **Surface:** marketing | **PR:** #217 (`193115b`) | **Deployed and verified on the apex**
