@@ -172,10 +172,13 @@ try {
     await page.evaluate(() => window.scrollTo(0, 0));
 
     const readGeometry = () => page.evaluate(() => {
+      // DECISION CHANGED, 2026-08-14: the heading reads "Your Fee Calculator"
+      // (David's rename). Matched loosely on the trailing two words so a future
+      // article change does not break the geometry suite again.
       const heading = [...document.querySelectorAll("h2")].find((node) =>
-        /^The Fee Calculator/i.test(node.textContent.trim()),
+        /Fee Calculator$/i.test(node.textContent.trim()),
       );
-      if (!heading) throw new Error('no <h2> matching "The Fee Calculator" on the page');
+      if (!heading) throw new Error('no <h2> ending in "Fee Calculator" on the page');
       const header = document.querySelector("header");
       if (!header) throw new Error("no <header> on the page");
       const headingBox = heading.getBoundingClientRect();
@@ -263,7 +266,7 @@ try {
        scrolled. It must survive any future spacing decision. */
     assert.ok(
       geometry.headingOpacity > 0.99,
-      `${profile.name}: "The Fee Calculator" is painted at opacity ${geometry.headingOpacity} —` +
+      `${profile.name}: "Your Fee Calculator" is painted at opacity ${geometry.headingOpacity} —` +
         ` its entrance animation has not fired, so a visitor landing here sees blank space where the heading` +
         ` should be. It only appears once they scroll.`,
     );

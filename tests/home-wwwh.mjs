@@ -605,14 +605,23 @@ test("site navigation is the simplified pair, with the retired items gone", () =
   // which is retired.
   assert.match(navConfigSource, /label: "FAQ",\s*href: "\/#faq"/);
 
-  const feeIndex = navConfigSource.indexOf('label: "Fee Calculator"');
-  assert.ok(feeIndex >= 0, "Fee Calculator must exist");
+  // DECISION CHANGED, 2026-08-14: the calculator is named "Your Fee Calculator"
+  // across both sites (David). The nav item keeps an explicit ctaLabel of the
+  // ORIGINAL "Fee Calculator" so PostHog's click history for it stays one
+  // continuous series instead of splitting at the rename — assert both.
+  const feeIndex = navConfigSource.indexOf('label: "Your Fee Calculator"');
+  assert.ok(feeIndex >= 0, "Your Fee Calculator must exist");
   const objectEnd = navConfigSource.indexOf("},", feeIndex);
-  assert.ok(objectEnd > feeIndex, "Fee Calculator config object must close");
+  assert.ok(objectEnd > feeIndex, "Your Fee Calculator config object must close");
   const feeSource = navConfigSource.slice(feeIndex, objectEnd);
   assert.match(feeSource, /href: "\/#calculator"/);
   assert.match(feeSource, /track: true/);
   assert.match(feeSource, /ctaLocation: "site_nav"/);
+  assert.match(
+    feeSource,
+    /ctaLabel: "Fee Calculator"/,
+    "the nav item must pin its analytics label to the pre-rename wording",
+  );
 });
 
 test("desktop and mobile nav expose the branded outbound firm link with tracking", () => {

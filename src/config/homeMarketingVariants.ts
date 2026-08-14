@@ -161,7 +161,7 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
     highlight: "over time.",
     body:
       "Most investors know the percentage. Fewer see the compounding dollar impact. This calculator makes the tradeoff visible.",
-    primaryCta: "Open the calculator",
+    primaryCta: "Open Your Fee Calculator",
     secondaryCta: "Copy this result",
     resultLabel: "Current projected fee gap",
     proofPoints: ["AUM fee", "Fund expenses", "$100/mo comparison"],
