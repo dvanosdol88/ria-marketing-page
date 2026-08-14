@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useAnimationControls, useInView, useReducedMotion } from "framer-motion";
+import { ChevronRight } from "lucide-react";
 import {
   FEE_QUOTES,
   FEE_QUOTE_PORTRAITS,
@@ -115,6 +116,15 @@ function QuoteSlot({
 }) {
   const prefersReducedMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
+  /* Dragging with a mouse is genuinely awkward — David, 2026-08-14: "It's a
+     little bit difficult to rotate them on desktop. You have to swipe with
+     your mouse, which isn't easy, but I like the simplicity of no more clutter
+     or buttons." So the whole card is now clickable and advances one quote,
+     which costs no chrome at all. This ref keeps the click from firing at the
+     end of a real drag: onDragStart only runs once a drag passes framer's
+     threshold, so a plain click never sets it, and the browser's click event
+     lands well inside the 50ms it stays true. */
+  const draggedRef = useRef(false);
   /** +1 when this slot last advanced forward, -1 backward — drives the slide
    *  direction so the card always exits the way the visitor pushed it. */
   const [direction, setDirection] = useState(1);
@@ -167,7 +177,7 @@ function QuoteSlot({
       role="group"
       aria-roledescription="carousel"
       aria-label={slotLabel}
-      className="relative overflow-hidden rounded-2xl"
+      className="group relative overflow-hidden rounded-2xl"
     >
       {/* The next card's edge, peeking out from behind the active quote —
           the always-visible cue that there are more behind it. */}
@@ -175,18 +185,40 @@ function QuoteSlot({
         aria-hidden="true"
         className="pointer-events-none absolute inset-y-2 left-6 right-0 rounded-2xl border border-[#D8E2EA] bg-white/75"
       />
+
+      {/* The standing hint line under the deck is gone (David struck it out),
+          so this is what carries discoverability on a mouse: nothing at rest,
+          a soft chevron on hover. Pointer-devices only — a touch device gets
+          no hover state, and swiping a card is already the obvious gesture
+          there. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute right-3 top-1/2 z-10 hidden -translate-y-1/2 text-[#AFC2D0] opacity-0 transition-opacity duration-200 group-hover:opacity-100 sm:block"
+      >
+        <ChevronRight className="h-6 w-6" strokeWidth={2.5} />
+      </span>
       <motion.div
         animate={nudge}
         drag={prefersReducedMotion ? false : "x"}
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.55}
-        onDragStart={() => setHasInteracted(true)}
+        onDragStart={() => {
+          draggedRef.current = true;
+          setHasInteracted(true);
+        }}
         onDragEnd={(_event, info) => {
           if (info.offset.x < -70 || info.velocity.x < -400) {
             goTo(1);
           } else if (info.offset.x > 70 || info.velocity.x > 400) {
             goTo(-1);
           }
+          window.setTimeout(() => {
+            draggedRef.current = false;
+          }, 50);
+        }}
+        onClick={() => {
+          if (draggedRef.current) return;
+          goTo(1);
         }}
         onKeyDown={(event) => {
           if (event.key === "ArrowRight") {
@@ -198,9 +230,9 @@ function QuoteSlot({
           }
         }}
         tabIndex={0}
-        aria-label={`${slotLabel}: swipe or drag it sideways, or use the left and right arrow keys, to see another.`}
+        aria-label={`${slotLabel}: click it, swipe it sideways, or use the left and right arrow keys to see another.`}
         aria-live="polite"
-        className="relative mr-2.5 cursor-grab active:cursor-grabbing focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] sm:mr-3"
+        className="group/card relative mr-2.5 cursor-pointer focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] active:cursor-grabbing sm:mr-3"
       >
         <AnimatePresence initial={false} mode="popLayout" custom={direction}>
           <motion.div
@@ -226,12 +258,6 @@ function QuoteSlot({
 
 export function FeeQuoteDeck() {
   const [topQuotes, bottomQuotes] = useMemo(() => splitPoolAlternately(FEE_QUOTES), []);
-  const prefersReducedMotion = useReducedMotion();
-  /** Matches the slots' own layout tween so the hint line — and the gap above
-   *  the firm card below it — glide with the deck rather than jumping. */
-  const layoutTransition = prefersReducedMotion
-    ? { duration: 0 }
-    : { duration: 0.42, ease: [0.32, 0.72, 0, 1] as const };
 
   return (
     <section
@@ -251,16 +277,10 @@ export function FeeQuoteDeck() {
           <QuoteSlot quotes={bottomQuotes} slotLabel="Bottom quote" nudgeDelayMs={1450} />
         </div>
 
-        <motion.p
-          layout
-          transition={layoutTransition}
-          className="mt-4 text-center text-xs font-semibold text-[#52657A]"
-        >
-          <span className="sm:hidden">&lsaquo; Swipe either quote for more — each moves on its own &rsaquo;</span>
-          <span className="hidden sm:inline">
-            Drag either quote sideways for more — each moves on its own
-          </span>
-        </motion.p>
+        {/* The standing hint line that sat here was struck out by David
+            (2026-08-14). Discoverability moved into the cards themselves: a
+            hover chevron on a mouse, and swiping on touch, where it is the
+            obvious gesture anyway. */}
       </div>
     </section>
   );

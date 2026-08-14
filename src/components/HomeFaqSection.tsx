@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { faqItems } from "@/data/faq";
 
@@ -18,6 +18,10 @@ import { faqItems } from "@/data/faq";
  * so the eye reads all three as one list — but it leaves the site, so it wears
  * the same ringed diagonal arrow used everywhere else here to mean "this opens
  * somewhere new".
+ *
+ * The section heading is set large and near-black rather than as a small green
+ * kicker (David, 2026-08-14): "Because both questions make important points,
+ * we want to draw attention to it."
  */
 
 /** The one existing question David kept. Pulled from the shared FAQ data
@@ -28,12 +32,6 @@ const KEPT_FAQ_ID = "afford-100-per-month";
  *  from the stored "$100/mo" phrasing. The ANSWER still comes from the data
  *  file untouched. */
 const KEPT_QUESTION_LABEL = "How can you afford to do this for $100 a month?";
-
-const RHETORICAL_QUESTION =
-  "My portfolio kept pace with the S&P 500 from the start of 2023 through the end of July 2026 and is up just over 100%. Does that mean my advisor is doing twice as much work?";
-
-const RHETORICAL_ANSWER =
-  "A rhetorical question is a figure of speech framed as a question but meant to make a statement rather than get an answer. The speaker asks it to emphasize a point, create a dramatic effect, or make the listener think.";
 
 /** Placeholder attribution, per David: "add a footnote and we will get the
  *  attribution in the next round." It states the measure and the period and
@@ -53,11 +51,12 @@ function FaqLine({
   footnote,
   footnoteMarker,
 }: {
-  question: string;
-  answer: string;
-  /** Rendered small and muted beneath the answer when present. */
+  /** A node rather than a string so a marker can sit mid-sentence — David
+   *  asked for the reference to land right after "2026" rather than trailing
+   *  the whole question. */
+  question: ReactNode;
+  answer: ReactNode;
   footnote?: string;
-  /** Superscript tying the question to its footnote. */
   footnoteMarker?: string;
 }) {
   const [open, setOpen] = useState(false);
@@ -66,27 +65,14 @@ function FaqLine({
     <div className="py-5">
       <button type="button" onClick={() => setOpen((current) => !current)} aria-expanded={open} className={QUESTION_CLASS}>
         {question}
-        {footnoteMarker ? <sup className="ml-0.5 text-[#6E7883]">{footnoteMarker}</sup> : null}
       </button>
       {open ? (
         <div>
-          {/* The stored answers were written for a page that listed all
-              eighteen questions, so some end with a "See also:" pointing at
-              siblings. Only two questions live here now, so those pointers
-              would send the reader after questions this page does not have.
-              Dropped at render rather than edited out of the data, because the
-              full set still carries them on smarterwaywealth.com. */}
-          {answer
-            .split("\n\n")
-            .filter((paragraph) => !paragraph.trimStart().startsWith("See also:"))
-            .map((paragraph) => (
-              <p key={paragraph.slice(0, 32)} className={ANSWER_CLASS}>
-                {paragraph}
-              </p>
-            ))}
+          {answer}
           {footnote ? (
             <p className="mt-3 max-w-3xl text-xs leading-5 text-[#8A939E]">
-              {footnoteMarker} {footnote}
+              <sup className="mr-0.5">{footnoteMarker}</sup>
+              {footnote}
             </p>
           ) : null}
         </div>
@@ -98,21 +84,65 @@ function FaqLine({
 export function HomeFaqSection() {
   const kept = faqItems.find((item) => item.id === KEPT_FAQ_ID);
 
+  /* The stored answers were written for a page that listed all eighteen
+     questions, so some end with a "See also:" pointing at siblings. Only two
+     questions live here now, so those pointers would send the reader after
+     questions this page does not have. Dropped at render rather than edited
+     out of the data, because the full set still carries them — and they are
+     still correct — on smarterwaywealth.com. */
+  const keptParagraphs = (kept?.answer ?? "")
+    .split("\n\n")
+    .filter((paragraph) => !paragraph.trimStart().startsWith("See also:"));
+
   return (
     <section id="faq" aria-labelledby="home-faq-heading" className="w-full scroll-mt-24 bg-[#EEF0F5] px-4 pb-16 pt-4 sm:px-6 sm:pb-20">
       <div className="mx-auto max-w-3xl">
-        <h2 id="home-faq-heading" className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#007A2F]">
-          Frequently asked questions
+        <h2
+          id="home-faq-heading"
+          className="text-3xl font-black tracking-tight text-[#10233A] sm:text-4xl"
+        >
+          Frequently Asked Questions
         </h2>
 
-        <div className="mt-2">
-          {kept ? <FaqLine question={KEPT_QUESTION_LABEL} answer={kept.answer} /> : null}
+        <div className="mt-5">
+          {kept ? (
+            <FaqLine
+              question={KEPT_QUESTION_LABEL}
+              answer={keptParagraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)} className={ANSWER_CLASS}>
+                  {paragraph}
+                </p>
+              ))}
+            />
+          ) : null}
 
           <FaqLine
-            question={RHETORICAL_QUESTION}
-            answer={RHETORICAL_ANSWER}
+            /* The reference marker sits immediately after "2026" rather than at
+               the end of the question, so it attaches to the figure it
+               qualifies instead of to the joke (David, 2026-08-14). */
+            question={
+              <>
+                My portfolio kept pace with the S&amp;P 500 from the start of 2023 through the end of July 2026
+                <sup className="ml-0.5 font-normal text-[#6E7883]">1</sup> and is up just over 100%. Does that mean my
+                advisor is doing twice as much work?
+              </>
+            }
+            answer={
+              <>
+                {/* Two beats, deliberately weighted: the definition arrives
+                    light and deadpan, then the point it exists to make lands
+                    in its own paragraph, heavier and darker (David). */}
+                <p className={`${ANSWER_CLASS} font-normal`}>
+                  Luckily, a rhetorical question is a figure of speech framed as a question but meant to make a
+                  statement rather than get an answer.
+                </p>
+                <p className="mt-3 max-w-3xl text-[15px] font-semibold leading-7 text-[#333B45] sm:text-base">
+                  The speaker asks it to emphasize a point, create a dramatic effect, or make the listener think.
+                </p>
+              </>
+            }
             footnote={RHETORICAL_FOOTNOTE}
-            footnoteMarker="*"
+            footnoteMarker="1"
           />
 
           {/* Same weight and ink as the two questions above, so the three read

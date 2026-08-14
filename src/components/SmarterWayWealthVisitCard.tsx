@@ -57,10 +57,18 @@ export function SmarterWayWealthVisitCard({
           on purpose: the solid-green-single-unit decision is a lock, and the
           guard test rejects any decorative blended fill (it greps this file's
           own source, so do not name that CSS function even in a comment). */}
-      <div className="group/card mx-auto max-w-3xl overflow-hidden rounded-2xl bg-[#007A2F] text-white shadow-[0_18px_46px_rgba(0,122,47,0.22)] ring-1 ring-inset ring-white/15 transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_28px_66px_rgba(0,122,47,0.30)]">
+      {/* Narrower than the sections above it (2026-08-14): a door should not be
+          as wide as the room. max-w-2xl still fits the longest row —
+          "use the advanced calculator and see how we do the math" — on one
+          line at the sm: type size. */}
+      <div className="group/card mx-auto max-w-2xl overflow-hidden rounded-2xl bg-[#007A2F] text-white shadow-[0_18px_46px_rgba(0,122,47,0.22)] ring-1 ring-inset ring-white/15 transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_28px_66px_rgba(0,122,47,0.30)]">
         <a
           aria-label="Visit Smarter Way Wealth home page (opens in a new tab)"
-          className="group grid min-h-52 place-items-center px-5 py-11 text-center !text-white !no-underline transition-colors duration-200 hover:bg-white/[0.07] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-6px] focus-visible:outline-white sm:px-10 sm:py-12"
+          /* No min-height any more: it existed to balance the arrow disc that
+             sat under the wordmark, and with the disc struck out it just left
+             a pool of empty green between the logo and the first row. Padding
+             defines the block now. */
+          className="group grid place-items-center px-5 py-10 text-center !text-white !no-underline transition-colors duration-200 hover:bg-white/[0.07] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-6px] focus-visible:outline-white sm:px-10 sm:py-11"
           data-posthog-cta="true"
           data-posthog-cta-label="Visit Smarter Way Wealth"
           data-posthog-cta-location="home_firm_visit_card"
@@ -73,23 +81,18 @@ export function SmarterWayWealthVisitCard({
             <span>Visit</span>
             <span aria-hidden="true" className="h-px w-7 bg-white/30" />
           </span>
+          {/* The wordmark carries this block on its own — the arrow disc that
+              used to sit beneath it was struck out by David (2026-08-14). Each
+              row below still has its own arrow, so nothing about "these leave
+              the site" is lost, and the logo gets the room the disc was
+              taking. */}
           <Image
             alt="Smarter Way Wealth"
-            className="mt-6 h-auto w-[min(86%,21rem)] brightness-0 invert transition-transform duration-300 group-hover:scale-[1.015]"
+            className="mt-6 h-auto w-[min(92%,24rem)] brightness-0 invert transition-transform duration-300 group-hover:scale-[1.015]"
             height={144}
             src="/brand/logo.svg"
             width={360}
           />
-          <span
-            aria-hidden="true"
-            className="mt-7 flex h-10 w-10 items-center justify-center rounded-full bg-white/12 ring-1 ring-inset ring-white/25 transition-colors duration-200 group-hover:bg-white/22"
-          >
-            <ArrowUpRight
-              aria-hidden="true"
-              className="h-5 w-5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-              strokeWidth={2.5}
-            />
-          </span>
         </a>
 
         <nav aria-label="Explore Smarter Way Wealth" className="border-t border-white/25">
