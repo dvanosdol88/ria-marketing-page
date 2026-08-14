@@ -40,9 +40,14 @@ export function SmarterWayWealthVisitCard({
   ];
 
   return (
+    /* The small-iPhone-height spacer (pt-[667px]) that used to sit here now
+       belongs to the quote deck above: the pause still exists, but it carries
+       the fee quotes instead of empty space (David approved from the
+       2026-08-13 mockups). This section keeps only its own breathing room;
+       tests/home-wwwh.mjs asserts the spacer stays retired. */
     <section
       aria-label="Visit Smarter Way Wealth"
-      className="w-full bg-[#EEF0F5] px-4 pb-12 pt-[667px] sm:px-6 sm:pb-16"
+      className="w-full bg-[#EEF0F5] px-4 pb-12 pt-16 sm:px-6 sm:pb-16 sm:pt-24"
     >
       <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl bg-[#007A2F] text-white shadow-[0_16px_42px_rgba(6,43,67,0.16)]">
         <a
