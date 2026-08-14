@@ -530,7 +530,13 @@ export function ShareMyResults({
         data-posthog-cta="true"
         data-posthog-cta-label="Share my results"
         data-posthog-cta-location={siteCalculatorConfig.analytics.detailedCalculatorResultsLocation}
-        className={`inline-flex min-h-11 items-center gap-2 rounded-md bg-[#66F0AC] px-4 text-sm font-bold text-[#062B43] ${focusRing}`}
+        /* Brand blue, not the mint green it opened in (David, 2026-08-14: "I do
+           not like the minty green"). #064B84 is the navy the conversion card
+           and the chart's accumulation line already use, so the button reads as
+           the site's own rather than as a fourth accent. Its focus ring drops to
+           the deeper #062B43 because the shared mint ring would have been
+           near-invisible against a blue face. */
+        className="inline-flex min-h-11 items-center gap-2 rounded-md bg-[#064B84] px-4 text-sm font-bold text-white shadow-[0_6px_18px_rgba(6,75,132,0.26)] transition hover:bg-[#053B6A] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#062B43]"
       >
         <Share2 className="h-4 w-4" aria-hidden="true" />
         Share my results

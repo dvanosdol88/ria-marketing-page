@@ -63,6 +63,13 @@ export const WWWH_HOW = {
    glance, and the WHO portrait gets a quiet ring so the one photograph on the
    page sits deliberately. Copy, order, colours, and verdict geometry are all
    the settled decisions — presentation only. */
+/* The closing line's first word ("No") is set at the verdicts' size while the
+   rest of the sentence stays body copy. Split from the single `closing`
+   constant rather than hard-coded so the approved copy still has exactly one
+   source of truth. */
+const [closingLeadWord, ...closingRestWords] = WWWH_HOW.closing.split(" ");
+const closingRemainder = closingRestWords.join(" ");
+
 export function WhatWhyWhoHow() {
   return (
     <section
@@ -81,9 +88,15 @@ export function WhatWhyWhoHow() {
               <h2 className={WWWH_LABEL_CLASS}>
                 {answer.label}
                 {answer.key === "what" ? (
-                  <span className="text-lg font-normal tracking-normal text-[#10233A] sm:text-xl">
+                  /* One size up from the body's step, and the firm's own name
+                     carries a little more weight than the "is" joining it to
+                     the question word — the completion should read as a
+                     statement of identity, not as a caption (David,
+                     2026-08-14). Still lighter and smaller than the green
+                     question word, which keeps the heading. */
+                  <span className="text-xl font-normal tracking-normal text-[#10233A] sm:text-2xl">
                     {" "}
-                    is Smarter Way Wealth
+                    is <span className="font-semibold">Smarter Way Wealth</span>
                   </span>
                 ) : null}
               </h2>
@@ -181,9 +194,18 @@ export function WhatWhyWhoHow() {
             {/* Same weight as the Yes/No verdicts above it, so the closing line
                 lands as a third verdict rather than as body copy. Its ink stays
                 the body's — David asked for the weight, not the colour
-                (2026-08-12). */}
-            <p className="mt-7 text-lg font-black leading-7 text-[#10233A] sm:text-xl">
-              {WWWH_HOW.closing}
+                (2026-08-12).
+
+                DECISION EXTENDED, 2026-08-14: its opening "No" is now set at
+                the verdicts' own size as well as their weight, and the line is
+                centred, so it reads as the section's final answer rather than
+                as a footnote to the right-hand column. The word is still split
+                off the single `closing` constant rather than hard-coded, so the
+                copy has one source. Ink deliberately stays body-dark: David
+                asked for the size and weight of the red "No", not its colour. */}
+            <p className="mt-7 text-center text-lg font-black leading-7 text-[#10233A] sm:text-xl">
+              <span className="text-xl tracking-tight sm:text-2xl">{closingLeadWord}</span>{" "}
+              {closingRemainder}
             </p>
           </div>
         </div>

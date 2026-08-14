@@ -19,8 +19,8 @@ plan's "Improvement flow"). This register is enforced by
 `tests/calculator-canon-manifest.test.mjs`.
 
 Counterpart repo: `D:\smarter-way-wealth` (smarterwaywealth.com)
-Last synced: 2026-08-13
-syncVersion: 3
+Last synced: 2026-08-14
+syncVersion: 4
 
 ## Narrowed scope (Phase B1 adjudication — read before editing this file)
 
@@ -43,6 +43,15 @@ investigation.
 
 ## Why these files, and not others
 
+- **v4 (2026-08-14, share button goes blue)**: presentation-only, one file.
+  The "Share my results" toggle moves off the mint `#66F0AC` it launched in
+  (David: "I do not like the minty green") to `#064B84`, the navy the
+  conversion card and the chart's accumulation line already use, with white
+  label, a soft blue-tinted shadow, a hover step to `#053B6A`, and a `#062B43`
+  focus ring (the shared mint ring would have been near-invisible on a blue
+  face). Nothing else changed: same label, same analytics attributes, same
+  panel, same disclosures. Because this file is canon, the change lands on
+  BOTH sites by design.
 - **v3 (2026-08-13, poll & share redesign, David's direct feedback)**: same
   behavior, new presentation across Quiz.tsx, ShareMyResults.tsx, and
   SocialShareRow.tsx. Poll: results (percentages/bars/total) now REVEAL
@@ -107,7 +116,7 @@ investigation.
 | Path | SHA-256 |
 |---|---|
 | src/components/Quiz.tsx | 769737A1B4482CB775F4829C883BC8D79EE09632CCAC61AAFF1ED1D1EC3551C4 |
-| src/components/calculator/ShareMyResults.tsx | 47F1856970B1F096270C12281FD4F012C2A20FB6E3A05DA6821BB6E631781596 |
+| src/components/calculator/ShareMyResults.tsx | 7FB5C512450DDE70365D4DB49633C3D8956E8A562EE89206A3D8D0F526091C2A |
 | src/components/calculator/SocialShareRow.tsx | DA2A83E48EA9F543203223E1E7448F5031F1E8979EDB565899EAC87B757FCAF8 |
 | src/lib/shareSummary.ts | F2562529515C5C851CD57380899D2D4C19C60A54921EA7FD67128CE903295E42 |
 
