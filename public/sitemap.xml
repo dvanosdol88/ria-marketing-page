@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- /save, /savings-rates, /how-it-works and /faq were retired 2026-08-14 and
+     now redirect (see next.config.mjs). They are removed from this sitemap so
+     search engines and AI crawlers stop being told to fetch pages that only
+     bounce; the FAQ lives at https://youarepayingtoomuch.com/#faq and in full
+     on https://smarterwaywealth.com/faq. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://youarepayingtoomuch.com/</loc>
   </url>
   <url>
     <loc>https://youarepayingtoomuch.com/become-a-client</loc>
-  </url>
-  <url>
-    <loc>https://youarepayingtoomuch.com/save</loc>
   </url>
   <url>
     <loc>https://youarepayingtoomuch.com/save-a-ton</loc>
@@ -19,16 +21,7 @@
     <loc>https://youarepayingtoomuch.com/improve-your-tools</loc>
   </url>
   <url>
-    <loc>https://youarepayingtoomuch.com/how-it-works</loc>
-  </url>
-  <url>
     <loc>https://youarepayingtoomuch.com/our-math</loc>
-  </url>
-  <url>
-    <loc>https://youarepayingtoomuch.com/savings-rates</loc>
-  </url>
-  <url>
-    <loc>https://youarepayingtoomuch.com/faq</loc>
   </url>
   <url>
     <loc>https://youarepayingtoomuch.com/privacy</loc>

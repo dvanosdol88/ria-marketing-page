@@ -17,10 +17,20 @@ export interface SiteNavLink {
   tier?: "primary" | "secondary";
 }
 
+/**
+ * SIMPLIFIED 2026-08-14 (David): "We are simplifying YA-PT in an effort to
+ * more quickly drive the user to https://smarterwaywealth.com. To that end, we
+ * will simplify the nav bar." Save, Rates and How? were removed along with the
+ * pages behind them — "Save" pointed at this same homepage, Rates and How?
+ * pointed at /savings-rates and /how-it-works, both now retired with
+ * redirects. What is left is the one thing to do here, the one thing to read
+ * here, and the door to the firm.
+ *
+ * FAQ no longer leaves the homepage: the FAQ is now two questions at the
+ * bottom of this page (HomeFaqSection) plus a link out to the firm site's full
+ * set, so the nav item scrolls rather than navigates.
+ */
 export const siteNavLinks: SiteNavLink[] = [
-  // Retired root anchors are omitted because the lean homepage no longer
-  // renders those sections; their standalone reusable experiences remain.
-  { label: "Save", href: "/", sectionId: "calculator", tier: "primary" },
   {
     label: "Fee Calculator",
     href: "/#calculator",
@@ -28,7 +38,5 @@ export const siteNavLinks: SiteNavLink[] = [
     track: true,
     ctaLocation: "site_nav",
   },
-  { label: "Rates", href: "/savings-rates", tier: "secondary" },
-  { label: "How?", href: "/how-it-works", tier: "secondary" },
-  { label: "FAQ", href: "/faq", tier: "secondary" },
+  { label: "FAQ", href: "/#faq", sectionId: "faq", tier: "secondary" },
 ];

@@ -85,10 +85,18 @@ export const faqItems: FaqItem[] = [
       "David Van Osdol, CFA, CFP®, directly and personally. Smarter Way Wealth is a solo fiduciary practice — there is no team of junior associates handling your account, and no hand-off chain. The credentialed advisor you speak with on the first call is the same credentialed advisor managing your portfolio.",
   },
   {
+    /* CORRECTED 2026-08-14. The previous answer read "Trades are placed
+       through your custodian, and are reviewed and approved by David before
+       execution", which described a discretionary relationship this firm does
+       not have and contradicted smarterwaywealth.com's own answer. David,
+       asked directly: "I will never make a trade, and we don't take custody of
+       any assets. I give instructions to the client, and they are responsible
+       for doing the actual trade." This wording now matches his statement and
+       the firm site. Do not soften it back toward "we trade for you". */
     id: "who-makes-trades",
     question: "Who makes trades?",
     answer:
-      "Trades are placed through your custodian, and are reviewed and approved by David before execution. Rebalancing and tax-loss-harvesting decisions follow the Investment Policy Statement (IPS) we develop together at the start of the engagement.",
+      "You do. Smarter Way Wealth gives you specific recommendations and instructions, but never places trades and never takes custody of your money. You place the trades yourself, through your own brokerage account.\n\nRebalancing and tax-loss-harvesting recommendations follow the Investment Policy Statement (IPS) we develop together at the start of the engagement — David tells you what he suggests and why, and the decision and the trade are yours.",
   },
   {
     id: "are-you-qualified",
