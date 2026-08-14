@@ -19,6 +19,7 @@ import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
 import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
 import { HomeTopBanner } from "@/components/HomeTopBanner";
+import { FeeQuoteDeck } from "@/components/FeeQuoteDeck";
 import { SignupCta } from "@/components/SignupCta";
 import { SmarterWayWealthVisitCard } from "@/components/SmarterWayWealthVisitCard";
 /* PremiumPromisePreview (the Save / Upgrade / Improve video panel) is
@@ -1381,12 +1382,16 @@ export function CostAnalysisCalculator({
       </section>
 
       {/* The lean root flow is calculator, WWWH, one primary conversion CTA,
-          an intentional small-iPhone-height pause, one unified firm handoff,
-          then notes. Legacy proof and repeated conversion sections remain
-          reusable off-root. */}
+          the swipeable fee-quote deck (which now carries the intentional
+          pause before the firm handoff — David approved this placement from
+          the 2026-08-13 mockups), one unified firm handoff, then notes.
+          Legacy proof and repeated conversion sections remain reusable
+          off-root. */}
       {isSavingsCalculatorUpgrade && <WhatWhyWhoHow />}
 
       {isSavingsCalculatorUpgrade && <SignupCta location="home_post_calculator" />}
+
+      {isSavingsCalculatorUpgrade && <FeeQuoteDeck />}
 
       {isSavingsCalculatorUpgrade && (
         <SmarterWayWealthVisitCard

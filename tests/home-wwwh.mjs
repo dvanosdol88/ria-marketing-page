@@ -128,6 +128,7 @@ test("lean root composition retains the approved homepage order", () => {
   const homeSignupIndex = calculatorSource.indexOf(
     '<SignupCta location="home_post_calculator" />',
   );
+  const quoteDeckIndex = calculatorSource.indexOf("<FeeQuoteDeck />");
   const firmVisitCardIndex = calculatorSource.indexOf(
     "<SmarterWayWealthVisitCard",
   );
@@ -139,6 +140,7 @@ test("lean root composition retains the approved homepage order", () => {
     ["calculator section end", calculatorSectionEndIndex],
     ["WWWH component", answersIndex],
     ["homepage primary CTA", homeSignupIndex],
+    ["fee quote deck", quoteDeckIndex],
     ["homepage firm visit card", firmVisitCardIndex],
   ]) {
     assert.ok(index >= 0, `${marker} must exist before placement is compared`);
@@ -154,9 +156,22 @@ test("lean root composition retains the approved homepage order", () => {
   );
   assert.ok(calculatorSectionEndIndex < answersIndex, "WWWH must follow the calculator");
   assert.ok(answersIndex < homeSignupIndex, "the primary homepage CTA must follow WWWH");
+  // DECISION PROPOSED, 2026-08-13 (mockup round) — pending David's approval.
+  // The swipeable fee-quote deck sits in the intentional pause between the
+  // primary CTA and the firm handoff: the separation survives, but it now
+  // carries the fee quotes instead of empty space.
   assert.ok(
-    homeSignupIndex < firmVisitCardIndex,
-    "the firm visit card must follow the existing primary CTA",
+    homeSignupIndex < quoteDeckIndex,
+    "the fee quote deck must follow the primary CTA",
+  );
+  assert.ok(
+    quoteDeckIndex < firmVisitCardIndex,
+    "the firm visit card must follow the fee quote deck",
+  );
+  assert.equal(
+    calculatorSource.match(/<FeeQuoteDeck \/>/g)?.length,
+    1,
+    "the quote deck must render exactly once",
   );
   assert.equal(
     calculatorSource.match(/<WhatWhyWhoHow \/>/g)?.length,
@@ -203,7 +218,19 @@ test("the firm visit card is one solid green visual unit with separate tracked d
   assert.match(flatCard, /data-posthog-cta="true"/);
   assert.match(flatCard, /data-posthog-cta-label="Visit Smarter Way Wealth"/);
   assert.match(flatCard, /data-posthog-cta-location="home_firm_visit_card"/);
-  assert.match(flatCard, /pt-\[667px\]/, "the card follows a small-iPhone-height pause");
+  // DECISION PROPOSED, 2026-08-13 (mockup round) — pending David's approval.
+  //
+  // The card used to follow a hard small-iPhone-height spacer (pt-[667px]) so
+  // the handoff began a full phone screen after the primary CTA. The quote
+  // deck now occupies that pause — the composition test above proves the deck
+  // sits between the CTA and this card; this proves the empty spacer did not
+  // quietly return alongside it. Comments stripped: the component's comment
+  // names the retired spacer on purpose.
+  assert.doesNotMatch(
+    stripComments(firmVisitCardSource),
+    /pt-\[667px\]/,
+    "the empty phone-height spacer's job moved to the quote deck (2026-08-13)",
+  );
   assert.match(flatCard, /bg-\[#007A2F\]/, "the visual unit uses solid brand green");
   assert.doesNotMatch(flatCard, /gradient/, "the visual unit stays solid rather than decorative");
   assert.match(flatCard, /target="_blank"/);
