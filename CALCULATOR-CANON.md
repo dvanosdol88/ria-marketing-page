@@ -20,7 +20,7 @@ plan's "Improvement flow"). This register is enforced by
 
 Counterpart repo: `D:\smarter-way-wealth` (smarterwaywealth.com)
 Last synced: 2026-08-14
-syncVersion: 4
+syncVersion: 5
 
 ## Narrowed scope (Phase B1 adjudication — read before editing this file)
 
@@ -43,6 +43,26 @@ investigation.
 
 ## Why these files, and not others
 
+- **v5 (2026-08-14, LinkedIn share + the copy buttons actually copy)**: two
+  files, both from David's round-3 review.
+  `SocialShareRow.tsx` gains a fourth tile, LinkedIn, and it leads the row —
+  his call: "that could be more fruitful than Facebook and X combined." The
+  mark is the official rounded square (Simple Icons CC0 path, inlined like the
+  other three, so still no icon dependency), sharing via
+  `linkedin.com/sharing/share-offsite`, which builds its post from the page's
+  own Open Graph tags rather than from passed text. Four tiles do not fit
+  across a narrow phone, so the sub-480px grid drops to two columns and
+  returns to four from 420px up.
+  `ShareMyResults.tsx` fixes the copy buttons he reported dead ("I don't think
+  either of the copy buttons worked"). They call
+  `navigator.clipboard.writeText`, which succeeds in a desktop browser but is
+  gated by WebKit and by the in-app browsers a mailed-QR visitor arrives from;
+  a hidden-textarea `execCommand` fallback now runs when it is refused. The
+  confirmation also moved out from under the thumb — it was the button's own
+  13px label, covered by the finger that had just pressed it and reverting
+  after 1.8s — to a live-region line beneath the row. And the share card's
+  positive-case eyebrow now reads "I could potentially save" rather than
+  "Potential difference" (also his), in both the canvas and its DOM replica.
 - **v4 (2026-08-14, share button goes blue)**: presentation-only, one file.
   The "Share my results" toggle moves off the mint `#66F0AC` it launched in
   (David: "I do not like the minty green") to `#064B84`, the navy the
@@ -116,8 +136,8 @@ investigation.
 | Path | SHA-256 |
 |---|---|
 | src/components/Quiz.tsx | 769737A1B4482CB775F4829C883BC8D79EE09632CCAC61AAFF1ED1D1EC3551C4 |
-| src/components/calculator/ShareMyResults.tsx | 7FB5C512450DDE70365D4DB49633C3D8956E8A562EE89206A3D8D0F526091C2A |
-| src/components/calculator/SocialShareRow.tsx | DA2A83E48EA9F543203223E1E7448F5031F1E8979EDB565899EAC87B757FCAF8 |
+| src/components/calculator/ShareMyResults.tsx | 0D49F87E340E88AEB44854508F3129DC37744E3CD7A67F65FD4F31D7F7864395 |
+| src/components/calculator/SocialShareRow.tsx | 8A221CD817F4D0A171CECCB6E217A43FAF8433CB0AA856DA42B69DCA4086934D |
 | src/lib/shareSummary.ts | F2562529515C5C851CD57380899D2D4C19C60A54921EA7FD67128CE903295E42 |
 
 **Line endings (review fix round, 2026-08-13):** `.gitattributes` now forces

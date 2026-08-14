@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { faqItems } from "@/data/faq";
 
 /**
@@ -12,12 +12,18 @@ import { faqItems } from "@/data/faq";
  * David cut. The site's job is to move a visitor toward smarterwaywealth.com,
  * not to hold them here reading.
  *
- * Deliberately plain, per his direction: no boxes, no chevrons, no rules
- * between rows. A question is dark grey text you tap; its answer unfolds
- * beneath in lighter grey. The third line looks identical to the two above it
- * so the eye reads all three as one list — but it leaves the site, so it wears
- * the same ringed diagonal arrow used everywhere else here to mean "this opens
- * somewhere new".
+ * Deliberately plain, per his direction: no boxes, no rules between rows. A
+ * question is dark grey text you tap; its answer unfolds beneath in lighter
+ * grey. The third line looks identical to the two above it so the eye reads
+ * all three as one list — but it leaves the site, so it wears the ringed
+ * diagonal arrow used everywhere else here to mean "this opens somewhere new".
+ *
+ * DECISION REVERSED, 2026-08-14: chevrons are back. They were dropped in the
+ * first pass at David's request, then restored the same day ("please do now
+ * put a chevron with each question") — with nothing but plain text, a visitor
+ * had no way to tell the questions were tappable at all. The chevron sits
+ * immediately after the question rather than out at the right margin, so on
+ * every one of the three lines the affordance touches the words it belongs to.
  *
  * The section heading is set large and near-black rather than as a small green
  * kicker (David, 2026-08-14): "Because both questions make important points,
@@ -43,7 +49,18 @@ const RHETORICAL_FOOTNOTE =
 const QUESTION_CLASS =
   "block w-full text-left text-[17px] font-semibold leading-7 text-[#333B45] transition-colors duration-150 hover:text-[#10233A] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#064B84] sm:text-lg";
 
+/** The setup line above a question carries slightly less weight than the
+ *  question itself, so the two read as premise and punchline rather than as
+ *  one undifferentiated block (David, 2026-08-14: "give it a *slightly* less
+ *  weight th[a]n the 2nd paragraph (the question itself)"). Semibold to
+ *  medium is one step — deliberately subtle. */
+const QUESTION_SETUP_CLASS = "font-medium";
+
 const ANSWER_CLASS = "mt-2.5 max-w-3xl text-[15px] leading-7 text-[#6E7883] sm:text-base";
+
+/** One line of the question, so a question can run to two weighted paragraphs.
+ *  `className` overrides the shared question styling for that line only. */
+type QuestionLine = { content: ReactNode; className?: string };
 
 function FaqLine({
   question,
@@ -51,10 +68,10 @@ function FaqLine({
   footnote,
   footnoteMarker,
 }: {
-  /** A node rather than a string so a marker can sit mid-sentence — David
-   *  asked for the reference to land right after "2026" rather than trailing
-   *  the whole question. */
-  question: ReactNode;
+  /** One entry per paragraph. Nodes rather than strings so a footnote marker
+   *  can sit mid-sentence — David asked for the reference to attach to the
+   *  market figure rather than trail the whole question. */
+  question: QuestionLine[];
   answer: ReactNode;
   footnote?: string;
   footnoteMarker?: string;
@@ -64,7 +81,23 @@ function FaqLine({
   return (
     <div className="py-5">
       <button type="button" onClick={() => setOpen((current) => !current)} aria-expanded={open} className={QUESTION_CLASS}>
-        {question}
+        {/* Spans, not paragraphs: a <button>'s content model is phrasing
+            content, and a block element inside it is invalid markup that
+            some engines reflow unpredictably. `block` gives the same result. */}
+        {question.map((line, index) => (
+          <span key={index} className={`block ${index > 0 ? "mt-2 " : ""}${line.className ?? ""}`}>
+            {line.content}
+            {index === question.length - 1 ? (
+              <ChevronDown
+                aria-hidden="true"
+                strokeWidth={2.5}
+                className={`ml-1.5 inline-block h-4 w-4 shrink-0 align-[-3px] text-[#007A2F] transition-transform duration-200 ${
+                  open ? "rotate-180" : ""
+                }`}
+              />
+            ) : null}
+          </span>
+        ))}
       </button>
       {open ? (
         <div>
@@ -107,7 +140,7 @@ export function HomeFaqSection() {
         <div className="mt-5">
           {kept ? (
             <FaqLine
-              question={KEPT_QUESTION_LABEL}
+              question={[{ content: KEPT_QUESTION_LABEL }]}
               answer={keptParagraphs.map((paragraph) => (
                 <p key={paragraph.slice(0, 32)} className={ANSWER_CLASS}>
                   {paragraph}
@@ -117,29 +150,30 @@ export function HomeFaqSection() {
           ) : null}
 
           <FaqLine
-            /* The reference marker sits immediately after "2026" rather than at
-               the end of the question, so it attaches to the figure it
-               qualifies instead of to the joke (David, 2026-08-14). */
-            question={
-              <>
-                My portfolio kept pace with the S&amp;P 500 from the start of 2023 through the end of July 2026
-                <sup className="ml-0.5 font-normal text-[#6E7883]">1</sup> and is up just over 100%. Does that mean my
-                advisor is doing twice as much work?
-              </>
-            }
+            /* Two beats, deliberately weighted (David, 2026-08-14 — the
+               treatment he first described for the answer, corrected the same
+               day to apply here instead): the market fact arrives lighter,
+               then the question it exists to set up lands at full question
+               weight. The reference marker sits with the figure it qualifies
+               rather than at the end of the joke. */
+            question={[
+              {
+                content: (
+                  <>
+                    The S&amp;P 500 and my portfolio have both doubled over the past few years.
+                    <sup className="ml-0.5 font-normal text-[#6E7883]">1</sup>
+                  </>
+                ),
+                className: QUESTION_SETUP_CLASS,
+              },
+              { content: "Does that mean my advisor is doing twice as much work?" },
+            ]}
             answer={
-              <>
-                {/* Two beats, deliberately weighted: the definition arrives
-                    light and deadpan, then the point it exists to make lands
-                    in its own paragraph, heavier and darker (David). */}
-                <p className={`${ANSWER_CLASS} font-normal`}>
-                  Luckily, a rhetorical question is a figure of speech framed as a question but meant to make a
-                  statement rather than get an answer.
-                </p>
-                <p className="mt-3 max-w-3xl text-[15px] font-semibold leading-7 text-[#333B45] sm:text-base">
-                  The speaker asks it to emphasize a point, create a dramatic effect, or make the listener think.
-                </p>
-              </>
+              <p className={ANSWER_CLASS}>
+                Luckily, a rhetorical question is a figure of speech framed as a question but meant to make a statement
+                rather than get an answer. The speaker asks it to emphasize a point, create a dramatic effect, or make
+                the listener think.
+              </p>
             }
             footnote={RHETORICAL_FOOTNOTE}
             footnoteMarker="1"
@@ -147,7 +181,10 @@ export function HomeFaqSection() {
 
           {/* Same weight and ink as the two questions above, so the three read
               as one list — but this one leaves the site, hence the ringed
-              diagonal arrow this project uses for every outbound door. */}
+              diagonal arrow this project uses for every outbound door. The
+              arrow sits right after the words rather than out at the right
+              margin (David, 2026-08-14: "Put the narrow circle closer to
+              it"), which also matches where the questions' chevrons sit. */}
           <div className="py-5">
             <a
               href="https://smarterwaywealth.com/faq"
@@ -156,16 +193,20 @@ export function HomeFaqSection() {
               data-posthog-cta="true"
               data-posthog-cta-label="Read all FAQs on Smarter Way Wealth"
               data-posthog-cta-location="home_faq_all_questions"
-              className="group flex items-start justify-between gap-4 !no-underline"
+              className="group inline-block !no-underline"
             >
+              {/* The arrow is inside the text span, not a flex sibling, so it
+                  wraps with the words and sits immediately after the final
+                  full stop at every width. As a sibling it drifted to the far
+                  right of the block whenever the line wrapped. */}
               <span className="text-[17px] font-semibold leading-7 !text-[#333B45] transition-colors duration-150 group-hover:!text-[#10233A] sm:text-lg">
-                Read all of the frequently asked questions on smarterwaywealth.com
-              </span>
-              <span
-                aria-hidden="true"
-                className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white ring-1 ring-inset ring-[#CFD6DF] transition-colors duration-200 group-hover:bg-[#F2FBF5] group-hover:ring-[#00A540]"
-              >
-                <ArrowUpRight className="h-4 w-4 text-[#007A2F]" strokeWidth={2.5} />
+                Read all of the FAQs on smarterwaywealth.com.
+                <span
+                  aria-hidden="true"
+                  className="ml-2 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white align-middle ring-1 ring-inset ring-[#CFD6DF] transition-colors duration-200 group-hover:bg-[#F2FBF5] group-hover:ring-[#00A540]"
+                >
+                  <ArrowUpRight className="h-4 w-4 text-[#007A2F]" strokeWidth={2.5} />
+                </span>
               </span>
             </a>
           </div>

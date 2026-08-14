@@ -123,6 +123,67 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number)
   return lines;
 }
 
+/**
+ * Copies text without depending on the async Clipboard API alone.
+ *
+ * David reported (2026-08-14) that neither copy button worked on his iPhone.
+ * navigator.clipboard.writeText is the right modern call and it succeeds in a
+ * desktop browser, but it is gated in exactly the places a mailed-QR visitor
+ * arrives from: WebKit rejects it outside a tight user-gesture window, and the
+ * in-app browsers (Gmail, LinkedIn, Instagram) reject it outright. The old
+ * hidden-textarea + execCommand path is still honoured by every one of those
+ * engines, so it runs as the fallback rather than the code giving up.
+ *
+ * The selection dance is the long-standing iOS recipe: a readonly textarea
+ * cannot be selected there, and a 16px font size stops Safari zooming the page
+ * when the element takes focus.
+ */
+async function writeToClipboard(text: string): Promise<boolean> {
+  if (!text) return false;
+
+  try {
+    if (typeof navigator !== "undefined" && navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {
+    // Blocked or unavailable — fall through to the legacy path below, which
+    // still runs inside this same user gesture.
+  }
+
+  try {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.top = "0";
+    textarea.style.left = "-9999px";
+    textarea.style.fontSize = "16px";
+    document.body.appendChild(textarea);
+
+    const selection = document.getSelection();
+    const previousRange = selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+
+    textarea.contentEditable = "true";
+    textarea.readOnly = false;
+    const range = document.createRange();
+    range.selectNodeContents(textarea);
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+    textarea.setSelectionRange(0, text.length);
+
+    const copied = document.execCommand("copy");
+    document.body.removeChild(textarea);
+
+    if (previousRange && selection) {
+      selection.removeAllRanges();
+      selection.addRange(previousRange);
+    }
+    return copied;
+  } catch {
+    return false;
+  }
+}
+
 function roundedRectPath(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
   ctx.beginPath();
   ctx.moveTo(x + r, y);
@@ -218,7 +279,12 @@ function drawShareCard(ctx: CanvasRenderingContext2D, data: ShareCardData) {
   ctx.fillStyle = accent;
   ctx.font = `800 22px ${FONT_STACK}`;
   setLetterSpacing(ctx, "1px");
-  ctx.fillText(isPositive ? "POTENTIAL DIFFERENCE" : "DIFFERENCE IN THIS SCENARIO", PAD_X, cursorY);
+  /* First person, because a share card is something a visitor posts about
+     their own situation — "I could potentially save" is what they would
+     actually say, where "Potential difference" reads like a spreadsheet
+     header (David, 2026-08-14). The negative case keeps the neutral label:
+     you cannot say you saved anything when the flat fee costs more. */
+  ctx.fillText(isPositive ? "I COULD POTENTIALLY SAVE" : "DIFFERENCE IN THIS SCENARIO", PAD_X, cursorY);
   setLetterSpacing(ctx, "0px");
   cursorY += 88;
 
@@ -328,7 +394,7 @@ function ShareCardPreview({
       </div>
 
       <p className={`mt-5 text-[11px] font-extrabold uppercase tracking-[0.1em] ${accentText}`}>
-        {isPositive ? "Potential difference" : "Difference in this scenario"}
+        {isPositive ? "I could potentially save" : "Difference in this scenario"}
       </p>
       <p className={`mt-1.5 text-4xl font-extrabold leading-none tabular-nums sm:text-5xl ${accentText}`}>
         {formatCurrency(data.savings)}
@@ -407,6 +473,8 @@ export function ShareMyResults({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [copyLinkStatus, setCopyLinkStatus] = useState("Copy link");
   const [copySummaryStatus, setCopySummaryStatus] = useState("Copy summary");
+  /** Confirmation shown below the copy row — see copyText. */
+  const [copyNotice, setCopyNotice] = useState<string | null>(null);
   const [includePoll, setIncludePoll] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -469,13 +537,21 @@ export function ShareMyResults({
     ? (pollIncluded && summary.textWithPoll ? summary.textWithPoll : summary.shortLine)
     : "";
 
-  const copyText = async (text: string, setStatus: (label: string) => void, defaultLabel: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setStatus("Copied");
-    } catch {
-      setStatus("Copy unavailable");
-    }
+  /* The button's own label was the only confirmation a copy had happened —
+     and on a phone that label sits directly under the thumb that just pressed
+     it, then reverts after 1.8 seconds. So the visitor's honest experience was
+     "nothing happened" even when the copy succeeded. The label still changes
+     (it reads well on a desktop), but the real answer now appears as a line
+     beneath the row, where a finger is not covering it, and is announced to
+     screen readers. */
+  const copyText = async (text: string, setStatus: (label: string) => void, defaultLabel: string, noun: string) => {
+    const copied = await writeToClipboard(text);
+    setStatus(copied ? "Copied" : "Copy unavailable");
+    setCopyNotice(
+      copied
+        ? `${noun} copied to your clipboard.`
+        : `Couldn't reach the clipboard in this browser. Press and hold the ${noun.toLowerCase()} to copy it manually.`,
+    );
     window.setTimeout(() => setStatus(defaultLabel), 1800);
   };
 
@@ -618,7 +694,7 @@ export function ShareMyResults({
                 <div className="mt-2.5 flex flex-wrap gap-2">
                   <button
                     type="button"
-                    onClick={() => copyText(canonicalUrl, setCopyLinkStatus, "Copy link")}
+                    onClick={() => copyText(canonicalUrl, setCopyLinkStatus, "Copy link", "Link")}
                     disabled={!canonicalUrl}
                     data-posthog-cta="true"
                     data-posthog-cta-label="Copy share link"
@@ -630,7 +706,7 @@ export function ShareMyResults({
                   </button>
                   <button
                     type="button"
-                    onClick={() => summary && copyText(shareBodyText, setCopySummaryStatus, "Copy summary")}
+                    onClick={() => summary && copyText(shareBodyText, setCopySummaryStatus, "Copy summary", "Summary")}
                     disabled={!summary}
                     data-posthog-cta="true"
                     data-posthog-cta-label="Copy summary"
@@ -668,6 +744,15 @@ export function ShareMyResults({
                     Download image
                   </button>
                 </div>
+                <p
+                  role="status"
+                  aria-live="polite"
+                  className={`mt-2.5 text-[13px] font-semibold ${
+                    tone === "light" ? "text-[#0A6E35]" : "text-[#66F0AC]"
+                  } ${copyNotice ? "" : "sr-only"}`}
+                >
+                  {copyNotice ?? ""}
+                </p>
               </div>
 
               <p className={toneClasses.disclaimer}>

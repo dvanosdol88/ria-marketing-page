@@ -56,9 +56,12 @@ test("the default root caller selects the lean savings-calculator-upgrade path",
 test("homepage WWWH keeps the locked order and exact approved answers", () => {
   const expected = [
     // Camel Case, not all-caps — David's call, 2026-08-07.
+    // DECISION CHANGED, 2026-08-14: "Registered Investment Advisor" is now
+    // capitalized (David) — it names a regulatory status, not a description.
+    // Only the casing moved; the sentence is otherwise the approved copy.
     [
       'label: "What"',
-      "A registered investment advisor that offers an investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
+      "A Registered Investment Advisor that offers an investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
     ],
     [
       'label: "Why"',
@@ -250,9 +253,11 @@ test("the firm visit card is one solid green visual unit with separate tracked d
 });
 
 test("WHAT presents the registered-advisor explanation as one sentence", () => {
+  // DECISION CHANGED, 2026-08-14 — capitalized, per David. See the note in the
+  // locked-answers test above.
   assert.match(
     answersSource,
-    /A registered investment advisor that offers an investment and financial planning relationship with an experienced, highly credentialed advisor — for just \$100 a month\./,
+    /A Registered Investment Advisor that offers an investment and financial planning relationship with an experienced, highly credentialed advisor — for just \$100 a month\./,
   );
   assert.doesNotMatch(answersSource, /offers\.\.\./, "the explanation is not split by an ellipsis");
 });
@@ -455,6 +460,15 @@ test("HOW's two columns are headed by a green Yes and a red No", () => {
     answersSource,
     /<span className="text-xl tracking-tight sm:text-2xl">\{closingLeadWord\}<\/span>/,
     "the closing line's lead word must match the verdicts' size",
+  );
+  // DECISION EXTENDED AGAIN, 2026-08-14: green rules now flank the line on both
+  // sides — "just like you have the green line below 'How'" (David). Same 2px
+  // and same #108843 as the rule over the Yes column, which is the line he was
+  // pointing at, so the section opens and closes on the same mark.
+  assert.match(
+    answersSource,
+    /<span aria-hidden="true" className="h-0\.5[^"]*bg-\[#108843\]" \/>[\s\S]*\{closingLeadWord\}[\s\S]*<span aria-hidden="true" className="h-0\.5[^"]*bg-\[#108843\]" \/>/,
+    "the closing line must be flanked by green rules, left and right",
   );
   // The approved copy keeps exactly one source: the lead word is split off
   // WWWH_HOW.closing rather than hard-coded beside it.

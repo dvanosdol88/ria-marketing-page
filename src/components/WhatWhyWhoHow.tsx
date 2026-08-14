@@ -5,7 +5,9 @@ export const WWWH_ANSWERS = [
   {
     key: "what",
     label: "What",
-    body: "A registered investment advisor that offers an investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
+    /* "Registered Investment Advisor" capitalized as the proper noun it is —
+       it names a regulatory status, not a description (David, 2026-08-14). */
+    body: "A Registered Investment Advisor that offers an investment and financial planning relationship with an experienced, highly credentialed advisor — for just $100 a month.",
   },
   {
     key: "why",
@@ -202,11 +204,25 @@ export function WhatWhyWhoHow() {
                 as a footnote to the right-hand column. The word is still split
                 off the single `closing` constant rather than hard-coded, so the
                 copy has one source. Ink deliberately stays body-dark: David
-                asked for the size and weight of the red "No", not its colour. */}
-            <p className="mt-7 text-center text-lg font-black leading-7 text-[#10233A] sm:text-xl">
-              <span className="text-xl tracking-tight sm:text-2xl">{closingLeadWord}</span>{" "}
-              {closingRemainder}
-            </p>
+                asked for the size and weight of the red "No", not its colour.
+
+                DECISION EXTENDED AGAIN, 2026-08-14: green rules now flank the
+                line, left and right — "just like you have the green line below
+                'How'". They are the same 2px in the same #108843 as the rule
+                over the Yes column, which is the green line he was pointing
+                at, so the section opens and closes on the same mark. */}
+            {/* min-w-8 + shrink-0 on the rules and min-w-0 on the line: without
+                them the sentence keeps its full single-line width on a phone
+                and each rule collapses to about six pixels. This way the rules
+                always read as rules and the sentence wraps instead. */}
+            <div className="mt-7 flex items-center gap-4">
+              <span aria-hidden="true" className="h-0.5 min-w-8 shrink-0 flex-1 rounded-full bg-[#108843]" />
+              <p className="min-w-0 text-center text-lg font-black leading-7 text-[#10233A] sm:text-xl">
+                <span className="text-xl tracking-tight sm:text-2xl">{closingLeadWord}</span>{" "}
+                {closingRemainder}
+              </p>
+              <span aria-hidden="true" className="h-0.5 min-w-8 shrink-0 flex-1 rounded-full bg-[#108843]" />
+            </div>
           </div>
         </div>
       </div>

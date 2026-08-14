@@ -12,8 +12,13 @@
  * Facebook and Reddit publish disc-shaped marks (the glyph is knocked out of
  * the disc by the path itself), so a single brand-color fill reproduces the
  * real logo; X publishes a bare letterform, so it gets its brand-black disc
- * behind a white glyph.
+ * behind a white glyph. LinkedIn publishes a rounded SQUARE and keeps it —
+ * forcing it into a circle to match its neighbours would be redrawing the one
+ * thing we are here to reproduce faithfully.
  */
+const LINKEDIN_BRAND_PATH =
+  "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z";
+
 const FACEBOOK_BRAND_PATH =
   "M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z";
 
@@ -23,10 +28,21 @@ const REDDIT_BRAND_PATH =
 const X_BRAND_PATH =
   "M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z";
 
-const PLATFORMS = ["Facebook", "X", "Reddit"] as const;
+/* LinkedIn leads. It is where a prospect for a $100-a-month advisory
+   relationship actually is, and David's call on adding it (2026-08-14) was
+   that it "could be more fruitful than Facebook and X combined" — so it gets
+   the first tile rather than the last. */
+const PLATFORMS = ["LinkedIn", "Facebook", "X", "Reddit"] as const;
 type Platform = (typeof PLATFORMS)[number];
 
 function BrandBadge({ platform, variant }: { platform: Platform; variant: "dark" | "light" }) {
+  if (platform === "LinkedIn") {
+    return (
+      <svg viewBox="0 0 24 24" className="h-9 w-9" aria-hidden="true" fill="#0A66C2">
+        <path d={LINKEDIN_BRAND_PATH} />
+      </svg>
+    );
+  }
   if (platform === "Facebook") {
     return (
       <svg viewBox="0 0 24 24" className="h-9 w-9" aria-hidden="true" fill="#0866FF">
@@ -54,11 +70,17 @@ function BrandBadge({ platform, variant }: { platform: Platform; variant: "dark"
   );
 }
 
-// Below 480px the host panels get too narrow for three fixed-width tiles
-// (they staggered 2/1) — a three-column grid lets the tiles shrink fluidly
-// and always hold one row; from 480px up they revert to fixed-width tiles.
+// Below 480px the host panels get too narrow for fixed-width tiles (they
+// staggered), so the tiles go in a fluid grid instead; from 480px up they
+// revert to fixed-width tiles in a row.
+//
+// Two columns on the narrowest phones, not four: with LinkedIn added there
+// are four tiles, and four across a ~215px-wide panel (iPhone SE inside the
+// card's padding) leaves ~36px of content per tile — exactly the width of the
+// brand badge, so "Facebook" and "LinkedIn" wrap or clip. 2x2 holds every
+// label intact at every width; four across returns as soon as there is room.
 const containerClass =
-  "grid w-full grid-cols-3 gap-2 min-[480px]:flex min-[480px]:w-auto min-[480px]:flex-wrap min-[480px]:items-start min-[480px]:gap-3";
+  "grid w-full grid-cols-2 gap-2 min-[420px]:grid-cols-4 min-[480px]:flex min-[480px]:w-auto min-[480px]:flex-wrap min-[480px]:items-start min-[480px]:gap-3";
 
 const tileBase =
   "flex min-h-11 w-full min-w-0 flex-col items-center gap-1.5 rounded-2xl border px-1.5 pb-2 pt-2.5 text-center min-[480px]:w-[76px]";
@@ -79,7 +101,7 @@ const VARIANT_CLASSES: Record<"dark" | "light", { anchor: string; placeholder: s
 };
 
 /**
- * Facebook/X/Reddit share intents for the personalized calculator URL.
+ * LinkedIn/Facebook/X/Reddit share intents for the personalized calculator URL.
  * `url` is null before the parent has resolved window.location.origin (or
  * when the current inputs have no valid share URL yet) — renders disabled
  * placeholders instead of anchors in that state so nothing links out with a
@@ -121,6 +143,10 @@ export function SocialShareRow({
 
   const encodedUrl = encodeURIComponent(url);
   const hrefByPlatform: Record<Platform, string> = {
+    // LinkedIn's share-offsite intent takes the URL only and builds the post
+    // from the page's own Open Graph tags, so there is no text parameter to
+    // pass here — the unfurled share card is what the reader sees.
+    LinkedIn: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
     Facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
     X: `https://x.com/intent/post?text=${encodeURIComponent(socialText)}&url=${encodedUrl}`,
     Reddit: `https://www.reddit.com/submit?url=${encodedUrl}&title=${encodeURIComponent(redditTitle)}`,
