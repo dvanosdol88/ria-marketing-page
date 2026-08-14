@@ -444,7 +444,21 @@ test("HOW's two columns are headed by a green Yes and a red No", () => {
   assert.doesNotMatch(answersSource, /WWWH_VERDICT_CLASS =\s*\n?\s*"[^"]*uppercase/);
   // The closing line carries the verdicts' weight but keeps the body's ink —
   // David asked for the weight, not the colour.
-  assert.match(answersSource, /text-lg font-black leading-7 text-\[#10233A\] sm:text-xl">\s*\{WWWH_HOW\.closing\}/);
+  //
+  // DECISION EXTENDED, 2026-08-14: the line is now centred, and its opening
+  // "No" is set at the verdicts' SIZE as well as their weight, so it lands as
+  // the section's final answer rather than as a footnote under the right-hand
+  // column. Ink still deliberately stays body-dark — David asked for the red
+  // No's size and weight, not its colour.
+  assert.match(answersSource, /text-center text-lg font-black leading-7 text-\[#10233A\] sm:text-xl/);
+  assert.match(
+    answersSource,
+    /<span className="text-xl tracking-tight sm:text-2xl">\{closingLeadWord\}<\/span>/,
+    "the closing line's lead word must match the verdicts' size",
+  );
+  // The approved copy keeps exactly one source: the lead word is split off
+  // WWWH_HOW.closing rather than hard-coded beside it.
+  assert.match(answersSource, /WWWH_HOW\.closing\.split\(" "\)/);
   // The verdicts must carry the same greens and reds as the icons beneath them.
   assert.match(flatAnswers, /<Check[^>]*text-\[#108843\]/);
   assert.match(flatAnswers, /<DollarSign[^>]*text-\[#C62828\]/);
@@ -497,13 +511,18 @@ test("the mobile first-screen spacing constants are the measured ones", () => {
     /heightClass=\{collapsed \? "h-\[34px\]" : "h-\[52px\]"\}/,
     "the 10% smaller mobile logo",
   );
-  assert.match(calculatorSource, /px-4 pt-\[64px\] pb-11 sm:pt-20 sm:pb-20/, "gap above the headline");
-  assert.match(calculatorSource, /absolute left-1\/2 top-\[48\.3%\]/, "the decorative ? sits with the headline, not 5px above it");
+  // DECISION CHANGED, 2026-08-14 — read before "fixing" these back. David asked
+  // for 5px more in both gaps (header → "?" 49px → 54px; promise → The Fee
+  // Calculator 73px → 78px) and released the fold constraint that had been
+  // rationing them: "I'm not concerned about the fee calculator being below the
+  // fold on older phones, I think the visual clarity is more important."
+  assert.match(calculatorSource, /px-4 pt-\[69px\] pb-11 sm:pt-20 sm:pb-20/, "gap above the headline");
+  assert.match(calculatorSource, /absolute left-1\/2 top-\[49\.6%\]/, "the decorative ? keeps pace with the taller hero");
   // The geometry test measures this element; without the hook it would fall
   // back to guessing which node is the mark.
   assert.match(calculatorSource, /data-hero-mark/, "the decorative ? keeps its stable test hook");
   assert.match(calculatorSource, /<div className="mt-\[47px\] sm:mt-20">\{introContent\}<\/div>/, "gap above the promise");
-  assert.match(calculatorSource, /pb-\[73px\] text-center/, "gap below the promise");
+  assert.match(calculatorSource, /pb-\[78px\] text-center/, "gap below the promise");
 });
 
 // The single worst defect found on 2026-08-12, and it was invisible to every

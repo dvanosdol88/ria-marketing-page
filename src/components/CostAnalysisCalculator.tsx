@@ -525,29 +525,41 @@ function SavingsLeadHero({
 
      Later the same day David asked for 5px more between the header and the top
      of the "?" (44px → 49px), with everything below pushed down in turn. Done,
-     and it spends the budget exactly: the heading's letters now end at 659px on
-     an iPhone 14, which is the fold — zero margin — and 8px above it on an
-     iPhone 15/16. THERE IS NOTHING LEFT. The next pixel added anywhere above
-     the calculator cuts the words on an iPhone 14, and the only remaining place
-     to buy room is the header, already down to a 58px logo in a 70px bar.
-     Re-run the geometry test before touching anything here. */
+     and it spent the budget exactly: the heading's letters ended at 659px on an
+     iPhone 14, which is the fold — zero margin — and 8px above it on an
+     iPhone 15/16.
+
+     DECISION CHANGED, 2026-08-14 — read before "fixing" this back. David asked
+     for another 5px in BOTH gaps (header → "?" 49px → 54px, and promise → The
+     Fee Calculator 73px → 78px) and explicitly released the first-screen
+     constraint that had been rationing them: "I'm not concerned about the fee
+     calculator being below the fold on older phones, I think the visual clarity
+     is more important — if they came to the site from the QR code, they will at
+     least scroll down some." So the heading may now cross the fold on the
+     smallest profiles by design. tests/home-first-screen.mjs still measures the
+     geometry and still asserts the heading is actually PAINTED (the invisible-
+     heading defect it was written for is unrelated to the fold and must stay
+     caught); only its fold-clearance expectation moved. */
   return (
     <section
       data-url-eval-section="opening-promise"
-      className="w-full bg-[#EEF0F5] pb-[73px] text-center text-[#10233A] sm:pb-[110px]"
+      className="w-full bg-[#EEF0F5] pb-[78px] text-center text-[#10233A] sm:pb-[110px]"
     >
-      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[64px] pb-11 sm:pt-20 sm:pb-20">
-        {/* 48.3% rather than 47% on mobile. The mark is centred as a share of
+      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[69px] pb-11 sm:pt-20 sm:pb-20">
+        {/* 49.6% rather than 47% on mobile. The mark is centred as a share of
             the hero's height, so growing the hero above it only moves it down
             by that fraction — 5px of new padding would have opened the gap
-            David measured by about 2px. The extra 1.3 points makes up the
-            difference, so the visible gap between the header and the top of the
-            "?" grows the full 5px he asked for (David, 2026-08-12). Desktop is
-            untouched. */}
+            David measured by about 2px. Each +1.3 points makes up the
+            difference for one such 5px step, so the visible gap between the
+            header and the top of the "?" grows the full 5px he asked for:
+            47% → 48.3% bought the first step (David, 2026-08-12) and
+            48.3% → 49.6% buys the second (David, 2026-08-14, gap now 54px).
+            Desktop is untouched. tests/home-first-screen.mjs measures the gap
+            for real — trust it over arithmetic here. */}
         <div
           aria-hidden="true"
           data-hero-mark
-          className="pointer-events-none absolute left-1/2 top-[48.3%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
+          className="pointer-events-none absolute left-1/2 top-[49.6%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
           style={{ fontFamily: '"Satoshi", var(--font-sans), sans-serif' }}
         >
           ?
@@ -1192,28 +1204,21 @@ export function CostAnalysisCalculator({
         initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, ease: "easeOut" }}
-        className="mx-auto flex w-full max-w-[1380px] flex-col gap-3 text-left sm:flex-row sm:items-end sm:justify-between"
+        className="mx-auto flex w-full max-w-[1380px] flex-col gap-3 text-left"
       >
         <div className="min-w-0">
           <h2 className="text-[clamp(2rem,8vw,3.25rem)] font-bold leading-[1.02] tracking-normal text-[#10233A]">
             The Fee Calculator
           </h2>
           <p className="mt-1 max-w-2xl text-base leading-6 text-[#52657A] sm:text-lg">
-            Calculate your potential additional wealth using your own numbers.
+            Use the calculator to see how much additional wealth you would keep by paying $100 a month instead of
+            an asset-based fee.
           </p>
         </div>
-        <div className="flex w-full max-w-full flex-col items-start gap-2 sm:w-auto sm:items-end">
-          <div className="inline-flex min-h-11 w-fit max-w-full items-center gap-2 rounded-md border border-[#BFD4C8] bg-white px-3 py-2 shadow-[0_10px_28px_rgba(17,33,52,0.08)] sm:px-4">
-            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#5E6F80]">
-              Potential savings
-            </span>
-            {/* No marker here. The results block carries exactly one, on its
-                Amount column (David, 2026-08-12). */}
-            <span className="text-xl font-bold leading-none text-[#007A2F] tabular-nums sm:text-2xl">
-              {formatCurrencyFloored(projection.savings)}
-            </span>
-          </div>
-        </div>
+        {/* The "Potential savings" badge that sat here was removed as
+            redundant (David, 2026-08-14): the same figure already headlines
+            the hero above and the results block below, so a third copy beside
+            the heading only competed with them. */}
       </motion.div>
     </div>
   ) : null;

@@ -53,24 +53,40 @@ async function waitForPage(url, child) {
 
    David accepted a heading that reaches the fold ("I think the clear separation
    results in a feeling of more simplicity", 2026-08-11); he did not accept one
-   whose words are cut. So: ink must clear the fold on every profile, and the
-   line box is allowed to overrun it only by the empty leading below. */
+   whose words are cut.
+
+   DECISION CHANGED, 2026-08-14 — read before "fixing" this back. David asked
+   for 5px more between the header and the "?" and another 5px between the
+   promise and "The Fee Calculator", and released the clearance requirement
+   outright to pay for them: "I'm not concerned about the fee calculator being
+   below the fold on older phones, I think the visual clarity is more important
+   — if they came to the site from the QR code, they will at least scroll down
+   some." So no profile asserts clearance any more. Every profile now carries a
+   measured shortfall budget instead, which still catches the thing that
+   actually matters: silent drift. The budgets below are the real measurements
+   plus a few pixels of headroom, not guesses.
+
+   What did NOT change: the opacity check. It was written for a different
+   defect — a heading that renders at opacity 0 and only appears once you
+   scroll — and that has nothing to do with the fold, so it was hoisted OUT of
+   the clearance branch and now runs on every profile. */
 const PROFILES = [
-  { name: "iPhone 15/16, 14 Pro", width: 393, usable: 667, inkMustClear: true },
-  { name: "iPhone 14, 13, 12", width: 390, usable: 659, inkMustClear: true },
-  /* 375px is this project's mobile-first baseline, so it is measured — but the
-     heading was already below the fold on these two before any of this work,
-     and David accepted that in as many words: "That may partially obscure 'the
-     fee calculator' on some smaller phones, but I'm willing to live with that"
-     (2026-08-11). Asserting clearance here would assert a fiction. What is
-     worth locking is that the accepted shortfall does not quietly deepen. */
-  { name: "iPhone 13 mini", width: 375, usable: 635, inkMustClear: false, maxShortfall: 26 },
-  { name: "iPhone SE", width: 375, usable: 553, inkMustClear: false, maxShortfall: 108 },
+  { name: "iPhone 15/16, 14 Pro", width: 393, usable: 667, maxShortfall: 8 },
+  { name: "iPhone 14, 13, 12", width: 390, usable: 659, maxShortfall: 18 },
+  /* 375px is this project's mobile-first baseline, so it is measured — and the
+     heading was already below the fold on these two long before the 2026-08-14
+     change, which David accepted in as many words: "That may partially obscure
+     'the fee calculator' on some smaller phones, but I'm willing to live with
+     that" (2026-08-11). */
+  { name: "iPhone 13 mini", width: 375, usable: 635, maxShortfall: 36 },
+  { name: "iPhone SE", width: 375, usable: 553, maxShortfall: 118 },
 ];
 
-/* If the line box ever overruns the fold by more than the leading it should
-   have, the layout has drifted and the ink check is about to start failing. */
-const MAX_LINE_BOX_OVERRUN_PX = 12;
+/* The line-box overrun and minimum-visible-heading budgets that used to live
+   here were both fold-clearance guards, and clearance stopped being a
+   requirement on 2026-08-14 (see the PROFILES note). Each profile's measured
+   `maxShortfall` now catches the same drift directly, so they were removed
+   rather than left as dead constants. */
 
 /* Read a geometry sample repeatedly until two consecutive samples are
    identical, so a font swap or a recompile mid-measurement cannot hand back a
@@ -108,15 +124,15 @@ async function settle(read, label) {
   );
 }
 
-/* At least this much of the heading must be on screen for it to read as a
-   heading rather than a sliver. */
-const MIN_VISIBLE_HEADING_PX = 24;
-
-/* David asked for this gap by eye and by number — 44px was too tight, 49px is
-   what he approved (2026-08-12). It is not a free value: the "?" is centred as
-   a share of the hero's height, so anything that changes the hero's padding
-   moves it by a fraction and quietly reopens the question. */
-const MARK_GAP_PX = 49;
+/* David asked for this gap by eye and by number — 44px was too tight, 49px was
+   approved 2026-08-12, and he asked for 5px more on 2026-08-14 (→ 54px). It is
+   not a free value: the "?" is centred as a share of the hero's height, so
+   anything that changes the hero's padding moves it by a fraction and quietly
+   reopens the question. Measured at 55px after the 2026-08-14 change — one
+   pixel over the request, which is what the ±1 tolerance below is for: the
+   mark's anchor is a fractional percentage of the hero's height, so it cannot
+   be dialled to an exact pixel without over-fitting one viewport. */
+const MARK_GAP_PX = 54;
 const MARK_GAP_TOLERANCE_PX = 1;
 
 let nextProcess;
@@ -240,43 +256,26 @@ try {
       `${profile.name}: ink ends ${geometry.inkBottom}px vs ${profile.usable}px usable, ? gap ${geometry.markGap}px`,
     );
 
-    if (profile.inkMustClear) {
-      /* Checked before position, because a heading that is above the fold and
-         painted at opacity 0 is not on the first screen in any sense the
-         visitor cares about. */
-      assert.ok(
-        geometry.headingOpacity > 0.99,
-        `${profile.name}: "The Fee Calculator" is on the first screen but painted at opacity ${geometry.headingOpacity} —` +
-          ` its entrance animation has not fired, so a visitor landing here sees blank space where the heading should be.` +
-          ` It only appears once they scroll.`,
-      );
+    /* Runs on EVERY profile, and deliberately not as part of any fold check:
+       a heading painted at opacity 0 is invisible whether it sits above the
+       fold or below it. This is the guard for the 2026-08-12 defect where the
+       entrance animation never fired and visitors saw blank space until they
+       scrolled. It must survive any future spacing decision. */
+    assert.ok(
+      geometry.headingOpacity > 0.99,
+      `${profile.name}: "The Fee Calculator" is painted at opacity ${geometry.headingOpacity} —` +
+        ` its entrance animation has not fired, so a visitor landing here sees blank space where the heading` +
+        ` should be. It only appears once they scroll.`,
+    );
 
-      assert.ok(
-        shortfall <= 0,
-        `${profile.name}: the letters of "The Fee Calculator" end at ${geometry.inkBottom}px against ${profile.usable}px` +
-          ` of usable height — the heading's words are cut off on the first screen.`,
-      );
-
-      assert.ok(
-        geometry.headingBottom - profile.usable <= MAX_LINE_BOX_OVERRUN_PX,
-        `${profile.name}: the heading's line box overruns the fold by ${geometry.headingBottom - profile.usable}px,` +
-          ` past the ${MAX_LINE_BOX_OVERRUN_PX}px that should be empty leading. The layout has drifted — re-measure before shipping.`,
-      );
-
-      assert.ok(
-        profile.usable - geometry.headingTop >= MIN_VISIBLE_HEADING_PX,
-        `${profile.name}: only ${profile.usable - geometry.headingTop}px of the heading is on screen,` +
-          ` under the ${MIN_VISIBLE_HEADING_PX}px needed to read as a heading`,
-      );
-    } else {
-      /* Known and accepted below the fold. The only regression that matters is
-         it getting worse. */
-      assert.ok(
-        shortfall <= profile.maxShortfall,
-        `${profile.name}: the heading now sits ${shortfall}px below the fold, past the ${profile.maxShortfall}px` +
-          ` David accepted. Something above the calculator grew — this screen was already the compromise.`,
-      );
-    }
+    /* Clearance is no longer required on any profile (David, 2026-08-14 — see
+       the PROFILES note above). What is still locked is drift: the heading may
+       sit below the fold by the measured amount, and no further. */
+    assert.ok(
+      shortfall <= profile.maxShortfall,
+      `${profile.name}: the heading now sits ${shortfall}px below the fold, past the ${profile.maxShortfall}px` +
+        ` measured when David approved this spacing. Something above the calculator grew — re-measure before shipping.`,
+    );
 
     await page.close();
   }
@@ -327,10 +326,10 @@ try {
     );
   }
 
-  const cleared = PROFILES.filter((profile) => profile.inkMustClear).length;
   console.log(
-    `First-screen geometry passed on ${PROFILES.length} iPhone profiles (${cleared} must clear the fold, ` +
-      `${PROFILES.length - cleared} accepted below it):\n  ${measurements.join("\n  ")}\n` +
+    `First-screen geometry passed on ${PROFILES.length} iPhone profiles (heading painted on every one; ` +
+      `fold clearance not required since 2026-08-14, each profile bounded by its measured shortfall):\n  ` +
+      `${measurements.join("\n  ")}\n` +
       "Header 62px; results bounded by two equal full-width rules; Yes/No 12px right of their lists.",
   );
 } finally {

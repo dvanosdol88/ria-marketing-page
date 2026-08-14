@@ -42,45 +42,61 @@ function splitPoolAlternately(quotes: FeeQuote[]): [FeeQuote[], FeeQuote[]] {
   return [top, bottom];
 }
 
+/**
+ * Attribution sits in its own left-hand column beneath the portrait rather
+ * than under the quote (David, 2026-08-14), which also does real work on the
+ * jerk problem: the portrait + name + title block sets a tall floor for every
+ * card, so the height difference between a one-line quote and a four-line one
+ * shrinks dramatically. The parent slot animates whatever difference is left.
+ */
 function QuoteCard({ quote, counter }: { quote: FeeQuote; counter: string }) {
   const portraitSrc = FEE_QUOTE_PORTRAITS[quote.lastName];
   const portraitOffset = FEE_QUOTE_PORTRAIT_OFFSET[quote.lastName];
 
   return (
-    <figure className="flex items-start gap-4 rounded-2xl border border-[#D8E2EA] bg-white p-4 shadow-[0_10px_30px_rgba(17,33,52,0.07)] sm:gap-5 sm:p-6">
-      {portraitSrc ? (
-        <Image
-          src={portraitSrc}
-          alt=""
-          width={128}
-          height={128}
-          className="h-14 w-14 shrink-0 rounded-full border border-[#E4ECF2] bg-[#F4F7FA] object-cover sm:h-16 sm:w-16"
-          style={portraitOffset ? { objectPosition: `50% ${portraitOffset}%` } : undefined}
-          draggable={false}
-        />
-      ) : (
-        <span aria-hidden="true" className="h-14 w-14 shrink-0 rounded-full bg-[#EAF1F8] sm:h-16 sm:w-16" />
-      )}
-      <div className="min-w-0 flex-1">
-        <blockquote className="text-[15px] font-medium leading-6 text-[#10233A] sm:text-base sm:leading-7">
-          <span aria-hidden="true" className="mr-0.5 font-black text-[#00A540]">
-            &ldquo;
+    /* Top-aligned on a phone, where the quote is tall enough to fill beside the
+       attribution column anyway; centred from sm up, where the wider card turns
+       a two-line quote into an obviously bottom-heavy card if it stays pinned
+       to the top of a ~150px portrait block. */
+    <figure className="relative flex min-h-[176px] items-start gap-4 rounded-2xl border border-[#D8E2EA] bg-white p-4 shadow-[0_10px_30px_rgba(17,33,52,0.07)] sm:items-center sm:gap-6 sm:p-6">
+      <div className="flex w-[96px] shrink-0 flex-col sm:w-[112px]">
+        {portraitSrc ? (
+          <Image
+            src={portraitSrc}
+            alt=""
+            width={192}
+            height={192}
+            className="h-20 w-20 rounded-full border border-[#E4ECF2] bg-[#F4F7FA] object-cover sm:h-[88px] sm:w-[88px]"
+            style={portraitOffset ? { objectPosition: `50% ${portraitOffset}%` } : undefined}
+            draggable={false}
+          />
+        ) : (
+          <span aria-hidden="true" className="h-20 w-20 rounded-full bg-[#EAF1F8] sm:h-[88px] sm:w-[88px]" />
+        )}
+        <figcaption className="mt-2.5">
+          <span className="block text-[13px] font-bold leading-4 text-[#062B43] sm:text-sm">
+            {quote.firstName} {quote.lastName}
           </span>
-          {quote.quote}
-          <span aria-hidden="true" className="ml-0.5 font-black text-[#00A540]">
-            &rdquo;
-          </span>
-        </blockquote>
-        <figcaption className="mt-2.5 flex items-baseline gap-3 text-sm leading-5">
-          <span className="min-w-0 flex-1">
-            <span className="font-bold text-[#062B43]">
-              {quote.firstName} {quote.lastName}
-            </span>
-            <span className="text-[#52657A]"> · {quote.title}</span>
-          </span>
-          <span className="shrink-0 text-[11px] font-semibold tabular-nums text-[#AFC2D0]">{counter}</span>
+          <span className="mt-1 block text-[11px] leading-4 text-[#52657A]">{quote.title}</span>
         </figcaption>
       </div>
+
+      <blockquote className="min-w-0 flex-1 pt-0.5 text-[15px] font-medium leading-6 text-[#10233A] sm:text-base sm:leading-7">
+        <span aria-hidden="true" className="mr-0.5 font-black text-[#00A540]">
+          &ldquo;
+        </span>
+        {quote.quote}
+        <span aria-hidden="true" className="ml-0.5 font-black text-[#00A540]">
+          &rdquo;
+        </span>
+      </blockquote>
+
+      <span
+        aria-hidden="true"
+        className="absolute bottom-3 right-4 text-[11px] font-semibold tabular-nums text-[#C2CFDA]"
+      >
+        {counter}
+      </span>
     </figure>
   );
 }
@@ -126,10 +142,28 @@ function QuoteSlot({
   }, [isInView, hasInteracted, prefersReducedMotion, nudge, nudgeDelayMs]);
 
   const slideDistance = prefersReducedMotion ? 0 : 320;
+  const slideTransition = {
+    duration: prefersReducedMotion ? 0.15 : 0.34,
+    ease: [0.32, 0.72, 0, 1] as const,
+  };
+  /**
+   * The jerk fix (David, 2026-08-14). Quotes are different lengths, so each
+   * swap changed the card's height instantly — the card snapped taller or
+   * shorter and everything beneath it jumped. `layout` on this shell makes
+   * framer-motion measure before and after and tween the difference on the
+   * same curve as the slide, so the deck settles instead of snapping. It
+   * lives on the SHELL, never on the dragged element: a layout animation on
+   * a dragging node fights the drag transform.
+   */
+  const layoutTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.42, ease: [0.32, 0.72, 0, 1] as const };
 
   return (
-    <div
+    <motion.div
       ref={slotRef}
+      layout
+      transition={layoutTransition}
       role="group"
       aria-roledescription="carousel"
       aria-label={slotLabel}
@@ -180,18 +214,24 @@ function QuoteSlot({
             initial="enter"
             animate="center"
             exit="exit"
-            transition={{ duration: prefersReducedMotion ? 0.15 : 0.34, ease: [0.32, 0.72, 0, 1] }}
+            transition={slideTransition}
           >
             <QuoteCard quote={quotes[index]} counter={`${index + 1} / ${quotes.length}`} />
           </motion.div>
         </AnimatePresence>
       </motion.div>
-    </div>
+    </motion.div>
   );
 }
 
 export function FeeQuoteDeck() {
   const [topQuotes, bottomQuotes] = useMemo(() => splitPoolAlternately(FEE_QUOTES), []);
+  const prefersReducedMotion = useReducedMotion();
+  /** Matches the slots' own layout tween so the hint line — and the gap above
+   *  the firm card below it — glide with the deck rather than jumping. */
+  const layoutTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.42, ease: [0.32, 0.72, 0, 1] as const };
 
   return (
     <section
@@ -211,12 +251,16 @@ export function FeeQuoteDeck() {
           <QuoteSlot quotes={bottomQuotes} slotLabel="Bottom quote" nudgeDelayMs={1450} />
         </div>
 
-        <p className="mt-4 text-center text-xs font-semibold text-[#52657A]">
+        <motion.p
+          layout
+          transition={layoutTransition}
+          className="mt-4 text-center text-xs font-semibold text-[#52657A]"
+        >
           <span className="sm:hidden">&lsaquo; Swipe either quote for more — each moves on its own &rsaquo;</span>
           <span className="hidden sm:inline">
             Drag either quote sideways for more — each moves on its own
           </span>
-        </p>
+        </motion.p>
       </div>
     </section>
   );

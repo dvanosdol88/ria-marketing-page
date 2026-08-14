@@ -42,17 +42,25 @@ export function SmarterWayWealthVisitCard({
   return (
     /* The small-iPhone-height spacer (pt-[667px]) that used to sit here now
        belongs to the quote deck above: the pause still exists, but it carries
-       the fee quotes instead of empty space (David approved from the
-       2026-08-13 mockups). This section keeps only its own breathing room;
-       tests/home-wwwh.mjs asserts the spacer stays retired. */
+       the fee quotes instead of empty space (shipped 2026-08-13; the guard
+       test asserts the spacer stays retired). This section keeps only its
+       own breathing room. */
     <section
       aria-label="Visit Smarter Way Wealth"
       className="w-full bg-[#EEF0F5] px-4 pb-12 pt-16 sm:px-6 sm:pb-16 sm:pt-24"
     >
-      <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl bg-[#007A2F] text-white shadow-[0_16px_42px_rgba(6,43,67,0.16)]">
+      {/* Premium pass, 2026-08-14 (David: "make the Visit Smarter Way Wealth
+          button look more premium"). Everything here is depth and typography —
+          an inset hairline so the block has a milled edge, a deeper green-tinted
+          shadow that lifts on hover, a finer letterspaced eyebrow flanked by
+          rules, and more air around the wordmark. The fill stays FLAT #007A2F
+          on purpose: the solid-green-single-unit decision is a lock, and the
+          guard test rejects any decorative blended fill (it greps this file's
+          own source, so do not name that CSS function even in a comment). */}
+      <div className="group/card mx-auto max-w-3xl overflow-hidden rounded-2xl bg-[#007A2F] text-white shadow-[0_18px_46px_rgba(0,122,47,0.22)] ring-1 ring-inset ring-white/15 transition-[transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:shadow-[0_28px_66px_rgba(0,122,47,0.30)]">
         <a
           aria-label="Visit Smarter Way Wealth home page (opens in a new tab)"
-          className="group grid min-h-52 place-items-center px-5 py-8 text-center !text-white !no-underline transition-colors duration-200 hover:bg-white/10 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-6px] focus-visible:outline-white sm:px-10"
+          className="group grid min-h-52 place-items-center px-5 py-11 text-center !text-white !no-underline transition-colors duration-200 hover:bg-white/[0.07] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-6px] focus-visible:outline-white sm:px-10 sm:py-12"
           data-posthog-cta="true"
           data-posthog-cta-label="Visit Smarter Way Wealth"
           data-posthog-cta-location="home_firm_visit_card"
@@ -60,25 +68,34 @@ export function SmarterWayWealthVisitCard({
           rel="noreferrer"
           target="_blank"
         >
-          <span className="text-sm font-extrabold uppercase tracking-[0.24em]">Visit</span>
+          <span className="flex items-center gap-3 text-[11px] font-extrabold uppercase tracking-[0.34em] text-white/75">
+            <span aria-hidden="true" className="h-px w-7 bg-white/30" />
+            <span>Visit</span>
+            <span aria-hidden="true" className="h-px w-7 bg-white/30" />
+          </span>
           <Image
             alt="Smarter Way Wealth"
-            className="mt-4 h-auto w-[min(88%,22rem)] brightness-0 invert"
+            className="mt-6 h-auto w-[min(86%,21rem)] brightness-0 invert transition-transform duration-300 group-hover:scale-[1.015]"
             height={144}
             src="/brand/logo.svg"
             width={360}
           />
-          <ArrowUpRight
+          <span
             aria-hidden="true"
-            className="mt-4 h-5 w-5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            strokeWidth={2.5}
-          />
+            className="mt-7 flex h-10 w-10 items-center justify-center rounded-full bg-white/12 ring-1 ring-inset ring-white/25 transition-colors duration-200 group-hover:bg-white/22"
+          >
+            <ArrowUpRight
+              aria-hidden="true"
+              className="h-5 w-5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              strokeWidth={2.5}
+            />
+          </span>
         </a>
 
-        <nav aria-label="Explore Smarter Way Wealth" className="border-t border-white/30">
+        <nav aria-label="Explore Smarter Way Wealth" className="border-t border-white/25">
           {destinations.map((destination) => (
             <a
-              className="group flex min-h-16 items-center justify-between gap-4 border-b border-white/30 px-5 py-4 text-base font-semibold leading-6 !text-white !no-underline transition-colors duration-200 last:border-b-0 hover:bg-white/10 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-6px] focus-visible:outline-white sm:px-8 sm:text-lg"
+              className="group flex min-h-16 items-center justify-between gap-4 border-b border-white/25 px-5 py-4 text-base font-semibold leading-6 !text-white !no-underline transition-colors duration-200 last:border-b-0 hover:bg-white/10 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-6px] focus-visible:outline-white sm:px-8 sm:text-lg"
               data-posthog-cta="true"
               data-posthog-cta-label={destination.label}
               data-posthog-cta-location={destination.location}
@@ -87,12 +104,17 @@ export function SmarterWayWealthVisitCard({
               rel="noreferrer"
               target="_blank"
             >
-              <span>{destination.text}</span>
-              <ArrowUpRight
+              <span className="transition-transform duration-200 group-hover:translate-x-1">{destination.text}</span>
+              <span
                 aria-hidden="true"
-                className="h-5 w-5 shrink-0 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                strokeWidth={2.5}
-              />
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/12 transition-colors duration-200 group-hover:bg-white/22"
+              >
+                <ArrowUpRight
+                  aria-hidden="true"
+                  className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  strokeWidth={2.5}
+                />
+              </span>
             </a>
           ))}
         </nav>
