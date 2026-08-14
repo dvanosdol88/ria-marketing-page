@@ -25,7 +25,13 @@ try {
   const dirty = run('git status --porcelain') !== '';
   const commitsToday = run('git log --oneline --since=midnight') !== '';
 
-  const today = new Date().toISOString().slice(0, 10);
+  // REPO-LOG entries are dated by the Eastern business day (see the file's
+  // own headers), so "today" must be computed on that clock — the UTC date
+  // rolls over at 8pm EDT and made this guard cry wolf every evening
+  // against a journal entry that was correctly dated. en-CA => YYYY-MM-DD.
+  const today = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/New_York',
+  }).format(new Date());
   let logHasToday = false;
   try {
     logHasToday =
