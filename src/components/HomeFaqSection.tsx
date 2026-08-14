@@ -70,11 +70,20 @@ function FaqLine({
       </button>
       {open ? (
         <div>
-          {answer.split("\n\n").map((paragraph) => (
-            <p key={paragraph.slice(0, 32)} className={ANSWER_CLASS}>
-              {paragraph}
-            </p>
-          ))}
+          {/* The stored answers were written for a page that listed all
+              eighteen questions, so some end with a "See also:" pointing at
+              siblings. Only two questions live here now, so those pointers
+              would send the reader after questions this page does not have.
+              Dropped at render rather than edited out of the data, because the
+              full set still carries them on smarterwaywealth.com. */}
+          {answer
+            .split("\n\n")
+            .filter((paragraph) => !paragraph.trimStart().startsWith("See also:"))
+            .map((paragraph) => (
+              <p key={paragraph.slice(0, 32)} className={ANSWER_CLASS}>
+                {paragraph}
+              </p>
+            ))}
           {footnote ? (
             <p className="mt-3 max-w-3xl text-xs leading-5 text-[#8A939E]">
               {footnoteMarker} {footnote}
