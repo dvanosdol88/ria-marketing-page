@@ -316,7 +316,7 @@ export function SiteNav() {
                     key={link.href}
                     href={link.href as any}
                     data-posthog-cta={isTracked ? "true" : undefined}
-                    data-posthog-cta-label={isTracked ? link.label : undefined}
+                    data-posthog-cta-label={isTracked ? (link.ctaLabel ?? link.label) : undefined}
                     data-posthog-cta-location={isTracked ? link.ctaLocation : undefined}
                     className={`relative inline-flex min-h-11 items-center rounded-md px-3 py-2 text-sm transition-[color,font-weight] duration-300 ease-out ${
                       isFirstSecondary ? "ml-4" : ""
@@ -419,7 +419,7 @@ export function SiteNav() {
                 href={link.href as any}
                 onClick={closeDrawer}
                 data-posthog-cta={isTracked ? "true" : undefined}
-                data-posthog-cta-label={isTracked ? link.label : undefined}
+                data-posthog-cta-label={isTracked ? (link.ctaLabel ?? link.label) : undefined}
                 data-posthog-cta-location={isTracked ? "site_nav_mobile" : undefined}
                 className={`flex items-center gap-3 rounded-lg px-3 py-3.5 text-base underline-offset-8 transition-[color,font-weight,text-decoration-color] duration-300 ${
                   isFirstSecondary ? "mt-3 border-t border-neutral-100 pt-4" : ""

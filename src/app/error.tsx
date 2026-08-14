@@ -21,7 +21,7 @@ export default function Error({
       <div className="space-y-3">
         <h1 className="text-3xl font-semibold text-neutral-900 sm:text-4xl">Something went wrong.</h1>
         <p className="max-w-xl text-base text-neutral-600 sm:text-lg">
-          We hit a snag loading this page. Try again, or head back to the calculator in a moment.
+          We hit a snag loading this page. Try again, or head back to Your Fee Calculator in a moment.
         </p>
       </div>
       <div className="flex flex-wrap items-center justify-center gap-3">

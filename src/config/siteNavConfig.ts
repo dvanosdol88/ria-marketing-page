@@ -10,6 +10,15 @@ export interface SiteNavLink {
   track?: boolean;
   ctaLocation?: string;
   /**
+   * Analytics label, for the case where it must differ from the visible one.
+   * PostHog groups clicks by this string, so renaming a nav item would
+   * otherwise split its click history into a before and an after — the
+   * mailer/QR scoreboard reads these. Set it to the ORIGINAL label when the
+   * visible wording changes, so the trend line stays continuous.
+   * Defaults to `label`.
+   */
+  ctaLabel?: string;
+  /**
    * Visual weight. "primary" = main root actions; "secondary" = ancillary
    * navigation (How? / FAQ). Secondary items render muted with extra left
    * margin so the primary actions read as the core message.
@@ -32,7 +41,10 @@ export interface SiteNavLink {
  */
 export const siteNavLinks: SiteNavLink[] = [
   {
-    label: "Fee Calculator",
+    /* Renamed 2026-08-14 (David): the calculator is "Your Fee Calculator"
+       across both sites. ctaLabel keeps the analytics history continuous. */
+    label: "Your Fee Calculator",
+    ctaLabel: "Fee Calculator",
     href: "/#calculator",
     tier: "primary",
     track: true,

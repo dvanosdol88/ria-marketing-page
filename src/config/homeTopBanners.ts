@@ -60,7 +60,7 @@ export const homeTopBanners: Record<HomeTopBannerId, HomeTopBanner> = {
     eyebrow: "The advisor standard matters",
     headline: "Built by a CFA/CFP® fiduciary, not an asset-based fee model.",
     body:
-      "The calculator gives you the math first. Smarter Way Wealth gives you the firm standard behind the math: serious planning, clear tradeoffs, and a flat monthly fee.",
+      "Your Fee Calculator gives you the math first. Smarter Way Wealth gives you the firm standard behind the math: serious planning, clear tradeoffs, and a flat monthly fee.",
     ctaLabel: "Meet David at Smarter Way Wealth",
     mobileCtaLabel: "Meet David",
     ctaHref: "https://smarterwaywealth.com/meet",

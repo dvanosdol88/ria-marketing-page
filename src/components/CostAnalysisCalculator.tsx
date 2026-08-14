@@ -1209,7 +1209,7 @@ export function CostAnalysisCalculator({
       >
         <div className="min-w-0">
           <h2 className="text-[clamp(2rem,8vw,3.25rem)] font-bold leading-[1.02] tracking-normal text-[#10233A]">
-            The Fee Calculator
+            Your Fee Calculator
           </h2>
           <p className="mt-1 max-w-2xl text-base leading-6 text-[#52657A] sm:text-lg">
             Use the calculator to see how much additional wealth you would keep by paying $100 a month instead of
