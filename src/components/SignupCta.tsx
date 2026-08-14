@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { signupCta } from "@/config/signupCta";
 
 type SignupCtaProps = {
@@ -18,9 +19,10 @@ const INLINE_PRIMARY_BUTTON_CLASS =
   "flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#00D8FF] px-6 text-center text-base font-bold !text-[#052E45] !no-underline shadow-sm transition hover:bg-[#3FE3FF] hover:!text-[#052E45] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D8FF]";
 
 /** The retained full-card CTA is intentionally quiet: the white pill is the
- * single primary action after the headline/body were deprecated. */
+ * single primary action after the headline/body were deprecated. The group/
+ * arrow treatment is presentation only — one button, same label, same door. */
 const BLOCK_PRIMARY_BUTTON_CLASS =
-  "flex min-h-[48px] w-full items-center justify-center rounded-full bg-white px-6 text-center text-base font-bold !text-[#052E45] !no-underline shadow-sm transition hover:bg-white/90 hover:!text-[#052E45] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
+  "group flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-white px-6 text-center text-base font-bold !text-[#052E45] !no-underline shadow-[0_10px_26px_rgba(3,26,42,0.35)] transition hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_16px_34px_rgba(3,26,42,0.45)] hover:!text-[#052E45] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
 
 /**
  * Secondary next step. Deliberately a plain underlined link, never a second
@@ -64,6 +66,13 @@ export function SignupCta({
       data-posthog-cta-location={`${location}_primary`}
     >
       {signupCta.primary.label}
+      {variant === "block" ? (
+        <ArrowRight
+          aria-hidden="true"
+          className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:translate-x-1"
+          strokeWidth={2.75}
+        />
+      ) : null}
     </Link>
   );
 
@@ -88,20 +97,31 @@ export function SignupCta({
 
   return (
     <section className="w-full bg-[#EEF0F5] px-4 py-10 sm:px-6 sm:py-14">
-      <div className="mx-auto max-w-3xl rounded-2xl bg-[#064B84] p-6 text-white shadow-[0_18px_44px_rgba(6,75,132,0.22)] sm:p-10">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/70">
-          {signupCta.block.eyebrow}
-        </p>
-
-        <div className="mt-6 sm:mx-auto sm:max-w-md">{primary}</div>
-
-        <div className="mt-6 border-t border-white/20 pt-6">
-          <SecondaryLink location={location} />
+      <div className="relative mx-auto max-w-3xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0A5A9C] via-[#064B84] to-[#04324F] p-6 text-white shadow-[0_22px_54px_rgba(6,75,132,0.30)] sm:p-10">
+        {/* Quiet brand mark in the card's corner — the same three rising bars
+            as the logo, screened way back. Identity, not decoration; carries
+            no copy, so the deprecated headline/body stay deprecated. */}
+        <div aria-hidden="true" className="pointer-events-none absolute -right-4 -top-8 flex items-end gap-2.5 opacity-[0.08] sm:-right-2 sm:gap-3">
+          <span className="h-16 w-6 rounded-sm bg-white sm:h-20 sm:w-7" />
+          <span className="h-24 w-6 rounded-sm bg-white sm:h-32 sm:w-7" />
+          <span className="h-32 w-6 rounded-sm bg-white sm:h-44 sm:w-7" />
         </div>
 
-        <p className="mt-6 text-[11px] leading-4 text-white/60">
-          {signupCta.disclosure}
-        </p>
+        <div className="relative">
+          <p className="text-xs font-bold uppercase tracking-[0.24em] text-[#8ED3A8]">
+            {signupCta.block.eyebrow}
+          </p>
+
+          <div className="mt-6 sm:mx-auto sm:max-w-md">{primary}</div>
+
+          <div className="mt-6 rounded-xl bg-white/[0.07] px-4 py-4 ring-1 ring-white/10 sm:px-6">
+            <SecondaryLink location={location} />
+          </div>
+
+          <p className="mt-5 text-[11px] leading-4 text-white/60">
+            {signupCta.disclosure}
+          </p>
+        </div>
       </div>
     </section>
   );
