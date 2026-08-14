@@ -157,7 +157,7 @@ export default function BecomeAClientPage() {
 
       <section className="section-shell mt-8 max-w-2xl">
         <Link
-          href="/faq"
+          href="/#faq"
           className="text-sm font-semibold text-[#064B84] underline underline-offset-4"
         >
           Read the FAQ first

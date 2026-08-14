@@ -100,7 +100,6 @@ const SECTIONS: Section[] = [
     color: 'text-amber-700',
     bgColor: 'bg-amber-600',
     items: [
-      { route: '/save', title: 'Save', description: 'Fee projection chart and savings meters' },
       { route: '/save-a-ton', title: 'Save A Ton', description: 'Placeholder for merged Save content', highlight: true },
     ],
   },
@@ -111,8 +110,6 @@ const SECTIONS: Section[] = [
     color: 'text-teal-700',
     bgColor: 'bg-teal-600',
     items: [
-      { route: '/how-it-works', title: 'How It Works', description: 'Production route' },
-      { route: '/how-it-works/substitution', title: 'Portfolio Architect', description: 'Production substitution route', highlight: true },
     ],
   },
   {
@@ -123,7 +120,6 @@ const SECTIONS: Section[] = [
     bgColor: 'bg-slate-600',
     items: [
       { route: '/', title: 'Home', description: 'Production home page' },
-      { route: '/faq', title: 'FAQ', description: 'Placeholder shell' },
     ],
   },
 ];

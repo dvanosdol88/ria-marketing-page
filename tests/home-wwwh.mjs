@@ -572,14 +572,24 @@ test("advanced calculator motion preference is gated until after hydration", () 
   assert.match(advancedCalculatorCtaSource, /\{!shouldReduceMotion &&/);
 });
 
-test("site navigation preserves working items and adds tracked Fee Calculator", () => {
-  const labels = ["Save", "Rates", "How?", "FAQ"];
-  for (const label of labels) {
+// DECISION CHANGED, 2026-08-14 — read before "fixing" this back. This test used
+// to require Save, Rates, How? and FAQ all remain in the nav. David simplified
+// the bar to move visitors to smarterwaywealth.com faster: "We are simplifying
+// YA-PT... To that end, we will simplify the nav bar." Save pointed at this same
+// homepage; Rates and How? pointed at /savings-rates and /how-it-works, both now
+// retired with redirects. What the nav must still do is lock the two survivors —
+// and lock that the retired three do NOT quietly return.
+test("site navigation is the simplified pair, with the retired items gone", () => {
+  for (const label of ["Save", "Rates", "How?"]) {
     assert.ok(
-      navConfigSource.includes(`label: "${label}"`),
-      `existing ${label} navigation item must remain`,
+      !navConfigSource.includes(`label: "${label}"`),
+      `the retired ${label} navigation item must not come back`,
     );
   }
+  assert.ok(navConfigSource.includes('label: "FAQ"'), "FAQ must remain in the nav");
+  // FAQ now scrolls to the homepage section rather than leaving for /faq,
+  // which is retired.
+  assert.match(navConfigSource, /label: "FAQ",\s*href: "\/#faq"/);
 
   const feeIndex = navConfigSource.indexOf('label: "Fee Calculator"');
   assert.ok(feeIndex >= 0, "Fee Calculator must exist");

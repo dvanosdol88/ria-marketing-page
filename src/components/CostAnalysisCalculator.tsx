@@ -20,6 +20,7 @@ import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
 import { HomeTopBanner } from "@/components/HomeTopBanner";
 import { FeeQuoteDeck } from "@/components/FeeQuoteDeck";
+import { HomeFaqSection } from "@/components/HomeFaqSection";
 import { SignupCta } from "@/components/SignupCta";
 import { SmarterWayWealthVisitCard } from "@/components/SmarterWayWealthVisitCard";
 /* PremiumPromisePreview (the Save / Upgrade / Improve video panel) is
@@ -1403,6 +1404,12 @@ export function CostAnalysisCalculator({
           advancedCalculatorHref={advancedCalculatorHref}
         />
       )}
+
+      {/* The FAQ is the last thing on the page now, and the nav's FAQ item
+          scrolls here rather than leaving for /faq — that route is retired
+          (David, 2026-08-14). Two questions and a door to the firm site's
+          full set. */}
+      {isSavingsCalculatorUpgrade && <HomeFaqSection />}
 
       {usesOpeningMarketingHero && (
         <SignupCta location="marketing_post_calculator" />

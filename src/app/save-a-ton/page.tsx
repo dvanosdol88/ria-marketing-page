@@ -43,12 +43,17 @@ export default function SaveATonPage() {
             >
               ← Improve Your Tools
             </Link>
-            <Link
-              href="/how-it-works"
+            {/* /how-it-works retired 2026-08-14; its client-facing content
+                moved to the firm site's How page, so this points there now
+                rather than at a redirect. */}
+            <a
+              href="https://smarterwaywealth.com/how"
+              target="_blank"
+              rel="noreferrer"
               className="rounded-full bg-brand-600 px-4 py-2 text-sm font-semibold text-white no-underline transition hover:bg-brand-700"
             >
               How It Works →
-            </Link>
+            </a>
           </div>
         </section>
       </ScrollReveal>
