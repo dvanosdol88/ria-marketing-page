@@ -1647,6 +1647,29 @@ function SeeOurMathBento({
 
   return (
     <>
+      {/* ORDER CHANGED, 2026-08-14 (David): "View calculation details" now sits
+          directly under the calculator, ahead of the poll and the share card.
+          It is the only one of the three that is about the number the visitor
+          just produced, so it belongs against the calculator; voting and
+          sharing are both things you do afterwards. The rule below separates
+          the two ideas — read your result, then act on it. */}
+      <motion.section
+        whileHover={{ y: -3, scale: 1.004 }}
+        transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
+        className="mb-5 min-w-0 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
+      >
+        <div className="flex items-center justify-between gap-4">
+          <div className="min-w-0">
+            <h3 className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
+              View calculation details
+            </h3>
+          </div>
+          <MathExpandButton onClick={() => setExpanded(true)} />
+        </div>
+      </motion.section>
+
+      <div aria-hidden="true" className="mb-5 h-px w-full bg-[#D8E2EA]" />
+
       <motion.section
         id="poll"
         whileHover={{ y: -3, scale: 1.004 }}
@@ -1713,13 +1736,13 @@ function SeeOurMathBento({
           calculator-canon.md, Phase B1). Same component set as the sister
           site (smarterwaywealth.com): ShareMyResults + SocialShareRow, wired
           to this component's own live state via siteCalculatorConfig.
-          Placed below the poll and above "View calculation details", per
-          the plan. */}
+          Sits last of the three, directly below the poll: vote, then share
+          (order revised 2026-08-14 — see the note above the details card). */}
       <motion.section
         whileHover={{ y: -3, scale: 1.004 }}
         transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
         aria-labelledby="home-share-results-heading"
-        className="mb-4 min-w-0 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
+        className="min-w-0 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
       >
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div className="min-w-0">
@@ -1746,21 +1769,6 @@ function SeeOurMathBento({
         {/* The Facebook/X/Reddit row lives ONLY inside the ShareMyResults
             panel now — it used to render a second time here, which put two
             identical social rows within one viewport. */}
-      </motion.section>
-
-      <motion.section
-        whileHover={{ y: -3, scale: 1.004 }}
-        transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
-        className="min-w-0 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
-      >
-        <div className="flex items-center justify-between gap-4">
-          <div className="min-w-0">
-            <h3 className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
-              View calculation details
-            </h3>
-          </div>
-          <MathExpandButton onClick={() => setExpanded(true)} />
-        </div>
       </motion.section>
 
       {/* The homepage keeps its single conversion CTA after WWWH; reusable
