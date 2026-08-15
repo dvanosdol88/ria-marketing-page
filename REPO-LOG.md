@@ -3,6 +3,13 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-15 — Homepage FAQ: second question edits (drop "Luckily", one paragraph, bolder second sentence)
+**Agent:** Claude (Sonnet 5, Claude Code on the web) | **Surface:** homepage FAQ | **Goal:** branch `claude/faq-second-question-edits-lxxvie`
+
+- changed: in `src/components/HomeFaqSection.tsx`, the rhetorical-question FAQ (the S&P 500/advisor-work one). Removed "Luckily, " from the start of the answer. Collapsed the question from two weighted lines (lighter market-fact setup + full-weight question, from round 3) into a single plain paragraph — `QUESTION_SETUP_CLASS` and its comment removed since nothing uses it anymore. Wrapped the answer's second sentence ("The speaker asks it to emphasize a point...") in `<strong>` for slightly bolder weight.
+- verified: `npx tsc --noEmit` clean, `npm run lint` clean (pre-existing unrelated warning only), `npm run build` succeeds. Ran the dev server and screenshotted the FAQ section at 390px width with both questions expanded — confirmed the second question reads as one paragraph, no "Luckily", and the second answer sentence renders bold.
+- deployed: not deployed — pushed to `claude/faq-second-question-edits-lxxvie`, PR opened against `main`.
+
 ### 2026-08-14 — Round 3: FAQ weights + chevrons, LinkedIn share, and copy buttons that actually copy
 **Agent:** Claude (Opus 5, Claude Code desktop) | **Surface:** homepage FAQ, WWWH, site nav, calculator stack, canon share components | **Duration:** ~1 session, worktree branch `claude/yapt-round3` off `aeb4365` — PR #230
 
