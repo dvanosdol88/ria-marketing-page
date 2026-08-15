@@ -49,13 +49,6 @@ const RHETORICAL_FOOTNOTE =
 const QUESTION_CLASS =
   "block w-full text-left text-[17px] font-semibold leading-7 text-[#333B45] transition-colors duration-150 hover:text-[#10233A] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-[#064B84] sm:text-lg";
 
-/** The setup line above a question carries slightly less weight than the
- *  question itself, so the two read as premise and punchline rather than as
- *  one undifferentiated block (David, 2026-08-14: "give it a *slightly* less
- *  weight th[a]n the 2nd paragraph (the question itself)"). Semibold to
- *  medium is one step — deliberately subtle. */
-const QUESTION_SETUP_CLASS = "font-medium";
-
 const ANSWER_CLASS = "mt-2.5 max-w-3xl text-[15px] leading-7 text-[#6E7883] sm:text-base";
 
 /** One line of the question, so a question can run to two weighted paragraphs.
@@ -150,29 +143,28 @@ export function HomeFaqSection() {
           ) : null}
 
           <FaqLine
-            /* Two beats, deliberately weighted (David, 2026-08-14 — the
-               treatment he first described for the answer, corrected the same
-               day to apply here instead): the market fact arrives lighter,
-               then the question it exists to set up lands at full question
-               weight. The reference marker sits with the figure it qualifies
-               rather than at the end of the joke. */
+            /* One paragraph (David, 2026-08-15: collapse the market-fact
+               setup and the question into a single paragraph rather than two
+               weighted lines). The reference marker still sits with the
+               figure it qualifies rather than at the end of the sentence. */
             question={[
               {
                 content: (
                   <>
                     The S&amp;P 500 and my portfolio have both doubled over the past few years.
-                    <sup className="ml-0.5 font-normal text-[#6E7883]">1</sup>
+                    <sup className="ml-0.5 font-normal text-[#6E7883]">1</sup> Does that mean my advisor is doing
+                    twice as much work?
                   </>
                 ),
-                className: QUESTION_SETUP_CLASS,
               },
-              { content: "Does that mean my advisor is doing twice as much work?" },
             ]}
             answer={
               <p className={ANSWER_CLASS}>
-                Luckily, a rhetorical question is a figure of speech framed as a question but meant to make a statement
-                rather than get an answer. The speaker asks it to emphasize a point, create a dramatic effect, or make
-                the listener think.
+                A rhetorical question is a figure of speech framed as a question but meant to make a statement
+                rather than get an answer.{" "}
+                <strong className="font-semibold text-[#333B45]">
+                  The speaker asks it to emphasize a point, create a dramatic effect, or make the listener think.
+                </strong>
               </p>
             }
             footnote={RHETORICAL_FOOTNOTE}
