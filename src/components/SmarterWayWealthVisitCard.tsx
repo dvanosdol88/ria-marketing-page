@@ -20,9 +20,12 @@ const FIRM_DESTINATIONS = [
   },
   {
     href: "https://smarterwaywealth.com/faq",
+    /* The tracked label stays the long-form wording it has always been so the
+       PostHog series does not split in two on the day the visible copy
+       changed. Only `text` — what the visitor reads — is David's new line. */
     label: "See our frequently asked questions",
     location: "home_firm_visit_card_faq",
-    text: "see our frequently asked questions.",
+    text: "See ALL of our FAQs.",
   },
 ] as const;
 
@@ -76,10 +79,17 @@ export function SmarterWayWealthVisitCard({
           rel="noreferrer"
           target="_blank"
         >
-          <span className="flex items-center gap-3 text-[11px] font-extrabold uppercase tracking-[0.34em] text-white/75">
-            <span aria-hidden="true" className="h-px w-7 bg-white/30" />
+          {/* Set up a step, 2026-08-16 (David: "make 'Visit' slightly larger
+              and bolder"). 11px/extrabold at 75% opacity read as a caption
+              rather than as the verb of the card; 13px/black at 90% gives it
+              weight without letting it compete with the wordmark beneath.
+              Tracking eases from .34em to .3em — letterspacing that wide at
+              the larger size starts to break the word apart — and the flanking
+              rules grow with it so the ratio of rule to word holds. */}
+          <span className="flex items-center gap-3 text-[13px] font-black uppercase tracking-[0.3em] text-white/90">
+            <span aria-hidden="true" className="h-px w-8 bg-white/35" />
             <span>Visit</span>
-            <span aria-hidden="true" className="h-px w-7 bg-white/30" />
+            <span aria-hidden="true" className="h-px w-8 bg-white/35" />
           </span>
           {/* The wordmark carries this block on its own — the arrow disc that
               used to sit beneath it was struck out by David (2026-08-14). Each

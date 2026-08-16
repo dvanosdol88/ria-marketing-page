@@ -1563,6 +1563,7 @@ function SeeOurMathBento({
   const [sharePanelOpen, setSharePanelOpen] = useState(false);
   const [origin, setOrigin] = useState("");
   const dialogBackdropRef = useRef<HTMLDivElement | null>(null);
+  const shareSectionRef = useRef<HTMLElement | null>(null);
   const expandedRef = useRef(expanded);
   const finalGap = Math.max(savings, 0);
   const directFeeGap = Math.min(Math.max(totalAssetBasedFees - totalFlatFees, 0), finalGap);
@@ -1617,7 +1618,24 @@ function SeeOurMathBento({
         pollUrl: `${canonicalUrl.replace(/#calculator$/, "")}#poll`,
       })
     : null;
-  const openSharePanel = () => setSharePanelOpen(true);
+  /* The poll's own "Share my results" button opens THIS panel. Since the
+     2026-08-16 reorder the panel sits ABOVE the poll rather than below it, so
+     opening it without moving the viewport would expand a panel the visitor
+     cannot see and the click would read as broken.
+
+     ShareMyResults already nudges itself into view on open, but with
+     block:"nearest" — the right call when the panel opens BELOW the tapped
+     button, and the wrong one here: the panel is taller than a phone viewport
+     and sits above it, so "nearest" brings its bottom edge up and lands the
+     visitor at the end of the panel. This runs after that one (canon fires at
+     160ms) and re-aims at the top of the section, so the visitor arrives at
+     the heading with scroll-mt-24 keeping the sticky header off it. */
+  const openSharePanel = () => {
+    setSharePanelOpen(true);
+    window.setTimeout(() => {
+      shareSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 260);
+  };
   const handleFeeLoadChange = (value: number) => {
     onAssumptionChange({
       annualFeePercent: Math.max(0, Number((value - mutualFundExpensePercent).toFixed(2))),
@@ -1652,29 +1670,103 @@ function SeeOurMathBento({
           It is the only one of the three that is about the number the visitor
           just produced, so it belongs against the calculator; voting and
           sharing are both things you do afterwards. The rule below separates
-          the two ideas — read your result, then act on it. */}
+          the two ideas — read your result, then act on it.
+
+          HALVED, 2026-08-16 (David: "make that about half of its existing
+          height"). It was 82px on a phone because it was built like the two
+          cards below it — full card padding wrapped around a 40px icon button —
+          when all it actually is is a link to a dialog. It is now a single 42px
+          strip: the padding drops to py-2, the icon drops to a 24px disc, and
+          the whole row became the button rather than just the icon, so halving
+          the height GREW the tap target from a 40px square to the full width of
+          the card. The label is clickable now too, which it never was. */}
       <motion.section
-        whileHover={{ y: -3, scale: 1.004 }}
+        whileHover={{ y: -2, scale: 1.004 }}
         transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
-        className="mb-5 min-w-0 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
+        className="mb-5 min-w-0 overflow-hidden rounded-lg border border-[#D8E2EA] bg-white shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)]"
       >
-        <div className="flex items-center justify-between gap-4">
-          <div className="min-w-0">
-            <h3 className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
-              View calculation details
-            </h3>
-          </div>
-          <MathExpandButton onClick={() => setExpanded(true)} />
-        </div>
+        <button
+          type="button"
+          onClick={() => setExpanded(true)}
+          aria-expanded={expanded}
+          aria-controls="see-our-math-details"
+          className="group flex w-full items-center justify-between gap-4 px-4 py-2 text-left transition-colors duration-200 hover:bg-[#F5FAF7] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-3px] focus-visible:outline-[#108843] sm:px-6 sm:py-2.5"
+        >
+          <h3 className="min-w-0 truncate text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
+            View calculation details
+          </h3>
+          <span
+            aria-hidden="true"
+            className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[#EAF7EF] text-[#108843] transition-colors duration-200 group-hover:bg-[#D8F0E0]"
+          >
+            <Maximize2 className="h-3.5 w-3.5" strokeWidth={2.5} />
+          </span>
+        </button>
       </motion.section>
 
       <div aria-hidden="true" className="mb-5 h-px w-full bg-[#D8E2EA]" />
+
+      {/* Share & results — canon share stack (docs/plans/2026-08-12-
+          calculator-canon.md, Phase B1). Same component set as the sister
+          site (smarterwaywealth.com): ShareMyResults + SocialShareRow, wired
+          to this component's own live state via siteCalculatorConfig.
+
+          ORDER REVERSED AGAIN, 2026-08-16 (David: "Vote | Share — switch those
+          so share comes first"). Sharing is the higher-value action of the two
+          and it is the one that leaves the site with the visitor's own number
+          attached; the poll is a curiosity. It now sits directly under the
+          details strip, with the poll beneath it. */}
+      <motion.section
+        ref={shareSectionRef}
+        whileHover={{ y: -3, scale: 1.004 }}
+        transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
+        aria-labelledby="home-share-results-heading"
+        className="mb-4 min-w-0 scroll-mt-24 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
+      >
+        <div className="min-w-0">
+          {/* The eyebrow said "Share & results" over a heading that said "Share
+              this comparison", above a button that says "Share my results" —
+              the word three times in 40 vertical pixels (2026-08-16). The
+              eyebrow now names the section and the heading says what you get,
+              so neither is a restatement of the other. */}
+          <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">Share</p>
+          <h3 id="home-share-results-heading" className="mt-1 text-lg font-semibold text-[#10233A] sm:text-xl">
+            Send this comparison
+          </h3>
+        </div>
+
+        <div className="mt-4 flex flex-wrap gap-3">
+          <ShareMyResults
+            summary={shareSummary}
+            summaryInput={summaryInput}
+            shareCardPath={shareCardPath}
+            canonicalUrl={canonicalUrl}
+            open={sharePanelOpen}
+            onOpenChange={setSharePanelOpen}
+            tone="light"
+          />
+        </div>
+
+        {/* Moved below the control and rewritten (2026-08-16). It used to sit
+            up beside the heading, where a reassurance nobody had asked for yet
+            competed with the heading for the first read; fine print belongs
+            after the thing it qualifies. "PostHog" is the name of a vendor the
+            visitor has no reason to know — the claim is unchanged in scope,
+            only in language. */}
+        <p className="mt-3 text-xs font-medium leading-5 text-[#667587]">
+          Nothing you enter here is sent to our analytics.
+        </p>
+
+        {/* The Facebook/X/Reddit row lives ONLY inside the ShareMyResults
+            panel now — it used to render a second time here, which put two
+            identical social rows within one viewport. */}
+      </motion.section>
 
       <motion.section
         id="poll"
         whileHover={{ y: -3, scale: 1.004 }}
         transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
-        className="mb-4 min-w-0 scroll-mt-24 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
+        className="min-w-0 scroll-mt-24 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
       >
         <button
           type="button"
@@ -1730,45 +1822,6 @@ function SeeOurMathBento({
             </motion.div>
           ) : null}
         </AnimatePresence>
-      </motion.section>
-
-      {/* Share & results — canon share stack (docs/plans/2026-08-12-
-          calculator-canon.md, Phase B1). Same component set as the sister
-          site (smarterwaywealth.com): ShareMyResults + SocialShareRow, wired
-          to this component's own live state via siteCalculatorConfig.
-          Sits last of the three, directly below the poll: vote, then share
-          (order revised 2026-08-14 — see the note above the details card). */}
-      <motion.section
-        whileHover={{ y: -3, scale: 1.004 }}
-        transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
-        aria-labelledby="home-share-results-heading"
-        className="min-w-0 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
-      >
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div className="min-w-0">
-            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">Share &amp; results</p>
-            <h3 id="home-share-results-heading" className="mt-1 text-lg font-semibold text-[#10233A]">
-              Share this comparison
-            </h3>
-          </div>
-          <p className="text-xs font-semibold text-neutral-500">Nothing entered here is sent to PostHog.</p>
-        </div>
-
-        <div className="mt-4 flex flex-wrap gap-3">
-          <ShareMyResults
-            summary={shareSummary}
-            summaryInput={summaryInput}
-            shareCardPath={shareCardPath}
-            canonicalUrl={canonicalUrl}
-            open={sharePanelOpen}
-            onOpenChange={setSharePanelOpen}
-            tone="light"
-          />
-        </div>
-
-        {/* The Facebook/X/Reddit row lives ONLY inside the ShareMyResults
-            panel now — it used to render a second time here, which put two
-            identical social rows within one viewport. */}
       </motion.section>
 
       {/* The homepage keeps its single conversion CTA after WWWH; reusable
