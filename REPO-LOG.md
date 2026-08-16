@@ -3,6 +3,15 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-16 — Cloud camera fallback for the screenshot hook
+**Agent:** Claude (Fable 5, Claude Code remote/cloud) | **Surface:** `.claude/` tooling only — nothing ships to the site build
+
+- context: cloud sessions could not satisfy the screenshot Stop hook: the gstack camera lives in the desktop home directory (never in a fresh clone), and the default cloud environment's Trusted network blocked the production domains. David created a "Full network" cloud environment for the network half; this entry lands the camera half.
+- changed: new `.claude/tools/camera.mjs` — a headless production camera that works in both worlds. It imports the repo's own Playwright (`@playwright/test`, falling back to `playwright-core`), auto-detects the cloud's preinstalled Chromium at `/opt/pw-browsers/chromium` and routes it through the session proxy via `HTTPS_PROXY`; supports `--mobile`, `--full-page`, `--wait`, and `--scroll-to <text>`. `.claude/hooks/screenshot-check.mjs` now names both cameras in its nudge and its capture-detection regex recognizes a real `camera.mjs <url>` invocation (the nudge's placeholder text deliberately does not match, so the nudge cannot satisfy itself).
+- verified locally: `node --check` clean on the hook and the camera in both repos; hook smoke-run exits 0; camera self-test captured a 114KB PNG from a local page with `--scroll-to` resolving, using the pinned `@playwright/test` against the cloud Chromium — the exact pairing cloud sessions will use.
+- released: PR pending on branch claude/cloud-camera-fallback; mirrored in smarter-way-wealth (camera fallback PR).
+- verified in production: n/a — `.claude/` tooling is not part of the deployed site.
+
 ### 2026-08-15 — Homepage FAQ: second question edits (drop "Luckily", one paragraph, bolder second sentence)
 **Agent:** Claude (Sonnet 5, Claude Code on the web) | **Surface:** homepage FAQ | **Goal:** branch `claude/faq-second-question-edits-lxxvie`
 
