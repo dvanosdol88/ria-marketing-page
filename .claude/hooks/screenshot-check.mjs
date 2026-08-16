@@ -23,10 +23,21 @@ const EXEMPT = /(^|\/)(scripts|docs|api|database|db|e2e|tests?)\/|\.test\.|\.spe
 const PRODUCTION = /youarepayingtoomuch\.com/i;
 const NOT_PRODUCTION = /(localhost|127\.0\.0\.1|\[::1\]|\.vercel\.app)/i;
 
+// How to actually take the picture, wherever the session runs. Desktop
+// sessions have the gstack browse binary in ~/.claude; cloud sessions
+// start from a fresh clone and use the in-repo camera instead, which
+// drives the preinstalled Chromium through the session proxy.
+const CAMERA =
+  'Standing camera (do not improvise): on desktop, ~/.claude/skills/gstack/browse/dist/browse goto <production-url> ' +
+  'then ~/.claude/skills/gstack/browse/dist/browse screenshot <path>. In cloud sessions (no gstack binary), ' +
+  'node .claude/tools/camera.mjs <production-url> <path.png> drives the preinstalled Chromium through the session ' +
+  "proxy - the environment's network access must allow the production domain. Then Read the PNG. " +
+  'Both are headless - no window, extension or connected Chrome required.';
+
 // Actual screenshot tool invocations. Matching the bare word "screenshot"
 // would self-trigger on this file and on the nudge text itself.
 const SCREENSHOT_TOOL =
-  /(browser_take_screenshot|__take_screenshot|Windows-MCP__Screenshot|computer-use__screenshot|"action"\s*:\s*"screenshot")/;
+  /(browser_take_screenshot|__take_screenshot|Windows-MCP__Screenshot|computer-use__screenshot|"action"\s*:\s*"screenshot"|tools\/camera\.mjs\s+"?https?:)/;
 
 try {
   const input = JSON.parse(readFileSync(0, 'utf8'));
@@ -81,13 +92,13 @@ try {
       `this session changed a human-visible surface (${sample}${more}) but captured no screenshot. ` +
       'If the change is live, show David a picture of it on the production site. ' +
       'If it is NOT live yet, say "not live yet" and show nothing - never a local capture. ' +
-      'Standing camera (do not improvise): ~/.claude/skills/gstack/browse/dist/browse goto <production-url> && ~/.claude/skills/gstack/browse/dist/browse screenshot <path>, then Read the PNG. It is headless - no window, extension or connected Chrome required.';
+      CAMERA;
   } else if (sawLocal && !sawProd) {
     problem =
       `a screenshot was captured but only local/preview URLs appear in this session, and ${sample}${more} changed. ` +
       'A local or preview capture must never be shown as evidence of finished work (deploy-truth, CRITICAL-RULES rule 2). ' +
       'Capture the production URL after confirming live, or show nothing and say why. ' +
-      'Standing camera (do not improvise): ~/.claude/skills/gstack/browse/dist/browse goto <production-url> && ~/.claude/skills/gstack/browse/dist/browse screenshot <path>, then Read the PNG. It is headless - no window, extension or connected Chrome required.';
+      CAMERA;
   }
 
   if (problem) {
