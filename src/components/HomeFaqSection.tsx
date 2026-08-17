@@ -48,6 +48,18 @@ const KEPT_FAQ_ID = "afford-100-per-month";
  *  file untouched. */
 const KEPT_QUESTION_LABEL = "How can you afford to do this for $100 a month?";
 
+/** Third question, added 2026-08-16 at David's request. The data file already
+ *  answers this one — as "Do I have to move my assets?" — and its stored answer
+ *  opens with the "No." he asked for, then earns it: you keep Fidelity or
+ *  Schwab, the assets stay in your name, the firm never takes custody, and the
+ *  statements still come from the custodian. Same treatment as the kept
+ *  question above: David's phrasing on the outside, the approved answer
+ *  untouched underneath, so this page never becomes a second source for an
+ *  answer the firm site also gives. */
+const ACCOUNTS_FAQ_ID = "do-i-have-to-move-my-assets";
+
+const ACCOUNTS_QUESTION_LABEL = "Do I need to move my accounts to become a client?";
+
 /** Placeholder attribution, per David: "add a footnote and we will get the
  *  attribution in the next round." It states the measure and the period and
  *  carries the required past-performance language, so the page is not making
@@ -65,9 +77,25 @@ const ROW_X = "px-4 sm:px-6";
 const ROW_Y = "py-4 sm:py-5";
 const ANSWER_INSET = "pl-12 pr-4 sm:pl-14 sm:pr-6";
 
-const QUESTION_CLASS = "min-w-0 text-[17px] leading-7 text-[#333B45] sm:text-lg";
+/* Question and answer are the SAME size now (David, 2026-08-16 #4). The answer
+   used to be a step smaller, which is the ordinary way to say "supporting
+   text" — but here the answer is the payload and the question is only the
+   handle you grab it by, so size no longer carries that hierarchy. Colour does
+   instead: see FOCUS below. */
+const TEXT_SIZE = "text-[17px] leading-7 sm:text-lg";
 
-const ANSWER_CLASS = "text-[15px] leading-7 text-[#5C6773] sm:text-base";
+const QUESTION_CLASS = `min-w-0 transition-colors duration-200 ${TEXT_SIZE}`;
+
+const ANSWER_CLASS = `text-[#10233A] ${TEXT_SIZE}`;
+
+/* David, 2026-08-16 #5: "when the answer is toggled ON, make the text black,
+   and the QUESTION text grey, so that the answer is more of the focus." A
+   closed question is the darkest thing in its row because it is the only thing
+   in it; the moment its answer appears the question steps back to grey and the
+   answer takes the near-black. Nothing moves and nothing resizes — the ink
+   just changes hands. */
+const QUESTION_INK_CLOSED = "text-[#333B45]";
+const QUESTION_INK_OPEN = "text-[#8A939E]";
 
 const ROW_FOCUS =
   "focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-3px] focus-visible:outline-[#064B84]";
@@ -109,7 +137,9 @@ function FaqRow({
         {/* A span, not a paragraph: a <button>'s content model is phrasing
             content, and a block element inside it is invalid markup that some
             engines reflow unpredictably. */}
-        <span className={QUESTION_CLASS}>{question}</span>
+        <span className={`${QUESTION_CLASS} ${open ? QUESTION_INK_OPEN : QUESTION_INK_CLOSED}`}>
+          {question}
+        </span>
       </button>
 
       {open ? (
@@ -133,18 +163,29 @@ function FaqRow({
   );
 }
 
-export function HomeFaqSection() {
-  const kept = faqItems.find((item) => item.id === KEPT_FAQ_ID);
+/* The stored answers were written for a page that listed all eighteen
+   questions, so some end with a "See also:" pointing at siblings. Only three
+   questions live here now, so those pointers would send the reader after
+   questions this page does not have. Dropped at render rather than edited out
+   of the data, because the full set still carries them — and they are still
+   correct — on smarterwaywealth.com. */
+function storedAnswer(id: string) {
+  const item = faqItems.find((entry) => entry.id === id);
+  if (!item) return null;
 
-  /* The stored answers were written for a page that listed all eighteen
-     questions, so some end with a "See also:" pointing at siblings. Only two
-     questions live here now, so those pointers would send the reader after
-     questions this page does not have. Dropped at render rather than edited
-     out of the data, because the full set still carries them — and they are
-     still correct — on smarterwaywealth.com. */
-  const keptParagraphs = (kept?.answer ?? "")
+  return (item.answer ?? "")
     .split("\n\n")
-    .filter((paragraph) => !paragraph.trimStart().startsWith("See also:"));
+    .filter((paragraph) => !paragraph.trimStart().startsWith("See also:"))
+    .map((paragraph) => (
+      <p key={paragraph.slice(0, 32)} className={ANSWER_CLASS}>
+        {paragraph}
+      </p>
+    ));
+}
+
+export function HomeFaqSection() {
+  const keptAnswer = storedAnswer(KEPT_FAQ_ID);
+  const accountsAnswer = storedAnswer(ACCOUNTS_FAQ_ID);
 
   return (
     <section
@@ -162,14 +203,10 @@ export function HomeFaqSection() {
 
         <div className="mt-6 overflow-hidden rounded-2xl border border-[#DDE4EC] bg-white shadow-[0_12px_32px_rgba(17,33,52,0.06)]">
           <div className="divide-y divide-[#EAEFF4]">
-            {kept ? (
+            {keptAnswer ? (
               <FaqRow
                 question={<span className="font-bold">{KEPT_QUESTION_LABEL}</span>}
-                answer={keptParagraphs.map((paragraph) => (
-                  <p key={paragraph.slice(0, 32)} className={ANSWER_CLASS}>
-                    {paragraph}
-                  </p>
-                ))}
+                answer={keptAnswer}
               />
             ) : null}
 
@@ -194,17 +231,42 @@ export function HomeFaqSection() {
                  2026-08-16). Half of it used to be bold, which read as the
                  answer emphasising itself; the whole thing is one borrowed
                  definition, so it is set as one quotation. "Listener" became
-                 "reader" — nobody is listening to a web page. */
+                 "reader", then "speaker" became "writer" the same day — nobody
+                 is speaking to, or listening on, a web page.
+
+                 The defined term is set the way a dictionary sets one: <em>
+                 for the italic, +10% on the size and 440 on the weight (David:
+                 "about 10% heavier and 10% larger"). Both are relative rather
+                 than fixed — 1.1em tracks whatever the answer size is, and 440
+                 is a real value because Inter is loaded as a variable font, so
+                 this is a genuine 10% step up from 400 rather than the 25%
+                 jump that font-medium would have been. */
               answer={
                 <p className={ANSWER_CLASS}>
-                  &ldquo;A rhetorical question is a figure of speech framed as a question but meant to
-                  make a statement rather than get an answer. The speaker asks it to emphasize a
-                  point, create a dramatic effect, or make the reader think.&rdquo;
+                  {/* Explicit {" "} on BOTH sides of the <em>. JSX drops the
+                      space that sits between an element and a text node when
+                      the line wraps there, which is exactly how this rendered
+                      "rhetorical questionis a figure of speech" the first
+                      time. */}
+                  &ldquo;A{" "}
+                  <em className="text-[1.1em] font-[440]">rhetorical question</em>{" "}
+                  is a figure of speech framed as a question but meant to make a statement rather
+                  than get an answer. The writer asks it to emphasize a point, create a dramatic
+                  effect, or make the reader think.&rdquo;
                 </p>
               }
               footnote={RHETORICAL_FOOTNOTE}
               footnoteMarker="1"
             />
+
+            {/* Added 2026-08-16 (David). Third and last question before the
+                door out. */}
+            {accountsAnswer ? (
+              <FaqRow
+                question={<span className="font-bold">{ACCOUNTS_QUESTION_LABEL}</span>}
+                answer={accountsAnswer}
+              />
+            ) : null}
 
             {/* The door out, and the last row of the same card. It is indented
                 to the answer column so all three rows share a left edge, but it
