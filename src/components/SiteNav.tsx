@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ExternalLink, Menu, X } from "lucide-react";
 import { siteNavLinks } from "@/config/siteNavConfig";
+import { SIGNUP_PATH } from "@/config/signupCta";
 import {
   DESKTOP_SITE_NAV_MEDIA_QUERY,
   getSiteNavScrollTriggerY,
@@ -30,8 +31,8 @@ const SMARTER_WAY_WEALTH_URL = "https://smarterwaywealth.com/";
  * Logo swap uses an opacity cross-fade — both logo elements are always in the
  * DOM (grid-stacked) to avoid layout shifts.
  *
- * Mobile: hamburger + centered logo + future CTA slot.
- * Desktop: logo left + spaced nav links right.
+ * Mobile: hamburger + left-aligned logo + client CTA.
+ * Desktop: logo left + spaced nav links right, including the client CTA.
  * Drawer uses CSS transitions (always in DOM) for reliability.
  */
 export function SiteNav() {
@@ -247,17 +248,9 @@ export function SiteNav() {
 
         <div className="site-nav mx-auto max-w-[1200px] px-4 transition-all duration-500 ease-out sm:px-6">
           {/* ── Mobile Layout ── */}
-          {/* The right slot stays empty on purpose. A "Fee Calculator" button
-              lived here briefly; with the promise block now sitting directly
-              above the calculator, the calculator is the very next thing a
-              visitor sees, so the button was redundant (David, 2026-08-10). */}
-          {/* 62px, not 77px: the expanded bar is the logo plus its breathing
-              room, and every pixel trimmed here is spent on the three gaps below
-              the header so "The Fee Calculator" still clears the fold on a
-              phone. 70px on 2026-08-12 with the logo untouched; then David
-              chose to shrink the logo 10% (58px → 52px) to buy the last round
-              of spacing rather than lose the heading off the first screen. */}
-          <div className={`flex items-center justify-between xl:hidden transition-all duration-500 ease-out transform-gpu ${
+          {/* The 62px mobile header preserves the first-screen calculator
+              heading while fitting the menu, compact brand mark, and client CTA. */}
+          <div className={`flex items-center gap-2 xl:hidden transition-all duration-500 ease-out transform-gpu ${
             collapsed ? "h-[58px]" : "h-[62px]"
           }`}>
             <button
@@ -270,21 +263,27 @@ export function SiteNav() {
               {drawerOpen ? <X className="h-5 w-5" strokeWidth={2.2} /> : <Menu className="h-6 w-6" strokeWidth={2.2} />}
             </button>
 
-            {/* Mobile logo — tiered implementation */}
+            {/* Mobile logo stays with the menu instead of floating at center. */}
             <Link
               href={"/" as any}
-              className="absolute left-1/2 flex min-h-11 -translate-x-1/2 items-center transform-gpu"
+              className="flex min-h-11 shrink items-center"
               aria-label="Smarter Way Wealth home"
             >
               <Logo
-                heightClass={collapsed ? "h-[34px]" : "h-[52px]"}
-                fontSizeBase={collapsed ? "1.1rem" : "1.26rem"}
-                isCentered={true}
+                heightClass={collapsed ? "h-7" : "h-[30px]"}
+                fontSizeBase={collapsed ? "0.8rem" : "0.9rem"}
               />
             </Link>
 
-            {/* Right slot — reserved for future CTA */}
-            <div className="w-11" aria-hidden="true" />
+            <Link
+              href={SIGNUP_PATH as any}
+              data-posthog-cta="true"
+              data-posthog-cta-label="Become a Client"
+              data-posthog-cta-location="site_nav_mobile"
+              className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-md border border-[#2563EB] bg-[#EFF6FF] px-3 py-2 text-xs font-extrabold text-[#1D4ED8] transition-[background-color,border-color,color] duration-200 hover:bg-[#DBEAFE] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+            >
+              Become a Client
+            </Link>
           </div>
 
           {/* ── Desktop Layout ── */}
@@ -337,6 +336,15 @@ export function SiteNav() {
                   </Link>
                 );
               })}
+              <Link
+                href={SIGNUP_PATH as any}
+                data-posthog-cta="true"
+                data-posthog-cta-label="Become a Client"
+                data-posthog-cta-location="site_nav"
+                className="ml-3 inline-flex min-h-11 items-center rounded-md border border-[#2563EB] bg-[#EFF6FF] px-4 py-2 text-sm font-extrabold text-[#1D4ED8] transition-[background-color,border-color,color] duration-200 hover:bg-[#DBEAFE] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+              >
+                Become a Client
+              </Link>
               <a
                 href={SMARTER_WAY_WEALTH_URL}
                 target="_blank"

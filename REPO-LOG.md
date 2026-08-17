@@ -3,6 +3,12 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-17 — Client CTA added to the navigation
+**Agent:** Codex | **Surface:** marketing | **Status:** ready for PR
+- changed: `SiteNav` now puts a blue, tracked **Become a Client** link beside the existing Smarter Way Wealth link on desktop. At smaller widths, the logo is left-aligned after the menu button and the same destination becomes a right-aligned blue button. Both use the existing internal `/become-a-client` route; no new sign-up flow or compliance copy was introduced.
+- verified locally: 375px browser render shows menu, left logo, and 121px client button without horizontal overflow; 1280px render shows the blue link immediately before the existing firm link. The focused `home-wwwh` contract passes 24/24 and the changed navigation file has no lint errors. Full-repo lint is blocked by 11 pre-existing errors in untracked design mockups outside this change. The local build process completed, but its shell did not return a final status line; CI remains the release build proof.
+- deployed: not yet. Next: PR, CI, merge, then fresh apex mobile and desktop proof.
+
 ### 2026-08-17 — Round 5: FAQ focus swap + the share becomes a picture (canon v6)
 **Agent:** Claude (Opus 5, Claude Code remote/cloud) | **Surface:** homepage FAQ, canon share panel | **Goal:** branch `claude/frontend-cosmetic-refinements-baq86n` — PR #236, sister PR smarter-way-wealth#116
 
