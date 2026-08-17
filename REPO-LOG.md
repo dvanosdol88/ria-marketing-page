@@ -4,10 +4,10 @@
 > Newest sessions on top.
 
 ### 2026-08-17 — Client CTA added to the navigation
-**Agent:** Codex | **Surface:** marketing | **Status:** ready for PR
+**Agent:** Codex | **Surface:** marketing | **PR:** [#238](https://github.com/dvanosdol88/ria-marketing-page/pull/238) (`165e3d0`) | **Status:** deployed and verified
 - changed: `SiteNav` now puts a blue, tracked **Become a Client** link beside the existing Smarter Way Wealth link on desktop. At smaller widths, the logo is left-aligned after the menu button and the same destination becomes a right-aligned blue button. Both use the existing internal `/become-a-client` route; no new sign-up flow or compliance copy was introduced.
-- verified locally: 375px browser render shows menu, left logo, and 121px client button without horizontal overflow; 1280px render shows the blue link immediately before the existing firm link. The focused `home-wwwh` contract passes 24/24 and the changed navigation file has no lint errors. Full-repo lint is blocked by 11 pre-existing errors in untracked design mockups outside this change. The local build process completed, but its shell did not return a final status line; CI remains the release build proof.
-- deployed: not yet. Next: PR, CI, merge, then fresh apex mobile and desktop proof.
+- verified: focused `home-wwwh` contract passed 24/24 and the changed navigation file had no lint errors. PR CI passed build, lint, and the full test suite. (Full local-repo lint remains blocked by 11 errors in untracked design mockups outside this change.)
+- deployed: merged to `main` at `165e3d0`; cache-bypassed apex verification passed at 375px and 1280px. Mobile shows a 121px client button to the right of the left-aligned logo with no horizontal overflow; desktop shows the 145px client link before the firm link. Both resolve to `/become-a-client`.
 
 ### 2026-08-17 — Round 5: FAQ focus swap + the share becomes a picture (canon v6)
 **Agent:** Claude (Opus 5, Claude Code remote/cloud) | **Surface:** homepage FAQ, canon share panel | **Goal:** branch `claude/frontend-cosmetic-refinements-baq86n` — PR #236, sister PR smarter-way-wealth#116
