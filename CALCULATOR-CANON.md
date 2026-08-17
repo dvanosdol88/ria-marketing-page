@@ -19,8 +19,8 @@ plan's "Improvement flow"). This register is enforced by
 `tests/calculator-canon-manifest.test.mjs`.
 
 Counterpart repo: `D:\smarter-way-wealth` (smarterwaywealth.com)
-Last synced: 2026-08-16
-syncVersion: 6
+Last synced: 2026-08-17
+syncVersion: 7
 
 ## Narrowed scope (Phase B1 adjudication — read before editing this file)
 
@@ -43,6 +43,21 @@ investigation.
 
 ## Why these files, and not others
 
+- **v7 (2026-08-17, one-tap share)**: one file, `ShareMyResults.tsx`, from
+  David's four checked changes off the "One Tap to Share" research report.
+  Where `navigator.share` exists — effectively all phone traffic — the
+  primary "Share my results" button now fires `shareNative` directly on the
+  tap (card image + summary text + state URL handed to the OS share sheet)
+  instead of toggling a panel; the aria disclosure attributes apply only in
+  the fallback mode where the button still toggles, and a quieter "More
+  options" text button keeps the panel reachable on share-sheet browsers.
+  The panel itself flips into a backup menu: "Copy or save" actions lead,
+  the social tiles drop beneath them under "Or post it" (~1-in-500 usage
+  across the published datasets), and the card preview shrinks to a
+  max-w-[340px] thumbnail at the bottom. The in-panel native "More" tile is
+  gone — its job moved to the primary button. The card canvas now draws on
+  demand (`buildCardCanvas`) so the one-tap share works without the panel
+  ever opening, and any cached canvas is invalidated when inputs change.
 - **v6 (2026-08-16, the share is a picture now, and you can read it)**: one
   file, `ShareMyResults.tsx`, from David's round-5 review.
   *"What is being shared — text is too small."* The preview card's type ran
@@ -163,7 +178,7 @@ investigation.
 | Path | SHA-256 |
 |---|---|
 | src/components/Quiz.tsx | 769737A1B4482CB775F4829C883BC8D79EE09632CCAC61AAFF1ED1D1EC3551C4 |
-| src/components/calculator/ShareMyResults.tsx | A98F15B828B9CC277A33598E5DADF2D6438B0312854E4B93E5358A6552FA541F |
+| src/components/calculator/ShareMyResults.tsx | 8EA87826227E55A55510769021A808CADF5CA3346154651BAEB52DCB9C831DAF |
 | src/components/calculator/SocialShareRow.tsx | 8A221CD817F4D0A171CECCB6E217A43FAF8433CB0AA856DA42B69DCA4086934D |
 | src/lib/shareSummary.ts | F2562529515C5C851CD57380899D2D4C19C60A54921EA7FD67128CE903295E42 |
 

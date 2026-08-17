@@ -4,7 +4,7 @@
 // D:\ria-marketing-page). Edit both repos in the same session or CI fails.
 // See CALCULATOR-CANON.md.
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Copy, Download, Image as ImageIcon, Link2, Mail, Share2 } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
@@ -34,9 +34,6 @@ const lightFocusRing =
  */
 type ShareMyResultsTone = "dark" | "light";
 
-const nativeTileBase =
-  "flex min-h-11 w-[76px] flex-col items-center gap-1.5 rounded-2xl border px-1.5 pb-2 pt-2.5 text-center transition-all duration-200 hover:-translate-y-0.5";
-
 const TONE_CLASSES: Record<
   ShareMyResultsTone,
   {
@@ -45,8 +42,7 @@ const TONE_CLASSES: Record<
     pollLabel: string;
     checkbox: string;
     utilityButton: string;
-    nativeTile: string;
-    nativeTileLabel: string;
+    moreOptions: string;
     disclaimer: string;
     socialVariant: "dark" | "light";
   }
@@ -59,8 +55,8 @@ const TONE_CLASSES: Record<
       "h-4 w-4 shrink-0 rounded border-white/40 bg-white/10 text-[#66F0AC] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#66F0AC]",
     utilityButton:
       `inline-flex min-h-10 items-center gap-1.5 rounded-lg border border-white/25 bg-white/5 px-3 text-[13px] font-bold text-white hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-45 ${focusRing}`,
-    nativeTile: `${nativeTileBase} border-white/15 bg-white/5 hover:bg-white/10 ${focusRing}`,
-    nativeTileLabel: "text-[11px] font-bold leading-none text-white/80",
+    moreOptions:
+      `inline-flex min-h-11 items-center px-2 text-[13px] font-bold text-white/75 underline decoration-white/40 underline-offset-4 hover:text-white ${focusRing}`,
     disclaimer: "mt-4 text-xs leading-5 text-white/70",
     socialVariant: "dark",
   },
@@ -71,8 +67,8 @@ const TONE_CLASSES: Record<
     checkbox: `h-4 w-4 shrink-0 rounded border-[#AFC2D0] bg-white text-[#007A2F] ${lightFocusRing}`,
     utilityButton:
       `inline-flex min-h-10 items-center gap-1.5 rounded-lg border border-[#C9D8E4] bg-white px-3 text-[13px] font-bold text-[#10233A] hover:bg-[#F4F7FA] disabled:cursor-not-allowed disabled:opacity-45 ${lightFocusRing}`,
-    nativeTile: `${nativeTileBase} border-[#E3EAF1] bg-white shadow-[0_2px_10px_rgba(17,33,52,0.05)] hover:border-[#C9D8E4] hover:shadow-[0_10px_24px_rgba(17,33,52,0.12)] ${lightFocusRing}`,
-    nativeTileLabel: "text-[11px] font-bold leading-none text-[#33465A]",
+    moreOptions:
+      `inline-flex min-h-11 items-center px-2 text-[13px] font-bold text-[#064B84] underline decoration-[#9DB9D2] underline-offset-4 hover:text-[#053B6A] ${lightFocusRing}`,
     disclaimer: "mt-4 text-xs leading-5 text-[#52657A]",
     socialVariant: "light",
   },
@@ -495,21 +491,18 @@ export function ShareMyResults({
     setCanNativeShare(typeof navigator !== "undefined" && typeof navigator.share === "function");
   }, []);
 
-  // The canvas exists solely to produce the downloadable PNG now — the
-  // visible preview is the DOM replica (ShareCardPreview) above it.
-  useEffect(() => {
-    if (!open || !summary) return;
+  /** Draws the 1200x630 card for the CURRENT inputs, or null where this
+   *  engine has no 2D canvas (a test/SSR environment — the download button
+   *  falls back to the server-rendered share-card route in that case). Split
+   *  out of the panel effect (2026-08-17) because the one-tap share needs a
+   *  fresh card at tap time whether or not the panel was ever opened. */
+  const buildCardCanvas = useCallback((): HTMLCanvasElement | null => {
+    if (!summary) return null;
     const canvas = document.createElement("canvas");
     canvas.width = CARD_WIDTH;
     canvas.height = CARD_HEIGHT;
     const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      // No canvas support (or a test/SSR environment without one) — the
-      // download button falls back to the server-rendered share-card route.
-      canvasRef.current = null;
-      setPreviewUrl(null);
-      return;
-    }
+    if (!ctx) return null;
     drawShareCard(ctx, {
       savings: summaryInput.savings,
       flatEndingValue: summaryInput.flatEndingValue,
@@ -520,9 +513,22 @@ export function ShareMyResults({
       feeLabel: summaryInput.feeLabel,
       disclosure: summary.disclosure,
     });
+    return canvas;
+  }, [summary, summaryInput]);
+
+  // Any cached card goes stale the moment the inputs change. While the panel
+  // is open, redraw immediately for its thumbnail; while it is closed, just
+  // drop the cache — the one-tap path redraws on demand inside the tap.
+  useEffect(() => {
+    canvasRef.current = null;
+    if (!open || !summary) {
+      setPreviewUrl(null);
+      return;
+    }
+    const canvas = buildCardCanvas();
     canvasRef.current = canvas;
-    setPreviewUrl(canvas.toDataURL("image/png"));
-  }, [open, summary, summaryInput]);
+    setPreviewUrl(canvas ? canvas.toDataURL("image/png") : null);
+  }, [open, summary, buildCardCanvas]);
 
   // On a phone, the tapped toggle button often sits near the bottom of the
   // viewport, so the panel expands entirely below the fold — the exact
@@ -574,11 +580,14 @@ export function ShareMyResults({
     window.setTimeout(() => setStatus(defaultLabel), 1800);
   };
 
-  /** The card as a real PNG File. Null whenever this engine gave us no canvas
-   *  (the same condition the download button falls back for). */
+  /** The card as a real PNG File. Draws on demand so the one-tap share works
+   *  without the panel ever having been opened; null whenever this engine
+   *  gave us no canvas (the same condition the download button falls back
+   *  for). */
   const cardImageBlob = async (): Promise<Blob | null> => {
-    const canvas = canvasRef.current;
+    const canvas = canvasRef.current ?? buildCardCanvas();
     if (!canvas) return null;
+    canvasRef.current = canvas;
     return new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
   };
 
@@ -689,11 +698,29 @@ export function ShareMyResults({
 
   return (
     <>
+      {/* ONE-TAP SHARE, 2026-08-17 (David's call, from the "One Tap to
+          Share" research: a button that says Share should share on the tap —
+          Apple's HIG expectation, and Google's Santa Tracker measured ~20%
+          more shares from exactly this single-button-to-OS-sheet move).
+          Where navigator.share exists — effectively all phone traffic — the
+          tap opens the OS share sheet directly with the card image, summary
+          text, and state-encoded link attached. Without it (mainly desktop
+          Firefox and old engines) the button keeps its old job and toggles
+          the backup panel, so the aria disclosure wiring applies only in
+          that mode; on share-sheet browsers the panel stays reachable via
+          the quieter "More options" trigger beside this button. */}
       <button
         type="button"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-        aria-controls="share-my-results-panel"
+        onClick={() => {
+          if (canNativeShare) {
+            void shareNative();
+            return;
+          }
+          setOpen(!open);
+        }}
+        {...(canNativeShare
+          ? {}
+          : { "aria-expanded": open, "aria-controls": "share-my-results-panel" })}
         data-posthog-cta="true"
         data-posthog-cta-label="Share my results"
         data-posthog-cta-location={siteCalculatorConfig.analytics.detailedCalculatorResultsLocation}
@@ -708,6 +735,20 @@ export function ShareMyResults({
         <Share2 className="h-4 w-4" aria-hidden="true" />
         Share my results
       </button>
+      {canNativeShare ? (
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          aria-controls="share-my-results-panel"
+          data-posthog-cta="true"
+          data-posthog-cta-label="More sharing options"
+          data-posthog-cta-location={siteCalculatorConfig.analytics.detailedCalculatorResultsLocation}
+          className={toneClasses.moreOptions}
+        >
+          More options
+        </button>
+      ) : null}
 
       <AnimatePresence initial={false}>
         {open ? (
@@ -720,67 +761,17 @@ export function ShareMyResults({
             className="w-full overflow-hidden"
           >
             <div ref={panelRef} className={toneClasses.panel}>
-              <p className={toneClasses.microLabel}>Your share card</p>
-              <ShareCardPreview
-                data={{
-                  savings: summaryInput.savings,
-                  flatEndingValue: summaryInput.flatEndingValue,
-                  traditionalEndingValue: summaryInput.traditionalEndingValue,
-                  portfolioValue: summaryInput.portfolioValue,
-                  years: summaryInput.years,
-                  returnLabel: summaryInput.returnLabel,
-                  feeLabel: summaryInput.feeLabel,
-                  disclosure: summary?.disclosure ?? "",
-                }}
-              />
-
-              {summary?.pollLine ? (
-                <label className={toneClasses.pollLabel}>
-                  <input
-                    type="checkbox"
-                    checked={includePoll}
-                    onChange={(event) => setIncludePoll(event.target.checked)}
-                    className={toneClasses.checkbox}
-                  />
-                  Include the quick-poll question
-                </label>
-              ) : null}
-
-              <div className="mt-5">
-                <p className={toneClasses.microLabel}>Share it</p>
-                {/* Column below 480px so the three brand tiles keep one tidy
-                    row and the native tile drops underneath, instead of the
-                    flex split squeezing them into a 2/1/1 stagger. */}
-                <div className="mt-2.5 flex flex-col items-start gap-3 min-[480px]:flex-row min-[480px]:flex-wrap">
-                  <SocialShareRow
-                    url={canonicalUrl || null}
-                    socialText={summary?.socialText ?? ""}
-                    redditTitle={summary?.redditTitle ?? ""}
-                    location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
-                    variant={toneClasses.socialVariant}
-                  />
-                  {canNativeShare ? (
-                    <button
-                      type="button"
-                      onClick={shareNative}
-                      data-posthog-cta="true"
-                      data-posthog-cta-label="Share native"
-                      data-posthog-cta-location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
-                      className={toneClasses.nativeTile}
-                    >
-                      <span
-                        aria-hidden="true"
-                        className="flex h-9 w-9 items-center justify-center rounded-full bg-[#007A2F]"
-                      >
-                        <Share2 className="h-4 w-4 text-white" />
-                      </span>
-                      <span className={toneClasses.nativeTileLabel}>More</span>
-                    </button>
-                  ) : null}
-                </div>
-              </div>
-
-              <div className="mt-5">
+              {/* BACKUP MENU FLIPPED, 2026-08-17 (same change list): the
+                  crucial content of this panel is its actions, so they lead —
+                  NN/g's accordion guidance says never to bury the essential
+                  rows at the bottom of a collapsed panel, which is exactly
+                  where they sat, below a full-width preview. The preview
+                  survives as a thumbnail at the end (confirmation, not a
+                  gate), and the Facebook/X/Reddit tiles drop to the last
+                  action group: at roughly 1-in-500 usage they no longer
+                  outrank copy and save. The panel's old native "More" tile is
+                  gone — its job moved to the primary button. */}
+              <div>
                 <p className={toneClasses.microLabel}>Copy or save</p>
                 <div className="mt-2.5 flex flex-wrap gap-2">
                   <button
@@ -861,6 +852,55 @@ export function ShareMyResults({
                 >
                   {copyNotice ?? ""}
                 </p>
+              </div>
+
+              <div className="mt-5">
+                <p className={toneClasses.microLabel}>Or post it</p>
+                <div className="mt-2.5 flex flex-col items-start gap-3 min-[480px]:flex-row min-[480px]:flex-wrap">
+                  <SocialShareRow
+                    url={canonicalUrl || null}
+                    socialText={summary?.socialText ?? ""}
+                    redditTitle={summary?.redditTitle ?? ""}
+                    location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
+                    variant={toneClasses.socialVariant}
+                  />
+                </div>
+              </div>
+
+              {summary?.pollLine ? (
+                <label className={toneClasses.pollLabel}>
+                  <input
+                    type="checkbox"
+                    checked={includePoll}
+                    onChange={(event) => setIncludePoll(event.target.checked)}
+                    className={toneClasses.checkbox}
+                  />
+                  Include the quick-poll question
+                </label>
+              ) : null}
+
+              <div className="mt-5">
+                <p className={toneClasses.microLabel}>Your share card</p>
+                {/* A thumbnail, deliberately: the visitor has already seen
+                    their result on screen, so this exists to confirm what the
+                    image looks like (and that the disclosure rides on it),
+                    not to be read line by line. The DOM replica reflows at
+                    narrow widths, so constraining the box keeps it honest at
+                    thumbnail size instead of scaling text down. */}
+                <div className="mt-2 max-w-[340px]">
+                  <ShareCardPreview
+                    data={{
+                      savings: summaryInput.savings,
+                      flatEndingValue: summaryInput.flatEndingValue,
+                      traditionalEndingValue: summaryInput.traditionalEndingValue,
+                      portfolioValue: summaryInput.portfolioValue,
+                      years: summaryInput.years,
+                      returnLabel: summaryInput.returnLabel,
+                      feeLabel: summaryInput.feeLabel,
+                      disclosure: summary?.disclosure ?? "",
+                    }}
+                  />
+                </div>
               </div>
 
               <p className={toneClasses.disclaimer}>

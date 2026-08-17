@@ -20,6 +20,7 @@
     "test:refresh-position": "node tests/refresh-position.mjs",
     "test:home-wwwh": "node --test tests/home-wwwh.mjs",
     "test:calculator-canon-manifest": "node --test tests/calculator-canon-manifest.mjs",
+    "test:share-one-tap": "node --test tests/share-one-tap.mjs",
     "test:posthog-cta-tracker-mailto": "node tests/posthog-cta-tracker-mailto.mjs"
   },
   "dependencies": {

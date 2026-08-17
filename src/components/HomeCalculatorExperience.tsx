@@ -1724,13 +1724,14 @@ function SeeOurMathBento({
         className="mb-4 min-w-0 scroll-mt-24 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
       >
         <div className="min-w-0">
-          {/* The eyebrow said "Share & results" over a heading that said "Share
-              this comparison", above a button that says "Share my results" —
-              the word three times in 40 vertical pixels (2026-08-16). The
-              eyebrow now names the section and the heading says what you get,
-              so neither is a restatement of the other. */}
-          <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">Share</p>
-          <h3 id="home-share-results-heading" className="mt-1 text-lg font-semibold text-[#10233A] sm:text-xl">
+          {/* One heading, one button (2026-08-17, David's checked change list
+              from the One Tap to Share research). The 2026-08-16 pass had
+              already reworded the eyebrow/heading pair; this one removes the
+              eyebrow outright — "SHARE" over "Send this comparison" over a
+              button reading "Share my results" was still the same idea three
+              times in 40 vertical pixels, and NN/g's visual-hierarchy
+              guidance wants each level to add information, not restate it. */}
+          <h3 id="home-share-results-heading" className="text-lg font-semibold text-[#10233A] sm:text-xl">
             Send this comparison
           </h3>
         </div>
