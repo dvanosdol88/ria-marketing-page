@@ -522,13 +522,14 @@ test("the Difference label is set larger than the operand labels", () => {
 // there — that is the test that can fail honestly.
 test("the mobile first-screen spacing constants preserve room for the client CTA", () => {
   assert.match(navSource, /collapsed \? "h-\[58px\]" : "h-\[62px\]"/, "expanded mobile header is 62px");
-  // The left-aligned logo is compact enough to coexist with the hamburger and
-  // the new right-side client CTA without taking space from the calculator.
+  // The centered logo scales gently with the viewport but no longer shrinks
+  // independently when the header enters its compact scroll state.
   assert.match(
     navSource,
-    /heightClass=\{collapsed \? "h-7" : "h-\[30px\]"\}/,
-    "the compact left-aligned mobile logo",
+    /heightClass="h-\[clamp\(1\.75rem,8\.5vw,2\.125rem\)\]"/,
+    "the responsive centered mobile logo",
   );
+  assert.match(navSource, /fontSizeBase="clamp\(0\.85rem,4vw,1rem\)"/);
   // DECISION CHANGED, 2026-08-14 — read before "fixing" these back. David asked
   // for 5px more in both gaps (header → "?" 49px → 54px; promise → The Fee
   // Calculator 73px → 78px) and released the fold constraint that had been
@@ -674,13 +675,19 @@ test("desktop and mobile nav expose the tracked internal client CTA", () => {
   assert.match(navSource, /data-posthog-cta-location="site_nav_mobile_drawer"/);
   assert.match(navSource, /Sign Up/);
   assert.match(navSource, /bg-\[#064B84\][^"\n]*text-white/);
+  assert.match(navSource, /px-2\.5[^"\n]*min-\[360px\]:px-4/);
   assert.match(navSource, /absolute left-1\/2[^"\n]*-translate-x-1\/2/);
   assert.match(navSource, /const DESKTOP_PEER_LINK_CLASS/);
   assert.match(navSource, /const DRAWER_PEER_LINK_CLASS/);
+  assert.equal(
+    navSource.match(/<ExternalLink className=/g)?.length,
+    4,
+    "firm and client peer links must each carry the same leave-page arrow",
+  );
 
   const desktopStart = navSource.indexOf("Desktop Layout");
   const desktopFirmIndex = navSource.indexOf("Smarter Way Wealth\n                <ExternalLink", desktopStart);
-  const desktopClientIndex = navSource.indexOf("Become a Client\n              </Link>", desktopStart);
+  const desktopClientIndex = navSource.indexOf('data-posthog-cta-label="Become a Client"', desktopStart);
   assert.ok(desktopFirmIndex >= 0, "desktop firm link must render");
   assert.ok(desktopClientIndex > desktopFirmIndex, "desktop client link must follow the firm link");
 });

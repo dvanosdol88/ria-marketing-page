@@ -3,6 +3,13 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-17 — Client-link arrows and stable mobile brand balance
+**Agent:** Codex | **Surface:** site navigation | **Status:** locally verified; production proof required after merge
+- changed: desktop and drawer **Become a Client** links now carry the same square-arrow indicator as **Smarter Way Wealth**. The mobile wordmark no longer shrinks independently when the header compacts on scroll; it scales gently from 28px to 34px by viewport width and remains the same size in both scroll states.
+- mobile fit: the Sign Up button keeps its 44px tap target and full padding from 360px upward, with narrower horizontal padding below 360px so the centered wordmark and button do not overlap on a 320px viewport.
+- verified locally: at 375px the logo measured 131x32px before and after scrolling, retained a 14px gap from the 85x44px button, and produced no overflow. At 462px it grew to 139x34px. At 320px it retained a 5px gap from the compact 73x44px button with no overflow. Drawer and desktop links rendered 20px and 16px arrow icons respectively.
+- release contract: this entry ships with the implementation PR; completion still requires green CI, an exact-commit Git-linked production deployment, and fresh cache-bypassed apex proof.
+
 ### 2026-08-17 — Navigation hierarchy and homepage FAQ refinements
 **Agent:** Codex | **Surface:** homepage navigation + FAQ | **Status:** locally verified; production proof required after merge
 - changed: the desktop **Become a Client** item now follows **Smarter Way Wealth** and uses the same quiet peer-link treatment. At mobile widths, the wordmark is centered within the usable viewport, the visible CTA is the solid-blue **Sign Up** button, and the drawer includes a full **Become a Client** peer link.

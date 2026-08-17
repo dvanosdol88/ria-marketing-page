@@ -267,18 +267,17 @@ export function SiteNav() {
               {drawerOpen ? <X className="h-5 w-5" strokeWidth={2.2} /> : <Menu className="h-6 w-6" strokeWidth={2.2} />}
             </button>
 
-            {/* Center the compact wordmark in the header whenever the 375px
-                mobile budget permits. The side controls stay in normal flow,
-                so their tap targets remain stable while the logo holds the
-                visual center. */}
+            {/* Keep the wordmark visually stable before and after scrolling.
+                It grows gently with the viewport, reaching its full mobile
+                size without colliding with the 44px menu and signup targets. */}
             <Link
               href={"/" as any}
               className="absolute left-1/2 flex min-h-11 -translate-x-1/2 items-center"
               aria-label="Smarter Way Wealth home"
             >
               <Logo
-                heightClass={collapsed ? "h-7" : "h-[30px]"}
-                fontSizeBase={collapsed ? "0.8rem" : "0.9rem"}
+                heightClass="h-[clamp(1.75rem,8.5vw,2.125rem)]"
+                fontSizeBase="clamp(0.85rem,4vw,1rem)"
               />
             </Link>
 
@@ -287,7 +286,7 @@ export function SiteNav() {
               data-posthog-cta="true"
               data-posthog-cta-label="Become a Client"
               data-posthog-cta-location="site_nav_mobile"
-              className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-md bg-[#064B84] px-4 text-sm font-bold !text-white !no-underline shadow-[0_6px_18px_rgba(6,75,132,0.26)] transition hover:bg-[#053B6A] hover:!text-white focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#062B43]"
+              className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-md bg-[#064B84] px-2.5 text-sm font-bold !text-white !no-underline shadow-[0_6px_18px_rgba(6,75,132,0.26)] transition hover:bg-[#053B6A] hover:!text-white focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#062B43] min-[360px]:px-4"
             >
               Sign Up
             </Link>
@@ -371,6 +370,7 @@ export function SiteNav() {
                 style={{ color: "#064B84" }}
               >
                 Become a Client
+                <ExternalLink className="h-4 w-4" aria-hidden="true" />
               </Link>
             </nav>
           </div>
@@ -476,6 +476,7 @@ export function SiteNav() {
             style={{ color: "#064B84" }}
           >
             Become a Client
+            <ExternalLink className="h-5 w-5" aria-hidden="true" />
           </Link>
         </div>
 
