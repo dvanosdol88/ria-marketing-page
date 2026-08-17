@@ -16,6 +16,8 @@ const [
   stickyNavConfigSource,
   advancedCalculatorCtaSource,
   footerSource,
+  homeFaqSource,
+  faqDataSource,
 ] = await Promise.all([
   readSource("../src/app/page.tsx"),
   readSource("../src/components/CostAnalysisCalculator.tsx"),
@@ -27,6 +29,8 @@ const [
   readSource("../src/config/stickyNavConfig.ts"),
   readSource("../src/components/AdvancedCalculatorCta.tsx"),
   readSource("../src/components/SiteFooter.tsx"),
+  readSource("../src/components/HomeFaqSection.tsx"),
+  readSource("../src/data/faq.ts"),
 ]);
 
 const flatten = (source) => source.replace(/\s+/g, " ");
@@ -657,18 +661,40 @@ test("desktop and mobile nav expose the branded outbound firm link with tracking
 test("desktop and mobile nav expose the tracked internal client CTA", () => {
   assert.equal(
     navSource.match(/href=\{SIGNUP_PATH as any\}/g)?.length,
-    2,
-    "desktop and mobile headers must each render the client CTA",
+    3,
+    "desktop, mobile header, and mobile drawer must each render the client CTA",
   );
   assert.equal(
     navSource.match(/data-posthog-cta-label="Become a Client"/g)?.length,
-    2,
-    "both client CTAs must preserve the CTA label",
+    3,
+    "all client CTAs must preserve the analytics label",
   );
   assert.match(navSource, /data-posthog-cta-location="site_nav"/);
   assert.match(navSource, /data-posthog-cta-location="site_nav_mobile"/);
-  assert.match(navSource, /border-\[#2563EB\] bg-\[#EFF6FF\]/);
-  assert.match(navSource, /Mobile logo stays with the menu instead of floating at center/);
+  assert.match(navSource, /data-posthog-cta-location="site_nav_mobile_drawer"/);
+  assert.match(navSource, /Sign Up/);
+  assert.match(navSource, /bg-\[#064B84\][^"\n]*text-white/);
+  assert.match(navSource, /absolute left-1\/2[^"\n]*-translate-x-1\/2/);
+  assert.match(navSource, /const DESKTOP_PEER_LINK_CLASS/);
+  assert.match(navSource, /const DRAWER_PEER_LINK_CLASS/);
+
+  const desktopStart = navSource.indexOf("Desktop Layout");
+  const desktopFirmIndex = navSource.indexOf("Smarter Way Wealth\n                <ExternalLink", desktopStart);
+  const desktopClientIndex = navSource.indexOf("Become a Client\n              </Link>", desktopStart);
+  assert.ok(desktopFirmIndex >= 0, "desktop firm link must render");
+  assert.ok(desktopClientIndex > desktopFirmIndex, "desktop client link must follow the firm link");
+});
+
+test("homepage FAQ reflects the approved lean-model and custody edits", () => {
+  assert.match(homeFaqSource, /How does your lean model make \$100 a month possible\?/);
+  assert.match(homeFaqSource, /<em className="font-\[440\]">rhetorical question<\/em>/);
+  assert.doesNotMatch(homeFaqSource, /text-\[1\.1em\][^>]*>rhetorical question/);
+  assert.match(
+    faqDataSource,
+    /Fidelity, Schwab, Interactive Brokers, etc\. Smarter Way Wealth never takes custody of client funds or securities\./,
+  );
+  assert.doesNotMatch(faqDataSource, /You select and maintain your own accounts/);
+  assert.doesNotMatch(faqDataSource, /You receive account statements directly from your custodian/);
 });
 
 test("navigation uses one safe 1280px breakpoint across rendering and viewport logic", () => {

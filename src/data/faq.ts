@@ -58,7 +58,7 @@ export const faqItems: FaqItem[] = [
     id: "do-i-have-to-move-my-assets",
     question: "Do I have to move my assets?",
     answer:
-      "No. You keep the custodian you already know — Fidelity, Schwab, or another brokerage you choose. You select and maintain your own accounts, the assets stay in your name, and Smarter Way Wealth never takes custody of client funds or securities. You receive account statements directly from your custodian.",
+      "No. You keep the custodian you already know — Fidelity, Schwab, Interactive Brokers, etc. Smarter Way Wealth never takes custody of client funds or securities.",
   },
   {
     id: "hidden-fees",

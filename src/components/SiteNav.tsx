@@ -19,6 +19,10 @@ import {
 const COLLAPSE_SCROLL_Y = 158;
 const EXPAND_SCROLL_Y = 104;
 const SMARTER_WAY_WEALTH_URL = "https://smarterwaywealth.com/";
+const DESKTOP_PEER_LINK_CLASS =
+  "ml-3 inline-flex min-h-11 items-center gap-2 rounded-md px-3 py-2 text-sm font-extrabold transition-colors duration-200 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2";
+const DRAWER_PEER_LINK_CLASS =
+  "mt-3 flex min-h-12 items-center justify-between gap-3 rounded-lg px-3 py-3.5 text-base font-extrabold transition-colors duration-200 hover:bg-neutral-50 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2";
 
 /**
  * Site-wide navigation bar — "Authority" style with collapsing behavior.
@@ -31,8 +35,8 @@ const SMARTER_WAY_WEALTH_URL = "https://smarterwaywealth.com/";
  * Logo swap uses an opacity cross-fade — both logo elements are always in the
  * DOM (grid-stacked) to avoid layout shifts.
  *
- * Mobile: hamburger + left-aligned logo + client CTA.
- * Desktop: logo left + spaced nav links right, including the client CTA.
+ * Mobile: hamburger + centered logo + compact Sign Up CTA.
+ * Desktop: logo left + spaced nav links right, ending with two peer links.
  * Drawer uses CSS transitions (always in DOM) for reliability.
  */
 export function SiteNav() {
@@ -249,8 +253,8 @@ export function SiteNav() {
         <div className="site-nav mx-auto max-w-[1200px] px-4 transition-all duration-500 ease-out sm:px-6">
           {/* ── Mobile Layout ── */}
           {/* The 62px mobile header preserves the first-screen calculator
-              heading while fitting the menu, compact brand mark, and client CTA. */}
-          <div className={`flex items-center gap-2 xl:hidden transition-all duration-500 ease-out transform-gpu ${
+              heading while fitting the menu, centered brand mark, and signup CTA. */}
+          <div className={`relative flex items-center gap-2 xl:hidden transition-all duration-500 ease-out transform-gpu ${
             collapsed ? "h-[58px]" : "h-[62px]"
           }`}>
             <button
@@ -263,10 +267,13 @@ export function SiteNav() {
               {drawerOpen ? <X className="h-5 w-5" strokeWidth={2.2} /> : <Menu className="h-6 w-6" strokeWidth={2.2} />}
             </button>
 
-            {/* Mobile logo stays with the menu instead of floating at center. */}
+            {/* Center the compact wordmark in the header whenever the 375px
+                mobile budget permits. The side controls stay in normal flow,
+                so their tap targets remain stable while the logo holds the
+                visual center. */}
             <Link
               href={"/" as any}
-              className="flex min-h-11 shrink items-center"
+              className="absolute left-1/2 flex min-h-11 -translate-x-1/2 items-center"
               aria-label="Smarter Way Wealth home"
             >
               <Logo
@@ -280,9 +287,9 @@ export function SiteNav() {
               data-posthog-cta="true"
               data-posthog-cta-label="Become a Client"
               data-posthog-cta-location="site_nav_mobile"
-              className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-md border border-[#2563EB] bg-[#EFF6FF] px-3 py-2 text-xs font-extrabold text-[#1D4ED8] transition-[background-color,border-color,color] duration-200 hover:bg-[#DBEAFE] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
+              className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-md bg-[#064B84] px-4 text-sm font-bold !text-white !no-underline shadow-[0_6px_18px_rgba(6,75,132,0.26)] transition hover:bg-[#053B6A] hover:!text-white focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#062B43]"
             >
-              Become a Client
+              Sign Up
             </Link>
           </div>
 
@@ -336,15 +343,6 @@ export function SiteNav() {
                   </Link>
                 );
               })}
-              <Link
-                href={SIGNUP_PATH as any}
-                data-posthog-cta="true"
-                data-posthog-cta-label="Become a Client"
-                data-posthog-cta-location="site_nav"
-                className="ml-3 inline-flex min-h-11 items-center rounded-md border border-[#2563EB] bg-[#EFF6FF] px-4 py-2 text-sm font-extrabold text-[#1D4ED8] transition-[background-color,border-color,color] duration-200 hover:bg-[#DBEAFE] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#2563EB]"
-              >
-                Become a Client
-              </Link>
               <a
                 href={SMARTER_WAY_WEALTH_URL}
                 target="_blank"
@@ -358,12 +356,22 @@ export function SiteNav() {
                    arrow stays — it is what says "this leaves the site" — and
                    the brand green keeps it the most prominent thing in the
                    nav without pretending to be an action. */
-                className="ml-3 inline-flex min-h-11 items-center gap-2 rounded-md px-3 py-2 text-sm font-extrabold transition-colors duration-200 hover:text-[#005A22] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#007A2F]"
+                className={`${DESKTOP_PEER_LINK_CLASS} hover:text-[#005A22] focus-visible:outline-[#007A2F]`}
                 style={{ color: "#007A2F" }}
               >
                 Smarter Way Wealth
                 <ExternalLink className="h-4 w-4" aria-hidden="true" />
               </a>
+              <Link
+                href={SIGNUP_PATH as any}
+                data-posthog-cta="true"
+                data-posthog-cta-label="Become a Client"
+                data-posthog-cta-location="site_nav"
+                className={`${DESKTOP_PEER_LINK_CLASS} hover:text-[#043B68] focus-visible:outline-[#064B84]`}
+                style={{ color: "#064B84" }}
+              >
+                Become a Client
+              </Link>
             </nav>
           </div>
         </div>
@@ -452,12 +460,23 @@ export function SiteNav() {
             data-posthog-cta-label="Smarter Way Wealth"
             data-posthog-cta-location="site_nav_mobile"
             /* Matches the desktop treatment above — link, not button. */
-            className="mt-3 flex min-h-12 items-center justify-between gap-3 rounded-lg px-3 py-3.5 text-base font-extrabold transition-colors duration-200 hover:bg-neutral-50 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#007A2F]"
+            className={`${DRAWER_PEER_LINK_CLASS} focus-visible:outline-[#007A2F]`}
             style={{ color: "#007A2F" }}
           >
             Smarter Way Wealth
             <ExternalLink className="h-5 w-5" aria-hidden="true" />
           </a>
+          <Link
+            href={SIGNUP_PATH as any}
+            onClick={closeDrawer}
+            data-posthog-cta="true"
+            data-posthog-cta-label="Become a Client"
+            data-posthog-cta-location="site_nav_mobile_drawer"
+            className={`${DRAWER_PEER_LINK_CLASS} focus-visible:outline-[#064B84]`}
+            style={{ color: "#064B84" }}
+          >
+            Become a Client
+          </Link>
         </div>
 
         <div className="border-t border-neutral-100 px-4 py-4">

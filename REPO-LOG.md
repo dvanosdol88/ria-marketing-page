@@ -3,6 +3,13 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-17 — Navigation hierarchy and homepage FAQ refinements
+**Agent:** Codex | **Surface:** homepage navigation + FAQ | **Status:** locally verified; production proof required after merge
+- changed: the desktop **Become a Client** item now follows **Smarter Way Wealth** and uses the same quiet peer-link treatment. At mobile widths, the wordmark is centered within the usable viewport, the visible CTA is the solid-blue **Sign Up** button, and the drawer includes a full **Become a Client** peer link.
+- FAQ: the affordability question now ties directly to the lean operating model; *rhetorical question* keeps its surrounding 17px size, remains italic, and moves to variable weight 440; the custodian answer now names Fidelity, Schwab, and Interactive Brokers and removes the two requested sentences.
+- verified locally: production build and TypeScript passed; focused lint has 0 errors (one existing `no-img-element` warning); `home-wwwh` passed 25/25 plus first-screen, disclosures SSR, and PostHog mailto suites. Rendered browser proof passed at 375px and 1482px, including a functional mobile drawer and exact computed styles/copy. Full-repo lint remains blocked only by 11 errors in separate untracked `design-candidates/upgrade-mocks` files, which were preserved untouched.
+- release contract: this entry ships with the implementation PR; do not call the work complete until the Git-linked production deployment matches the merged commit and the cache-bypassed apex passes fresh mobile and desktop browser checks.
+
 ### 2026-08-17 — Client CTA added to the navigation
 **Agent:** Codex | **Surface:** marketing | **PR:** [#238](https://github.com/dvanosdol88/ria-marketing-page/pull/238) (`165e3d0`) | **Status:** deployed and verified
 - changed: `SiteNav` now puts a blue, tracked **Become a Client** link beside the existing Smarter Way Wealth link on desktop. At smaller widths, the logo is left-aligned after the menu button and the same destination becomes a right-aligned blue button. Both use the existing internal `/become-a-client` route; no new sign-up flow or compliance copy was introduced.

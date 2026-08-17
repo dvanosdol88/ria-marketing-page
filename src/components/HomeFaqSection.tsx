@@ -46,7 +46,7 @@ const KEPT_FAQ_ID = "afford-100-per-month";
 /** David's wording for the kept question (2026-08-14), which differs slightly
  *  from the stored "$100/mo" phrasing. The ANSWER still comes from the data
  *  file untouched. */
-const KEPT_QUESTION_LABEL = "How can you afford to do this for $100 a month?";
+const KEPT_QUESTION_LABEL = "How does your lean model make $100 a month possible?";
 
 /** Third question, added 2026-08-16 at David's request. The data file already
  *  answers this one — as "Do I have to move my assets?" — and its stored answer
@@ -235,12 +235,9 @@ export function HomeFaqSection() {
                  is speaking to, or listening on, a web page.
 
                  The defined term is set the way a dictionary sets one: <em>
-                 for the italic, +10% on the size and 440 on the weight (David:
-                 "about 10% heavier and 10% larger"). Both are relative rather
-                 than fixed — 1.1em tracks whatever the answer size is, and 440
-                 is a real value because Inter is loaded as a variable font, so
-                 this is a genuine 10% step up from 400 rather than the 25%
-                 jump that font-medium would have been. */
+                 keeps the italic and 440 is a real variable-font value, making
+                 the term 10% heavier than the surrounding 400-weight answer
+                 without changing its size (David, 2026-08-17). */
               answer={
                 <p className={ANSWER_CLASS}>
                   {/* Explicit {" "} on BOTH sides of the <em>. JSX drops the
@@ -249,7 +246,7 @@ export function HomeFaqSection() {
                       "rhetorical questionis a figure of speech" the first
                       time. */}
                   &ldquo;A{" "}
-                  <em className="text-[1.1em] font-[440]">rhetorical question</em>{" "}
+                  <em className="font-[440]">rhetorical question</em>{" "}
                   is a figure of speech framed as a question but meant to make a statement rather
                   than get an answer. The writer asks it to emphasize a point, create a dramatic
                   effect, or make the reader think.&rdquo;
