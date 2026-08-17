@@ -516,14 +516,14 @@ test("the Difference label is set larger than the operand labels", () => {
 // renders the page at two iPhone widths and asserts the heading's bounding box
 // against the usable Safari height. If you change a number here, re-measure
 // there — that is the test that can fail honestly.
-test("the mobile first-screen spacing constants are the measured ones", () => {
+test("the mobile first-screen spacing constants preserve room for the client CTA", () => {
   assert.match(navSource, /collapsed \? "h-\[58px\]" : "h-\[62px\]"/, "expanded mobile header is 62px");
-  // David chose to shrink the brand mark 10% rather than lose the calculator
-  // heading off the first screen. That trade is what pays for the gaps below.
+  // The left-aligned logo is compact enough to coexist with the hamburger and
+  // the new right-side client CTA without taking space from the calculator.
   assert.match(
     navSource,
-    /heightClass=\{collapsed \? "h-\[34px\]" : "h-\[52px\]"\}/,
-    "the 10% smaller mobile logo",
+    /heightClass=\{collapsed \? "h-7" : "h-\[30px\]"\}/,
+    "the compact left-aligned mobile logo",
   );
   // DECISION CHANGED, 2026-08-14 — read before "fixing" these back. David asked
   // for 5px more in both gaps (header → "?" 49px → 54px; promise → The Fee
@@ -652,6 +652,23 @@ test("desktop and mobile nav expose the branded outbound firm link with tracking
   assert.match(navSource, /min-h-11/);
   assert.match(navSource, /min-h-12/);
   assert.doesNotMatch(navSource, /\bh-10 w-10\b/);
+});
+
+test("desktop and mobile nav expose the tracked internal client CTA", () => {
+  assert.equal(
+    navSource.match(/href=\{SIGNUP_PATH as any\}/g)?.length,
+    2,
+    "desktop and mobile headers must each render the client CTA",
+  );
+  assert.equal(
+    navSource.match(/data-posthog-cta-label="Become a Client"/g)?.length,
+    2,
+    "both client CTAs must preserve the CTA label",
+  );
+  assert.match(navSource, /data-posthog-cta-location="site_nav"/);
+  assert.match(navSource, /data-posthog-cta-location="site_nav_mobile"/);
+  assert.match(navSource, /border-\[#2563EB\] bg-\[#EFF6FF\]/);
+  assert.match(navSource, /Mobile logo stays with the menu instead of floating at center/);
 });
 
 test("navigation uses one safe 1280px breakpoint across rendering and viewport logic", () => {
