@@ -6,7 +6,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Copy, Download, Link2, Mail, Share2 } from "lucide-react";
+import { Check, Copy, Download, Image as ImageIcon, Link2, Mail, Share2 } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
 import { siteCalculatorConfig } from "@/lib/siteCalculatorConfig";
 import type { ShareSummary, ShareSummaryInput } from "@/lib/shareSummary";
@@ -374,54 +374,63 @@ function ShareCardPreview({
   const isPositive = data.savings >= 0;
   const accentText = isPositive ? "text-[#007A2F]" : "text-[#B42318]";
 
+  /* TYPE SIZES RAISED, 2026-08-16 (David: "what is being shared — text is too
+     small"). Everything but the savings figure sat between 8px and 13px, which
+     is caption type doing body-copy work: this block is the visitor's only
+     look at what they are about to put their name on, and the numbers in it
+     are the whole point. Each step below is one size class, not a redesign —
+     the hierarchy is unchanged, it is just legible now. Nothing here scales the
+     1200x630 canvas card (drawShareCard), which keeps its own proportions. */
   return (
     <div className="mt-2 overflow-hidden rounded-xl border border-[#D8DEE8] bg-[#EEF0F5] p-4 shadow-sm sm:p-6">
       <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
         <div className="flex items-end gap-2">
           <span className="flex items-end gap-[3px]" aria-hidden="true">
-            <span className="h-[13px] w-[7px] rounded-[2px] bg-[#7ADCA6]" />
-            <span className="h-[19px] w-[7px] rounded-[2px] bg-[#00A540]" />
-            <span className="h-[25px] w-[7px] rounded-[2px] bg-[#007A2F]" />
+            <span className="h-[15px] w-[8px] rounded-[2px] bg-[#7ADCA6]" />
+            <span className="h-[22px] w-[8px] rounded-[2px] bg-[#00A540]" />
+            <span className="h-[29px] w-[8px] rounded-[2px] bg-[#007A2F]" />
           </span>
           <span className="leading-none">
-            <span className="block text-[13px] font-bold tracking-[0.18em] text-[#10233A]">SMARTER</span>
-            <span className="mt-[3px] block text-[8px] font-bold tracking-[0.3em] text-[#007A2F]">WAY WEALTH</span>
+            <span className="block text-[15px] font-bold tracking-[0.18em] text-[#10233A]">SMARTER</span>
+            <span className="mt-[3px] block text-[9px] font-bold tracking-[0.3em] text-[#007A2F]">WAY WEALTH</span>
           </span>
         </div>
-        <p className="text-[9px] font-bold uppercase tracking-[0.12em] text-[#53606A]">
+        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#53606A]">
           Fee comparison · Educational illustration
         </p>
       </div>
 
-      <p className={`mt-5 text-[11px] font-extrabold uppercase tracking-[0.1em] ${accentText}`}>
+      <p className={`mt-5 text-[13px] font-extrabold uppercase tracking-[0.1em] ${accentText}`}>
         {isPositive ? "I could potentially save" : "Difference in this scenario"}
       </p>
       <p className={`mt-1.5 text-4xl font-extrabold leading-none tabular-nums sm:text-5xl ${accentText}`}>
         {formatCurrency(data.savings)}
       </p>
-      <p className="mt-2.5 text-[13px] font-semibold leading-5 text-[#33465A]">
+      <p className="mt-2.5 text-[15px] font-semibold leading-6 text-[#33465A] sm:text-base">
         over {data.years} years · {formatCurrency(data.portfolioValue)} starting portfolio · {data.returnLabel}
       </p>
 
       <div className="mt-4 grid gap-2.5 min-[480px]:grid-cols-2">
         <div className="rounded-lg border border-[#BFE7D1] bg-[#E8F7EE] px-3.5 py-3">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-[#0A6E35]">Flat-fee ending value</p>
-          <p className="mt-1 text-lg font-extrabold tabular-nums text-[#0A6E35]">{formatCurrency(data.flatEndingValue)}</p>
+          <p className="text-[12px] font-bold uppercase tracking-wider text-[#0A6E35]">Flat-fee ending value</p>
+          <p className="mt-1 text-xl font-extrabold tabular-nums text-[#0A6E35] sm:text-2xl">
+            {formatCurrency(data.flatEndingValue)}
+          </p>
         </div>
         <div className="rounded-lg border border-[#C9D8E4] bg-[#EAF1F8] px-3.5 py-3">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-[#064B84]">Traditional ending value</p>
-          <p className="mt-1 text-lg font-extrabold tabular-nums text-[#062B43]">
+          <p className="text-[12px] font-bold uppercase tracking-wider text-[#064B84]">Traditional ending value</p>
+          <p className="mt-1 text-xl font-extrabold tabular-nums text-[#062B43] sm:text-2xl">
             {formatCurrency(data.traditionalEndingValue)}
           </p>
         </div>
       </div>
 
-      <p className="mt-3 text-[11px] font-semibold text-[#53606A]">{data.feeLabel}</p>
+      <p className="mt-3 text-[13px] font-semibold text-[#53606A]">{data.feeLabel}</p>
 
       <div className="mt-4 border-t border-[#C9D8E4] pt-3">
-        <p className="text-[11px] font-bold text-[#53606A]">{siteCalculatorConfig.displayDomain}</p>
-        <p className="mt-1 text-[10px] leading-4 text-[#53606A]">{data.disclosure}</p>
-        <p className="mt-1.5 text-[10px] font-bold text-[#53606A]">{siteCalculatorConfig.brandAttributionLine}</p>
+        <p className="text-[13px] font-bold text-[#53606A]">{siteCalculatorConfig.displayDomain}</p>
+        <p className="mt-1 text-[12px] leading-5 text-[#53606A]">{data.disclosure}</p>
+        <p className="mt-1.5 text-[12px] font-bold text-[#53606A]">{siteCalculatorConfig.brandAttributionLine}</p>
       </div>
     </div>
   );
@@ -473,6 +482,7 @@ export function ShareMyResults({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [copyLinkStatus, setCopyLinkStatus] = useState("Copy link");
   const [copySummaryStatus, setCopySummaryStatus] = useState("Copy summary");
+  const [copyImageStatus, setCopyImageStatus] = useState("Copy image");
   /** Confirmation shown below the copy row — see copyText. */
   const [copyNotice, setCopyNotice] = useState<string | null>(null);
   const [includePoll, setIncludePoll] = useState(true);
@@ -537,6 +547,15 @@ export function ShareMyResults({
     ? (pollIncluded && summary.textWithPoll ? summary.textWithPoll : summary.shortLine)
     : "";
 
+  /* Used only by the file share, which cannot pass url: alongside files (see
+     shareNative). shortLine carries no URL of its own, so append one; the
+     poll variant already ends with the "Run it with your own numbers" line,
+     hence the guard against printing the same link twice. */
+  const nativeShareTextWithLink =
+    canonicalUrl && !nativeShareText.includes(canonicalUrl)
+      ? `${nativeShareText}\n\n${canonicalUrl}`
+      : nativeShareText;
+
   /* The button's own label was the only confirmation a copy had happened —
      and on a phone that label sits directly under the thumb that just pressed
      it, then reverts after 1.8 seconds. So the visitor's honest experience was
@@ -555,14 +574,85 @@ export function ShareMyResults({
     window.setTimeout(() => setStatus(defaultLabel), 1800);
   };
 
+  /** The card as a real PNG File. Null whenever this engine gave us no canvas
+   *  (the same condition the download button falls back for). */
+  const cardImageBlob = async (): Promise<Blob | null> => {
+    const canvas = canvasRef.current;
+    if (!canvas) return null;
+    return new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
+  };
+
+  /* SHARES THE PICTURE, NOT THE LINK, 2026-08-16 (David: "can the image be
+     just that, an image, so it's not a link? ... just viewing the image, I
+     think, will be more powerful").
+
+     Web Share Level 2 carries files, so on a phone the card itself now lands
+     in the thread — iMessage, WhatsApp, Mail, Instagram — instead of a URL the
+     recipient has to tap and wait for. The link is not lost: the card renders
+     the domain on its own face, and the URL is appended to the shared text, so
+     it travels underneath the picture exactly as David described.
+
+     navigator.canShare({files}) is the only honest test. Both Safari and
+     Chrome reject a files: payload they cannot carry by throwing from share(),
+     which is indistinguishable from the visitor tapping Cancel — so asking
+     first is what keeps the link-only fallback from being dead code. */
   const shareNative = async () => {
     if (!summary || typeof navigator.share !== "function") return;
+
+    const blob = await cardImageBlob();
+    if (blob) {
+      const file = new File([blob], summary.imageFileName, { type: "image/png" });
+      if (typeof navigator.canShare === "function" && navigator.canShare({ files: [file] })) {
+        try {
+          /* No url: alongside files — several implementations drop the whole
+             payload rather than one field when they cannot carry both. The
+             link rides in the text instead, where every implementation keeps
+             it. */
+          await navigator.share({ title: summary.title, text: nativeShareTextWithLink, files: [file] });
+          return;
+        } catch (error) {
+          // A cancelled sheet is done; anything else falls through to the
+          // link-only share below rather than leaving the visitor with nothing.
+          if (error instanceof Error && error.name === "AbortError") return;
+        }
+      }
+    }
+
     try {
       await navigator.share({ title: summary.title, text: nativeShareText, url: canonicalUrl });
     } catch {
       // The visitor cancelled the native share sheet or the platform
       // declined the request — nothing to surface back to them.
     }
+  };
+
+  /* The desktop counterpart to the file share: put the PNG on the clipboard so
+     it can be pasted straight into an email, a document or a chat window.
+     ClipboardItem is handed the PROMISE of the blob rather than an awaited
+     one — Safari discards the write if the item is not constructed inside the
+     gesture's own task, and Chrome accepts the promise form too. */
+  const copyImage = async () => {
+    if (!summary) return;
+    const supported =
+      typeof ClipboardItem === "function" && typeof navigator.clipboard?.write === "function";
+
+    if (supported && canvasRef.current) {
+      try {
+        await navigator.clipboard.write([
+          new ClipboardItem({ "image/png": cardImageBlob() as Promise<Blob> }),
+        ]);
+        setCopyImageStatus("Copied");
+        setCopyNotice("Image copied to your clipboard.");
+        window.setTimeout(() => setCopyImageStatus("Copy image"), 1800);
+        return;
+      } catch {
+        // Fall through to the same advice the text copies give.
+      }
+    }
+
+    setCopyImageStatus("Copy unavailable");
+    setCopyNotice("Couldn't reach the clipboard in this browser. Use Download image instead.");
+    window.setTimeout(() => setCopyImageStatus("Copy image"), 1800);
   };
 
   const downloadImage = () => {
@@ -595,6 +685,7 @@ export function ShareMyResults({
 
   const CopyLinkIcon = copyLinkStatus === "Copied" ? Check : Link2;
   const CopySummaryIcon = copySummaryStatus === "Copied" ? Check : Copy;
+  const CopyImageIcon = copyImageStatus === "Copied" ? Check : ImageIcon;
 
   return (
     <>
@@ -731,6 +822,23 @@ export function ShareMyResults({
                     <Mail className="h-4 w-4" aria-hidden="true" />
                     Email results
                   </a>
+                  {/* Sits immediately before Download, 2026-08-16. Same idea as
+                      the file share, for the desktop half of the audience: put
+                      the picture itself on the clipboard so it can be pasted
+                      into a mail or a document, rather than making a download
+                      and a file-picker the only route to sending an image. */}
+                  <button
+                    type="button"
+                    onClick={copyImage}
+                    disabled={!summary || !previewUrl}
+                    data-posthog-cta="true"
+                    data-posthog-cta-label="Copy share image"
+                    data-posthog-cta-location={siteCalculatorConfig.analytics.shareMyResultsPanelLocation}
+                    className={toneClasses.utilityButton}
+                  >
+                    <CopyImageIcon className="h-4 w-4" aria-hidden="true" />
+                    {copyImageStatus}
+                  </button>
                   <button
                     type="button"
                     onClick={downloadImage}

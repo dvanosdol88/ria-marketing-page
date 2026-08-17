@@ -19,8 +19,8 @@ plan's "Improvement flow"). This register is enforced by
 `tests/calculator-canon-manifest.test.mjs`.
 
 Counterpart repo: `D:\smarter-way-wealth` (smarterwaywealth.com)
-Last synced: 2026-08-14
-syncVersion: 5
+Last synced: 2026-08-16
+syncVersion: 6
 
 ## Narrowed scope (Phase B1 adjudication — read before editing this file)
 
@@ -42,6 +42,33 @@ composition differences, and treat the two base-experience files as
 investigation.
 
 ## Why these files, and not others
+
+- **v6 (2026-08-16, the share is a picture now, and you can read it)**: one
+  file, `ShareMyResults.tsx`, from David's round-5 review.
+  *"What is being shared — text is too small."* The preview card's type ran
+  from 8px to 13px, caption sizes doing body-copy work, on the one block that
+  shows a visitor what they are about to put their name on. Every line but the
+  savings figure moves up one step (subline 13→15px, tile labels 10→12px, tile
+  values 18→20px, fee line and domain 11→13px, disclosure 10→12px with the
+  leading opened to match). The hierarchy is unchanged and the 1200x630 canvas
+  card is untouched — `drawShareCard` keeps its own proportions.
+  *"Can the image be just that, an image, so it's not a link?"* It can, on the
+  platforms that carry one. `shareNative` now builds the PNG as a `File` and,
+  when `navigator.canShare({files})` agrees, shares the picture itself — so on
+  a phone the card lands in the thread rather than a URL awaiting an unfurl.
+  The link is not lost: the card renders the domain on its own face, and the
+  URL is appended to the shared text. `canShare` is asked first because both
+  WebKit and Chrome refuse an uncarriable `files:` payload by throwing from
+  `share()`, which is indistinguishable from the visitor cancelling — without
+  the check the link-only fallback would be dead code. A new **Copy image**
+  button does the same job for desktop, putting the PNG on the clipboard so it
+  pastes into a mail or a document; `ClipboardItem` is handed the *promise* of
+  the blob because WebKit discards a write whose item was not constructed
+  inside the gesture's own task.
+  The social tiles still pass a link, and always will: Facebook, X, Reddit and
+  LinkedIn web intents accept a URL and nothing else. Those platforms show the
+  image through the page's Open Graph tags, not through anything this panel
+  can hand them.
 
 - **v5 (2026-08-14, LinkedIn share + the copy buttons actually copy)**: two
   files, both from David's round-3 review.
@@ -136,7 +163,7 @@ investigation.
 | Path | SHA-256 |
 |---|---|
 | src/components/Quiz.tsx | 769737A1B4482CB775F4829C883BC8D79EE09632CCAC61AAFF1ED1D1EC3551C4 |
-| src/components/calculator/ShareMyResults.tsx | 0D49F87E340E88AEB44854508F3129DC37744E3CD7A67F65FD4F31D7F7864395 |
+| src/components/calculator/ShareMyResults.tsx | A98F15B828B9CC277A33598E5DADF2D6438B0312854E4B93E5358A6552FA541F |
 | src/components/calculator/SocialShareRow.tsx | 8A221CD817F4D0A171CECCB6E217A43FAF8433CB0AA856DA42B69DCA4086934D |
 | src/lib/shareSummary.ts | F2562529515C5C851CD57380899D2D4C19C60A54921EA7FD67128CE903295E42 |
 
