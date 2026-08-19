@@ -7,7 +7,10 @@ import {
   registerPostHogProperties,
   registerPostHogPropertiesOnce,
 } from "@/lib/posthog";
-import { POSTHOG_UTM_KEYS } from "@/lib/campaignAttribution";
+import {
+  appendCampaignAttributionToFirmHref,
+  POSTHOG_UTM_KEYS,
+} from "@/lib/campaignAttribution";
 
 const CTA_HOSTS = new Set([
   "smarterwaywealth.com",
@@ -57,6 +60,16 @@ export function PostHogCtaTracker() {
     const handleClick = (event: MouseEvent) => {
       const anchor = getAnchorFromEvent(event);
       if (!anchor || !isTrackedCta(anchor)) return;
+
+      const attributedHref = appendCampaignAttributionToFirmHref(
+        anchor.href,
+        getPostHogCampaignProperties(),
+      );
+      if (attributedHref !== anchor.href) {
+        // Carry campaign context to the firm site without carrying calculator
+        // assumptions, browser/session identity, or any visitor-entered data.
+        anchor.href = attributedHref;
+      }
 
       const url = new URL(anchor.href, window.location.href);
       // Canon privacy invariant (docs/plans/2026-08-12-calculator-canon.md

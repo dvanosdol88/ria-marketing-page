@@ -3,6 +3,13 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-19 — EDDM campaign attribution now crosses the firm-site handoff
+**Agent:** Codex | **Surface:** YAPT → Smarter Way Wealth campaign handoff | **Status:** locally verified; production proof required after merge
+- changed: attributed outbound links to `smarterwaywealth.com` receive only the available standard UTM fields at click time. Static page markup remains clean, and ordinary non-campaign visitors keep the existing destinations.
+- privacy boundary: calculator assumptions, user-entered information, PostHog distinct IDs, and browser/session identifiers do not cross domains. The event contract and dashboard guide now record that boundary.
+- verified locally: the legacy and canonical EDDM URLs still open the mobile calculator; the legacy printer URL still resolves to `launch_5k`; the firm handoff receives the four EDDM UTM values and none of the calculator fields; the mailto analytics-redaction regression remains green; focused lint, TypeScript, and JSON validation pass.
+- release contract: ship through PR → `main` → Vercel, then prove the exact printed QR journey on production and confirm the Smarter Way Wealth landing session registers the EDDM campaign without PII.
+
 ### 2026-08-17 — One-tap share: the button that says Share now shares (canon v7)
 **Agent:** Claude (Fable 5, Claude Code desktop) | **Surface:** canon share stack + homepage share section | **Status:** deployed and verified (main `9fc94e3`, CI green; GitHub Production deployment record carries the exact sha; cache-bypassed apex HTML shows the eyebrow gone + new heading markup; deployed JS bundle on the apex contains "Or post it"/"More options")
 - context: David's four checked changes, selected off the same-day "One Tap to Share" research report (27 sources, every link fetch-verified; key evidence: Apple HIG share-affordance expectation, Google's Santa Tracker +20% shares from one-native-button, ~0.2% custom share-button usage across GOV.UK/Moovweb/LukeW, NN/g accordion + information-scent guidance).
