@@ -50,6 +50,12 @@ Events inferred from the printer-proof URL must include
 `campaign_attribution_method=legacy_qr_signature` and
 `legacy_eddm_qr=true`. Explicit UTM parameters always take precedence.
 
+When an attributed visitor follows a link from this site to
+`smarterwaywealth.com`, carry only the available `utm_source`, `utm_medium`,
+`utm_campaign`, `utm_content`, and `utm_term` values into the destination URL.
+Do not carry calculator assumptions, PostHog distinct IDs, browser/session IDs,
+or visitor-entered information across the domain boundary.
+
 Required campaign parameters:
 
 - `variant=direct-mail`

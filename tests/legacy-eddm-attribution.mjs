@@ -38,9 +38,15 @@ async function waitForPage(url, child) {
   );
 }
 
-async function waitForCapturedEvent(capturedEvents, eventName) {
+async function waitForCapturedEvent(
+  capturedEvents,
+  eventName,
+  predicate = () => true,
+) {
   for (let attempt = 0; attempt < 60; attempt += 1) {
-    const event = capturedEvents.find((candidate) => candidate.event === eventName);
+    const event = capturedEvents.find(
+      (candidate) => candidate.event === eventName && predicate(candidate),
+    );
     if (event) return event;
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
@@ -168,6 +174,49 @@ try {
   const ctaEvent = await waitForCapturedEvent(capturedEvents, "cta_clicked");
   assertLegacyAttribution(ctaEvent);
 
+  const firmHandoff = page.locator(
+    'a[data-posthog-cta-location="home_firm_visit_card"]',
+  );
+  assert.equal(
+    await firmHandoff.getAttribute("href"),
+    "https://smarterwaywealth.com/",
+    "the rendered handoff should remain clean before a campaign visitor clicks",
+  );
+  await firmHandoff.evaluate((link) => {
+    link.addEventListener("click", (event) => event.preventDefault(), { once: true });
+    link.click();
+  });
+
+  const attributedHandoffHref = new URL(await firmHandoff.getAttribute("href"));
+  assert.equal(attributedHandoffHref.origin, "https://smarterwaywealth.com");
+  assert.equal(attributedHandoffHref.searchParams.get("utm_source"), "eddm");
+  assert.equal(attributedHandoffHref.searchParams.get("utm_medium"), "print");
+  assert.equal(attributedHandoffHref.searchParams.get("utm_campaign"), "launch_5k");
+  assert.equal(attributedHandoffHref.searchParams.get("utm_content"), "qr_code");
+  for (const forbiddenKey of [
+    "portfolio",
+    "years",
+    "growth",
+    "fee",
+    "flat",
+    "mfe",
+    "variant",
+  ]) {
+    assert.equal(
+      attributedHandoffHref.searchParams.has(forbiddenKey),
+      false,
+      `firm handoff must not carry ${forbiddenKey}`,
+    );
+  }
+
+  const firmHandoffEvent = await waitForCapturedEvent(
+    capturedEvents,
+    "cta_clicked",
+    (event) => event.properties?.cta_location === "home_firm_visit_card",
+  );
+  assertLegacyAttribution(firmHandoffEvent);
+  assert.equal(firmHandoffEvent.properties.cta_href, attributedHandoffHref.toString());
+
   await page.goto(`${baseUrl}/?${CANONICAL_MAILER_QUERY}`, {
     waitUntil: "domcontentloaded",
   });
@@ -195,7 +244,7 @@ try {
   await unrelatedPage.close();
 
   console.log(
-    "Legacy and canonical EDDM QR URLs land at the calculator; foreign explicit UTM traffic stays at the page top; legacy attribution survives URL cleanup and the retained /become-a-client CTA.",
+    "Legacy and canonical EDDM QR URLs land at the calculator; foreign explicit UTM traffic stays at the page top; legacy attribution survives URL cleanup and reaches the firm site using UTM-only handoff links.",
   );
 } finally {
   await browser?.close();

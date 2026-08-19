@@ -71,6 +71,10 @@ The live dashboard was created on 2026-06-04 with the following saved insights. 
      `home_firm_visit_card_david`, and `home_firm_visit_card_faq`; this makes
      the firm-home handoff and each visitor intent comparable with navigation
      and other firm-site handoffs.
+   - For campaign visitors, the destination URL receives only the standard UTM
+     fields. This lets subsequent SWW events retain campaign-level attribution
+     without sending calculator assumptions, visitor-entered data, or a
+     cross-domain identity token.
    - Question answered: which page/CTA is sending visitors to the firm site?
 
 4. `Firm-site intent`

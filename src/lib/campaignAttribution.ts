@@ -1,4 +1,7 @@
-import { EDDM_LAUNCH_QR_PARAMS } from "@/config/campaignLinks";
+import {
+  EDDM_LAUNCH_QR_PARAMS,
+  SMARTER_WAY_WEALTH_ORIGIN,
+} from "@/config/campaignLinks";
 
 export const POSTHOG_UTM_KEYS = [
   "utm_source",
@@ -13,6 +16,29 @@ export type CampaignAttribution = Partial<Record<(typeof POSTHOG_UTM_KEYS)[numbe
   is_eddm_visitor: boolean;
   legacy_eddm_qr: boolean;
 };
+
+const SMARTER_WAY_WEALTH_HOSTS = new Set([
+  new URL(SMARTER_WAY_WEALTH_ORIGIN).hostname,
+  `www.${new URL(SMARTER_WAY_WEALTH_ORIGIN).hostname}`,
+]);
+
+export function appendCampaignAttributionToFirmHref(
+  href: string,
+  campaignProperties: Record<string, unknown>,
+) {
+  const url = new URL(href);
+  if (!SMARTER_WAY_WEALTH_HOSTS.has(url.hostname.toLowerCase())) return href;
+
+  let changed = false;
+  POSTHOG_UTM_KEYS.forEach((key) => {
+    const value = campaignProperties[key];
+    if (typeof value !== "string" || !value) return;
+    url.searchParams.set(key, value);
+    changed = true;
+  });
+
+  return changed ? url.toString() : href;
+}
 
 const LEGACY_EDDM_QR_SIGNATURE = {
   portfolio: EDDM_LAUNCH_QR_PARAMS.portfolio,
