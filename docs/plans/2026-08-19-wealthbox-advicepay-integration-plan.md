@@ -32,6 +32,8 @@ The capability assessment defined a 7-stage journey and left three stages withou
 
 ## 4. Decisions for David (in order of leverage)
 
+> **Status update (2026-08-19, from David):** already live with WealthBox, RightCapital, and AdvicePay — the buy/tier decisions below are moot as purchase questions and become configuration verifications (§6). §4.1 (XYPN) is deferred to contract renewal; a one-shot reminder is set for 2027-04-19 to re-evaluate.
+
 ### 4.1 XYPN membership — evaluate FIRST, before buying anything à la carte
 XYPN membership bundles **all three tools** (WealthBox, RightCapital ~Premium-equivalent, AdvicePay Professional) plus discounted AdvicePay transaction rates (1.0% ACH vs 1.5%; 2.9%+30¢ card vs 3.5%+30¢) and pre-built WealthBox workflow templates matching their Financial Planning Process. À la carte, the same stack runs roughly $75–99 (WealthBox Pro/Premier) + $50 (AdvicePay Pro) + $210 (RightCapital Premium) ≈ **$335–360/mo** before transaction fees. If XYPN membership cost is in that neighborhood, the bundled compliance/community support for a startup RIA likely makes it strictly better. **Action: price XYPN membership vs à la carte.**
 
