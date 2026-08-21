@@ -275,12 +275,10 @@ function drawShareCard(ctx: CanvasRenderingContext2D, data: ShareCardData) {
   ctx.fillStyle = accent;
   ctx.font = `800 22px ${FONT_STACK}`;
   setLetterSpacing(ctx, "1px");
-  /* First person, because a share card is something a visitor posts about
-     their own situation — "I could potentially save" is what they would
-     actually say, where "Potential difference" reads like a spreadsheet
-     header (David, 2026-08-14). The negative case keeps the neutral label:
-     you cannot say you saved anything when the flat fee costs more. */
-  ctx.fillText(isPositive ? "I COULD POTENTIALLY SAVE" : "DIFFERENCE IN THIS SCENARIO", PAD_X, cursorY);
+  /* Keep the receipt language neutral and assumption-bound. It is an
+     estimated advisory-fee comparison, not a claim that the visitor already
+     saved money or achieved an investment result. */
+  ctx.fillText(isPositive ? "ESTIMATED ADVISORY-FEE DIFFERENCE" : "DIFFERENCE IN THIS SCENARIO", PAD_X, cursorY);
   setLetterSpacing(ctx, "0px");
   cursorY += 88;
 
@@ -397,7 +395,7 @@ function ShareCardPreview({
       </div>
 
       <p className={`mt-5 text-[13px] font-extrabold uppercase tracking-[0.1em] ${accentText}`}>
-        {isPositive ? "I could potentially save" : "Difference in this scenario"}
+        {isPositive ? "Estimated advisory-fee difference" : "Difference in this scenario"}
       </p>
       <p className={`mt-1.5 text-4xl font-extrabold leading-none tabular-nums sm:text-5xl ${accentText}`}>
         {formatCurrency(data.savings)}

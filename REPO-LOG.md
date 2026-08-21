@@ -3,6 +3,13 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-20 — Standardized the cross-site fee-comparison receipt
+**Agent:** RIA Chief | **Surface:** shared calculator share/receipt stack | **Status:** locally verified; production proof pending
+- changed: the shared copy/email/social summary and in-panel/share-card artifact now use neutral **estimated advisory-fee difference** language tied to the visitor's assumptions. The stronger percentage-of-wealth / “lost to fees” sentence was removed from the receipt variants.
+- changed: YAPT's dynamic OG card and metadata image alt text now use the same receipt terminology. The calculator math, page title, and dynamic title/meta behavior were not changed.
+- verified locally: focused canon/share tests passed 12/12; TypeScript passed; lint passed with one existing image-optimization warning; production build passed. Cross-site canon hashes match the SWW register at syncVersion 8.
+- not deployed in this entry: production verification remains after the paired main pushes.
+
 ### 2026-08-19 — EDDM campaign attribution now crosses the firm-site handoff
 **Agent:** Codex | **Surface:** YAPT → Smarter Way Wealth campaign handoff | **Status:** locally verified; production proof required after merge
 - changed: attributed outbound links to `smarterwaywealth.com` receive only the available standard UTM fields at click time. Static page markup remains clean, and ordinary non-campaign visitors keep the existing destinations.

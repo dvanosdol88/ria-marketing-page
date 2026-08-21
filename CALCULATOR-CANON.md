@@ -19,8 +19,8 @@ plan's "Improvement flow"). This register is enforced by
 `tests/calculator-canon-manifest.test.mjs`.
 
 Counterpart repo: `D:\smarter-way-wealth` (smarterwaywealth.com)
-Last synced: 2026-08-17
-syncVersion: 7
+Last synced: 2026-08-20
+syncVersion: 8
 
 ## Narrowed scope (Phase B1 adjudication — read before editing this file)
 
@@ -43,6 +43,13 @@ investigation.
 
 ## Why these files, and not others
 
+- **v8 (2026-08-20, standardized fee-comparison receipt language)**: the
+  shared summary and share-card artifact now say **estimated advisory-fee
+  difference**, keep the result explicitly tied to the visitor's assumptions,
+  and remove the stronger "lost to fees" sentence from copy/email/social
+  variants. The YAPT OG card and SWW server share card use the same neutral
+  label. This is a fee-comparison receipt, not a performance or realized-
+  savings claim.
 - **v7 (2026-08-17, one-tap share)**: one file, `ShareMyResults.tsx`, from
   David's four checked changes off the "One Tap to Share" research report.
   Where `navigator.share` exists — effectively all phone traffic — the
@@ -178,9 +185,9 @@ investigation.
 | Path | SHA-256 |
 |---|---|
 | src/components/Quiz.tsx | 769737A1B4482CB775F4829C883BC8D79EE09632CCAC61AAFF1ED1D1EC3551C4 |
-| src/components/calculator/ShareMyResults.tsx | 8EA87826227E55A55510769021A808CADF5CA3346154651BAEB52DCB9C831DAF |
+| src/components/calculator/ShareMyResults.tsx | 4618AD2CAD62F05ABC3B9D038D2C0288971C190C5B7614BC103921566CF546B1 |
 | src/components/calculator/SocialShareRow.tsx | 8A221CD817F4D0A171CECCB6E217A43FAF8433CB0AA856DA42B69DCA4086934D |
-| src/lib/shareSummary.ts | F2562529515C5C851CD57380899D2D4C19C60A54921EA7FD67128CE903295E42 |
+| src/lib/shareSummary.ts | 54BB6E49E805E1CC7861AEC4E53B9358394F592A26B0560FF7460CAA07B325E7 |
 
 **Line endings (review fix round, 2026-08-13):** `.gitattributes` now forces
 `text eol=lf` on all four paths above, closing a real drift: this repo's

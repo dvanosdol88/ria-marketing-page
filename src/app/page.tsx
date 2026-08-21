@@ -59,7 +59,7 @@ export async function generateMetadata({
           url: image,
           width: 1200,
           height: 630,
-          alt: `${savings} projected fee savings with Smarter Way Wealth`,
+          alt: `${savings} estimated advisory-fee difference with Smarter Way Wealth`,
         },
       ],
     },

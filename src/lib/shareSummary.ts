@@ -35,7 +35,7 @@ export interface ShareSummaryInput {
 }
 
 export interface ShareSummary {
-  /** "Fee comparison: $788,306 potential difference" (negative savings ->
+  /** "Fee comparison: $788,306 estimated advisory-fee difference" (negative savings ->
    *  "Fee comparison: flat fee costs $X more in this scenario") */
   title: string;
   /** one-liner for native share text */
@@ -65,10 +65,6 @@ export interface ShareSummary {
 
 const DISCLOSURE =
   "Educational illustration only — not investment advice, a forecast, or a guarantee. Actual results will vary.";
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
-}
 
 const TIERED_FEE_LABEL_RE = /^Tiered schedule \((.+)\)$/;
 const SINGLE_FEE_LABEL_RE = /^([\d.]+)% asset-based fee$/;
@@ -132,15 +128,13 @@ export function buildShareSummary(input: ShareSummaryInput): ShareSummary {
 
   const isPositive = savings >= 0;
   const magnitude = formatCurrency(Math.abs(savings));
-  const percentLost = flatEndingValue > 0 ? clamp((savings / flatEndingValue) * 100, 0, 100) : 0;
-  const percentLostLabel = percentLost.toFixed(1);
 
   const title = isPositive
-    ? `Fee comparison: ${magnitude} potential difference`
+    ? `Fee comparison: ${magnitude} estimated advisory-fee difference`
     : `Fee comparison: flat fee costs ${magnitude} more in this scenario`;
 
   const shortLine = isPositive
-    ? `Educational illustration — I compared a ${formatCurrency(monthlyFlatFee)}/month flat advisory fee to a ${feeLabel} on a ${formatCurrency(portfolioValue)} portfolio over ${years} years: potential difference ${magnitude} (${percentLostLabel}% of the final wealth).`
+    ? `Educational illustration — I compared a ${formatCurrency(monthlyFlatFee)}/month flat advisory fee to a ${feeLabel} on a ${formatCurrency(portfolioValue)} portfolio over ${years} years: estimated advisory-fee difference of ${magnitude} under these assumptions.`
     : `${firmDisplayName} calculator: in this scenario, the flat fee costs ${magnitude} more over ${years} years.`;
 
   const comparisonBlock = [
@@ -157,7 +151,7 @@ export function buildShareSummary(input: ShareSummaryInput): ShareSummary {
   ].join("\n");
 
   const savingsParagraph = isPositive
-    ? `Potential savings of ${magnitude} over that time period. That's ${percentLostLabel}% of the wealth, lost to fees.`
+    ? `Estimated advisory-fee difference of ${magnitude} over that time period under these assumptions.`
     : `In this scenario the flat fee costs ${magnitude} more than the asset-based fee over that time period.`;
 
   const finalBlock = [`Run it with your own numbers: ${url}`, DISCLOSURE].join("\n");
@@ -172,11 +166,11 @@ export function buildShareSummary(input: ShareSummaryInput): ShareSummary {
 
   const compactFeeLabel = buildCompactFeeLabel(feeLabel);
   const socialText = isPositive
-    ? `Educational illustration — I compared ${formatCurrency(monthlyFlatFee)}/month flat-fee advice to ${compactFeeLabel} on a ${formatCurrency(portfolioValue)} portfolio over ${years} years: potential difference ${magnitude}. That's ${percentLostLabel}% of the wealth, lost to fees.`
+    ? `Educational illustration — I compared ${formatCurrency(monthlyFlatFee)}/month flat-fee advice to ${compactFeeLabel} on a ${formatCurrency(portfolioValue)} portfolio over ${years} years: estimated advisory-fee difference of ${magnitude} under these assumptions.`
     : `Educational illustration — I compared ${formatCurrency(monthlyFlatFee)}/month flat-fee advice to ${compactFeeLabel} on a ${formatCurrency(portfolioValue)} portfolio over ${years} years: in this scenario, the flat fee costs ${magnitude} more.`;
 
   const redditTitle = isPositive
-    ? `Fee comparison illustration: ${formatCurrency(monthlyFlatFee)}/month flat fee vs ${feeLabel} on ${formatCurrency(portfolioValue)} over ${years} years — potential difference ${magnitude}`
+    ? `Fee comparison illustration: ${formatCurrency(monthlyFlatFee)}/month flat fee vs ${feeLabel} on ${formatCurrency(portfolioValue)} over ${years} years — estimated advisory-fee difference ${magnitude}`
     : `Fee comparison illustration: ${formatCurrency(monthlyFlatFee)}/month flat fee vs ${feeLabel} on ${formatCurrency(portfolioValue)} over ${years} years — flat fee costs ${magnitude} more`;
 
   return {

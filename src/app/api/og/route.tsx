@@ -72,7 +72,7 @@ export async function GET(request: Request) {
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <div style={{ color: "#4b6075", display: "flex", fontSize: 34, fontWeight: 800 }}>Projected savings</div>
+          <div style={{ color: "#4b6075", display: "flex", fontSize: 34, fontWeight: 800 }}>Estimated advisory-fee difference</div>
           <div style={{ color: "#108843", display: "flex", fontSize: 102, fontWeight: 900, letterSpacing: "-2px" }}>
             {formatCurrency(projection.savings)}
           </div>

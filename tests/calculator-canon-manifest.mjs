@@ -29,7 +29,7 @@ import test from "node:test";
 
 const REPO_ROOT = new URL("..", import.meta.url);
 const REGISTER_PATH = new URL("../CALCULATOR-CANON.md", import.meta.url);
-const SIBLING_ROOT = "D:\\smarter-way-wealth";
+const SIBLING_ROOT = process.env.CALCULATOR_CANON_SIBLING_ROOT || "D:\\smarter-way-wealth";
 const SIBLING_REGISTER_PATH = path.join(SIBLING_ROOT, "CALCULATOR-CANON.md");
 
 function sha256(buffer) {
