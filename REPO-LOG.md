@@ -12,6 +12,13 @@
 - verified locally: a real POST against the running route returned exact HTTP 410/no-save copy; 375px and 1440px browser checks found no form fields, overflow, console errors, or page errors and proved keyboard focus order plus accessible CTA names/destinations. All 12px route labels meet at least 4.5:1 contrast. Focused safety/home tests passed 30/30, and the safety suite is composed into the existing required CI source-lock test command without changing workflow configuration. Legacy and canonical EDDM attribution passed, targeted lint passed with one existing image warning, TypeScript passed, and the production build passed.
 - release boundary: this PR may be reviewed and previewed, but merging changes production behavior and requires David's explicit confirmation. No client data was accessed or changed.
 
+### 2026-08-26 — Firm handoffs enforce the UTM-only privacy boundary
+**Agent:** Codex | **Surface:** YAPT → Smarter Way Wealth campaign handoff | **Status:** locally verified; production proof required after merge
+- corrected: the Advanced Calculator row now renders a clean `https://smarterwaywealth.com/save` destination instead of placing portfolio value, time horizon, growth, fees, or fund expenses in cross-domain markup.
+- defense in depth: every clicked Smarter Way Wealth URL is rebuilt from the standard five-field UTM allowlist. Calculator inputs, `variant`, PostHog/browser/session identifiers, and unknown future query keys are removed before navigation and analytics capture; persisted EDDM UTM values still win.
+- verified locally on commit `8f90652` from a fresh `npm ci`: TypeScript, focused and full lint, production build, the changed homepage source contract, the legacy/canonical EDDM browser regression, and the remaining nine CI suites passed. The unfiltered homepage source suite remained 24/25 only because of its existing Windows newline-sensitive desktop-firm-link assertion; the changed contract passed independently.
+- release contract: not deployed. Ship through PR → `main` → Vercel, then repeat the exact printed-QR-to-`/save` browser proof on the apex domains. The existing 2026-08-19 entry in `D:/smarter-way-wealth/docs/SMW-CROSS-SITE-LOG.md` already records the company-level UTM-only decision.
+
 ### 2026-08-20 — Standardized the cross-site fee-comparison receipt
 **Agent:** RIA Chief | **Surface:** shared calculator share/receipt stack | **Status:** deployed and production-verified
 - changed: the shared copy/email/social summary and in-panel/share-card artifact now use neutral **estimated advisory-fee difference** language tied to the visitor's assumptions. The stronger percentage-of-wealth / “lost to fees” sentence was removed from the receipt variants.

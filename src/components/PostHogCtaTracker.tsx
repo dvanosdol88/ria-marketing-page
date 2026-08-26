@@ -8,7 +8,7 @@ import {
   registerPostHogPropertiesOnce,
 } from "@/lib/posthog";
 import {
-  appendCampaignAttributionToFirmHref,
+  buildPrivacySafeFirmHandoffHref,
   POSTHOG_UTM_KEYS,
 } from "@/lib/campaignAttribution";
 
@@ -61,13 +61,13 @@ export function PostHogCtaTracker() {
       const anchor = getAnchorFromEvent(event);
       if (!anchor || !isTrackedCta(anchor)) return;
 
-      const attributedHref = appendCampaignAttributionToFirmHref(
+      const attributedHref = buildPrivacySafeFirmHandoffHref(
         anchor.href,
         getPostHogCampaignProperties(),
       );
       if (attributedHref !== anchor.href) {
-        // Carry campaign context to the firm site without carrying calculator
-        // assumptions, browser/session identity, or any visitor-entered data.
+        // Carry campaign context to the firm site while enforcing the
+        // UTM-only cross-domain privacy boundary.
         anchor.href = attributedHref;
       }
 

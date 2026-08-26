@@ -174,6 +174,63 @@ try {
   const ctaEvent = await waitForCapturedEvent(capturedEvents, "cta_clicked");
   assertLegacyAttribution(ctaEvent);
 
+  const advancedHandoff = page.locator(
+    'a[data-posthog-cta-location="home_firm_visit_card_calculator"]',
+  );
+  assert.equal(
+    await advancedHandoff.getAttribute("href"),
+    "https://smarterwaywealth.com/save",
+    "the rendered advanced-calculator handoff must not expose calculator state",
+  );
+  await advancedHandoff.evaluate((link) => {
+    const contaminatedHref = new URL(link.href);
+    for (const [key, value] of Object.entries({
+      portfolio: "2500000",
+      years: "30",
+      growth: "9",
+      fee: "1.25",
+      flat: "1200",
+      mfe: "0.2",
+      variant: "direct-mail",
+      distinct_id: "must-not-cross",
+      session_id: "must-not-cross",
+      unknown_future_key: "must-not-cross",
+      utm_source: "must-be-overridden-by-persisted-attribution",
+    })) {
+      contaminatedHref.searchParams.set(key, value);
+    }
+    link.href = contaminatedHref.toString();
+    link.addEventListener("click", (event) => event.preventDefault(), { once: true });
+    link.click();
+  });
+
+  const attributedAdvancedHref = new URL(
+    await advancedHandoff.getAttribute("href"),
+  );
+  assert.equal(attributedAdvancedHref.origin, "https://smarterwaywealth.com");
+  assert.equal(attributedAdvancedHref.pathname, "/save");
+  assert.deepEqual(
+    [...attributedAdvancedHref.searchParams.keys()].sort(),
+    ["utm_campaign", "utm_content", "utm_medium", "utm_source"],
+    "the advanced handoff query must contain standard campaign UTM fields only",
+  );
+  assert.equal(attributedAdvancedHref.searchParams.get("utm_source"), "eddm");
+  assert.equal(attributedAdvancedHref.searchParams.get("utm_medium"), "print");
+  assert.equal(attributedAdvancedHref.searchParams.get("utm_campaign"), "launch_5k");
+  assert.equal(attributedAdvancedHref.searchParams.get("utm_content"), "qr_code");
+
+  const advancedHandoffEvent = await waitForCapturedEvent(
+    capturedEvents,
+    "cta_clicked",
+    (event) =>
+      event.properties?.cta_location === "home_firm_visit_card_calculator",
+  );
+  assertLegacyAttribution(advancedHandoffEvent);
+  assert.equal(
+    advancedHandoffEvent.properties.cta_href,
+    attributedAdvancedHref.toString(),
+  );
+
   const firmHandoff = page.locator(
     'a[data-posthog-cta-location="home_firm_visit_card"]',
   );
@@ -201,6 +258,8 @@ try {
     "flat",
     "mfe",
     "variant",
+    "distinct_id",
+    "session_id",
   ]) {
     assert.equal(
       attributedHandoffHref.searchParams.has(forbiddenKey),
@@ -244,7 +303,7 @@ try {
   await unrelatedPage.close();
 
   console.log(
-    "Legacy and canonical EDDM QR URLs land at the calculator; foreign explicit UTM traffic stays at the page top; legacy attribution survives URL cleanup and reaches the firm site using UTM-only handoff links.",
+    "Legacy and canonical EDDM QR URLs land at the calculator; foreign explicit UTM traffic stays at the page top; every firm handoff enforces a UTM-only query, including the advanced-calculator path.",
   );
 } finally {
   await browser?.close();
