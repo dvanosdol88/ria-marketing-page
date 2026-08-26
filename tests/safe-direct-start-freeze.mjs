@@ -24,8 +24,15 @@ const PAUSED_CTA_SHORT_NAME = "Start paused";
 const OPTIONAL_MEETING_NAME = "Meet David for 15 minutes";
 const OPTIONAL_MEETING_HREF = "https://smarterwaywealth.com/meet";
 const HOW_IT_WORKS_HREF = "https://smarterwaywealth.com/how";
+const PAUSE_DISCLOSURE =
+  "Direct onboarding is temporarily paused. No information is collected at this step.";
+const COMPLIANCE_DISCLOSURE =
+  "Personalized investment advice begins only after becoming a client.";
 const NO_SAVE_BODY =
   '{"error":"Secure direct onboarding is temporarily unavailable. No information was saved."}';
+const screenshotOutputDir = process.env.SAFE_DIRECT_START_SCREENSHOT_DIR
+  ? path.resolve(root, process.env.SAFE_DIRECT_START_SCREENSHOT_DIR)
+  : null;
 
 function parseRgb(value) {
   const channels = value.match(/[\d.]+/g)?.slice(0, 3).map(Number);
@@ -112,9 +119,12 @@ test("the pause page preserves the exact six-phase permanent journey", () => {
 test("every reachable direct-start CTA and machine-readable name tells the paused truth", () => {
   assert.match(signupConfigSource, /label: "Direct onboarding paused"/);
   assert.match(signupConfigSource, /shortLabel: "Start paused"/);
+  assert.ok(signupConfigSource.includes(PAUSE_DISCLOSURE));
+  assert.ok(signupConfigSource.includes(COMPLIANCE_DISCLOSURE));
   assert.match(
     signupConfigSource,
-    /Direct onboarding is temporarily paused\. No information is collected at this step\./,
+    /Direct onboarding is temporarily paused\. No information is collected at this step\. Personalized investment advice begins only after becoming a client\./,
+    "the pause boundary must preserve the original compliance sentence in order",
   );
   assert.doesNotMatch(signupConfigSource, /Become a client|Ready when you are/i);
 
@@ -136,6 +146,11 @@ test("every reachable direct-start CTA and machine-readable name tells the pause
   assert.doesNotMatch(navSource, /Become a Client|Sign Up/);
   assert.match(sharedCtaSource, /data-posthog-cta-label=\{signupCta\.primary\.label\}/);
   assert.match(sharedCtaSource, /\{signupCta\.primary\.label\}/);
+  assert.equal(
+    sharedCtaSource.match(/\{signupCta\.disclosure\}/g)?.length,
+    2,
+    "both shared CTA variants must render the combined pause and compliance disclosure",
+  );
   assert.match(fitCtaSource, /label: signupCta\.primary\.label/);
 
   assert.match(
@@ -320,6 +335,15 @@ test("the running pause route fails closed and is accessible at 375px and 1440px
 
       assert.deepEqual(consoleErrors, [], `${viewport.width}px console errors`);
       assert.deepEqual(pageErrors, [], `${viewport.width}px page errors`);
+      if (screenshotOutputDir) {
+        fs.mkdirSync(screenshotOutputDir, { recursive: true });
+        await page.evaluate(() => window.scrollTo(0, 0));
+        await page.waitForFunction(() => window.scrollY === 0);
+        await page.screenshot({
+          path: path.join(screenshotOutputDir, `freeze-${viewport.width}.png`),
+          fullPage: true,
+        });
+      }
       await context.close();
     }
   } finally {

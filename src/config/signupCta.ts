@@ -37,5 +37,5 @@ export const signupCta = {
   },
   /** Truthful release boundary shown anywhere the paused primary path appears. */
   disclosure:
-    "Direct onboarding is temporarily paused. No information is collected at this step.",
+    "Direct onboarding is temporarily paused. No information is collected at this step. Personalized investment advice begins only after becoming a client.",
 } as const;
