@@ -198,7 +198,17 @@ test("lean root composition retains the approved homepage order", () => {
   assert.match(
     calculatorSource,
     /<SmarterWayWealthVisitCard\s+advancedCalculatorHref=\{advancedCalculatorHref\}/,
-    "the secondary card must carry the visitor's calculator assumptions to Save",
+    "the secondary card must retain the privacy-safe advanced-calculator destination",
+  );
+  assert.match(
+    calculatorSource,
+    /const advancedCalculatorHref = ADVANCED_CALCULATOR_URL;/,
+    "the advanced-calculator handoff must render without calculator-state query parameters",
+  );
+  assert.doesNotMatch(
+    calculatorSource,
+    /buildAdvancedCalculatorHrefFromState/,
+    "the cross-domain handoff must not be rebuilt from visitor calculator state",
   );
 });
 
