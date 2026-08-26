@@ -111,6 +111,17 @@ test("the public direct-start page renders no legacy PII collection or agreement
   assert.match(pageSource, /does not replace the secure direct-onboarding path/);
 });
 
+test("the retired legacy PII form modules are absent", () => {
+  assert.equal(
+    fs.existsSync(path.join(root, "src/components/BecomeAClientForm.tsx")),
+    false,
+  );
+  assert.equal(
+    fs.existsSync(path.join(root, "src/config/becomeAClient.ts")),
+    false,
+  );
+});
+
 test("the pause page preserves the exact six-phase permanent journey", () => {
   const phases = [
     "Verify",
@@ -147,8 +158,13 @@ test("every reachable direct-start CTA and machine-readable name tells the pause
   );
   assert.equal(
     navSource.match(/aria-label=\{signupCta\.primary\.label\}/g)?.length,
-    3,
-    "all three navigation placements must expose the truthful accessible name",
+    2,
+    "desktop and drawer labels must match their visible full paused text",
+  );
+  assert.match(
+    navSource,
+    /href=\{signupCta\.primary\.href as any\}\s+data-posthog-cta="true"[\s\S]*?\{signupCta\.primary\.shortLabel\}/,
+    "the compact header must derive its accessible name from its visible short label",
   );
   assert.equal(
     navSource.match(/data-posthog-cta-label=\{signupCta\.primary\.label\}/g)?.length,
@@ -285,16 +301,35 @@ test("the running pause route fails closed and is accessible at 375px and 1440px
       );
       assert.equal(await page.locator("main form, main input, main select, main textarea").count(), 0);
 
+      const compactHeader = viewport.width < 1280;
+      const expectedHeaderStatusName = compactHeader
+        ? PAUSED_CTA_SHORT_NAME
+        : PAUSED_CTA_NAME;
       const visibleStatusCta = page.getByRole("link", {
-        name: PAUSED_CTA_NAME,
+        name: expectedHeaderStatusName,
         exact: true,
       });
       assert.equal(await visibleStatusCta.count(), 1);
-      assert.equal(await visibleStatusCta.getAttribute("aria-label"), PAUSED_CTA_NAME);
-      assert.match(
-        (await visibleStatusCta.innerText()).trim(),
-        new RegExp(`^(?:${PAUSED_CTA_NAME}|${PAUSED_CTA_SHORT_NAME})$`, "i"),
+      assert.equal(
+        await visibleStatusCta.getAttribute("aria-label"),
+        compactHeader ? null : PAUSED_CTA_NAME,
       );
+      assert.equal((await visibleStatusCta.innerText()).trim(), expectedHeaderStatusName);
+
+      if (compactHeader) {
+        await page.getByRole("button", { name: "Open menu" }).click();
+        const drawerStatusCta = page.getByRole("link", {
+          name: PAUSED_CTA_NAME,
+          exact: true,
+        });
+        assert.equal(await drawerStatusCta.count(), 1);
+        assert.equal((await drawerStatusCta.innerText()).trim(), PAUSED_CTA_NAME);
+        assert.equal(await drawerStatusCta.getAttribute("aria-label"), PAUSED_CTA_NAME);
+        await page
+          .getByRole("navigation", { name: "Mobile navigation" })
+          .getByRole("button", { name: "Close menu" })
+          .click();
+      }
 
       const meetingCta = page.getByRole("link", {
         name: OPTIONAL_MEETING_NAME,
@@ -361,7 +396,8 @@ test("the running pause route fails closed and is accessible at 375px and 1440px
         if (focused.href === HOW_IT_WORKS_HREF) break;
       }
       const statusFocusIndex = focusSequence.findIndex(
-        (entry) => entry.href === "/become-a-client" && entry.name === PAUSED_CTA_NAME,
+        (entry) =>
+          entry.href === "/become-a-client" && entry.name === expectedHeaderStatusName,
       );
       const meetingFocusIndex = focusSequence.findIndex(
         (entry) => entry.href === OPTIONAL_MEETING_HREF,

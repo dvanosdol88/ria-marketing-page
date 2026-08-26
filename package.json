@@ -18,7 +18,7 @@
     "test:eddm-attribution": "node tests/legacy-eddm-attribution.mjs",
     "test:home-first-screen": "node tests/home-first-screen.mjs",
     "test:refresh-position": "node tests/refresh-position.mjs",
-    "test:home-wwwh": "node --test tests/home-wwwh.mjs && npm run test:safe-direct-start-freeze",
+    "test:home-wwwh": "node --test tests/home-wwwh.mjs",
     "test:safe-direct-start-freeze": "node --test tests/safe-direct-start-freeze.mjs",
     "test:calculator-canon-manifest": "node --test tests/calculator-canon-manifest.mjs",
     "test:share-one-tap": "node --test tests/share-one-tap.mjs",

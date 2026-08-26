@@ -283,7 +283,6 @@ export function SiteNav() {
 
             <Link
               href={signupCta.primary.href as any}
-              aria-label={signupCta.primary.label}
               data-posthog-cta="true"
               data-posthog-cta-label={signupCta.primary.label}
               data-posthog-cta-location="site_nav_mobile"
