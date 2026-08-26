@@ -659,21 +659,21 @@ test("desktop and mobile nav expose the branded outbound firm link with tracking
   assert.doesNotMatch(navSource, /\bh-10 w-10\b/);
 });
 
-test("desktop and mobile nav expose the tracked internal client CTA", () => {
+test("desktop and mobile nav expose the truthful tracked onboarding-pause CTA", () => {
   assert.equal(
-    navSource.match(/href=\{SIGNUP_PATH as any\}/g)?.length,
+    navSource.match(/href=\{signupCta\.primary\.href as any\}/g)?.length,
     3,
-    "desktop, mobile header, and mobile drawer must each render the client CTA",
+    "desktop, mobile header, and mobile drawer must each render the onboarding status CTA",
   );
   assert.equal(
-    navSource.match(/data-posthog-cta-label="Become a Client"/g)?.length,
+    navSource.match(/data-posthog-cta-label=\{signupCta\.primary\.label\}/g)?.length,
     3,
-    "all client CTAs must preserve the analytics label",
+    "all onboarding status CTAs must use the shared truthful analytics label",
   );
   assert.match(navSource, /data-posthog-cta-location="site_nav"/);
   assert.match(navSource, /data-posthog-cta-location="site_nav_mobile"/);
   assert.match(navSource, /data-posthog-cta-location="site_nav_mobile_drawer"/);
-  assert.match(navSource, /Sign Up/);
+  assert.match(navSource, /\{signupCta\.primary\.shortLabel\}/);
   assert.match(navSource, /bg-\[#064B84\][^"\n]*text-white/);
   assert.match(navSource, /px-2\.5[^"\n]*min-\[360px\]:px-4/);
   assert.match(navSource, /absolute left-1\/2[^"\n]*-translate-x-1\/2/);
@@ -686,8 +686,11 @@ test("desktop and mobile nav expose the tracked internal client CTA", () => {
   );
 
   const desktopStart = navSource.indexOf("Desktop Layout");
-  const desktopFirmIndex = navSource.indexOf("Smarter Way Wealth\n                <ExternalLink", desktopStart);
-  const desktopClientIndex = navSource.indexOf('data-posthog-cta-label="Become a Client"', desktopStart);
+  const desktopFirmIndex = navSource.indexOf(
+    'data-posthog-cta-label="Smarter Way Wealth"',
+    desktopStart,
+  );
+  const desktopClientIndex = navSource.indexOf("data-posthog-cta-label={signupCta.primary.label}", desktopStart);
   assert.ok(desktopFirmIndex >= 0, "desktop firm link must render");
   assert.ok(desktopClientIndex > desktopFirmIndex, "desktop client link must follow the firm link");
 });

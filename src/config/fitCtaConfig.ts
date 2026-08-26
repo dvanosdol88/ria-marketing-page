@@ -6,9 +6,10 @@ import { signupCta } from "@/config/signupCta";
  * booking page — one of seven differently-worded asks that all landed on the
  * same 15-minute call.
  *
- * It now carries the site's single primary ask. The 15-minute call is still
- * offered, but as the secondary link inside `SignupCta` — see the note in
- * `src/config/signupCta.ts`.
+ * It now carries the site's shared direct-onboarding status. While that path
+ * is paused, the label says so everywhere instead of implying that a visitor
+ * can complete sign-up. The optional 15-minute call remains the secondary
+ * link inside `SignupCta`.
  */
 export const fitCta = {
   href: signupCta.primary.href,

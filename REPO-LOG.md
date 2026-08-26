@@ -3,6 +3,15 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-26 — Prepared a fail-closed pause for the legacy public client form
+**Agent:** Codex | **Surface:** `/become-a-client` and its legacy API | **Status:** not deployed; production approval required
+- changed: replaced the old public identity/asset-range/free-text form and agreement-by-email promise with a truthful temporary pause page that collects nothing and preserves the approved six-phase secure direct-onboarding journey.
+- changed: the legacy POST route now returns HTTP 410 without reading, logging, storing, or forwarding the request body. The existing 15-minute meeting remains an explicitly optional fallback, not a replacement for direct onboarding.
+- changed: every reachable direct-start placement now shares the truthful **Direct onboarding paused** state, including visible navigation copy, accessible names, PostHog CTA labels, proof-section CTAs, and `llms.txt`; the pause disclosure preserves the original personalized-advice compliance sentence, and no analytics event was renamed or removed.
+- why: the live legacy form conflicts with the approved verified-access product and must not receive first-mailing traffic. The permanent direct path will reopen only after provider, privacy, recovery, and end-to-end production acceptance pass.
+- verified locally: a real POST against the running route returned exact HTTP 410/no-save copy; 375px and 1440px browser checks found no form fields, overflow, console errors, or page errors and proved keyboard focus order plus accessible CTA names/destinations. All 12px route labels meet at least 4.5:1 contrast. Focused safety/home tests passed 30/30, and the safety suite is composed into the existing required CI source-lock test command without changing workflow configuration. Legacy and canonical EDDM attribution passed, targeted lint passed with one existing image warning, TypeScript passed, and the production build passed.
+- release boundary: this PR may be reviewed and previewed, but merging changes production behavior and requires David's explicit confirmation. No client data was accessed or changed.
+
 ### 2026-08-20 — Standardized the cross-site fee-comparison receipt
 **Agent:** RIA Chief | **Surface:** shared calculator share/receipt stack | **Status:** deployed and production-verified
 - changed: the shared copy/email/social summary and in-panel/share-card artifact now use neutral **estimated advisory-fee difference** language tied to the visitor's assumptions. The stronger percentage-of-wealth / “lost to fees” sentence was removed from the receipt variants.
