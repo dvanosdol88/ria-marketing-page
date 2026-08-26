@@ -3,6 +3,20 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-26 — Assembled one atomic EDDM launch-safety release
+**Agent:** Codex | **Surface:** exact printer-QR journey, `/become-a-client`, legacy intake API, and every Smarter Way Wealth handoff | **Status:** verified locally; not deployed
+- integrated: one branch from immutable `main` `0f5883383ab50bed617c5b7f55d3eca2a7c15b37` contains reviewed fail-closed direct-start head `0d7488ccdf527640638bf5e03a249db36d52af86` and reviewed UTM-only handoff head `05f86ce05b940af366c275b7c848a98470e9eee8`. Their runtime changes do not overlap; the sole journal conflict was resolved by preserving both complete entries.
+- added proof: the browser regression now follows the exact legacy EDDM signature into the calculator, clicks the real primary direct-start CTA, verifies the no-form pause page, and proves the legacy API returns HTTP 410 with the exact no-save response. The same run still proves both firm-site destinations are rebuilt with standard UTM attribution only.
+- verified locally from a fresh `npm ci`: all required CI source/browser/calculator/privacy suites passed; TypeScript passed; lint passed with one inherited image warning and zero errors; and the production build passed. The dedicated pause browser test also passed at 375px and 1440px with no overflow, console errors, or page errors.
+- release boundary: this atomic candidate is not production proof and does not authorize a mailing. It still requires explicit merge approval, exact-commit Vercel deployment proof, cache-bypassed apex verification of the printed-QR path and 410 API, and confirmation that no financial assumptions or identity/session values cross to Smarter Way Wealth.
+
+### 2026-08-26 — Firm handoffs enforce the UTM-only privacy boundary
+**Agent:** Codex | **Surface:** YAPT → Smarter Way Wealth campaign handoff | **Status:** locally verified; production proof required after merge
+- corrected: the Advanced Calculator row now renders a clean `https://smarterwaywealth.com/save` destination instead of placing portfolio value, time horizon, growth, fees, or fund expenses in cross-domain markup.
+- defense in depth: every clicked Smarter Way Wealth URL is rebuilt from the standard five-field UTM allowlist. Calculator inputs, `variant`, PostHog/browser/session identifiers, and unknown future query keys are removed before navigation and analytics capture; persisted EDDM UTM values still win.
+- verified locally on commit `8f90652` from a fresh `npm ci`: TypeScript, focused and full lint, production build, the changed homepage source contract, the legacy/canonical EDDM browser regression, and the remaining nine CI suites passed. The unfiltered homepage source suite remained 24/25 only because of its existing Windows newline-sensitive desktop-firm-link assertion; the changed contract passed independently.
+- release contract: not deployed. Ship through PR → `main` → Vercel, then repeat the exact printed-QR-to-`/save` browser proof on the apex domains. The existing 2026-08-19 entry in `D:/smarter-way-wealth/docs/SMW-CROSS-SITE-LOG.md` already records the company-level UTM-only decision.
+
 ### 2026-08-26 — Prepared a fail-closed pause for the legacy public client form
 **Agent:** Codex | **Surface:** `/become-a-client` and its legacy API | **Status:** not deployed; production approval required
 - changed: replaced the old public identity/asset-range/free-text form and agreement-by-email promise with a truthful temporary pause page that collects nothing and preserves the approved six-phase secure direct-onboarding journey.
@@ -11,13 +25,6 @@
 - why: the live legacy form conflicts with the approved verified-access product and must not receive first-mailing traffic. The permanent direct path will reopen only after provider, privacy, recovery, and end-to-end production acceptance pass.
 - verified locally: a real POST against the running route returned exact HTTP 410/no-save copy; 375px and 1440px browser checks found no form fields, overflow, console errors, or page errors and proved keyboard focus order plus accessible CTA names/destinations. All 12px route labels meet at least 4.5:1 contrast. Focused safety/home tests passed 30/30, and the safety suite is composed into the existing required CI source-lock test command without changing workflow configuration. Legacy and canonical EDDM attribution passed, targeted lint passed with one existing image warning, TypeScript passed, and the production build passed.
 - release boundary: this PR may be reviewed and previewed, but merging changes production behavior and requires David's explicit confirmation. No client data was accessed or changed.
-
-### 2026-08-26 — Firm handoffs enforce the UTM-only privacy boundary
-**Agent:** Codex | **Surface:** YAPT → Smarter Way Wealth campaign handoff | **Status:** locally verified; production proof required after merge
-- corrected: the Advanced Calculator row now renders a clean `https://smarterwaywealth.com/save` destination instead of placing portfolio value, time horizon, growth, fees, or fund expenses in cross-domain markup.
-- defense in depth: every clicked Smarter Way Wealth URL is rebuilt from the standard five-field UTM allowlist. Calculator inputs, `variant`, PostHog/browser/session identifiers, and unknown future query keys are removed before navigation and analytics capture; persisted EDDM UTM values still win.
-- verified locally on commit `8f90652` from a fresh `npm ci`: TypeScript, focused and full lint, production build, the changed homepage source contract, the legacy/canonical EDDM browser regression, and the remaining nine CI suites passed. The unfiltered homepage source suite remained 24/25 only because of its existing Windows newline-sensitive desktop-firm-link assertion; the changed contract passed independently.
-- release contract: not deployed. Ship through PR → `main` → Vercel, then repeat the exact printed-QR-to-`/save` browser proof on the apex domains. The existing 2026-08-19 entry in `D:/smarter-way-wealth/docs/SMW-CROSS-SITE-LOG.md` already records the company-level UTM-only decision.
 
 ### 2026-08-20 — Standardized the cross-site fee-comparison receipt
 **Agent:** RIA Chief | **Surface:** shared calculator share/receipt stack | **Status:** deployed and production-verified

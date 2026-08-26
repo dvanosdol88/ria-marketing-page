@@ -302,8 +302,38 @@ try {
   );
   await unrelatedPage.close();
 
+  const directStartPage = await context.newPage();
+  await directStartPage.goto(mailerUrl, { waitUntil: "domcontentloaded" });
+  await directStartPage.locator("#calculator").waitFor();
+  await waitForCalculatorLanding(directStartPage);
+  const directStartCta = directStartPage.locator(
+    'a[data-posthog-cta-location="home_post_calculator_primary"]',
+  );
+  assert.equal(await directStartCta.getAttribute("href"), "/become-a-client");
+  await directStartCta.click();
+  await directStartPage.waitForURL(`${baseUrl}/become-a-client`);
+  await directStartPage.getByRole("heading", {
+    level: 1,
+    name: "Direct onboarding is temporarily paused.",
+  }).waitFor();
+  assert.equal(
+    await directStartPage.locator("main form, main input, main select, main textarea").count(),
+    0,
+    "the EDDM direct-start journey must collect no personal information while paused",
+  );
+  const pausedApiResponse = await directStartPage.request.post(
+    `${baseUrl}/api/become-a-client`,
+    { data: { sentinel: "THIS_EDDM_REQUEST_MUST_NOT_BE_READ_OR_SAVED" } },
+  );
+  assert.equal(pausedApiResponse.status(), 410);
+  assert.deepEqual(await pausedApiResponse.json(), {
+    error:
+      "Secure direct onboarding is temporarily unavailable. No information was saved.",
+  });
+  await directStartPage.close();
+
   console.log(
-    "Legacy and canonical EDDM QR URLs land at the calculator; foreign explicit UTM traffic stays at the page top; every firm handoff enforces a UTM-only query, including the advanced-calculator path.",
+    "Legacy and canonical EDDM QR URLs land at the calculator; the legacy EDDM direct-start journey reaches the no-collection pause and 410 API; foreign explicit UTM traffic stays at the page top; every firm handoff enforces a UTM-only query, including the advanced-calculator path.",
   );
 } finally {
   await browser?.close();
