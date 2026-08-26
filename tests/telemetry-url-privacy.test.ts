@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import posthog from "posthog-js";
 
 import {
   isApprovedCampaignValue,
@@ -15,6 +16,10 @@ import {
   sanitizeStoredCampaignAttribution,
   shouldOpenCalculatorForEddmQr,
 } from "../src/lib/campaignAttribution.ts";
+import {
+  registerPostHogProperties,
+  registerPostHogPropertiesOnce,
+} from "../src/lib/posthog.ts";
 
 const SENSITIVE_QUERY = new URLSearchParams({
   email: "prospect@example.com",
@@ -226,6 +231,9 @@ test("campaign values reject protected data while canonical and ordinary slugs s
     "invite_household",
     "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature123",
     "+1 (203) 555-0123",
+    "campaign_203-555-0123",
+    "lead_1234567890",
+    "fall_2035550123",
     "123-45-6789",
     "A7f9K2mQ8vR4xT6zP1nC5bL0",
   ]) {
@@ -238,6 +246,7 @@ test("campaign values reject protected data while canonical and ordinary slugs s
     "qr_code",
     "fairfield_county",
     "fall-retirement-planning",
+    "spring-2026-wave-3",
   ]) {
     assert.equal(isApprovedCampaignValue(value), true, value);
   }
@@ -266,20 +275,35 @@ test("campaign ingestion, storage inputs, and firm forwarding share the safe-val
     is_eddm_visitor: false,
     legacy_eddm_qr: false,
   });
+  assert.deepEqual(
+    resolveCampaignAttribution(
+      new URLSearchParams({
+        utm_source: "campaign_203-555-0123",
+        utm_medium: "print",
+        utm_campaign: "lead_1234567890",
+        utm_content: "fall_2035550123",
+      }),
+    ),
+    {
+      utm_medium: "print",
+      campaign_attribution_method: "explicit_utm",
+      is_eddm_visitor: false,
+      legacy_eddm_qr: false,
+    },
+  );
 
   const forwarded = new URL(
     appendCampaignAttributionToFirmHref("https://smarterwaywealth.com/start", {
       utm_source: "eddm",
       utm_medium: "print",
       utm_campaign: "verification-code-654321",
-      utm_content: "qr_code",
+      utm_content: "campaign_203-555-0123",
       utm_term: "https://example.com/private",
     }),
   );
   assert.deepEqual(Array.from(forwarded.searchParams.entries()), [
     ["utm_source", "eddm"],
     ["utm_medium", "print"],
-    ["utm_content", "qr_code"],
   ]);
 
   assert.deepEqual(
@@ -287,7 +311,8 @@ test("campaign ingestion, storage inputs, and firm forwarding share the safe-val
       utm_source: "eddm",
       utm_medium: "print",
       utm_campaign: "bearer_secret_token",
-      utm_content: "qr_code",
+      utm_content: "lead_1234567890",
+      utm_term: "qr_code",
       campaign_attribution_method: "explicit_utm",
       is_eddm_visitor: false,
       legacy_eddm_qr: true,
@@ -295,7 +320,7 @@ test("campaign ingestion, storage inputs, and firm forwarding share the safe-val
     {
       utm_source: "eddm",
       utm_medium: "print",
-      utm_content: "qr_code",
+      utm_term: "qr_code",
       campaign_attribution_method: "explicit_utm",
       is_eddm_visitor: true,
       legacy_eddm_qr: false,
@@ -319,6 +344,85 @@ test("campaign ingestion, storage inputs, and firm forwarding share the safe-val
     "https://smarterwaywealth.com/start?utm_source=eddm",
   );
   assert.equal(getterCalled, false);
+});
+
+test("capture and SDK registration reject embedded phone campaign values", () => {
+  const hostileProperties = {
+    utm_source: "campaign_203-555-0123",
+    first_utm_campaign: "lead_1234567890",
+    utm_medium: "print",
+    $current_url:
+      "https://youarepayingtoomuch.com/start?utm_campaign=fall_2035550123&utm_content=qr_code&token=private",
+  };
+
+  const captured = sanitizePostHogCaptureResult({
+    event: "cta_clicked",
+    properties: hostileProperties,
+  });
+  assert.deepEqual(captured, {
+    event: "cta_clicked",
+    properties: {
+      utm_medium: "print",
+      $current_url:
+        "https://youarepayingtoomuch.com/start?utm_content=qr_code",
+    },
+  });
+
+  const registrations: Array<Record<string, unknown>> = [];
+  const registrationsOnce: Array<Record<string, unknown>> = [];
+  const originalWindow = Object.getOwnPropertyDescriptor(globalThis, "window");
+  const browserPostHog = posthog as unknown as Record<string, unknown>;
+  const originalRegister = Object.getOwnPropertyDescriptor(
+    browserPostHog,
+    "register",
+  );
+  const originalRegisterOnce = Object.getOwnPropertyDescriptor(
+    browserPostHog,
+    "register_once",
+  );
+
+  try {
+    Object.defineProperty(globalThis, "window", {
+      configurable: true,
+      value: {},
+    });
+    Object.defineProperty(browserPostHog, "register", {
+      configurable: true,
+      value: (properties: Record<string, unknown>) =>
+        registrations.push(properties),
+    });
+    Object.defineProperty(browserPostHog, "register_once", {
+      configurable: true,
+      value: (properties: Record<string, unknown>) =>
+        registrationsOnce.push(properties),
+    });
+
+    registerPostHogProperties(hostileProperties);
+    registerPostHogPropertiesOnce(hostileProperties);
+  } finally {
+    if (originalRegister) {
+      Object.defineProperty(browserPostHog, "register", originalRegister);
+    } else {
+      delete browserPostHog.register;
+    }
+    if (originalRegisterOnce) {
+      Object.defineProperty(
+        browserPostHog,
+        "register_once",
+        originalRegisterOnce,
+      );
+    } else {
+      delete browserPostHog.register_once;
+    }
+    if (originalWindow) {
+      Object.defineProperty(globalThis, "window", originalWindow);
+    } else {
+      delete (globalThis as { window?: unknown }).window;
+    }
+  }
+
+  assert.deepEqual(registrations, [captured.properties]);
+  assert.deepEqual(registrationsOnce, [captured.properties]);
 });
 
 test("legacy and canonical EDDM attribution remain exact after UTM hardening", () => {

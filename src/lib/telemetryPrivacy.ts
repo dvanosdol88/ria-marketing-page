@@ -25,7 +25,7 @@ const JWT_VALUE_PATTERN =
 const UUID_VALUE_PATTERN =
   /(?:^|[^a-f\d])[a-f\d]{8}-[a-f\d]{4}-[1-5][a-f\d]{3}-[89ab][a-f\d]{3}-[a-f\d]{12}(?:$|[^a-f\d])/i;
 const SSN_VALUE_PATTERN = /(?:^|\D)\d{3}[- ]?\d{2}[- ]?\d{4}(?:$|\D)/;
-const PHONE_VALUE_PATTERN = /^\+?[\d().\s-]{10,}$/;
+const PHONE_SEQUENCE_PATTERN = /(?:^|\D)(\+?\d[\d().\s-]{8,}\d)(?!\d)/g;
 const LONG_OPAQUE_RUN_PATTERN = /[a-z\d+/=]{24,}/gi;
 const ABSOLUTE_URL_PATTERN = /^(?:https?|wss?|ftp|mailto|sms|tel):/i;
 const BARE_RELATIVE_URL_PATTERN =
@@ -111,6 +111,13 @@ function containsHighEntropyOpaqueRun(value: string) {
   return runs.some((run) => entropy(run.toLowerCase()) >= 3.7);
 }
 
+function containsPhoneShapedSequence(value: string) {
+  return Array.from(value.matchAll(PHONE_SEQUENCE_PATTERN)).some((match) => {
+    const digitCount = match[1].replace(/\D/g, "").length;
+    return digitCount >= 10;
+  });
+}
+
 /** Return true only for ordinary campaign labels, never secret-shaped data. */
 export function isApprovedCampaignValue(value: unknown): value is string {
   if (typeof value !== "string") return false;
@@ -118,7 +125,6 @@ export function isApprovedCampaignValue(value: unknown): value is string {
   if (!trimmed || trimmed.length > 200) return false;
 
   const inspected = decodeCampaignValue(trimmed);
-  const phoneDigits = inspected.replace(/\D/g, "");
   return !(
     CONTROL_CHARACTER_PATTERN.test(inspected) ||
     EMAIL_VALUE_PATTERN.test(inspected) ||
@@ -129,11 +135,9 @@ export function isApprovedCampaignValue(value: unknown): value is string {
     JWT_VALUE_PATTERN.test(inspected) ||
     UUID_VALUE_PATTERN.test(inspected) ||
     SSN_VALUE_PATTERN.test(inspected) ||
-    (PHONE_VALUE_PATTERN.test(inspected) &&
-      phoneDigits.length >= 10 &&
-      phoneDigits.length <= 15) ||
+    containsPhoneShapedSequence(inspected) ||
     /^\d{4,8}$/.test(inspected) ||
-    (/^\d{9,19}$/.test(inspected) && phoneDigits.length === inspected.length) ||
+    /^\d{9,19}$/.test(inspected) ||
     /^[a-f\d]{24,}$/i.test(inspected) ||
     containsHighEntropyOpaqueRun(inspected)
   );

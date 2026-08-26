@@ -128,9 +128,9 @@ export function capturePostHogEvent(eventName: string, properties: PostHogProper
 }
 
 export function registerPostHogProperties(properties: PostHogProperties) {
-  getBrowserPostHog()?.register?.(properties);
+  getBrowserPostHog()?.register?.(sanitizeTelemetryPayload(properties));
 }
 
 export function registerPostHogPropertiesOnce(properties: PostHogProperties) {
-  getBrowserPostHog()?.register_once?.(properties);
+  getBrowserPostHog()?.register_once?.(sanitizeTelemetryPayload(properties));
 }
