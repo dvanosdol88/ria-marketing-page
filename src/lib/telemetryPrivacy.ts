@@ -31,7 +31,7 @@ const ABSOLUTE_URL_PATTERN = /^(?:https?|wss?|ftp|mailto|sms|tel):/i;
 const BARE_RELATIVE_URL_PATTERN =
   /^[a-z\d._~-]+(?:\/[a-z\d._~!$&()*+,;=:@%/-]*)*[?#]/i;
 const EMBEDDED_URL_PATTERN =
-  /(?:https?|wss?|ftp):\/\/[^\s<>"']+|(?:mailto|sms|tel):[^\s<>"']+|\/[a-z\d._~!$&()*+,;=:@%/-]+[?#][^\s<>"']*/gi;
+  /(?:https?|wss?|ftp):\/\/[^\s<>"']+|(?:mailto|sms|tel):[^\s<>"']+|\/\/[^\s<>"']+|\/[a-z\d._~!$&()*+,;=:@%/-]+[?#][^\s<>"']*/gi;
 const EMBEDDED_PROTECTED_PATH_PATTERN =
   /(^|[\s([{=:])((?:\/)?(?:api\/auth|auth|onboarding|access|activate|callback|invite|magic-link|reset-password|secure-link|verification|verify)(?:\/[^\s<>"'?#[\]{}(),;]+)+)/gi;
 const URL_FIELD_KEY_PATTERN = /(?:^|[_$])(?:url|uri|href)(?:$|[_])/i;
@@ -249,10 +249,15 @@ export function sanitizeAnalyticsUrl(value: unknown): string {
 
 function sanitizeTelemetryString(value: string) {
   const trimmed = value.trim();
+  const isClearRelativeUrl =
+    trimmed.startsWith("/") ||
+    trimmed.startsWith("./") ||
+    trimmed.startsWith("../") ||
+    (BARE_RELATIVE_URL_PATTERN.test(trimmed) && trimmed.includes("/"));
   if (
     ABSOLUTE_URL_PATTERN.test(trimmed) ||
     trimmed.startsWith("//") ||
-    isRelativeReference(trimmed)
+    isClearRelativeUrl
   ) {
     return sanitizeAnalyticsUrl(trimmed);
   }

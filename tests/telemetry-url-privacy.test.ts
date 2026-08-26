@@ -79,7 +79,7 @@ test("canonical calculator attribution survives while calculator state stays out
   assert.equal(url.searchParams.has("growth"), false);
   assert.equal(url.searchParams.has("fee"), false);
   assert.equal(url.searchParams.has("variant"), false);
-  assert.match(raw, /portfolio=1000000&years=20&growth=8&fee=1/);
+  assert.equal(url.pathname, "/");
 });
 
 test("the recursive PostHog/Sentry boundary sanitizes URL properties and embedded URLs", () => {
@@ -145,6 +145,17 @@ test("ordinary error messages are not mistaken for URL schemes", () => {
   assert.equal(
     sanitizeTelemetryPayload("TypeError: onboarding request failed"),
     "TypeError: onboarding request failed",
+  );
+  assert.equal(sanitizeTelemetryPayload("What?"), "What?");
+  assert.equal(
+    sanitizeTelemetryPayload("Retry step? wait for confirmation"),
+    "Retry step? wait for confirmation",
+  );
+  assert.equal(
+    sanitizeTelemetryPayload(
+      "Request failed at //api-user:api-pass@example.com/private",
+    ),
+    "Request failed at //example.com/private",
   );
 });
 
