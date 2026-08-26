@@ -3,11 +3,18 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 import {
+  isApprovedCampaignValue,
   sanitizeAnalyticsUrl,
   sanitizePostHogCaptureResult,
   sanitizeSentryEvent,
   sanitizeTelemetryPayload,
 } from "../src/lib/telemetryPrivacy.ts";
+import {
+  appendCampaignAttributionToFirmHref,
+  resolveCampaignAttribution,
+  sanitizeStoredCampaignAttribution,
+  shouldOpenCalculatorForEddmQr,
+} from "../src/lib/campaignAttribution.ts";
 
 const SENSITIVE_QUERY = new URLSearchParams({
   email: "prospect@example.com",
@@ -160,4 +167,211 @@ test("both direct capture and the PostHog SDK use the final sanitizer boundary",
   assert.match(sdkSource, /before_send: sanitizePostHogCaptureResult/);
   assert.match(sdkSource, /save_campaign_params: false/);
   assert.match(sdkSource, /disable_session_recording: true/);
+});
+
+test("protected dynamic paths collapse without changing ordinary public paths", () => {
+  const protectedCases = new Map([
+    [
+      "/onboarding/verify/654321/prospect%40example.com?utm_source=eddm",
+      "/onboarding/verify?utm_source=eddm",
+    ],
+    [
+      "/auth/callback/eyJhbGciOiJIUzI1NiJ9.private.signature?utm_medium=print",
+      "/auth/callback?utm_medium=print",
+    ],
+    ["/invite/household-secret", "/invite"],
+    ["/api/auth/verify/one-time-code", "/api/auth/verify"],
+  ]);
+
+  protectedCases.forEach((expected, input) => {
+    assert.equal(sanitizeAnalyticsUrl(input), expected);
+  });
+  assert.equal(
+    sanitizeAnalyticsUrl("/learn/retirement-planning/2026?utm_campaign=fall_launch"),
+    "/learn/retirement-planning/2026?utm_campaign=fall_launch",
+  );
+  assert.equal(
+    sanitizeTelemetryPayload(
+      "Navigation failed at /auth/callback/one-time-secret before retry",
+    ),
+    "Navigation failed at /auth/callback before retry",
+  );
+  assert.equal(
+    sanitizeTelemetryPayload(
+      "Rejected onboarding/verify/prospect%40example.com during validation",
+    ),
+    "Rejected /onboarding/verify during validation",
+  );
+});
+
+test("campaign values reject protected data while canonical and ordinary slugs survive", () => {
+  for (const value of [
+    "https://example.com/private",
+    "example.com/private",
+    "api-user:api-pass",
+    "bearer_secret_token",
+    "654321",
+    "verification-code-654321",
+    "invite_household",
+    "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.signature123",
+    "+1 (203) 555-0123",
+    "123-45-6789",
+    "A7f9K2mQ8vR4xT6zP1nC5bL0",
+  ]) {
+    assert.equal(isApprovedCampaignValue(value), false, value);
+  }
+  for (const value of [
+    "eddm",
+    "print",
+    "launch_5k",
+    "qr_code",
+    "fairfield_county",
+    "fall-retirement-planning",
+  ]) {
+    assert.equal(isApprovedCampaignValue(value), true, value);
+  }
+
+  const sanitized = new URL(
+    sanitizeAnalyticsUrl(
+      "https://youarepayingtoomuch.com/start?utm_source=%2B1%20(203)%20555-0123&utm_medium=print&utm_campaign=launch_5k&utm_content=https%3A%2F%2Fevil.example%2Ftoken",
+    ),
+  );
+  assert.deepEqual(Array.from(sanitized.searchParams.entries()), [
+    ["utm_medium", "print"],
+    ["utm_campaign", "launch_5k"],
+  ]);
+});
+
+test("campaign ingestion, storage inputs, and firm forwarding share the safe-value gate", () => {
+  const suspicious = new URLSearchParams({
+    utm_source: "prospect@example.com",
+    utm_medium: "print",
+    utm_campaign: "eyJhbGciOiJIUzI1NiJ9.private.signature",
+    utm_content: "+1 (203) 555-0123",
+  });
+  assert.deepEqual(resolveCampaignAttribution(suspicious), {
+    utm_medium: "print",
+    campaign_attribution_method: "explicit_utm",
+    is_eddm_visitor: false,
+    legacy_eddm_qr: false,
+  });
+
+  const forwarded = new URL(
+    appendCampaignAttributionToFirmHref("https://smarterwaywealth.com/start", {
+      utm_source: "eddm",
+      utm_medium: "print",
+      utm_campaign: "verification-code-654321",
+      utm_content: "qr_code",
+      utm_term: "https://example.com/private",
+    }),
+  );
+  assert.deepEqual(Array.from(forwarded.searchParams.entries()), [
+    ["utm_source", "eddm"],
+    ["utm_medium", "print"],
+    ["utm_content", "qr_code"],
+  ]);
+
+  assert.deepEqual(
+    sanitizeStoredCampaignAttribution({
+      utm_source: "eddm",
+      utm_medium: "print",
+      utm_campaign: "bearer_secret_token",
+      utm_content: "qr_code",
+      campaign_attribution_method: "explicit_utm",
+      is_eddm_visitor: false,
+      legacy_eddm_qr: true,
+    }),
+    {
+      utm_source: "eddm",
+      utm_medium: "print",
+      utm_content: "qr_code",
+      campaign_attribution_method: "explicit_utm",
+      is_eddm_visitor: true,
+      legacy_eddm_qr: false,
+    },
+  );
+
+  let getterCalled = false;
+  const getterCampaign: Record<string, unknown> = { utm_source: "eddm" };
+  Object.defineProperty(getterCampaign, "utm_campaign", {
+    enumerable: true,
+    get() {
+      getterCalled = true;
+      return "verification-code-654321";
+    },
+  });
+  assert.equal(
+    appendCampaignAttributionToFirmHref(
+      "https://smarterwaywealth.com/start",
+      getterCampaign,
+    ),
+    "https://smarterwaywealth.com/start?utm_source=eddm",
+  );
+  assert.equal(getterCalled, false);
+});
+
+test("legacy and canonical EDDM attribution remain exact after UTM hardening", () => {
+  const legacy =
+    "portfolio=1000000&years=20&growth=8&fee=1";
+  const canonical =
+    `${legacy}&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code`;
+
+  assert.equal(shouldOpenCalculatorForEddmQr(legacy), true);
+  assert.equal(shouldOpenCalculatorForEddmQr(canonical), true);
+  assert.deepEqual(resolveCampaignAttribution(legacy), {
+    utm_source: "eddm",
+    utm_medium: "print",
+    utm_campaign: "launch_5k",
+    utm_content: "qr_code",
+    campaign_attribution_method: "legacy_qr_signature",
+    is_eddm_visitor: true,
+    legacy_eddm_qr: true,
+  });
+  assert.deepEqual(resolveCampaignAttribution(canonical), {
+    utm_source: "eddm",
+    utm_medium: "print",
+    utm_campaign: "launch_5k",
+    utm_content: "qr_code",
+    campaign_attribution_method: "explicit_utm",
+    is_eddm_visitor: true,
+    legacy_eddm_qr: false,
+  });
+});
+
+test("non-plain, cyclic, getter, and inaccessible values fail closed and serialize", () => {
+  class Context {
+    callbackUrl =
+      "https://youarepayingtoomuch.com/auth/callback/secret?code=private&utm_source=eddm";
+  }
+
+  let getterCalled = false;
+  const payload: Record<string, unknown> = {
+    context: new Context(),
+    nested: {},
+  };
+  (payload.nested as Record<string, unknown>).parent = payload;
+  Object.defineProperty(payload, "dangerousGetter", {
+    enumerable: true,
+    get() {
+      getterCalled = true;
+      return "https://example.com/?token=must-not-run";
+    },
+  });
+
+  const revoked = Proxy.revocable({ secret: "private" }, {});
+  revoked.revoke();
+  payload.inaccessible = revoked.proxy;
+
+  const sanitized = sanitizeTelemetryPayload(payload);
+  const context = sanitized.context as Record<string, unknown>;
+  const nested = sanitized.nested as Record<string, unknown>;
+  assert.equal(getterCalled, false);
+  assert.equal(
+    context.callbackUrl,
+    "https://youarepayingtoomuch.com/auth/callback?utm_source=eddm",
+  );
+  assert.equal(nested.parent, null);
+  assert.deepEqual(sanitized.inaccessible, {});
+  assert.doesNotThrow(() => JSON.stringify(sanitized));
+  assert.doesNotMatch(JSON.stringify(sanitized), /secret|private|must-not-run/);
 });

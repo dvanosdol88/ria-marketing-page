@@ -1,6 +1,7 @@
 import posthog from "posthog-js";
 import {
   resolveCampaignAttribution,
+  sanitizeStoredCampaignAttribution,
   type CampaignAttribution,
 } from "@/lib/campaignAttribution";
 import {
@@ -49,7 +50,7 @@ function storeCampaignAttribution(attribution: CampaignAttribution) {
 function readStoredCampaignAttribution(): CampaignAttribution | null {
   try {
     const stored = window.sessionStorage.getItem(CAMPAIGN_SESSION_STORAGE_KEY);
-    return stored ? (JSON.parse(stored) as CampaignAttribution) : null;
+    return stored ? sanitizeStoredCampaignAttribution(JSON.parse(stored)) : null;
   } catch {
     return null;
   }

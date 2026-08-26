@@ -183,7 +183,9 @@ Before blaming copy/design for a conversion drop:
 
 1. Check Sentry unresolved issues for the affected production window.
 2. Check whether errors align with the affected route/device/browser.
-3. Check PostHog `$exception`, `$dead_click`, `$rageclick`, and session replay when available.
+3. Check PostHog `$exception`, `$dead_click`, `$rageclick`, and `$pageleave`
+   by route, device, browser, and campaign. Session replay is disabled on both
+   public sites, so do not depend on or enable recordings for this workflow.
 4. Fix production errors before changing marketing based on broken-session data.
 
 Agents need `SENTRY_AUTH_TOKEN` set locally for direct Sentry API inspection. Never ask David to paste the token in chat.

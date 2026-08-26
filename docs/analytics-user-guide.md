@@ -28,7 +28,8 @@ Watch these numbers first:
 - Percent who reach a result.
 - Percent who click through to Smarter Way Wealth.
 - Percent who click intro-call/contact/verify-firm CTAs on Smarter Way Wealth.
-- Mobile rage clicks, dead clicks, and session replays.
+- Mobile rage clicks, dead clicks, page leaves, and exceptions. Session replay
+  is disabled, so use these event-level signals by route, device, and campaign.
 - Sentry errors around the same time as conversion changes.
 
 ## What To Do With The Information
@@ -41,7 +42,8 @@ Examples:
 - Many starts, few submissions/results: simplify the calculator interaction or reduce confusing fields.
 - Many results, few SWW clicks: improve the bridge copy from "fee gap" to "what to do next."
 - Many SWW visits, few intro clicks: make trust/proof/contact path clearer.
-- Rage/dead clicks on mobile: watch recordings before changing copy.
+- Rage/dead clicks on mobile: compare route, device, campaign, and exception
+  events before changing copy.
 - Conversion drop plus Sentry spike: fix the bug before changing marketing.
 
 ## Recommended Cadence
@@ -60,7 +62,8 @@ Digest shape:
 - Traffic by source/campaign.
 - Funnel conversion: visit -> calculator start -> result -> SWW click -> intro/contact.
 - Top friction signals.
-- Notable session replay themes.
+- Notable route/device patterns in dead-click, rage-click, page-leave, and
+  exception events.
 - Sentry/PostHog error notes.
 - Recommended next action.
 
