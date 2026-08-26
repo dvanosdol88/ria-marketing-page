@@ -11,7 +11,7 @@ import { chromium } from "playwright";
 // (dollar figures, the personalized share URL) inside the subject/body
 // query. The redaction belongs in THIS repo's own PostHogCtaTracker.tsx
 // (site-specific, not canon-registered), mirroring the sister repo's
-// PostHogCtaTracker.js's isMailto branch exactly.
+// PostHogCtaTracker.js's sensitive-scheme branch.
 
 const readSource = (relativePath) =>
   readFile(new URL(relativePath, import.meta.url), "utf8");
@@ -53,19 +53,19 @@ async function waitForCapturedEvent(capturedEvents, predicate, label) {
   throw new Error(`Timed out waiting for PostHog event: ${label}`);
 }
 
-// Source lock: the isMailto branch must gate cta_href/cta_host/cta_path
+// Source lock: the sensitive-scheme branch must gate cta_href/cta_host/cta_path
 // construction — mirrors the sister repo's
 // tests/posthog-cta-tracker-mailto.test.mjs "source lock" assertion.
 const trackerSource = await readSource("../src/components/PostHogCtaTracker.tsx");
 assert.match(
   trackerSource,
-  /const isMailto = url\.protocol === ["']mailto:["'];/,
-  "expected the mailto special-case to gate cta_href/cta_host/cta_path construction",
+  /const hasSensitiveScheme = \[[^\]]*["']mailto:["'][^\]]*["']sms:["'][^\]]*["']tel:["'][^\]]*\]\.includes\(/s,
+  "expected mailto, sms, and tel to gate cta_href/cta_host/cta_path construction",
 );
 assert.match(
   trackerSource,
-  /cta_href: isMailto\s*\?\s*["']mailto:["']/,
-  "expected cta_href to collapse to the bare mailto scheme for mailto anchors",
+  /cta_href: hasSensitiveScheme\s*\?\s*url\.protocol/,
+  "expected cta_href to collapse to the bare protocol for sensitive-scheme anchors",
 );
 console.log("source lock: PostHogCtaTracker.tsx redacts mailto hrefs at the property-construction level — OK");
 

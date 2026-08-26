@@ -3,6 +3,10 @@ import {
   resolveCampaignAttribution,
   type CampaignAttribution,
 } from "@/lib/campaignAttribution";
+import {
+  sanitizeAnalyticsUrl,
+  sanitizeTelemetryPayload,
+} from "@/lib/telemetryPrivacy";
 
 export type PostHogProperties = Record<string, unknown>;
 
@@ -76,22 +80,30 @@ function sendDirectPostHogEvent(eventName: string, properties: PostHogProperties
   if (!posthogKey) return;
 
   const apiHost = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
-  const currentUrl =
+  const requestedCurrentUrl =
     typeof properties.$current_url === "string"
       ? properties.$current_url
       : window.location.href;
+  // Attribution is resolved from the real browser URL before its query is
+  // removed. This preserves both explicit UTM and the exact legacy EDDM QR
+  // signature while keeping calculator/auth state out of the payload.
+  const campaignProperties = getPostHogCampaignProperties(window.location.href);
+  const safeProperties = sanitizeTelemetryPayload({
+    distinct_id: getDistinctId(),
+    $current_url: sanitizeAnalyticsUrl(requestedCurrentUrl),
+    $host: window.location.hostname,
+    site_domain: window.location.hostname,
+    site_path: window.location.pathname,
+    ...campaignProperties,
+    ...properties,
+  });
+  // Event-specific properties must not override the final URL boundary.
+  safeProperties.$current_url = sanitizeAnalyticsUrl(requestedCurrentUrl);
+
   const body = JSON.stringify({
     api_key: posthogKey,
     event: eventName,
-    properties: {
-      distinct_id: getDistinctId(),
-      $current_url: currentUrl,
-      $host: window.location.hostname,
-      site_domain: window.location.hostname,
-      site_path: window.location.pathname,
-      ...getPostHogCampaignProperties(currentUrl),
-      ...properties,
-    },
+    properties: safeProperties,
     timestamp: new Date().toISOString(),
   });
 

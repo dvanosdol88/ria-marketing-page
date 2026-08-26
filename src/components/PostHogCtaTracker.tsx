@@ -11,6 +11,7 @@ import {
   appendCampaignAttributionToFirmHref,
   POSTHOG_UTM_KEYS,
 } from "@/lib/campaignAttribution";
+import { sanitizeAnalyticsUrl } from "@/lib/telemetryPrivacy";
 
 const CTA_HOSTS = new Set([
   "smarterwaywealth.com",
@@ -45,7 +46,7 @@ export function PostHogCtaTracker() {
       ...campaignProperties,
     });
     registerPostHogPropertiesOnce({
-      first_landing_url: window.location.href,
+      first_landing_url: sanitizeAnalyticsUrl(window.location.href),
       first_landing_domain: window.location.hostname,
       ...Object.fromEntries(
         POSTHOG_UTM_KEYS.flatMap((key) => {
@@ -89,13 +90,19 @@ export function PostHogCtaTracker() {
       // trying to sanitize it piecemeal. Ported verbatim from the sister
       // repo's PostHogCtaTracker.js (this file is site-specific, not
       // canon-registered, but the fix itself must match exactly).
-      const isMailto = url.protocol === "mailto:";
+      const hasSensitiveScheme = ["mailto:", "sms:", "tel:"].includes(
+        url.protocol,
+      );
       const isRedacted = anchor.dataset.posthogRedactQuery === "true";
       capturePostHogEvent("cta_clicked", {
         cta_label: anchor.dataset.posthogCtaLabel ?? anchor.textContent?.trim().replace(/\s+/g, " ").slice(0, 120) ?? "",
-        cta_href: isMailto ? "mailto:" : isRedacted ? `${url.origin}${url.pathname}` : anchor.href,
-        cta_host: isMailto ? "" : url.hostname,
-        cta_path: isMailto ? "" : url.pathname,
+        cta_href: hasSensitiveScheme
+          ? url.protocol
+          : isRedacted
+            ? `${url.origin}${url.pathname}`
+            : sanitizeAnalyticsUrl(anchor.href),
+        cta_host: hasSensitiveScheme ? "" : url.hostname,
+        cta_path: hasSensitiveScheme ? "" : url.pathname,
         cta_location: anchor.dataset.posthogCtaLocation ?? "global_link",
         opens_new_tab: anchor.target === "_blank",
       });

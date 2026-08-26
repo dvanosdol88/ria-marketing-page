@@ -3,6 +3,14 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-26 — Deny-by-default telemetry URL boundary
+**Agent:** Codex | **Surface:** PostHog and Sentry URL metadata | **Status:** implemented in review; not deployed
+- changed: direct PostHog capture, PostHog SDK/autocapture, page views, CTA URLs, session-recording network names, and Sentry error/transaction/breadcrumb hooks now share one URL sanitizer. It removes URL credentials, fragments, auth/invite/verification/token/code/email/answer/story/provider/session parameters, calculator state, and every other non-approved query key; only the five contract-approved UTM keys may survive. `mailto:`, `sms:`, and `tel:` values collapse to the bare scheme.
+- protected: browser-side Sentry and PostHog replay were disabled because underlying replay frames can contain raw navigation or link URLs before ordinary event hooks run. PostHog input masking remains deny-by-default, automatic campaign-parameter persistence is off, and the PostHog `before_send` boundary sanitizes SDK/autocapture event properties.
+- preserved: event names and event-specific non-URL properties are unchanged. This is a URL-state boundary, not a claim that arbitrary non-URL event properties are scrubbed. The raw browser URL is still used locally to recognize the printer-approved legacy QR signature before the outgoing `$current_url` is sanitized.
+- verified locally: focused URL tests passed 8/8; the mailto behavioral test passed; the real mobile EDDM browser test proved legacy and canonical attribution plus UTM-only firm handoff; TypeScript, targeted ESLint, and the production build passed.
+- not deployed: feature branch only; merge and production verification remain with the launch release owner.
+
 ### 2026-08-20 — Standardized the cross-site fee-comparison receipt
 **Agent:** RIA Chief | **Surface:** shared calculator share/receipt stack | **Status:** deployed and production-verified
 - changed: the shared copy/email/social summary and in-panel/share-card artifact now use neutral **estimated advisory-fee difference** language tied to the visitor's assumptions. The stronger percentage-of-wealth / “lost to fees” sentence was removed from the receipt variants.

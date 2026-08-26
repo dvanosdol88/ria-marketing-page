@@ -144,9 +144,10 @@ try {
 
   const pageview = await waitForCapturedEvent(capturedEvents, "$pageview");
   assertLegacyAttribution(pageview);
-  assert.match(
+  assert.equal(
     pageview.properties.$current_url,
-    new RegExp(`\\?${LEGACY_MAILER_QUERY.replaceAll("?", "\\?")}`),
+    `${baseUrl}/`,
+    "legacy QR attribution must be inferred before the calculator query is removed from telemetry",
   );
 
   await page.waitForFunction(() => window.location.search === "");
