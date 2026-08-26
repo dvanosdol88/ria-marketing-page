@@ -18,6 +18,11 @@ const navSource = readSource("src/components/SiteNav.tsx");
 const sharedCtaSource = readSource("src/components/SignupCta.tsx");
 const fitCtaSource = readSource("src/config/fitCtaConfig.ts");
 const llmsSource = readSource("public/llms.txt");
+const sitemapSource = readSource("public/sitemap.xml");
+const analyticsContract = JSON.parse(
+  readSource("docs/analytics-event-contract.json"),
+);
+const dashboardSource = readSource("docs/posthog-two-site-dashboard.md");
 
 const PAUSED_CTA_NAME = "Direct onboarding paused";
 const PAUSED_CTA_SHORT_NAME = "Start paused";
@@ -25,7 +30,7 @@ const OPTIONAL_MEETING_NAME = "Meet David for 15 minutes";
 const OPTIONAL_MEETING_HREF = "https://smarterwaywealth.com/meet";
 const HOW_IT_WORKS_HREF = "https://smarterwaywealth.com/how";
 const PAUSE_DISCLOSURE =
-  "Direct onboarding is temporarily paused. No information is collected at this step.";
+  "Direct onboarding is temporarily paused. No onboarding form accepts personal or financial information at this step; standard site analytics may still record page and CTA activity.";
 const COMPLIANCE_DISCLOSURE =
   "Personalized investment advice begins only after becoming a client.";
 const NO_SAVE_BODY =
@@ -95,7 +100,14 @@ test("the public direct-start page renders no legacy PII collection or agreement
     pageSource,
     /Send me the agreement|David sends one email|You fill in three fields/i,
   );
-  assert.match(pageSource, /Nothing is being collected on this page/);
+  assert.match(
+    pageSource,
+    /No onboarding submission or personal or financial information is accepted here/,
+  );
+  assert.match(
+    pageSource,
+    /Standard site analytics may record this page visit and link clicks/,
+  );
   assert.match(pageSource, /does not replace the secure direct-onboarding path/);
 });
 
@@ -123,7 +135,7 @@ test("every reachable direct-start CTA and machine-readable name tells the pause
   assert.ok(signupConfigSource.includes(COMPLIANCE_DISCLOSURE));
   assert.match(
     signupConfigSource,
-    /Direct onboarding is temporarily paused\. No information is collected at this step\. Personalized investment advice begins only after becoming a client\./,
+    /Direct onboarding is temporarily paused\. No onboarding form accepts personal or financial information at this step; standard site analytics may still record page and CTA activity\. Personalized investment advice begins only after becoming a client\./,
     "the pause boundary must preserve the original compliance sentence in order",
   );
   assert.doesNotMatch(signupConfigSource, /Become a client|Ready when you are/i);
@@ -155,9 +167,43 @@ test("every reachable direct-start CTA and machine-readable name tells the pause
 
   assert.match(
     llmsSource,
-    /Secure direct onboarding status \(temporarily paused; no information is collected\)/,
+    /Secure direct onboarding status \(temporarily paused; no onboarding, personal, or financial submission is accepted; standard site analytics may record page and link activity\)/,
   );
   assert.doesNotMatch(llmsSource, /Become a client \(sign-up/);
+});
+
+test("paused onboarding has explicit analytics semantics and consistent crawler guidance", () => {
+  const ctaContract = analyticsContract.events.find(
+    (event) => event.name === "cta_clicked",
+  );
+  assert.ok(ctaContract, "cta_clicked must remain in the canonical event contract");
+  assert.ok(
+    ctaContract.semanticRules.includes(
+      "Clicks with cta_label=Direct onboarding paused are status-navigation events, not client-start conversions, and must be segmented or excluded from client-start reporting.",
+    ),
+  );
+  assert.ok(
+    ctaContract.semanticRules.includes(
+      "Clicks with cta_location=signup_pause_optional_meeting represent optional meeting intent while direct onboarding is paused and must be reported separately from permanent onboarding starts.",
+    ),
+  );
+  assert.match(
+    dashboardSource,
+    /cta_label=Direct onboarding paused[\s\S]*?not[\s\S]*?client-start conversions/,
+  );
+  assert.match(
+    dashboardSource,
+    /cta_location=signup_pause_optional_meeting[\s\S]*?Report it separately/,
+  );
+  assert.match(
+    pageSource,
+    /robots:\s*\{\s*index:\s*false,\s*follow:\s*true\s*\}/,
+  );
+  assert.doesNotMatch(
+    sitemapSource,
+    /<loc>https:\/\/youarepayingtoomuch\.com\/become-a-client<\/loc>/,
+  );
+  assert.match(sitemapSource, /become-a-client is temporarily[\s\S]*?noindex/);
 });
 
 test("the retired API never reads, logs, stores, or forwards a request body", () => {

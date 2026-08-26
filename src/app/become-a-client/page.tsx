@@ -47,8 +47,12 @@ export default function BecomeAClientPage() {
       <section className="section-shell mt-10 max-w-3xl" aria-labelledby="pause-boundary">
         <div className="border border-[#B8C9D8] border-t-4 border-t-[#108843] bg-white p-5 shadow-[8px_8px_0_rgba(16,35,58,0.08)] sm:p-8">
           <h2 id="pause-boundary" className="text-2xl font-black text-[#10233A]">
-            Nothing is being collected on this page.
+            No onboarding submission or personal or financial information is accepted here.
           </h2>
+          <p className="mt-4 text-sm leading-6 text-[#31465F] sm:text-base">
+            Standard site analytics may record this page visit and link clicks. There is no
+            onboarding form, and no onboarding submission is accepted or stored here.
+          </p>
           <ul className="mt-5 grid gap-3 text-sm leading-6 text-[#31465F] sm:text-base">
             <li className="border-l-4 border-[#108843] bg-[#EEF9F2] px-4 py-3">
               Do not send your name, email, financial details, documents, or account information
