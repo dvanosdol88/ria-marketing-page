@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-19",
+  "version": "2026-08-26",
   "owner": "Smarter Way Wealth marketing analytics",
   "posthog": {
     "recommendedProjectShape": "Use one PostHog project for youarepayingtoomuch.com and smarterwaywealth.com so the cross-site journey can be analyzed in one place.",
@@ -205,7 +205,8 @@
   "privacyRules": [
     "Do not capture Social Security numbers, account numbers, full phone numbers, email addresses typed into forms, or free-form personal financial notes.",
     "Calculator numeric assumptions may be captured because they are anonymous modeling inputs, but do not combine them with identified user profiles without a new compliance/privacy review.",
-    "PostHog session replay may show calculator numbers. Password, email, and telephone inputs must stay masked.",
+    "PostHog and Sentry session replay are disabled on both public sites. Diagnose mobile friction from event-level dead-click, rage-click, page-leave, exception, route, device, and campaign signals only.",
+    "Only the five listed UTM properties may survive URL sanitization or cross-site forwarding, and their values must reject URLs, credentials, tokens, verification or invite values, email addresses, phone numbers, Social Security numbers, and opaque high-entropy identifiers.",
     "Sentry should receive technical error context, not marketing funnel payloads or sensitive user-entered financial details."
   ]
 }

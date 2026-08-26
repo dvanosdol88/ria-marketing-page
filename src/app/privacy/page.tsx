@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     "How Smarter Way Wealth, LLC collects, uses, and protects information from visitors to youarepayingtoomuch.com.",
 };
 
-const LAST_UPDATED = "2026-07-28";
+const LAST_UPDATED = "2026-08-26";
 
 export default function PrivacyPolicy() {
   return (
@@ -57,11 +57,11 @@ export default function PrivacyPolicy() {
           purpose of operating, securing, and improving the site.
         </p>
         <p>
-          PostHog may also record a replay of a browsing session, including page
-          navigation and interactions. Password, email, and telephone input
-          fields are configured to be masked in these recordings. You should
-          still avoid entering sensitive financial or personal information into
-          ordinary website fields.
+          We do not use PostHog or Sentry session replay on either public site.
+          We use event-level signals such as page views, clicks, page leaves,
+          device information, campaign attribution, and technical errors. You
+          should still avoid entering sensitive financial or personal
+          information into ordinary website fields.
         </p>
 
         <h2 id="how-we-use-information" className="pt-4 text-lg font-semibold text-neutral-900">
@@ -79,7 +79,7 @@ export default function PrivacyPolicy() {
         </h2>
         <p>
           Our sites are hosted on Vercel, use Sentry for error monitoring,
-          PostHog for product analytics and session replay, and Calendly for
+          PostHog for event-level product analytics, and Calendly for
           meeting scheduling on smarterwaywealth.com. These providers process
           data on our behalf under their own privacy practices.
         </p>

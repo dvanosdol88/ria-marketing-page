@@ -80,7 +80,7 @@ Period: <date range>
 
 4. Friction and bugs
 - PostHog dead/rage clicks:
-- Session replay themes:
+- Route/device/campaign patterns in page-leave and exception events:
 - Sentry unresolved/new issues:
 - Any reason behavior data may be distorted:
 
@@ -159,8 +159,7 @@ PostHog:
 - behavior
 - funnel
 - CTAs
-- session replay
-- friction signals
+- event-level friction signals (dead click, rage click, page leave, exception)
 
 Sentry:
 

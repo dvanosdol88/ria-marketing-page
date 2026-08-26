@@ -11,7 +11,7 @@ import { chromium } from "playwright";
 // (dollar figures, the personalized share URL) inside the subject/body
 // query. The redaction belongs in THIS repo's own PostHogCtaTracker.tsx
 // (site-specific, not canon-registered), mirroring the sister repo's
-// PostHogCtaTracker.js's isMailto branch exactly.
+// PostHogCtaTracker.js's sensitive-scheme branch.
 
 const readSource = (relativePath) =>
   readFile(new URL(relativePath, import.meta.url), "utf8");
@@ -53,19 +53,19 @@ async function waitForCapturedEvent(capturedEvents, predicate, label) {
   throw new Error(`Timed out waiting for PostHog event: ${label}`);
 }
 
-// Source lock: the isMailto branch must gate cta_href/cta_host/cta_path
+// Source lock: the sensitive-scheme branch must gate cta_href/cta_host/cta_path
 // construction — mirrors the sister repo's
 // tests/posthog-cta-tracker-mailto.test.mjs "source lock" assertion.
 const trackerSource = await readSource("../src/components/PostHogCtaTracker.tsx");
 assert.match(
   trackerSource,
-  /const isMailto = url\.protocol === ["']mailto:["'];/,
-  "expected the mailto special-case to gate cta_href/cta_host/cta_path construction",
+  /const hasSensitiveScheme = \[[^\]]*["']mailto:["'][^\]]*["']sms:["'][^\]]*["']tel:["'][^\]]*\]\.includes\(/s,
+  "expected mailto, sms, and tel to gate cta_href/cta_host/cta_path construction",
 );
 assert.match(
   trackerSource,
-  /cta_href: isMailto\s*\?\s*["']mailto:["']/,
-  "expected cta_href to collapse to the bare mailto scheme for mailto anchors",
+  /cta_href: hasSensitiveScheme\s*\?\s*url\.protocol/,
+  "expected cta_href to collapse to the bare protocol for sensitive-scheme anchors",
 );
 console.log("source lock: PostHogCtaTracker.tsx redacts mailto hrefs at the property-construction level — OK");
 
@@ -155,6 +155,41 @@ try {
   assert.equal(ctaEvent.properties.cta_href, "mailto:", "cta_href must be exactly the redacted mailto scheme");
   assert.equal(ctaEvent.properties.cta_host, "");
   assert.equal(ctaEvent.properties.cta_path, "");
+
+  for (const [scheme, privateDestination] of [
+    ["sms", "+12025550123?body=private-message"],
+    ["tel", "+12025550124"],
+  ]) {
+    const ctaLabel = `${scheme.toUpperCase()} privacy test`;
+    await page.evaluate(
+      ({ href, label }) => {
+        const anchor = document.createElement("a");
+        anchor.href = href;
+        anchor.dataset.posthogCta = "true";
+        anchor.dataset.posthogCtaLabel = label;
+        anchor.textContent = label;
+        anchor.addEventListener("click", (event) => event.preventDefault());
+        document.body.append(anchor);
+      },
+      { href: `${scheme}:${privateDestination}`, label: ctaLabel },
+    );
+
+    await page.locator(`a[data-posthog-cta-label="${ctaLabel}"]`).click();
+    const sensitiveSchemeEvent = await waitForCapturedEvent(
+      capturedEvents,
+      (event) => event.event === "cta_clicked" && event.properties?.cta_label === ctaLabel,
+      `cta_clicked (${ctaLabel})`,
+    );
+
+    assert.equal(sensitiveSchemeEvent.properties.cta_href, `${scheme}:`);
+    assert.equal(sensitiveSchemeEvent.properties.cta_host, "");
+    assert.equal(sensitiveSchemeEvent.properties.cta_path, "");
+    assert.doesNotMatch(
+      JSON.stringify(sensitiveSchemeEvent),
+      /1202555012[34]|private-message/,
+      `${scheme}: destination must not survive anywhere in the captured payload`,
+    );
+  }
 
   const serialized = JSON.stringify(ctaEvent);
   assert.doesNotMatch(serialized, /\$[\d,]{4,}/, "no dollar figure anywhere in the captured payload");

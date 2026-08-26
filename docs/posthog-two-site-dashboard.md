@@ -131,7 +131,7 @@ The live dashboard was created on 2026-06-04 with the following saved insights. 
    - Insight ID: `9074121`
    - Short ID: `cZghBwkV`
    - URL: `https://us.posthog.com/project/452693/insights/cZghBwkV`
-   - Type: trend/session replay workflow
+   - Type: event-only trend workflow (session replay is disabled)
    - Events:
      - `$dead_click`
      - `$rageclick`
@@ -139,6 +139,9 @@ The live dashboard was created on 2026-06-04 with the following saved insights. 
    - Filters:
      - `site_domain` in both public domains
      - Optional: `utm_source = eddm`
+   - Workflow: break these events down by device, browser, route, and campaign;
+     compare the same time window with `$exception` and Sentry issue counts.
+     Do not expect or enable session recordings for this investigation.
    - Question answered: are mobile QR visitors confused or stuck?
 
 7. `Asset-tier mix`

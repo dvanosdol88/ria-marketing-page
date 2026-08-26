@@ -1,8 +1,13 @@
 import posthog from "posthog-js";
 import {
   resolveCampaignAttribution,
+  sanitizeStoredCampaignAttribution,
   type CampaignAttribution,
 } from "@/lib/campaignAttribution";
+import {
+  sanitizeAnalyticsUrl,
+  sanitizeTelemetryPayload,
+} from "@/lib/telemetryPrivacy";
 
 export type PostHogProperties = Record<string, unknown>;
 
@@ -45,7 +50,7 @@ function storeCampaignAttribution(attribution: CampaignAttribution) {
 function readStoredCampaignAttribution(): CampaignAttribution | null {
   try {
     const stored = window.sessionStorage.getItem(CAMPAIGN_SESSION_STORAGE_KEY);
-    return stored ? (JSON.parse(stored) as CampaignAttribution) : null;
+    return stored ? sanitizeStoredCampaignAttribution(JSON.parse(stored)) : null;
   } catch {
     return null;
   }
@@ -76,22 +81,30 @@ function sendDirectPostHogEvent(eventName: string, properties: PostHogProperties
   if (!posthogKey) return;
 
   const apiHost = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
-  const currentUrl =
+  const requestedCurrentUrl =
     typeof properties.$current_url === "string"
       ? properties.$current_url
       : window.location.href;
+  // Attribution is resolved from the real browser URL before its query is
+  // removed. This preserves both explicit UTM and the exact legacy EDDM QR
+  // signature while keeping calculator/auth state out of the payload.
+  const campaignProperties = getPostHogCampaignProperties(window.location.href);
+  const safeProperties = sanitizeTelemetryPayload({
+    distinct_id: getDistinctId(),
+    $current_url: sanitizeAnalyticsUrl(requestedCurrentUrl),
+    $host: window.location.hostname,
+    site_domain: window.location.hostname,
+    site_path: window.location.pathname,
+    ...campaignProperties,
+    ...properties,
+  });
+  // Event-specific properties must not override the final URL boundary.
+  safeProperties.$current_url = sanitizeAnalyticsUrl(requestedCurrentUrl);
+
   const body = JSON.stringify({
     api_key: posthogKey,
     event: eventName,
-    properties: {
-      distinct_id: getDistinctId(),
-      $current_url: currentUrl,
-      $host: window.location.hostname,
-      site_domain: window.location.hostname,
-      site_path: window.location.pathname,
-      ...getPostHogCampaignProperties(currentUrl),
-      ...properties,
-    },
+    properties: safeProperties,
     timestamp: new Date().toISOString(),
   });
 
@@ -115,9 +128,9 @@ export function capturePostHogEvent(eventName: string, properties: PostHogProper
 }
 
 export function registerPostHogProperties(properties: PostHogProperties) {
-  getBrowserPostHog()?.register?.(properties);
+  getBrowserPostHog()?.register?.(sanitizeTelemetryPayload(properties));
 }
 
 export function registerPostHogPropertiesOnce(properties: PostHogProperties) {
-  getBrowserPostHog()?.register_once?.(properties);
+  getBrowserPostHog()?.register_once?.(sanitizeTelemetryPayload(properties));
 }
