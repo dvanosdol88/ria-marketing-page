@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BecomeAClientForm } from "@/components/BecomeAClientForm";
 import { signupCta } from "@/config/signupCta";
-import { HOME_STATE } from "@/config/becomeAClient";
 
-const TITLE = "Become a client | Smarter Way Wealth";
+const TITLE = "Secure onboarding | Smarter Way Wealth";
 const DESCRIPTION =
-  "Start with Smarter Way Wealth for a flat $100 a month. Fill in three fields and David sends the advisory agreement, Form ADV Part 2, and Form CRS in a single email.";
+  "Smarter Way Wealth direct onboarding is temporarily paused while final identity, privacy, and provider checks are completed.";
 
 export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: signupCta.primary.href },
+  robots: { index: false, follow: true },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
@@ -20,147 +19,107 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
-/**
- * Page-specific schema. The site-wide Organization/WebSite declarations live
- * in the root layout — this describes only what THIS page offers.
- */
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  name: "Flat-fee investment advice",
-  provider: {
-    "@type": "FinancialService",
-    name: "Smarter Way Wealth, LLC",
-    url: "https://smarterwaywealth.com",
-  },
-  areaServed: HOME_STATE,
-  offers: {
-    "@type": "Offer",
-    price: "100",
-    priceCurrency: "USD",
-    description: "Flat $100 per month advisory fee, regardless of portfolio size.",
-  },
-};
-
-const STEPS = [
-  {
-    title: "You fill in three fields",
-    body: "Name, email, and your state. It takes about a minute.",
-  },
-  {
-    title: "David sends one email",
-    body: "The advisory agreement to sign, with the firm's Form ADV Part 2 and Form CRS attached. No separate confirmation step to click through.",
-  },
-  {
-    title: "You sign — and that's the start",
-    body: "Nothing is owed and nothing begins until you do. Your money stays where it is; Smarter Way Wealth never takes custody of client funds.",
-  },
-];
+const JOURNEY = [
+  "Verify",
+  "Your Story",
+  "Confirm Fit",
+  "Make It Official",
+  "Financial Picture",
+  "First Meeting",
+] as const;
 
 export default function BecomeAClientPage() {
   return (
     <main className="bg-[#EEF0F5] pb-16">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
-
       <header className="section-shell pt-10 sm:pt-14">
-        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#108843]">
-          Become a client
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#007A2F]">
+          Secure direct onboarding
         </p>
-        <h1 className="mt-3 text-balance text-3xl font-black leading-tight text-[#10233A] sm:text-5xl">
-          One flat fee. $100 a month.
+        <h1 className="mt-3 max-w-3xl text-balance text-3xl font-black leading-tight text-[#10233A] sm:text-5xl">
+          Direct onboarding is temporarily paused.
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-7 text-[#31465F] sm:text-lg">
-          No commissions, no products, and no percentage of your money. Your fee
-          stays exactly the same as your portfolio grows.
+          We are finishing the verified-access, privacy, and provider checks that must work before
+          anyone shares personal information or signs an advisory agreement.
         </p>
       </header>
 
-      <section className="section-shell mt-10 max-w-2xl">
-        <ol className="flex flex-col gap-4">
-          {STEPS.map((step, index) => (
-            <li
-              key={step.title}
-              className="flex gap-4 rounded-xl border border-[#D8E2EA] bg-white p-4 sm:p-5"
-            >
-              <span
-                aria-hidden="true"
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#064B84] text-sm font-bold text-white"
-              >
-                {index + 1}
-              </span>
-              <div className="min-w-0">
-                <h2 className="text-base font-bold text-[#10233A]">{step.title}</h2>
-                <p className="mt-1 text-sm leading-6 text-[#31465F]">{step.body}</p>
-              </div>
+      <section className="section-shell mt-10 max-w-3xl" aria-labelledby="pause-boundary">
+        <div className="border border-[#B8C9D8] border-t-4 border-t-[#108843] bg-white p-5 shadow-[8px_8px_0_rgba(16,35,58,0.08)] sm:p-8">
+          <h2 id="pause-boundary" className="text-2xl font-black text-[#10233A]">
+            Nothing is being collected on this page.
+          </h2>
+          <ul className="mt-5 grid gap-3 text-sm leading-6 text-[#31465F] sm:text-base">
+            <li className="border-l-4 border-[#108843] bg-[#EEF9F2] px-4 py-3">
+              Do not send your name, email, financial details, documents, or account information
+              here.
             </li>
-          ))}
-        </ol>
-      </section>
-
-      <section className="section-shell mt-10 max-w-2xl">
-        <div className="rounded-2xl border border-[#D8E2EA] bg-white p-5 sm:p-8">
-          <BecomeAClientForm />
+            <li className="border-l-4 border-[#108843] bg-[#EEF9F2] px-4 py-3">
+              No agreement, disclosure delivery, signature request, or billing authorization is
+              created from this page.
+            </li>
+            <li className="border-l-4 border-[#108843] bg-[#EEF9F2] px-4 py-3">
+              No advisory relationship begins until the complete secure process is available and
+              every required item is executed.
+            </li>
+          </ul>
         </div>
       </section>
 
-      <section className="section-shell mt-8 max-w-2xl">
-        <h2 className="text-sm font-bold uppercase tracking-[0.15em] text-[#5A6B80]">
-          Two things worth knowing first
+      <section className="section-shell mt-12 max-w-3xl" aria-labelledby="secure-journey">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#007A2F]">
+          What will reopen here
+        </p>
+        <h2 id="secure-journey" className="mt-3 text-2xl font-black text-[#10233A] sm:text-3xl">
+          One private journey with clear ownership at every step.
         </h2>
-        <dl className="mt-3 flex flex-col gap-4">
-          <div>
-            <dt className="text-base font-bold text-[#10233A]">
-              There is a $250,000 minimum.
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-[#31465F]">
-              That is the standard minimum in investable assets disclosed in the
-              firm&apos;s Form ADV Part 2A. It can be waived at the firm&apos;s
-              discretion — if you are close, say so and David will tell you
-              honestly.
-            </dd>
-          </div>
-          <div>
-            <dt className="text-base font-bold text-[#10233A]">
-              The firm is registered in {HOME_STATE}.
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-[#31465F]">
-              Most states allow an out-of-state adviser to serve a limited
-              number of their residents without separate registration, so living
-              elsewhere is usually fine. David confirms it before anything is
-              signed.
-            </dd>
-          </div>
-        </dl>
+        <ol className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {JOURNEY.map((phase, index) => (
+            <li key={phase} className="flex min-h-16 items-center gap-3 border border-[#D8E2EA] bg-white px-4 py-3">
+              <span
+                aria-hidden="true"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#10233A] text-sm font-bold text-white"
+              >
+                {index + 1}
+              </span>
+              <span className="font-bold text-[#10233A]">{phase}</span>
+            </li>
+          ))}
+        </ol>
+        <p className="mt-5 text-sm leading-6 text-[#5A6B80]">
+          The permanent direct path will reopen here only after the entire mobile and desktop
+          journey is production-proven.
+        </p>
       </section>
 
-      <section className="section-shell mt-10 max-w-2xl">
-        <div className="rounded-2xl bg-[#064B84] p-6 text-center text-white sm:p-8">
-          <p className="text-lg font-bold">{signupCta.secondary.prompt}</p>
-          <p className="mt-2 text-sm leading-6 text-white/85">
-            Talk it through first. Fifteen minutes over Zoom, nothing to
-            prepare, and nobody will try to sell you anything.
+      <section className="section-shell mt-12 max-w-3xl">
+        <div className="bg-[#064B84] p-6 text-white sm:p-8">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#A8D8F0]">
+            Optional while direct onboarding is paused
+          </p>
+          <h2 className="mt-3 text-2xl font-black">Talk with David first.</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-white/85">
+            You may schedule the existing 15-minute, no-obligation conversation. This is optional
+            and does not replace the secure direct-onboarding path.
           </p>
           <a
             href={signupCta.secondary.href}
             className="mt-5 inline-flex min-h-[48px] w-full items-center justify-center rounded-full bg-white px-6 text-base font-bold !text-[#064B84] !no-underline transition hover:bg-white/90 sm:w-auto"
             data-posthog-cta="true"
             data-posthog-cta-label={signupCta.secondary.label}
-            data-posthog-cta-location="signup_page_secondary"
+            data-posthog-cta-location="signup_pause_optional_meeting"
           >
             Meet David for 15 minutes
           </a>
         </div>
       </section>
 
-      <section className="section-shell mt-8 max-w-2xl">
+      <section className="section-shell mt-8 max-w-3xl">
         <Link
-          href="/#faq"
+          href="https://smarterwaywealth.com/how"
           className="text-sm font-semibold text-[#064B84] underline underline-offset-4"
         >
-          Read the FAQ first
+          See how Smarter Way Wealth works
         </Link>
       </section>
     </main>

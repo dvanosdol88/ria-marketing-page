@@ -1,11 +1,11 @@
 # You Are Paying Too Much
 
-This site is an educational fee calculator and lead-generation surface for Smarter Way Wealth, LLC.
+This site is an educational fee calculator and firm-discovery surface for Smarter Way Wealth, LLC.
 
 Primary URLs:
 
 - Home and calculator: https://youarepayingtoomuch.com/
-- Become a client (sign-up, flat $100/month): https://youarepayingtoomuch.com/become-a-client
+- Secure direct onboarding status (temporarily paused; no information is collected): https://youarepayingtoomuch.com/become-a-client
 - Structured calculator API: https://youarepayingtoomuch.com/api/calculator
 - Structured savings-rates API (verified, dated rates with FDIC national averages; the human-facing /savings-rates page was retired 2026-08-14, this endpoint is now the canonical source): https://youarepayingtoomuch.com/api/savings-rates
 - Math and assumptions: https://youarepayingtoomuch.com/our-math

@@ -1,27 +1,22 @@
 import { SMARTER_WAY_WEALTH_MEET_URL } from "@/config/campaignLinks";
 
 /**
- * The single conversion pattern for the whole site: one primary button and one
- * secondary link, never two equal buttons.
+ * The single next-step pattern for the whole site: one primary status link and
+ * one secondary meeting link, never two equal buttons.
  *
- * Before this existed the site offered seven differently-worded next steps
- * ("Get started", "Meet David — pick a time", "See if SWW is a good fit", …),
- * all of which landed on the same 15-minute call. A visitor who had already
- * decided had no faster door than a visitor who was still unsure.
- *
- * Primary  — the person who is sold. Goes to the on-site sign-up.
- * Secondary — the person who is not. Goes to the existing 15-minute fit call.
- *
- * The secondary link is what protects the primary: naming the hesitation out
- * loud ("Not sure yet?") gives an unready visitor somewhere to go that isn't
- * the back button. Keep both, keep the weighting.
+ * Direct onboarding is temporarily paused, so every primary placement names
+ * that state instead of inviting a visitor to sign up. The destination stays
+ * stable so existing links, mailers, and attribution remain valid while the
+ * route fails closed. When direct onboarding reopens, update this shared
+ * config and its browser contract together.
  */
 
 export const SIGNUP_PATH = "/become-a-client";
 
 export const signupCta = {
   primary: {
-    label: "Become a client — $100/month",
+    label: "Direct onboarding paused",
+    shortLabel: "Start paused",
     href: SIGNUP_PATH,
   },
   secondary: {
@@ -34,14 +29,13 @@ export const signupCta = {
   /** Closing-block copy. The inline variant under the calculator result
    *  supplies its own headline built from the visitor's own number. */
   block: {
-    eyebrow: "Ready when you are",
+    eyebrow: "Secure onboarding update",
     // Deprecated from the full CTA card on the YAPT root. The headline remains
     // the inline calculator-result fallback; review the retired fee body with it.
     headline: "One flat fee, whatever your balance does.",
     body: "No commissions, no products, and no percentage of your money.",
   },
-  /** Kept verbatim from the previous booking block — this line is required
-   *  wherever an engagement is offered. */
+  /** Truthful release boundary shown anywhere the paused primary path appears. */
   disclosure:
-    "Personalized investment advice begins only after becoming a client.",
+    "Direct onboarding is temporarily paused. No information is collected at this step.",
 } as const;
