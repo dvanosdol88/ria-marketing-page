@@ -156,6 +156,41 @@ try {
   assert.equal(ctaEvent.properties.cta_host, "");
   assert.equal(ctaEvent.properties.cta_path, "");
 
+  for (const [scheme, privateDestination] of [
+    ["sms", "+12025550123?body=private-message"],
+    ["tel", "+12025550124"],
+  ]) {
+    const ctaLabel = `${scheme.toUpperCase()} privacy test`;
+    await page.evaluate(
+      ({ href, label }) => {
+        const anchor = document.createElement("a");
+        anchor.href = href;
+        anchor.dataset.posthogCta = "true";
+        anchor.dataset.posthogCtaLabel = label;
+        anchor.textContent = label;
+        anchor.addEventListener("click", (event) => event.preventDefault());
+        document.body.append(anchor);
+      },
+      { href: `${scheme}:${privateDestination}`, label: ctaLabel },
+    );
+
+    await page.locator(`a[data-posthog-cta-label="${ctaLabel}"]`).click();
+    const sensitiveSchemeEvent = await waitForCapturedEvent(
+      capturedEvents,
+      (event) => event.event === "cta_clicked" && event.properties?.cta_label === ctaLabel,
+      `cta_clicked (${ctaLabel})`,
+    );
+
+    assert.equal(sensitiveSchemeEvent.properties.cta_href, `${scheme}:`);
+    assert.equal(sensitiveSchemeEvent.properties.cta_host, "");
+    assert.equal(sensitiveSchemeEvent.properties.cta_path, "");
+    assert.doesNotMatch(
+      JSON.stringify(sensitiveSchemeEvent),
+      /1202555012[34]|private-message/,
+      `${scheme}: destination must not survive anywhere in the captured payload`,
+    );
+  }
+
   const serialized = JSON.stringify(ctaEvent);
   assert.doesNotMatch(serialized, /\$[\d,]{4,}/, "no dollar figure anywhere in the captured payload");
   assert.doesNotMatch(serialized, /1,?000,?000/, "no default portfolio value in the captured payload");
