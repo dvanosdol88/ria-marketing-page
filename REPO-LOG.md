@@ -4,12 +4,13 @@
 > Newest sessions on top.
 
 ### 2026-08-30 — Dependency hygiene: all high-severity audit findings cleared
-**Agent:** Claude (Fable 5, dispatched hygiene run) | **Surface:** dependencies (lockfile only) | **Status:** locally verified; ships through PR → `main`
+**Agent:** Claude (Fable 5, dispatched hygiene run) | **Surface:** dependencies (lockfile only) | **Status:** deployed and production-verified (PR #250 → `main` `7163110`)
 - changed: `npm audit fix` lockfile-only updates — no package.json edits, no source changes. Next.js 16.2.12 → 16.3.3 (carries sharp 0.35.4, clearing four libvips CVEs), brace-expansion / js-yaml / dompurify patch bumps, and gaxios settling to 6.3.0 within its allowed range, which drops its vulnerable uuid path. All moves are semver-compatible with the existing package.json ranges.
 - result: audit went from **4 high + 9 moderate** to **0 critical / 0 high / 7 moderate**.
 - remaining 7 moderates are one chain: firebase-admin 13.10.0 (already latest 13.x) → google-gax 4.6.1 / teeny-request 9.0.0 → uuid 9.0.1, where the fix (uuid ≥11.1.1) only ships with firebase-admin 14 — a major upgrade, out of scope for a hygiene run. Exposure note: the uuid flaw is in v3/v5/v6 with a caller-supplied buffer; these libraries call plain `v4()`, so the vulnerable path is not reachable.
 - verified locally: fresh `npm audit` as above; `tsc --noEmit` clean; production build clean on Next 16.3.3; 10 of 11 test scripts pass including the CI-gated canon manifest. `home-wwwh` shows 24/25 — the same failure reproduces on an untouched origin/main checkout and matches the known Windows-only CRLF nav-assertion artifact logged 2026-08-17 (CI on main green); not introduced by this change.
 - reverted before commit: the AGENTS.md block and `next-env.d.ts` line that `next build` auto-injects — build side effects, not part of this change.
+- deployed: PR #250 squash-merged to `main` as `7163110` (2026-08-30 11:36 UTC) with required checks `test` and `verify` green. Platform read confirms the apex production deployment is READY and built from that exact sha (aliases include `youarepayingtoomuch.com`); a fresh apex fetch returned HTTP 200 with the full calculator page. Post-merge re-verification on the merged tree: fresh `npm ci` + `npm audit` again 0 critical / 0 high / 7 moderate, `tsc --noEmit` clean, production build clean, canon-manifest and share-one-tap suites green, `home-wwwh` at the same pre-existing 24/25. Diff re-checked: `package-lock.json` + REPO-LOG only, no package.json change, no secret-like strings.
 
 ### 2026-08-20 — Standardized the cross-site fee-comparison receipt
 **Agent:** RIA Chief | **Surface:** shared calculator share/receipt stack | **Status:** deployed and production-verified
