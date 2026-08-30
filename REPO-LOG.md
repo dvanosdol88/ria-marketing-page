@@ -3,6 +3,14 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-08-30 — Dependency hygiene: all high-severity audit findings cleared
+**Agent:** Claude (Fable 5, dispatched hygiene run) | **Surface:** dependencies (lockfile only) | **Status:** locally verified; ships through PR → `main`
+- changed: `npm audit fix` lockfile-only updates — no package.json edits, no source changes. Next.js 16.2.12 → 16.3.3 (carries sharp 0.35.4, clearing four libvips CVEs), brace-expansion / js-yaml / dompurify patch bumps, and gaxios settling to 6.3.0 within its allowed range, which drops its vulnerable uuid path. All moves are semver-compatible with the existing package.json ranges.
+- result: audit went from **4 high + 9 moderate** to **0 critical / 0 high / 7 moderate**.
+- remaining 7 moderates are one chain: firebase-admin 13.10.0 (already latest 13.x) → google-gax 4.6.1 / teeny-request 9.0.0 → uuid 9.0.1, where the fix (uuid ≥11.1.1) only ships with firebase-admin 14 — a major upgrade, out of scope for a hygiene run. Exposure note: the uuid flaw is in v3/v5/v6 with a caller-supplied buffer; these libraries call plain `v4()`, so the vulnerable path is not reachable.
+- verified locally: fresh `npm audit` as above; `tsc --noEmit` clean; production build clean on Next 16.3.3; 10 of 11 test scripts pass including the CI-gated canon manifest. `home-wwwh` shows 24/25 — the same failure reproduces on an untouched origin/main checkout and matches the known Windows-only CRLF nav-assertion artifact logged 2026-08-17 (CI on main green); not introduced by this change.
+- reverted before commit: the AGENTS.md block and `next-env.d.ts` line that `next build` auto-injects — build side effects, not part of this change.
+
 ### 2026-08-20 — Standardized the cross-site fee-comparison receipt
 **Agent:** RIA Chief | **Surface:** shared calculator share/receipt stack | **Status:** deployed and production-verified
 - changed: the shared copy/email/social summary and in-panel/share-card artifact now use neutral **estimated advisory-fee difference** language tied to the visitor's assumptions. The stronger percentage-of-wealth / “lost to fees” sentence was removed from the receipt variants.
