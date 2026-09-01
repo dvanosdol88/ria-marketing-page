@@ -3,6 +3,14 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-09-01 — Mailer QR opens at the homepage top
+**Agent:** Codex (Portfolio PM dev lane) | **Surface:** youarepayingtoomuch.com / EDDM QR | **Duration:** ~40 minutes
+- changed: the canonical public QR and its tracked mailer copies now encode the clean site root; removed the historical EDDM query-triggered auto-scroll while retaining attribution for existing printed mail. The clean root was chosen because calculator-state and campaign parameters were causing visitors to bypass the opening section.
+- evidence: PR #252 passed required `verify` and `test` checks and squash-merged as `de761c1`; Vercel deployment `dpl_8dJEG9pvCNQx4eum4wdx6fWbARrQ` is READY on that exact `main` SHA and owns the apex alias. A fresh production QR decoded to the clean root. A 390x844 production browser exercise returned HTTP 200 with no query or fragment, `scrollY=0`, heading top 131px, and calculator top 628px; the former tagged QR URL also remained at `scrollY=0`.
+- run-log: Portfolio PM receipt `c55a70d1-2c66-4c7d-9297-e6e68f64c488` for dispatch `ed88ec1e-b106-4c8d-984a-95a5da8f5c6f`.
+- deployed: https://youarepayingtoomuch.com/
+- next: (none)
+
 ### 2026-08-30 — Dependency hygiene: all high-severity audit findings cleared
 **Agent:** Claude (Fable 5, dispatched hygiene run) | **Surface:** dependencies (lockfile only) | **Status:** deployed and production-verified (PR #250 → `main` `7163110`)
 - changed: `npm audit fix` lockfile-only updates — no package.json edits, no source changes. Next.js 16.2.12 → 16.3.3 (carries sharp 0.35.4, clearing four libvips CVEs), brace-expansion / js-yaml / dompurify patch bumps, and gaxios settling to 6.3.0 within its allowed range, which drops its vulnerable uuid path. All moves are semver-compatible with the existing package.json ranges.
