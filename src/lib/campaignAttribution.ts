@@ -1,5 +1,5 @@
 import {
-  EDDM_LAUNCH_QR_PARAMS,
+  LEGACY_EDDM_QR_PARAMS,
   SMARTER_WAY_WEALTH_ORIGIN,
 } from "@/config/campaignLinks";
 
@@ -41,10 +41,10 @@ export function appendCampaignAttributionToFirmHref(
 }
 
 const LEGACY_EDDM_QR_SIGNATURE = {
-  portfolio: EDDM_LAUNCH_QR_PARAMS.portfolio,
-  years: EDDM_LAUNCH_QR_PARAMS.years,
-  growth: EDDM_LAUNCH_QR_PARAMS.growth,
-  fee: EDDM_LAUNCH_QR_PARAMS.fee,
+  portfolio: LEGACY_EDDM_QR_PARAMS.portfolio,
+  years: LEGACY_EDDM_QR_PARAMS.years,
+  growth: LEGACY_EDDM_QR_PARAMS.growth,
+  fee: LEGACY_EDDM_QR_PARAMS.fee,
 } as const;
 
 function matchesSearchSignature(
@@ -54,26 +54,6 @@ function matchesSearchSignature(
   return Object.entries(signature).every(
     ([key, value]) => searchParams.get(key) === value,
   );
-}
-
-export function shouldOpenCalculatorForEddmQr(
-  search: string | URLSearchParams,
-) {
-  const searchParams =
-    typeof search === "string" ? new URLSearchParams(search) : search;
-  const hasExplicitUtm = POSTHOG_UTM_KEYS.some((key) =>
-    Boolean(searchParams.get(key)),
-  );
-  const matchesLegacyMailerQr =
-    matchesSearchSignature(searchParams, LEGACY_EDDM_QR_SIGNATURE) &&
-    !searchParams.has("variant") &&
-    !hasExplicitUtm;
-  const matchesCanonicalMailerQr = matchesSearchSignature(
-    searchParams,
-    EDDM_LAUNCH_QR_PARAMS,
-  );
-
-  return matchesLegacyMailerQr || matchesCanonicalMailerQr;
 }
 
 export function resolveCampaignAttribution(
@@ -106,10 +86,10 @@ export function resolveCampaignAttribution(
   if (!matchesLegacyMailerQr) return null;
 
   return {
-    utm_source: EDDM_LAUNCH_QR_PARAMS.utm_source,
-    utm_medium: EDDM_LAUNCH_QR_PARAMS.utm_medium,
-    utm_campaign: EDDM_LAUNCH_QR_PARAMS.utm_campaign,
-    utm_content: EDDM_LAUNCH_QR_PARAMS.utm_content,
+    utm_source: LEGACY_EDDM_QR_PARAMS.utm_source,
+    utm_medium: LEGACY_EDDM_QR_PARAMS.utm_medium,
+    utm_campaign: LEGACY_EDDM_QR_PARAMS.utm_campaign,
+    utm_content: LEGACY_EDDM_QR_PARAMS.utm_content,
     campaign_attribution_method: "legacy_qr_signature",
     is_eddm_visitor: true,
     legacy_eddm_qr: true,

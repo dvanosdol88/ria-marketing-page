@@ -33,7 +33,7 @@ The EDDM launch QR URL must remain traceable in PostHog. Its source of truth is 
 Current canonical QR URL:
 
 ```text
-https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code
+https://youarepayingtoomuch.com/
 ```
 
 The printer-approved 2026 launch proofs contain this legacy URL:
@@ -43,9 +43,9 @@ https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1
 ```
 
 Production must recognize that exact four-value signature as the same EDDM
-`launch_5k` campaign and open the existing fee calculator directly without
-reordering the home page. The canonical tagged QR URL follows the same landing
-behavior.
+`launch_5k` campaign while leaving the visitor at the top of the home page.
+New QR codes use the clean root URL and carry no calculator state, campaign
+query, anchor, or fragment.
 Events inferred from the printer-proof URL must include
 `campaign_attribution_method=legacy_qr_signature` and
 `legacy_eddm_qr=true`. Explicit UTM parameters always take precedence.
@@ -56,7 +56,7 @@ When an attributed visitor follows a link from this site to
 Do not carry calculator assumptions, PostHog distinct IDs, browser/session IDs,
 or visitor-entered information across the domain boundary.
 
-Required campaign parameters:
+Legacy campaign parameters retained only for attribution of existing mail:
 
 - `variant=direct-mail`
 - `utm_source=eddm`
