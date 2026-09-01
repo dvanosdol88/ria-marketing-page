@@ -5,7 +5,7 @@ import { chromium } from "playwright";
 
 const LEGACY_MAILER_QUERY =
   "portfolio=1000000&years=20&growth=8&fee=1";
-const CANONICAL_MAILER_QUERY =
+const TAGGED_LEGACY_MAILER_QUERY =
   `${LEGACY_MAILER_QUERY}&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code`;
 
 async function getUnusedPort() {
@@ -66,23 +66,6 @@ function assertLegacyAttribution(event) {
   );
 }
 
-async function waitForCalculatorLanding(page) {
-  await page.waitForFunction(() => {
-    const calculator = document.getElementById("calculator");
-    if (!calculator) return false;
-    const top = calculator.getBoundingClientRect().top;
-    return window.scrollY > 50 && top >= 0 && top < 160;
-  });
-
-  return page.evaluate(() => {
-    const calculator = document.getElementById("calculator");
-    return {
-      scrollY: window.scrollY,
-      calculatorTop: calculator?.getBoundingClientRect().top ?? null,
-    };
-  });
-}
-
 async function readCalculatorPosition(page) {
   return page.evaluate(() => {
     const calculator = document.getElementById("calculator");
@@ -123,6 +106,21 @@ try {
   );
   await waitForPage(mailerUrl, nextProcess);
 
+  const calculatorApi = await fetch(`${baseUrl}/api/calculator`);
+  const calculatorPayload = await calculatorApi.json();
+  assert.equal(
+    calculatorPayload.links.canonicalEddmQrUrl,
+    "https://youarepayingtoomuch.com/",
+    "the canonical QR destination must be the clean site root",
+  );
+
+  const agentInfo = await fetch(`${baseUrl}/agent-info.json`).then((response) => response.json());
+  assert.equal(
+    agentInfo.campaigns.eddmLaunchQr.url,
+    "https://youarepayingtoomuch.com/",
+    "agent-readable campaign metadata must publish the clean site root",
+  );
+
   browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const capturedEvents = [];
@@ -155,10 +153,13 @@ try {
     "",
     "the visible URL should still be cleaned after attribution is captured",
   );
-  const legacyLanding = await waitForCalculatorLanding(page);
+  await page.waitForTimeout(800);
+  const legacyLanding = await readCalculatorPosition(page);
   assert.ok(
-    legacyLanding.calculatorTop !== null && legacyLanding.calculatorTop < 160,
-    `legacy printer QR should land at the calculator: ${JSON.stringify(legacyLanding)}`,
+    legacyLanding.scrollY < 50 &&
+      legacyLanding.calculatorTop !== null &&
+      legacyLanding.calculatorTop > 160,
+    `legacy printer QR should remain at the page top: ${JSON.stringify(legacyLanding)}`,
   );
 
   const retainedCta = page.locator(
@@ -217,14 +218,17 @@ try {
   assertLegacyAttribution(firmHandoffEvent);
   assert.equal(firmHandoffEvent.properties.cta_href, attributedHandoffHref.toString());
 
-  await page.goto(`${baseUrl}/?${CANONICAL_MAILER_QUERY}`, {
+  await page.goto(`${baseUrl}/?${TAGGED_LEGACY_MAILER_QUERY}`, {
     waitUntil: "domcontentloaded",
   });
   await page.locator("#calculator").waitFor();
-  const canonicalLanding = await waitForCalculatorLanding(page);
+  await page.waitForTimeout(800);
+  const taggedLegacyLanding = await readCalculatorPosition(page);
   assert.ok(
-    canonicalLanding.calculatorTop !== null && canonicalLanding.calculatorTop < 160,
-    `canonical EDDM QR should land at the calculator: ${JSON.stringify(canonicalLanding)}`,
+    taggedLegacyLanding.scrollY < 50 &&
+      taggedLegacyLanding.calculatorTop !== null &&
+      taggedLegacyLanding.calculatorTop > 160,
+    `tagged legacy EDDM QR should remain at the page top: ${JSON.stringify(taggedLegacyLanding)}`,
   );
 
   const unrelatedPage = await context.newPage();
@@ -244,7 +248,7 @@ try {
   await unrelatedPage.close();
 
   console.log(
-    "Legacy and canonical EDDM QR URLs land at the calculator; foreign explicit UTM traffic stays at the page top; legacy attribution survives URL cleanup and reaches the firm site using UTM-only handoff links.",
+    "The canonical QR destination is the clean root; legacy QR URLs and foreign explicit UTM traffic stay at the page top; legacy attribution survives URL cleanup and reaches the firm site using UTM-only handoff links.",
   );
 } finally {
   await browser?.close();

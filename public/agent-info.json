@@ -14,7 +14,7 @@
   },
   "campaigns": {
     "eddmLaunchQr": {
-      "url": "https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code",
+      "url": "https://youarepayingtoomuch.com/",
       "printerProofUrl": "https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1",
       "qrImageUrl": "https://youarepayingtoomuch.com/assets/yaptom_default_inputs_qr.png",
       "utm_source": "eddm",
