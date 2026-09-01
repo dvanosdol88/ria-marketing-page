@@ -7,6 +7,7 @@ const readSource = (relativePath) =>
 
 const [
   pageSource,
+  layoutSource,
   calculatorSource,
   calculatorExperienceSource,
   answersSource,
@@ -20,6 +21,7 @@ const [
   faqDataSource,
 ] = await Promise.all([
   readSource("../src/app/page.tsx"),
+  readSource("../src/app/layout.tsx"),
   readSource("../src/components/CostAnalysisCalculator.tsx"),
   readSource("../src/components/HomeCalculatorExperience.tsx"),
   readSource("../src/components/WhatWhyWhoHow.tsx"),
@@ -546,7 +548,9 @@ test("the mobile first-screen spacing constants preserve room for the client CTA
   // rationing them: "I'm not concerned about the fee calculator being below the
   // fold on older phones, I think the visual clarity is more important."
   assert.match(calculatorSource, /px-4 pt-\[69px\] pb-11 sm:pt-20 sm:pb-20/, "gap above the headline");
-  assert.match(calculatorSource, /absolute left-1\/2 top-\[49\.6%\]/, "the decorative ? keeps pace with the taller hero");
+  assert.match(calculatorSource, /absolute left-1\/2 top-\[48\.3%\]/, "the bundled-font decorative ? keeps the approved visible gap");
+  assert.match(calculatorSource, /fontFamily: "var\(--font-logo\)"/, "the decorative ? uses the bundled DM Sans face");
+  assert.doesNotMatch(layoutSource, /api\.fontshare\.com/, "the hero mark must not depend on an external font stylesheet");
   // The geometry test measures this element; without the hook it would fall
   // back to guessing which node is the mark.
   assert.match(calculatorSource, /data-hero-mark/, "the decorative ? keeps its stable test hook");

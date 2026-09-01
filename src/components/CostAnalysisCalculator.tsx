@@ -546,21 +546,17 @@ function SavingsLeadHero({
       className="w-full bg-[#EEF0F5] pb-[78px] text-center text-[#10233A] sm:pb-[110px]"
     >
       <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[69px] pb-11 sm:pt-20 sm:pb-20">
-        {/* 49.6% rather than 47% on mobile. The mark is centred as a share of
-            the hero's height, so growing the hero above it only moves it down
-            by that fraction — 5px of new padding would have opened the gap
-            David measured by about 2px. Each +1.3 points makes up the
-            difference for one such 5px step, so the visible gap between the
-            header and the top of the "?" grows the full 5px he asked for:
-            47% → 48.3% bought the first step (David, 2026-08-12) and
-            48.3% → 49.6% buys the second (David, 2026-08-14, gap now 54px).
+        {/* The decorative mark uses the bundled DM Sans face instead of an
+            external font stylesheet. That keeps its visible top stable when a
+            browser or CI runner cannot reach a font CDN. At 48.3% the measured
+            mobile gap is 55px, inside David's approved 54px ±1px guard.
             Desktop is untouched. tests/home-first-screen.mjs measures the gap
             for real — trust it over arithmetic here. */}
         <div
           aria-hidden="true"
           data-hero-mark
-          className="pointer-events-none absolute left-1/2 top-[49.6%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
-          style={{ fontFamily: '"Satoshi", var(--font-sans), sans-serif' }}
+          className="pointer-events-none absolute left-1/2 top-[48.3%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
+          style={{ fontFamily: "var(--font-logo)" }}
         >
           ?
         </div>
