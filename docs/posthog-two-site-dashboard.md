@@ -75,6 +75,13 @@ The live dashboard was created on 2026-06-04 with the following saved insights. 
      fields. This lets subsequent SWW events retain campaign-level attribution
      without sending calculator assumptions, visitor-entered data, or a
      cross-domain identity token.
+   - While direct onboarding is paused, clicks with
+     `cta_label=Direct onboarding paused` are status-navigation events, not
+     client-start conversions. Segment or exclude them from any permanent
+     direct-onboarding conversion series.
+   - `cta_location=signup_pause_optional_meeting` means the visitor chose the
+     optional 15-minute meeting from the pause page. Report it separately from
+     both a permanent onboarding start and the general firm-site handoff rows.
    - Question answered: which page/CTA is sending visitors to the firm site?
 
 4. `Firm-site intent`

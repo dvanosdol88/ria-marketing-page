@@ -22,22 +22,29 @@ const SMARTER_WAY_WEALTH_HOSTS = new Set([
   `www.${new URL(SMARTER_WAY_WEALTH_ORIGIN).hostname}`,
 ]);
 
-export function appendCampaignAttributionToFirmHref(
+export function buildPrivacySafeFirmHandoffHref(
   href: string,
   campaignProperties: Record<string, unknown>,
 ) {
   const url = new URL(href);
   if (!SMARTER_WAY_WEALTH_HOSTS.has(url.hostname.toLowerCase())) return href;
 
-  let changed = false;
+  const safeSearch = new URLSearchParams();
   POSTHOG_UTM_KEYS.forEach((key) => {
-    const value = campaignProperties[key];
-    if (typeof value !== "string" || !value) return;
-    url.searchParams.set(key, value);
-    changed = true;
+    const campaignValue = campaignProperties[key];
+    const existingValue = url.searchParams.get(key);
+    const value =
+      typeof campaignValue === "string" && campaignValue
+        ? campaignValue
+        : existingValue;
+    if (value) safeSearch.set(key, value);
   });
 
-  return changed ? url.toString() : href;
+  // The cross-domain privacy contract is a strict allowlist. Rebuilding the
+  // query prevents calculator inputs, identity values, and unknown future
+  // parameters from hitching a ride on any Smarter Way Wealth destination.
+  url.search = safeSearch.toString();
+  return url.toString();
 }
 
 const LEGACY_EDDM_QR_SIGNATURE = {

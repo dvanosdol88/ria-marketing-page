@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ExternalLink, Menu, X } from "lucide-react";
 import { siteNavLinks } from "@/config/siteNavConfig";
-import { SIGNUP_PATH } from "@/config/signupCta";
+import { signupCta } from "@/config/signupCta";
 import {
   DESKTOP_SITE_NAV_MEDIA_QUERY,
   getSiteNavScrollTriggerY,
@@ -35,7 +35,7 @@ const DRAWER_PEER_LINK_CLASS =
  * Logo swap uses an opacity cross-fade — both logo elements are always in the
  * DOM (grid-stacked) to avoid layout shifts.
  *
- * Mobile: hamburger + centered logo + compact Sign Up CTA.
+ * Mobile: hamburger + centered logo + compact direct-start status CTA.
  * Desktop: logo left + spaced nav links right, ending with two peer links.
  * Drawer uses CSS transitions (always in DOM) for reliability.
  */
@@ -282,13 +282,13 @@ export function SiteNav() {
             </Link>
 
             <Link
-              href={SIGNUP_PATH as any}
+              href={signupCta.primary.href as any}
               data-posthog-cta="true"
-              data-posthog-cta-label="Become a Client"
+              data-posthog-cta-label={signupCta.primary.label}
               data-posthog-cta-location="site_nav_mobile"
               className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-md bg-[#064B84] px-2.5 text-sm font-bold !text-white !no-underline shadow-[0_6px_18px_rgba(6,75,132,0.26)] transition hover:bg-[#053B6A] hover:!text-white focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#062B43] min-[360px]:px-4"
             >
-              Sign Up
+              {signupCta.primary.shortLabel}
             </Link>
           </div>
 
@@ -362,14 +362,15 @@ export function SiteNav() {
                 <ExternalLink className="h-4 w-4" aria-hidden="true" />
               </a>
               <Link
-                href={SIGNUP_PATH as any}
+                href={signupCta.primary.href as any}
+                aria-label={signupCta.primary.label}
                 data-posthog-cta="true"
-                data-posthog-cta-label="Become a Client"
+                data-posthog-cta-label={signupCta.primary.label}
                 data-posthog-cta-location="site_nav"
                 className={`${DESKTOP_PEER_LINK_CLASS} hover:text-[#043B68] focus-visible:outline-[#064B84]`}
                 style={{ color: "#064B84" }}
               >
-                Become a Client
+                {signupCta.primary.label}
                 <ExternalLink className="h-4 w-4" aria-hidden="true" />
               </Link>
             </nav>
@@ -467,15 +468,16 @@ export function SiteNav() {
             <ExternalLink className="h-5 w-5" aria-hidden="true" />
           </a>
           <Link
-            href={SIGNUP_PATH as any}
+            href={signupCta.primary.href as any}
+            aria-label={signupCta.primary.label}
             onClick={closeDrawer}
             data-posthog-cta="true"
-            data-posthog-cta-label="Become a Client"
+            data-posthog-cta-label={signupCta.primary.label}
             data-posthog-cta-location="site_nav_mobile_drawer"
             className={`${DRAWER_PEER_LINK_CLASS} focus-visible:outline-[#064B84]`}
             style={{ color: "#064B84" }}
           >
-            Become a Client
+            {signupCta.primary.label}
             <ExternalLink className="h-5 w-5" aria-hidden="true" />
           </Link>
         </div>

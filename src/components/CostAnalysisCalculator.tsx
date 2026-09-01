@@ -43,7 +43,7 @@ import type { HomeTopBannerId } from "@/config/homeTopBanners";
 import { useSavingsBar } from "@/components/SavingsBarContext";
 import { capturePostHogEvent } from "@/lib/posthog";
 import {
-  buildAdvancedCalculatorHrefFromState,
+  ADVANCED_CALCULATOR_URL,
 } from "@/config/advancedCalculator";
 
 type IntroStyle = "rule" | "panel" | "quote";
@@ -654,10 +654,7 @@ export function CostAnalysisCalculator({
       }),
     [state.annualFlatFee, state.annualGrowthPercent, state.portfolioValue, state.years, totalAnnualFeePercent]
   );
-  const advancedCalculatorHref = useMemo(
-    () => buildAdvancedCalculatorHrefFromState(state),
-    [state],
-  );
+  const advancedCalculatorHref = ADVANCED_CALCULATOR_URL;
 
   useEffect(() => {
     if (!assumptionsCustomized || calculatorSubmittedRef.current) return;

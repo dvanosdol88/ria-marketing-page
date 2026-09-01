@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-19",
+  "version": "2026-08-26",
   "owner": "Smarter Way Wealth marketing analytics",
   "posthog": {
     "recommendedProjectShape": "Use one PostHog project for youarepayingtoomuch.com and smarterwaywealth.com so the cross-site journey can be analyzed in one place.",
@@ -119,6 +119,10 @@
         "cta_path",
         "cta_location",
         "opens_new_tab"
+      ],
+      "semanticRules": [
+        "Clicks with cta_label=Direct onboarding paused are status-navigation events, not client-start conversions, and must be segmented or excluded from client-start reporting.",
+        "Clicks with cta_location=signup_pause_optional_meeting represent optional meeting intent while direct onboarding is paused and must be reported separately from permanent onboarding starts."
       ],
       "ownerFiles": [
         "src/components/PostHogCtaTracker.tsx",
