@@ -3,6 +3,11 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-09-15 — Separate confirmation after an agreement request
+- Fixed successful form submission leaving visitors scrolled beside the unrelated "Not sure yet?" panel. Success now opens a dedicated confirmation route at the top, with request receipt, three next steps, and accurate pending-versus-sent email wording. No personal information is placed in the URL.
+- Verified: production build and TypeScript passed; lint has zero errors and one inherited image warning. Browser submission with intercepted API responses passed at 375px and 1440px for both email states, including top position, refresh, no overflow, and absence of the sales panel. No real submission or email was created by testing.
+- Release: production verification follows merge; agreement delivery remains manual as before.
+
 ### 2026-09-15 — Live EDDM QR-scan email alert
 **Agent:** Codex | **Surface:** PostHog workflows + smarterwaywealth.com DNS | **Status:** live and verified
 - created and enabled the PostHog workflow **EDDM mailer scan alert**. It starts from the reusable **Mailer QR landing** action, emails `david@smarterwaywealth.com` with subject **EDDM QR scan detected**, and then exits.
