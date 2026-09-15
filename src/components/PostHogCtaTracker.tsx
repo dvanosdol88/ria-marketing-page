@@ -11,6 +11,7 @@ import {
   buildPrivacySafeFirmHandoffHref,
   POSTHOG_UTM_KEYS,
 } from "@/lib/campaignAttribution";
+import { buildTrackedCtaProperties } from "@/lib/ctaAnalytics";
 
 const CTA_HOSTS = new Set([
   "smarterwaywealth.com",
@@ -89,16 +90,14 @@ export function PostHogCtaTracker() {
       // trying to sanitize it piecemeal. Ported verbatim from the sister
       // repo's PostHogCtaTracker.js (this file is site-specific, not
       // canon-registered, but the fix itself must match exactly).
-      const isMailto = url.protocol === "mailto:";
       const isRedacted = anchor.dataset.posthogRedactQuery === "true";
-      capturePostHogEvent("cta_clicked", {
-        cta_label: anchor.dataset.posthogCtaLabel ?? anchor.textContent?.trim().replace(/\s+/g, " ").slice(0, 120) ?? "",
-        cta_href: isMailto ? "mailto:" : isRedacted ? `${url.origin}${url.pathname}` : anchor.href,
-        cta_host: isMailto ? "" : url.hostname,
-        cta_path: isMailto ? "" : url.pathname,
-        cta_location: anchor.dataset.posthogCtaLocation ?? "global_link",
-        opens_new_tab: anchor.target === "_blank",
-      });
+      capturePostHogEvent("cta_clicked", buildTrackedCtaProperties({
+        href: anchor.href,
+        label: anchor.dataset.posthogCtaLabel ?? anchor.textContent?.trim().replace(/\s+/g, " ").slice(0, 120) ?? "",
+        location: anchor.dataset.posthogCtaLocation ?? "global_link",
+        opensNewTab: anchor.target === "_blank",
+        redactQuery: isRedacted,
+      }));
     };
 
     document.addEventListener("click", handleClick, { capture: true });

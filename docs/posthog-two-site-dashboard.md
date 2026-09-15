@@ -41,6 +41,20 @@ The live dashboard was created on 2026-06-04 with the following saved insights. 
    - Breakdown: `site_domain`
    - Question answered: are mailer/QR scans arriving, and which site are they hitting?
 
+1a. `Immediate mailed-QR arrivals`
+   - Event: `eddm_qr_landed`
+   - Filter: `is_eddm_visitor = true`
+   - Display: last 24 hours, broken down by `campaign_attribution_method`
+   - Alert use: trigger the launch alert workflow from this event. It is
+     intentionally one event per browser tab session so refreshes in the same
+     tab do not create repeated alerts.
+   - Public display: the same landing writes one aggregate-only receipt to
+     `/api/analytics/mailer-scans`; RIA Builder reads that total every 30
+     seconds. The display begins when this release goes live and is not a
+     substitute for historical PostHog totals. It favors avoiding duplicate
+     increments over blind network retries, so a lost request can undercount;
+     PostHog remains the campaign source of truth.
+
 2. `Calculator funnel`
    - Live insight: `Calculator Funnel: YAPTOM to SWW`
    - Insight ID: `9074085`
@@ -184,6 +198,13 @@ site recognizes its exact calculator signature as the same campaign and adds:
 
 Keep a launch-day view filtered by `legacy_eddm_qr = true` so scans from the
 physical mail piece are visible independently of explicitly tagged test visits.
+
+Create the immediate notification as a PostHog workflow triggered by
+`eddm_qr_landed`. Test with a synthetic event first, then enable only after the
+recipient/channel is confirmed. The notification must contain count-free,
+privacy-safe context only: campaign, attribution method, site, path, and time.
+Do not include a distinct ID, IP/location, calculator assumptions, replay link,
+or person profile.
 
 Canonical QR URL:
 

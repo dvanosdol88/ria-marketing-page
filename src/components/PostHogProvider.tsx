@@ -5,6 +5,8 @@ import { PostHogProvider as PHProvider } from 'posthog-js/react'
 
 if (typeof window !== "undefined") {
   const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+  const analyticsContractTest =
+    process.env.NEXT_PUBLIC_POSTHOG_TEST_MODE === "true";
 
   if (posthogKey && !(posthog as typeof posthog & { __loaded?: boolean }).__loaded) {
     posthog.init(posthogKey, {
@@ -15,6 +17,9 @@ if (typeof window !== "undefined") {
       person_profiles: 'always',
       capture_pageview: false, // handled by SuspensePostHogPageView
       request_batching: false,
+      advanced_disable_flags: analyticsContractTest,
+      disable_external_dependency_loading: analyticsContractTest,
+      opt_out_useragent_filter: analyticsContractTest,
       loaded: (ph) => {
         ph.capture("posthog_client_loaded", {
           site_domain: window.location.hostname,

@@ -3,6 +3,14 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-09-15 — Added one-browser-tab-session mailer scan telemetry and an aggregate counter
+**Agent:** Codex | **Surface:** printed EDDM QR landing, shared PostHog funnel, and RIA Builder counter source | **Status:** locally production-built and browser-proved; not yet deployed
+- corrected: custom analytics events now use the initialized PostHog browser client instead of a second hand-built capture transport, preserving the SDK identity/session context and standard library metadata.
+- added: the privacy-safe `eddm_qr_landed` event fires once per browser session for either explicit EDDM UTM attribution or the exact legacy printed-mailer signature. The existing `$pageview` remains the traffic baseline; known bot user agents are excluded from the public aggregate.
+- added: `/api/analytics/mailer-scans` increments and reads one Firestore aggregate (`count`, last-scan time, and attribution-method totals). It stores no visitor rows, identity, IP address, calculator inputs, or session identifier. Only the RIA Builder origin may read it cross-site; increments must originate from the calculator site.
+- proof: static scan contract, TypeScript, lint, and the optimized Next production build pass. A 390px mobile-Chrome browser run against that build proved `$pageview`, `eddm_qr_landed`, one counter receipt, legacy `launch_5k` attribution, URL cleanup, the no-collection onboarding pause, and a UTM-only Smarter Way Wealth handoff.
+- remaining: ship through reviewed PR to `main`, prove the exact deployment on the apex, and reconnect PostHog before live counts can be inspected or the per-scan email workflow can be drafted, tested, approved, and enabled.
+
 ### 2026-09-12 — Dependency hygiene: high-severity audit findings cleared again (lockfile only)
 **Agent:** Claude (Fable 5.1, dispatched hygiene run) | **Surface:** dependencies (lockfile only) | **Status:** PR open; not yet merged or deployed
 - trigger: the 2026-09-12 daily hygiene scan flagged this repo RED citing 1 critical / 5 high / 11 moderate. A fresh `npm ci` + `npm audit` on a clean detached `origin/main` (`27b529f`) worktree reproduced **0 critical / 2 high / 9 moderate** instead; the scanner's higher figures were not reproducible from clean `main` and most likely came from a dirty checkout or a stale advisory snapshot. The dirty local checkout was left untouched.

@@ -20,6 +20,11 @@ Live dashboard:
 
 - `https://us.posthog.com/project/452693/dashboard/1669847`
 
+RIA Builder also shows the launch counter on its homepage and at the top of
+RIA Chief chat. That number is a privacy-safe operational signal refreshed
+every 30 seconds; PostHog remains the source for the full funnel, historical
+traffic, bot exclusion, and conversion analysis.
+
 Do not make broad strategy changes from a single live spike. Use it to decide what to inspect next.
 
 ### 2. Weekly Decision Digest
