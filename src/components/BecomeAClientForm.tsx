@@ -17,9 +17,6 @@ const LABEL_CLASS = "block text-sm font-bold text-[#10233A]";
 
 export function BecomeAClientForm() {
   const [status, setStatus] = useState<Status>("idle");
-  /** Whether the agreement actually went out, so the confirmation never
-   *  promises an email that isn't there. */
-  const [agreementSent, setAgreementSent] = useState(false);
   const [assetBand, setAssetBand] = useState("");
   const [state, setState] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -47,39 +44,25 @@ export function BecomeAClientForm() {
       });
 
       const payload = (await response.json().catch(() => null)) as
-        | { error?: string; agreementSent?: boolean }
+        | { success?: boolean; error?: string; agreementSent?: boolean }
         | null;
 
-      if (!response.ok) {
+      if (!response.ok || payload?.success !== true) {
         throw new Error(payload?.error ?? "Something went wrong.");
       }
 
-      setAgreementSent(Boolean(payload?.agreementSent));
       setStatus("sent");
+      window.location.replace(
+        payload.agreementSent === true
+          ? "/become-a-client/confirmation?agreement=sent"
+          : "/become-a-client/confirmation",
+      );
     } catch (error) {
       setStatus("error");
       setErrorMessage(
         error instanceof Error ? error.message : "Something went wrong.",
       );
     }
-  }
-
-  if (status === "sent") {
-    return (
-      <div className="rounded-2xl border border-[#0A5633] bg-[#F3F8F6] p-6 sm:p-8">
-        <h2 className="text-2xl font-black leading-tight text-[#10233A]">
-          {agreementSent ? "Got it — check your email." : "Got it."}
-        </h2>
-        <p className="mt-3 text-sm leading-6 text-[#31465F] sm:text-base">
-          {agreementSent
-            ? "One email is on its way with the advisory agreement to sign, along with the firm's Form ADV Part 2 and Form CRS. Opening it and signing is all that's left — there is no separate confirmation step."
-            : "David will email you the advisory agreement to sign, along with the firm's Form ADV Part 2 and Form CRS. Signing it is all that's left — there is no separate confirmation step."}
-        </p>
-        <p className="mt-3 text-sm leading-6 text-[#31465F] sm:text-base">
-          Nothing is owed and nothing begins until you sign.
-        </p>
-      </div>
-    );
   }
 
   return (
@@ -222,10 +205,10 @@ export function BecomeAClientForm() {
 
       <button
         type="submit"
-        disabled={status === "submitting"}
+        disabled={status === "submitting" || status === "sent"}
         className="min-h-[52px] w-full rounded-full bg-[#064B84] px-6 text-base font-bold text-white transition hover:bg-[#053E6D] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84] disabled:opacity-60"
       >
-        {status === "submitting" ? "Sending…" : "Send me the agreement"}
+        {status === "sent" ? "Opening confirmation…" : status === "submitting" ? "Sending…" : "Send me the agreement"}
       </button>
 
       <p className="text-xs leading-5 text-[#5A6B80]">
