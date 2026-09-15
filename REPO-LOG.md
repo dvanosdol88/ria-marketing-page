@@ -4,7 +4,7 @@
 > Newest sessions on top.
 
 ### 2026-09-15 — Prepared a privacy-safe telemetry repair while quota attribution remains blocked
-**Agent:** R2D2 | **Surface:** PostHog consumer/campaign analytics and Sentry technical monitoring | **Status:** focused repair tested on an isolated branch; not merged or deployed
+**Agent:** R2D2 | **Surface:** PostHog consumer/campaign analytics and Sentry technical monitoring | **Status:** focused repair in [PR #263](https://github.com/dvanosdol88/ria-marketing-page/pull/263); not merged or deployed
 - audit finding: current production is serving exact `origin/main` and sends PostHog requests, but live PostHog event/property evidence and Sentry project-by-project Usage Stats remain unavailable behind account sign-in. The authenticated Sentry MCP exposes issues/events, not billing usage outcomes, so it cannot identify the span/replay contributor.
 - prepared change: keeps the existing page-view, QR, calculator-milestone, CTA, UTM, and cross-site event names while removing calculator assumptions, portfolio values, rates, projections, and derived asset tiers from custom properties. All SDK captures sanitize URLs and private fields; replay masks all page text/inputs and discards captured network bodies/headers.
 - Sentry boundary: default personal-data collection is disabled and client/server/edge events and transactions remove calculator, contact, credential, and network-address data while preserving stack-frame and source-map fields. Existing trace/replay sampling rates are deliberately unchanged until Usage Stats proves this project contributes materially.
