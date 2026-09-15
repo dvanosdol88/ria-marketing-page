@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     "How Smarter Way Wealth, LLC collects, uses, and protects information from visitors to youarepayingtoomuch.com.",
 };
 
-const LAST_UPDATED = "2026-07-28";
+const LAST_UPDATED = "2026-09-15";
 
 export default function PrivacyPolicy() {
   return (
@@ -38,6 +38,14 @@ export default function PrivacyPolicy() {
           If you submit a vote on an interactive poll, contact us, or sign up
           to be notified, we receive the information you choose to share
           (such as your selection or contact details).
+        </p>
+        <p>
+          If you use the Become a Client form, we receive your name, email
+          address, state, approximate investment-account range, and any
+          optional note you provide. We use that information to assess fit and
+          follow up with the advisory agreement and required disclosures.
+          Please do not include account numbers, passwords, or other sensitive
+          information in the optional note.
         </p>
         <p>
           If you continue to smarterwaywealth.com and schedule a meeting
@@ -78,10 +86,11 @@ export default function PrivacyPolicy() {
           Third parties
         </h2>
         <p>
-          Our sites are hosted on Vercel, use Sentry for error monitoring,
-          PostHog for product analytics and session replay, and Calendly for
-          meeting scheduling on smarterwaywealth.com. These providers process
-          data on our behalf under their own privacy practices.
+          Our sites are hosted on Vercel, use Google Firebase to store direct
+          onboarding requests, Sentry for error monitoring, PostHog for product
+          analytics and session replay, and Calendly for meeting scheduling on
+          smarterwaywealth.com. These providers process data on our behalf
+          under their own privacy practices.
         </p>
 
         <h2 id="disclosures" className="pt-4 text-lg font-semibold text-neutral-900">

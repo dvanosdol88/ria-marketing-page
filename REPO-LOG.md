@@ -3,6 +3,14 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
++### 2026-09-15 — Reopened direct onboarding at David's direction
+**Agent:** Codex | **Surface:** site-wide client CTA, `/become-a-client`, and onboarding intake | **Status:** release candidate; not yet deployed
+- changed: removed every visitor-facing paused-onboarding message and restored the active **Become a Client** / **Sign Up** buttons.
+- restored: the mobile-first onboarding page again explains the $100/month offer, collects name, email, state, approximate investment-account range, and an optional note, then stores the request for David's manual follow-up. The page does not claim that an agreement was automatically sent.
+- privacy: updated the public notice to name the onboarding fields and Firebase storage; the form continues to tell visitors not to submit account numbers, passwords, or other sensitive information.
+- verified locally: the active-source and homepage navigation contracts passed; TypeScript passed; lint passed with one inherited image warning and zero errors; the optimized production build passed. Fresh 390px and 1440px browser checks rendered the active form with no overflow, console errors, or page errors. The full 390px mailer-to-onboarding regression reached the form without submitting test personal data, and an empty API request returned the expected validation error instead of the former pause response.
+- release boundary: ship through PR to `main`, then verify the apex shows active onboarding and no paused copy.
+
 ### 2026-09-15 — Added one-browser-tab-session mailer scan telemetry and an aggregate counter
 **Agent:** Codex | **Surface:** printed EDDM QR landing, shared PostHog funnel, and RIA Builder counter source | **Status:** locally production-built and browser-proved; not yet deployed
 - corrected: custom analytics events now use the initialized PostHog browser client instead of a second hand-built capture transport, preserving the SDK identity/session context and standard library metadata.
