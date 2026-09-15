@@ -145,10 +145,7 @@
         "cta_location",
         "opens_new_tab"
       ],
-      "semanticRules": [
-        "Clicks with cta_label=Direct onboarding paused are status-navigation events, not client-start conversions, and must be segmented or excluded from client-start reporting.",
-        "Clicks with cta_location=signup_pause_optional_meeting represent optional meeting intent while direct onboarding is paused and must be reported separately from permanent onboarding starts."
-      ],
+      "semanticRules": [],
       "ownerFiles": [
         "src/components/PostHogCtaTracker.tsx",
         "D:/smarter-way-wealth/src/components/PostHogCtaTracker.js"

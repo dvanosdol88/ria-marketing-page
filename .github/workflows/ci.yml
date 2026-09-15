@@ -66,8 +66,8 @@ jobs:
       # Next dev server on a free port and drives Chromium. They share one .next
       # directory, so they run one at a time. Named separately so a failure says
       # which check failed without opening the log.
-      - name: Direct-onboarding fail-closed freeze
-        run: npm run test:safe-direct-start-freeze
+      - name: Active direct-onboarding contract
+        run: npm run test:active-direct-start
 
       - name: Source locks (WWWH, nav, spacing constants)
         run: npm run test:home-wwwh
