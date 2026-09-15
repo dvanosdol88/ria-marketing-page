@@ -102,13 +102,7 @@
         "changed_fields",
         "first_changed_field",
         "experience_mode",
-        "marketing_variant",
-        "calculated_asset_tier",
-        "portfolio_value",
-        "annual_fee_percent",
-        "mutual_fund_expense_percent",
-        "annual_growth_percent",
-        "years"
+        "marketing_variant"
       ],
       "ownerFiles": [
         "src/components/CostAnalysisCalculator.tsx"
@@ -121,13 +115,7 @@
       "requiredProperties": [
         "submission_type",
         "experience_mode",
-        "marketing_variant",
-        "calculated_asset_tier",
-        "portfolio_value",
-        "annual_fee_percent",
-        "mutual_fund_expense_percent",
-        "annual_growth_percent",
-        "years"
+        "marketing_variant"
       ],
       "ownerFiles": [
         "src/components/CostAnalysisCalculator.tsx"
@@ -233,9 +221,9 @@
   ],
   "privacyRules": [
     "Do not capture Social Security numbers, account numbers, full phone numbers, email addresses typed into forms, or free-form personal financial notes.",
-    "Calculator numeric assumptions may be captured because they are anonymous modeling inputs, but do not combine them with identified user profiles without a new compliance/privacy review.",
-    "PostHog session replay may show calculator numbers. Password, email, and telephone inputs must stay masked.",
-    "Sentry should receive technical error context, not marketing funnel payloads or sensitive user-entered financial details.",
+    "Do not capture calculator assumptions, portfolio values, rates, horizons, projected results, or derived asset tiers. Calculator milestones retain only interaction, experience, and presentation metadata.",
+    "PostHog session replay must mask all inputs and all page text, and must discard captured network bodies and headers, so calculator assumptions, results, contact details, and credentials are not serialized.",
+    "Sentry should receive technical error context only. Default personal-data collection is disabled, and event and transaction sanitizers remove calculator, contact, network-address, and credential fields.",
     "The public mailer counter stores only a total, attribution-method totals, and the latest server timestamp; it stores no browser identifier, IP address, location, URL, calculator input, or visitor-level record."
   ]
 }

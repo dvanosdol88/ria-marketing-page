@@ -3,6 +3,14 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-09-15 — Prepared a privacy-safe telemetry repair while quota attribution remains blocked
+**Agent:** R2D2 | **Surface:** PostHog consumer/campaign analytics and Sentry technical monitoring | **Status:** focused repair tested on an isolated branch; not merged or deployed
+- audit finding: current production is serving exact `origin/main` and sends PostHog requests, but live PostHog event/property evidence and Sentry project-by-project Usage Stats remain unavailable behind account sign-in. The authenticated Sentry MCP exposes issues/events, not billing usage outcomes, so it cannot identify the span/replay contributor.
+- prepared change: keeps the existing page-view, QR, calculator-milestone, CTA, UTM, and cross-site event names while removing calculator assumptions, portfolio values, rates, projections, and derived asset tiers from custom properties. All SDK captures sanitize URLs and private fields; replay masks all page text/inputs and discards captured network bodies/headers.
+- Sentry boundary: default personal-data collection is disabled and client/server/edge events and transactions remove calculator, contact, credential, and network-address data while preserving stack-frame and source-map fields. Existing trace/replay sampling rates are deliberately unchanged until Usage Stats proves this project contributes materially.
+- proof: focused privacy/event-contract checks, mailer policy/contract checks, 25 homepage source locks, the full legacy EDDM/UTM/handoff browser journey, TypeScript, lint (zero errors; one inherited image warning), production build, and diff validation pass. No fake production QR arrival, quota setting, paid budget, vendor, infrastructure, deployment, or production event was created.
+- remaining: authenticate the existing Sentry Usage page and PostHog project/dashboard, record project-level accepted/dropped/filtered quantities and real event properties, then either add evidence-based Sentry sampling to this branch or close it as a privacy-only repair before merge.
+
 ### 2026-09-15 — Added one-browser-tab-session mailer scan telemetry and an aggregate counter
 **Agent:** Codex | **Surface:** printed EDDM QR landing, shared PostHog funnel, and RIA Builder counter source | **Status:** locally production-built and browser-proved; not yet deployed
 - corrected: custom analytics events now use the initialized PostHog browser client instead of a second hand-built capture transport, preserving the SDK identity/session context and standard library metadata.

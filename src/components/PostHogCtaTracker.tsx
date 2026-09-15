@@ -12,6 +12,7 @@ import {
   POSTHOG_UTM_KEYS,
 } from "@/lib/campaignAttribution";
 import { buildTrackedCtaProperties } from "@/lib/ctaAnalytics";
+import { sanitizeTelemetryUrl } from "@/lib/telemetryPrivacy";
 
 const CTA_HOSTS = new Set([
   "smarterwaywealth.com",
@@ -46,7 +47,7 @@ export function PostHogCtaTracker() {
       ...campaignProperties,
     });
     registerPostHogPropertiesOnce({
-      first_landing_url: window.location.href,
+      first_landing_url: sanitizeTelemetryUrl(window.location.href),
       first_landing_domain: window.location.hostname,
       ...Object.fromEntries(
         POSTHOG_UTM_KEYS.flatMap((key) => {

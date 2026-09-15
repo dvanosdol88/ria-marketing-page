@@ -53,7 +53,7 @@ Compare:
 - campaign sources
 - EDDM variants
 - mobile vs desktop
-- asset-tier mix
+- calculator experience and presentation mix
 - CTA locations
 - SWW intent quality
 - technical reliability
