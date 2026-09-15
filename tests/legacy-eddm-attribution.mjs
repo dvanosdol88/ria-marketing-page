@@ -494,26 +494,22 @@ try {
   await directStartPage.waitForURL(`${baseUrl}/become-a-client`);
   await directStartPage.getByRole("heading", {
     level: 1,
-    name: "Direct onboarding is temporarily paused.",
+    name: "One flat fee. $100 a month.",
   }).waitFor();
   assert.equal(
-    await directStartPage.locator("main form, main input, main select, main textarea").count(),
-    0,
-    "the EDDM direct-start journey must collect no personal information while paused",
+    await directStartPage.locator("main form").count(),
+    1,
+    "the EDDM direct-start journey must reach the active onboarding form",
   );
-  const pausedApiResponse = await directStartPage.request.post(
-    `${baseUrl}/api/become-a-client`,
-    { data: { sentinel: "THIS_EDDM_REQUEST_MUST_NOT_BE_READ_OR_SAVED" } },
-  );
-  assert.equal(pausedApiResponse.status(), 410);
-  assert.deepEqual(await pausedApiResponse.json(), {
-    error:
-      "Secure direct onboarding is temporarily unavailable. No information was saved.",
-  });
+  await directStartPage.getByLabel("Your name").waitFor();
+  await directStartPage.getByLabel("Email").waitFor();
+  await directStartPage.getByLabel("What state do you live in?").waitFor();
+  await directStartPage.getByLabel("Roughly how much is in your investment accounts?").waitFor();
+  await directStartPage.getByRole("button", { name: "Send me the agreement" }).waitFor();
   await directStartPage.close();
 
   console.log(
-    "The canonical QR destination is the clean root; legacy QR URLs and foreign explicit UTM traffic stay at the page top; the legacy EDDM direct-start journey reaches the no-collection pause and 410 API; attribution survives URL cleanup; every firm handoff enforces a UTM-only query, including the advanced-calculator path.",
+    "The canonical QR destination is the clean root; legacy QR URLs and foreign explicit UTM traffic stay at the page top; the legacy EDDM direct-start journey reaches the active onboarding form without test submission; attribution survives URL cleanup; every firm handoff enforces a UTM-only query, including the advanced-calculator path.",
   );
 } finally {
   await browser?.close();

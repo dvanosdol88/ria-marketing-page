@@ -3,6 +3,26 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-09-15 — Separate confirmation after an agreement request
+- Fixed successful form submission leaving visitors scrolled beside the unrelated "Not sure yet?" panel. Success now opens a dedicated confirmation route at the top, with request receipt, three next steps, and accurate pending-versus-sent email wording. No personal information is placed in the URL.
+- Verified: production build and TypeScript passed; lint has zero errors and one inherited image warning. Browser submission with intercepted API responses passed at 375px and 1440px for both email states, including top position, refresh, no overflow, and absence of the sales panel. No real submission or email was created by testing.
+- Release: production verification follows merge; agreement delivery remains manual as before.
+
+### 2026-09-15 — Live EDDM QR-scan email alert
+**Agent:** Codex | **Surface:** PostHog workflows + smarterwaywealth.com DNS | **Status:** live and verified
+- created and enabled the PostHog workflow **EDDM mailer scan alert**. It starts from the reusable **Mailer QR landing** action, emails `david@smarterwaywealth.com` with subject **EDDM QR scan detected**, and then exits.
+- configured and verified the PostHog sender `Smarter Way Wealth <david@smarterwaywealth.com>`. Added the Amazon SES ownership, DKIM, custom MAIL FROM, and DMARC records in Vercel DNS. Preserved Google Workspace mail authentication by replacing the prior root SPF record with one combined policy that authorizes both Google and Amazon SES; no secret values were stored in the repository.
+- verified: all eight sender DNS checks reported **Verified** in PostHog; the exact QR-signature trigger test passed; the mocked email test resolved the intended recipient, subject, and message and reached Exit; the workflow status then changed from **Draft** to **Live**. No synthetic production scan or fake live alert was generated.
+- live workflow: https://us.posthog.com/project/452693/workflows/01a0a6ca-1ff7-0000-8fdd-b075a6b789c8/workflow
+
+### 2026-09-15 — Reopened direct onboarding at David's direction
+**Agent:** Codex | **Surface:** site-wide client CTA, `/become-a-client`, and onboarding intake | **Status:** deployed and production-proved (PR #259 → `main` `ad92f39`)
+- changed: removed every visitor-facing paused-onboarding message and restored the active **Become a Client** / **Sign Up** buttons.
+- restored: the mobile-first onboarding page again explains the $100/month offer, collects name, email, state, approximate investment-account range, and an optional note, then stores the request for David's manual follow-up. The page does not claim that an agreement was automatically sent.
+- privacy: updated the public notice to name the onboarding fields and Firebase storage; the form continues to tell visitors not to submit account numbers, passwords, or other sensitive information.
+- verified locally: the active-source and homepage navigation contracts passed; TypeScript passed; lint passed with one inherited image warning and zero errors; the optimized production build passed. Fresh 390px and 1440px browser checks rendered the active form with no overflow, console errors, or page errors. The full 390px mailer-to-onboarding regression reached the form without submitting test personal data, and an empty API request returned the expected validation error instead of the former pause response.
+- production proof: PR #259 passed required checks and squash-merged to `main` as `ad92f39`. Vercel deployment `dpl_6RL95TZVm3sPqstzVYF6a9Rt4nsC` reached READY, targets production, and owns the `youarepayingtoomuch.com` alias. Fresh cache-bypassed 390px and 1440px apex sessions clicked the real **Sign Up** / **Become a Client** links, reached the active form, found zero paused copy, no overflow, and no console errors. An empty production API request returned HTTP 400 field validation rather than the retired HTTP 410 pause response; no test personal data was submitted.
+
 ### 2026-09-15 — Prepared a privacy-safe telemetry repair while quota attribution remains blocked
 **Agent:** R2D2 | **Surface:** PostHog consumer/campaign analytics and Sentry technical monitoring | **Status:** focused repair in [PR #263](https://github.com/dvanosdol88/ria-marketing-page/pull/263); not merged or deployed
 - audit finding: current production is serving exact `origin/main` and sends PostHog requests, but live PostHog event/property evidence and Sentry project-by-project Usage Stats remain unavailable behind account sign-in. The authenticated Sentry MCP exposes issues/events, not billing usage outcomes, so it cannot identify the span/replay contributor.

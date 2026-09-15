@@ -673,21 +673,21 @@ test("desktop and mobile nav expose the branded outbound firm link with tracking
   assert.doesNotMatch(navSource, /\bh-10 w-10\b/);
 });
 
-test("desktop and mobile nav expose the truthful tracked onboarding-pause CTA", () => {
+test("desktop and mobile nav expose the active tracked onboarding CTA", () => {
   assert.equal(
-    navSource.match(/href=\{signupCta\.primary\.href as any\}/g)?.length,
+    navSource.match(/href=\{SIGNUP_PATH as any\}/g)?.length,
     3,
-    "desktop, mobile header, and mobile drawer must each render the onboarding status CTA",
+    "desktop, mobile header, and mobile drawer must each render the onboarding CTA",
   );
   assert.equal(
-    navSource.match(/data-posthog-cta-label=\{signupCta\.primary\.label\}/g)?.length,
+    navSource.match(/data-posthog-cta-label="Become a Client"/g)?.length,
     3,
-    "all onboarding status CTAs must use the shared truthful analytics label",
+    "all onboarding CTAs must use the active analytics label",
   );
   assert.match(navSource, /data-posthog-cta-location="site_nav"/);
   assert.match(navSource, /data-posthog-cta-location="site_nav_mobile"/);
   assert.match(navSource, /data-posthog-cta-location="site_nav_mobile_drawer"/);
-  assert.match(navSource, /\{signupCta\.primary\.shortLabel\}/);
+  assert.match(navSource, />\s*Sign Up\s*<\/Link>/);
   assert.match(navSource, /bg-\[#064B84\][^"\n]*text-white/);
   assert.match(navSource, /px-2\.5[^"\n]*min-\[360px\]:px-4/);
   assert.match(navSource, /absolute left-1\/2[^"\n]*-translate-x-1\/2/);
@@ -704,7 +704,7 @@ test("desktop and mobile nav expose the truthful tracked onboarding-pause CTA", 
     'data-posthog-cta-label="Smarter Way Wealth"',
     desktopStart,
   );
-  const desktopClientIndex = navSource.indexOf("data-posthog-cta-label={signupCta.primary.label}", desktopStart);
+  const desktopClientIndex = navSource.indexOf('data-posthog-cta-label="Become a Client"', desktopStart);
   assert.ok(desktopFirmIndex >= 0, "desktop firm link must render");
   assert.ok(desktopClientIndex > desktopFirmIndex, "desktop client link must follow the firm link");
 });
