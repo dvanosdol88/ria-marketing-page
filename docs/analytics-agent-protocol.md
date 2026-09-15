@@ -103,6 +103,7 @@ Use stable snake_case event names.
 
 Approved events:
 
+- `eddm_qr_landed`
 - `calculator_started`
 - `calculator_submitted`
 - `cta_clicked`
@@ -133,6 +134,16 @@ Every custom event should include:
 - `site_path`
 - relevant UTM fields when present
 - event-specific fields listed in `docs/analytics-event-contract.json`
+
+`eddm_qr_landed` is the immediate-alert milestone. It fires once per browser
+tab session only for `is_eddm_visitor=true`. The complete campaign traffic
+ledger remains `$pageview`, so analysts must not substitute the alert event for
+historical landing analysis.
+
+The RIA Builder display reads only the aggregate endpoint at
+`/api/analytics/mailer-scans`. That endpoint may expose the total and latest
+timestamp, never visitor-level receipts, browser identifiers, locations,
+calculator inputs, or URLs.
 
 CTA events should include:
 

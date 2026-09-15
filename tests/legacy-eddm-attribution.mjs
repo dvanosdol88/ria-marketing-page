@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createServer } from "node:net";
 import { execFileSync, spawn } from "node:child_process";
 import { chromium } from "playwright";
+import { gunzipSync } from "node:zlib";
 
 const LEGACY_MAILER_QUERY =
   "portfolio=1000000&years=20&growth=8&fee=1";
@@ -21,8 +22,8 @@ async function getUnusedPort() {
 
 async function waitForPage(url, child) {
   let lastError;
-  for (let attempt = 0; attempt < 90; attempt += 1) {
-    if (child.exitCode !== null) {
+  for (let attempt = 0; attempt < 180; attempt += 1) {
+    if (child && child.exitCode !== null) {
       throw new Error(`next dev exited early with code ${child.exitCode}`);
     }
     try {
@@ -38,12 +39,58 @@ async function waitForPage(url, child) {
   );
 }
 
+function decodePostHogEvents(rawBody) {
+  if (!rawBody) return [];
+
+  let bodyBuffer = Buffer.isBuffer(rawBody)
+    ? rawBody
+    : Buffer.from(rawBody);
+  if (bodyBuffer[0] === 0x1f && bodyBuffer[1] === 0x8b) {
+    bodyBuffer = gunzipSync(bodyBuffer);
+  }
+  const bodyText = bodyBuffer.toString("utf8");
+
+  const candidates = [];
+  try {
+    candidates.push(JSON.parse(bodyText));
+  } catch {
+    const form = new URLSearchParams(bodyText);
+    const encoded = form.get("data");
+    if (encoded) {
+      try {
+        candidates.push(
+          JSON.parse(Buffer.from(encoded, "base64").toString("utf8")),
+        );
+      } catch {
+        return [];
+      }
+    }
+  }
+
+  return candidates.flatMap((candidate) => {
+    if (candidate?.event) return [candidate];
+    if (Array.isArray(candidate?.batch)) return candidate.batch;
+    if (typeof candidate?.data === "string") {
+      try {
+        const decoded = JSON.parse(
+          Buffer.from(candidate.data, "base64").toString("utf8"),
+        );
+        if (decoded?.event) return [decoded];
+        if (Array.isArray(decoded?.batch)) return decoded.batch;
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
+}
+
 async function waitForCapturedEvent(
   capturedEvents,
   eventName,
   predicate = () => true,
 ) {
-  for (let attempt = 0; attempt < 60; attempt += 1) {
+  for (let attempt = 0; attempt < 900; attempt += 1) {
     const event = capturedEvents.find(
       (candidate) => candidate.event === eventName && predicate(candidate),
     );
@@ -51,6 +98,14 @@ async function waitForCapturedEvent(
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
   throw new Error(`Timed out waiting for PostHog event: ${eventName}`);
+}
+
+async function waitForCondition(predicate, description) {
+  for (let attempt = 0; attempt < 900; attempt += 1) {
+    if (predicate()) return;
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+  throw new Error(`Timed out waiting for ${description}`);
 }
 
 function assertLegacyAttribution(event) {
@@ -80,30 +135,35 @@ let nextProcess;
 let browser;
 
 try {
-  const port = await getUnusedPort();
-  const baseUrl = `http://127.0.0.1:${port}`;
+  const externalBaseUrl = process.env.EDDM_TEST_BASE_URL;
+  const port = externalBaseUrl ? null : await getUnusedPort();
+  const baseUrl = externalBaseUrl ?? `http://127.0.0.1:${port}`;
   const mailerUrl = `${baseUrl}/?${LEGACY_MAILER_QUERY}`;
-  nextProcess = spawn(
-    process.execPath,
-    [
-      "node_modules/next/dist/bin/next",
-      "dev",
-      "--hostname",
-      "127.0.0.1",
-      "--port",
-      String(port),
-    ],
-    {
-      cwd: process.cwd(),
-      env: {
-        ...process.env,
-        NEXT_PUBLIC_POSTHOG_KEY: "phc_local_eddm_test",
-        NEXT_PUBLIC_POSTHOG_HOST: "https://us.i.posthog.com",
+  if (!externalBaseUrl) {
+    nextProcess = spawn(
+      process.execPath,
+      [
+        "node_modules/next/dist/bin/next",
+        "dev",
+        "--webpack",
+        "--hostname",
+        "127.0.0.1",
+        "--port",
+        String(port),
+      ],
+      {
+        cwd: process.cwd(),
+        env: {
+          ...process.env,
+          NEXT_PUBLIC_POSTHOG_KEY: "phc_local_eddm_test",
+          NEXT_PUBLIC_POSTHOG_HOST: "https://us.i.posthog.com",
+          NEXT_PUBLIC_POSTHOG_TEST_MODE: "true",
+        },
+        stdio: "ignore",
+        windowsHide: true,
       },
-      stdio: "ignore",
-      windowsHide: true,
-    },
-  );
+    );
+  }
   await waitForPage(mailerUrl, nextProcess);
 
   const calculatorApi = await fetch(`${baseUrl}/api/calculator`);
@@ -122,17 +182,67 @@ try {
   );
 
   browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    userAgent:
+      "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 " +
+      "(KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36",
+  });
   const capturedEvents = [];
+  const scanReceipts = [];
+  await context.route("https://us-assets.i.posthog.com/**", async (route) => {
+    const url = new URL(route.request().url());
+    if (url.pathname.includes("/config")) {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          config: {},
+          supportedCompression: ["base64"],
+        }),
+      });
+      return;
+    }
+    await route.fulfill({
+      status: 200,
+      contentType: "application/javascript",
+      body: "/* optional PostHog extension disabled in test */",
+    });
+  });
   await context.route("https://us.i.posthog.com/**", async (route) => {
     const request = route.request();
-    if (request.url().endsWith("/capture/") && request.postData()) {
-      capturedEvents.push(JSON.parse(request.postData()));
+    const rawBody = request.postDataBuffer();
+    const decodedEvents = decodePostHogEvents(rawBody);
+    if (decodedEvents.length === 0 && rawBody) {
+      console.error(
+        "Unrecognized PostHog payload",
+        JSON.stringify({
+          url: request.url(),
+          contentType: request.headers()["content-type"],
+          contentEncoding: request.headers()["content-encoding"],
+          length: rawBody.length,
+          prefixHex: rawBody.subarray(0, 48).toString("hex"),
+          prefixText: rawBody.subarray(0, 160).toString("utf8"),
+        }),
+      );
     }
+    capturedEvents.push(...decodedEvents);
     await route.fulfill({
       status: 200,
       contentType: "application/json",
       body: '{"status":1}',
+    });
+  });
+  await context.route(`${baseUrl}/api/analytics/mailer-scans`, async (route) => {
+    const request = route.request();
+    scanReceipts.push(JSON.parse(request.postData() ?? "{}"));
+    await route.fulfill({
+      status: scanReceipts.length === 1 ? 503 : 200,
+      contentType: "application/json",
+      body:
+        scanReceipts.length === 1
+          ? '{"error":"temporary test failure"}'
+          : '{"counted":true}',
     });
   });
 
@@ -142,12 +252,55 @@ try {
 
   const pageview = await waitForCapturedEvent(capturedEvents, "$pageview");
   assertLegacyAttribution(pageview);
-  assert.match(
-    pageview.properties.$current_url,
-    new RegExp(`\\?${LEGACY_MAILER_QUERY.replaceAll("?", "\\?")}`),
+  assert.equal(
+    pageview.properties.$lib,
+    "web",
+    "custom events must use the initialized PostHog browser client",
+  );
+  assert.equal(pageview.properties.$current_url, `${baseUrl}/`);
+
+  const qrLanding = await waitForCapturedEvent(
+    capturedEvents,
+    "eddm_qr_landed",
+  );
+  assertLegacyAttribution(qrLanding);
+  assert.equal(qrLanding.properties.scan_kind, "mailer_qr_landing");
+  assert.equal(qrLanding.properties.$current_url, `${baseUrl}/`);
+  await waitForCondition(
+    () => scanReceipts.length === 1,
+    "the first aggregate receipt attempt",
+  );
+  assert.deepEqual(scanReceipts[0], {
+    attributionMethod: "legacy_qr_signature",
+  });
+  assert.equal(
+    await page.evaluate(() =>
+      window.sessionStorage.getItem(
+        "sww_eddm_qr_landed_receipt_recorded",
+      ),
+    ),
+    null,
+    "a failed aggregate receipt must stay unmarked",
   );
 
-  await page.waitForFunction(() => window.location.search === "");
+  await page.goto(mailerUrl, { waitUntil: "domcontentloaded" });
+  await page.getByRole("heading", { level: 1 }).waitFor();
+  await waitForCondition(
+    () => scanReceipts.length === 2,
+    "the unmarked aggregate receipt to retry after reload",
+  );
+  assert.deepEqual(scanReceipts[1], {
+    attributionMethod: "legacy_qr_signature",
+  });
+  assert.equal(
+    capturedEvents.filter((event) => event.event === "eddm_qr_landed").length,
+    1,
+    "a receipt retry after reload must not duplicate the PostHog scan event",
+  );
+
+  await page.waitForFunction(() => window.location.search === "", undefined, {
+    timeout: 90_000,
+  });
   assert.equal(
     new URL(page.url()).search,
     "",
@@ -281,6 +434,12 @@ try {
     waitUntil: "domcontentloaded",
   });
   await page.locator("#calculator").waitFor();
+  await page.waitForFunction(
+    () =>
+      JSON.parse(
+        window.sessionStorage.getItem("sww_campaign_attribution") ?? "null",
+      )?.campaign_attribution_method === "explicit_utm",
+  );
   await page.waitForTimeout(800);
   const taggedLegacyLanding = await readCalculatorPosition(page);
   assert.ok(
@@ -296,6 +455,16 @@ try {
     { waitUntil: "domcontentloaded" },
   );
   await unrelatedPage.locator("#calculator").waitFor();
+  await unrelatedPage.waitForFunction(
+    () => window.sessionStorage.getItem("sww_campaign_attribution") !== null,
+  );
+  assert.equal(
+    await unrelatedPage.evaluate(() =>
+      window.sessionStorage.getItem("sww_eddm_qr_landed_reported"),
+    ),
+    null,
+    "partial EDDM UTM traffic must not create a mailer scan event",
+  );
   await unrelatedPage.waitForTimeout(800);
   const unrelatedLanding = await readCalculatorPosition(unrelatedPage);
   assert.ok(

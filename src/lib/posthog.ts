@@ -1,5 +1,6 @@
 import posthog from "posthog-js";
 import {
+  POSTHOG_UTM_KEYS,
   resolveCampaignAttribution,
   type CampaignAttribution,
 } from "@/lib/campaignAttribution";
@@ -15,18 +16,6 @@ type BrowserPostHog = {
 function getBrowserPostHog() {
   if (typeof window === "undefined") return undefined;
   return posthog as BrowserPostHog;
-}
-
-function getDistinctId() {
-  const storageKey = "sww_posthog_distinct_id";
-  const existingId = window.localStorage.getItem(storageKey);
-  if (existingId) return existingId;
-
-  const distinctId =
-    window.crypto?.randomUUID?.() ??
-    `anon_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-  window.localStorage.setItem(storageKey, distinctId);
-  return distinctId;
 }
 
 const CAMPAIGN_SESSION_STORAGE_KEY = "sww_campaign_attribution";
@@ -71,47 +60,33 @@ export function getPostHogCampaignProperties(
   );
 }
 
-function sendDirectPostHogEvent(eventName: string, properties: PostHogProperties) {
-  const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-  if (!posthogKey) return;
-
-  const apiHost = process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
-  const currentUrl =
+function buildPostHogProperties(properties: PostHogProperties) {
+  const sourceUrl =
     typeof properties.$current_url === "string"
       ? properties.$current_url
       : window.location.href;
-  const body = JSON.stringify({
-    api_key: posthogKey,
-    event: eventName,
-    properties: {
-      distinct_id: getDistinctId(),
-      $current_url: currentUrl,
-      $host: window.location.hostname,
-      site_domain: window.location.hostname,
-      site_path: window.location.pathname,
-      ...getPostHogCampaignProperties(currentUrl),
-      ...properties,
-    },
-    timestamp: new Date().toISOString(),
+  const currentUrl = new URL(sourceUrl, window.location.origin);
+  const safeSearch = new URLSearchParams();
+  POSTHOG_UTM_KEYS.forEach((key) => {
+    const value = currentUrl.searchParams.get(key);
+    if (value) safeSearch.set(key, value);
   });
+  currentUrl.search = safeSearch.toString();
+  currentUrl.hash = "";
 
-  const endpoint = `${apiHost.replace(/\/$/, "")}/capture/`;
-  if (navigator.sendBeacon) {
-    const blob = new Blob([body], { type: "application/json" });
-    if (navigator.sendBeacon(endpoint, blob)) return;
-  }
-
-  void fetch(endpoint, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body,
-    keepalive: true,
-  }).catch(() => undefined);
+  return {
+    $host: window.location.hostname,
+    site_domain: window.location.hostname,
+    site_path: window.location.pathname,
+    ...getPostHogCampaignProperties(sourceUrl),
+    ...properties,
+    $current_url: currentUrl.toString(),
+  };
 }
 
 export function capturePostHogEvent(eventName: string, properties: PostHogProperties = {}) {
   if (typeof window === "undefined") return;
-  sendDirectPostHogEvent(eventName, properties);
+  getBrowserPostHog()?.capture?.(eventName, buildPostHogProperties(properties));
 }
 
 export function registerPostHogProperties(properties: PostHogProperties) {

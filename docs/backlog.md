@@ -34,7 +34,7 @@ Tracked items for youarepayingtoomuch.com. One-liner per item with enough contex
 
 ## Pre-mail-drop checklist (do BEFORE the EDDM drop; David confirmed mailers not yet sent as of 2026-08-03)
 
-- [ ] **Unify PostHog capture through posthog-js.** `src/lib/posthog.ts` (`sendDirectPostHogEvent`) POSTs `$pageview`/`cta_clicked`/`calculator_*` to `/capture/` with a homemade localStorage distinct_id, bypassing the loaded posthog-js client → 100% of pageviews classified as Automation/bot, humans double-counted across two identity spaces, sessions unstitchable. Fix: route `capturePostHogEvent` through `posthog.capture()`; keep custom campaign properties. *(added 2026-08-03, from 6-dimension audit)*
+- [x] **Unify PostHog capture through posthog-js.** Completed 2026-09-15: `capturePostHogEvent` now routes through the initialized browser client while preserving campaign properties, removing the split identity/automation path before mailer traffic arrives.
 - [ ] **Track booked calls.** Wire a Calendly `invitee.created` webhook to a server-side PostHog `call_booked` event so mailer → scan → calculator → booked-call is attributable. *(added 2026-08-03)*
 - [ ] **Tag internal/test traffic.** Agent verification runs + David's devices should carry an internal-traffic marker PostHog filters can exclude; don't init PostHog on localhost. *(added 2026-08-03)*
 - [ ] **Verify `calculator_submitted` payload on production** — the 2026-08-03 event carried null portfolio/savings/years while 7 prior ones had values; check the PR190-era submit handler before real scans arrive. *(added 2026-08-03)*

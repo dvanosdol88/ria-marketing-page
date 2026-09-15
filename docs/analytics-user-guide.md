@@ -24,6 +24,10 @@ Watch these numbers first:
 - Visits from the QR/mail campaign.
 - Visits from the physical 2026 mailer, identified by
   `legacy_eddm_qr = true` even though its printed QR lacks UTMs.
+- Immediate scan alerts use `eddm_qr_landed`, one per browser tab session.
+  The visible RIA Builder counter is an aggregate receipt that begins when the
+  counter release goes live. It favors avoiding duplicate increments over blind
+  retries, so use the PostHog dashboard for authoritative historical totals.
 - Percent who start the calculator.
 - Percent who reach a result.
 - Percent who click through to Smarter Way Wealth.
