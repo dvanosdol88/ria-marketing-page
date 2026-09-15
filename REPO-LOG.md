@@ -3,6 +3,13 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-09-15 — Live EDDM QR-scan email alert
+**Agent:** Codex | **Surface:** PostHog workflows + smarterwaywealth.com DNS | **Status:** live and verified
+- created and enabled the PostHog workflow **EDDM mailer scan alert**. It starts from the reusable **Mailer QR landing** action, emails `david@smarterwaywealth.com` with subject **EDDM QR scan detected**, and then exits.
+- configured and verified the PostHog sender `Smarter Way Wealth <david@smarterwaywealth.com>`. Added the Amazon SES ownership, DKIM, custom MAIL FROM, and DMARC records in Vercel DNS. Preserved Google Workspace mail authentication by replacing the prior root SPF record with one combined policy that authorizes both Google and Amazon SES; no secret values were stored in the repository.
+- verified: all eight sender DNS checks reported **Verified** in PostHog; the exact QR-signature trigger test passed; the mocked email test resolved the intended recipient, subject, and message and reached Exit; the workflow status then changed from **Draft** to **Live**. No synthetic production scan or fake live alert was generated.
+- live workflow: https://us.posthog.com/project/452693/workflows/01a0a6ca-1ff7-0000-8fdd-b075a6b789c8/workflow
+
 ### 2026-09-15 — Reopened direct onboarding at David's direction
 **Agent:** Codex | **Surface:** site-wide client CTA, `/become-a-client`, and onboarding intake | **Status:** deployed and production-proved (PR #259 → `main` `ad92f39`)
 - changed: removed every visitor-facing paused-onboarding message and restored the active **Become a Client** / **Sign Up** buttons.
