@@ -48,14 +48,6 @@ import {
 
 type IntroStyle = "rule" | "panel" | "quote";
 
-function getAssetTier(portfolioValue: number) {
-  if (portfolioValue < 500000) return "under_500k";
-  if (portfolioValue < 1000000) return "500k_1m";
-  if (portfolioValue < 2500000) return "1m_2_5m";
-  if (portfolioValue < 5000000) return "2_5m_5m";
-  return "5m_plus";
-}
-
 // ============================================================================
 // PILL SLIDER - Value-in-pill thumb with color-coded track
 // ============================================================================
@@ -616,7 +608,6 @@ export function CostAnalysisCalculator({
   const calculatorSubmittedRef = useRef(false);
   const updateCalculatorState = useCallback((patch: Partial<CalculatorState>) => {
     const changedFields = Object.keys(patch);
-    const nextState = { ...state, ...patch };
 
     if (!calculatorStartedRef.current) {
       calculatorStartedRef.current = true;
@@ -625,18 +616,12 @@ export function CostAnalysisCalculator({
         first_changed_field: changedFields[0],
         experience_mode: experienceMode,
         marketing_variant: marketingVariantId,
-        calculated_asset_tier: getAssetTier(nextState.portfolioValue),
-        portfolio_value: nextState.portfolioValue,
-        annual_fee_percent: nextState.annualFeePercent,
-        mutual_fund_expense_percent: nextState.mutualFundExpensePercent,
-        annual_growth_percent: nextState.annualGrowthPercent,
-        years: nextState.years,
       });
     }
 
     setAssumptionsCustomized(true);
     setState((prev) => ({ ...prev, ...patch }));
-  }, [experienceMode, marketingVariantId, state]);
+  }, [experienceMode, marketingVariantId]);
 
   const totalAnnualFeePercent = state.annualFeePercent + state.mutualFundExpensePercent;
 
@@ -661,18 +646,8 @@ export function CostAnalysisCalculator({
       submission_type: "instant_result_rendered",
       experience_mode: experienceMode,
       marketing_variant: marketingVariantId,
-      calculated_asset_tier: getAssetTier(state.portfolioValue),
-      portfolio_value: state.portfolioValue,
-      annual_fee_percent: state.annualFeePercent,
-      mutual_fund_expense_percent: state.mutualFundExpensePercent,
-      total_annual_fee_percent: totalAnnualFeePercent,
-      annual_growth_percent: state.annualGrowthPercent,
-      years: state.years,
-      projected_savings: Math.round(projection.savings),
-      projected_total_asset_based_fees: Math.round(projection.totalFees),
-      projected_total_flat_fees: Math.round(projection.totalFlatFees),
     });
-  }, [assumptionsCustomized, experienceMode, marketingVariantId, projection.savings, projection.totalFees, projection.totalFlatFees, state, totalAnnualFeePercent]);
+  }, [assumptionsCustomized, experienceMode, marketingVariantId]);
 
   const { setData: setSavingsBarData } = useSavingsBar();
   useEffect(() => {
@@ -761,8 +736,6 @@ export function CostAnalysisCalculator({
       cta_type: "share_result",
       experience_mode: experienceMode,
       marketing_variant: marketingVariantId,
-      calculated_asset_tier: getAssetTier(state.portfolioValue),
-      projected_savings: Math.round(projection.savings),
     });
 
     if (!shareUrl || typeof navigator === "undefined") {
@@ -798,7 +771,7 @@ export function CostAnalysisCalculator({
     }
 
     setShareFeedback("error");
-  }, [experienceMode, marketingVariantId, projection.savings, shareSummary, shareUrl, state.portfolioValue]);
+  }, [experienceMode, marketingVariantId, shareSummary, shareUrl]);
 
   useEffect(() => {
     if (typeof document === "undefined") return;

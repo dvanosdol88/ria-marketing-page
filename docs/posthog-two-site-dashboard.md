@@ -155,15 +155,16 @@ The live dashboard was created on 2026-06-04 with the following saved insights. 
      - Optional: `utm_source = eddm`
    - Question answered: are mobile QR visitors confused or stuck?
 
-7. `Asset-tier mix`
-   - Live insight: `Calculator Result Asset-Tier Mix`
+7. `Calculator experience mix`
+   - Live insight currently named `Calculator Result Asset-Tier Mix`; rename it
+     after PostHog access is restored so the saved dashboard matches this contract.
    - Insight ID: `9074129`
    - Short ID: `w93bGCXZ`
    - URL: `https://us.posthog.com/project/452693/insights/w93bGCXZ`
    - Type: trend or bar
    - Event: `calculator_submitted`
-   - Breakdown: `calculated_asset_tier`
-   - Question answered: what kind of investor is using the calculator?
+   - Breakdown: `experience_mode`
+   - Question answered: which calculator experience is producing engagement?
 
 8. `Technical health next to behavior`
    - Live coverage: included in `Mobile Friction and Error Signals` via `$exception`; direct Sentry issue counts remain a separate reporting input unless Sentry is connected to the digest workflow.
