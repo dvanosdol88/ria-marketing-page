@@ -3,6 +3,22 @@ import { readFile } from "node:fs/promises";
 import { createServer } from "node:net";
 import { execFileSync, spawn } from "node:child_process";
 import { chromium } from "playwright";
+import { gunzipSync } from "node:zlib";
+
+function decodePostHogEvents(rawBody) {
+  if (!rawBody) return [];
+  let body = Buffer.isBuffer(rawBody) ? rawBody : Buffer.from(rawBody);
+  if (body[0] === 0x1f && body[1] === 0x8b) body = gunzipSync(body);
+  const text = body.toString("utf8");
+  const candidates = [];
+  try {
+    candidates.push(JSON.parse(text));
+  } catch {
+    const encoded = new URLSearchParams(text).get("data");
+    if (encoded) candidates.push(JSON.parse(Buffer.from(encoded, "base64").toString("utf8")));
+  }
+  return candidates.flatMap((candidate) => candidate?.event ? [candidate] : Array.isArray(candidate?.batch) ? candidate.batch : []);
+}
 
 // Privacy lock (review fix round, docs/plans/2026-08-12-calculator-canon.md
 // in the sister repo, Phase B1): ShareMyResults.tsx's "Email results" anchor
@@ -116,9 +132,7 @@ try {
   const capturedEvents = [];
   await context.route("https://us.i.posthog.com/**", async (route) => {
     const request = route.request();
-    if (request.url().endsWith("/capture/") && request.postData()) {
-      capturedEvents.push(JSON.parse(request.postData()));
-    }
+    capturedEvents.push(...decodePostHogEvents(request.postDataBuffer()));
     await route.fulfill({ status: 200, contentType: "application/json", body: '{"status":1}' });
   });
 
