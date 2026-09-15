@@ -3,13 +3,13 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
-+### 2026-09-15 — Reopened direct onboarding at David's direction
-**Agent:** Codex | **Surface:** site-wide client CTA, `/become-a-client`, and onboarding intake | **Status:** release candidate; not yet deployed
+### 2026-09-15 — Reopened direct onboarding at David's direction
+**Agent:** Codex | **Surface:** site-wide client CTA, `/become-a-client`, and onboarding intake | **Status:** deployed and production-proved (PR #259 → `main` `ad92f39`)
 - changed: removed every visitor-facing paused-onboarding message and restored the active **Become a Client** / **Sign Up** buttons.
 - restored: the mobile-first onboarding page again explains the $100/month offer, collects name, email, state, approximate investment-account range, and an optional note, then stores the request for David's manual follow-up. The page does not claim that an agreement was automatically sent.
 - privacy: updated the public notice to name the onboarding fields and Firebase storage; the form continues to tell visitors not to submit account numbers, passwords, or other sensitive information.
 - verified locally: the active-source and homepage navigation contracts passed; TypeScript passed; lint passed with one inherited image warning and zero errors; the optimized production build passed. Fresh 390px and 1440px browser checks rendered the active form with no overflow, console errors, or page errors. The full 390px mailer-to-onboarding regression reached the form without submitting test personal data, and an empty API request returned the expected validation error instead of the former pause response.
-- release boundary: ship through PR to `main`, then verify the apex shows active onboarding and no paused copy.
+- production proof: PR #259 passed required checks and squash-merged to `main` as `ad92f39`. Vercel deployment `dpl_6RL95TZVm3sPqstzVYF6a9Rt4nsC` reached READY, targets production, and owns the `youarepayingtoomuch.com` alias. Fresh cache-bypassed 390px and 1440px apex sessions clicked the real **Sign Up** / **Become a Client** links, reached the active form, found zero paused copy, no overflow, and no console errors. An empty production API request returned HTTP 400 field validation rather than the retired HTTP 410 pause response; no test personal data was submitted.
 
 ### 2026-09-15 — Added one-browser-tab-session mailer scan telemetry and an aggregate counter
 **Agent:** Codex | **Surface:** printed EDDM QR landing, shared PostHog funnel, and RIA Builder counter source | **Status:** locally production-built and browser-proved; not yet deployed
