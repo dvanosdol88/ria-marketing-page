@@ -19,6 +19,7 @@ const [
   footerSource,
   homeFaqSource,
   faqDataSource,
+  feeQuoteDeckSource,
 ] = await Promise.all([
   readSource("../src/app/page.tsx"),
   readSource("../src/app/layout.tsx"),
@@ -33,6 +34,7 @@ const [
   readSource("../src/components/SiteFooter.tsx"),
   readSource("../src/components/HomeFaqSection.tsx"),
   readSource("../src/data/faq.ts"),
+  readSource("../src/components/FeeQuoteDeck.tsx"),
 ]);
 
 const flatten = (source) => source.replace(/\s+/g, " ");
@@ -719,6 +721,16 @@ test("homepage FAQ reflects the approved lean-model and custody edits", () => {
   );
   assert.doesNotMatch(faqDataSource, /You select and maintain your own accounts/);
   assert.doesNotMatch(faqDataSource, /You receive account statements directly from your custodian/);
+});
+
+test("quote swipes keep the surrounding homepage anchored", () => {
+  assert.match(feeQuoteDeckSource, /const \[reservedHeight, setReservedHeight\]/);
+  assert.match(feeQuoteDeckSource, /new ResizeObserver\(measure\)/);
+  assert.match(feeQuoteDeckSource, /style=\{reservedHeight \? \{ height: reservedHeight \} : undefined\}/);
+  assert.match(feeQuoteDeckSource, /dragDirectionLock/);
+  assert.match(feeQuoteDeckSource, /dragMomentum=\{false\}/);
+  assert.match(feeQuoteDeckSource, /style=\{\{ touchAction: "pan-y" \}\}/);
+  assert.doesNotMatch(feeQuoteDeckSource, /\n\s+layout\n/);
 });
 
 test("navigation uses one safe 1280px breakpoint across rendering and viewport logic", () => {

@@ -3,6 +3,13 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-09-16 — Stable, smoother mobile quote-card swipes
+**Agent:** Codex | **Surface:** homepage quote deck | **Status:** locally verified; production proof required after merge
+- changed: each quote slot now reserves the height of its tallest quote at the current viewport, so swiping never moves the other card, the section heading, or the firm handoff below the deck. The height is recalculated when text reflows after a viewport change.
+- interaction: horizontal drags now lock direction, skip momentum drift, use restrained elasticity, and settle on a tuned spring. Normal vertical page scrolling remains available outside a committed horizontal swipe; reduced-motion behavior remains intact.
+- verified: the homepage contract passed 26/26, focused lint and TypeScript passed, and the optimized production build completed. At 375px, a rendered browser run cycled every quote in both independent decks and measured a 0px range for page scroll, both card heights, the second card position, and the following section position; the browser console had zero errors.
+- release contract: ship through a reviewed PR to `main`, then verify the merged deployment and repeat the real mobile swipe geometry check on the production apex.
+
 ### 2026-09-15 — Separate confirmation after an agreement request
 - Fixed successful form submission leaving visitors scrolled beside the unrelated "Not sure yet?" panel. Success now opens a dedicated confirmation route at the top, with request receipt, three next steps, and accurate pending-versus-sent email wording. No personal information is placed in the URL.
 - Verified: production build and TypeScript passed; lint has zero errors and one inherited image warning. Browser submission with intercepted API responses passed at 375px and 1440px for both email states, including top position, refresh, no overflow, and absence of the sales panel. No real submission or email was created by testing.
