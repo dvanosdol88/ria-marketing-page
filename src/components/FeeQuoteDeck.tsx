@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useAnimationControls, useInView, useReducedMotion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
@@ -59,7 +59,7 @@ function QuoteCard({ quote, counter }: { quote: FeeQuote; counter: string }) {
        attribution column anyway; centred from sm up, where the wider card turns
        a two-line quote into an obviously bottom-heavy card if it stays pinned
        to the top of a ~150px portrait block. */
-    <figure className="relative flex min-h-[176px] items-start gap-4 rounded-2xl border border-[#D8E2EA] bg-white p-4 shadow-[0_10px_30px_rgba(17,33,52,0.07)] sm:items-center sm:gap-6 sm:p-6">
+    <figure className="relative flex h-full min-h-[176px] items-start gap-4 rounded-2xl border border-[#D8E2EA] bg-white p-4 shadow-[0_10px_30px_rgba(17,33,52,0.07)] sm:items-center sm:gap-6 sm:p-6">
       <div className="flex w-[96px] shrink-0 flex-col sm:w-[112px]">
         {portraitSrc ? (
           <Image
@@ -130,6 +130,8 @@ function QuoteSlot({
   const [direction, setDirection] = useState(1);
   const [hasInteracted, setHasInteracted] = useState(false);
   const slotRef = useRef<HTMLDivElement | null>(null);
+  const measureRef = useRef<HTMLDivElement | null>(null);
+  const [reservedHeight, setReservedHeight] = useState<number | null>(null);
   const isInView = useInView(slotRef, { once: true, amount: 0.6 });
   const nudge = useAnimationControls();
 
@@ -151,34 +153,54 @@ function QuoteSlot({
     return () => window.clearTimeout(timeout);
   }, [isInView, hasInteracted, prefersReducedMotion, nudge, nudgeDelayMs]);
 
+  // Reserve the tallest card in this slot. Changing quotes must never move
+  // the heading above the deck, the other quote, or the firm handoff below it.
+  // ResizeObserver keeps that promise when text reflows at a new viewport.
+  useLayoutEffect(() => {
+    const measureRoot = measureRef.current;
+    if (!measureRoot) return;
+
+    const measure = () => {
+      const tallest = Array.from(measureRoot.children).reduce(
+        (maxHeight, child) => Math.max(maxHeight, (child as HTMLElement).offsetHeight),
+        0,
+      );
+      if (tallest > 0) setReservedHeight(Math.ceil(tallest));
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(measureRoot);
+    Array.from(measureRoot.children).forEach((child) => observer.observe(child));
+    return () => observer.disconnect();
+  }, [quotes]);
+
   const slideDistance = prefersReducedMotion ? 0 : 320;
-  const slideTransition = {
-    duration: prefersReducedMotion ? 0.15 : 0.34,
-    ease: [0.32, 0.72, 0, 1] as const,
-  };
-  /**
-   * The jerk fix (David, 2026-08-14). Quotes are different lengths, so each
-   * swap changed the card's height instantly — the card snapped taller or
-   * shorter and everything beneath it jumped. `layout` on this shell makes
-   * framer-motion measure before and after and tween the difference on the
-   * same curve as the slide, so the deck settles instead of snapping. It
-   * lives on the SHELL, never on the dragged element: a layout animation on
-   * a dragging node fights the drag transform.
-   */
-  const layoutTransition = prefersReducedMotion
-    ? { duration: 0 }
-    : { duration: 0.42, ease: [0.32, 0.72, 0, 1] as const };
+  const slideTransition = prefersReducedMotion
+    ? { duration: 0.15 }
+    : { type: "spring" as const, stiffness: 340, damping: 34, mass: 0.9 };
 
   return (
     <motion.div
       ref={slotRef}
-      layout
-      transition={layoutTransition}
       role="group"
       aria-roledescription="carousel"
       aria-label={slotLabel}
-      className="group relative overflow-hidden rounded-2xl"
+      className="group relative min-h-[176px] overflow-hidden rounded-2xl"
+      style={reservedHeight ? { height: reservedHeight } : undefined}
     >
+      <div
+        ref={measureRef}
+        aria-hidden="true"
+        className="pointer-events-none invisible absolute inset-x-0 top-0 -z-10 mr-2.5 sm:mr-3"
+      >
+        {quotes.map((quote, quoteIndex) => (
+          <div key={`${quote.lastName}-${quoteIndex}`}>
+            <QuoteCard quote={quote} counter={`${quoteIndex + 1} / ${quotes.length}`} />
+          </div>
+        ))}
+      </div>
+
       {/* The next card's edge, peeking out from behind the active quote —
           the always-visible cue that there are more behind it. */}
       <div
@@ -200,8 +222,10 @@ function QuoteSlot({
       <motion.div
         animate={nudge}
         drag={prefersReducedMotion ? false : "x"}
+        dragDirectionLock
         dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.55}
+        dragElastic={0.24}
+        dragMomentum={false}
         onDragStart={() => {
           draggedRef.current = true;
           setHasInteracted(true);
@@ -232,7 +256,8 @@ function QuoteSlot({
         tabIndex={0}
         aria-label={`${slotLabel}: click it, swipe it sideways, or use the left and right arrow keys to see another.`}
         aria-live="polite"
-        className="group/card relative mr-2.5 cursor-pointer focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] active:cursor-grabbing sm:mr-3"
+        className="group/card relative mr-2.5 h-full cursor-pointer focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] active:cursor-grabbing sm:mr-3"
+        style={{ touchAction: "pan-y" }}
       >
         <AnimatePresence initial={false} mode="popLayout" custom={direction}>
           <motion.div
@@ -247,6 +272,7 @@ function QuoteSlot({
             animate="center"
             exit="exit"
             transition={slideTransition}
+            className="h-full"
           >
             <QuoteCard quote={quotes[index]} counter={`${index + 1} / ${quotes.length}`} />
           </motion.div>
