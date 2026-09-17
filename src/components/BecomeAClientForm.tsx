@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { signupCta } from "@/config/signupCta";
 import {
-  ASSET_BANDS,
-  BELOW_MINIMUM_BAND,
   US_STATES,
   HOME_STATE,
 } from "@/config/becomeAClient";
@@ -17,11 +15,9 @@ const LABEL_CLASS = "block text-sm font-bold text-[#10233A]";
 
 export function BecomeAClientForm() {
   const [status, setStatus] = useState<Status>("idle");
-  const [assetBand, setAssetBand] = useState("");
   const [state, setState] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const belowMinimum = assetBand === BELOW_MINIMUM_BAND;
   const outOfState = state !== "" && state !== HOME_STATE;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -38,7 +34,6 @@ export function BecomeAClientForm() {
           fullName: formData.get("fullName"),
           email: formData.get("email"),
           state: formData.get("state"),
-          assetBand: formData.get("assetBand"),
           notes: formData.get("notes"),
         }),
       });
@@ -124,50 +119,6 @@ export function BecomeAClientForm() {
             separate registration, so this is usually fine — David will confirm
             before anything is signed.
           </p>
-        ) : null}
-      </div>
-
-      <div>
-        <label className={LABEL_CLASS} htmlFor="assetBand">
-          Roughly how much is in your investment accounts?
-        </label>
-        <select
-          id="assetBand"
-          name="assetBand"
-          required
-          value={assetBand}
-          onChange={(event) => setAssetBand(event.target.value)}
-          className={`${FIELD_CLASS} mt-2`}
-        >
-          <option value="">Select a range</option>
-          {ASSET_BANDS.map((band) => (
-            <option key={band} value={band}>
-              {band}
-            </option>
-          ))}
-        </select>
-        <p className="mt-2 text-xs leading-5 text-[#5A6B80]">
-          A rough range is fine. No account numbers, ever.
-        </p>
-        {belowMinimum ? (
-          <div className="mt-2 rounded-lg bg-[#FFF7E6] px-4 py-3 text-xs leading-5 text-[#6B4E12]">
-            <p>
-              The standard minimum is $250,000 in investable assets, though the
-              firm can waive it at its discretion. You can still sign up and
-              David will tell you honestly either way — but if you&apos;d rather
-              ask first,{" "}
-              <a
-                href={signupCta.secondary.href}
-                className="font-bold !text-[#6B4E12] underline underline-offset-2"
-                data-posthog-cta="true"
-                data-posthog-cta-label="Talk to David first — below minimum"
-                data-posthog-cta-location="signup_form_below_minimum"
-              >
-                take the 15 minutes instead
-              </a>
-              .
-            </p>
-          </div>
         ) : null}
       </div>
 

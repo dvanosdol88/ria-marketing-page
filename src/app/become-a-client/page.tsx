@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { BecomeAClientForm } from "@/components/BecomeAClientForm";
 import { signupCta } from "@/config/signupCta";
@@ -67,7 +68,8 @@ export default function BecomeAClientPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      <header className="section-shell pt-10 sm:pt-14">
+      <header className="section-shell grid items-center gap-6 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,1fr)_200px] lg:gap-10">
+        <div className="min-w-0">
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#108843]">
           Become a client
         </p>
@@ -77,6 +79,16 @@ export default function BecomeAClientPage() {
         <p className="mt-4 max-w-2xl text-base leading-7 text-[#31465F] sm:text-lg">
           See what truly independent advice looks like.
         </p>
+        </div>
+        <Image
+          src="/DVO Head Shot picture.jpg"
+          alt="David Van Osdol"
+          width={200}
+          height={210}
+          sizes="(min-width: 1024px) 200px, 112px"
+          priority
+          className="h-[118px] w-28 rounded-xl object-cover object-top lg:h-[210px] lg:w-[200px]"
+        />
       </header>
 
       <section className="section-shell mt-10 max-w-2xl">
@@ -110,41 +122,11 @@ export default function BecomeAClientPage() {
         </div>
       </section>
 
-      <section className="section-shell mt-8 max-w-2xl">
-        <h2 className="text-sm font-bold uppercase tracking-[0.15em] text-[#5A6B80]">
-          Two things worth knowing first
-        </h2>
-        <dl className="mt-3 flex flex-col gap-4">
-          <div>
-            <dt className="text-base font-bold text-[#10233A]">
-              There is a $250,000 minimum.
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-[#31465F]">
-              That is the standard minimum in investable assets disclosed in the
-              firm&apos;s Form ADV Part 2A. It can be waived at the firm&apos;s
-              discretion — if you are close, say so and David will tell you
-              honestly.
-            </dd>
-          </div>
-          <div>
-            <dt className="text-base font-bold text-[#10233A]">
-              The firm is registered in {HOME_STATE}.
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-[#31465F]">
-              Most states allow an out-of-state adviser to serve a limited
-              number of their residents without separate registration, so living
-              elsewhere is usually fine. David confirms it before anything is
-              signed.
-            </dd>
-          </div>
-        </dl>
-      </section>
-
       <section className="section-shell mt-10 max-w-2xl">
         <div className="rounded-2xl bg-[#064B84] p-6 text-center text-white sm:p-8">
           <p className="text-lg font-bold">{signupCta.secondary.prompt}</p>
           <p className="mt-2 text-sm leading-6 text-white/85">
-            Talk it through first. Fifteen minutes over Zoom, nothing to
+            See if you are a good fit for Smarter Way Wealth. Fifteen minutes over Zoom, nothing to
             prepare, and nobody will try to sell you anything.
           </p>
           <a
