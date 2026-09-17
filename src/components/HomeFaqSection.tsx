@@ -100,12 +100,39 @@ const QUESTION_INK_OPEN = "text-[#8A939E]";
 const ROW_FOCUS =
   "focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-3px] focus-visible:outline-[#064B84]";
 
+type FaqTone = "light" | "blues";
+
+/* Presentation per front door. "light" is the green home exactly as before;
+   "blues" sits the same white card on the One Percent Blues gradient
+   (src/app/(blues)), with the accents in that page's blue. */
+const FAQ_TONES: Record<
+  FaqTone,
+  { section: string; heading: string; chevron: string; arrow: string; doorHover: string }
+> = {
+  light: {
+    section: "bg-[#EEF0F5]",
+    heading: "text-[#10233A]",
+    chevron: "text-[#007A2F]",
+    arrow: "text-[#007A2F]",
+    doorHover: "group-hover:bg-[#F2FBF5] group-hover:ring-[#00A540]",
+  },
+  blues: {
+    section: "bg-transparent",
+    heading: "text-white",
+    chevron: "text-[#2563EB]",
+    arrow: "text-[#2563EB]",
+    doorHover: "group-hover:bg-[#EEF3FF] group-hover:ring-[#2563EB]",
+  },
+};
+
 function FaqRow({
   question,
   answer,
   footnote,
   footnoteMarker,
+  chevronClassName,
 }: {
+  chevronClassName: string;
   /** A node rather than a string so a footnote marker can sit mid-sentence and
    *  so a question can carry its own per-sentence weights — David's #4: the
    *  sentence that sets a question up is normal weight, the sentence that asks
@@ -130,7 +157,7 @@ function FaqRow({
         <ChevronRight
           aria-hidden="true"
           strokeWidth={2.75}
-          className={`mt-0.5 h-5 w-5 shrink-0 text-[#007A2F] transition-transform duration-200 ${
+          className={`mt-0.5 h-5 w-5 shrink-0 ${chevronClassName} transition-transform duration-200 ${
             open ? "rotate-90" : ""
           }`}
         />
@@ -183,7 +210,8 @@ function storedAnswer(id: string) {
     ));
 }
 
-export function HomeFaqSection() {
+export function HomeFaqSection({ tone = "light" }: { tone?: FaqTone } = {}) {
+  const t = FAQ_TONES[tone];
   const keptAnswer = storedAnswer(KEPT_FAQ_ID);
   const accountsAnswer = storedAnswer(ACCOUNTS_FAQ_ID);
 
@@ -191,12 +219,12 @@ export function HomeFaqSection() {
     <section
       id="faq"
       aria-labelledby="home-faq-heading"
-      className="w-full scroll-mt-24 bg-[#EEF0F5] px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14"
+      className={`w-full scroll-mt-24 ${t.section} px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14`}
     >
       <div className="mx-auto max-w-3xl">
         <h2
           id="home-faq-heading"
-          className="text-3xl font-black tracking-tight text-[#10233A] sm:text-4xl"
+          className={`text-3xl font-black tracking-tight ${t.heading} sm:text-4xl`}
         >
           Frequently Asked Questions
         </h2>
@@ -207,6 +235,7 @@ export function HomeFaqSection() {
               <FaqRow
                 question={<span className="font-bold">{KEPT_QUESTION_LABEL}</span>}
                 answer={keptAnswer}
+                chevronClassName={t.chevron}
               />
             ) : null}
 
@@ -254,6 +283,7 @@ export function HomeFaqSection() {
               }
               footnote={RHETORICAL_FOOTNOTE}
               footnoteMarker="1"
+              chevronClassName={t.chevron}
             />
 
             {/* Added 2026-08-16 (David). Third and last question before the
@@ -262,6 +292,7 @@ export function HomeFaqSection() {
               <FaqRow
                 question={<span className="font-bold">{ACCOUNTS_QUESTION_LABEL}</span>}
                 answer={accountsAnswer}
+                chevronClassName={t.chevron}
               />
             ) : null}
 
@@ -288,9 +319,9 @@ export function HomeFaqSection() {
                   Read all of the FAQs on smarterwaywealth.com.
                   <span
                     aria-hidden="true"
-                    className="ml-2 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white align-middle ring-1 ring-inset ring-[#CFD6DF] transition-colors duration-200 group-hover:bg-[#F2FBF5] group-hover:ring-[#00A540]"
+                    className={`ml-2 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white align-middle ring-1 ring-inset ring-[#CFD6DF] transition-colors duration-200 ${t.doorHover}`}
                   >
-                    <ArrowUpRight className="h-4 w-4 text-[#007A2F]" strokeWidth={2.5} />
+                    <ArrowUpRight className={`h-4 w-4 ${t.arrow}`} strokeWidth={2.5} />
                   </span>
                 </span>
               </a>

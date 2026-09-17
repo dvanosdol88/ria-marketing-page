@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import {
   ChevronDown,
   Clock3,
@@ -21,9 +21,11 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { createPortal } from "react-dom";
 import { formatCurrency, formatCurrencyFloored } from "@/lib/format";
 import { MIN_HORIZON_YEARS, buildQueryFromState } from "@/lib/calculatorState";
-import type {
-  HomeCalculatorTheme,
-  HomeCalculatorLayout,
+import {
+  calculatorAccentGreen,
+  type CalculatorAccentTheme,
+  type HomeCalculatorTheme,
+  type HomeCalculatorLayout,
 } from "@/config/homeMarketingVariants";
 import type { ProjectionYear } from "@/lib/feeProjection";
 import { Odometer, RollingCurrencyOdometer } from "@/components/Odometer";
@@ -61,6 +63,13 @@ type CalculatorAssumptionPatch = {
 };
 
 type EditableHeaderField = "portfolio" | "years" | "fee";
+
+/* Accent colour for the final-c layout's sub-components. A context rather than
+   a prop on six signatures: the default is the green the site always used, so
+   every layout that does not provide it renders exactly as before. The blue
+   front door (src/config/onePercentBlues.ts) provides a blue set. */
+const CalculatorAccentContext = createContext<CalculatorAccentTheme>(calculatorAccentGreen);
+const useCalculatorAccent = () => useContext(CalculatorAccentContext);
 
 const FEE_GAP_HINT_INITIAL_DELAY_MS = 1200;
 const FEE_GAP_HINT_VISIBLE_MS = 3000;
@@ -267,17 +276,18 @@ function EditableHeaderButton({
   iconClassName?: string;
   onClick: () => void;
 }) {
+  const accent = useCalculatorAccent();
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`-mx-1 inline-flex items-center gap-1 rounded-md px-1 py-0.5 font-[inherit] leading-[inherit] underline decoration-[#AEB8C3] decoration-2 underline-offset-[0.2em] outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843] sm:mx-0 sm:px-0 sm:py-0 sm:decoration-[#D7E0E8] sm:decoration-1 ${className}`}
+      className={`-mx-1 inline-flex items-center gap-1 rounded-md px-1 py-0.5 font-[inherit] leading-[inherit] underline decoration-[#AEB8C3] decoration-2 underline-offset-[0.2em] outline-none transition hover:text-[#0B3756] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 ${accent.focusOutlineClassName} sm:mx-0 sm:px-0 sm:py-0 sm:decoration-[#D7E0E8] sm:decoration-1 ${className}`}
       aria-label={ariaLabel}
     >
       <span>{children}</span>
       <PencilLine
         aria-hidden="true"
-        className={`h-[0.62em] w-[0.62em] shrink-0 text-[#108843] sm:hidden ${iconClassName}`}
+        className={`h-[0.62em] w-[0.62em] shrink-0 ${accent.textClassName} sm:hidden ${iconClassName}`}
         strokeWidth={2.4}
       />
     </button>
@@ -323,6 +333,7 @@ function FinalHeaderNumberInput({
   useGrouping?: boolean;
   value: number;
 }) {
+  const accent = useCalculatorAccent();
   const prefersReducedMotion = useReducedMotion();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [focused, setFocused] = useState(false);
@@ -388,7 +399,7 @@ function FinalHeaderNumberInput({
       <motion.span
         layout
         transition={widthTransition}
-        className="inline-flex items-baseline justify-center border-b border-[#D7E0E8] transition-colors duration-200 focus-within:border-[#108843] focus-within:outline focus-within:outline-2 focus-within:outline-offset-4 focus-within:outline-[#108843] hover:border-[#AEB8C3]"
+        className={`inline-flex items-baseline justify-center border-b border-[#D7E0E8] transition-colors duration-200 ${accent.focusWithinBorderClassName} focus-within:outline focus-within:outline-2 focus-within:outline-offset-4 ${accent.focusWithinOutlineClassName} hover:border-[#AEB8C3]`}
       >
         <input
           ref={inputRef}
@@ -463,6 +474,7 @@ function MathAssumptionInputCard({
   useGrouping?: boolean;
   value: number;
 }) {
+  const accent = useCalculatorAccent();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [focused, setFocused] = useState(false);
   const [draft, setDraft] = useState(() => formatHeaderInputValue(value, decimals, useGrouping));
@@ -496,7 +508,7 @@ function MathAssumptionInputCard({
 
   return (
     <label
-      className="block cursor-text rounded-md border border-[#DDE7EF] bg-white px-3 py-2 focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/20"
+      className={`block cursor-text rounded-md border border-[#DDE7EF] bg-white px-3 py-2 ${accent.focusWithinBorderClassName} focus-within:ring-2 ${accent.focusWithinRingClassName}`}
       onMouseDown={(event) => {
         if (event.target === inputRef.current) return;
         event.preventDefault();
@@ -945,6 +957,7 @@ function FinalHomeLineChart({
   onGapLeave: () => void;
   onGapToggle: () => void;
 }) {
+  const accent = useCalculatorAccent();
   // Measured-pixel rendering: a ResizeObserver tracks the container's actual
   // width/height and we redraw the SVG against those live dimensions every
   // time the layout changes (viewport resize, slider edit reflow, etc.).
@@ -1161,7 +1174,7 @@ function FinalHomeLineChart({
           <path d={gapAreaPath} fill="#D92D20" />
         </g>
         <path d={pathFor("withFees")} fill="none" stroke="#064B84" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
-        <path d={pathFor("withoutFees")} fill="none" stroke="#108843" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d={pathFor("withoutFees")} fill="none" stroke={accent.hex} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
         <g
           opacity={chartActive ? "1" : "0"}
           className="transition-opacity duration-300"
@@ -1264,7 +1277,7 @@ function FinalHomeLineChart({
             key: "flat" as const,
             cx: flatEndX,
             cy: flatEndY,
-            color: "#108843",
+            color: accent.hex,
             label: "Flat $100/mo fee",
             value: finalValueWithoutFees,
           },
@@ -1415,6 +1428,7 @@ function SimpleMathResults({
   finalValueWithoutFees: number;
   savings: number;
 }) {
+  const accent = useCalculatorAccent();
   /* The odometer rolls the figure as assumptions change, but only where there
      is room for the animation to read as motion rather than jitter. */
   const amount = (value: number) => (
@@ -1481,7 +1495,7 @@ function SimpleMathResults({
           Difference
         </p>
         <p
-          className="mt-3 text-right text-[22px] font-bold leading-none tabular-nums text-[#007A2F] sm:text-3xl"
+          className={`mt-3 text-right text-[22px] font-bold leading-none tabular-nums ${accent.strongTextClassName} sm:text-3xl`}
           data-difference-amount
         >
           {amount(savings)}
@@ -1499,6 +1513,7 @@ function MathExpandButton({
   isOpen?: boolean;
   onClick: () => void;
 }) {
+  const accent = useCalculatorAccent();
   const Icon = isOpen ? X : Maximize2;
 
   return (
@@ -1508,7 +1523,7 @@ function MathExpandButton({
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.96 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-[#EAF7EF] text-[#108843] transition-colors duration-300 hover:bg-[#D8F0E0] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#108843]/35"
+      className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-md ${accent.tileClassName} ${accent.textClassName} transition-colors duration-300 ${accent.tileHoverClassName} focus-visible:outline-none focus-visible:ring-2 ${accent.focusRingClassName}`}
       aria-label={isOpen ? "Close calculation details" : "View calculation details"}
       aria-expanded={Boolean(isOpen)}
       aria-controls="see-our-math-details"
@@ -1558,6 +1573,7 @@ function SeeOurMathBento({
   totalFlatFees: number;
   years: number;
 }) {
+  const accent = useCalculatorAccent();
   const [expanded, setExpanded] = useState(false);
   const [pollOpen, setPollOpen] = useState(false);
   const [sharePanelOpen, setSharePanelOpen] = useState(false);
@@ -1690,14 +1706,14 @@ function SeeOurMathBento({
           onClick={() => setExpanded(true)}
           aria-expanded={expanded}
           aria-controls="see-our-math-details"
-          className="group flex w-full items-center justify-between gap-4 px-4 py-2 text-left transition-colors duration-200 hover:bg-[#F5FAF7] focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-3px] focus-visible:outline-[#108843] sm:px-6 sm:py-2.5"
+          className={`group flex w-full items-center justify-between gap-4 px-4 py-2 text-left transition-colors duration-200 ${accent.rowHoverClassName} focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-3px] ${accent.focusOutlineClassName} sm:px-6 sm:py-2.5`}
         >
-          <h3 className="min-w-0 truncate text-xs font-extrabold uppercase tracking-[0.2em] text-[#108843]">
+          <h3 className={`min-w-0 truncate text-xs font-extrabold uppercase tracking-[0.2em] ${accent.textClassName}`}>
             View calculation details
           </h3>
           <span
             aria-hidden="true"
-            className="grid h-6 w-6 shrink-0 place-items-center rounded-md bg-[#EAF7EF] text-[#108843] transition-colors duration-200 group-hover:bg-[#D8F0E0]"
+            className={`grid h-6 w-6 shrink-0 place-items-center rounded-md ${accent.tileClassName} ${accent.textClassName} transition-colors duration-200 ${accent.tileGroupHoverClassName}`}
           >
             <Maximize2 className="h-3.5 w-3.5" strokeWidth={2.5} />
           </span>
@@ -1780,23 +1796,23 @@ function SeeOurMathBento({
             <p className="min-w-0 text-xl font-semibold leading-tight text-[#10233A] sm:text-2xl">
               <span className="block">What would you do with your</span>
               <span className="block">
-                <span className="tabular-nums text-[#108843]">{formatCurrencyFloored(savings)}</span> savings
+                <span className={`tabular-nums ${accent.textClassName}`}>{formatCurrencyFloored(savings)}</span> savings
               </span>
             </p>
             <span
               aria-hidden="true"
-              className="shrink-0 text-[3.25rem] font-bold leading-none text-[#108843] sm:text-[3.75rem]"
+              className={`shrink-0 text-[3.25rem] font-bold leading-none ${accent.textClassName} sm:text-[3.75rem]`}
             >
               ?
             </span>
           </div>
           <div className="flex shrink-0 items-center gap-3">
             <span className="hidden flex-col items-end leading-tight sm:flex">
-              <span className="text-base font-extrabold uppercase tracking-[0.18em] text-[#108843]">Vote</span>
+              <span className={`text-base font-extrabold uppercase tracking-[0.18em] ${accent.textClassName}`}>Vote</span>
               <span className="text-base font-extrabold uppercase tracking-[0.18em] text-[#5B6B7B]">See results</span>
             </span>
             <ChevronDown
-              className={`h-6 w-6 text-[#108843] transition-transform duration-300 ${pollOpen ? "rotate-180" : ""}`}
+              className={`h-6 w-6 ${accent.textClassName} transition-transform duration-300 ${pollOpen ? "rotate-180" : ""}`}
               strokeWidth={2.5}
             />
           </div>
@@ -1865,8 +1881,8 @@ function SeeOurMathBento({
 
       <div className="grid min-w-0 gap-4 pr-12 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:items-start lg:pr-14">
         <div className="min-w-0">
-          <div className="flex items-center gap-2 text-[#108843]">
-            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-[#E4F6EB]">
+          <div className={`flex items-center gap-2 ${accent.textClassName}`}>
+            <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-md ${accent.tileAltClassName}`}>
               <Table2 className="h-4 w-4" strokeWidth={2.3} />
             </span>
             <div>
@@ -2008,7 +2024,7 @@ function SeeOurMathBento({
                       <th scope="row" className="px-3 py-2 font-bold tabular-nums text-[#4B6075]">
                         {row.year}
                       </th>
-                      <td className="px-3 py-2 font-semibold tabular-nums text-[#108843]">{formatCurrency(row.withoutFees)}</td>
+                      <td className={`px-3 py-2 font-semibold tabular-nums ${accent.textClassName}`}>{formatCurrency(row.withoutFees)}</td>
                       <td className="px-3 py-2 font-semibold tabular-nums text-[#064B84]">{formatCurrency(row.withFees)}</td>
                       <td className="px-3 py-2 font-semibold tabular-nums text-[#D92D20]">{formatCurrency(gap)}</td>
                       <td className="px-3 py-2 tabular-nums">{formatCurrency(feePart)}</td>
@@ -2051,7 +2067,7 @@ function SeeOurMathBento({
               href={SMARTER_WAY_WEALTH_ORIGIN}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 font-extrabold text-[#108843] underline underline-offset-4 hover:text-[#0A6E35]"
+              className={`inline-flex items-center gap-1 font-extrabold ${accent.textClassName} underline underline-offset-4 ${accent.linkHoverClassName}`}
             >
               Learn about Smarter Way Wealth
               <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
@@ -2071,6 +2087,9 @@ function SeeOurMathBento({
 }
 
 function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
+  /* Provided to every sub-component above via CalculatorAccentContext; the
+     green variants pass calculatorAccentGreen, the blue page its own set. */
+  const accent = props.theme.accent;
   const {
     advancedCalculatorHref,
     annualFeePercent,
@@ -2238,6 +2257,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   }, [chartGapHintActive, chartPinned]);
 
   return (
+    <CalculatorAccentContext.Provider value={accent}>
     <div className={`section-shell relative z-10 pb-16 ${showChartHeading ? "pt-1 sm:pt-2" : "pt-5 sm:pt-6"}`}>
       {disclosure ? (
         <div className="mx-auto mb-4 max-w-3xl text-center [&_p]:mt-0">
@@ -2416,7 +2436,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
                       maxWidthCh={4.5}
                       className="font-semibold text-[#064B84]"
                     />
-                    <span>fee with a flat <span className="font-semibold text-[#108843]">{formatCurrency(annualFlatFee / 12)}/month</span>.</span>
+                    <span>fee with a flat <span className={`font-semibold ${accent.textClassName}`}>{formatCurrency(annualFlatFee / 12)}/month</span>.</span>
                   </motion.span>
                 ) : (
                   <motion.span
@@ -2437,13 +2457,13 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
                     >
                       your asset-based fee
                     </EditableHeaderButton>
-                    <span>with a flat <span className="font-semibold text-[#108843]">{formatCurrency(annualFlatFee / 12)}/month</span>.</span>
+                    <span>with a flat <span className={`font-semibold ${accent.textClassName}`}>{formatCurrency(annualFlatFee / 12)}/month</span>.</span>
                   </motion.span>
                 )}
               </AnimatePresence>
             </p>
           </div>
-          <div className="mx-auto flex shrink-0 flex-col items-center justify-center border-l-2 border-[#108843] pl-4 text-center text-sm font-semibold uppercase leading-tight tracking-tight text-[#108843] sm:text-base lg:mx-0 lg:items-start lg:text-left">
+          <div className={`mx-auto flex shrink-0 flex-col items-center justify-center border-l-2 ${accent.borderClassName} pl-4 text-center text-sm font-semibold uppercase leading-tight tracking-tight ${accent.textClassName} sm:text-base lg:mx-0 lg:items-start lg:text-left`}>
             <span>Annual Growth</span>
             <FinalHeaderNumberInput
               ariaLabel="Annual growth percentage"
@@ -2454,7 +2474,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
               inputMode="decimal"
               min={3}
               max={12}
-              className="text-[#108843]"
+              className={accent.textClassName}
             />
           </div>
           </div>
@@ -2560,6 +2580,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
       </ScrollReveal>
       </div>
     </div>
+    </CalculatorAccentContext.Provider>
   );
 }
 

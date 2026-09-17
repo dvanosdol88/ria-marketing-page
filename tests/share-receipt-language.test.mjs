@@ -14,6 +14,10 @@ const ogSource = readFileSync(
   new URL("../src/app/api/og/route.tsx", import.meta.url),
   "utf8",
 );
+const ogBluesSource = readFileSync(
+  new URL("../src/app/api/og/blues/route.tsx", import.meta.url),
+  "utf8",
+);
 
 test("fee receipt copy is an assumption-bound advisory-fee comparison", () => {
   assert.match(shareSummarySource, /estimated advisory-fee difference/);
@@ -26,4 +30,7 @@ test("fee receipt copy is an assumption-bound advisory-fee comparison", () => {
 test("the dynamic share card uses the same neutral receipt label", () => {
   assert.match(ogSource, /Estimated advisory-fee difference/);
   assert.doesNotMatch(ogSource, />Projected savings</);
+  // The One Percent Blues card carries the same receipt label.
+  assert.match(ogBluesSource, /Estimated advisory-fee difference/);
+  assert.doesNotMatch(ogBluesSource, />Projected savings</);
 });

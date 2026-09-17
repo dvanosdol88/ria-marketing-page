@@ -13,6 +13,14 @@ type SignupCtaProps = {
   variant?: "block" | "inline";
   /** Formatted savings figure (e.g. "$184,000"). Inline variant only. */
   savingsLabel?: string | null;
+  /** Outer band background for the block variant. The One Percent Blues page
+   *  passes bg-transparent so the card floats on its gradient. */
+  surfaceClassName?: string;
+  /** Absolute destination for the primary button, rendered as a plain <a>
+   *  instead of next/link. The One Percent Blues page passes the green
+   *  site's sign-up URL: on onepercentblues.com every green route redirects
+   *  cross-domain, and a client-side prefetch of that redirect fails CORS. */
+  primaryHref?: string;
 };
 
 const INLINE_PRIMARY_BUTTON_CLASS =
@@ -53,18 +61,14 @@ export function SignupCta({
   location,
   variant = "block",
   savingsLabel = null,
+  surfaceClassName = "bg-[#EEF0F5]",
+  primaryHref,
 }: SignupCtaProps) {
   const primaryButtonClass =
     variant === "block" ? BLOCK_PRIMARY_BUTTON_CLASS : INLINE_PRIMARY_BUTTON_CLASS;
 
-  const primary = (
-    <Link
-      href={signupCta.primary.href}
-      className={primaryButtonClass}
-      data-posthog-cta="true"
-      data-posthog-cta-label={signupCta.primary.label}
-      data-posthog-cta-location={`${location}_primary`}
-    >
+  const primaryContent = (
+    <>
       {signupCta.primary.label}
       {variant === "block" ? (
         <ArrowRight
@@ -73,6 +77,28 @@ export function SignupCta({
           strokeWidth={2.75}
         />
       ) : null}
+    </>
+  );
+
+  const primary = primaryHref ? (
+    <a
+      href={primaryHref}
+      className={primaryButtonClass}
+      data-posthog-cta="true"
+      data-posthog-cta-label={signupCta.primary.label}
+      data-posthog-cta-location={`${location}_primary`}
+    >
+      {primaryContent}
+    </a>
+  ) : (
+    <Link
+      href={signupCta.primary.href}
+      className={primaryButtonClass}
+      data-posthog-cta="true"
+      data-posthog-cta-label={signupCta.primary.label}
+      data-posthog-cta-location={`${location}_primary`}
+    >
+      {primaryContent}
     </Link>
   );
 
@@ -96,7 +122,7 @@ export function SignupCta({
   }
 
   return (
-    <section className="w-full bg-[#EEF0F5] px-4 py-10 sm:px-6 sm:py-14">
+    <section className={`w-full ${surfaceClassName} px-4 py-10 sm:px-6 sm:py-14`}>
       <div className="relative mx-auto max-w-3xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0A5A9C] via-[#064B84] to-[#04324F] p-6 text-white shadow-[0_22px_54px_rgba(6,75,132,0.30)] sm:p-10">
         {/* Quiet brand mark in the card's corner — the same three rising bars
             as the logo, screened way back. Identity, not decoration; carries

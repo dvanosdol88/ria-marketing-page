@@ -24,6 +24,49 @@ export type HomeMarketingVariant = {
   calculator: HomeCalculatorTheme;
 };
 
+/**
+ * The calculator's accent colour, as complete Tailwind class strings (Tailwind
+ * only emits classes it can see in source) plus one hex for SVG and inline
+ * use. The green site sets this to exactly the literals it used before the
+ * One Percent Blues front door existed, so its HTML is unchanged; the blue
+ * page supplies a blue set (src/config/onePercentBlues.ts).
+ */
+export type CalculatorAccentTheme = {
+  hex: string;
+  textClassName: string;
+  strongTextClassName: string;
+  borderClassName: string;
+  tileClassName: string;
+  tileHoverClassName: string;
+  tileGroupHoverClassName: string;
+  tileAltClassName: string;
+  rowHoverClassName: string;
+  linkHoverClassName: string;
+  focusOutlineClassName: string;
+  focusRingClassName: string;
+  focusWithinBorderClassName: string;
+  focusWithinOutlineClassName: string;
+  focusWithinRingClassName: string;
+};
+
+export const calculatorAccentGreen: CalculatorAccentTheme = {
+  hex: "#108843",
+  textClassName: "text-[#108843]",
+  strongTextClassName: "text-[#007A2F]",
+  borderClassName: "border-[#108843]",
+  tileClassName: "bg-[#EAF7EF]",
+  tileHoverClassName: "hover:bg-[#D8F0E0]",
+  tileGroupHoverClassName: "group-hover:bg-[#D8F0E0]",
+  tileAltClassName: "bg-[#E4F6EB]",
+  rowHoverClassName: "hover:bg-[#F5FAF7]",
+  linkHoverClassName: "hover:text-[#0A6E35]",
+  focusOutlineClassName: "focus-visible:outline-[#108843]",
+  focusRingClassName: "focus-visible:ring-[#108843]/35",
+  focusWithinBorderClassName: "focus-within:border-[#108843]",
+  focusWithinOutlineClassName: "focus-within:outline-[#108843]",
+  focusWithinRingClassName: "focus-within:ring-[#108843]/20",
+};
+
 export type HomeCalculatorTheme = {
   sectionClassName: string;
   backdropClassName: string;
@@ -39,6 +82,7 @@ export type HomeCalculatorTheme = {
   collapseButtonClassName: string;
   helperTextClassName: string;
   linkClassName: string;
+  accent: CalculatorAccentTheme;
   slider: {
     labelClassName: string;
     trackClassName: string;
@@ -120,6 +164,7 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
         "text-slate-500 hover:bg-slate-50",
       helperTextClassName: "text-neutral-500",
       linkClassName: "text-brand-700 underline transition-colors hover:text-brand-800",
+      accent: calculatorAccentGreen,
       slider: {
         labelClassName: "text-neutral-600",
         trackClassName: "bg-slate-200",
@@ -185,6 +230,7 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
         "text-slate-500 hover:bg-red-50 hover:text-red-700",
       helperTextClassName: "text-slate-500",
       linkClassName: "text-red-700 underline transition-colors hover:text-red-800",
+      accent: calculatorAccentGreen,
       slider: {
         labelClassName: "text-slate-700",
         trackClassName: "bg-slate-200",
@@ -255,6 +301,7 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
         "text-emerald-50/70 hover:bg-white/10 hover:text-white",
       helperTextClassName: "text-emerald-50/60",
       linkClassName: "text-emerald-200 underline transition-colors hover:text-emerald-100",
+      accent: calculatorAccentGreen,
       slider: {
         labelClassName: "text-emerald-50/80",
         trackClassName: "bg-white/10",
@@ -323,6 +370,7 @@ export const homeMarketingVariants: Record<HomeMarketingVariantId, HomeMarketing
       collapseButtonClassName: "text-slate-500 hover:bg-slate-50",
       helperTextClassName: "text-slate-500",
       linkClassName: "text-brand-700 underline transition-colors hover:text-brand-800",
+      accent: calculatorAccentGreen,
       slider: {
         labelClassName: "text-[#213B56]",
         trackClassName: "bg-[#DCE4EB]",
