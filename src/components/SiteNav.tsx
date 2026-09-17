@@ -399,7 +399,7 @@ export function SiteNav() {
         {/* Drawer Header */}
         <div className="flex h-[77px] items-center justify-between px-4">
           <Link
-            href={"/" as any}
+            href={SMARTER_WAY_WEALTH_URL}
             aria-label="Smarter Way Wealth home"
             onClick={closeDrawer}
             className="inline-flex min-h-11 items-center"
