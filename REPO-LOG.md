@@ -6,6 +6,8 @@
 - Preserved approved copy, step line breaks, form behavior, and tracking. Uses the existing optimized image component with explicit dimensions and descriptive alt text.
 - Corrected both mobile and desktop top-logo destinations to https://smarterwaywealth.com/ as requested; footer logo and other navigation remain unchanged.
 - Removed the requested “Two things worth knowing first” section (minimum and state-registration explanations) from this page only. Formal footer disclosures, linked disclosure documents, and eligibility logic remain unchanged.
+- Replaced “Talk it through first.” with “See if you are a good fit for Smarter Way Wealth.” in the optional-meeting card.
+- Removed investment-amount collection and its conditional minimum message from the form and API; existing records are untouched. Updated the privacy collection description and tests. Name, email and state remain required; notes remain optional.
 
 ### 2026-09-17 — Become a client introduction
 - Replaced only the introductory paragraph beneath the price headline with David's approved copy: “See what truly independent advice looks like.”

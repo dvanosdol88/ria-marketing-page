@@ -39,12 +39,14 @@ test("direct onboarding is active and the paused experience is absent", () => {
 });
 
 test("the active form and privacy notice describe the same collected fields", () => {
-  for (const field of ["fullName", "email", "state", "assetBand", "notes"]) {
+  for (const field of ["fullName", "email", "state", "notes"]) {
     assert.match(formSource, new RegExp(`name="${field}"`));
     assert.match(apiSource, new RegExp(`body\\.${field}`));
   }
 
-  assert.match(privacySource, /name, email[\s\S]*state[\s\S]*investment-account range[\s\S]*optional note/);
+  assert.doesNotMatch(formSource, /assetBand|investment accounts/);
+  assert.doesNotMatch(apiSource, /assetBand|Please select a range/);
+  assert.match(privacySource, /name, email[\s\S]*state[\s\S]*optional note/);
   assert.match(privacySource, /Google Firebase to store direct[\s\S]*onboarding requests/);
   assert.match(formSource, /Please don&apos;t include account numbers, passwords/);
 });

@@ -41,7 +41,7 @@ export default function PrivacyPolicy() {
         </p>
         <p>
           If you use the Become a Client form, we receive your name, email
-          address, state, approximate investment-account range, and any
+          address, state, and any
           optional note you provide. We use that information to assess fit and
           follow up with the advisory agreement and required disclosures.
           Please do not include account numbers, passwords, or other sensitive

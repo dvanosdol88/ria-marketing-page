@@ -652,8 +652,8 @@ test("desktop and mobile nav expose the branded outbound firm link with tracking
   );
   assert.equal(
     navSource.match(/href=\{SMARTER_WAY_WEALTH_URL\}/g)?.length,
-    2,
-    "desktop and mobile drawer must each render the firm link",
+    4,
+    "desktop and mobile logos plus both navigation links must lead to the firm site",
   );
   assert.equal(
     navSource.match(/data-posthog-cta-label="Smarter Way Wealth"/g)?.length,

@@ -126,7 +126,7 @@ export default function BecomeAClientPage() {
         <div className="rounded-2xl bg-[#064B84] p-6 text-center text-white sm:p-8">
           <p className="text-lg font-bold">{signupCta.secondary.prompt}</p>
           <p className="mt-2 text-sm leading-6 text-white/85">
-            Talk it through first. Fifteen minutes over Zoom, nothing to
+            See if you are a good fit for Smarter Way Wealth. Fifteen minutes over Zoom, nothing to
             prepare, and nobody will try to sell you anything.
           </p>
           <a

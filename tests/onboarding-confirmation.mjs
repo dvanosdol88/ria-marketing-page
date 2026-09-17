@@ -18,7 +18,6 @@ try {
       await page.getByLabel("Your name").fill("Confirmation Test");
       await page.getByLabel("Email", { exact: true }).fill("confirmation@example.com");
       await page.getByLabel("What state do you live in?").selectOption("Connecticut");
-      await page.getByLabel("Roughly how much is in your investment accounts?").selectOption({ index: 2 });
       await page.getByRole("button", { name: "Send me the agreement" }).click();
       await page.waitForURL("**/become-a-client/confirmation**");
       const heading = page.getByRole("heading", { level: 1 });

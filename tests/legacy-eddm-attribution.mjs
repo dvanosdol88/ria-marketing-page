@@ -504,7 +504,8 @@ try {
   await directStartPage.getByLabel("Your name").waitFor();
   await directStartPage.getByLabel("Email").waitFor();
   await directStartPage.getByLabel("What state do you live in?").waitFor();
-  await directStartPage.getByLabel("Roughly how much is in your investment accounts?").waitFor();
+  await directStartPage.getByLabel("What state do you live in?").waitFor();
+  assert.equal(await directStartPage.getByLabel("Roughly how much is in your investment accounts?").count(), 0);
   await directStartPage.getByRole("button", { name: "Send me the agreement" }).waitFor();
   await directStartPage.close();
 

@@ -1,7 +1,7 @@
 import { getAdminDb } from "@/lib/firebaseAdmin";
 import { FieldValue } from "firebase-admin/firestore";
 import { NextRequest, NextResponse } from "next/server";
-import { ASSET_BANDS, US_STATES } from "@/config/becomeAClient";
+import { US_STATES } from "@/config/becomeAClient";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +13,6 @@ type SignupBody = {
   fullName?: unknown;
   email?: unknown;
   state?: unknown;
-  assetBand?: unknown;
   notes?: unknown;
 };
 
@@ -62,7 +61,6 @@ export async function POST(request: NextRequest) {
   const fullName = asTrimmedString(body.fullName, MAX_NAME);
   const email = asTrimmedString(body.email, MAX_NAME).toLowerCase();
   const state = asTrimmedString(body.state, MAX_NAME);
-  const assetBand = asTrimmedString(body.assetBand, MAX_NAME);
   const notes = asTrimmedString(body.notes, MAX_NOTES);
 
   if (!fullName) {
@@ -77,9 +75,6 @@ export async function POST(request: NextRequest) {
   if (!US_STATES.includes(state as (typeof US_STATES)[number])) {
     return NextResponse.json({ error: "Please select your state." }, { status: 400 });
   }
-  if (!ASSET_BANDS.includes(assetBand as (typeof ASSET_BANDS)[number])) {
-    return NextResponse.json({ error: "Please select a range." }, { status: 400 });
-  }
 
   // Record the lead BEFORE attempting delivery. Someone who never signs is
   // still a person David can follow up with — losing them because a mail
@@ -91,7 +86,6 @@ export async function POST(request: NextRequest) {
         fullName,
         email,
         state,
-        assetBand,
         notes,
         createdAt: FieldValue.serverTimestamp(),
         agreementDelivered: false,
