@@ -49,11 +49,13 @@ const STEPS = [
   },
   {
     title: "David sends one email",
-    body: "The advisory agreement to sign, with the firm's Form ADV Part 2 and Form CRS attached. No separate confirmation step to click through.",
+    body: "The advisory agreement to sign, with the firm's Form ADV Part 2 and Form CRS attached.",
+    secondLine: "No separate confirmation step to click through.",
   },
   {
     title: "You sign — and that's the start",
-    body: "Nothing is owed and nothing begins until you do. Your money stays where it is; Smarter Way Wealth never takes custody of client funds.",
+    body: "Nothing is owed and nothing begins until you do.",
+    secondLine: "Your money stays where it is; Smarter Way Wealth never takes custody of client funds.",
   },
 ];
 
@@ -73,8 +75,7 @@ export default function BecomeAClientPage() {
           One flat fee. $100 a month.
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-7 text-[#31465F] sm:text-lg">
-          No commissions, no products, and no percentage of your money. Your fee
-          stays exactly the same as your portfolio grows.
+          See what truly independent advice looks like.
         </p>
       </header>
 
@@ -93,7 +94,10 @@ export default function BecomeAClientPage() {
               </span>
               <div className="min-w-0">
                 <h2 className="text-base font-bold text-[#10233A]">{step.title}</h2>
-                <p className="mt-1 text-sm leading-6 text-[#31465F]">{step.body}</p>
+                <p className="mt-1 text-sm leading-6 text-[#31465F]">
+                  {step.body}
+                  {step.secondLine && <span className="block">{step.secondLine}</span>}
+                </p>
               </div>
             </li>
           ))}
