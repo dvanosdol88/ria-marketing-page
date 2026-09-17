@@ -13,7 +13,7 @@ import {
   type BluesAnswers,
   type BluesQuestionId,
 } from "@/config/onePercentBlues";
-import { formatCurrency, formatCurrencyFloored } from "@/lib/format";
+import { formatCurrency } from "@/lib/format";
 import { capturePostHogEvent } from "@/lib/posthog";
 import type { BluesOpeningProps } from "./BluesOpening";
 
@@ -147,7 +147,7 @@ export function BluesCheck({
                 className="mt-1 font-blues-serif text-[clamp(48px,14vw,84px)] font-bold leading-none tracking-[-0.03em] tabular-nums"
                 data-blues-savings={Math.round(savings)}
               >
-                {formatCurrencyFloored(savings)}
+                {formatCurrency(savings)}
                 <a
                   href={disclaimerHref}
                   aria-label="See the calculator disclaimer"

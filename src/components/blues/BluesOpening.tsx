@@ -1,7 +1,7 @@
 "use client";
 
 import { bluesCopy, bluesDiagnoses } from "@/config/onePercentBlues";
-import { formatCurrencyFloored } from "@/lib/format";
+import { formatCurrency } from "@/lib/format";
 import { BluesCheck } from "./BluesCheck";
 
 export type BluesOpeningProps = {
@@ -41,7 +41,7 @@ export function BluesOpening(props: BluesOpeningProps) {
         <noscript>
           <p className="mt-4 text-[15px] leading-6 text-white/90">
             {bluesDiagnoses.full.heading} With the calculator&rsquo;s starting assumptions the projected{" "}
-            {props.years}-year difference is {formatCurrencyFloored(props.savings)}. The cure:{" "}
+            {props.years}-year difference is {formatCurrency(props.savings)}. The cure:{" "}
             {bluesCopy.tiles[1].body}{" "}
             <a href={bluesCopy.primaryCta.href} className="!text-white underline">
               {bluesCopy.primaryCta.label}
