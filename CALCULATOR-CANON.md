@@ -215,7 +215,7 @@ above).
 | This repo | Sister repo equivalent | What must stay in sync |
 |---|---|---|
 | `src/components/CostAnalysisCalculator.tsx` | `src/components/CostAnalysisCalculator.tsx` | Control layout below the chart, 3-row results shape, range-hint presentation, share-button treatment |
-| `src/components/HomeCalculatorExperience.tsx` (`SeeOurMathBento`'s gap-breakdown block) | `src/components/HomeCalculatorExperience.tsx` | Gray fee-derivation annotation wording/guard, "Actual fees"/"Lost compounding" bar-breakdown copy and colors, canon share-stack mount (ShareMyResults; since v3 the SocialShareRow renders only inside its panel, with no page-level duplicate) placement relative to the poll and the details entry point |
+| `src/components/HomeCalculatorExperience.tsx` (`SeeOurMathBento`'s gap-breakdown block) | `src/components/HomeCalculatorExperience.tsx` | Gray fee-derivation annotation wording/guard, "Actual fees"/"Lost compounding" bar-breakdown copy and colors, canon share-stack mount (ShareMyResults; since v3 the SocialShareRow renders only inside its panel, with no page-level duplicate) placement relative to the poll and the details entry point; since 2026-09-17 the final-c layout reads its accent colours from `theme.accent` (`CalculatorAccentTheme`, defaults = the previous green literals, via a module-private context) so the One Percent Blues front door can re-skin it — mirror the type, not the blue values |
 
 ## Register semantics (mirrors the sister repo's, same one-version-grace)
 
