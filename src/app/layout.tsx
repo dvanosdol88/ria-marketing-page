@@ -3,57 +3,15 @@ import { ViewTransitions } from "next-view-transitions";
 import { Suspense } from "react";
 import "./globals.css";
 import { inter, dmSans } from "./fonts";
-import { SiteNav } from "@/components/SiteNav";
-import { SiteFooter } from "@/components/SiteFooter";
 import { PostHogCtaTracker } from "@/components/PostHogCtaTracker";
 import { SavingsBarProvider } from "@/components/SavingsBarContext";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { PostHogPageView } from "@/components/PostHogPageView";
 
-const siteJsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "FinancialService",
-    "@id": "https://youarepayingtoomuch.com/#smarter-way-wealth",
-    name: "Smarter Way Wealth, LLC",
-    url: "https://smarterwaywealth.com/",
-    description:
-      "Connecticut-registered investment adviser offering credentialed fiduciary planning for a flat monthly fee.",
-    identifier: "CRD #342140",
-    sameAs: ["https://adviserinfo.sec.gov/firm/summary/342140"],
-    founder: {
-      "@type": "Person",
-      name: "David J. Van Osdol",
-      jobTitle: "Founder",
-      honorificSuffix: "CFA, CFP",
-    },
-    contactPoint: {
-      "@type": "ContactPoint",
-      email: "compliance@smarterwaywealth.com",
-      telephone: "+1-646-418-2867",
-      contactType: "Compliance",
-    },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": "https://youarepayingtoomuch.com/#website",
-    name: "You Are Paying Too Much",
-    url: "https://youarepayingtoomuch.com/",
-    about: { "@id": "https://youarepayingtoomuch.com/#smarter-way-wealth" },
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "@id": "https://youarepayingtoomuch.com/#fee-calculator",
-    name: "Investment Fee Calculator",
-    url: "https://youarepayingtoomuch.com/",
-    applicationCategory: "FinanceApplication",
-    operatingSystem: "Web",
-    isAccessibleForFree: true,
-    about: { "@id": "https://youarepayingtoomuch.com/#smarter-way-wealth" },
-  },
-];
+/* The site's header, footer and JSON-LD moved to src/app/(site)/layout.tsx on
+   2026-09-17 so the One Percent Blues front door (src/app/(blues)) can render
+   its own chrome. This root layout carries only what BOTH front doors share:
+   the document, fonts, analytics and providers. */
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://youarepayingtoomuch.com"),
@@ -113,18 +71,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
-        />
-      </head>
       <body className={`${inter.variable} ${dmSans.variable} bg-[#EEF0F5] text-neutral-900`}>
         <PostHogProvider>
           <ViewTransitions>
             <SavingsBarProvider>
               <PostHogCtaTracker />
-              <SiteNav />
               {/* ProgressiveStickyBar (the pinned "Potential savings" line and
                   the Save / Upgrade / Improve strip under it) is deliberately
                   not rendered. It covered 72px of every scrolled screen and cut
@@ -133,8 +84,7 @@ export default function RootLayout({
               <Suspense fallback={null}>
                 <PostHogPageView />
               </Suspense>
-              <div className="min-h-screen">{children}</div>
-              <SiteFooter />
+              {children}
             </SavingsBarProvider>
           </ViewTransitions>
         </PostHogProvider>

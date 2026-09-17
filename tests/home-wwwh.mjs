@@ -21,7 +21,7 @@ const [
   faqDataSource,
   feeQuoteDeckSource,
 ] = await Promise.all([
-  readSource("../src/app/page.tsx"),
+  readSource("../src/app/(site)/page.tsx"),
   readSource("../src/app/layout.tsx"),
   readSource("../src/components/CostAnalysisCalculator.tsx"),
   readSource("../src/components/HomeCalculatorExperience.tsx"),

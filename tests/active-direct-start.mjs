@@ -6,12 +6,12 @@ function readSource(path) {
   return readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 }
 
-const pageSource = readSource("src/app/become-a-client/page.tsx");
+const pageSource = readSource("src/app/(site)/become-a-client/page.tsx");
 const apiSource = readSource("src/app/api/become-a-client/route.ts");
 const formSource = readSource("src/components/BecomeAClientForm.tsx");
 const navSource = readSource("src/components/SiteNav.tsx");
 const signupConfigSource = readSource("src/config/signupCta.ts");
-const privacySource = readSource("src/app/privacy/page.tsx");
+const privacySource = readSource("src/app/(site)/privacy/page.tsx");
 const llmsSource = readSource("public/llms.txt");
 const sitemapSource = readSource("public/sitemap.xml");
 
