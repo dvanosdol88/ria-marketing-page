@@ -123,6 +123,15 @@ try {
   html = await text("/?portfolio=2000000&years=20&growth=8&fee=1", blues);
   assert.ok(html.includes("/api/og/blues?"), "the blue share card must carry the scenario query");
   assert.ok(!html.includes("$788,306"), "a custom scenario must not show the default number");
+  // Next appends the unconsumed `has` host match to the rewritten query; the
+  // page must drop it so it never reaches the address bar or the share links.
+  // (The router's own serialized request URL inside the page payload still
+  // carries it; that string never reaches the address bar, which the client
+  // router takes from window.location.)
+  assert.ok(
+    !/(href|content|src)="[^"]*host=onepercentblues.com/.test(html),
+    "the rewrite's host value must not leak into the page's links, images or share URLs",
+  );
   assert.match(await text("/robots.txt", blues), /Sitemap: https:\/\/onepercentblues\.com\/sitemap\.xml/);
   assert.match(await text("/sitemap.xml", blues), /<loc>https:\/\/onepercentblues\.com\/<\/loc>/);
   assert.match(await text("/llms.txt", blues), /# One Percent Blues/);
