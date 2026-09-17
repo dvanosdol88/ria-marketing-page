@@ -16,6 +16,11 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-09-17 — One Percent Blues: David's first-look fixes (question 3 wording, calculator controls)
+**Agent:** Claude (Fable 5.1, Claude Code desktop) | **Surface:** onepercentblues.com | **PR:** [#273](https://github.com/dvanosdol88/ria-marketing-page/pull/273) (`210a5c7`) | **Status:** deployed and verified on the apex
+- changed: question 3 read as a percentage ("Did your fee go up when your portfolio did?" — David: "it probably did not go up"); it now asks **"Did the amount you actually pay go up?"**, his wording. The four calculator stepper controls were getting lost in the white card on the blue page; they now carry a blue outline, pale-blue fill and blue +/− (`SimpleRangeControl` takes the three class strings as optional props whose defaults are its previous literals, so the green site is unchanged). Spec table and source locks follow the wording.
+- verified: type check, lint, blues locks 5/5, home locks 26/26, host-routing suite and production build locally; platform read after merge: production deployment `dpl_4eyJLfhbJs8dzxGD43XhRjhmU9L1`, READY, commit == `origin/main` `210a5c7`, served page carries that build id; live page shows the new wording and computed control styles (border rgb(37,99,235), fill rgb(238,243,255)) at 375px and 1280px; screenshots of the live apex sent to David.
+
 ### 2026-09-17 — Archived four sessions of uncommitted leftovers
 **Agent:** Claude (Fable 5.1, Claude Code desktop) | **Surface:** repo hygiene | **Status:** docs and archive only; nothing ships to the site
 - kept: the paid-ads plan and copy pack Claude wrote on 2026-08-19 (`docs/marketing/2026-09_paid-ads-test-plan.md`, `…-copy-pack.md` — "The 1% Test", now the source for the One Percent Blues ad links); the v5/v6 motion concepts ("The Market Sets the Average", "The Compounding Cost Wedge") that continue the v1–v4 redesign series, with their two charts and the verification screenshots (`output/`).
