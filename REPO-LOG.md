@@ -16,6 +16,12 @@
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
 
+### 2026-09-17 — Archived four sessions of uncommitted leftovers
+**Agent:** Claude (Fable 5.1, Claude Code desktop) | **Surface:** repo hygiene | **Status:** docs and archive only; nothing ships to the site
+- kept: the paid-ads plan and copy pack Claude wrote on 2026-08-19 (`docs/marketing/2026-09_paid-ads-test-plan.md`, `…-copy-pack.md` — "The 1% Test", now the source for the One Percent Blues ad links); the v5/v6 motion concepts ("The Market Sets the Average", "The Compounding Cost Wedge") that continue the v1–v4 redesign series, with their two charts and the verification screenshots (`output/`).
+- archived: five Upgrade-page mock layouts from 2026-07-07 under `design-candidates/upgrade-mocks/` (now lint-ignored — they were the "11 local lint errors" two earlier entries mention), and an icon-format copy of the WSJ-style portrait from 2026-09-13 moved out of the public folder to `design-candidates/portraits/`.
+- dropped: a 2026-08-24 phone screenshot of the home page and a line-endings-only "modification" of `src/data/faq.ts` (content identical).
+
 ### 2026-09-17 — One Percent Blues: a blue front door on onepercentblues.com
 **Agent:** Claude (Fable 5.1, Claude Code desktop) | **Surface:** new campaign page + site chrome split | **PR:** [#268](https://github.com/dvanosdol88/ria-marketing-page/pull/268) (`fcd2663`) + [#269](https://github.com/dvanosdol88/ria-marketing-page/pull/269) (`d4f9b53`) | **Status:** deployed and verified on both apex domains
 - what: David owns onepercentblues.com and 1percentblues.com and approved Concept C ("Feeling Blue?") from the 2026-09-17 concept round with the headline **Got the 1% Blues?**. The page opens with a 3-question yes/no check, shows a diagnosis card once all three are answered (the live projected difference — $788,306 on the defaults — with the site's receipt label, the $100/month cure, "Get the cure — meet David" and a link down to the calculator), then the same calculator, share stack, poll, conversion block, three FAQ questions, disclaimer and regulatory compliance footer as the green home, on a deep-blue-to-sky gradient with a Fraunces headline face.
