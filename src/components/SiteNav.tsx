@@ -271,7 +271,7 @@ export function SiteNav() {
                 It grows gently with the viewport, reaching its full mobile
                 size without colliding with the 44px menu and signup targets. */}
             <Link
-              href={"/" as any}
+              href={SMARTER_WAY_WEALTH_URL}
               className="absolute left-1/2 flex min-h-11 -translate-x-1/2 items-center"
               aria-label="Smarter Way Wealth home"
             >
@@ -298,7 +298,7 @@ export function SiteNav() {
           }`}>
             {/* Desktop logo — tiered implementation */}
             <Link
-              href={"/" as any}
+              href={SMARTER_WAY_WEALTH_URL}
               className="inline-flex min-h-11 shrink-0 items-center rounded-md transition-opacity duration-300 hover:opacity-90"
               aria-label="Smarter Way Wealth home"
             >

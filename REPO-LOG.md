@@ -4,6 +4,7 @@
 **Agent:** Codex | **Surface:** Become a Client | **Status:** not deployed at commit; production verification follows merge
 - Added the existing David headshot beside the introduction on desktop, with a compact stacked photo on smaller screens to preserve headline readability.
 - Preserved approved copy, step line breaks, form behavior, and tracking. Uses the existing optimized image component with explicit dimensions and descriptive alt text.
+- Corrected both mobile and desktop top-logo destinations to https://smarterwaywealth.com/ as requested; footer logo and other navigation remain unchanged.
 
 ### 2026-09-17 — Become a client introduction
 - Replaced only the introductory paragraph beneath the price headline with David's approved copy: “See what truly independent advice looks like.”
