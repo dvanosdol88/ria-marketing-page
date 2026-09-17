@@ -98,7 +98,9 @@ try {
     assert.ok(html.includes(needle), `/blues must contain ${needle}`);
   }
   assert.ok(!html.includes('aria-label="Mobile navigation"'), "the green nav must not render on the blue page");
-  assert.ok(!html.includes("What would you do with"), "the green hero must not render on the blue page");
+  // The green hero is the "opening-promise" section; "What would you do with"
+  // alone would also match the poll question inside the shared calculator.
+  assert.ok(!html.includes('data-url-eval-section="opening-promise"'), "the green hero must not render on the blue page");
   assert.ok(html.includes("<noscript>"), "the number and the cure must be readable without JavaScript");
   // Every disclaimer marker on the blue page must resolve (same guard as
   // tests/home-disclosures-ssr.mjs keeps on the green home).
@@ -137,7 +139,13 @@ try {
       statuses.includes(response.status),
       `${path} (${headers.Host ?? "default host"}) answered ${response.status}, expected ${statuses.join("/")}`,
     );
-    assert.equal(response.headers.location, location, `${path} (${headers.Host ?? "default host"})`);
+    // Compared as parsed URLs: Next writes `https://host?q` for an empty :path*,
+    // which every browser reads as `https://host/?q`.
+    assert.equal(
+      new URL(response.headers.location ?? "", "http://invalid.test").href,
+      new URL(location).href,
+      `${path} (${headers.Host ?? "default host"})`,
+    );
   };
   await expectRedirect("/our-math", blues, "https://youarepayingtoomuch.com/our-math", [307]);
   await expectRedirect("/become-a-client", blues, "https://youarepayingtoomuch.com/become-a-client", [307]);
@@ -151,7 +159,7 @@ try {
   // 4. The green home is untouched and the share card renders.
   html = await text("/");
   assert.ok(
-    html.includes("What would you do with") && html.includes('aria-label="Mobile navigation"'),
+    html.includes('data-url-eval-section="opening-promise"') && html.includes('aria-label="Mobile navigation"'),
     "the green home must still render its hero and nav",
   );
   assert.ok(!html.includes('data-theme="blues"'), "the green home must not carry the blue wrapper");
