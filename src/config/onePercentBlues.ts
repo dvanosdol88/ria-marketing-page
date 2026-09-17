@@ -63,7 +63,7 @@ export const bluesCheckQuestions: ReadonlyArray<{
   },
   {
     id: "q3",
-    prompt: "Did your fee go up when your portfolio did?",
+    prompt: "Did the amount you actually pay go up?",
     yesLabel: "Yes",
     noLabel: "No / not sure",
   },
@@ -136,6 +136,18 @@ const bluesAccent: CalculatorAccentTheme = {
   focusWithinOutlineClassName: "focus-within:outline-[#2563EB]",
   focusWithinRingClassName: "focus-within:ring-[#2563EB]/20",
 };
+
+/** The calculator's four stepper controls (portfolio, years, growth, fee)
+ *  sit in a white card on the blue page and were getting lost (David,
+ *  2026-09-17). Blue outline, pale-blue fill and blue +/- so they read as
+ *  the thing to touch. Green site keeps its own defaults. */
+export const bluesControlClasses = {
+  frameClassName:
+    "rounded-md border-[1.5px] border-[#2563EB] bg-[#EEF3FF] shadow-[0_1px_0_rgba(37,99,235,0.18)] focus-within:border-[#1E3A8A] focus-within:ring-2 focus-within:ring-[#2563EB]/30",
+  buttonClassName:
+    "text-[#1D4ED8] transition hover:bg-[#DCE6FF] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent",
+  dividerClassName: "border-[#C7D7FF]",
+} as const;
 
 /** Same shape as the green variants' `calculator` theme, blue values. The
  *  section and backdrop are transparent so the page gradient shows through
