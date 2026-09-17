@@ -1,0 +1,1055 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="An animated explanation of why investor dollars collectively earn the market return before costs, and less after costs."
+    />
+    <link rel="icon" href="data:," />
+    <title>The Market Sets the Average — Motion Concept</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #0b2b27;
+        --muted: #526763;
+        --green: #00a540;
+        --green-dark: #087735;
+        --green-soft: #e2f4e7;
+        --rust: #c65f3f;
+        --rust-dark: #9d442c;
+        --rust-soft: #f8e8e1;
+        --paper: #f7f8f3;
+        --white: #ffffff;
+        --line: #d9e1dc;
+        --shadow: 0 30px 70px rgba(11, 43, 39, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background:
+          radial-gradient(circle at 50% 3%, rgba(0, 165, 64, 0.1), transparent 32rem),
+          var(--paper);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .page-shell {
+        width: min(100% - 32px, 1080px);
+        margin: 0 auto;
+        padding: 28px 0 64px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--ink);
+        font-size: 0.72rem;
+        font-weight: 850;
+        letter-spacing: 0.16em;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        position: relative;
+        width: 26px;
+        height: 26px;
+        border: 2px solid var(--green);
+        border-radius: 50%;
+      }
+
+      .brand-mark::before,
+      .brand-mark::after {
+        position: absolute;
+        content: "";
+        background: var(--green);
+        border-radius: 999px;
+      }
+
+      .brand-mark::before {
+        width: 2px;
+        height: 13px;
+        left: 11px;
+        top: 4px;
+        transform: rotate(35deg);
+      }
+
+      .brand-mark::after {
+        width: 9px;
+        height: 2px;
+        right: 3px;
+        bottom: 6px;
+        transform: rotate(-28deg);
+      }
+
+      .intro {
+        max-width: 790px;
+        margin: 54px auto 36px;
+        text-align: center;
+      }
+
+      .eyebrow {
+        margin: 0 0 14px;
+        color: var(--green-dark);
+        font-size: 0.76rem;
+        font-weight: 850;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 760px;
+        margin: 0 auto;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2.55rem, 8vw, 5.8rem);
+        font-weight: 500;
+        letter-spacing: -0.055em;
+        line-height: 0.96;
+        text-wrap: balance;
+      }
+
+      .intro-copy {
+        max-width: 670px;
+        margin: 22px auto 0;
+        color: var(--muted);
+        font-size: clamp(1rem, 2.6vw, 1.2rem);
+        line-height: 1.65;
+        text-wrap: pretty;
+      }
+
+      .story-wrap {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+
+      .story-card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(11, 43, 39, 0.08);
+        border-radius: 30px;
+        background: var(--white);
+        box-shadow: var(--shadow);
+        isolation: isolate;
+      }
+
+      .story-card::before {
+        position: absolute;
+        z-index: -1;
+        width: 380px;
+        height: 380px;
+        right: -210px;
+        top: -210px;
+        border-radius: 50%;
+        background: rgba(0, 165, 64, 0.07);
+        content: "";
+      }
+
+      #market-average-motion {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4 / 5;
+        opacity: 1;
+        transition: opacity 160ms ease;
+      }
+
+      #market-average-motion.preparing {
+        opacity: 0;
+      }
+
+      #market-average-motion svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      #scene-two,
+      #weighted-center,
+      #final-takeaway {
+        opacity: 0;
+      }
+
+      #market-average-motion.static-end #scene-one,
+      #market-average-motion.static-end #weighted-center {
+        opacity: 0;
+      }
+
+      #market-average-motion.static-end #scene-two,
+      #market-average-motion.static-end #final-takeaway {
+        opacity: 1;
+      }
+
+      .svg-kicker {
+        fill: var(--green-dark);
+        font-size: 14px;
+        font-weight: 850;
+        letter-spacing: 2.4px;
+      }
+
+      .svg-title {
+        fill: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 42px;
+        font-weight: 500;
+        letter-spacing: -1.4px;
+      }
+
+      .svg-label {
+        fill: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+      }
+
+      .svg-small {
+        fill: var(--muted);
+        font-size: 15px;
+        font-weight: 650;
+      }
+
+      .svg-body {
+        fill: var(--ink);
+        font-size: 20px;
+        font-weight: 720;
+      }
+
+      .svg-body-strong {
+        fill: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 29px;
+        font-weight: 600;
+        letter-spacing: -0.5px;
+      }
+
+      .svg-green {
+        fill: var(--green-dark);
+      }
+
+      .svg-rust {
+        fill: var(--rust-dark);
+      }
+
+      .benchmark-line {
+        stroke: var(--green);
+        stroke-width: 4;
+      }
+
+      .trail {
+        stroke: #b9c9c0;
+        stroke-width: 2;
+        stroke-dasharray: 5 7;
+      }
+
+      .dot-dark {
+        fill: var(--ink);
+      }
+
+      .dot-green {
+        fill: var(--green);
+      }
+
+      .dot-mid {
+        fill: #66877e;
+      }
+
+      .story-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 16px 18px 18px;
+        border-top: 1px solid var(--line);
+        background: rgba(247, 248, 243, 0.7);
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 0 4px rgba(0, 165, 64, 0.13);
+      }
+
+      .replay {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid rgba(11, 43, 39, 0.14);
+        border-radius: 999px;
+        padding: 10px 15px;
+        background: var(--white);
+        color: var(--ink);
+        cursor: pointer;
+        font-size: 0.84rem;
+        font-weight: 800;
+        transition:
+          border-color 160ms ease,
+          transform 160ms ease,
+          box-shadow 160ms ease;
+      }
+
+      .replay:hover {
+        border-color: rgba(0, 165, 64, 0.55);
+        box-shadow: 0 8px 20px rgba(11, 43, 39, 0.08);
+        transform: translateY(-1px);
+      }
+
+      .replay:focus-visible {
+        outline: 3px solid rgba(0, 165, 64, 0.3);
+        outline-offset: 3px;
+      }
+
+      .replay[hidden] {
+        display: none;
+      }
+
+      .disclosure {
+        max-width: 650px;
+        margin: 16px auto 0;
+        color: #667873;
+        font-size: 0.76rem;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      .implementation-notes {
+        display: grid;
+        gap: 12px;
+        max-width: 900px;
+        margin: 48px auto 0;
+      }
+
+      .note {
+        padding: 18px;
+        border: 1px solid rgba(11, 43, 39, 0.09);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .note-number {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--green-dark);
+        font-size: 0.7rem;
+        font-weight: 900;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+
+      .note strong {
+        display: block;
+        margin-bottom: 5px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 1.2rem;
+      }
+
+      .note p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.55;
+      }
+
+      .sr-only {
+        position: absolute;
+        overflow: hidden;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        border: 0;
+        margin: -1px;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+      }
+
+      @media (min-width: 760px) {
+        .page-shell {
+          padding-top: 40px;
+        }
+
+        .implementation-notes {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        .note {
+          padding: 22px;
+        }
+      }
+
+      @media (max-width: 420px) {
+        .page-shell {
+          width: min(100% - 20px, 1080px);
+          padding-top: 20px;
+        }
+
+        .intro {
+          margin-top: 38px;
+        }
+
+        .story-card {
+          border-radius: 22px;
+        }
+
+        .story-controls {
+          padding: 12px 13px 14px;
+        }
+
+        .status {
+          font-size: 0.66rem;
+          letter-spacing: 0.08em;
+        }
+
+        .replay {
+          padding-inline: 13px;
+        }
+
+        .svg-kicker {
+          font-size: 22px;
+          letter-spacing: 1.2px;
+        }
+
+        .svg-label {
+          font-size: 24px;
+          letter-spacing: 0.7px;
+        }
+
+        .svg-small,
+        .svg-body {
+          font-size: 24px;
+        }
+
+        .svg-body-strong {
+          font-size: 31px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+    <noscript>
+      <style>
+        #market-average-motion.preparing {
+          opacity: 1;
+        }
+
+        #market-average-motion #scene-one,
+        #market-average-motion #weighted-center {
+          opacity: 0;
+        }
+
+        #market-average-motion #scene-two,
+        #market-average-motion #final-takeaway {
+          opacity: 1;
+        }
+
+        .replay {
+          display: none;
+        }
+      </style>
+    </noscript>
+  </head>
+  <body>
+    <main class="page-shell">
+      <div class="brand" aria-label="Smarter Way Wealth">
+        <span class="brand-mark" aria-hidden="true"></span>
+        SMARTER WAY WEALTH
+      </div>
+
+      <header class="intro">
+        <p class="eyebrow">How the market math works</p>
+        <h1>The market sets the average. Costs pull it down.</h1>
+        <p class="intro-copy">
+          Investors take different paths. But all investor dollars, weighted together, equal the
+          market return before costs.
+        </p>
+      </header>
+
+      <section class="story-wrap" aria-labelledby="story-heading">
+        <h2 id="story-heading" class="sr-only">Animated market return and cost explanation</h2>
+        <div class="story-card">
+          <div
+            id="market-average-motion"
+            class="preparing"
+            data-composition-id="market-average-motion"
+            data-start="0"
+            data-width="720"
+            data-height="900"
+            data-duration="6"
+          >
+            <svg
+              viewBox="0 0 720 900"
+              role="img"
+              aria-labelledby="motion-title motion-description"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              <title id="motion-title">Market average before and after investor costs</title>
+              <desc id="motion-description">
+                Different investor results spread around the market return. Their dollars combine
+                at the market return before costs. A costs and fees band then moves the net investor
+                return below the market return.
+              </desc>
+
+              <defs>
+                <filter id="soft-shadow" x="-60%" y="-60%" width="220%" height="220%">
+                  <feDropShadow
+                    dx="0"
+                    dy="8"
+                    stdDeviation="10"
+                    flood-color="#0b2b27"
+                    flood-opacity="0.14"
+                  />
+                </filter>
+                <filter id="green-glow" x="-80%" y="-80%" width="260%" height="260%">
+                  <feDropShadow
+                    dx="0"
+                    dy="0"
+                    stdDeviation="13"
+                    flood-color="#00a540"
+                    flood-opacity="0.28"
+                  />
+                </filter>
+                <marker
+                  id="arrow-rust"
+                  viewBox="0 0 10 10"
+                  refX="9"
+                  refY="5"
+                  markerWidth="7"
+                  markerHeight="7"
+                  orient="auto-start-reverse"
+                >
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#c65f3f"></path>
+                </marker>
+              </defs>
+
+              <g
+                id="scene-one"
+                data-start="0"
+                data-duration="3.35"
+                data-track-index="1"
+                aria-hidden="true"
+              >
+                <g id="before-heading">
+                  <rect x="48" y="42" width="128" height="34" rx="17" fill="#e2f4e7"></rect>
+                  <text x="112" y="64" text-anchor="middle" class="svg-kicker">BEFORE COSTS</text>
+                  <text x="48" y="126" class="svg-title">
+                    <tspan x="48" dy="0">Different results.</tspan>
+                    <tspan x="48" dy="48">One weighted center.</tspan>
+                  </text>
+                </g>
+
+                <text x="48" y="237" class="svg-label">LOWER</text>
+                <text x="672" y="237" text-anchor="end" class="svg-label">HIGHER</text>
+
+                <line
+                  id="market-line"
+                  class="benchmark-line"
+                  x1="360"
+                  y1="250"
+                  x2="360"
+                  y2="592"
+                ></line>
+                <g id="market-label">
+                  <rect
+                    x="270"
+                    y="219"
+                    width="180"
+                    height="38"
+                    rx="19"
+                    fill="#ffffff"
+                    stroke="#00a540"
+                    stroke-width="2"
+                  ></rect>
+                  <text
+                    x="360"
+                    y="243"
+                    text-anchor="middle"
+                    class="svg-label svg-green"
+                  >
+                    MARKET RETURN
+                  </text>
+                </g>
+
+                <g id="dot-trails" aria-hidden="true">
+                  <line class="trail" x1="360" y1="294" x2="176" y2="294"></line>
+                  <line class="trail" x1="360" y1="330" x2="544" y2="330"></line>
+                  <line class="trail" x1="360" y1="386" x2="238" y2="386"></line>
+                  <line class="trail" x1="360" y1="421" x2="482" y2="421"></line>
+                  <line class="trail" x1="360" y1="474" x2="303" y2="474"></line>
+                  <line class="trail" x1="360" y1="505" x2="417" y2="505"></line>
+                  <line class="trail" x1="360" y1="552" x2="110" y2="552"></line>
+                  <line class="trail" x1="360" y1="567" x2="610" y2="567"></line>
+                </g>
+
+                <g id="investor-dots" aria-hidden="true">
+                  <circle class="investor-dot dot-green" cx="176" cy="294" r="25"></circle>
+                  <circle class="investor-dot dot-green" cx="544" cy="330" r="25"></circle>
+                  <circle class="investor-dot dot-dark" cx="238" cy="386" r="18"></circle>
+                  <circle class="investor-dot dot-dark" cx="482" cy="421" r="18"></circle>
+                  <circle class="investor-dot dot-mid" cx="303" cy="474" r="12"></circle>
+                  <circle class="investor-dot dot-mid" cx="417" cy="505" r="12"></circle>
+                  <circle class="investor-dot dot-dark" cx="110" cy="552" r="21"></circle>
+                  <circle class="investor-dot dot-dark" cx="610" cy="567" r="21"></circle>
+                  <circle class="investor-dot dot-green" cx="360" cy="347" r="10"></circle>
+                </g>
+
+                <g id="weight-legend">
+                  <circle cx="58" cy="631" r="9" fill="#66877e"></circle>
+                  <text x="78" y="636" class="svg-small">
+                    Dot area represents relative dollars invested
+                  </text>
+                </g>
+
+                <g id="scene-one-summary">
+                  <line x1="48" y1="677" x2="672" y2="677" stroke="#d9e1dc" stroke-width="2"></line>
+                  <text x="48" y="718" class="svg-label svg-green">
+                    TOGETHER, NOT INDIVIDUALLY
+                  </text>
+                  <text x="48" y="760" class="svg-body-strong">
+                    <tspan x="48" dy="0">Weighted investor dollars</tspan>
+                    <tspan x="48" dy="38">equal the market return.</tspan>
+                  </text>
+                </g>
+              </g>
+
+              <g id="weighted-center" aria-hidden="true">
+                <circle
+                  id="center-halo"
+                  cx="360"
+                  cy="422"
+                  r="69"
+                  fill="none"
+                  stroke="#00a540"
+                  stroke-width="2"
+                  opacity="0.22"
+                ></circle>
+                <circle
+                  id="center-dot"
+                  cx="360"
+                  cy="422"
+                  r="42"
+                  fill="#00a540"
+                  filter="url(#green-glow)"
+                ></circle>
+                <path
+                  d="M343 423 L355 435 L380 408"
+                  fill="none"
+                  stroke="#ffffff"
+                  stroke-width="7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </g>
+
+              <g
+                id="scene-two"
+                data-start="3.2"
+                data-duration="2.8"
+                data-track-index="2"
+                aria-hidden="true"
+              >
+                <g id="after-heading">
+                  <rect x="48" y="42" width="118" height="34" rx="17" fill="#f8e8e1"></rect>
+                  <text
+                    x="107"
+                    y="64"
+                    text-anchor="middle"
+                    class="svg-kicker svg-rust"
+                  >
+                    AFTER COSTS
+                  </text>
+                  <text x="48" y="126" class="svg-title">
+                    <tspan x="48" dy="0">Costs pull the</tspan>
+                    <tspan x="48" dy="48">weighted result down.</tspan>
+                  </text>
+                </g>
+
+                <text x="48" y="270" class="svg-label">LOWER NET RETURN</text>
+                <text x="672" y="270" text-anchor="end" class="svg-label">MARKET RETURN</text>
+
+                <line x1="70" y1="393" x2="650" y2="393" stroke="#d9e1dc" stroke-width="4"></line>
+                <line
+                  x1="540"
+                  y1="290"
+                  x2="540"
+                  y2="509"
+                  stroke="#00a540"
+                  stroke-width="3"
+                  stroke-dasharray="8 8"
+                ></line>
+
+                <circle
+                  id="gross-ghost"
+                  cx="540"
+                  cy="393"
+                  r="27"
+                  fill="#ffffff"
+                  stroke="#00a540"
+                  stroke-width="4"
+                ></circle>
+                <text x="540" y="545" text-anchor="middle" class="svg-small svg-green">
+                  Before costs
+                </text>
+
+                <g id="cost-band">
+                  <rect
+                    x="290"
+                    y="353"
+                    width="250"
+                    height="80"
+                    rx="40"
+                    fill="#f8e8e1"
+                    stroke="#c65f3f"
+                    stroke-width="2"
+                  ></rect>
+                  <line
+                    x1="510"
+                    y1="393"
+                    x2="320"
+                    y2="393"
+                    stroke="#c65f3f"
+                    stroke-width="4"
+                    marker-end="url(#arrow-rust)"
+                  ></line>
+                  <text x="415" y="333" text-anchor="middle" class="svg-label svg-rust">
+                    COSTS + FEES
+                  </text>
+                </g>
+
+                <g id="net-result" filter="url(#soft-shadow)">
+                  <circle id="net-dot" cx="290" cy="393" r="31" fill="#0b2b27"></circle>
+                  <circle cx="290" cy="393" r="10" fill="#ffffff"></circle>
+                </g>
+                <text
+                  id="net-label"
+                  x="290"
+                  y="493"
+                  text-anchor="middle"
+                  class="svg-label"
+                >
+                  NET INVESTOR RETURN
+                </text>
+
+                <g id="equation-card">
+                  <rect
+                    x="48"
+                    y="604"
+                    width="624"
+                    height="153"
+                    rx="24"
+                    fill="#f7f8f3"
+                    stroke="#d9e1dc"
+                    stroke-width="2"
+                  ></rect>
+                  <text x="78" y="647" class="svg-label">THE UNAVOIDABLE EQUATION</text>
+                  <g id="equation">
+                    <text x="78" y="704" class="svg-body svg-green">MARKET</text>
+                    <text x="190" y="704" class="svg-body">−</text>
+                    <text x="220" y="704" class="svg-body svg-rust">COSTS &amp; FEES</text>
+                    <text x="411" y="704" class="svg-body">=</text>
+                    <text x="449" y="704" class="svg-body">NET RETURN</text>
+                  </g>
+                </g>
+
+                <g id="final-takeaway">
+                  <text x="360" y="795" text-anchor="middle" class="svg-body-strong">
+                    What you keep is what compounds.
+                  </text>
+                  <text x="360" y="836" text-anchor="middle" class="svg-small">
+                    <tspan x="360" dy="0">After costs, the average investor dollar</tspan>
+                    <tspan x="360" dy="27">must finish below the market.</tspan>
+                  </text>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <div class="story-controls">
+            <span class="status" id="story-status">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span id="status-label">Ready to play</span>
+            </span>
+            <button class="replay" id="replay" type="button">
+              <span aria-hidden="true">↻</span>
+              Replay story
+            </button>
+          </div>
+        </div>
+
+        <p class="disclosure">
+          Conceptual illustration only. Dot positions and sizes are illustrative and do not imply
+          a specific return, investor count, or market share.
+        </p>
+        <p class="sr-only" id="live-summary" aria-live="polite"></p>
+      </section>
+
+      <section class="implementation-notes" aria-label="Recommended website implementation">
+        <article class="note">
+          <span class="note-number">01 · Placement</span>
+          <strong>Bridge math to advice</strong>
+          <p>Place directly after the calculator and before “Upgrade Your Advice.”</p>
+        </article>
+        <article class="note">
+          <span class="note-number">02 · Behavior</span>
+          <strong>Play once on scroll</strong>
+          <p>One six-second sequence in normal page flow, with a quiet replay control.</p>
+        </article>
+        <article class="note">
+          <span class="note-number">03 · Production</span>
+          <strong>Build as responsive SVG</strong>
+          <p>Use the site’s existing Framer Motion patterns and show the end state for reduced motion.</p>
+        </article>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (() => {
+        "use strict";
+
+        const composition = document.querySelector("#market-average-motion");
+        const replayButton = document.querySelector("#replay");
+        const statusLabel = document.querySelector("#status-label");
+        const liveSummary = document.querySelector("#live-summary");
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const duration = 6;
+
+        const showStaticEnd = () => {
+          composition.classList.remove("preparing");
+          composition.classList.add("static-end");
+          statusLabel.textContent = reduceMotion ? "Full story shown" : "Animation unavailable";
+          replayButton.hidden = true;
+          liveSummary.textContent =
+            "Weighted investor dollars equal the market return before costs. After costs and fees, the net investor return must be lower.";
+        };
+
+        if (!window.gsap) {
+          showStaticEnd();
+          return;
+        }
+
+        const { gsap } = window;
+        const timeline = gsap.timeline({
+          paused: true,
+          defaults: { ease: "power3.out" },
+          onStart: () => {
+            statusLabel.textContent = "Playing the story";
+          },
+          onComplete: () => {
+            statusLabel.textContent = "Story complete";
+            liveSummary.textContent =
+              "Weighted investor dollars equal the market return before costs. After costs and fees, the net investor return must be lower.";
+          },
+        });
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["market-average-motion"] = timeline;
+
+        const investorDots = Array.from(document.querySelectorAll(".investor-dot"));
+        const centerX = 360;
+        const centerY = 422;
+
+        gsap.set("#market-line", {
+          transformOrigin: "50% 100%",
+          scaleY: 0,
+        });
+        gsap.set("#market-label, #before-heading, #weight-legend, #scene-one-summary", {
+          opacity: 0,
+          y: 14,
+        });
+        gsap.set("#dot-trails", { opacity: 0 });
+        investorDots.forEach((dot) => {
+          const x = Number(dot.getAttribute("cx"));
+          gsap.set(dot, {
+            x: centerX - x,
+            scale: 0.35,
+            opacity: 0,
+            transformOrigin: "50% 50%",
+          });
+        });
+        gsap.set("#weighted-center", { opacity: 0 });
+        gsap.set("#center-halo, #center-dot", {
+          scale: 0.2,
+          transformOrigin: "50% 50%",
+        });
+        gsap.set("#scene-two", { opacity: 0 });
+        gsap.set("#after-heading", { opacity: 0, y: 14 });
+        gsap.set("#net-result", { x: 250 });
+        gsap.set("#cost-band", {
+          opacity: 0,
+          scaleX: 0.05,
+          transformOrigin: "100% 50%",
+        });
+        gsap.set("#net-label", { opacity: 0, y: 12 });
+        gsap.set("#equation-card", { opacity: 0, y: 18 });
+        gsap.set("#equation > *", { opacity: 0, y: 8 });
+        gsap.set("#final-takeaway", { opacity: 0, y: 14 });
+
+        timeline
+          .to("#before-heading", { opacity: 1, y: 0, duration: 0.42 }, 0.05)
+          .to("#market-line", { scaleY: 1, duration: 0.65 }, 0.18)
+          .to("#market-label", { opacity: 1, y: 0, duration: 0.36 }, 0.44)
+          .to("#dot-trails", { opacity: 0.72, duration: 0.35 }, 0.62)
+          .to(
+            investorDots,
+            {
+              x: 0,
+              scale: 1,
+              opacity: 1,
+              duration: 0.72,
+              stagger: { each: 0.055, from: "center" },
+              ease: "back.out(1.45)",
+            },
+            0.65,
+          )
+          .to("#weight-legend", { opacity: 1, y: 0, duration: 0.35 }, 1.08)
+          .to("#scene-one-summary", { opacity: 1, y: 0, duration: 0.42 }, 1.28)
+          .to("#dot-trails", { opacity: 0.16, duration: 0.24 }, 1.75)
+          .to(
+            investorDots,
+            {
+              x: (index, dot) => centerX - Number(dot.getAttribute("cx")),
+              y: (index, dot) => centerY - Number(dot.getAttribute("cy")),
+              scale: 0.25,
+              opacity: 0.08,
+              duration: 0.6,
+              stagger: { each: 0.022, from: "edges" },
+              ease: "power2.inOut",
+            },
+            1.78,
+          )
+          .to("#weighted-center", { opacity: 1, duration: 0.22 }, 2.02)
+          .to(
+            "#center-halo, #center-dot",
+            {
+              scale: 1,
+              duration: 0.48,
+              stagger: 0.06,
+              ease: "back.out(1.8)",
+            },
+            2.02,
+          )
+          .to("#center-halo", { scale: 1.16, opacity: 0.05, duration: 0.5 }, 2.48)
+          .to("#scene-one", { opacity: 0, duration: 0.42, ease: "power2.inOut" }, 2.82)
+          .to("#weighted-center", { opacity: 0, duration: 0.3 }, 2.88)
+          .to("#scene-two", { opacity: 1, duration: 0.42 }, 3.05)
+          .to("#after-heading", { opacity: 1, y: 0, duration: 0.42 }, 3.1)
+          .from(
+            "#gross-ghost",
+            {
+              scale: 0.3,
+              opacity: 0,
+              transformOrigin: "50% 50%",
+              duration: 0.4,
+              ease: "back.out(1.6)",
+            },
+            3.25,
+          )
+          .to(
+            "#net-result",
+            {
+              x: 0,
+              duration: 0.78,
+              ease: "power3.inOut",
+            },
+            3.58,
+          )
+          .to(
+            "#cost-band",
+            {
+              opacity: 1,
+              scaleX: 1,
+              duration: 0.76,
+              ease: "power3.inOut",
+            },
+            3.58,
+          )
+          .to("#net-label", { opacity: 1, y: 0, duration: 0.34 }, 4.12)
+          .to("#equation-card", { opacity: 1, y: 0, duration: 0.42 }, 4.36)
+          .to(
+            "#equation > *",
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.26,
+              stagger: 0.1,
+            },
+            4.54,
+          )
+          .to("#final-takeaway", { opacity: 1, y: 0, duration: 0.45 }, 5.12)
+          .to({}, { duration: Math.max(0, duration - 5.57) });
+
+        composition.classList.remove("preparing");
+
+        const playFromStart = () => {
+          liveSummary.textContent = "";
+          timeline.restart();
+        };
+
+        replayButton.addEventListener("click", playFromStart);
+
+        if (reduceMotion) {
+          timeline.progress(1).pause();
+          composition.classList.add("static-end");
+          statusLabel.textContent = "Full story shown";
+          replayButton.hidden = true;
+          liveSummary.textContent =
+            "Weighted investor dollars equal the market return before costs. After costs and fees, the net investor return must be lower.";
+          return;
+        }
+
+        if ("IntersectionObserver" in window) {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              if (!entries[0].isIntersecting) return;
+              observer.disconnect();
+              playFromStart();
+            },
+            { threshold: 0.46 },
+          );
+          observer.observe(composition);
+        } else {
+          playFromStart();
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -24,6 +24,8 @@
     "test:active-direct-start": "node --test tests/active-direct-start.mjs",
     "test:calculator-canon-manifest": "node --test tests/calculator-canon-manifest.mjs",
     "test:share-one-tap": "node --test tests/share-one-tap.mjs",
+    "test:blues-source-locks": "node --test tests/blues-source-locks.mjs",
+    "test:blues-host-routing": "node tests/blues-host-routing.mjs",
     "test:posthog-cta-tracker-mailto": "node tests/posthog-cta-tracker-mailto.mjs",
     "test:served-version": "node --experimental-strip-types --test tests/served-version.mjs"
   },

@@ -22,6 +22,8 @@ import { HomeTopBanner } from "@/components/HomeTopBanner";
 import { FeeQuoteDeck } from "@/components/FeeQuoteDeck";
 import { HomeFaqSection } from "@/components/HomeFaqSection";
 import { SignupCta } from "@/components/SignupCta";
+import { BluesOpening } from "@/components/blues/BluesOpening";
+import { bluesCalculatorTheme, bluesCopy, bluesLinks } from "@/config/onePercentBlues";
 import { SmarterWayWealthVisitCard } from "@/components/SmarterWayWealthVisitCard";
 /* PremiumPromisePreview (the Save / Upgrade / Improve video panel) is
    deliberately not imported here. It sat between the promise block and the
@@ -66,7 +68,7 @@ type Props = {
   initialState: CalculatorState;
   searchParams: Record<string, string | string[] | undefined>;
   marketingVariantId: HomeMarketingVariantId;
-  experienceMode?: "marketing" | "calculator-first" | "savings-calculator-upgrade";
+  experienceMode?: "marketing" | "calculator-first" | "savings-calculator-upgrade" | "one-percent-blues";
   bannerId?: HomeTopBannerId;
 };
 
@@ -842,10 +844,17 @@ export function CostAnalysisCalculator({
   }, []);
 
   const marketingVariant = homeMarketingVariants[marketingVariantId];
-  const calculatorTheme = marketingVariant.calculator;
   const isCalculatorFirst = experienceMode === "calculator-first";
   const isSavingsCalculatorUpgrade = experienceMode === "savings-calculator-upgrade";
   const usesOpeningMarketingHero = experienceMode === "marketing";
+  /* One Percent Blues (src/app/(blues), onepercentblues.com): the same
+     engine behind a blue opening. It shares the lean home's calculator
+     behaviour — inputs view, chart heading, no view tabs, disclaimer in the
+     footer rather than the card — but not its grey section ground or the
+     sections below it. */
+  const isOnePercentBlues = experienceMode === "one-percent-blues";
+  const usesLeanCalculator = isSavingsCalculatorUpgrade || isOnePercentBlues;
+  const calculatorTheme = isOnePercentBlues ? bluesCalculatorTheme : marketingVariant.calculator;
   const reducedMotion = useReducedMotion();
 
   const quoteSectionStyle = isDarkMode
@@ -913,9 +922,18 @@ export function CostAnalysisCalculator({
     <>
       <p className={`text-center text-xs ${calculatorTheme.helperTextClassName}`}>
         Compares our {formatCurrency(monthlyFlatFee)}/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
-        <Link href="/our-math" className={calculatorTheme.linkClassName}>
-          For finance nerds
-        </Link>
+        {isOnePercentBlues ? (
+          /* Absolute, plain <a>: /our-math on the blue host redirects to the
+             green domain, and a next/link prefetch of a cross-domain redirect
+             fails CORS on every page view. */
+          <a href={bluesLinks.ourMath} className={calculatorTheme.linkClassName}>
+            For finance nerds
+          </a>
+        ) : (
+          <Link href="/our-math" className={calculatorTheme.linkClassName}>
+            For finance nerds
+          </Link>
+        )}
       </p>
       <div className={`mx-auto mt-4 max-w-2xl space-y-2 text-center text-xs leading-snug ${calculatorTheme.helperTextClassName}`}>
         <p>
@@ -1140,6 +1158,15 @@ export function CostAnalysisCalculator({
     </div>
   );
 
+  const bluesHandoff = isOnePercentBlues ? (
+    <div className="relative z-10 mx-auto w-full max-w-[1040px] px-4 pt-3 sm:px-6 sm:pt-5">
+      <h2 className="font-blues-serif text-[30px] font-semibold leading-[1.05] text-white sm:text-[40px]">
+        {bluesCopy.calculatorHeading}
+      </h2>
+      <p className="mt-2 max-w-2xl text-base leading-6 text-white/90 sm:text-lg">{bluesCopy.calculatorSub}</p>
+    </div>
+  ) : null;
+
   const calculatorHandoff = isSavingsCalculatorUpgrade ? (
     <div className="section-shell relative z-10 pt-2 sm:pt-3">
       {/* NEVER hide this block behind an entrance animation. `initial={false}`
@@ -1190,6 +1217,18 @@ export function CostAnalysisCalculator({
 
   return (
     <>
+      {isOnePercentBlues && (
+        <BluesOpening
+          savings={projection.savings}
+          portfolioValue={state.portfolioValue}
+          years={state.years}
+          annualGrowthPercent={state.annualGrowthPercent}
+          annualFeePercent={state.annualFeePercent}
+          annualFlatFee={state.annualFlatFee}
+          initialCheck={paramsFromServer.get("check")}
+        />
+      )}
+
       {isSavingsCalculatorUpgrade && (
         <SavingsLeadHero
           introStyle={introStyle}
@@ -1304,6 +1343,7 @@ export function CostAnalysisCalculator({
         />
 
         {calculatorHandoff}
+        {bluesHandoff}
 
         {isCalculatorFirst && (
           <HomeTopBanner
@@ -1332,7 +1372,7 @@ export function CostAnalysisCalculator({
           annualAumFeeEstimate={annualAumFeeEstimate}
           annualFlatFee={annualFlatFee}
           shareAction={shareAction}
-          disclosure={isSavingsCalculatorUpgrade ? null : disclosure}
+          disclosure={usesLeanCalculator ? null : disclosure}
           helperNotes={helperNotes}
           collapseControl={collapseControl}
           slidersExpanded={slidersExpanded}
@@ -1342,9 +1382,9 @@ export function CostAnalysisCalculator({
           activeScenario={activeCard}
           assumptionsCustomized={assumptionsCustomized}
           advancedCalculatorHref={advancedCalculatorHref}
-          showViewTabs={!isSavingsCalculatorUpgrade}
-          initialView={isSavingsCalculatorUpgrade ? "inputs" : "header"}
-          showChartHeading={isSavingsCalculatorUpgrade}
+          showViewTabs={!usesLeanCalculator}
+          initialView={usesLeanCalculator ? "inputs" : "header"}
+          showChartHeading={usesLeanCalculator}
           onHighlightScenario={handleCardTap}
           onAssumptionChange={(patch) => updateCalculatorState(patch)}
         />
@@ -1374,6 +1414,14 @@ export function CostAnalysisCalculator({
           (David, 2026-08-14). Two questions and a door to the firm site's
           full set. */}
       {isSavingsCalculatorUpgrade && <HomeFaqSection />}
+
+      {/* One Percent Blues: the site's standard conversion block, then the
+          same three FAQ questions, both on the page gradient. */}
+      {isOnePercentBlues && (
+        <SignupCta location="blues_post_calculator" surfaceClassName="bg-transparent" primaryHref={bluesLinks.signup} />
+      )}
+
+      {isOnePercentBlues && <HomeFaqSection tone="blues" />}
 
       {usesOpeningMarketingHero && (
         <SignupCta location="marketing_post_calculator" />

@@ -5,6 +5,7 @@ This site is an educational fee calculator and lead-generation surface for Smart
 Primary URLs:
 
 - Home and calculator: https://youarepayingtoomuch.com/
+- Sister campaign page (same calculator, blue skin, three-question check): https://onepercentblues.com/
 - Become a client (sign-up, flat $100/month): https://youarepayingtoomuch.com/become-a-client
 - Structured calculator API: https://youarepayingtoomuch.com/api/calculator
 - Structured savings-rates API (verified, dated rates with FDIC national averages; the human-facing /savings-rates page was retired 2026-08-14, this endpoint is now the canonical source): https://youarepayingtoomuch.com/api/savings-rates

@@ -1,7 +1,14 @@
 {
   "root": true,
-  "extends": ["next", "next/core-web-vitals"],
-  "ignorePatterns": ["docs/", "scripts/"],
+  "extends": [
+    "next",
+    "next/core-web-vitals"
+  ],
+  "ignorePatterns": [
+    "docs/",
+    "scripts/",
+    "design-candidates/"
+  ],
   "rules": {
     "react/jsx-key": "off"
   }
