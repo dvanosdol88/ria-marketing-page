@@ -122,36 +122,6 @@ export default function BecomeAClientPage() {
         </div>
       </section>
 
-      <section className="section-shell mt-8 max-w-2xl">
-        <h2 className="text-sm font-bold uppercase tracking-[0.15em] text-[#5A6B80]">
-          Two things worth knowing first
-        </h2>
-        <dl className="mt-3 flex flex-col gap-4">
-          <div>
-            <dt className="text-base font-bold text-[#10233A]">
-              There is a $250,000 minimum.
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-[#31465F]">
-              That is the standard minimum in investable assets disclosed in the
-              firm&apos;s Form ADV Part 2A. It can be waived at the firm&apos;s
-              discretion — if you are close, say so and David will tell you
-              honestly.
-            </dd>
-          </div>
-          <div>
-            <dt className="text-base font-bold text-[#10233A]">
-              The firm is registered in {HOME_STATE}.
-            </dt>
-            <dd className="mt-1 text-sm leading-6 text-[#31465F]">
-              Most states allow an out-of-state adviser to serve a limited
-              number of their residents without separate registration, so living
-              elsewhere is usually fine. David confirms it before anything is
-              signed.
-            </dd>
-          </div>
-        </dl>
-      </section>
-
       <section className="section-shell mt-10 max-w-2xl">
         <div className="rounded-2xl bg-[#064B84] p-6 text-center text-white sm:p-8">
           <p className="text-lg font-bold">{signupCta.secondary.prompt}</p>
