@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { BecomeAClientForm } from "@/components/BecomeAClientForm";
 import { signupCta } from "@/config/signupCta";
@@ -67,7 +68,8 @@ export default function BecomeAClientPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
 
-      <header className="section-shell pt-10 sm:pt-14">
+      <header className="section-shell grid items-center gap-6 pt-10 sm:pt-14 lg:grid-cols-[minmax(0,1fr)_200px] lg:gap-10">
+        <div className="min-w-0">
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#108843]">
           Become a client
         </p>
@@ -77,6 +79,16 @@ export default function BecomeAClientPage() {
         <p className="mt-4 max-w-2xl text-base leading-7 text-[#31465F] sm:text-lg">
           See what truly independent advice looks like.
         </p>
+        </div>
+        <Image
+          src="/DVO Head Shot picture.jpg"
+          alt="David Van Osdol"
+          width={200}
+          height={210}
+          sizes="(min-width: 1024px) 200px, 112px"
+          priority
+          className="h-[118px] w-28 rounded-xl object-cover object-top lg:h-[210px] lg:w-[200px]"
+        />
       </header>
 
       <section className="section-shell mt-10 max-w-2xl">
