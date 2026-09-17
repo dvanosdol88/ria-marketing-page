@@ -2,7 +2,7 @@
 
 ### 2026-09-17 — Become a client introduction
 - Replaced only the introductory paragraph beneath the price headline with David's approved copy: “See what truly independent advice looks like.”
-- No layout, form, pricing, tracking, or navigation changes. Publication and production verification follow this commit.
+- Placed the second sentences in steps 2 and 3 on their own lines for readability. No form, pricing, tracking, or navigation changes. Publication and production verification follow this commit.
 
 > Persistent activity memory for this repo. Read by any agent or human.
 > Newest sessions on top.
