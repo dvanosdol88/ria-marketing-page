@@ -34,7 +34,7 @@ Mentor check-in (answers proposed; David corrects in one reply if wrong):
 | Sub | Three quick questions. No email, no login. Then we show you the number and the cure. |
 | Q1 | Do you pay a percentage of your portfolio for advice? — **Yes** / **No / not sure** |
 | Q2 | Do you know what you paid last year, in dollars? — **Yes** / **No** |
-| Q3 | Did your fee go up when your portfolio did? — **Yes** / **No / not sure** |
+| Q3 | Did the amount you actually pay go up? — **Yes** / **No / not sure** (David, 2026-09-17: "fee" read as a percentage, which probably did not go up; the dollars did) |
 | Diagnosis, full case (Q1 yes and Q2 no, or Q1 yes and Q3 yes) | eyebrow "Diagnosis" · **Yep. That's the 1% Blues.** |
 | Diagnosis, mild case (Q1 yes, Q2 yes, Q3 no) | **A mild case. Still a case.** |
 | Diagnosis, unsure (Q1 no / not sure) | **No percentage fee, or not sure?** — "If nobody takes a percentage of your portfolio, this is the number you are avoiding. If you are not sure, check one statement: asset-based fees rarely show up as a line item." |

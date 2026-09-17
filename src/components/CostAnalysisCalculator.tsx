@@ -23,7 +23,7 @@ import { FeeQuoteDeck } from "@/components/FeeQuoteDeck";
 import { HomeFaqSection } from "@/components/HomeFaqSection";
 import { SignupCta } from "@/components/SignupCta";
 import { BluesOpening } from "@/components/blues/BluesOpening";
-import { bluesCalculatorTheme, bluesCopy, bluesLinks } from "@/config/onePercentBlues";
+import { bluesCalculatorTheme, bluesControlClasses, bluesCopy, bluesLinks } from "@/config/onePercentBlues";
 import { SmarterWayWealthVisitCard } from "@/components/SmarterWayWealthVisitCard";
 /* PremiumPromisePreview (the Save / Upgrade / Improve video panel) is
    deliberately not imported here. It sat between the promise block and the
@@ -103,6 +103,13 @@ interface SimpleRangeControlProps {
   onChange: (value: number) => void;
   step: number;
   value: number;
+  /** Container box (border, fill, focus ring). Defaults to the green site's
+   *  quiet grey box; the blue page passes a stronger blue treatment. */
+  frameClassName?: string;
+  /** Colour/hover/disabled classes shared by the +/- buttons. */
+  buttonClassName?: string;
+  /** Colour of the hairline between a button and the value. */
+  dividerClassName?: string;
 }
 
 /**
@@ -145,6 +152,9 @@ function SimpleRangeControl({
   onChange,
   step,
   value,
+  frameClassName = "rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30",
+  buttonClassName = "text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent",
+  dividerClassName = "border-[#DFE6EE]",
 }: SimpleRangeControlProps) {
   const precision = useMemo(() => {
     const decimalPlaces = (number: number) => number.toString().split(".")[1]?.length ?? 0;
@@ -230,13 +240,13 @@ function SimpleRangeControl({
           ({boundsFormatter(min)}&ndash;{boundsFormatter(max)})
         </span>
       </label>
-      <div className="flex shrink-0 items-stretch overflow-hidden rounded border border-[#DFE6EE] bg-[#FBFCFD] focus-within:border-[#108843] focus-within:ring-2 focus-within:ring-[#108843]/30">
+      <div className={`flex shrink-0 items-stretch overflow-hidden ${frameClassName}`}>
         <button
           type="button"
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => stepValue(-step)}
           disabled={!canDecrease}
-          className="grid h-9 w-9 place-items-center border-r border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
+          className={`grid h-9 w-9 place-items-center border-r ${dividerClassName} ${buttonClassName}`}
           aria-label={`Decrease ${label}`}
         >
           <Minus aria-hidden="true" size={14} strokeWidth={2.5} />
@@ -300,7 +310,7 @@ function SimpleRangeControl({
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => stepValue(step)}
           disabled={!canIncrease}
-          className="grid h-9 w-9 place-items-center border-l border-[#DFE6EE] text-[#31506D] transition hover:bg-[#EEF3F7] disabled:cursor-not-allowed disabled:text-[#A8B5C2] disabled:hover:bg-transparent"
+          className={`grid h-9 w-9 place-items-center border-l ${dividerClassName} ${buttonClassName}`}
           aria-label={`Increase ${label}`}
         >
           <Plus aria-hidden="true" size={14} strokeWidth={2.5} />
@@ -1042,9 +1052,14 @@ export function CostAnalysisCalculator({
     ),
   };
 
+  /* On the blue page the four controls get the blue outline and fill
+     (David, 2026-09-17: they were getting lost in the white). Elsewhere the
+     props stay undefined and the control keeps its grey defaults. */
+  const controlClasses = isOnePercentBlues ? bluesControlClasses : {};
   const simpleControls: CalculatorSimpleControlNodes = {
     portfolio: (
       <SimpleRangeControl
+        {...controlClasses}
         label="Portfolio value"
         value={state.portfolioValue}
         onChange={(value) => updateCalculatorState({ portfolioValue: value })}
@@ -1057,6 +1072,7 @@ export function CostAnalysisCalculator({
     ),
     years: (
       <SimpleRangeControl
+        {...controlClasses}
         label="Years"
         value={state.years}
         onChange={(value) => updateCalculatorState({ years: Math.round(value) })}
@@ -1068,6 +1084,7 @@ export function CostAnalysisCalculator({
     ),
     growth: (
       <SimpleRangeControl
+        {...controlClasses}
         label="Annualized growth"
         value={state.annualGrowthPercent}
         onChange={(value) => updateCalculatorState({ annualGrowthPercent: value })}
@@ -1079,6 +1096,7 @@ export function CostAnalysisCalculator({
     ),
     advisoryFee: (
       <SimpleRangeControl
+        {...controlClasses}
         label="Asset-based fee"
         showNote
         value={state.annualFeePercent}

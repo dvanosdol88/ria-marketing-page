@@ -29,7 +29,7 @@ test("the approved headline and check copy have one source", () => {
   for (const question of [
     "Do you pay a percentage of your portfolio for advice?",
     "Do you know what you paid last year, in dollars?",
-    "Did your fee go up when your portfolio did?",
+    "Did the amount you actually pay go up?",
   ]) {
     assert.ok(config.includes(question), `question missing: ${question}`);
   }
