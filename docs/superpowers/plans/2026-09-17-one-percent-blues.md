@@ -1348,3 +1348,37 @@ Watch CI (`verify` + `test`), fix, re-push. Merge with `gh pr merge --squash` wh
 - [ ] **Step 5: Prove on the apex** — `curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n"` for `https://onepercentblues.com/` (200), `https://1percentblues.com/` (308 → onepercentblues.com), `https://onepercentblues.com/our-math` (307 → youarepayingtoomuch.com), `https://onepercentblues.com/robots.txt`, `/sitemap.xml`, `/llms.txt`, `https://onepercentblues.com/api/og/blues` (200 image/png); `https://youarepayingtoomuch.com/` still 200 with its hero. Playwright MCP screenshots of `https://onepercentblues.com/` at 375 and 1280, answering the three questions.
 
 - [ ] **Step 6: Close out** — update the REPO-LOG entry with the proof (deployment id, commit, URLs), commit it on a tiny follow-up branch → PR → merge, remove the worktree (`git worktree remove --force D:\worktrees\one-percent-blues-20260917` + delete the local branch), and publish the David-facing report page with the live screenshots.
+
+---
+
+## Execution notes (2026-09-17, same session)
+
+What the build did differently from the tasks above, so the plan stays an honest record:
+
+- **Task 3:** the accent reaches the seven final-c sub-components through a module-private
+  `CalculatorAccentContext` (default `calculatorAccentGreen`) rather than props; each of
+  `EditableHeaderButton`, `FinalHeaderNumberInput`, `MathAssumptionInputCard`, `FinalHomeLineChart`,
+  `SimpleMathResults`, `MathExpandButton` and `SeeOurMathBento` opens with
+  `const accent = useCalculatorAccent();`, and `FinalHomeCalculatorExperience` wraps its tree in the
+  provider with `props.theme.accent`. The first pass inserted the hook into only one component and the
+  green page fell into its error boundary — caught by the structural HTML comparison, not by eye.
+- **Task 3, the identity check:** a line diff of the streamed HTML is noise (random Sentry trace ids,
+  chunk boundaries), so the comparison is structural — the sorted multisets of every class attribute,
+  inline style, SVG stroke/fill, href and text node before vs. after (`compare-html.cjs` in the session
+  scratchpad). It also has to wait for a fully compiled response; a capture taken while Turbopack was
+  still recompiling holds only the loading shell.
+- **Task 1:** `loading.tsx` and `error.tsx` moved under `(site)` too (review finding: their fallbacks
+  had lost the green chrome). Shared files are CRLF on this machine; the scripted edits normalise
+  line endings before matching.
+- **Task 5/6, review round:** diagnosis card gets the receipt label "Estimated advisory-fee difference",
+  scrolls into view on first appearance when it lands under the fold, and its secondary step is an
+  underlined link (one-button-one-link). `?check=yny` seeds the three answers so a link renders its
+  diagnosis server-side (`parseBluesAnswers`, threaded `page → CostAnalysisCalculator → BluesOpening →
+  BluesCheck` as `initialCheck`). Cross-domain doors (`SignupCta primaryHref`, "For finance nerds") are
+  plain absolute links with UTM tags — a `next/link` prefetch of a redirecting route fails CORS.
+- **Task 7:** blue JSON-LD declares the firm, WebSite, WebApplication and WebPage itself (no dangling
+  cross-site `@id` references); the page's `openGraph` restates `siteName`/`type` because a page-level
+  `openGraph` replaces the layout's whole object; `manifest: null` keeps the green PWA manifest off the
+  blue host.
+- **Task 8:** the host-routing test uses `node:http` — Node's `fetch` (undici) silently replaces a
+  caller-set Host header — and reads redirects without following them, so CI never calls production.

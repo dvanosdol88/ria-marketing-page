@@ -37,14 +37,15 @@ Mentor check-in (answers proposed; David corrects in one reply if wrong):
 | Q3 | Did your fee go up when your portfolio did? — **Yes** / **No / not sure** |
 | Diagnosis, full case (Q1 yes and Q2 no, or Q1 yes and Q3 yes) | eyebrow "Diagnosis" · **Yep. That's the 1% Blues.** |
 | Diagnosis, mild case (Q1 yes, Q2 yes, Q3 no) | **A mild case. Still a case.** |
-| Diagnosis, unsure (Q1 no / not sure) | **Not sure? That's the most common answer.** |
+| Diagnosis, unsure (Q1 no / not sure) | **No percentage fee, or not sure?** — "If nobody takes a percentage of your portfolio, this is the number you are avoiding. If you are not sure, check one statement: asset-based fees rarely show up as a line item." |
+| Number label | Estimated advisory-fee difference (the site's receipt language) |
 | Number | live projected difference from the calculator state (default $788,306), with the `*` disclaimer marker |
 | Under the number | Projected {years}-year difference between a {fee}% asset-based fee and ${monthly}/month flat, on {portfolio} at {growth}% growth. Hypothetical, adjustable, not a guarantee. |
-| Tile: Symptom | A fee that grows with your balance, invisible on the statement. |
+| Tile: Symptom | A fee that grows with your balance and rarely shows up as a line item. |
 | Tile: Treatment | $100 a month. Period. Real human fiduciary advice from a CFA charterholder and CFP® professional. |
 | Tile: Next step | Meet David for 15 minutes on video. Nothing to prepare. |
 | Primary button | Get the cure — meet David → https://smarterwaywealth.com/meet |
-| Secondary button | Run it on my numbers first → `#calculator` |
+| Secondary link (underlined text, not a second button — the site's one-button-one-link pattern) | Run it on my numbers first → `#calculator` |
 | Calculator heading | Your numbers, not ours. |
 | Calculator sub | Every assumption is yours to change. The math is public and takes about a minute. |
 | Footer line | Smarter Way Wealth, LLC · Connecticut-registered investment adviser · CRD #342140 |
@@ -80,7 +81,17 @@ src/app/api/…                      unchanged (api routes have no chrome)
 src/app/not-found.tsx              renders SiteNav/SiteFooter itself so 404s keep the green chrome
 ```
 
-`tests/home-wwwh.mjs` reads `src/app/page.tsx` by path; that one line updates to the new location.
+`tests/home-wwwh.mjs` and `tests/active-direct-start.mjs` read moved pages by path; those three lines update
+to the new locations. `loading.tsx` and `error.tsx` move under `(site)` too, so their fallbacks keep the green
+header and footer around them. The root `not-found.tsx` renders the green chrome itself.
+
+Review round (2026-09-17, three-lens panel with adversarial verification) changed four things from the first
+draft: the blue page declares its own firm and calculator entities in JSON-LD instead of pointing at nodes that
+only exist on the green site; the page-level Open Graph restates the site name and type (a page's `openGraph`
+replaces the layout's, it does not merge); the diagnosis card scrolls into view the first time it appears on a
+phone; and cross-domain doors from the blue page (sign-up, our-math) are plain absolute links, never `next/link`,
+because a client-side prefetch of a redirecting route fails CORS. The host-routing test uses `node:http`, since
+Node's `fetch` replaces a caller-set Host header.
 
 ### 3.2 Host rules (`next.config.mjs`)
 
@@ -172,7 +183,8 @@ URL sync, PostHog `calculator_*` events, share and poll wiring are reused as-is.
 
 - `tests/blues-source-locks.mjs` (node:test, no browser): headline, three questions, diagnosis outcomes,
   primary CTA target, host rules present in `next.config.mjs`, canon files not imported anywhere new.
-- `tests/blues-host-routing.mjs` (real `next dev`, fetch with `Host` headers): `/blues` serves the page
+- `tests/blues-host-routing.mjs` (real `next dev`, `node:http` requests with `Host` headers, redirects read
+  and never followed): `/blues` serves the page
   with "Got the 1% Blues?", the default number, `id="calculator"`, the disclaimer anchor and the compliance
   text, and no green nav; `Host: onepercentblues.com` on `/`, `/robots.txt`, `/sitemap.xml`, `/llms.txt`
   serves the blue versions; `/our-math` on that host redirects to youarepayingtoomuch.com; `1percentblues.com`
