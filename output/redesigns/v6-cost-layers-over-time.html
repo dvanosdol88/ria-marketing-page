@@ -1,0 +1,1198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A mobile-first animated illustration showing how advisory, fund, and account costs compound through time."
+    />
+    <link rel="icon" href="data:," />
+    <title>The Compounding Cost Wedge — Motion Concept</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #0b2b27;
+        --muted: #536965;
+        --brand: #00a540;
+        --brand-dark: #087735;
+        --brand-soft: #e4f5e8;
+        --advice: #b94f35;
+        --fund: #da7b4e;
+        --account: #edb083;
+        --account-soft: #f9e8da;
+        --paper: #f4f7f1;
+        --white: #ffffff;
+        --line: #d8e1dc;
+        --shadow: 0 28px 70px rgba(11, 43, 39, 0.14);
+        --font-display: "DM Sans", "Arial Narrow", Arial, sans-serif;
+        --font-body: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background:
+          linear-gradient(180deg, rgba(0, 165, 64, 0.07), transparent 24rem),
+          var(--paper);
+        color: var(--ink);
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page-shell {
+        width: min(100% - 24px, 1080px);
+        margin: 0 auto;
+        padding: 24px 0 64px;
+      }
+
+      .brand-lockup {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: #4a4a4a;
+        font-family: var(--font-display);
+        font-size: 0.77rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+      }
+
+      .brand-bars {
+        display: inline-flex;
+        height: 26px;
+        align-items: flex-end;
+        gap: 3px;
+      }
+
+      .brand-bars span {
+        display: block;
+        width: 6px;
+        border-radius: 1px;
+      }
+
+      .brand-bars span:nth-child(1) {
+        height: 12px;
+        background: #66d980;
+      }
+
+      .brand-bars span:nth-child(2) {
+        height: 18px;
+        background: #33bf60;
+      }
+
+      .brand-bars span:nth-child(3) {
+        height: 26px;
+        background: var(--brand);
+      }
+
+      .intro {
+        max-width: 850px;
+        margin: 54px auto 36px;
+        text-align: center;
+      }
+
+      .eyebrow {
+        margin: 0 0 14px;
+        color: var(--brand-dark);
+        font-size: 0.76rem;
+        font-weight: 850;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 820px;
+        margin: 0 auto;
+        font-family: var(--font-display);
+        font-size: clamp(2.55rem, 7.5vw, 5.6rem);
+        font-weight: 650;
+        letter-spacing: -0.065em;
+        line-height: 0.96;
+        text-wrap: balance;
+      }
+
+      .intro-copy {
+        max-width: 700px;
+        margin: 22px auto 0;
+        color: var(--muted);
+        font-size: clamp(1rem, 2.5vw, 1.18rem);
+        line-height: 1.65;
+        text-wrap: pretty;
+      }
+
+      .story-wrap {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+
+      .story-card {
+        overflow: hidden;
+        border: 1px solid rgba(11, 43, 39, 0.09);
+        border-radius: 30px;
+        background: var(--white);
+        box-shadow: var(--shadow);
+      }
+
+      #cost-layers-over-time {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 2 / 3;
+        opacity: 1;
+        transition: opacity 150ms ease;
+      }
+
+      #cost-layers-over-time.preparing {
+        opacity: 0;
+      }
+
+      #cost-layers-over-time svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      #no-js-summary {
+        display: none;
+      }
+
+      .svg-kicker {
+        fill: var(--brand-dark);
+        font-family: var(--font-body);
+        font-size: 23px;
+        font-weight: 850;
+        letter-spacing: 1.2px;
+      }
+
+      .svg-title {
+        fill: var(--ink);
+        font-family: var(--font-display);
+        font-size: 41px;
+        font-weight: 680;
+        letter-spacing: -1.7px;
+      }
+
+      .svg-label {
+        fill: var(--muted);
+        font-family: var(--font-body);
+        font-size: 25px;
+        font-weight: 800;
+        letter-spacing: 0.45px;
+      }
+
+      .svg-small {
+        fill: var(--muted);
+        font-family: var(--font-body);
+        font-size: 25px;
+        font-weight: 650;
+      }
+
+      .svg-body {
+        fill: var(--ink);
+        font-family: var(--font-body);
+        font-size: 26px;
+        font-weight: 720;
+      }
+
+      .svg-display {
+        fill: var(--ink);
+        font-family: var(--font-display);
+        font-size: 36px;
+        font-weight: 700;
+        letter-spacing: -0.8px;
+      }
+
+      .svg-green {
+        fill: var(--brand-dark);
+      }
+
+      .svg-advice {
+        fill: var(--advice);
+      }
+
+      .svg-fund {
+        fill: var(--fund);
+      }
+
+      .svg-account {
+        fill: #a65d33;
+      }
+
+      .chart-line {
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cost-area {
+        transform-box: fill-box;
+        transform-origin: left center;
+      }
+
+      .poster-play {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 11px;
+        border: 0;
+        padding: 30px;
+        background: transparent;
+        color: var(--ink);
+        cursor: pointer;
+        text-align: center;
+      }
+
+      .poster-play-icon {
+        display: grid;
+        width: 58px;
+        height: 58px;
+        place-items: center;
+        border: 2px solid var(--brand);
+        border-radius: 50%;
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+        font-size: 1.65rem;
+        line-height: 1;
+        transition:
+          background 160ms ease,
+          transform 160ms ease;
+      }
+
+      .poster-play-title {
+        font-family: var(--font-display);
+        font-size: clamp(1.05rem, 4.5vw, 1.65rem);
+        font-weight: 750;
+        letter-spacing: -0.025em;
+      }
+
+      .poster-play-copy {
+        color: var(--muted);
+        font-size: clamp(0.78rem, 3.2vw, 0.98rem);
+        font-weight: 650;
+      }
+
+      .poster-play:hover .poster-play-icon {
+        background: #d4f0dc;
+        transform: scale(1.04);
+      }
+
+      .poster-play:focus-visible {
+        outline: 3px solid rgba(0, 165, 64, 0.42);
+        outline-offset: -8px;
+      }
+
+      .poster-play[hidden] {
+        display: none;
+      }
+
+      .story-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 15px 18px 17px;
+        border-top: 1px solid var(--line);
+        background: rgba(244, 247, 241, 0.7);
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 0.73rem;
+        font-weight: 800;
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--brand);
+        box-shadow: 0 0 0 4px rgba(0, 165, 64, 0.13);
+      }
+
+      .replay {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid rgba(11, 43, 39, 0.15);
+        border-radius: 999px;
+        padding: 10px 15px;
+        background: var(--white);
+        color: var(--ink);
+        cursor: pointer;
+        font-size: 0.84rem;
+        font-weight: 800;
+        transition:
+          border-color 160ms ease,
+          box-shadow 160ms ease,
+          transform 160ms ease;
+      }
+
+      .replay:hover {
+        border-color: rgba(0, 165, 64, 0.55);
+        box-shadow: 0 8px 20px rgba(11, 43, 39, 0.08);
+        transform: translateY(-1px);
+      }
+
+      .replay:focus-visible {
+        outline: 3px solid rgba(0, 165, 64, 0.3);
+        outline-offset: 3px;
+      }
+
+      .replay[hidden] {
+        display: none;
+      }
+
+      .disclosure {
+        max-width: 680px;
+        margin: 16px auto 0;
+        color: #667a75;
+        font-size: 0.77rem;
+        line-height: 1.55;
+        text-align: center;
+      }
+
+      .decision-notes {
+        display: grid;
+        gap: 0;
+        max-width: 940px;
+        margin: 52px auto 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .decision-note {
+        padding: 23px 3px 24px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .decision-note-label {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--brand-dark);
+        font-size: 0.69rem;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .decision-note h2 {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: 1.35rem;
+        letter-spacing: -0.025em;
+      }
+
+      .decision-note p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+
+      .sources {
+        max-width: 940px;
+        margin: 28px auto 0;
+        color: var(--muted);
+        font-size: 0.78rem;
+        line-height: 1.65;
+      }
+
+      .sources strong {
+        color: var(--ink);
+      }
+
+      .sources a {
+        text-decoration-color: rgba(0, 165, 64, 0.45);
+        text-underline-offset: 3px;
+      }
+
+      .sources a:hover {
+        color: var(--brand-dark);
+      }
+
+      .sr-only {
+        position: absolute;
+        overflow: hidden;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        border: 0;
+        margin: -1px;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+      }
+
+      @media (min-width: 760px) {
+        .page-shell {
+          padding-top: 38px;
+        }
+
+        .decision-notes {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        .decision-note {
+          padding: 26px 24px;
+          border-right: 1px solid var(--line);
+        }
+
+        .decision-note:first-child {
+          padding-left: 0;
+        }
+
+        .decision-note:last-child {
+          border-right: 0;
+          padding-right: 0;
+        }
+      }
+
+      @media (max-width: 420px) {
+        .page-shell {
+          width: min(100% - 20px, 1080px);
+          padding-top: 19px;
+        }
+
+        .intro {
+          margin-top: 38px;
+        }
+
+        .story-card {
+          border-radius: 22px;
+        }
+
+        .story-controls {
+          padding: 12px 13px 14px;
+        }
+
+        .status {
+          font-size: 0.72rem;
+          letter-spacing: 0.075em;
+        }
+
+        .replay {
+          padding-inline: 13px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+    <noscript>
+      <style>
+        #cost-layers-over-time.preparing {
+          opacity: 1;
+        }
+
+        #cost-layers-over-time svg {
+          display: none;
+        }
+
+        #no-js-summary {
+          display: flex;
+          position: absolute;
+          inset: 0;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 20px;
+          padding: 42px;
+          background: #ffffff;
+          color: #0b2b27;
+          text-align: center;
+        }
+
+        #no-js-summary strong {
+          font: 700 2rem/1.05 "DM Sans", Arial, sans-serif;
+        }
+
+        #no-js-summary span {
+          color: #536965;
+          font: 600 1rem/1.55 Inter, Arial, sans-serif;
+        }
+
+        .story-controls,
+        .poster-play {
+          display: none;
+        }
+      </style>
+    </noscript>
+  </head>
+  <body>
+    <main class="page-shell">
+      <div class="brand-lockup" aria-label="Smarter Way Wealth">
+        <span class="brand-bars" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        SMARTER WAY WEALTH
+      </div>
+
+      <header class="intro">
+        <p class="eyebrow">The cost stack over time</p>
+        <h1>The impact of costs compounds over time.</h1>
+        <p class="intro-copy">
+          Advisory, fund, and account costs form a widening wedge between the market’s gross path
+          and what an investor keeps.
+        </p>
+      </header>
+
+      <section class="story-wrap" aria-labelledby="story-heading">
+        <h2 id="story-heading" class="sr-only">Animated compounding cost wedge</h2>
+        <div class="story-card">
+          <div
+            id="cost-layers-over-time"
+            class="preparing"
+            data-composition-id="cost-layers-over-time"
+            data-start="0"
+            data-width="720"
+            data-height="1080"
+            data-duration="7.6"
+          >
+            <svg
+              viewBox="0 0 720 1080"
+              role="img"
+              aria-labelledby="motion-title motion-description"
+              preserveAspectRatio="xMidYMid meet"
+            >
+              <title id="motion-title">Three investment-cost layers widening over twenty years</title>
+              <desc id="motion-description">
+                An illustrative gross return path separates over time from a net return path.
+                The widening space is divided into advice and portfolio management, fund and ETF
+                operating costs, and separately charged account and transaction costs.
+              </desc>
+
+              <defs>
+                <filter id="soft-shadow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feDropShadow
+                    dx="0"
+                    dy="8"
+                    stdDeviation="10"
+                    flood-color="#0b2b27"
+                    flood-opacity="0.14"
+                  />
+                </filter>
+                <filter id="brand-glow" x="-70%" y="-70%" width="240%" height="240%">
+                  <feDropShadow
+                    dx="0"
+                    dy="0"
+                    stdDeviation="10"
+                    flood-color="#00a540"
+                    flood-opacity="0.28"
+                  />
+                </filter>
+              </defs>
+
+              <g
+                id="cost-story"
+                class="clip"
+                data-start="0"
+                data-duration="7.6"
+                data-track-index="1"
+                aria-hidden="true"
+              >
+                <g id="frame-header">
+                  <rect x="48" y="40" width="220" height="40" rx="20" fill="#e4f5e8"></rect>
+                  <text x="158" y="68" text-anchor="middle" class="svg-kicker">
+                    20-YEAR COST MAP
+                  </text>
+                  <text x="48" y="122" class="svg-title">
+                    <tspan x="48" dy="0">One gross path.</tspan>
+                    <tspan x="48" dy="45">Three layers between.</tspan>
+                  </text>
+                </g>
+
+                <g id="cost-ledger">
+                  <g class="ledger-row" id="ledger-advice">
+                    <rect x="48" y="194" width="13" height="36" rx="6.5" fill="#b94f35"></rect>
+                    <text x="80" y="219" class="svg-body svg-advice">1.00%</text>
+                    <text x="190" y="219" class="svg-body">Advice &amp; portfolio management</text>
+                  </g>
+
+                  <line x1="48" y1="242" x2="672" y2="242" stroke="#d8e1dc" stroke-width="2"></line>
+
+                  <g class="ledger-row" id="ledger-fund">
+                    <rect x="48" y="255" width="13" height="36" rx="6.5" fill="#da7b4e"></rect>
+                    <text x="80" y="280" class="svg-body svg-fund">+ 0.25%</text>
+                    <text x="190" y="280" class="svg-body">Fund &amp; ETF operating costs</text>
+                  </g>
+
+                  <line x1="48" y1="303" x2="672" y2="303" stroke="#d8e1dc" stroke-width="2"></line>
+
+                  <g class="ledger-row" id="ledger-account">
+                    <rect x="48" y="316" width="13" height="36" rx="6.5" fill="#edb083"></rect>
+                    <text x="80" y="341" class="svg-body svg-account">+ 0.10%</text>
+                    <text x="190" y="341" class="svg-body">Account &amp; transaction estimate*</text>
+                  </g>
+
+                  <g id="ledger-total">
+                    <rect
+                      x="48"
+                      y="367"
+                      width="624"
+                      height="66"
+                      rx="18"
+                      fill="#f4f7f1"
+                      stroke="#cbd9d1"
+                      stroke-width="2"
+                    ></rect>
+                    <text x="76" y="407" class="svg-label">TOTAL MODELED ANNUAL COST</text>
+                    <text x="644" y="410" text-anchor="end" class="svg-display svg-green">1.35%</text>
+                  </g>
+                </g>
+
+                <g id="chart-visual">
+                  <text x="48" y="484" class="svg-label">COST WEDGE</text>
+                  <text x="672" y="484" text-anchor="end" class="svg-label">
+                    CONCEPTUAL · NOT TO SCALE
+                  </text>
+
+                  <rect
+                    x="48"
+                    y="506"
+                    width="624"
+                    height="346"
+                    rx="22"
+                    fill="#fbfcfa"
+                    stroke="#d8e1dc"
+                    stroke-width="2"
+                  ></rect>
+
+                  <g id="time-grid">
+                    <line x1="88" y1="536" x2="88" y2="810" stroke="#e2e9e5" stroke-width="2"></line>
+                    <line x1="226" y1="536" x2="226" y2="810" stroke="#e2e9e5" stroke-width="2"></line>
+                    <line x1="364" y1="536" x2="364" y2="810" stroke="#e2e9e5" stroke-width="2"></line>
+                    <line x1="502" y1="536" x2="502" y2="810" stroke="#e2e9e5" stroke-width="2"></line>
+                    <line x1="640" y1="536" x2="640" y2="810" stroke="#e2e9e5" stroke-width="2"></line>
+                  </g>
+
+                  <g id="cost-bands">
+                    <path id="advice-band" class="cost-area" fill="#b94f35" fill-opacity="0.46"></path>
+                    <path id="fund-band" class="cost-area" fill="#da7b4e" fill-opacity="0.62"></path>
+                    <path id="account-band" class="cost-area" fill="#edb083" fill-opacity="0.88"></path>
+                  </g>
+
+                  <path
+                    id="gross-path"
+                    class="chart-line"
+                    stroke="#00a540"
+                    stroke-width="6"
+                    filter="url(#brand-glow)"
+                  ></path>
+                  <path
+                    id="net-path"
+                    class="chart-line"
+                    stroke="#0b2b27"
+                    stroke-width="6"
+                  ></path>
+
+                  <g id="time-axis">
+                    <line x1="88" y1="810" x2="640" y2="810" stroke="#90a29b" stroke-width="3"></line>
+                    <g class="x-tick">
+                      <circle cx="88" cy="810" r="5" fill="#90a29b"></circle>
+                      <text x="88" y="839" text-anchor="middle" class="svg-small">Today</text>
+                    </g>
+                    <g class="x-tick">
+                      <circle cx="226" cy="810" r="5" fill="#90a29b"></circle>
+                      <text x="226" y="839" text-anchor="middle" class="svg-small">5</text>
+                    </g>
+                    <g class="x-tick">
+                      <circle cx="364" cy="810" r="5" fill="#90a29b"></circle>
+                      <text x="364" y="839" text-anchor="middle" class="svg-small">10</text>
+                    </g>
+                    <g class="x-tick">
+                      <circle cx="502" cy="810" r="5" fill="#90a29b"></circle>
+                      <text x="502" y="839" text-anchor="middle" class="svg-small">15</text>
+                    </g>
+                    <g class="x-tick">
+                      <circle cx="640" cy="810" r="5" fill="#90a29b"></circle>
+                      <text x="640" y="839" text-anchor="middle" class="svg-small">20 years</text>
+                    </g>
+                  </g>
+
+                  <g id="time-sweep">
+                    <line x1="88" y1="522" x2="88" y2="810" stroke="#00a540" stroke-width="2"></line>
+                    <rect x="56" y="511" width="64" height="34" rx="17" fill="#00a540"></rect>
+                    <text
+                      x="88"
+                      y="536"
+                      text-anchor="middle"
+                      fill="#ffffff"
+                      font-family="Inter, sans-serif"
+                      font-size="22"
+                      font-weight="850"
+                    >
+                      TIME
+                    </text>
+                  </g>
+
+                  <g id="end-labels">
+                    <circle cx="640" cy="548" r="10" fill="#00a540"></circle>
+                    <text x="622" y="538" text-anchor="end" class="svg-label svg-green">
+                      GROSS MARKET PATH
+                    </text>
+                    <circle cx="640" cy="790" r="10" fill="#0b2b27"></circle>
+                    <text x="622" y="785" text-anchor="end" class="svg-label">
+                      NET PATH · CONCEPTUAL
+                    </text>
+                  </g>
+
+                  <g id="cost-bracket">
+                    <line x1="654" y1="548" x2="654" y2="790" stroke="#b94f35" stroke-width="3"></line>
+                    <line x1="643" y1="548" x2="665" y2="548" stroke="#b94f35" stroke-width="3"></line>
+                    <line x1="643" y1="790" x2="665" y2="790" stroke="#b94f35" stroke-width="3"></line>
+                    <text
+                      x="646"
+                      y="675"
+                      text-anchor="end"
+                      class="svg-label svg-advice"
+                    >
+                      WEALTH DRAG
+                    </text>
+                  </g>
+                </g>
+
+                <g id="final-insight">
+                  <rect
+                    id="final-halo"
+                    x="48"
+                    y="883"
+                    width="624"
+                    height="108"
+                    rx="24"
+                    fill="#e4f5e8"
+                  ></rect>
+                  <text x="360" y="924" text-anchor="middle" class="svg-display">
+                    The cost wedge widens with time.
+                  </text>
+                  <text x="360" y="962" text-anchor="middle" class="svg-small">
+                    Fees reduce the dollars left to earn future returns.
+                  </text>
+                </g>
+
+                <text x="360" y="1025" text-anchor="middle" class="svg-small">
+                  <tspan x="360" dy="0">*Annualized example.</tspan>
+                  <tspan x="360" dy="28">Do not double-count bundled costs.</tspan>
+                </text>
+
+              </g>
+            </svg>
+
+            <button
+              class="poster-play"
+              id="poster-play"
+              type="button"
+              aria-label="Play the 20-year cost story"
+            >
+              <span class="poster-play-icon" aria-hidden="true">▶</span>
+              <span class="poster-play-title">Play the 20-year cost story</span>
+              <span class="poster-play-copy">Three cost layers. One widening wedge.</span>
+            </button>
+
+            <div id="no-js-summary">
+              <strong>1.00% + 0.25% + 0.10% = 1.35% modeled annual costs</strong>
+              <span>
+                Over time, advisory, fund, and separately charged account or transaction costs
+                create a widening gap between gross and net returns.
+              </span>
+            </div>
+          </div>
+
+          <div class="story-controls">
+            <span class="status" id="story-status" aria-live="polite">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span id="status-label">Ready to play</span>
+            </span>
+            <button
+              class="replay"
+              id="replay"
+              type="button"
+              aria-controls="cost-layers-over-time"
+            >
+              <span id="control-icon" aria-hidden="true">▶</span>
+              <span id="control-label">Play story</span>
+            </button>
+          </div>
+        </div>
+
+        <p class="disclosure">
+          Illustrative cost education—not a return forecast. The path and vertical distances are
+          conceptual. Costs vary by investment, account, and provider; some charges are bundled or
+          transaction-based. Taxes are separate and depend on individual circumstances.
+        </p>
+        <p class="sr-only" id="live-summary" aria-live="polite"></p>
+      </section>
+
+      <section class="decision-notes" aria-label="Design and modeling decisions">
+        <article class="decision-note">
+          <span class="decision-note-label">The third layer</span>
+          <h2>Account &amp; transaction costs</h2>
+          <p>
+            This can include separately incurred custody, platform, or account charges plus
+            commissions, spreads, or other trading costs. A wrap fee may already include some of
+            them.
+          </p>
+        </article>
+        <article class="decision-note">
+          <span class="decision-note-label">Kept separate</span>
+          <h2>Taxes are not a fee</h2>
+          <p>
+            Taxes can reduce what an investor keeps, but the effect depends on the account,
+            investment, jurisdiction, and investor—so they should not be buried in this total.
+          </p>
+        </article>
+        <article class="decision-note">
+          <span class="decision-note-label">Range decision</span>
+          <h2>No forecast-looking band</h2>
+          <p>
+            No range is shown because this concept has no defined, validated statistical
+            methodology. Add one only with a documented scenario or Monte Carlo model.
+          </p>
+        </article>
+      </section>
+
+      <p class="sources">
+        <strong>Cost definitions:</strong>
+        <a
+          href="https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/updated"
+        >SEC: How Fees and Expenses Affect Your Portfolio</a>,
+        <a
+          href="https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/mutual-fund-and-etf-fees-and-expenses-investor-bulletin"
+        >SEC: Mutual Fund and ETF Fees</a>, and
+        <a href="https://www.finra.org/investors/investing/investing-basics/fees-commissions"
+        >FINRA: Fees and Commissions</a>.
+      </p>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <script>
+      (() => {
+        "use strict";
+
+        const composition = document.querySelector("#cost-layers-over-time");
+        const playbackButton = document.querySelector("#replay");
+        const posterButton = document.querySelector("#poster-play");
+        const controlIcon = document.querySelector("#control-icon");
+        const controlLabel = document.querySelector("#control-label");
+        const statusLabel = document.querySelector("#status-label");
+        const liveSummary = document.querySelector("#live-summary");
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        const chart = {
+          xStart: 88,
+          xEnd: 640,
+          grossStartY: 778,
+          grossEndY: 548,
+          adviceDrag: 130,
+          fundDrag: 70,
+          accountDrag: 42,
+        };
+
+        const samples = Array.from({ length: 61 }, (_, index) => index / 60);
+        const xAt = (progress) => chart.xStart + (chart.xEnd - chart.xStart) * progress;
+        const grossYAt = (progress) =>
+          chart.grossStartY - (chart.grossStartY - chart.grossEndY) * Math.pow(progress, 1.12);
+        const adviceYAt = (progress) =>
+          grossYAt(progress) + chart.adviceDrag * Math.pow(progress, 1.72);
+        const fundYAt = (progress) =>
+          adviceYAt(progress) + chart.fundDrag * Math.pow(progress, 1.72);
+        const netYAt = (progress) =>
+          fundYAt(progress) + chart.accountDrag * Math.pow(progress, 1.72);
+
+        const linePath = (yAt) =>
+          samples
+            .map((progress, index) => {
+              const command = index === 0 ? "M" : "L";
+              return `${command}${xAt(progress).toFixed(2)},${yAt(progress).toFixed(2)}`;
+            })
+            .join(" ");
+
+        const bandPath = (upperYAt, lowerYAt) => {
+          const upper = samples.map((progress) =>
+            `${xAt(progress).toFixed(2)},${upperYAt(progress).toFixed(2)}`
+          );
+          const lower = [...samples]
+            .reverse()
+            .map((progress) => `${xAt(progress).toFixed(2)},${lowerYAt(progress).toFixed(2)}`);
+          return `M${upper[0]} L${upper.slice(1).join(" L")} L${lower.join(" L")} Z`;
+        };
+
+        const grossPath = document.querySelector("#gross-path");
+        const netPath = document.querySelector("#net-path");
+        grossPath.setAttribute("d", linePath(grossYAt));
+        netPath.setAttribute("d", linePath(netYAt));
+        document.querySelector("#advice-band").setAttribute("d", bandPath(grossYAt, adviceYAt));
+        document.querySelector("#fund-band").setAttribute("d", bandPath(adviceYAt, fundYAt));
+        document.querySelector("#account-band").setAttribute("d", bandPath(fundYAt, netYAt));
+
+        const setupDrawPath = (path) => {
+          const length = path.getTotalLength();
+          path.style.strokeDasharray = String(length);
+          path.style.strokeDashoffset = String(length);
+          return length;
+        };
+
+        const grossLength = setupDrawPath(grossPath);
+        const netLength = setupDrawPath(netPath);
+
+        const finalSummary =
+          "Illustrative example: a 1.00 percent advice fee, 0.25 percent fund and ETF operating costs, and a 0.10 percent annualized account and transaction estimate equal 1.35 percent modeled annual costs. Their cumulative wealth impact widens over time. Taxes are separate.";
+
+        const setPlaybackControl = (label, icon) => {
+          controlLabel.textContent = label;
+          controlIcon.textContent = icon;
+        };
+
+        const showStaticEnd = () => {
+          composition.classList.remove("preparing");
+          composition.classList.add("static-end");
+          grossPath.style.strokeDashoffset = "0";
+          netPath.style.strokeDashoffset = "0";
+          posterButton.hidden = true;
+          document.querySelector("#time-sweep").style.display = "none";
+          statusLabel.textContent = reduceMotion ? "Full story shown" : "Animation unavailable";
+          playbackButton.hidden = true;
+          liveSummary.textContent = finalSummary;
+        };
+
+        if (!window.gsap) {
+          showStaticEnd();
+          return;
+        }
+
+        const { gsap } = window;
+        const timeline = gsap.timeline({
+          paused: true,
+          defaults: { ease: "power3.out" },
+          onStart: () => {
+            statusLabel.textContent = "Playing the story";
+            setPlaybackControl("Pause story", "Ⅱ");
+          },
+          onComplete: () => {
+            statusLabel.textContent = "Story complete";
+            setPlaybackControl("Replay story", "↻");
+            liveSummary.textContent = finalSummary;
+          },
+        });
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["cost-layers-over-time"] = timeline;
+
+        gsap.set("#cost-ledger", { opacity: 0 });
+        gsap.set("#frame-header", { opacity: 0, y: 14 });
+        gsap.set('[data-composition-id="cost-layers-over-time"] .ledger-row', {
+          opacity: 0,
+          x: -18,
+        });
+        gsap.set("#ledger-total", { opacity: 0, scale: 0.96, transformOrigin: "50% 50%" });
+        gsap.set("#chart-visual", { opacity: 0 });
+        gsap.set("#time-grid", { opacity: 0 });
+        gsap.set('[data-composition-id="cost-layers-over-time"] .x-tick', {
+          opacity: 0,
+          y: 8,
+        });
+        gsap.set('[data-composition-id="cost-layers-over-time"] .cost-area', {
+          scaleX: 0,
+          opacity: 0,
+        });
+        gsap.set("#time-sweep", { opacity: 0, x: 0 });
+        gsap.set("#end-labels, #cost-bracket", { opacity: 0 });
+        gsap.set("#final-insight", { opacity: 0, y: 16 });
+        gsap.set("#final-halo", { scale: 0.97, transformOrigin: "50% 50%" });
+
+        timeline
+          .to("#poster-play", { autoAlpha: 0, duration: 0.24 }, 0)
+          .to("#frame-header", { opacity: 1, y: 0, duration: 0.46 }, 0.12)
+          .to("#cost-ledger", { opacity: 1, duration: 0.18 }, 0.42)
+          .to(
+            '[data-composition-id="cost-layers-over-time"] .ledger-row',
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.42,
+              stagger: 0.34,
+            },
+            0.55,
+          )
+          .to(
+            "#ledger-total",
+            {
+              opacity: 1,
+              scale: 1,
+              duration: 0.48,
+              ease: "back.out(1.45)",
+            },
+            1.62,
+          )
+          .to("#chart-visual", { opacity: 1, duration: 0.4 }, 2.02)
+          .to("#time-grid", { opacity: 1, duration: 0.34 }, 2.18)
+          .to(
+            '[data-composition-id="cost-layers-over-time"] .x-tick',
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.3,
+              stagger: 0.11,
+            },
+            2.22,
+          )
+          .to("#time-sweep", { opacity: 1, duration: 0.2 }, 2.55)
+          .to(
+            "#time-sweep",
+            {
+              x: chart.xEnd - chart.xStart,
+              duration: 2.75,
+              ease: "none",
+            },
+            2.65,
+          )
+          .to(
+            grossPath,
+            {
+              strokeDashoffset: 0,
+              duration: 2.55,
+              ease: "none",
+            },
+            2.65,
+          )
+          .to(
+            "#advice-band",
+            {
+              scaleX: 1,
+              opacity: 1,
+              duration: 2.35,
+              ease: "power2.inOut",
+            },
+            2.88,
+          )
+          .to(
+            "#fund-band",
+            {
+              scaleX: 1,
+              opacity: 1,
+              duration: 2.15,
+              ease: "power2.inOut",
+            },
+            3.1,
+          )
+          .to(
+            "#account-band",
+            {
+              scaleX: 1,
+              opacity: 1,
+              duration: 1.95,
+              ease: "power2.inOut",
+            },
+            3.32,
+          )
+          .to(
+            netPath,
+            {
+              strokeDashoffset: 0,
+              duration: 1.78,
+              ease: "none",
+            },
+            3.58,
+          )
+          .to("#time-sweep", { opacity: 0, duration: 0.24 }, 5.38)
+          .to("#end-labels", { opacity: 1, duration: 0.38 }, 5.46)
+          .to("#cost-bracket", { opacity: 1, duration: 0.4 }, 5.64)
+          .to("#final-insight", { opacity: 1, y: 0, duration: 0.5 }, 6.05)
+          .to(
+            "#final-halo",
+            {
+              scale: 1.025,
+              opacity: 0.88,
+              duration: 0.72,
+              ease: "sine.inOut",
+            },
+            6.52,
+          )
+          .to(
+            "#final-halo",
+            {
+              scale: 1,
+              opacity: 1,
+              duration: 0.36,
+              ease: "sine.inOut",
+            },
+            7.24,
+          );
+
+        composition.classList.remove("preparing");
+
+        const playFromStart = () => {
+          liveSummary.textContent = "";
+          timeline.restart();
+        };
+
+        const togglePlayback = () => {
+          if (timeline.progress() >= 0.999) {
+            playFromStart();
+            return;
+          }
+
+          if (timeline.paused()) {
+            liveSummary.textContent = "";
+            timeline.resume();
+            statusLabel.textContent = "Playing the story";
+            setPlaybackControl("Pause story", "Ⅱ");
+            return;
+          }
+
+          timeline.pause();
+          statusLabel.textContent = "Story paused";
+          setPlaybackControl("Resume story", "▶");
+        };
+
+        playbackButton.addEventListener("click", togglePlayback);
+        posterButton.addEventListener("click", togglePlayback);
+
+        if (reduceMotion) {
+          timeline.progress(1).pause();
+          statusLabel.textContent = "Full story shown";
+          playbackButton.hidden = true;
+          posterButton.hidden = true;
+          liveSummary.textContent = finalSummary;
+          return;
+        }
+      })();
+    </script>
+  </body>
+</html>
