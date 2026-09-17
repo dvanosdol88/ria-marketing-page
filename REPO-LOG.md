@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-09-17 — Served build published at /api/version for the Rack observer
+**Agent:** Claude Fable 5.1 (Claude Code cloud) | **Surface:** `/api/version` | **Status:** not deployed at commit; production verification follows merge | **Rack container:** pending (address to be added when taken)
+- why: the command centre's Rack board turns a container solid green only when an independent check finds its merged change served by production. Until now the board could read what dvo88.com serves but not this site, so work here could never earn solid green. This is the smallest honest way for youarepayingtoomuch.com to say which build it is serving.
+- changed: `src/app/api/version/route.ts` answers `{ surface, commit, ref, env }` from the values Vercel stamps on each deployment (`VERCEL_GIT_COMMIT_SHA`, `VERCEL_GIT_COMMIT_REF`, `VERCEL_ENV`), dynamic and `Cache-Control: no-store`; `src/lib/servedVersion.ts` validates the commit and answers honestly `null` outside Vercel or for a malformed value. No page, calculator, tracking, or navigation change.
+- verified: `npm run test:served-version` 3/3 (new suite, wired into the CI `test` job), focused ESLint clean, `npx tsc --noEmit` clean.
+- deployed: not deployed. Production proof after merge = `https://youarepayingtoomuch.com/api/version` answers the merge commit of this change, and the Rack container for this work shows You Are Paying Too Much beside its pull request.
+
 ### 2026-09-17 — Headshot on Become a Client
 **Agent:** Codex | **Surface:** Become a Client | **Status:** not deployed at commit; production verification follows merge
 - Added the existing David headshot beside the introduction on desktop, with a compact stacked photo on smaller screens to preserve headline readability.

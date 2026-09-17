@@ -102,6 +102,9 @@ jobs:
       - name: Mailto CTA redaction
         run: npm run test:posthog-cta-tracker-mailto
 
+      - name: Served version endpoint
+        run: npm run test:served-version
+
   notify-failure:
     needs: [verify, test]
     if: failure()
