@@ -72,6 +72,9 @@ jobs:
       - name: Source locks (WWWH, nav, spacing constants)
         run: npm run test:home-wwwh
 
+      - name: Source locks (One Percent Blues)
+        run: npm run test:blues-source-locks
+
       - name: First-screen geometry
         run: npm run test:home-first-screen
 
@@ -101,6 +104,9 @@ jobs:
 
       - name: Mailto CTA redaction
         run: npm run test:posthog-cta-tracker-mailto
+
+      - name: One Percent Blues host routing
+        run: npm run test:blues-host-routing
 
   notify-failure:
     needs: [verify, test]
