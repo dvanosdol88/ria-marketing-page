@@ -330,3 +330,32 @@ body {
     animation: none;
   }
 }
+
+/* One Percent Blues (src/app/(blues)). Scoped to the page wrapper. The two
+   `:root:has` rules paint the document canvas deep blue while a blue page is
+   mounted, so rubber-band overscroll never flashes the green site's grey
+   behind the gradient. The link rule sits in the base layer beside the site's
+   own `a` default so utilities still win. */
+:root:has([data-theme="blues"]) {
+  background-color: #1e3a8a;
+}
+:root:has([data-theme="blues"]) body {
+  background-color: #1e3a8a;
+}
+@layer base {
+  [data-theme="blues"] a {
+    color: #1d4ed8;
+  }
+  [data-theme="blues"] a:hover {
+    color: #1e3a8a;
+  }
+}
+[data-theme="blues"] .custom-slider {
+  background: linear-gradient(to right, #2563eb 0%, #2563eb var(--value-percent, 50%), #e5e7eb var(--value-percent, 50%), #e5e7eb 100%);
+}
+[data-theme="blues"] .custom-slider::-webkit-slider-thumb {
+  background: #2563eb;
+}
+[data-theme="blues"] .custom-slider::-moz-range-thumb {
+  background: #2563eb;
+}

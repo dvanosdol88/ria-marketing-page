@@ -15,6 +15,7 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-sans)", "ui-sans-serif", "system-ui", "sans-serif"],
         logo: ["var(--font-logo)", "sans-serif"],
+        "blues-serif": ["var(--font-blues-serif)", "Georgia", "serif"],
       },
       letterSpacing: {
         tightish: tokens.typography.trackingTightish,
