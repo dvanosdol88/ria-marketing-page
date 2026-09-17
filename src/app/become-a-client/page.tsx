@@ -73,8 +73,7 @@ export default function BecomeAClientPage() {
           One flat fee. $100 a month.
         </h1>
         <p className="mt-4 max-w-2xl text-base leading-7 text-[#31465F] sm:text-lg">
-          No commissions, no products, and no percentage of your money. Your fee
-          stays exactly the same as your portfolio grows.
+          See what truly independent advice looks like.
         </p>
       </header>
 
