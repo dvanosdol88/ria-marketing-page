@@ -7,13 +7,26 @@ import { formatCurrency } from "@/lib/format";
 
 type BluesSearchParams = Record<string, string | string[] | undefined>;
 
+/* Next appends every `has` match a rewrite does not consume to the rewritten
+   request's query, so the host rewrite in next.config.mjs arrives here as
+   `?host=onepercentblues.com`. Left in, the calculator's URL sync would write
+   it into the visitor's address bar and every share link. It is dropped at
+   the door; nothing on this page wants it. */
+const REWRITE_ONLY_PARAMS = new Set(["host"]);
+
+function stripRewriteParams(searchParams: BluesSearchParams): BluesSearchParams {
+  return Object.fromEntries(
+    Object.entries(searchParams).filter(([key]) => !REWRITE_ONLY_PARAMS.has(key)),
+  );
+}
+
 /* Same query contract as the green home (flat/portfolio/years/growth/fee/mfe),
    so a link shared from onepercentblues.com — which the canon share stack
    builds from window.location.origin + "/?query#calculator" — lands back
    here with the visitor's own numbers. */
 function normalizeSearchParams(searchParams: BluesSearchParams) {
   const params = new URLSearchParams();
-  Object.entries(searchParams).forEach(([key, value]) => {
+  Object.entries(stripRewriteParams(searchParams)).forEach(([key, value]) => {
     if (Array.isArray(value)) {
       value.forEach((entry) => params.append(key, entry));
     } else if (typeof value === "string") {
@@ -79,7 +92,7 @@ export default async function OnePercentBluesPage({
 }: {
   searchParams: Promise<BluesSearchParams>;
 }) {
-  const resolvedSearchParams = await searchParams;
+  const resolvedSearchParams = stripRewriteParams(await searchParams);
   const calculatorState = parseCalculatorState(normalizeSearchParams(resolvedSearchParams));
 
   return (
