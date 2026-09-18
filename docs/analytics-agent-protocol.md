@@ -158,7 +158,7 @@ CTA events should include:
 
 Allowed:
 
-- anonymous calculator assumptions
+- calculator milestone names and privacy-safe interaction metadata
 - campaign parameters
 - CTA metadata
 - page paths
@@ -170,6 +170,7 @@ Restricted:
 - phone numbers typed into forms
 - SSNs
 - account numbers
+- calculator assumptions, portfolio values, rates, horizons, projected results, or derived asset tiers
 - free-form personal financial details
 - client names or identifiable financial information
 
