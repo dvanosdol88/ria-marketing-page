@@ -1,11 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
 ### 02-06 — 2026-09-21 — Moved client entry to Smarter Way Wealth and tightened the quote handoff
-**Agent:** R2D2 | **Surface:** homepage client CTA and quote deck | **Status:** locally verified; production proof required after merge
+**Agent:** R2D2 | **Surface:** homepage client CTA and quote deck | **PR:** [#278](https://github.com/dvanosdol88/ria-marketing-page/pull/278) (`6b35db9`) | **Status:** deployed and production-proved
 - changed: every shared **Become a Client** destination now opens the live Smarter Way Wealth secure email-verification entrance. The optional 15-minute fit conversation remains unchanged.
 - changed: the homepage Fit-to-quotes band now reuses the Smarter Way Wealth Save-page math motion field. Its $, +, −, ×, ÷, and = characters are 10% larger and 10% darker, begin at the Fit choices, and continue behind the quote cards; reduced-motion visitors receive no animation.
 - changed: quote copy and **Not an endorsement.** are centered, the card's lower attribution gap is reduced by more than half, and the measured mobile gap from the Fit button to the quote heading is exactly half of production (160px → 80px at 390px). No horizontal overflow or console errors were found.
 - proof: focused source contracts, TypeScript, changed-file lint, the EDDM attribution browser journey, and a fresh optimized production build pass. Local 390px and 1440px browser checks confirmed the Smarter Way Wealth destination, centered text, active canvas, responsive fit, and zero overflow.
+- deployed: required GitHub checks passed. Vercel production deployment `dpl_7kTqbhDH7zCozcGCVefGfesW9QUr` is READY, targets production, serves exact `origin/main` `6b35db916a331e412ba6f428cb208568388cdc25`, and owns the `youarepayingtoomuch.com` apex alias. A fresh apex browser measured the requested 160px → 80px mobile gap, confirmed the live motion canvas changed frames, found zero horizontal overflow, and followed the real primary CTA to `https://smarterwaywealth.com/onboarding/verify` where the live secure email-verification form rendered.
 
 ### 01-97 — 2026-09-21 — Two clear homepage next steps
 **Agent:** Codex | **Surface:** homepage post-calculator signup | **Status:** not deployed at commit; production verification follows merge
