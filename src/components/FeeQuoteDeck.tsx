@@ -59,7 +59,7 @@ function QuoteCard({ quote, counter }: { quote: FeeQuote; counter: string }) {
        attribution column anyway; centred from sm up, where the wider card turns
        a two-line quote into an obviously bottom-heavy card if it stays pinned
        to the top of a ~150px portrait block. */
-    <figure className="relative flex h-full min-h-[176px] items-start gap-4 rounded-2xl border border-[#D8E2EA] bg-white p-4 shadow-[0_10px_30px_rgba(17,33,52,0.07)] sm:items-center sm:gap-6 sm:p-6">
+    <figure className="relative flex h-full min-h-[176px] items-start gap-4 rounded-2xl border border-[#D8E2EA] bg-white p-4 pb-10 shadow-[0_10px_30px_rgba(17,33,52,0.07)] sm:items-center sm:gap-6 sm:p-6 sm:pb-10">
       <div className="flex w-[96px] shrink-0 flex-col sm:w-[112px]">
         {portraitSrc ? (
           <Image
@@ -92,6 +92,9 @@ function QuoteCard({ quote, counter }: { quote: FeeQuote; counter: string }) {
         </span>
       </blockquote>
 
+      <p className="absolute bottom-3 left-4 right-16 text-[11px] leading-4 text-[#52657A] sm:left-6">
+        Not an endorsement.
+      </p>
       <span
         aria-hidden="true"
         className="absolute bottom-3 right-4 text-[11px] font-semibold tabular-nums text-[#C2CFDA]"

@@ -4,6 +4,7 @@
 **Agent:** Codex | **Surface:** homepage post-calculator signup | **Status:** not deployed at commit; production verification follows merge
 - Replaced the homepage's Ready when you are panel with a full-width blue “Sign me up — Become a client” button and a separate full-width green “See if I'm a good fit” button with “Schedule a 15-minute talk with David” beneath its title.
 - Preserved signup/meeting destinations, stable analytics labels and locations, and engagement disclosure. Other signup placements, including One Percent Blues, are unchanged.
+- Added David's requested “Not an endorsement.” note to the bottom of every homepage quote card, with reserved space separate from quote text and the card counter. Batch saved only; David requested holding publication while more edits arrive.
 
 ### 2026-09-17 — Headshot on Become a Client
 **Agent:** Codex | **Surface:** Become a Client | **Status:** not deployed at commit; production verification follows merge
