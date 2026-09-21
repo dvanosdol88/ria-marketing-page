@@ -64,6 +64,39 @@ export function SignupCta({
   surfaceClassName = "bg-[#EEF0F5]",
   primaryHref,
 }: SignupCtaProps) {
+  // The homepage uses David's compact two-choice layout. Other placements keep
+  // their existing presentation and all analytics labels remain stable.
+  if (variant === "block" && location === "home_post_calculator") {
+    return (
+      <section className={`w-full ${surfaceClassName} px-4 py-10 sm:px-6 sm:py-14`}>
+        <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
+          <Link
+            href={signupCta.primary.href}
+            className="flex min-h-[56px] w-full items-center justify-center rounded-md bg-[#064B84] px-6 py-4 text-center text-lg font-bold !text-white !no-underline shadow-sm transition hover:bg-[#053B6A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84]"
+            data-posthog-cta="true"
+            data-posthog-cta-label={signupCta.primary.label}
+            data-posthog-cta-location={`${location}_primary`}
+          >
+            Sign me up — Become a client
+          </Link>
+          <a
+            href={signupCta.secondary.href}
+            className="flex min-h-[80px] w-full flex-col items-center justify-center gap-1 rounded-md bg-[#008532] px-6 py-4 text-center !text-white !no-underline shadow-sm transition hover:bg-[#006B28] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]"
+            data-posthog-cta="true"
+            data-posthog-cta-label={signupCta.secondary.label}
+            data-posthog-cta-location={`${location}_secondary`}
+          >
+            <span className="text-lg font-bold">See if I&apos;m a good fit</span>
+            <span className="text-sm">Schedule a 15-minute talk with David</span>
+          </a>
+          <p className="text-center text-xs leading-5 text-[#536278]">
+            {signupCta.disclosure}
+          </p>
+        </div>
+      </section>
+    );
+  }
+
   const primaryButtonClass =
     variant === "block" ? BLOCK_PRIMARY_BUTTON_CLASS : INLINE_PRIMARY_BUTTON_CLASS;
 
