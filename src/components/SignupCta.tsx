@@ -68,7 +68,7 @@ export function SignupCta({
   // their existing presentation and all analytics labels remain stable.
   if (variant === "block" && location === "home_post_calculator") {
     return (
-      <section className={`w-full ${surfaceClassName} px-4 py-10 sm:px-6 sm:py-14`}>
+      <section className={`w-full ${surfaceClassName} px-4 pb-4 pt-10 sm:px-6 sm:pb-6 sm:pt-14`}>
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
           <Link
             href={signupCta.primary.href}

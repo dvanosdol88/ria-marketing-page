@@ -34,6 +34,10 @@ test("direct onboarding is active and the paused experience is absent", () => {
   assert.match(apiSource, /collection\(LEADS_COLLECTION\)/);
   assert.match(apiSource, /agreementDelivered: false/);
   assert.match(signupConfigSource, /label: "Become a client — \$100\/month"/);
+  assert.match(
+    signupConfigSource,
+    /export const SIGNUP_PATH = "https:\/\/smarterwaywealth\.com\/onboarding\/verify"/,
+  );
   assert.match(navSource, />\s*Become a Client\s*<ExternalLink/);
   assert.match(sitemapSource, /<loc>https:\/\/youarepayingtoomuch\.com\/become-a-client<\/loc>/);
 });

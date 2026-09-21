@@ -20,6 +20,7 @@ import { Odometer } from "@/components/Odometer";
 import { HomeMarketingHero } from "@/components/HomeMarketingHero";
 import { HomeTopBanner } from "@/components/HomeTopBanner";
 import { FeeQuoteDeck } from "@/components/FeeQuoteDeck";
+import { MathMotionField } from "@/components/MathMotionField";
 import { HomeFaqSection } from "@/components/HomeFaqSection";
 import { SignupCta } from "@/components/SignupCta";
 import { BluesOpening } from "@/components/blues/BluesOpening";
@@ -1417,9 +1418,15 @@ export function CostAnalysisCalculator({
           off-root. */}
       {isSavingsCalculatorUpgrade && <WhatWhyWhoHow />}
 
-      {isSavingsCalculatorUpgrade && <SignupCta location="home_post_calculator" />}
-
-      {isSavingsCalculatorUpgrade && <FeeQuoteDeck />}
+      {isSavingsCalculatorUpgrade && (
+        <section className="relative overflow-hidden bg-[#EEF0F5]">
+          <MathMotionField />
+          <div className="relative z-10">
+            <SignupCta location="home_post_calculator" surfaceClassName="bg-transparent" />
+            <FeeQuoteDeck />
+          </div>
+        </section>
+      )}
 
       {isSavingsCalculatorUpgrade && (
         <SmarterWayWealthVisitCard

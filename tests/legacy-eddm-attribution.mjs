@@ -319,7 +319,10 @@ try {
     'a[data-posthog-cta-location="home_post_calculator_primary"]',
   );
   assert.equal(await retainedCta.count(), 1, "the homepage must retain one primary CTA");
-  assert.equal(await retainedCta.getAttribute("href"), "/become-a-client");
+  assert.equal(
+    await retainedCta.getAttribute("href"),
+    "https://smarterwaywealth.com/onboarding/verify",
+  );
   await retainedCta.evaluate((link) => {
     link.addEventListener("click", (event) => event.preventDefault(), { once: true });
     link.click();
@@ -489,28 +492,15 @@ try {
   const directStartCta = directStartPage.locator(
     'a[data-posthog-cta-location="home_post_calculator_primary"]',
   );
-  assert.equal(await directStartCta.getAttribute("href"), "/become-a-client");
-  await directStartCta.click();
-  await directStartPage.waitForURL(`${baseUrl}/become-a-client`);
-  await directStartPage.getByRole("heading", {
-    level: 1,
-    name: "One flat fee. $100 a month.",
-  }).waitFor();
   assert.equal(
-    await directStartPage.locator("main form").count(),
-    1,
-    "the EDDM direct-start journey must reach the active onboarding form",
+    await directStartCta.getAttribute("href"),
+    "https://smarterwaywealth.com/onboarding/verify",
+    "the EDDM direct-start journey must enter Smarter Way Wealth secure onboarding",
   );
-  await directStartPage.getByLabel("Your name").waitFor();
-  await directStartPage.getByLabel("Email").waitFor();
-  await directStartPage.getByLabel("What state do you live in?").waitFor();
-  await directStartPage.getByLabel("What state do you live in?").waitFor();
-  assert.equal(await directStartPage.getByLabel("Roughly how much is in your investment accounts?").count(), 0);
-  await directStartPage.getByRole("button", { name: "Send me the agreement" }).waitFor();
   await directStartPage.close();
 
   console.log(
-    "The canonical QR destination is the clean root; legacy QR URLs and foreign explicit UTM traffic stay at the page top; the legacy EDDM direct-start journey reaches the active onboarding form without test submission; attribution survives URL cleanup; every firm handoff enforces a UTM-only query, including the advanced-calculator path.",
+    "The canonical QR destination is the clean root; legacy QR URLs and foreign explicit UTM traffic stay at the page top; the legacy EDDM direct-start journey points to Smarter Way Wealth secure onboarding; attribution survives URL cleanup; every firm handoff enforces a UTM-only query, including the advanced-calculator path.",
   );
 } finally {
   await browser?.close();
