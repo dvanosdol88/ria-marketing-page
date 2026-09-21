@@ -59,7 +59,7 @@ function QuoteCard({ quote, counter }: { quote: FeeQuote; counter: string }) {
        attribution column anyway; centred from sm up, where the wider card turns
        a two-line quote into an obviously bottom-heavy card if it stays pinned
        to the top of a ~150px portrait block. */
-    <figure className="relative flex h-full min-h-[176px] items-start gap-4 rounded-2xl border border-[#D8E2EA] bg-white p-4 pb-10 shadow-[0_10px_30px_rgba(17,33,52,0.07)] sm:items-center sm:gap-6 sm:p-6 sm:pb-10">
+    <figure className="relative flex h-full min-h-[160px] items-start gap-4 rounded-2xl border border-[#D8E2EA] bg-white p-4 pb-8 shadow-[0_10px_30px_rgba(17,33,52,0.07)] sm:items-center sm:gap-6 sm:p-6 sm:pb-8">
       <div className="flex w-[96px] shrink-0 flex-col sm:w-[112px]">
         {portraitSrc ? (
           <Image
@@ -82,7 +82,7 @@ function QuoteCard({ quote, counter }: { quote: FeeQuote; counter: string }) {
         </figcaption>
       </div>
 
-      <blockquote className="min-w-0 flex-1 pt-0.5 text-[15px] font-medium leading-6 text-[#10233A] sm:text-base sm:leading-7">
+      <blockquote className="min-w-0 flex-1 pt-0.5 text-center text-[15px] font-medium leading-6 text-[#10233A] sm:text-base sm:leading-7">
         <span aria-hidden="true" className="mr-0.5 font-black text-[#00A540]">
           &ldquo;
         </span>
@@ -92,7 +92,7 @@ function QuoteCard({ quote, counter }: { quote: FeeQuote; counter: string }) {
         </span>
       </blockquote>
 
-      <p className="absolute bottom-3 left-4 right-16 text-[11px] leading-4 text-[#52657A] sm:left-6">
+      <p className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap text-center text-[11px] leading-4 text-[#52657A]">
         Not an endorsement.
       </p>
       <span
@@ -189,7 +189,7 @@ function QuoteSlot({
       role="group"
       aria-roledescription="carousel"
       aria-label={slotLabel}
-      className="group relative min-h-[176px] overflow-hidden rounded-2xl"
+      className="group relative min-h-[160px] overflow-hidden rounded-2xl"
       style={reservedHeight ? { height: reservedHeight } : undefined}
     >
       <div
@@ -291,7 +291,7 @@ export function FeeQuoteDeck() {
   return (
     <section
       aria-label="What respected investors say about long-term costs"
-      className="w-full bg-[#EEF0F5] px-4 pb-4 pt-16 sm:px-6 sm:pt-24"
+      className="w-full bg-transparent px-4 pb-4 pt-2 sm:px-6 sm:pb-4 sm:pt-6"
     >
       <div className="mx-auto max-w-3xl">
         <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#007A2F]">

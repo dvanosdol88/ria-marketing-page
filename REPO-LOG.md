@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-06 — 2026-09-21 — Moved client entry to Smarter Way Wealth and tightened the quote handoff
+**Agent:** R2D2 | **Surface:** homepage client CTA and quote deck | **Status:** locally verified; production proof required after merge
+- changed: every shared **Become a Client** destination now opens the live Smarter Way Wealth secure email-verification entrance. The optional 15-minute fit conversation remains unchanged.
+- changed: the homepage Fit-to-quotes band now reuses the Smarter Way Wealth Save-page math motion field. Its $, +, −, ×, ÷, and = characters are 10% larger and 10% darker, begin at the Fit choices, and continue behind the quote cards; reduced-motion visitors receive no animation.
+- changed: quote copy and **Not an endorsement.** are centered, the card's lower attribution gap is reduced by more than half, and the measured mobile gap from the Fit button to the quote heading is exactly half of production (160px → 80px at 390px). No horizontal overflow or console errors were found.
+- proof: focused source contracts, TypeScript, changed-file lint, the EDDM attribution browser journey, and a fresh optimized production build pass. Local 390px and 1440px browser checks confirmed the Smarter Way Wealth destination, centered text, active canvas, responsive fit, and zero overflow.
+
 ### 01-97 — 2026-09-21 — Two clear homepage next steps
 **Agent:** Codex | **Surface:** homepage post-calculator signup | **Status:** not deployed at commit; production verification follows merge
 - Replaced the homepage's Ready when you are panel with a full-width blue “Sign me up — Become a client” button and a separate full-width green “See if I'm a good fit” button with “Schedule a 15-minute talk with David” beneath its title.

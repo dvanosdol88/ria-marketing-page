@@ -20,6 +20,7 @@ const [
   homeFaqSource,
   faqDataSource,
   feeQuoteDeckSource,
+  mathMotionFieldSource,
 ] = await Promise.all([
   readSource("../src/app/(site)/page.tsx"),
   readSource("../src/app/layout.tsx"),
@@ -35,6 +36,7 @@ const [
   readSource("../src/components/HomeFaqSection.tsx"),
   readSource("../src/data/faq.ts"),
   readSource("../src/components/FeeQuoteDeck.tsx"),
+  readSource("../src/components/MathMotionField.tsx"),
 ]);
 
 const flatten = (source) => source.replace(/\s+/g, " ");
@@ -137,7 +139,7 @@ test("lean root composition retains the approved homepage order", () => {
   );
   const answersIndex = calculatorSource.indexOf("<WhatWhyWhoHow />");
   const homeSignupIndex = calculatorSource.indexOf(
-    '<SignupCta location="home_post_calculator" />',
+    '<SignupCta location="home_post_calculator"',
   );
   const quoteDeckIndex = calculatorSource.indexOf("<FeeQuoteDeck />");
   const firmVisitCardIndex = calculatorSource.indexOf(
@@ -190,7 +192,7 @@ test("lean root composition retains the approved homepage order", () => {
     "WWWH must render exactly once",
   );
   assert.equal(
-    calculatorSource.match(/<SignupCta location="home_post_calculator" \/>/g)?.length,
+    calculatorSource.match(/<SignupCta location="home_post_calculator"/g)?.length,
     1,
     "the root must retain exactly one homepage CTA",
   );
@@ -214,6 +216,24 @@ test("lean root composition retains the approved homepage order", () => {
     /buildAdvancedCalculatorHrefFromState/,
     "the cross-domain handoff must not be rebuilt from visitor calculator state",
   );
+});
+
+test("the fit-to-quotes region reuses the Smarter Way Wealth math field with the requested emphasis", () => {
+  const flatCalculator = flatten(calculatorSource);
+  const flatQuotes = flatten(feeQuoteDeckSource);
+
+  assert.match(
+    flatCalculator,
+    /<section className="relative overflow-hidden bg-\[#EEF0F5\]"> <MathMotionField \/> <div className="relative z-10"> <SignupCta location="home_post_calculator" surfaceClassName="bg-transparent" \/> <FeeQuoteDeck \/> <\/div> <\/section>/,
+    "one motion field must begin with the Fit choices and continue through the quote cards",
+  );
+  assert.match(mathMotionFieldSource, /\["\$", "\$", "\$", "\+", "−", "×", "÷", "="\]/);
+  assert.match(mathMotionFieldSource, /size: 16\.5 \+ Math\.random\(\) \* 13\.2/);
+  assert.match(mathMotionFieldSource, /context\.fillStyle = "#00953A"/);
+  assert.match(mathMotionFieldSource, /prefers-reduced-motion: reduce/);
+  assert.match(flatQuotes, /blockquote className="[^"]*text-center/);
+  assert.match(flatQuotes, /left-1\/2[^\"]*-translate-x-1\/2[^\"]*text-center/);
+  assert.match(flatQuotes, /px-4 pb-4 pt-2 sm:px-6 sm:pb-4 sm:pt-6/);
 });
 
 test("the firm visit card is one solid green visual unit with separate tracked destinations", () => {

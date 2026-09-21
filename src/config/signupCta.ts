@@ -9,7 +9,8 @@ import { SMARTER_WAY_WEALTH_MEET_URL } from "@/config/campaignLinks";
  * all of which landed on the same 15-minute call. A visitor who had already
  * decided had no faster door than a visitor who was still unsure.
  *
- * Primary  — the person who is sold. Goes to the on-site sign-up.
+ * Primary  — the person who is sold. Goes to Smarter Way Wealth's secure
+ *            email-verification entrance.
  * Secondary — the person who is not. Goes to the existing 15-minute fit call.
  *
  * The secondary link is what protects the primary: naming the hesitation out
@@ -17,7 +18,7 @@ import { SMARTER_WAY_WEALTH_MEET_URL } from "@/config/campaignLinks";
  * the back button. Keep both, keep the weighting.
  */
 
-export const SIGNUP_PATH = "/become-a-client";
+export const SIGNUP_PATH = "https://smarterwaywealth.com/onboarding/verify";
 
 export const signupCta = {
   primary: {
