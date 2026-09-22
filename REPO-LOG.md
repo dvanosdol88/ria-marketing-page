@@ -13,8 +13,8 @@
 - changed: added a compact **What you get for $100/month** summary beside the existing signup invitation: planning and tailored investment recommendations, direct access to David with ongoing guidance, and step-by-step implementation help while clients keep their accounts and place trades. Third-party brokerage, transaction, and investment costs are stated separately.
 - preserved: calculator formula, defaults, rounding, analytics, privacy boundary, CTA labels/destinations/order, quotes, polls, sharing, disclosures, hash-locked canon files, sister repos, and Portfolio PM.
 - proof: test-first source contracts; browser state synchronization on default state, all four visible inputs, shared query parameters, and reload; 375px and 1280px layout checks; existing first-screen geometry, homepage signup, and homepage composition suites; TypeScript, lint, and production build.
-- deployed: not deployed — parent R2D2 session `20260922_074906_3bce83` owns independent inspection and release.
-- next: parent inspects the focused commit/diff and decides the normal PR/check/main release.
+- deployed: merged through [PR #282](https://github.com/dvanosdol88/ria-marketing-page/pull/282) as `c246e013d8998668061738cfc049badc201957ca`; verified on the production apex after it reached current `origin/main` (`bdb0ff016f893f041c4c61aac6f298e3c2765baf`).
+- live proof: the production browser passed 16 checks across 375px and 1440px views: defaults, all four visible inputs, exact 8.25% precision, shared custom query values, reload persistence, CTA destinations, service copy, no horizontal overflow, and no page errors.
 
 ### 02-08 — 2026-09-22 — Tightened the quote deck and made the math field touch-attractive
 **Agent:** R2D2 | **Surface:** homepage quote deck and firm-visit handoff | **PR:** [#280](https://github.com/dvanosdol88/ria-marketing-page/pull/280) (`9af9838`) | **Status:** deployed and production-proved
