@@ -19,8 +19,8 @@ plan's "Improvement flow"). This register is enforced by
 `tests/calculator-canon-manifest.test.mjs`.
 
 Counterpart repo: `D:\smarter-way-wealth` (smarterwaywealth.com)
-Last synced: 2026-08-20
-syncVersion: 8
+Last synced: 2026-09-22
+syncVersion: 9
 
 ## Narrowed scope (Phase B1 adjudication — read before editing this file)
 
@@ -43,6 +43,10 @@ investigation.
 
 ## Why these files, and not others
 
+- **v9 (2026-09-22, quieter poll result)**: `Quiz.tsx` still records the
+  visitor's vote and reveals the real percentage distribution, result bars,
+  and top answer, but no longer prints the aggregate number of votes. The
+  confirmation now says only **Thanks for voting!** on both sites.
 - **v8 (2026-08-20, standardized fee-comparison receipt language)**: the
   shared summary and share-card artifact now say **estimated advisory-fee
   difference**, keep the result explicitly tied to the visitor's assumptions,
@@ -184,7 +188,7 @@ investigation.
 
 | Path | SHA-256 |
 |---|---|
-| src/components/Quiz.tsx | 769737A1B4482CB775F4829C883BC8D79EE09632CCAC61AAFF1ED1D1EC3551C4 |
+| src/components/Quiz.tsx | D4AB746065ACEE7A1000A4645170705D24D5E13592ABC1A88C76D2BD2F8653F6 |
 | src/components/calculator/ShareMyResults.tsx | 4618AD2CAD62F05ABC3B9D038D2C0288971C190C5B7614BC103921566CF546B1 |
 | src/components/calculator/SocialShareRow.tsx | 8A221CD817F4D0A171CECCB6E217A43FAF8433CB0AA856DA42B69DCA4086934D |
 | src/lib/shareSummary.ts | 54BB6E49E805E1CC7861AEC4E53B9358394F592A26B0560FF7460CAA07B325E7 |

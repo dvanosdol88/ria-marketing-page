@@ -199,8 +199,9 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel, variant = "card" 
     return () => window.clearTimeout(timeout);
   }, [fallbackShareFeedback]);
 
-  // Results (percentages, bars, total) stay hidden until the visitor has
-  // voted — a clean ballot first, then the live tallies as the payoff.
+  // Results (percentages and bars) stay hidden until the visitor has voted —
+  // a clean ballot first, then the live distribution as the payoff. The total
+  // vote count remains internal and is deliberately not printed.
   // Percentages render only when the pool actually has votes; on API
   // degradation there are no counts and therefore no numbers, never fakes.
   const showResults = hasVoted && totalVotes > 0;
@@ -289,9 +290,6 @@ export function Quiz({ savings = 0, onShare, shareButtonLabel, variant = "card" 
               <Check className="h-3.5 w-3.5" strokeWidth={3} />
             </span>
             Thanks for voting!
-            {showResults ? (
-              <span className="font-semibold text-[#3D6B52]">{totalVotes.toLocaleString("en-US")} votes so far</span>
-            ) : null}
           </span>
           <button
             type="button"

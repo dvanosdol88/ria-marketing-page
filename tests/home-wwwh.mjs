@@ -742,12 +742,12 @@ test("desktop and mobile nav expose the active tracked onboarding CTA", () => {
   assert.ok(desktopClientIndex > desktopFirmIndex, "desktop client link must follow the firm link");
 });
 
-test("homepage FAQ reflects the approved lean-model and custody edits", () => {
-  assert.match(homeFaqSource, /How does your lean model make \$100 a month possible\?/);
+test("homepage FAQ reflects the approved affordability, insertion-note, and custody edits", () => {
+  assert.match(homeFaqSource, /How can you offer these services for only \$100\/month\?/);
   assert.match(homeFaqSource, /topPaddingClassName = "pt-10 sm:pt-14"/);
   assert.match(homeFaqSource, />\s*Very\s*<\/span>/);
   assert.match(homeFaqSource, /font-\[800\]/);
-  assert.match(homeFaqSource, />\s*\^\s*<\/span>/);
+  assert.match(homeFaqSource, />\s*⌄\s*<\/span>/);
   assert.match(homeFaqSource, /my advisory fees have all doubled in the past few years\./);
   assert.match(homeFaqSource, /Does that mean my advisor is doing double the work\?/);
   assert.match(homeFaqSource, /<em className="font-\[440\]">rhetorical question<\/em>/);
