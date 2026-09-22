@@ -77,6 +77,7 @@ export function WhatWhyWhoHow() {
     <section
       aria-label="What, why, who and how Smarter Way Wealth works"
       className="fit-cta-band"
+      style={{ borderBottom: "none" }}
     >
       <div className="mx-auto max-w-5xl px-5 py-12 sm:px-8 sm:py-16">
         <div className="divide-y divide-[#10233A]/10">

@@ -14,6 +14,10 @@ const signup = readFileSync(
   new URL("../src/components/SignupCta.tsx", import.meta.url),
   "utf8",
 );
+const whatWhyWhoHow = readFileSync(
+  new URL("../src/components/WhatWhyWhoHow.tsx", import.meta.url),
+  "utf8",
+);
 
 test("the savings hero names every live calculator assumption and links to the existing inputs", () => {
   assert.match(calculator, /data-home-assumptions/);
@@ -41,13 +45,19 @@ test("the homepage signup invitation explains the approved $100 monthly service 
   assert.ok(home);
   assert.match(home, /data-home-client-value/);
   assert.match(home, /What you get for \$100\/month/);
-  assert.match(home, /Personal financial planning and tailored investment recommendations/);
-  assert.match(home, /Direct access to David, with ongoing planning and investment guidance/);
-  assert.match(home, /Clear, step-by-step implementation help while you keep your accounts and place trades yourself/);
-  assert.match(home, /Third-party brokerage, transaction, and investment costs are separate/);
+  assert.match(signup, /Personal financial planning and tailored investment recommendations/);
+  assert.match(signup, /Direct access to David, regular meetings, and ongoing advice/);
+  assert.match(signup, /State-of-the-art financial planning tools you can use on your own/);
+  assert.match(signup, /Clear, step-by-step implementation help while you keep your accounts and place trades yourself/);
+  assert.doesNotMatch(signup, /Third-party brokerage, transaction, and investment costs are separate/);
+  assert.match(signup, /href: "https:\/\/smarterwaywealth\.com\/"/);
+  assert.match(home, /data-posthog-cta-label="More"/);
+  assert.match(home, /Check/);
+  assert.match(home, /ExternalLink/);
 
   assert.match(home, /Sign me up — Become a client/);
   assert.match(home, /See if I&apos;m a good fit/);
   assert.match(home, /href=\{signupCta\.primary\.href\}/);
   assert.match(home, /href=\{signupCta\.secondary\.href\}/);
+  assert.match(whatWhyWhoHow, /style=\{\{ borderBottom: "none" \}\}/);
 });

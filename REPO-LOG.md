@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-20 — 2026-09-22 — Expanded and clarified the $100/month client-value card
+**Agent:** R2D2 | **Surface:** homepage client-value card and conversion CTAs | **Status:** locally verified; production proof required after merge
+- changed: updated the David-access promise, added self-service financial-planning tools, removed the third-party-cost sentence, and added a tracked **More** link to the Smarter Way Wealth homepage.
+- changed: every client-value item now has a large green check, and both conversion CTAs now carry the external-page icon.
+- changed: removed the redundant bottom hairline beneath **No need to move your accounts.** because the bordered client-value card now provides the visual separation.
+- preserved: CTA labels, destinations, analytics locations, engagement disclosure, calculator state, and the rest of the service explanation.
+- proof: source contract and browser journey pass at 375px and 1280px; local screenshots at 375px, 681px, and 1440px confirm five checked items, three external-page icons, correct copy/link, no overflow, and no clipping.
+
 ### 02-19 — 2026-09-22 — Reduced quote-card empty space without moving content
 **Agent:** R2D2 | **Surface:** homepage quote deck | **Status:** locally verified; production proof required after merge
 - changed: reduced the shared quote-card height from 184px to 164px, removing visible unused center space while preserving the uniform-card rule.

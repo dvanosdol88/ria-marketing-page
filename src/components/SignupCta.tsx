@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check, ExternalLink } from "lucide-react";
 import { signupCta } from "@/config/signupCta";
 
 type SignupCtaProps = {
@@ -31,6 +31,14 @@ const INLINE_PRIMARY_BUTTON_CLASS =
  * arrow treatment is presentation only — one button, same label, same door. */
 const BLOCK_PRIMARY_BUTTON_CLASS =
   "group flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-white px-6 text-center text-base font-bold !text-[#052E45] !no-underline shadow-[0_10px_26px_rgba(3,26,42,0.35)] transition hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_16px_34px_rgba(3,26,42,0.45)] hover:!text-[#052E45] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
+
+const HOME_CLIENT_VALUE_ITEMS = [
+  { label: "Personal financial planning and tailored investment recommendations." },
+  { label: "Direct access to David, regular meetings, and ongoing advice." },
+  { label: "State-of-the-art financial planning tools you can use on your own." },
+  { label: "Clear, step-by-step implementation help while you keep your accounts and place trades yourself." },
+  { label: "More", href: "https://smarterwaywealth.com/" },
+] as const;
 
 /**
  * Secondary next step. Deliberately a plain underlined link, never a second
@@ -75,25 +83,41 @@ export function SignupCta({
             className="rounded-md border border-[#CFD9E3] bg-white/75 px-4 py-4 text-[#10233A] shadow-[0_8px_24px_rgba(17,33,52,0.05)] sm:px-5"
           >
             <h2 className="text-lg font-bold">What you get for $100/month</h2>
-            <ul className="mt-3 grid gap-2 text-sm leading-5 sm:grid-cols-3 sm:gap-4" role="list">
-              <li>Personal financial planning and tailored investment recommendations.</li>
-              <li>Direct access to David, with ongoing planning and investment guidance.</li>
-              <li>
-                Clear, step-by-step implementation help while you keep your accounts and place trades yourself.
-              </li>
+            <ul className="mt-3 grid gap-3 text-sm leading-5 sm:grid-cols-2 sm:gap-4" role="list">
+              {HOME_CLIENT_VALUE_ITEMS.map((item) => (
+                <li key={item.label} className="flex items-start gap-3">
+                  <Check
+                    aria-hidden="true"
+                    className="mt-0.5 h-6 w-6 shrink-0 text-[#108843]"
+                    strokeWidth={3.5}
+                  />
+                  {"href" in item ? (
+                    <a
+                      href={item.href}
+                      className="inline-flex min-h-6 items-center gap-1.5 font-bold !text-[#064B84] underline decoration-[#064B84]/40 underline-offset-2"
+                      data-posthog-cta="true"
+                      data-posthog-cta-label="More"
+                      data-posthog-cta-location={`${location}_more`}
+                    >
+                      More
+                      <ExternalLink aria-hidden="true" className="h-4 w-4 shrink-0" strokeWidth={2.5} />
+                    </a>
+                  ) : (
+                    <span>{item.label}</span>
+                  )}
+                </li>
+              ))}
             </ul>
-            <p className="mt-3 border-t border-[#D8E2EA] pt-3 text-xs leading-5 text-[#536278]">
-              Third-party brokerage, transaction, and investment costs are separate.
-            </p>
           </div>
           <Link
             href={signupCta.primary.href}
-            className="flex min-h-[56px] w-full items-center justify-center rounded-md bg-[#064B84] px-6 py-4 text-center text-lg font-bold !text-white !no-underline shadow-sm transition hover:bg-[#053B6A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84]"
+            className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-md bg-[#064B84] px-6 py-4 text-center text-lg font-bold !text-white !no-underline shadow-sm transition hover:bg-[#053B6A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84]"
             data-posthog-cta="true"
             data-posthog-cta-label={signupCta.primary.label}
             data-posthog-cta-location={`${location}_primary`}
           >
             Sign me up — Become a client
+            <ExternalLink aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={2.5} />
           </Link>
           <a
             href={signupCta.secondary.href}
@@ -102,7 +126,10 @@ export function SignupCta({
             data-posthog-cta-label={signupCta.secondary.label}
             data-posthog-cta-location={`${location}_secondary`}
           >
-            <span className="text-lg font-bold">See if I&apos;m a good fit</span>
+            <span className="inline-flex items-center gap-2 text-lg font-bold">
+              See if I&apos;m a good fit
+              <ExternalLink aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={2.5} />
+            </span>
             <span className="text-sm">Schedule a 15-minute talk with David</span>
           </a>
           <p className="text-center text-xs leading-5 text-[#536278]">
