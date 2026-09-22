@@ -15,8 +15,8 @@ type Particle = {
 
 /**
  * The same pointer-reactive math field used on Smarter Way Wealth's Save page.
- * This version is intentionally 10% larger and 10% darker for the calculator
- * site's broader, lighter conversion-and-quotes band.
+ * This version is intentionally 10% larger and uses a 5% darker blue for the
+ * calculator site's broader, lighter conversion-and-quotes band.
  */
 export function MathMotionField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -55,10 +55,12 @@ export function MathMotionField() {
       }));
     };
 
-    const onPointerMove = (event: PointerEvent) => {
+    const setAttractionPoint = (event: PointerEvent) => {
       const rect = section.getBoundingClientRect();
       pointer = { x: event.clientX - rect.left, y: event.clientY - rect.top };
     };
+    const onPointerMove = setAttractionPoint;
+    const onPointerDown = setAttractionPoint;
 
     const draw = () => {
       if (visible) {
@@ -68,8 +70,8 @@ export function MathMotionField() {
 
         for (const particle of particles) {
           if (pointer) {
-            const dx = particle.x - pointer.x;
-            const dy = particle.y - pointer.y;
+            const dx = pointer.x - particle.x;
+            const dy = pointer.y - particle.y;
             const distance = Math.hypot(dx, dy);
             if (distance > 0 && distance < 190) {
               const force = (190 - distance) / 190;
@@ -87,7 +89,7 @@ export function MathMotionField() {
           if (particle.y < -20 || particle.y > bounds.height + 20) particle.vy *= -1;
 
           context.globalAlpha = particle.opacity;
-          context.fillStyle = "#00953A";
+          context.fillStyle = "#06477D";
           context.font = `${particle.weight} ${particle.size}px ui-monospace, SFMono-Regular, Menlo, monospace`;
           context.fillText(particle.glyph, particle.x, particle.y);
         }
@@ -106,6 +108,7 @@ export function MathMotionField() {
 
     observer.observe(section);
     section.addEventListener("pointermove", onPointerMove, { passive: true });
+    section.addEventListener("pointerdown", onPointerDown, { passive: true });
     section.addEventListener("pointerleave", onPointerLeave, { passive: true });
     document.addEventListener("visibilitychange", onVisibilityChange);
     resize();
@@ -115,6 +118,7 @@ export function MathMotionField() {
       window.cancelAnimationFrame(frame);
       observer.disconnect();
       section.removeEventListener("pointermove", onPointerMove);
+      section.removeEventListener("pointerdown", onPointerDown);
       section.removeEventListener("pointerleave", onPointerLeave);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };

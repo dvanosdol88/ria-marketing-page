@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 
 type SmarterWayWealthVisitCardProps = {
   advancedCalculatorHref: string;
+  surfaceClassName?: string;
 };
 
 const FIRM_DESTINATIONS = [
@@ -31,6 +32,7 @@ const FIRM_DESTINATIONS = [
 
 export function SmarterWayWealthVisitCard({
   advancedCalculatorHref,
+  surfaceClassName = "bg-[#EEF0F5]",
 }: SmarterWayWealthVisitCardProps) {
   const destinations = [
     {
@@ -50,7 +52,7 @@ export function SmarterWayWealthVisitCard({
        own breathing room. */
     <section
       aria-label="Visit Smarter Way Wealth"
-      className="w-full bg-[#EEF0F5] px-4 pb-12 pt-16 sm:px-6 sm:pb-16 sm:pt-24"
+      className={`w-full ${surfaceClassName} px-4 pb-12 pt-16 sm:px-6 sm:pb-16 sm:pt-24`}
     >
       {/* Premium pass, 2026-08-14 (David: "make the Visit Smarter Way Wealth
           button look more premium"). Everything here is depth and typography —
