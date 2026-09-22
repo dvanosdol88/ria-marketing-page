@@ -1,11 +1,11 @@
 # REPO-LOG — ria-marketing-page
 
 ### 02-25 — 2026-09-22 — Stylized service badges and sharpened portfolio-analysis copy
-**Agent:** R2D2 | **Surface:** homepage HOW and What you get sections | **Status:** locally verified; production proof required after merge
+**Agent:** R2D2 | **Surface:** homepage HOW and What you get sections | **PR:** [#290](https://github.com/dvanosdol88/ria-marketing-page/pull/290) (`d100482`) | **Status:** deployed and production-proved
 - changed: replaced the plain green checks with green badge-check icons in both requested sections and replaced the plain red dollar signs with matching red dollar badges.
 - changed: replaced **State-of-the-art financial planning tools you can use on your own** with **In-depth portfolio analysis.**
 - preserved: service-list order, Yes/No labels, CTA count, CTA labels/destinations/tracking, disclosure, calculator behavior, and page composition.
-- proof: focused source contracts, TypeScript, changed-file lint, and a fresh production build pass. Real-browser checks at 375px and 1280px confirmed three green HOW badges, three red cost badges, five What you get badges, exact new copy, no horizontal overflow, and no console errors.
+- proof: focused source contracts, TypeScript, changed-file lint, and a fresh production build passed. Vercel reported READY production deployment `you-are-paying-too-much-a191q9b60-dvo.vercel.app` serving exact main revision `d10048271c3c4e956874cda45a744ff7bc53e3f0`. Fresh apex browser checks at 375px and 1280px confirmed three green HOW badges, three red cost badges, five What you get badges, exact new copy, no horizontal overflow, and no console errors.
 
 ### 02-20 — 2026-09-22 — Expanded and clarified the $100/month client-value card
 **Agent:** R2D2 | **Surface:** homepage client-value card and conversion CTAs | **PR:** [#288](https://github.com/dvanosdol88/ria-marketing-page/pull/288) (`3b26486`) | **Status:** deployed and production-proved
