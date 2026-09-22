@@ -3,6 +3,8 @@ import {
   ALLOWED_MAILER_ATTRIBUTION_METHODS,
   RIA_BUILDER_ORIGIN,
   buildMailerScanUpdate,
+  buildTrafficVisitUpdate,
+  easternDayKey,
   isApprovedMailerCampaign,
   isLikelyBotUserAgent,
   publicMailerScanHeaders,
@@ -84,6 +86,22 @@ assert.deepEqual(update, {
   },
 });
 assert.equal("byAttribution.explicit_utm" in update, false);
+
+assert.equal(easternDayKey(new Date("2026-09-23T02:30:00.000Z")), "2026-09-22");
+const visitUpdate = buildTrafficVisitUpdate(
+  "2026-09-22",
+  increment,
+  serverTimestamp,
+);
+assert.deepEqual(visitUpdate, {
+  visits: { increment: 1 },
+  lastVisitAt: { serverTimestamp: true },
+  daily: {
+    "2026-09-22": {
+      visits: { increment: 1 },
+    },
+  },
+});
 
 console.log(
   "Mailer scan policy accepts only the approved campaign, rejects bots/cross-site posts, publishes RIA-only CORS, and builds a nested Firestore attribution map.",

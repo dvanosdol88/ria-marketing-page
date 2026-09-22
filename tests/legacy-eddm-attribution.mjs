@@ -4,10 +4,8 @@ import { execFileSync, spawn } from "node:child_process";
 import { chromium } from "playwright";
 import { gunzipSync } from "node:zlib";
 
-const LEGACY_MAILER_QUERY =
-  "portfolio=1000000&years=20&growth=8&fee=1";
-const TAGGED_LEGACY_MAILER_QUERY =
-  `${LEGACY_MAILER_QUERY}&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code`;
+const LEGACY_MAILER_QUERY = "portfolio=1000000&years=20&growth=8&fee=1";
+const TAGGED_LEGACY_MAILER_QUERY = `${LEGACY_MAILER_QUERY}&variant=direct-mail&utm_source=eddm&utm_medium=print&utm_campaign=launch_5k&utm_content=qr_code`;
 
 async function getUnusedPort() {
   const server = createServer();
@@ -42,9 +40,7 @@ async function waitForPage(url, child) {
 function decodePostHogEvents(rawBody) {
   if (!rawBody) return [];
 
-  let bodyBuffer = Buffer.isBuffer(rawBody)
-    ? rawBody
-    : Buffer.from(rawBody);
+  let bodyBuffer = Buffer.isBuffer(rawBody) ? rawBody : Buffer.from(rawBody);
   if (bodyBuffer[0] === 0x1f && bodyBuffer[1] === 0x8b) {
     bodyBuffer = gunzipSync(bodyBuffer);
   }
@@ -174,7 +170,9 @@ try {
     "the canonical QR destination must be the clean site root",
   );
 
-  const agentInfo = await fetch(`${baseUrl}/agent-info.json`).then((response) => response.json());
+  const agentInfo = await fetch(`${baseUrl}/agent-info.json`).then((response) =>
+    response.json(),
+  );
   assert.equal(
     agentInfo.campaigns.eddmLaunchQr.url,
     "https://youarepayingtoomuch.com/",
@@ -190,6 +188,7 @@ try {
   });
   const capturedEvents = [];
   const scanReceipts = [];
+  const trafficReceipts = [];
   await context.route("https://us-assets.i.posthog.com/**", async (route) => {
     const url = new URL(route.request().url());
     if (url.pathname.includes("/config")) {
@@ -233,18 +232,31 @@ try {
       body: '{"status":1}',
     });
   });
-  await context.route(`${baseUrl}/api/analytics/mailer-scans`, async (route) => {
-    const request = route.request();
-    scanReceipts.push(JSON.parse(request.postData() ?? "{}"));
-    await route.fulfill({
-      status: scanReceipts.length === 1 ? 503 : 200,
-      contentType: "application/json",
-      body:
-        scanReceipts.length === 1
-          ? '{"error":"temporary test failure"}'
-          : '{"counted":true}',
-    });
-  });
+  await context.route(
+    `${baseUrl}/api/analytics/mailer-scans`,
+    async (route) => {
+      const request = route.request();
+      const body = JSON.parse(request.postData() ?? "{}");
+      if (body.kind === "visit") {
+        trafficReceipts.push(body);
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: '{"counted":true}',
+        });
+        return;
+      }
+      scanReceipts.push(body);
+      await route.fulfill({
+        status: scanReceipts.length === 1 ? 503 : 200,
+        contentType: "application/json",
+        body:
+          scanReceipts.length === 1
+            ? '{"error":"temporary test failure"}'
+            : '{"counted":true}',
+      });
+    },
+  );
 
   const page = await context.newPage();
   await page.goto(mailerUrl, { waitUntil: "domcontentloaded" });
@@ -267,6 +279,11 @@ try {
   assert.equal(qrLanding.properties.scan_kind, "mailer_qr_landing");
   assert.equal(qrLanding.properties.$current_url, `${baseUrl}/`);
   await waitForCondition(
+    () => trafficReceipts.length === 1,
+    "the first privacy-safe traffic receipt",
+  );
+  assert.deepEqual(trafficReceipts[0], { kind: "visit" });
+  await waitForCondition(
     () => scanReceipts.length === 1,
     "the first aggregate receipt attempt",
   );
@@ -275,9 +292,7 @@ try {
   });
   assert.equal(
     await page.evaluate(() =>
-      window.sessionStorage.getItem(
-        "sww_eddm_qr_landed_receipt_recorded",
-      ),
+      window.sessionStorage.getItem("sww_eddm_qr_landed_receipt_recorded"),
     ),
     null,
     "a failed aggregate receipt must stay unmarked",
@@ -292,6 +307,11 @@ try {
   assert.deepEqual(scanReceipts[1], {
     attributionMethod: "legacy_qr_signature",
   });
+  assert.equal(
+    trafficReceipts.length,
+    1,
+    "a reload in the same tab session must not duplicate the traffic visit",
+  );
   assert.equal(
     capturedEvents.filter((event) => event.event === "eddm_qr_landed").length,
     1,
@@ -318,13 +338,19 @@ try {
   const retainedCta = page.locator(
     'a[data-posthog-cta-location="home_post_calculator_primary"]',
   );
-  assert.equal(await retainedCta.count(), 1, "the homepage must retain one primary CTA");
+  assert.equal(
+    await retainedCta.count(),
+    1,
+    "the homepage must retain one primary CTA",
+  );
   assert.equal(
     await retainedCta.getAttribute("href"),
     "https://smarterwaywealth.com/onboarding/verify",
   );
   await retainedCta.evaluate((link) => {
-    link.addEventListener("click", (event) => event.preventDefault(), { once: true });
+    link.addEventListener("click", (event) => event.preventDefault(), {
+      once: true,
+    });
     link.click();
   });
 
@@ -357,7 +383,9 @@ try {
       contaminatedHref.searchParams.set(key, value);
     }
     link.href = contaminatedHref.toString();
-    link.addEventListener("click", (event) => event.preventDefault(), { once: true });
+    link.addEventListener("click", (event) => event.preventDefault(), {
+      once: true,
+    });
     link.click();
   });
 
@@ -373,8 +401,14 @@ try {
   );
   assert.equal(attributedAdvancedHref.searchParams.get("utm_source"), "eddm");
   assert.equal(attributedAdvancedHref.searchParams.get("utm_medium"), "print");
-  assert.equal(attributedAdvancedHref.searchParams.get("utm_campaign"), "launch_5k");
-  assert.equal(attributedAdvancedHref.searchParams.get("utm_content"), "qr_code");
+  assert.equal(
+    attributedAdvancedHref.searchParams.get("utm_campaign"),
+    "launch_5k",
+  );
+  assert.equal(
+    attributedAdvancedHref.searchParams.get("utm_content"),
+    "qr_code",
+  );
 
   const advancedHandoffEvent = await waitForCapturedEvent(
     capturedEvents,
@@ -397,7 +431,9 @@ try {
     "the rendered handoff should remain clean before a campaign visitor clicks",
   );
   await firmHandoff.evaluate((link) => {
-    link.addEventListener("click", (event) => event.preventDefault(), { once: true });
+    link.addEventListener("click", (event) => event.preventDefault(), {
+      once: true,
+    });
     link.click();
   });
 
@@ -405,8 +441,14 @@ try {
   assert.equal(attributedHandoffHref.origin, "https://smarterwaywealth.com");
   assert.equal(attributedHandoffHref.searchParams.get("utm_source"), "eddm");
   assert.equal(attributedHandoffHref.searchParams.get("utm_medium"), "print");
-  assert.equal(attributedHandoffHref.searchParams.get("utm_campaign"), "launch_5k");
-  assert.equal(attributedHandoffHref.searchParams.get("utm_content"), "qr_code");
+  assert.equal(
+    attributedHandoffHref.searchParams.get("utm_campaign"),
+    "launch_5k",
+  );
+  assert.equal(
+    attributedHandoffHref.searchParams.get("utm_content"),
+    "qr_code",
+  );
   for (const forbiddenKey of [
     "portfolio",
     "years",
@@ -431,7 +473,10 @@ try {
     (event) => event.properties?.cta_location === "home_firm_visit_card",
   );
   assertLegacyAttribution(firmHandoffEvent);
-  assert.equal(firmHandoffEvent.properties.cta_href, attributedHandoffHref.toString());
+  assert.equal(
+    firmHandoffEvent.properties.cta_href,
+    attributedHandoffHref.toString(),
+  );
 
   await page.goto(`${baseUrl}/?${TAGGED_LEGACY_MAILER_QUERY}`, {
     waitUntil: "domcontentloaded",

@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-27 — 2026-09-22 — Privacy-safe total traffic and daily scan/visit buckets for RIA Builder
+**Agent:** Hermes | **Surface:** public aggregate feeding the private RIA Builder workspace | **Status:** locally verified; production proof required after merge
+- why: RIA Builder needs large QR-scan and total-traffic numbers plus day-by-day charting, but the public calculator must not expose or duplicate visitor records.
+- changed: the existing aggregate endpoint remains backward-compatible and now also returns total website visits plus the latest 30 Eastern-calendar daily scan/visit buckets. A visit is counted once per browser-tab session; mailer scans continue to count once per session and now also increment their daily bucket.
+- privacy: the one aggregate Firestore document stores counts and timestamps only—no identity, IP address, user agent, browser/session identifier, calculator inputs, or visitor rows. Bot and same-origin checks remain in place; only RIA Builder can read cross-site.
+- proof: focused policy and source-contract tests pass; TypeScript and changed-file lint pass. Production build/deploy and live endpoint readback remain.
+
 ### 2026-09-22 — Enable Vercel Web Analytics (YAPT)
 **Agent:** Cursor | **Surface:** root layout / Vercel project you-are-paying-too-much.com | **Status:** code ready; project toggle still off
 - changed: added `@vercel/analytics` and rendered `<Analytics />` from `@vercel/analytics/next` in the shared App Router root layout so production pageviews can be recorded after deploy.
