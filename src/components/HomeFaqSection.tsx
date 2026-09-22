@@ -210,7 +210,10 @@ function storedAnswer(id: string) {
     ));
 }
 
-export function HomeFaqSection({ tone = "light" }: { tone?: FaqTone } = {}) {
+export function HomeFaqSection({
+  tone = "light",
+  topPaddingClassName = "pt-10 sm:pt-14",
+}: { tone?: FaqTone; topPaddingClassName?: string } = {}) {
   const t = FAQ_TONES[tone];
   const keptAnswer = storedAnswer(KEPT_FAQ_ID);
   const accountsAnswer = storedAnswer(ACCOUNTS_FAQ_ID);
@@ -219,15 +222,26 @@ export function HomeFaqSection({ tone = "light" }: { tone?: FaqTone } = {}) {
     <section
       id="faq"
       aria-labelledby="home-faq-heading"
-      className={`w-full scroll-mt-24 ${t.section} px-4 pb-16 pt-10 sm:px-6 sm:pb-20 sm:pt-14`}
+      className={`w-full scroll-mt-24 ${t.section} px-4 pb-16 ${topPaddingClassName} sm:px-6 sm:pb-20`}
     >
       <div className="mx-auto max-w-3xl">
-        <h2
-          id="home-faq-heading"
-          className={`text-3xl font-black tracking-tight ${t.heading} sm:text-4xl`}
-        >
-          Frequently Asked Questions
-        </h2>
+        <div className="flex items-end gap-2">
+          <span
+            aria-hidden="true"
+            className="-mb-0.5 rotate-[-9deg] font-serif text-2xl font-[800] italic leading-none text-[#06477D] sm:text-3xl"
+          >
+            ^
+          </span>
+          <span className="-mb-0.5 rotate-[-4deg] font-serif text-2xl font-[800] italic leading-none text-[#06477D] sm:text-3xl">
+            Very
+          </span>
+          <h2
+            id="home-faq-heading"
+            className={`text-3xl font-black tracking-tight ${t.heading} sm:text-4xl`}
+          >
+            Frequently Asked Questions
+          </h2>
+        </div>
 
         <div className="mt-6 overflow-hidden rounded-2xl border border-[#DDE4EC] bg-white shadow-[0_12px_32px_rgba(17,33,52,0.06)]">
           <div className="divide-y divide-[#EAEFF4]">
@@ -248,11 +262,11 @@ export function HomeFaqSection({ tone = "light" }: { tone?: FaqTone } = {}) {
               question={
                 <>
                   <span className="font-normal">
-                    The S&amp;P 500 and my portfolio have both doubled over the past few years.
+                    The S&amp;P 500, my portfolio, and my advisory fees have all doubled in the past few years.
                     <sup className="ml-0.5 font-normal text-[#6E7883]">1</sup>
                   </span>{" "}
                   <span className="font-bold">
-                    Does that mean my advisor is doing twice as much work?
+                    Does that mean my advisor is doing double the work?
                   </span>
                 </>
               }
