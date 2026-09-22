@@ -1,5 +1,11 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-19 — 2026-09-22 — Reduced quote-card empty space without moving content
+**Agent:** R2D2 | **Surface:** homepage quote deck | **Status:** locally verified; production proof required after merge
+- changed: reduced the shared quote-card height from 184px to 164px, removing visible unused center space while preserving the uniform-card rule.
+- preserved: portrait and quote-top alignment, centered disclaimer/counter treatment, three-line quote fit, swipe behavior, and mobile layout.
+- proof: homepage source-contract suite passed after the change; TypeScript, changed-file lint, and a fresh production build had already passed on this branch before the height adjustment. A final production proof remains required after merge.
+
 ### 02-14 — 2026-09-22 — Continued blue physics to the FAQ and sharpened the question
 **Agent:** R2D2 | **Surface:** firm-card-to-FAQ transition and homepage FAQ | **Status:** locally verified; production proof required after merge
 - changed: carried the active blue math field through the entire final blank strip immediately before the FAQ heading, then stopped it at that heading rather than decorating the FAQ content.
