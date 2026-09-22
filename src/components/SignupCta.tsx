@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Check, ExternalLink } from "lucide-react";
+import { ArrowRight, BadgeCheck, ExternalLink } from "lucide-react";
 import { signupCta } from "@/config/signupCta";
 
 type SignupCtaProps = {
@@ -35,7 +35,7 @@ const BLOCK_PRIMARY_BUTTON_CLASS =
 const HOME_CLIENT_VALUE_ITEMS = [
   { label: "Personal financial planning and tailored investment recommendations." },
   { label: "Direct access to David, regular meetings, and ongoing advice." },
-  { label: "State-of-the-art financial planning tools you can use on your own." },
+  { label: "In-depth portfolio analysis." },
   { label: "Clear, step-by-step implementation help while you keep your accounts and place trades yourself." },
   { label: "More", href: "https://smarterwaywealth.com/" },
 ] as const;
@@ -86,10 +86,10 @@ export function SignupCta({
             <ul className="mt-3 grid gap-3 text-sm leading-5 sm:grid-cols-2 sm:gap-4" role="list">
               {HOME_CLIENT_VALUE_ITEMS.map((item) => (
                 <li key={item.label} className="flex items-start gap-3">
-                  <Check
+                  <BadgeCheck
                     aria-hidden="true"
-                    className="mt-0.5 h-6 w-6 shrink-0 text-[#108843]"
-                    strokeWidth={3.5}
+                    className="mt-0.5 h-7 w-7 shrink-0 fill-[#E6F6EC] text-[#108843]"
+                    strokeWidth={2.25}
                   />
                   {"href" in item ? (
                     <a
