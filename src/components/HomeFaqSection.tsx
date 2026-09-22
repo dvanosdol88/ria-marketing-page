@@ -46,7 +46,10 @@ const KEPT_FAQ_ID = "afford-100-per-month";
 /** David's wording for the kept question (2026-08-14), which differs slightly
  *  from the stored "$100/mo" phrasing. The ANSWER still comes from the data
  *  file untouched. */
-const KEPT_QUESTION_LABEL = "How does your lean model make $100 a month possible?";
+const KEPT_QUESTION_LABEL = "How can you offer these services for only $100/month?";
+
+const AFFORDABILITY_FOOTNOTE =
+  "AI is not used for any financial advice or recommendations.";
 
 /** Third question, added 2026-08-16 at David's request. The data file already
  *  answers this one — as "Do I have to move my assets?" — and its stored answer
@@ -203,6 +206,7 @@ function storedAnswer(id: string) {
   return (item.answer ?? "")
     .split("\n\n")
     .filter((paragraph) => !paragraph.trimStart().startsWith("See also:"))
+    .filter((paragraph) => !paragraph.trimStart().startsWith("* AI is not used"))
     .map((paragraph) => (
       <p key={paragraph.slice(0, 32)} className={ANSWER_CLASS}>
         {paragraph}
@@ -225,19 +229,19 @@ export function HomeFaqSection({
       className={`w-full scroll-mt-24 ${t.section} px-4 pb-16 ${topPaddingClassName} sm:px-6 sm:pb-20`}
     >
       <div className="mx-auto max-w-3xl">
-        <div className="flex items-end gap-2">
+        <div className="relative inline-block pt-10">
           <span
             aria-hidden="true"
-            className="-mb-0.5 rotate-[-9deg] font-serif text-2xl font-[800] italic leading-none text-[#06477D] sm:text-3xl"
+            className={`absolute left-0 top-0 flex flex-col items-center ${t.heading}`}
           >
-            ^
-          </span>
-          <span className="-mb-0.5 rotate-[-4deg] font-serif text-2xl font-[800] italic leading-none text-[#06477D] sm:text-3xl">
-            Very
+            <span className="rotate-[-4deg] font-serif text-xl font-[800] italic leading-none sm:text-2xl">
+              Very
+            </span>
+            <span className="-mt-0.5 text-lg font-black leading-none">⌄</span>
           </span>
           <h2
             id="home-faq-heading"
-            className={`text-3xl font-black tracking-tight ${t.heading} sm:text-4xl`}
+            className={`pl-[1.5ch] text-3xl font-black tracking-tight ${t.heading} sm:text-4xl`}
           >
             Frequently Asked Questions
           </h2>
@@ -247,8 +251,15 @@ export function HomeFaqSection({
           <div className="divide-y divide-[#EAEFF4]">
             {keptAnswer ? (
               <FaqRow
-                question={<span className="font-bold">{KEPT_QUESTION_LABEL}</span>}
+                question={
+                  <span className="font-bold">
+                    {KEPT_QUESTION_LABEL}
+                    <sup className="ml-0.5 font-normal text-[#6E7883]">*</sup>
+                  </span>
+                }
                 answer={keptAnswer}
+                footnote={AFFORDABILITY_FOOTNOTE}
+                footnoteMarker="*"
                 chevronClassName={t.chevron}
               />
             ) : null}
@@ -327,15 +338,20 @@ export function HomeFaqSection({
                 data-posthog-cta="true"
                 data-posthog-cta-label="Read all FAQs on Smarter Way Wealth"
                 data-posthog-cta-location="home_faq_all_questions"
-                className={`group block !no-underline transition-colors duration-150 hover:bg-[#F1F6F3] ${ROW_Y} ${ANSWER_INSET} ${ROW_FOCUS}`}
+                className={`group block !no-underline transition-colors duration-150 hover:bg-[#F1F6F3] ${ROW_X} ${ROW_Y} ${ROW_FOCUS}`}
               >
-                <span className="text-[17px] font-semibold leading-7 !text-[#333B45] transition-colors duration-150 group-hover:!text-[#10233A] sm:text-lg">
-                  Read all of the FAQs on smarterwaywealth.com.
-                  <span
-                    aria-hidden="true"
-                    className={`ml-2 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white align-middle ring-1 ring-inset ring-[#CFD6DF] transition-colors duration-200 ${t.doorHover}`}
-                  >
-                    <ArrowUpRight className={`h-4 w-4 ${t.arrow}`} strokeWidth={2.5} />
+                <span className="grid grid-cols-[auto_1fr] items-start gap-3">
+                  <span className={`pt-1 text-[10px] font-extrabold uppercase tracking-[0.12em] ${t.chevron}`}>
+                    Leaving site
+                  </span>
+                  <span className="text-[17px] font-semibold leading-7 !text-[#333B45] transition-colors duration-150 group-hover:!text-[#10233A] sm:text-lg">
+                    Read all of the FAQs on smarterwaywealth.com.
+                    <span
+                      aria-hidden="true"
+                      className={`ml-2 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white align-middle ring-1 ring-inset ring-[#CFD6DF] transition-colors duration-200 ${t.doorHover}`}
+                    >
+                      <ArrowUpRight className={`h-4 w-4 ${t.arrow}`} strokeWidth={2.5} />
+                    </span>
                   </span>
                 </span>
               </a>

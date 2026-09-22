@@ -20,9 +20,9 @@ export type FaqItem = {
 export const faqItems: FaqItem[] = [
   {
     id: "afford-100-per-month",
-    question: "How can you afford to do this for $100/mo?",
+    question: "How can you offer these services for only $100/month?*",
     answer:
-      "Heavy use of modern technology and AI for the operational side of the practice — research synthesis, document drafting, quarterly-review prep, compliance reporting — means the firm runs lean. The $100/month flat fee is enough to support a credentialed solo fiduciary practice when the back-office work is automated.\n\nThe flat-fee structure also removes the incentive to chase asset growth at the expense of advice quality. The fee is the same whether your portfolio is $250,000 or $5,000,000, so there is no commercial reason to recommend a product, allocation, or strategy that benefits the advisor over the client.\n\nSee also: \"Do you use AI?\" and \"How?\"",
+      "Until very recently, it wasn't possible. But today, with advances in technology and AI*, nearly all back-office functions can be automated, leaving us time, allowing us to spend nearly all of our time working with clients.\n\nEven more importantly, we don't have massive marketing budgets, tens of millions in executive overhead, and $100 billion legacy IT budgets.\n\n* AI is not used for any financial advice or recommendations.",
   },
   {
     id: "what-am-i-giving-up",

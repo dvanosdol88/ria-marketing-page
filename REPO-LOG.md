@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-33 — 2026-09-22 — Corrected FAQ annotations, affordability copy, and poll count display
+**Agent:** R2D2 | **Surface:** homepage FAQ and shared calculator poll | **Status:** locally verified; production proof required after merge
+- changed: moved **Very** into a compact top insertion note with a downward caret, FAQ-heading color, and only a 1.5-character heading offset; moved **Leaving site** to the chevron gutter left of the outbound FAQ sentence.
+- changed: replaced the first affordability question/answer with David's approved technology, AI, and overhead explanation plus the explicit AI advice footnote.
+- changed: the shared poll still records votes and reveals percentages, result bars, and the top answer, but no longer prints the aggregate number of votes; calculator canon advanced to v9 in both public-site repos.
+- preserved: vote submission, shared vote pool, analytics event and payload, percentage math, CTA/link destinations, other FAQ copy, calculator behavior, and mobile layout.
+- proof: focused source/canon contracts, TypeScript, changed-file lint, and a fresh optimized build pass. Local browser checks at 375px and 1280px confirmed the FAQ annotation/door geometry, approved copy/footnote, no displayed vote total, preserved percentages, and no horizontal overflow; the only local console noise was the expected `/_vercel/insights/script.js` 404 outside Vercel.
+
 ### 02-27 — 2026-09-22 — Privacy-safe total traffic and daily scan/visit buckets for RIA Builder
 **Agent:** Hermes | **Surface:** public aggregate feeding the private RIA Builder workspace | **Status:** locally verified; production proof required after merge
 - why: RIA Builder needs large QR-scan and total-traffic numbers plus day-by-day charting, but the public calculator must not expose or duplicate visitor records.
