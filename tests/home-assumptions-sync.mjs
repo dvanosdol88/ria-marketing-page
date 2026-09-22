@@ -137,15 +137,35 @@ try {
   assertCenteredTightSpacing(await readAssumptionsSpacing(queryPage), "1280px");
 
   for (const page of [mobile, queryPage]) {
-    const layout = await page.evaluate(() => ({
-      body: document.body.scrollWidth,
-      viewport: document.documentElement.clientWidth,
-      valueSummary: Boolean(document.querySelector("[data-home-client-value]")),
-      primary: document.querySelectorAll('[data-posthog-cta-location="home_post_calculator_primary"]').length,
-      secondary: document.querySelectorAll('[data-posthog-cta-location="home_post_calculator_secondary"]').length,
-    }));
+    const layout = await page.evaluate(() => {
+      const valueSummary = document.querySelector("[data-home-client-value]");
+      const explanationSection = document.querySelector('[aria-label="What, why, who and how Smarter Way Wealth works"]');
+      return {
+        body: document.body.scrollWidth,
+        viewport: document.documentElement.clientWidth,
+        valueSummary: Boolean(valueSummary),
+        valueItems: valueSummary?.querySelectorAll("li").length,
+        valueChecks: valueSummary?.querySelectorAll("svg.lucide-check").length,
+        externalIcons: document.querySelectorAll(
+          '[data-home-client-value] svg.lucide-external-link, [data-posthog-cta-location="home_post_calculator_primary"] svg.lucide-external-link, [data-posthog-cta-location="home_post_calculator_secondary"] svg.lucide-external-link',
+        ).length,
+        moreHref: valueSummary?.querySelector('[data-posthog-cta-label="More"]')?.getAttribute("href"),
+        valueText: valueSummary?.textContent,
+        explanationBorderBottom: explanationSection ? getComputedStyle(explanationSection).borderBottomStyle : null,
+        primary: document.querySelectorAll('[data-posthog-cta-location="home_post_calculator_primary"]').length,
+        secondary: document.querySelectorAll('[data-posthog-cta-location="home_post_calculator_secondary"]').length,
+      };
+    });
     assert.equal(layout.body, layout.viewport, "the page must not overflow horizontally");
     assert.equal(layout.valueSummary, true);
+    assert.equal(layout.valueItems, 5);
+    assert.equal(layout.valueChecks, 5);
+    assert.equal(layout.externalIcons, 3);
+    assert.equal(layout.moreHref, "https://smarterwaywealth.com/");
+    assert.match(layout.valueText, /Direct access to David, regular meetings, and ongoing advice/);
+    assert.match(layout.valueText, /State-of-the-art financial planning tools you can use on your own/);
+    assert.doesNotMatch(layout.valueText, /Third-party brokerage/);
+    assert.equal(layout.explanationBorderBottom, "none");
     assert.equal(layout.primary, 1);
     assert.equal(layout.secondary, 1);
   }
