@@ -7,6 +7,7 @@ import { PostHogCtaTracker } from "@/components/PostHogCtaTracker";
 import { SavingsBarProvider } from "@/components/SavingsBarContext";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { PostHogPageView } from "@/components/PostHogPageView";
+import { Analytics } from "@vercel/analytics/next";
 
 /* The site's header, footer and JSON-LD moved to src/app/(site)/layout.tsx on
    2026-09-17 so the One Percent Blues front door (src/app/(blues)) can render
@@ -88,6 +89,7 @@ export default function RootLayout({
             </SavingsBarProvider>
           </ViewTransitions>
         </PostHogProvider>
+        <Analytics />
       </body>
     </html>
   );

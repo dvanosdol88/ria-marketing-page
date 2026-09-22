@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-09-22 — Enable Vercel Web Analytics (YAPT)
+**Agent:** Cursor | **Surface:** root layout / Vercel project you-are-paying-too-much.com | **Status:** code ready; project toggle still off
+- changed: added `@vercel/analytics` and rendered `<Analytics />` from `@vercel/analytics/next` in the shared App Router root layout so production pageviews can be recorded after deploy.
+- preserved: PostHog providers and events, calculator/canon files, and every other Vercel project (including dvo88.com).
+- verified: `npx tsc --noEmit` clean; `npx eslint src/app/layout.tsx` clean. Vercel MCP `count_pageviews` for `prj_M2Ap9Lzo1fxjAwV710W7kGyCf7Fr` (`you-are-paying-too-much.com`) returned `web_analytics_not_enabled`. The CLI is logged out here and `vercel project web-analytics` also refuses to enable non-interactively.
+- deployed: not deployed. Project-level toggle still requires an interactive `vercel project web-analytics enable you-are-paying-too-much.com --scope dvo` (or dashboard Analytics → Enable) after this PR ships.
+
 ### 02-25 — 2026-09-22 — Stylized service badges and sharpened portfolio-analysis copy
 **Agent:** R2D2 | **Surface:** homepage HOW and What you get sections | **PR:** [#290](https://github.com/dvanosdol88/ria-marketing-page/pull/290) (`d100482`) | **Status:** deployed and production-proved
 - changed: replaced the plain green checks with green badge-check icons in both requested sections and replaced the plain red dollar signs with matching red dollar badges.
