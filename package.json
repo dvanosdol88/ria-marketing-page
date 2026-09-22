@@ -17,6 +17,8 @@
     "test:credentials-layout": "node tests/advisor-proof-credentials-layout.mjs",
     "test:eddm-attribution": "node tests/legacy-eddm-attribution.mjs",
     "test:home-first-screen": "node tests/home-first-screen.mjs",
+    "test:home-assumptions-client-value": "node --test tests/home-assumptions-client-value.test.mjs",
+    "test:home-assumptions-sync": "node tests/home-assumptions-sync.mjs",
     "test:refresh-position": "node tests/refresh-position.mjs",
     "test:home-wwwh": "node --test tests/home-wwwh.mjs",
     "test:mailer-scan-contract": "node tests/mailer-scan-contract.mjs",

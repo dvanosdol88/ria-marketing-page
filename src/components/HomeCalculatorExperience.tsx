@@ -2135,7 +2135,8 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   const headerSwapExit = prefersReducedMotion ? undefined : { opacity: 0, y: -5 };
   const assumptionGrid = (
     <section
-      className="grid overflow-hidden border-b border-[#DFE6EE] bg-white px-3 py-3 sm:px-7"
+      id="calculator-assumptions"
+      className="grid scroll-mt-24 overflow-hidden border-b border-[#DFE6EE] bg-white px-3 py-3 sm:px-7"
       aria-label="Calculator assumptions"
     >
       {/* py-1, not p-3. Each row is a 36px stepper; 12px of padding above and

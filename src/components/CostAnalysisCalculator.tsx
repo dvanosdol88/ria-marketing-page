@@ -463,14 +463,29 @@ function normalizeSearchParams(searchParams: Record<string, string | string[] | 
 }
 
 function SavingsLeadHero({
+  annualFeePercent,
+  annualFlatFee,
+  annualGrowthPercent,
   introStyle,
+  mutualFundExpensePercent,
+  portfolioValue,
   savings,
   years,
 }: {
+  annualFeePercent: number;
+  annualFlatFee: number;
+  annualGrowthPercent: number;
   introStyle: IntroStyle;
+  mutualFundExpensePercent: number;
+  portfolioValue: number;
   savings: number;
   years: number;
 }) {
+  const currentFees = `${annualFeePercent.toFixed(2)}% asset-based fee${
+    mutualFundExpensePercent > 0
+      ? ` + ${mutualFundExpensePercent.toFixed(2)}% fund expenses`
+      : ""
+  }`;
   /* The promise reads in full the moment the page paints. It used to fade in
      one clause at a time and swap the name between "David" and "Smarter Way
      Wealth" on scroll; that sequence was retired (David, 2026-08-10) because
@@ -520,7 +535,7 @@ function SavingsLeadHero({
         <div className="mx-auto mt-7 h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
       </div>
     );
-  const introBlock = <div className="mt-[47px] sm:mt-20">{introContent}</div>;
+  const introBlock = <div className="mt-4 sm:mt-20">{introContent}</div>;
 
   /* Mobile spacing here is a fixed budget, not a free choice. Two rules
      compete: the page must breathe, and "The Fee Calculator" must still be on
@@ -556,7 +571,7 @@ function SavingsLeadHero({
   return (
     <section
       data-url-eval-section="opening-promise"
-      className="w-full bg-[#EEF0F5] pb-[78px] text-center text-[#10233A] sm:pb-[110px]"
+      className="w-full bg-[#EEF0F5] pb-11 text-center text-[#10233A] sm:pb-[110px]"
     >
       <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[69px] pb-11 sm:pt-20 sm:pb-20">
         {/* The decorative mark uses the bundled DM Sans face instead of an
@@ -594,6 +609,20 @@ function SavingsLeadHero({
           </p>
         </div>
       </div>
+      <p
+        data-home-assumptions
+        className="mx-auto max-w-4xl px-4 pt-2 text-xs leading-5 text-[#52657A] sm:pt-3 sm:text-sm"
+      >
+        Based on a {formatCurrency(portfolioValue)} portfolio · {currentFees} ·{" "}
+        {annualGrowthPercent.toFixed(2)}% annual growth · {years} years · compared with{" "}
+        {formatCurrency(annualFlatFee / 12)}/month flat fee.{" "}
+        <a
+          href="#calculator-assumptions"
+          className="whitespace-nowrap font-semibold text-[#064B84] underline decoration-[#064B84]/40 underline-offset-2"
+        >
+          Use my numbers
+        </a>
+      </p>
       <div className="mx-auto max-w-6xl px-4">{introBlock}</div>
     </section>
   );
@@ -1250,7 +1279,12 @@ export function CostAnalysisCalculator({
 
       {isSavingsCalculatorUpgrade && (
         <SavingsLeadHero
+          annualFeePercent={state.annualFeePercent}
+          annualFlatFee={state.annualFlatFee}
+          annualGrowthPercent={state.annualGrowthPercent}
           introStyle={introStyle}
+          mutualFundExpensePercent={state.mutualFundExpensePercent}
+          portfolioValue={state.portfolioValue}
           savings={projection.savings}
           years={state.years}
         />

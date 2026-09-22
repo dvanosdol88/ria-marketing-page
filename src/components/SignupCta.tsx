@@ -70,6 +70,22 @@ export function SignupCta({
     return (
       <section className={`w-full ${surfaceClassName} px-4 pb-4 pt-10 sm:px-6 sm:pb-6 sm:pt-14`}>
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
+          <div
+            data-home-client-value
+            className="rounded-md border border-[#CFD9E3] bg-white/75 px-4 py-4 text-[#10233A] shadow-[0_8px_24px_rgba(17,33,52,0.05)] sm:px-5"
+          >
+            <h2 className="text-lg font-bold">What you get for $100/month</h2>
+            <ul className="mt-3 grid gap-2 text-sm leading-5 sm:grid-cols-3 sm:gap-4" role="list">
+              <li>Personal financial planning and tailored investment recommendations.</li>
+              <li>Direct access to David, with ongoing planning and investment guidance.</li>
+              <li>
+                Clear, step-by-step implementation help while you keep your accounts and place trades yourself.
+              </li>
+            </ul>
+            <p className="mt-3 border-t border-[#D8E2EA] pt-3 text-xs leading-5 text-[#536278]">
+              Third-party brokerage, transaction, and investment costs are separate.
+            </p>
+          </div>
           <Link
             href={signupCta.primary.href}
             className="flex min-h-[56px] w-full items-center justify-center rounded-md bg-[#064B84] px-6 py-4 text-center text-lg font-bold !text-white !no-underline shadow-sm transition hover:bg-[#053B6A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84]"

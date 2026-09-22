@@ -1,5 +1,14 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-09 — 2026-09-22 — Live assumptions line and compact $100/month service summary
+**Agent:** Hermes | **Surface:** homepage savings hero and existing post-calculator signup invitation | **Status:** locally verified; held for parent R2D2 inspection
+- changed: added a quiet assumptions line under the main savings result, driven by the same live calculator state. It names portfolio value, asset-based fee plus fund expenses when present, growth, duration, and the current flat-fee comparison; **Use my numbers** jumps to the existing inputs without changing state.
+- changed: added a compact **What you get for $100/month** summary beside the existing signup invitation: planning and tailored investment recommendations, direct access to David with ongoing guidance, and step-by-step implementation help while clients keep their accounts and place trades. Third-party brokerage, transaction, and investment costs are stated separately.
+- preserved: calculator formula, defaults, rounding, analytics, privacy boundary, CTA labels/destinations/order, quotes, polls, sharing, disclosures, hash-locked canon files, sister repos, and Portfolio PM.
+- proof: test-first source contracts; browser state synchronization on default state, all four visible inputs, shared query parameters, and reload; 375px and 1280px layout checks; existing first-screen geometry, homepage signup, and homepage composition suites; TypeScript, lint, and production build.
+- deployed: not deployed — parent R2D2 session `20260922_074906_3bce83` owns independent inspection and release.
+- next: parent inspects the focused commit/diff and decides the normal PR/check/main release.
+
 ### 02-08 — 2026-09-22 — Tightened the quote deck and made the math field touch-attractive
 **Agent:** R2D2 | **Surface:** homepage quote deck and firm-visit handoff | **PR:** [#280](https://github.com/dvanosdol88/ria-marketing-page/pull/280) (`9af9838`) | **Status:** deployed and production-proved
 - changed: added the requested 30px to the Fit-to-quote-section gap (80px → 110px at 390px), while tightening each card's own upper and lower padding.
