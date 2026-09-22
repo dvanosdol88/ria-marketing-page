@@ -582,8 +582,13 @@ test("the mobile first-screen spacing constants preserve room for the client CTA
   // The geometry test measures this element; without the hook it would fall
   // back to guessing which node is the mark.
   assert.match(calculatorSource, /data-hero-mark/, "the decorative ? keeps its stable test hook");
-  assert.match(calculatorSource, /<div className="mt-\[47px\] sm:mt-20">\{introContent\}<\/div>/, "gap above the promise");
-  assert.match(calculatorSource, /pb-\[78px\] text-center/, "gap below the promise");
+  // DECISION CHANGED, 02-09 (2026-09-22): the quiet live assumptions line now
+  // occupies the old 47px gap below the savings hero. The promise starts after
+  // a compact 16px gap and the section gives back 34px below it, keeping the
+  // measured calculator-heading position within every approved phone budget.
+  // tests/home-first-screen.mjs remains the actual geometry proof.
+  assert.match(calculatorSource, /const introBlock = <div className="mt-4 sm:mt-20">/, "assumptions line replaces the old empty gap above the promise");
+  assert.match(calculatorSource, /bg-\[#EEF0F5\] pb-11 text-center/, "the compact mobile section preserves first-screen geometry");
 });
 
 // The single worst defect found on 2026-08-12, and it was invisible to every
