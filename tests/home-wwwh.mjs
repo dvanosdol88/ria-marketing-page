@@ -575,19 +575,19 @@ test("the mobile first-screen spacing constants preserve room for the client CTA
   // Calculator 73px → 78px) and released the fold constraint that had been
   // rationing them: "I'm not concerned about the fee calculator being below the
   // fold on older phones, I think the visual clarity is more important."
-  assert.match(calculatorSource, /px-4 pt-\[69px\] pb-11 sm:pt-20 sm:pb-20/, "gap above the headline");
-  assert.match(calculatorSource, /absolute left-1\/2 top-\[48\.1%\]/, "the bundled-font decorative ? keeps the approved visible gap across local and CI rasterizers");
+  assert.match(calculatorSource, /px-4 pt-\[69px\] pb-10 sm:pt-20 sm:pb-\[90px\]/, "balanced space above the live assumptions copy");
+  assert.match(calculatorSource, /absolute left-1\/2 top-\[49\.1%\]/, "the bundled-font decorative ? keeps the approved visible gap across local and CI rasterizers");
   assert.match(calculatorSource, /fontFamily: "var\(--font-logo\)"/, "the decorative ? uses the bundled DM Sans face");
   assert.doesNotMatch(layoutSource, /api\.fontshare\.com/, "the hero mark must not depend on an external font stylesheet");
   // The geometry test measures this element; without the hook it would fall
   // back to guessing which node is the mark.
   assert.match(calculatorSource, /data-hero-mark/, "the decorative ? keeps its stable test hook");
-  // DECISION CHANGED, 02-09 (2026-09-22): the quiet live assumptions line now
-  // occupies the old 47px gap below the savings hero. The promise starts after
-  // a compact 16px gap and the section gives back 34px below it, keeping the
-  // measured calculator-heading position within every approved phone budget.
+  // DECISION CHANGED, 02-18 (2026-09-22): David asked for the quiet live
+  // assumptions lines to tighten and sit exactly halfway between Potential
+  // savings and the promise's top green divider. Mobile uses 40px on both
+  // sides; sm+ uses 90px on both sides. The browser test measures the balance.
   // tests/home-first-screen.mjs remains the actual geometry proof.
-  assert.match(calculatorSource, /const introBlock = <div className="mt-4 sm:mt-20">/, "assumptions line replaces the old empty gap above the promise");
+  assert.match(calculatorSource, /const introBlock = <div className="mt-10 sm:mt-\[90px\]">/, "assumptions line is centered above the promise divider");
   assert.match(calculatorSource, /bg-\[#EEF0F5\] pb-11 text-center/, "the compact mobile section preserves first-screen geometry");
 });
 

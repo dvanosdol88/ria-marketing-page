@@ -26,6 +26,11 @@ test("the savings hero names every live calculator assumption and links to the e
   assert.match(calculator, /state\.annualFlatFee/);
   assert.match(calculator, /href="#calculator-assumptions"/);
   assert.match(calculatorExperience, /id="calculator-assumptions"/);
+  assert.match(calculator, /data-home-promise-divider="top"/);
+  assert.match(calculator, /\bpb-10\b/);
+  assert.match(calculator, /sm:pb-\[90px\]/);
+  assert.match(calculator, /leading-4/);
+  assert.match(calculator, /mt-10 sm:mt-\[90px\]/);
 });
 
 test("the homepage signup invitation explains the approved $100 monthly service without changing either CTA", () => {

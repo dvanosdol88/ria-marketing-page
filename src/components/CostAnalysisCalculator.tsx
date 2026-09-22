@@ -508,7 +508,10 @@ function SavingsLeadHero({
   const introContent =
     introStyle === "panel" ? (
       <div className="relative mx-auto max-w-4xl px-0 py-6 sm:px-10 sm:py-8">
-        <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
+        <div
+          data-home-promise-divider="top"
+          className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]"
+        />
         <p className="mx-auto max-w-3xl text-2xl font-semibold leading-[1.14] tracking-normal text-[#10233A] sm:text-[clamp(1.55rem,3.8vw,2.35rem)]">
           {statement}
         </p>
@@ -535,7 +538,7 @@ function SavingsLeadHero({
         <div className="mx-auto mt-7 h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
       </div>
     );
-  const introBlock = <div className="mt-4 sm:mt-20">{introContent}</div>;
+  const introBlock = <div className="mt-10 sm:mt-[90px]">{introContent}</div>;
 
   /* Mobile spacing here is a fixed budget, not a free choice. Two rules
      compete: the page must breathe, and "The Fee Calculator" must still be on
@@ -573,10 +576,10 @@ function SavingsLeadHero({
       data-url-eval-section="opening-promise"
       className="w-full bg-[#EEF0F5] pb-11 text-center text-[#10233A] sm:pb-[110px]"
     >
-      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[69px] pb-11 sm:pt-20 sm:pb-20">
+      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[69px] pb-10 sm:pt-20 sm:pb-[90px]">
         {/* The decorative mark uses the bundled DM Sans face instead of an
             external font stylesheet. That keeps its visible top stable when a
-            browser or CI runner cannot reach a font CDN. At 48.1% the measured
+            browser or CI runner cannot reach a font CDN. At 49.1% the measured
             mobile gap stays inside David's approved 54px ±1px guard on both
             Windows and Linux font rasterizers.
             Desktop is untouched. tests/home-first-screen.mjs measures the gap
@@ -584,7 +587,7 @@ function SavingsLeadHero({
         <div
           aria-hidden="true"
           data-hero-mark
-          className="pointer-events-none absolute left-1/2 top-[48.1%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
+          className="pointer-events-none absolute left-1/2 top-[49.1%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
           style={{ fontFamily: "var(--font-logo)" }}
         >
           ?
@@ -611,7 +614,7 @@ function SavingsLeadHero({
       </div>
       <p
         data-home-assumptions
-        className="mx-auto max-w-4xl px-4 pt-2 text-xs leading-5 text-[#52657A] sm:pt-3 sm:text-sm"
+        className="mx-auto max-w-4xl px-4 text-xs leading-4 text-[#52657A] sm:text-sm"
       >
         Based on a {formatCurrency(portfolioValue)} portfolio · {currentFees} ·{" "}
         {annualGrowthPercent.toFixed(2)}% annual growth · {years} years · compared with{" "}

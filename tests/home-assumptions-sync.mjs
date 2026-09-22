@@ -33,6 +33,38 @@ const normalize = (text) => text.replace(/\s+/g, " ").trim();
 const expectedDefault =
   "Based on a $1,000,000 portfolio · 1.00% asset-based fee · 8.00% annual growth · 20 years · compared with $100/month flat fee. Use my numbers";
 
+async function readAssumptionsSpacing(page) {
+  return page.evaluate(() => {
+    const section = document.querySelector('[data-url-eval-section="opening-promise"]');
+    const potential = [...section.querySelectorAll("p")].find((node) =>
+      node.textContent.includes("Potential savings"),
+    );
+    const assumptions = section.querySelector("[data-home-assumptions]");
+    const divider = section.querySelector('[data-home-promise-divider="top"]');
+    if (!potential || !assumptions || !divider) throw new Error("hero spacing landmarks are missing");
+
+    const potentialRect = potential.getBoundingClientRect();
+    const assumptionsRect = assumptions.getBoundingClientRect();
+    const dividerRect = divider.getBoundingClientRect();
+    const assumptionsStyle = getComputedStyle(assumptions);
+    const textTop = assumptionsRect.top + Number.parseFloat(assumptionsStyle.paddingTop);
+
+    return {
+      lineHeight: Number.parseFloat(assumptionsStyle.lineHeight),
+      topGap: textTop - potentialRect.bottom,
+      bottomGap: dividerRect.top - assumptionsRect.bottom,
+    };
+  });
+}
+
+function assertCenteredTightSpacing(spacing, viewport) {
+  assert.equal(spacing.lineHeight, 16, `${viewport}: wrapped assumptions lines should be tightly spaced`);
+  assert.ok(
+    Math.abs(spacing.topGap - spacing.bottomGap) <= 1,
+    `${viewport}: assumptions should be vertically centered; gaps were ${spacing.topGap}px and ${spacing.bottomGap}px`,
+  );
+}
+
 let nextProcess;
 let browser;
 
@@ -59,6 +91,7 @@ try {
     .evaluate((node) => Number.parseFloat(getComputedStyle(node).fontSize));
   const assumptionsFont = await assumptions.evaluate((node) => Number.parseFloat(getComputedStyle(node).fontSize));
   assert.ok(heroFont > assumptionsFont * 2, "the assumptions line must remain visually subordinate to the hero");
+  assertCenteredTightSpacing(await readAssumptionsSpacing(mobile), "375px");
 
   const edits = [
     ["#final-portfolio-value-input", "2050000", "$2,050,000 portfolio"],
@@ -101,6 +134,7 @@ try {
   );
   await queryPage.reload({ waitUntil: "networkidle" });
   assert.equal(normalize(await queryPage.locator("[data-home-assumptions]").innerText()), queryText);
+  assertCenteredTightSpacing(await readAssumptionsSpacing(queryPage), "1280px");
 
   for (const page of [mobile, queryPage]) {
     const layout = await page.evaluate(() => ({
