@@ -233,7 +233,7 @@ test("the fit-to-quotes region reuses the Smarter Way Wealth math field with the
   assert.match(mathMotionFieldSource, /const dx = pointer\.x - particle\.x/);
   assert.match(mathMotionFieldSource, /section\.addEventListener\("pointerdown", onPointerDown/);
   assert.match(mathMotionFieldSource, /prefers-reduced-motion: reduce/);
-  assert.match(flatQuotes, /h-\[184px\] items-start/);
+  assert.match(flatQuotes, /h-\[164px\] items-start/);
   assert.match(flatQuotes, /p-3 pb-3[^\"]*sm:p-4 sm:pb-3/);
   assert.match(flatQuotes, /blockquote className="[^"]*pt-0[^\"]*text-center/);
   assert.match(flatQuotes, /bottom-2 left-1\/2[^\"]*-translate-x-1\/2[^\"]*text-center/);
@@ -767,7 +767,7 @@ test("the math field reaches the FAQ boundary without decorating the FAQ itself"
 });
 
 test("quote swipes keep the surrounding homepage anchored", () => {
-  assert.match(feeQuoteDeckSource, /className="group relative h-\[184px\]/);
+  assert.match(feeQuoteDeckSource, /className="group relative h-\[164px\]/);
   assert.doesNotMatch(feeQuoteDeckSource, /reservedHeight|ResizeObserver\(measure\)/);
   assert.match(feeQuoteDeckSource, /dragDirectionLock/);
   assert.match(feeQuoteDeckSource, /dragMomentum=\{false\}/);

@@ -163,7 +163,7 @@ function QuoteSlot({
       role="group"
       aria-roledescription="carousel"
       aria-label={slotLabel}
-      className="group relative h-[184px] items-start overflow-hidden rounded-2xl"
+      className="group relative h-[164px] items-start overflow-hidden rounded-2xl"
     >
 
       {/* The next card's edge, peeking out from behind the active quote —
