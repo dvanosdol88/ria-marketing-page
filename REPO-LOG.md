@@ -1,11 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
 ### 02-08 — 2026-09-22 — Tightened the quote deck and made the math field touch-attractive
-**Agent:** R2D2 | **Surface:** homepage quote deck and firm-visit handoff | **Status:** locally verified; production proof required after merge
+**Agent:** R2D2 | **Surface:** homepage quote deck and firm-visit handoff | **PR:** [#280](https://github.com/dvanosdol88/ria-marketing-page/pull/280) (`9af9838`) | **Status:** deployed and production-proved
 - changed: added the requested 30px to the Fit-to-quote-section gap (80px → 110px at 390px), while tightening each card's own upper and lower padding.
 - changed: every quote card now uses one fixed 184px height. The first quote line begins exactly level with the portrait top; shorter quotes retain extra room below rather than shifting their top edge. The centered disclaimer and counter now sit 8px from the card bottom.
 - changed: the blue math characters now run through the blank space immediately above the green firm-visit card, are 5% darker blue, and are attracted to the visitor's most recent touch/click instead of being pushed away. Reduced-motion visitors still receive no animation.
 - proof: source contract suite, TypeScript, changed-file lint, fresh production build, and a 390px browser check passed. The browser measured 110px section gap, matching 184px card heights, 0px quote-to-portrait top difference, zero horizontal overflow, and no console errors.
+- deployed: required GitHub checks passed. Vercel production deployment `dpl_BoYDcgkHy1zj7V3uQZGSEY8ceRSV` is READY, targets production, serves exact `origin/main` `9af9838327df7230ff2c7981f7dd85643ed74394`, and owns the `youarepayingtoomuch.com` apex alias. A fresh apex browser confirmed the blue characters reach the space immediately above the green firm card and retained the measured spacing, card height, alignment, and no-overflow results.
 
 ### 02-06 — 2026-09-21 — Moved client entry to Smarter Way Wealth and tightened the quote handoff
 **Agent:** R2D2 | **Surface:** homepage client CTA and quote deck | **PR:** [#278](https://github.com/dvanosdol88/ria-marketing-page/pull/278) (`6b35db9`) | **Status:** deployed and production-proved
