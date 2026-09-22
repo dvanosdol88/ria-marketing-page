@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { usePathname, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import {
   capturePostHogEvent,
   getPostHogCampaignProperties,
@@ -16,6 +16,9 @@ import {
 let eventReportedInMemory = false;
 let receiptRecordedInMemory = false;
 let receiptInFlight: Promise<void> | null = null;
+let visitRecordedInMemory = false;
+let visitInFlight: Promise<void> | null = null;
+const TRAFFIC_VISIT_SESSION_KEY = "sww_traffic_visit_recorded";
 
 function hasSessionFlag(key: string, memoryFallback: boolean) {
   try {
@@ -62,6 +65,34 @@ function reportScanReceipt(attributionMethod: string) {
   });
 }
 
+function reportTrafficVisit() {
+  if (
+    visitRecordedInMemory ||
+    hasSessionFlag(TRAFFIC_VISIT_SESSION_KEY, visitRecordedInMemory) ||
+    visitInFlight
+  )
+    return;
+
+  visitInFlight = fetch("/api/analytics/mailer-scans", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ kind: "visit" }),
+    keepalive: true,
+  })
+    .then((response) => {
+      if (response.ok) {
+        visitRecordedInMemory = true;
+        setSessionFlag(TRAFFIC_VISIT_SESSION_KEY);
+      }
+    })
+    .catch(() => {
+      // Leave unmarked so a later navigation may try again.
+    })
+    .finally(() => {
+      visitInFlight = null;
+    });
+}
+
 function reportMailerScan(currentUrl: string) {
   const campaign = getPostHogCampaignProperties(currentUrl);
   if (!isMailerQrCampaign(campaign)) return;
@@ -87,19 +118,20 @@ function reportMailerScan(currentUrl: string) {
 }
 
 export function PostHogPageView() {
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (pathname) {
-      let url = window.location.origin + pathname
+      let url = window.location.origin + pathname;
       if (searchParams.toString()) {
-        url += `?${searchParams.toString()}`
+        url += `?${searchParams.toString()}`;
       }
-      capturePostHogEvent('$pageview', { $current_url: url })
-      reportMailerScan(url)
+      capturePostHogEvent("$pageview", { $current_url: url });
+      reportTrafficVisit();
+      reportMailerScan(url);
     }
-  }, [pathname, searchParams])
+  }, [pathname, searchParams]);
 
-  return null
+  return null;
 }

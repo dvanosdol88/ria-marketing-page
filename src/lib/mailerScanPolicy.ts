@@ -73,10 +73,37 @@ export function requestHeadersCameFromThisSite(headers: Pick<Headers, "get">) {
   }
 }
 
+export function easternDayKey(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(date);
+  const value = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((part) => part.type === type)?.value ?? "";
+  return `${value("year")}-${value("month")}-${value("day")}`;
+}
+
+export function buildTrafficVisitUpdate<TIncrement, TTimestamp>(
+  dayKey: string,
+  increment: (value: number) => TIncrement,
+  serverTimestamp: () => TTimestamp,
+) {
+  return {
+    visits: increment(1),
+    lastVisitAt: serverTimestamp(),
+    daily: {
+      [dayKey]: { visits: increment(1) },
+    },
+  };
+}
+
 export function buildMailerScanUpdate<TIncrement, TTimestamp>(
   attributionMethod: string,
   increment: (value: number) => TIncrement,
   serverTimestamp: () => TTimestamp,
+  dayKey?: string,
 ) {
   return {
     count: increment(1),
@@ -84,5 +111,6 @@ export function buildMailerScanUpdate<TIncrement, TTimestamp>(
     byAttribution: {
       [attributionMethod]: increment(1),
     },
+    ...(dayKey ? { daily: { [dayKey]: { scans: increment(1) } } } : {}),
   };
 }
