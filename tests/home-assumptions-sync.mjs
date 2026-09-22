@@ -145,7 +145,7 @@ try {
         viewport: document.documentElement.clientWidth,
         valueSummary: Boolean(valueSummary),
         valueItems: valueSummary?.querySelectorAll("li").length,
-        valueChecks: valueSummary?.querySelectorAll("svg.lucide-check").length,
+        valueChecks: valueSummary?.querySelectorAll("svg.lucide-badge-check").length,
         externalIcons: document.querySelectorAll(
           '[data-home-client-value] svg.lucide-external-link, [data-posthog-cta-location="home_post_calculator_primary"] svg.lucide-external-link, [data-posthog-cta-location="home_post_calculator_secondary"] svg.lucide-external-link',
         ).length,
@@ -163,7 +163,7 @@ try {
     assert.equal(layout.externalIcons, 3);
     assert.equal(layout.moreHref, "https://smarterwaywealth.com/");
     assert.match(layout.valueText, /Direct access to David, regular meetings, and ongoing advice/);
-    assert.match(layout.valueText, /State-of-the-art financial planning tools you can use on your own/);
+    assert.match(layout.valueText, /In-depth portfolio analysis/);
     assert.doesNotMatch(layout.valueText, /Third-party brokerage/);
     assert.equal(layout.explanationBorderBottom, "none");
     assert.equal(layout.primary, 1);

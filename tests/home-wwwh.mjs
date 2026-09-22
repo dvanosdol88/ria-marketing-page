@@ -405,10 +405,10 @@ test("WWWH is one plain panel of headed answers, with no rotated type or cards",
 // says merely "absent"; a red $ says "this is what you would be paying for at
 // a traditional firm" — which is the argument for the $100 price, made in one
 // glyph. The earlier rationale was sound but was not David's call to make.
-test("HOW's skipped costs are red dollar signs — what you'd be paying for", () => {
+test("HOW's included services and skipped costs use matched visual badges", () => {
   const flatAnswers = flatten(answersSource);
-  assert.match(flatAnswers, /<Check[^>]*text-\[#108843\]/);
-  assert.match(flatAnswers, /<DollarSign[^>]*text-\[#C62828\]/);
+  assert.match(flatAnswers, /<BadgeCheck[^>]*text-\[#108843\]/);
+  assert.match(flatAnswers, /<BadgeDollarSign[^>]*text-\[#C62828\]/);
   assert.doesNotMatch(
     flatAnswers,
     /<X[^>]/,
@@ -518,8 +518,8 @@ test("HOW's two columns are headed by a green Yes and a red No", () => {
   // WWWH_HOW.closing rather than hard-coded beside it.
   assert.match(answersSource, /WWWH_HOW\.closing\.split\(" "\)/);
   // The verdicts must carry the same greens and reds as the icons beneath them.
-  assert.match(flatAnswers, /<Check[^>]*text-\[#108843\]/);
-  assert.match(flatAnswers, /<DollarSign[^>]*text-\[#C62828\]/);
+  assert.match(flatAnswers, /<BadgeCheck[^>]*text-\[#108843\]/);
+  assert.match(flatAnswers, /<BadgeDollarSign[^>]*text-\[#C62828\]/);
 });
 
 // The results block is arithmetic, not a list. Both rules span the full grid so

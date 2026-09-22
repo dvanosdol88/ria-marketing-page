@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Check, DollarSign } from "lucide-react";
+import { BadgeCheck, BadgeDollarSign } from "lucide-react";
 
 export const WWWH_ANSWERS = [
   {
@@ -158,10 +158,10 @@ export function WhatWhyWhoHow() {
                       key={item}
                       className="flex gap-3 text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8"
                     >
-                      <Check
+                      <BadgeCheck
                         aria-hidden="true"
-                        className="mt-1.5 h-5 w-5 shrink-0 text-[#108843] sm:mt-2"
-                        strokeWidth={3}
+                        className="mt-1 h-6 w-6 shrink-0 fill-[#E6F6EC] text-[#108843] sm:mt-1.5"
+                        strokeWidth={2.25}
                       />
                       <span>{item}</span>
                     </li>
@@ -180,13 +180,13 @@ export function WhatWhyWhoHow() {
                       key={item}
                       className="flex gap-3 text-lg leading-7 text-[#10233A]/70 sm:text-xl sm:leading-8"
                     >
-                      {/* A red dollar sign, not a gray X — these are the costs a
+                      {/* A red dollar badge, not a gray X — these are the costs a
                           traditional firm passes on, so the icon says "this is
                           what you'd be paying for" rather than merely "absent". */}
-                      <DollarSign
+                      <BadgeDollarSign
                         aria-hidden="true"
-                        className="mt-1.5 h-5 w-5 shrink-0 text-[#C62828] sm:mt-2"
-                        strokeWidth={3}
+                        className="mt-1 h-6 w-6 shrink-0 fill-[#FDECEC] text-[#C62828] sm:mt-1.5"
+                        strokeWidth={2.25}
                       />
                       <span>{item}</span>
                     </li>

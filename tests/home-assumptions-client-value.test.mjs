@@ -47,12 +47,12 @@ test("the homepage signup invitation explains the approved $100 monthly service 
   assert.match(home, /What you get for \$100\/month/);
   assert.match(signup, /Personal financial planning and tailored investment recommendations/);
   assert.match(signup, /Direct access to David, regular meetings, and ongoing advice/);
-  assert.match(signup, /State-of-the-art financial planning tools you can use on your own/);
+  assert.match(signup, /In-depth portfolio analysis/);
   assert.match(signup, /Clear, step-by-step implementation help while you keep your accounts and place trades yourself/);
   assert.doesNotMatch(signup, /Third-party brokerage, transaction, and investment costs are separate/);
   assert.match(signup, /href: "https:\/\/smarterwaywealth\.com\/"/);
   assert.match(home, /data-posthog-cta-label="More"/);
-  assert.match(home, /Check/);
+  assert.match(home, /BadgeCheck/);
   assert.match(home, /ExternalLink/);
 
   assert.match(home, /Sign me up — Become a client/);
