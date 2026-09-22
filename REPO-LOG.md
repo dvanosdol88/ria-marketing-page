@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-08 — 2026-09-22 — Tightened the quote deck and made the math field touch-attractive
+**Agent:** R2D2 | **Surface:** homepage quote deck and firm-visit handoff | **Status:** locally verified; production proof required after merge
+- changed: added the requested 30px to the Fit-to-quote-section gap (80px → 110px at 390px), while tightening each card's own upper and lower padding.
+- changed: every quote card now uses one fixed 184px height. The first quote line begins exactly level with the portrait top; shorter quotes retain extra room below rather than shifting their top edge. The centered disclaimer and counter now sit 8px from the card bottom.
+- changed: the blue math characters now run through the blank space immediately above the green firm-visit card, are 5% darker blue, and are attracted to the visitor's most recent touch/click instead of being pushed away. Reduced-motion visitors still receive no animation.
+- proof: source contract suite, TypeScript, changed-file lint, fresh production build, and a 390px browser check passed. The browser measured 110px section gap, matching 184px card heights, 0px quote-to-portrait top difference, zero horizontal overflow, and no console errors.
+
 ### 02-06 — 2026-09-21 — Moved client entry to Smarter Way Wealth and tightened the quote handoff
 **Agent:** R2D2 | **Surface:** homepage client CTA and quote deck | **PR:** [#278](https://github.com/dvanosdol88/ria-marketing-page/pull/278) (`6b35db9`) | **Status:** deployed and production-proved
 - changed: every shared **Become a Client** destination now opens the live Smarter Way Wealth secure email-verification entrance. The optional 15-minute fit conversation remains unchanged.

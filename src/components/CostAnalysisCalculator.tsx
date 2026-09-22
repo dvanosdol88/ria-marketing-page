@@ -1424,14 +1424,12 @@ export function CostAnalysisCalculator({
           <div className="relative z-10">
             <SignupCta location="home_post_calculator" surfaceClassName="bg-transparent" />
             <FeeQuoteDeck />
+            <SmarterWayWealthVisitCard
+              advancedCalculatorHref={advancedCalculatorHref}
+              surfaceClassName="bg-transparent"
+            />
           </div>
         </section>
-      )}
-
-      {isSavingsCalculatorUpgrade && (
-        <SmarterWayWealthVisitCard
-          advancedCalculatorHref={advancedCalculatorHref}
-        />
       )}
 
       {/* The FAQ is the last thing on the page now, and the nav's FAQ item

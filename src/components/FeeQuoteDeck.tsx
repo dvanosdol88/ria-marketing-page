@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useAnimationControls, useInView, useReducedMotion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
@@ -55,11 +55,7 @@ function QuoteCard({ quote, counter }: { quote: FeeQuote; counter: string }) {
   const portraitOffset = FEE_QUOTE_PORTRAIT_OFFSET[quote.lastName];
 
   return (
-    /* Top-aligned on a phone, where the quote is tall enough to fill beside the
-       attribution column anyway; centred from sm up, where the wider card turns
-       a two-line quote into an obviously bottom-heavy card if it stays pinned
-       to the top of a ~150px portrait block. */
-    <figure className="relative flex h-full min-h-[160px] items-start gap-4 rounded-2xl border border-[#D8E2EA] bg-white p-4 pb-8 shadow-[0_10px_30px_rgba(17,33,52,0.07)] sm:items-center sm:gap-6 sm:p-6 sm:pb-8">
+    <figure className="relative flex h-full items-start gap-4 rounded-2xl border border-[#D8E2EA] bg-white p-3 pb-3 shadow-[0_10px_30px_rgba(17,33,52,0.07)] sm:gap-6 sm:p-4 sm:pb-3">
       <div className="flex w-[96px] shrink-0 flex-col sm:w-[112px]">
         {portraitSrc ? (
           <Image
@@ -82,7 +78,7 @@ function QuoteCard({ quote, counter }: { quote: FeeQuote; counter: string }) {
         </figcaption>
       </div>
 
-      <blockquote className="min-w-0 flex-1 pt-0.5 text-center text-[15px] font-medium leading-6 text-[#10233A] sm:text-base sm:leading-7">
+      <blockquote className="min-w-0 flex-1 pt-0 text-center text-[15px] font-medium leading-6 text-[#10233A] sm:text-base sm:leading-7">
         <span aria-hidden="true" className="mr-0.5 font-black text-[#00A540]">
           &ldquo;
         </span>
@@ -92,12 +88,12 @@ function QuoteCard({ quote, counter }: { quote: FeeQuote; counter: string }) {
         </span>
       </blockquote>
 
-      <p className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap text-center text-[11px] leading-4 text-[#52657A]">
+      <p className="absolute bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap text-center text-[11px] leading-4 text-[#52657A]">
         Not an endorsement.
       </p>
       <span
         aria-hidden="true"
-        className="absolute bottom-3 right-4 text-[11px] font-semibold tabular-nums text-[#C2CFDA]"
+        className="absolute right-3 bottom-2 text-[11px] font-semibold tabular-nums text-[#C2CFDA]"
       >
         {counter}
       </span>
@@ -133,8 +129,7 @@ function QuoteSlot({
   const [direction, setDirection] = useState(1);
   const [hasInteracted, setHasInteracted] = useState(false);
   const slotRef = useRef<HTMLDivElement | null>(null);
-  const measureRef = useRef<HTMLDivElement | null>(null);
-  const [reservedHeight, setReservedHeight] = useState<number | null>(null);
+
   const isInView = useInView(slotRef, { once: true, amount: 0.6 });
   const nudge = useAnimationControls();
 
@@ -156,27 +151,6 @@ function QuoteSlot({
     return () => window.clearTimeout(timeout);
   }, [isInView, hasInteracted, prefersReducedMotion, nudge, nudgeDelayMs]);
 
-  // Reserve the tallest card in this slot. Changing quotes must never move
-  // the heading above the deck, the other quote, or the firm handoff below it.
-  // ResizeObserver keeps that promise when text reflows at a new viewport.
-  useLayoutEffect(() => {
-    const measureRoot = measureRef.current;
-    if (!measureRoot) return;
-
-    const measure = () => {
-      const tallest = Array.from(measureRoot.children).reduce(
-        (maxHeight, child) => Math.max(maxHeight, (child as HTMLElement).offsetHeight),
-        0,
-      );
-      if (tallest > 0) setReservedHeight(Math.ceil(tallest));
-    };
-
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(measureRoot);
-    Array.from(measureRoot.children).forEach((child) => observer.observe(child));
-    return () => observer.disconnect();
-  }, [quotes]);
 
   const slideDistance = prefersReducedMotion ? 0 : 320;
   const slideTransition = prefersReducedMotion
@@ -189,20 +163,8 @@ function QuoteSlot({
       role="group"
       aria-roledescription="carousel"
       aria-label={slotLabel}
-      className="group relative min-h-[160px] overflow-hidden rounded-2xl"
-      style={reservedHeight ? { height: reservedHeight } : undefined}
+      className="group relative h-[184px] items-start overflow-hidden rounded-2xl"
     >
-      <div
-        ref={measureRef}
-        aria-hidden="true"
-        className="pointer-events-none invisible absolute inset-x-0 top-0 -z-10 mr-2.5 sm:mr-3"
-      >
-        {quotes.map((quote, quoteIndex) => (
-          <div key={`${quote.lastName}-${quoteIndex}`}>
-            <QuoteCard quote={quote} counter={`${quoteIndex + 1} / ${quotes.length}`} />
-          </div>
-        ))}
-      </div>
 
       {/* The next card's edge, peeking out from behind the active quote —
           the always-visible cue that there are more behind it. */}
@@ -291,7 +253,7 @@ export function FeeQuoteDeck() {
   return (
     <section
       aria-label="What respected investors say about long-term costs"
-      className="w-full bg-transparent px-4 pb-4 pt-2 sm:px-6 sm:pb-4 sm:pt-6"
+      className="w-full bg-transparent px-4 pb-4 pt-[38px] sm:px-6 sm:pb-4 sm:pt-[54px]"
     >
       <div className="mx-auto max-w-3xl">
         <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#007A2F]">

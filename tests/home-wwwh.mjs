@@ -224,16 +224,22 @@ test("the fit-to-quotes region reuses the Smarter Way Wealth math field with the
 
   assert.match(
     flatCalculator,
-    /<section className="relative overflow-hidden bg-\[#EEF0F5\]"> <MathMotionField \/> <div className="relative z-10"> <SignupCta location="home_post_calculator" surfaceClassName="bg-transparent" \/> <FeeQuoteDeck \/> <\/div> <\/section>/,
-    "one motion field must begin with the Fit choices and continue through the quote cards",
+    /<section className="relative overflow-hidden bg-\[#EEF0F5\]"> <MathMotionField \/> <div className="relative z-10"> <SignupCta location="home_post_calculator" surfaceClassName="bg-transparent" \/> <FeeQuoteDeck \/> <SmarterWayWealthVisitCard advancedCalculatorHref=\{advancedCalculatorHref\} surfaceClassName="bg-transparent" \/> <\/div> <\/section>/,
+    "one motion field must run from the Fit choices through the space before the firm card",
   );
   assert.match(mathMotionFieldSource, /\["\$", "\$", "\$", "\+", "−", "×", "÷", "="\]/);
   assert.match(mathMotionFieldSource, /size: 16\.5 \+ Math\.random\(\) \* 13\.2/);
-  assert.match(mathMotionFieldSource, /context\.fillStyle = "#00953A"/);
+  assert.match(mathMotionFieldSource, /context\.fillStyle = "#06477D"/);
+  assert.match(mathMotionFieldSource, /const dx = pointer\.x - particle\.x/);
+  assert.match(mathMotionFieldSource, /section\.addEventListener\("pointerdown", onPointerDown/);
   assert.match(mathMotionFieldSource, /prefers-reduced-motion: reduce/);
-  assert.match(flatQuotes, /blockquote className="[^"]*text-center/);
-  assert.match(flatQuotes, /left-1\/2[^\"]*-translate-x-1\/2[^\"]*text-center/);
-  assert.match(flatQuotes, /px-4 pb-4 pt-2 sm:px-6 sm:pb-4 sm:pt-6/);
+  assert.match(flatQuotes, /h-\[184px\] items-start/);
+  assert.match(flatQuotes, /p-3 pb-3[^\"]*sm:p-4 sm:pb-3/);
+  assert.match(flatQuotes, /blockquote className="[^"]*pt-0[^\"]*text-center/);
+  assert.match(flatQuotes, /bottom-2 left-1\/2[^\"]*-translate-x-1\/2[^\"]*text-center/);
+  assert.match(flatQuotes, /right-3[^\"]*bottom-2/);
+  assert.match(flatQuotes, /px-4 pb-4 pt-\[38px\] sm:px-6 sm:pb-4 sm:pt-\[54px\]/);
+  assert.match(firmVisitCardSource, /surfaceClassName = "bg-\[#EEF0F5\]"/);
 });
 
 test("the firm visit card is one solid green visual unit with separate tracked destinations", () => {
@@ -744,9 +750,8 @@ test("homepage FAQ reflects the approved lean-model and custody edits", () => {
 });
 
 test("quote swipes keep the surrounding homepage anchored", () => {
-  assert.match(feeQuoteDeckSource, /const \[reservedHeight, setReservedHeight\]/);
-  assert.match(feeQuoteDeckSource, /new ResizeObserver\(measure\)/);
-  assert.match(feeQuoteDeckSource, /style=\{reservedHeight \? \{ height: reservedHeight \} : undefined\}/);
+  assert.match(feeQuoteDeckSource, /className="group relative h-\[184px\]/);
+  assert.doesNotMatch(feeQuoteDeckSource, /reservedHeight|ResizeObserver\(measure\)/);
   assert.match(feeQuoteDeckSource, /dragDirectionLock/);
   assert.match(feeQuoteDeckSource, /dragMomentum=\{false\}/);
   assert.match(feeQuoteDeckSource, /style=\{\{ touchAction: "pan-y" \}\}/);
