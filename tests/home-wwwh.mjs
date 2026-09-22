@@ -576,7 +576,7 @@ test("the mobile first-screen spacing constants preserve room for the client CTA
   // rationing them: "I'm not concerned about the fee calculator being below the
   // fold on older phones, I think the visual clarity is more important."
   assert.match(calculatorSource, /px-4 pt-\[69px\] pb-10 sm:pt-20 sm:pb-\[90px\]/, "balanced space above the live assumptions copy");
-  assert.match(calculatorSource, /absolute left-1\/2 top-\[49\.1%\]/, "the bundled-font decorative ? keeps the approved visible gap across local and CI rasterizers");
+  assert.match(calculatorSource, /absolute left-1\/2 top-\[48\.6%\]/, "the bundled-font decorative ? keeps the approved visible gap across local and CI rasterizers");
   assert.match(calculatorSource, /fontFamily: "var\(--font-logo\)"/, "the decorative ? uses the bundled DM Sans face");
   assert.doesNotMatch(layoutSource, /api\.fontshare\.com/, "the hero mark must not depend on an external font stylesheet");
   // The geometry test measures this element; without the hook it would fall

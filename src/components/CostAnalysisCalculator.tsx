@@ -579,7 +579,7 @@ function SavingsLeadHero({
       <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[69px] pb-10 sm:pt-20 sm:pb-[90px]">
         {/* The decorative mark uses the bundled DM Sans face instead of an
             external font stylesheet. That keeps its visible top stable when a
-            browser or CI runner cannot reach a font CDN. At 49.1% the measured
+            browser or CI runner cannot reach a font CDN. At 48.6% the measured
             mobile gap stays inside David's approved 54px ±1px guard on both
             Windows and Linux font rasterizers.
             Desktop is untouched. tests/home-first-screen.mjs measures the gap
@@ -587,7 +587,7 @@ function SavingsLeadHero({
         <div
           aria-hidden="true"
           data-hero-mark
-          className="pointer-events-none absolute left-1/2 top-[49.1%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
+          className="pointer-events-none absolute left-1/2 top-[48.6%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
           style={{ fontFamily: "var(--font-logo)" }}
         >
           ?
