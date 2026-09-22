@@ -6,6 +6,13 @@
 - preserved: portrait and quote-top alignment, centered disclaimer/counter treatment, three-line quote fit, swipe behavior, and mobile layout.
 - proof: homepage source-contract suite passed after the change; TypeScript, changed-file lint, and a fresh production build had already passed on this branch before the height adjustment. A final production proof remains required after merge.
 
+### 02-18 — 2026-09-22 — Tightened and centered the live assumptions copy
+**Agent:** R2D2 | **Surface:** homepage savings hero | **Status:** locally verified; production proof required after merge
+- changed: tightened the wrapped **Based on…** line from 20px to 16px line spacing.
+- changed: centered that copy block exactly between the bottom of **Potential savings** and the top green divider: 40px / 40px at 375px and 90px / 90px from 681px upward.
+- preserved: live calculator values, exact input precision, hero hierarchy, copy, colors, typography size, and the section below.
+- proof: source contract and live-state browser tests pass; browser measurements at 375px, 681px, and 1440px show equal upper/lower gaps, 16px line height, no overflow, and no clipping.
+
 ### 02-14 — 2026-09-22 — Continued blue physics to the FAQ and sharpened the question
 **Agent:** R2D2 | **Surface:** firm-card-to-FAQ transition and homepage FAQ | **Status:** locally verified; production proof required after merge
 - changed: carried the active blue math field through the entire final blank strip immediately before the FAQ heading, then stopped it at that heading rather than decorating the FAQ content.
