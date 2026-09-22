@@ -224,7 +224,7 @@ test("the fit-to-quotes region reuses the Smarter Way Wealth math field with the
 
   assert.match(
     flatCalculator,
-    /<section className="relative overflow-hidden bg-\[#EEF0F5\]"> <MathMotionField \/> <div className="relative z-10"> <SignupCta location="home_post_calculator" surfaceClassName="bg-transparent" \/> <FeeQuoteDeck \/> <SmarterWayWealthVisitCard advancedCalculatorHref=\{advancedCalculatorHref\} surfaceClassName="bg-transparent" \/> <\/div> <\/section>/,
+    /<section className="relative overflow-hidden bg-\[#EEF0F5\]"> <MathMotionField \/> <div className="relative z-10"> <SignupCta location="home_post_calculator" surfaceClassName="bg-transparent" \/> <FeeQuoteDeck \/> <SmarterWayWealthVisitCard advancedCalculatorHref=\{advancedCalculatorHref\} surfaceClassName="bg-transparent" \/> <div aria-hidden="true" className="h-10 sm:h-14" \/> <\/div> <\/section>/,
     "one motion field must run from the Fit choices through the space before the firm card",
   );
   assert.match(mathMotionFieldSource, /\["\$", "\$", "\$", "\+", "−", "×", "÷", "="\]/);
@@ -744,6 +744,12 @@ test("desktop and mobile nav expose the active tracked onboarding CTA", () => {
 
 test("homepage FAQ reflects the approved lean-model and custody edits", () => {
   assert.match(homeFaqSource, /How does your lean model make \$100 a month possible\?/);
+  assert.match(homeFaqSource, /topPaddingClassName = "pt-10 sm:pt-14"/);
+  assert.match(homeFaqSource, />\s*Very\s*<\/span>/);
+  assert.match(homeFaqSource, /font-\[800\]/);
+  assert.match(homeFaqSource, />\s*\^\s*<\/span>/);
+  assert.match(homeFaqSource, /my advisory fees have all doubled in the past few years\./);
+  assert.match(homeFaqSource, /Does that mean my advisor is doing double the work\?/);
   assert.match(homeFaqSource, /<em className="font-\[440\]">rhetorical question<\/em>/);
   assert.doesNotMatch(homeFaqSource, /text-\[1\.1em\][^>]*>rhetorical question/);
   assert.match(
@@ -752,6 +758,12 @@ test("homepage FAQ reflects the approved lean-model and custody edits", () => {
   );
   assert.doesNotMatch(faqDataSource, /You select and maintain your own accounts/);
   assert.doesNotMatch(faqDataSource, /You receive account statements directly from your custodian/);
+});
+
+test("the math field reaches the FAQ boundary without decorating the FAQ itself", () => {
+  const flatCalculator = flatten(calculatorSource);
+  assert.match(flatCalculator, /<SmarterWayWealthVisitCard [^>]*surfaceClassName="bg-transparent" \/> <div aria-hidden="true" className="h-10 sm:h-14" \/> <\/div> <\/section>/);
+  assert.match(flatCalculator, /<HomeFaqSection topPaddingClassName="pt-0" \/>/);
 });
 
 test("quote swipes keep the surrounding homepage anchored", () => {

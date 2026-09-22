@@ -1462,6 +1462,7 @@ export function CostAnalysisCalculator({
               advancedCalculatorHref={advancedCalculatorHref}
               surfaceClassName="bg-transparent"
             />
+            <div aria-hidden="true" className="h-10 sm:h-14" />
           </div>
         </section>
       )}
@@ -1470,7 +1471,7 @@ export function CostAnalysisCalculator({
           scrolls here rather than leaving for /faq — that route is retired
           (David, 2026-08-14). Two questions and a door to the firm site's
           full set. */}
-      {isSavingsCalculatorUpgrade && <HomeFaqSection />}
+      {isSavingsCalculatorUpgrade && <HomeFaqSection topPaddingClassName="pt-0" />}
 
       {/* One Percent Blues: the site's standard conversion block, then the
           same three FAQ questions, both on the page gradient. */}

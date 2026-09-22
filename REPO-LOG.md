@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-14 — 2026-09-22 — Continued blue physics to the FAQ and sharpened the question
+**Agent:** R2D2 | **Surface:** firm-card-to-FAQ transition and homepage FAQ | **Status:** locally verified; production proof required after merge
+- changed: carried the active blue math field through the entire final blank strip immediately before the FAQ heading, then stopped it at that heading rather than decorating the FAQ content.
+- changed: added a handwritten-style `^ Very` lead-in immediately before **Frequently Asked Questions**, with `Very` at 800 weight versus the heading's 900 weight.
+- changed: the fee question now reads: “The S&P 500, my portfolio, and my advisory fees have all doubled in the past few years. Does that mean my advisor is doing double the work?”
+- proof: source contract suite, TypeScript, changed-file lint, and a fresh optimized production build passed. A 390px local browser check confirmed zero FAQ top padding (the field reaches the heading), the `^ Very` annotation, no horizontal overflow, and no console errors.
+
 ### 02-09 — 2026-09-22 — Live assumptions line and compact $100/month service summary
 **Agent:** Hermes | **Surface:** homepage savings hero and existing post-calculator signup invitation | **Status:** locally verified; held for parent R2D2 inspection
 - changed: added a quiet assumptions line under the main savings result, driven by the same live calculator state. It names portfolio value, asset-based fee plus fund expenses when present, growth, duration, and the current flat-fee comparison; **Use my numbers** jumps to the existing inputs without changing state.
