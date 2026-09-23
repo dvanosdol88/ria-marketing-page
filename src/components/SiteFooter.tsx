@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 import { usePathname } from "next/navigation";
 import ComplianceFooter from "@/components/ComplianceFooter";
 import { CalculatorNotes } from "@/components/CalculatorNotes";
@@ -39,7 +40,7 @@ export function SiteFooter() {
   return (
     <>
       <footer className="border-t border-neutral-200 bg-[#EEF0F5]">
-        <div className="mx-auto max-w-[1100px] px-4 py-10 sm:px-6">
+        <div className="mx-auto max-w-[1100px] px-4 pb-6 pt-10 sm:px-6">
           {/* Stacked, not side by side (David, 2026-09-23: "this is still
               showing up as a column"). Logo and legal links share the top
               row; the calculator disclaimer runs the full width beneath them,
@@ -59,34 +60,38 @@ export function SiteFooter() {
               <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-neutral-500">
                 <a
                   href={DISCLOSURES_URL}
-                  className="hover:text-neutral-700 no-underline"
+                  className="inline-flex items-center gap-1 hover:text-neutral-700 no-underline"
                 >
                   Disclosures
+                  <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" />
                 </a>
                 <a
                   href={ADV_BROCHURE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-neutral-700 no-underline"
+                  className="inline-flex items-center gap-1 hover:text-neutral-700 no-underline"
                 >
                   ADV Brochure (PDF)
+                  <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" />
                 </a>
                 <a
                   href={IAPD_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-neutral-700 no-underline"
+                  className="inline-flex items-center gap-1 hover:text-neutral-700 no-underline"
                 >
                   Verify on IAPD
+                  <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" />
                 </a>
                 {/* One link, not two. "Privacy" and "Privacy Policy" sat side by
                     side pointing at the same page once both were aimed at the
                     firm site. */}
                 <a
                   href={PRIVACY_URL}
-                  className="hover:text-neutral-700 no-underline"
+                  className="inline-flex items-center gap-1 hover:text-neutral-700 no-underline"
                 >
                   Privacy Policy
+                  <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" />
                 </a>
               </div>
             </div>
@@ -108,7 +113,7 @@ export function SiteFooter() {
           </div>
         </div>
       </footer>
-      <ComplianceFooter />
+      <ComplianceFooter linksAbove />
     </>
   );
 }
