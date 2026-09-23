@@ -29,7 +29,7 @@ export function BluesHeader() {
           data-posthog-cta-location="blues_nav"
         >
           Smarter Way Wealth
-          <ExternalLink aria-hidden="true" className="h-4 w-4" strokeWidth={2.5} />
+          <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
         </a>
       </div>
     </header>

@@ -54,7 +54,7 @@ export const WWWH_HOW = {
     "Massive marketing budgets",
     "A large real estate footprint",
   ],
-  closing: "No need to move your accounts.",
+  closing: "No need to move your accounts!",
 } as const;
 
 /* This section is deliberately ONE PLAIN PANEL — no cards, no rotated type
@@ -70,7 +70,13 @@ export const WWWH_HOW = {
    constant rather than hard-coded so the approved copy still has exactly one
    source of truth. */
 const [closingLeadWord, ...closingRestWords] = WWWH_HOW.closing.split(" ");
-const closingRemainder = closingRestWords.join(" ");
+/* DECISION, 2026-09-23 (David): the line ends in "!" set at the same size and
+   weight as the opening "No", so the sentence is bracketed by its two loud
+   marks. The mark is split off the same constant, so the copy still has one
+   source. */
+const closingJoined = closingRestWords.join(" ");
+const closingEndMark = closingJoined.endsWith("!") ? "!" : "";
+const closingRemainder = closingEndMark ? closingJoined.slice(0, -1) : closingJoined;
 
 export function WhatWhyWhoHow() {
   return (
@@ -221,6 +227,9 @@ export function WhatWhyWhoHow() {
               <p className="min-w-0 text-center text-lg font-black leading-7 text-[#10233A] sm:text-xl">
                 <span className="text-xl tracking-tight sm:text-2xl">{closingLeadWord}</span>{" "}
                 {closingRemainder}
+                {closingEndMark ? (
+                  <span className="text-xl tracking-tight sm:text-2xl">{closingEndMark}</span>
+                ) : null}
               </p>
               <span aria-hidden="true" className="h-0.5 min-w-8 shrink-0 flex-1 rounded-full bg-[#108843]" />
             </div>

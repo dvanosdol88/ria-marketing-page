@@ -92,3 +92,8 @@ Every link that leaves the site (to smarterwaywealth.com or anywhere else) uses 
 box-with-arrow external-link icon (lucide `ExternalLink`). Never the bare diagonal arrow
 (`ArrowUpRight`), and never a text label like "Leaving site" — the icon alone says it. Same rule
 on smarterwaywealth.com, so both sites stay uniform.
+
+Update (David, 2026-09-23): the icon is never bounded — no circle, ring, pill, or tile behind it —
+and it is sized relative to the link text: `h-[1.25em] w-[1.25em] shrink-0` on inline links, so
+it scales with whatever text it follows. Standalone row icons (the green firm-visit card) use
+`h-6 w-6`. The sister site still needs the same update.

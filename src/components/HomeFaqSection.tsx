@@ -327,8 +327,8 @@ export function HomeFaqSection({
             {/* The door out, and the last row of the same card. It is indented
                 to the answer column so all three rows share a left edge, but it
                 is not a question: it wears the tinted ground of a card footer
-                and the ringed external-link icon (box + arrow) this project uses for every
-                outbound link. The arrow stays immediately after the words
+                and the external-link icon (box + arrow) this project uses for every
+                outbound link — bare, never inside a circle (David, 2026-09-23). The arrow stays immediately after the words
                 rather than out at the right margin (David, 2026-08-14: "Put the
                 narrow circle closer to it") — it is inside the text span, not a
                 flex sibling, so it wraps with the sentence instead of drifting
@@ -346,12 +346,11 @@ export function HomeFaqSection({
                 <span className="block">
                   <span className="text-[17px] font-semibold leading-7 !text-[#333B45] transition-colors duration-150 group-hover:!text-[#10233A] sm:text-lg">
                     Read all of the FAQs on smarterwaywealth.com.
-                    <span
+                    <ExternalLink
                       aria-hidden="true"
-                      className={`ml-2 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white align-middle ring-1 ring-inset ring-[#CFD6DF] transition-colors duration-200 ${t.doorHover}`}
-                    >
-                      <ExternalLink className={`h-4 w-4 ${t.arrow}`} strokeWidth={2.5} />
-                    </span>
+                      className={`ml-1.5 inline-block h-[1.25em] w-[1.25em] shrink-0 -translate-y-px align-middle transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 ${t.arrow}`}
+                      strokeWidth={2.5}
+                    />
                   </span>
                 </span>
               </a>

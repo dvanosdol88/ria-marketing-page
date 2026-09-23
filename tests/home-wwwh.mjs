@@ -81,7 +81,7 @@ test("homepage WWWH keeps the locked order and exact approved answers", () => {
       'label: "Who"',
       "David Van Osdol, CFA Charter Holder and CFP Professional with over 20 years’ experience.",
     ],
-    ['label: "How"', "No need to move your accounts."],
+    ['label: "How"', "No need to move your accounts!"],
   ];
 
   let priorIndex = -1;
@@ -233,10 +233,13 @@ test("the fit-to-quotes region reuses the Smarter Way Wealth math field with the
   assert.match(mathMotionFieldSource, /const dx = pointer\.x - particle\.x/);
   assert.match(mathMotionFieldSource, /section\.addEventListener\("pointerdown", onPointerDown/);
   assert.match(mathMotionFieldSource, /prefers-reduced-motion: reduce/);
-  assert.match(flatQuotes, /h-\[164px\] items-start/);
-  assert.match(flatQuotes, /p-3 pb-3[^\"]*sm:p-4 sm:pb-3/);
-  assert.match(flatQuotes, /blockquote className="[^"]*pt-0[^\"]*text-center/);
-  assert.match(flatQuotes, /bottom-2 left-1\/2[^\"]*-translate-x-1\/2[^\"]*text-center/);
+  // 2026-09-23 (David): portrait + name + title centred top-to-bottom with
+  // equal padding; the slot is sized by an invisible stack of every quote.
+  assert.match(flatQuotes, /group relative grid overflow-hidden/);
+  assert.match(flatQuotes, /invisible col-start-1 row-start-1/);
+  assert.match(flatQuotes, /relative flex h-full items-center gap-4[^"]*px-3 py-3[^"]*sm:px-4/);
+  assert.match(flatQuotes, /blockquote className="[^"]*text-center/);
+  assert.match(flatQuotes, /mt-2 whitespace-nowrap text-center[^"]*">\s*Not an endorsement\./);
   assert.match(flatQuotes, /right-3[^\"]*bottom-2/);
   assert.match(flatQuotes, /px-4 pb-4 pt-\[38px\] sm:px-6 sm:pb-4 sm:pt-\[54px\]/);
   assert.match(firmVisitCardSource, /surfaceClassName = "bg-\[#EEF0F5\]"/);
@@ -767,7 +770,11 @@ test("the math field reaches the FAQ boundary without decorating the FAQ itself"
 });
 
 test("quote swipes keep the surrounding homepage anchored", () => {
-  assert.match(feeQuoteDeckSource, /className="group relative h-\[164px\]/);
+  // Height comes from the tallest quote in the pool (a static sizer), never
+  // from the active quote, so swiping cannot move the page.
+  assert.match(feeQuoteDeckSource, /className="group relative grid overflow-hidden rounded-2xl"/);
+  assert.match(feeQuoteDeckSource, /FEE_QUOTES\.map\(\(sizerQuote, sizerIndex\)/);
+  assert.match(feeQuoteDeckSource, /measureOnly \/>/);
   assert.doesNotMatch(feeQuoteDeckSource, /reservedHeight|ResizeObserver\(measure\)/);
   assert.match(feeQuoteDeckSource, /dragDirectionLock/);
   assert.match(feeQuoteDeckSource, /dragMomentum=\{false\}/);

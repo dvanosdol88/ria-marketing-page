@@ -1,5 +1,15 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-09-23 — Desktop client-value list, balanced quote cards, "!" closing line, unbounded outbound-link icon
+**Agent:** Claude (Cowork, cloud workspace) | **Surface:** homepage + every outbound link | **Status:** preview only — awaiting David's approval before merge
+- changed: "What you get for $100/month" is one stacked list at every width (the desktop two-column grid paired a 1-line item with a 3-line one and orphaned **More**); desktop gets a 16px type step; card is now opaque so the floating $ / = glyphs no longer show through.
+- changed: closing line is now **No need to move your accounts!** with the "!" at the same size and weight as "No".
+- changed: quote cards centre the portrait + name + title top-to-bottom with equal padding, and centre the quote; slots size themselves to the tallest quote in the pool (static invisible sizer, no ResizeObserver), so two-line titles and long quotes are no longer clipped and swipes still never move the page. Height: 176px desktop (was 164), ~200px on a 390px phone.
+- changed: the outbound-link icon is never inside a circle/tile (FAQ door, firm-visit card, /upgrade-your-advice Next Steps) and is sized at 1.25em of its link text everywhere; convention updated in CLAUDE.md.
+- preserved: copy (except the "!"), list order, CTA labels/destinations/PostHog tags, mobile layout of the client-value card, swipe/click/keyboard quote behavior.
+- proof: tests/home-wwwh (28/28), home-assumptions-client-value, home-assumptions-sync (375px + 1280px browser journey), home-first-screen, active-direct-start, calculator-canon-manifest, blues-source-locks, stylized-service-icons all pass; `tsc --noEmit` clean; changed-file lint clean (one pre-existing warning); production build OK; before/after screenshots at 1440px and 390px reviewed.
+- next: David reviews the Vercel preview; on approval merge to main and prove on the live apex. Same icon rule still to be applied on smarterwaywealth.com.
+
 ### 02-40 — 2026-09-23 — FAQ copy fixes + uniform outbound-link icon (YAPT + SWW)
 **Agent:** Claude | **Surface:** homepage FAQ + every outbound link | **PR:** [#296](https://github.com/dvanosdol88/ria-marketing-page/pull/296) (`a97267d`); sister smarter-way-wealth#240 | **Status:** deployed and production-proved
 - changed: AI footnote asterisk in the $100/month answer renders as a superscript; "Even more importantly, we don't have" → "We also don't have" (shared FAQ data, both repos); removed the "Leaving site" label from the FAQ door.

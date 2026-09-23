@@ -396,7 +396,7 @@ function GoodFitCard() {
           >
             {goodFitCardConfig.link.label}
             <ExternalLink
-              className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              className="h-[1.25em] w-[1.25em] shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
               aria-hidden="true"
             />
           </a>
@@ -789,12 +789,10 @@ function LowFrictionUpgradeSection() {
           className="group flex min-h-[224px] flex-col justify-between bg-[#064B84] p-6 !text-white !no-underline shadow-[0_18px_44px_rgba(6,75,132,0.22)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#053E6D] hover:!text-white hover:shadow-[0_24px_58px_rgba(6,75,132,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84] sm:min-h-[260px] lg:min-h-0"
         >
           <span className="flex items-center justify-between gap-4">
-            <span className="inline-flex h-12 w-12 items-center justify-center rounded-md bg-white/12 text-white ring-1 ring-white/20">
-              <ExternalLink
-                className="h-6 w-6 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                aria-hidden="true"
-              />
-            </span>
+            <ExternalLink
+              className="h-8 w-8 shrink-0 text-white transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden="true"
+            />
             <span className="text-xl font-black leading-none tracking-normal text-white/88 sm:text-2xl">
               Next Steps
             </span>

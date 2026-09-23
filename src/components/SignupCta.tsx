@@ -78,17 +78,25 @@ export function SignupCta({
     return (
       <section className={`w-full ${surfaceClassName} px-4 pb-4 pt-10 sm:px-6 sm:pb-6 sm:pt-14`}>
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
+          {/* DECISION, 2026-09-23 (David: "the layout seems off on desktop — it's
+              fine on mobile since it's stacked"): the list stays one stacked
+              column at every width. The old two-column desktop grid paired a
+              one-line item with a three-line one and left "More" orphaned on a
+              row of its own. Desktop gets a slightly larger type step instead,
+              so the wider card reads as a list, not a grid. The card is also
+              opaque now: at 75% white the page's floating $ / = glyphs showed
+              through behind the text. */}
           <div
             data-home-client-value
-            className="rounded-md border border-[#CFD9E3] bg-white/75 px-4 py-4 text-[#10233A] shadow-[0_8px_24px_rgba(17,33,52,0.05)] sm:px-5"
+            className="rounded-md border border-[#CFD9E3] bg-white px-4 py-4 text-[#10233A] shadow-[0_8px_24px_rgba(17,33,52,0.05)] sm:px-6 sm:py-5"
           >
             <h2 className="text-lg font-bold">What you get for $100/month</h2>
-            <ul className="mt-3 grid gap-3 text-sm leading-5 sm:grid-cols-2 sm:gap-4" role="list">
+            <ul className="mt-3 grid gap-3 text-sm leading-5 sm:mt-4 sm:text-base sm:leading-6" role="list">
               {HOME_CLIENT_VALUE_ITEMS.map((item) => (
                 <li key={item.label} className="flex items-start gap-3">
                   <BadgeCheck
                     aria-hidden="true"
-                    className="mt-0.5 h-7 w-7 shrink-0 fill-[#E6F6EC] text-[#108843]"
+                    className="mt-0.5 h-7 w-7 shrink-0 fill-[#E6F6EC] text-[#108843] sm:-mt-0.5"
                     strokeWidth={2.25}
                   />
                   {"href" in item ? (
@@ -100,7 +108,7 @@ export function SignupCta({
                       data-posthog-cta-location={`${location}_more`}
                     >
                       More
-                      <ExternalLink aria-hidden="true" className="h-4 w-4 shrink-0" strokeWidth={2.5} />
+                      <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
                     </a>
                   ) : (
                     <span>{item.label}</span>
@@ -117,7 +125,7 @@ export function SignupCta({
             data-posthog-cta-location={`${location}_primary`}
           >
             Sign me up — Become a client
-            <ExternalLink aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={2.5} />
+            <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
           </Link>
           <a
             href={signupCta.secondary.href}
@@ -128,7 +136,7 @@ export function SignupCta({
           >
             <span className="inline-flex items-center gap-2 text-lg font-bold">
               See if I&apos;m a good fit
-              <ExternalLink aria-hidden="true" className="h-5 w-5 shrink-0" strokeWidth={2.5} />
+              <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
             </span>
             <span className="text-sm">Schedule a 15-minute talk with David</span>
           </a>
