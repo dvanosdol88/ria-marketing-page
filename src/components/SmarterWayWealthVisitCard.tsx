@@ -56,22 +56,16 @@ export function SmarterWayWealthVisitCard({
       className={`w-full ${surfaceClassName} px-4 pb-12 pt-16 sm:px-6 sm:pb-16 sm:pt-24`}
     >
       {/* REDESIGN, 2026-09-23 (David: the bright green slab read as "very not
-          premium"; he picked option A1, then asked for "a gradual gradient from
-          the brighter green to the darker green, as seen in our three-bar
-          logo"). This replaces the flat #007A2F lock of 2026-08-14 at his
-          direction.
-
-          Every colour is from the brand ramp in src/styles/tokens.ts. The
-          gradient runs top-left to bottom-right, the same way the logo's bars
-          rise and deepen, from brand-700 (#008435, the step just below the
-          logo's #00A540) down to brand-950 (#002A11). The logo's own lighter
-          greens (#66D980 / #33BF60 / #00A540) are NOT used as the fill: white
-          text on them measures 1.8-3.3:1 contrast, which is unreadable. Every
-          stop here keeps white text at 4.8:1 or better.
+          premium"). He chose option A1 — a flat card in brand-950 (#002A11),
+          the deepest green in the brand ramp (src/styles/tokens.ts) — over a
+          brighter-to-darker blended variant he also reviewed. This replaces the
+          flat #007A2F lock of 2026-08-14 at his direction; it is still one
+          solid brand-green unit, just the ramp's darkest step.
 
           Type is the brand's own: the name is set in the logo face (DM Sans,
-          var(--font-logo)) and tracked like the wordmark; rows are Inter. */}
-      <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#008435_0%,#00682B_32%,#004D20_66%,#002A11_100%)] text-white shadow-[0_24px_60px_rgba(0,42,17,0.28)] ring-1 ring-inset ring-white/10">
+          var(--font-logo)) and tracked like the wordmark; rows are Inter. Green
+          is an accent only (eyebrow, numerals, one short rule). */}
+      <div className="mx-auto max-w-3xl overflow-hidden rounded-2xl bg-[#002A11] text-white shadow-[0_24px_60px_rgba(0,42,17,0.28)] ring-1 ring-inset ring-white/10">
         <a
           aria-label="Visit Smarter Way Wealth home page (opens in a new tab)"
           className="group block px-7 pb-7 pt-9 !text-white !no-underline focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-[-6px] focus-visible:outline-white sm:px-12 sm:pb-8 sm:pt-11"
@@ -82,7 +76,7 @@ export function SmarterWayWealthVisitCard({
           rel="noreferrer"
           target="_blank"
         >
-          <span className="block text-[12px] font-bold uppercase tracking-[0.28em] text-white/90">
+          <span className="block text-[12px] font-bold uppercase tracking-[0.28em] text-[#3FC87C]">
             <span>Visit</span>
           </span>
           <span className="mt-3 flex items-end justify-between gap-6">
@@ -90,7 +84,7 @@ export function SmarterWayWealthVisitCard({
               <span aria-hidden="true" className="block text-[30px] font-bold tracking-[0.14em] sm:text-[36px]">
                 SMARTER
               </span>
-              <span aria-hidden="true" className="mt-2 block text-[13px] font-medium tracking-[0.42em] text-[#D6F5E2] sm:text-[14px]">
+              <span aria-hidden="true" className="mt-2 block text-[13px] font-medium tracking-[0.42em] text-[#7ADCA6] sm:text-[14px]">
                 WAY WEALTH
               </span>
             </span>
@@ -100,7 +94,7 @@ export function SmarterWayWealthVisitCard({
               strokeWidth={2}
             />
           </span>
-          <span aria-hidden="true" className="mt-5 block h-0.5 w-11 bg-[#7ADCA6]" />
+          <span aria-hidden="true" className="mt-5 block h-0.5 w-11 bg-[#00A540]" />
         </a>
 
         <nav aria-label="Explore Smarter Way Wealth" className="px-7 pb-3 sm:px-12 sm:pb-5">
@@ -115,7 +109,7 @@ export function SmarterWayWealthVisitCard({
               rel="noreferrer"
               target="_blank"
             >
-              <span aria-hidden="true" className="w-6 shrink-0 text-[13px] font-bold tabular-nums tracking-[0.04em] text-[#7ADCA6]">
+              <span aria-hidden="true" className="w-6 shrink-0 text-[13px] font-bold tabular-nums tracking-[0.04em] text-[#3FC87C]">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <span className="flex-1 text-[17px] font-medium leading-6 text-white/90 transition-colors duration-200 group-hover:text-white sm:text-lg">

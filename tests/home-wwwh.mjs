@@ -283,16 +283,11 @@ test("the firm visit card is one brand-green visual unit with separate tracked d
     /pt-\[667px\]/,
     "the empty phone-height spacer's job moved to the quote deck (2026-08-13)",
   );
-  // DECISION CHANGED, 2026-09-23 (David): the flat #007A2F lock is replaced by a
-  // gradient that runs, like the logo's bars, from brighter to darker brand
-  // green. Every stop must come from the brand ramp, and the logo's light greens
-  // stay out of the fill because white text on them is unreadable.
-  assert.match(
-    flatCard,
-    /bg-\[linear-gradient\(135deg,#008435_0%,#00682B_32%,#004D20_66%,#002A11_100%\)\]/,
-    "the visual unit uses the brand-ramp gradient",
-  );
-  assert.doesNotMatch(flatCard, /bg-\[[^\]]*(#66D980|#33BF60)/i, "the logo's light greens never sit behind white text");
+  // DECISION CHANGED, 2026-09-23 (David picked A1): the flat #007A2F lock is
+  // replaced by flat brand-950 #002A11 — still one solid brand-green unit. A
+  // gradient variant was reviewed and not chosen, so the no-blend guard stays.
+  assert.match(flatCard, /bg-\[#002A11\]/, "the visual unit uses flat brand-950 green");
+  assert.doesNotMatch(flatCard, /gradient/, "the visual unit stays solid rather than decorative");
   assert.match(flatCard, /target="_blank"/);
   assert.match(flatCard, /rel="noreferrer"/);
   assert.match(flatCard, />Visit<\/span>/);
