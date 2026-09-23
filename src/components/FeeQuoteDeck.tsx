@@ -45,30 +45,46 @@ function splitPoolAlternately(quotes: FeeQuote[]): [FeeQuote[], FeeQuote[]] {
 
 /**
  * Attribution sits in its own left-hand column beneath the portrait rather
- * than under the quote (David, 2026-08-14), which also does real work on the
- * jerk problem: the portrait + name + title block sets a tall floor for every
- * card, so the height difference between a one-line quote and a four-line one
- * shrinks dramatically. The parent slot animates whatever difference is left.
+ * than under the quote (David, 2026-08-14).
+ *
+ * DECISION, 2026-09-23 (David: the portrait, name and title "are not evenly
+ * balanced vertically — see the Charlie Munger / Berkshire Hathaway example"):
+ * the attribution column is now centred top-to-bottom in the card, with equal
+ * padding above and below, and the quote is centred in its own column. The
+ * card's height no longer comes from a fixed number: each slot sizes itself to
+ * the tallest card in the whole pool (see QuoteSlot's sizer), so a two- or
+ * three-line title can never be clipped at the card's bottom edge again, and
+ * swiping between quotes still never changes the card's height.
  */
-function QuoteCard({ quote, counter }: { quote: FeeQuote; counter: string }) {
+function QuoteCard({
+  quote,
+  counter,
+  measureOnly = false,
+}: {
+  quote: FeeQuote;
+  counter: string;
+  /** Sizer copy: same geometry, no image request. */
+  measureOnly?: boolean;
+}) {
   const portraitSrc = FEE_QUOTE_PORTRAITS[quote.lastName];
   const portraitOffset = FEE_QUOTE_PORTRAIT_OFFSET[quote.lastName];
+  const portraitClass = "h-20 w-20 rounded-full sm:h-[88px] sm:w-[88px]";
 
   return (
-    <figure className="relative flex h-full items-start gap-4 rounded-2xl border border-[#D8E2EA] bg-white p-3 pb-3 shadow-[0_10px_30px_rgba(17,33,52,0.07)] sm:gap-6 sm:p-4 sm:pb-3">
-      <div className="flex w-[96px] shrink-0 flex-col sm:w-[112px]">
-        {portraitSrc ? (
+    <figure className="relative flex h-full items-center gap-4 rounded-2xl border border-[#D8E2EA] bg-white px-3 py-3 shadow-[0_10px_30px_rgba(17,33,52,0.07)] sm:gap-6 sm:px-4">
+      <div className="flex w-[96px] shrink-0 flex-col sm:w-[128px]">
+        {portraitSrc && !measureOnly ? (
           <Image
             src={portraitSrc}
             alt=""
             width={192}
             height={192}
-            className="h-20 w-20 rounded-full border border-[#E4ECF2] bg-[#F4F7FA] object-cover sm:h-[88px] sm:w-[88px]"
+            className={`${portraitClass} border border-[#E4ECF2] bg-[#F4F7FA] object-cover`}
             style={portraitOffset ? { objectPosition: `50% ${portraitOffset}%` } : undefined}
             draggable={false}
           />
         ) : (
-          <span aria-hidden="true" className="h-20 w-20 rounded-full bg-[#EAF1F8] sm:h-[88px] sm:w-[88px]" />
+          <span aria-hidden="true" className={`${portraitClass} block bg-[#EAF1F8]`} />
         )}
         <figcaption className="mt-2.5">
           <span className="block text-[13px] font-bold leading-4 text-[#062B43] sm:text-sm">
@@ -78,19 +94,25 @@ function QuoteCard({ quote, counter }: { quote: FeeQuote; counter: string }) {
         </figcaption>
       </div>
 
-      <blockquote className="min-w-0 flex-1 pt-0 text-center text-[15px] font-medium leading-6 text-[#10233A] sm:text-base sm:leading-7">
-        <span aria-hidden="true" className="mr-0.5 font-black text-[#00A540]">
-          &ldquo;
-        </span>
-        {quote.quote}
-        <span aria-hidden="true" className="ml-0.5 font-black text-[#00A540]">
-          &rdquo;
-        </span>
-      </blockquote>
+      <div className="flex h-full min-w-0 flex-1 flex-col">
+        <div className="flex flex-1 items-center justify-center">
+          <blockquote className="text-center text-[15px] font-medium leading-6 text-[#10233A] sm:text-base sm:leading-7">
+            {/* Marks at the text's own size and weight (David, 2026-09-23) — at
+                font-black they read a size larger than the words they hold. */}
+            <span aria-hidden="true" className="mr-0.5 text-[#00A540]">
+              &ldquo;
+            </span>
+            {quote.quote}
+            <span aria-hidden="true" className="ml-0.5 text-[#00A540]">
+              &rdquo;
+            </span>
+          </blockquote>
+        </div>
+        <p className="mt-2 whitespace-nowrap text-center text-[11px] leading-4 text-[#52657A]">
+          Not an endorsement.
+        </p>
+      </div>
 
-      <p className="absolute bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap text-center text-[11px] leading-4 text-[#52657A]">
-        Not an endorsement.
-      </p>
       <span
         aria-hidden="true"
         className="absolute right-3 bottom-2 text-[11px] font-semibold tabular-nums text-[#C2CFDA]"
@@ -163,8 +185,18 @@ function QuoteSlot({
       role="group"
       aria-roledescription="carousel"
       aria-label={slotLabel}
-      className="group relative h-[164px] items-start overflow-hidden rounded-2xl"
+      className="group relative grid overflow-hidden rounded-2xl"
     >
+      {/* Sizer: every quote in the pool, stacked invisibly in the same grid
+          cell, so the slot is exactly as tall as its tallest card at the
+          current width. The live card below fills that same cell. */}
+      <div aria-hidden="true" className="pointer-events-none invisible col-start-1 row-start-1 mr-2.5 grid sm:mr-3">
+        {FEE_QUOTES.map((sizerQuote, sizerIndex) => (
+          <div key={`sizer-${sizerIndex}`} className="col-start-1 row-start-1">
+            <QuoteCard quote={sizerQuote} counter="00 / 00" measureOnly />
+          </div>
+        ))}
+      </div>
 
       {/* The next card's edge, peeking out from behind the active quote —
           the always-visible cue that there are more behind it. */}
@@ -221,7 +253,7 @@ function QuoteSlot({
         tabIndex={0}
         aria-label={`${slotLabel}: click it, swipe it sideways, or use the left and right arrow keys to see another.`}
         aria-live="polite"
-        className="group/card relative mr-2.5 h-full cursor-pointer focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] active:cursor-grabbing sm:mr-3"
+        className="group/card relative col-start-1 row-start-1 mr-2.5 h-full cursor-pointer focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#064B84] active:cursor-grabbing sm:mr-3"
         style={{ touchAction: "pan-y" }}
       >
         <AnimatePresence initial={false} mode="popLayout" custom={direction}>

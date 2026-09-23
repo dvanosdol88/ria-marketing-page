@@ -173,7 +173,7 @@ function PanelLink({
       }`}
     >
       {label}
-      <ExternalLink className="h-4 w-4" aria-hidden="true" />
+      <ExternalLink className="h-[1.25em] w-[1.25em] shrink-0" aria-hidden="true" />
     </a>
   );
 }

@@ -2070,7 +2070,7 @@ function SeeOurMathBento({
               className={`inline-flex items-center gap-1 font-extrabold ${accent.textClassName} underline underline-offset-4 ${accent.linkHoverClassName}`}
             >
               Learn about Smarter Way Wealth
-              <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              <ExternalLink className="h-[1.25em] w-[1.25em] shrink-0" aria-hidden="true" />
             </a>
           </div>
         </div>

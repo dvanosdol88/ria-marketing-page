@@ -359,7 +359,7 @@ export function SiteNav() {
                 style={{ color: "#007A2F" }}
               >
                 Smarter Way Wealth
-                <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                <ExternalLink className="h-[1.25em] w-[1.25em] shrink-0" aria-hidden="true" />
               </a>
               <Link
                 href={SIGNUP_PATH as any}
@@ -370,7 +370,7 @@ export function SiteNav() {
                 style={{ color: "#064B84" }}
               >
                 Become a Client
-                <ExternalLink className="h-4 w-4" aria-hidden="true" />
+                <ExternalLink className="h-[1.25em] w-[1.25em] shrink-0" aria-hidden="true" />
               </Link>
             </nav>
           </div>
@@ -464,7 +464,7 @@ export function SiteNav() {
             style={{ color: "#007A2F" }}
           >
             Smarter Way Wealth
-            <ExternalLink className="h-5 w-5" aria-hidden="true" />
+            <ExternalLink className="h-[1.25em] w-[1.25em] shrink-0" aria-hidden="true" />
           </a>
           <Link
             href={SIGNUP_PATH as any}
@@ -476,7 +476,7 @@ export function SiteNav() {
             style={{ color: "#064B84" }}
           >
             Become a Client
-            <ExternalLink className="h-5 w-5" aria-hidden="true" />
+            <ExternalLink className="h-[1.25em] w-[1.25em] shrink-0" aria-hidden="true" />
           </Link>
         </div>
 

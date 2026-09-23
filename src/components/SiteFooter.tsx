@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 import { usePathname } from "next/navigation";
 import ComplianceFooter from "@/components/ComplianceFooter";
 import { CalculatorNotes } from "@/components/CalculatorNotes";
@@ -38,75 +38,55 @@ export function SiteFooter() {
 
   return (
     <>
+      {/* DECISION, 2026-09-23 (David: remove the redundancies, fix the alignment). One footer,
+          one left edge: the legal links sit once, at the top, flush with the
+          text below; the small grey logo is gone (its SVG carries built-in
+          padding, so it could never line up with the text, and the brand is
+          already shown full-size in the Visit card directly above). */}
       <footer className="border-t border-neutral-200 bg-[#EEF0F5]">
-        <div className="mx-auto max-w-[1100px] px-4 py-10 sm:px-6">
-          <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:items-start">
-            {/* Left: Logo + Disclaimer */}
-            <div className="max-w-2xl space-y-3">
-              <Link href={"/" as any} aria-label="Smarter Way Wealth home">
-                <Image
-                  src="/brand/logo.svg"
-                  alt="Smarter Way Wealth"
-                  width={170}
-                  height={68}
-                  className="h-6 w-auto opacity-75 grayscale"
-                />
-              </Link>
-              {/* The calculator disclaimer itself, not a paraphrase of it. This
-                  slot used to hold "Calculator projections are hypothetical and
-                  for illustrative purposes only. They are not a guarantee of
-                  future returns." — a weaker restatement of the real disclaimer
-                  that sat further up the page, so the site said the same thing
-                  twice and neither one was clearly the operative version
-                  (David, 2026-08-12).
-
-                  Only where the calculator is. The footer is site-wide, and
-                  this text speaks of "the assumptions entered here" — which on
-                  /faq or /privacy would refer to assumptions the page gives the
-                  reader no way to enter. The home page is the only route that
-                  renders the calculator, and therefore the only one carrying
-                  the markers that link down to this. */}
-              {isCalculatorPage ? <CalculatorNotes /> : null}
-            </div>
-
-            {/* Right: Legal links */}
-            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-neutral-500 shrink-0">
-              <a
-                href={DISCLOSURES_URL}
-                className="hover:text-neutral-700 no-underline"
-              >
-                Disclosures
-              </a>
-              <a
-                href={ADV_BROCHURE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-neutral-700 no-underline"
-              >
-                ADV Brochure (PDF)
-              </a>
-              <a
-                href={IAPD_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-neutral-700 no-underline"
-              >
-                Verify on IAPD
-              </a>
-              {/* One link, not two. "Privacy" and "Privacy Policy" sat side by
-                  side pointing at the same page once both were aimed at the
-                  firm site. */}
-              <a
-                href={PRIVACY_URL}
-                className="hover:text-neutral-700 no-underline"
-              >
-                Privacy Policy
-              </a>
-            </div>
+        <div className="mx-auto max-w-[1100px] px-4 pb-6 pt-10 sm:px-6">
+          <nav aria-label="Legal" className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold">
+            <a
+              href={DISCLOSURES_URL}
+              className="inline-flex items-center gap-1 !text-[#10233A] no-underline hover:!text-[#007A2F]"
+            >
+              Disclosures
+              <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" />
+            </a>
+            <a
+              href={ADV_BROCHURE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 !text-[#10233A] no-underline hover:!text-[#007A2F]"
+            >
+              ADV Brochure (PDF)
+              <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" />
+            </a>
+            <a
+              href={IAPD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 !text-[#10233A] no-underline hover:!text-[#007A2F]"
+            >
+              Verify on IAPD
+              <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" />
+            </a>
+            <a
+              href={PRIVACY_URL}
+              className="inline-flex items-center gap-1 !text-[#10233A] no-underline hover:!text-[#007A2F]"
+            >
+              Privacy Policy
+              <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" />
+            </a>
+          </nav>
+          <div className="mt-6 empty:hidden">
+            {/* The calculator disclaimer itself, gated to the calculator route
+                (see git history for the full rationale). */}
+            {isCalculatorPage ? <CalculatorNotes /> : null}
           </div>
         </div>
       </footer>
-      <ComplianceFooter />
+      <ComplianceFooter linksAbove />
     </>
   );
 }

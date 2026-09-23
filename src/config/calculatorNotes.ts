@@ -17,6 +17,10 @@
  *
  * Risk-of-loss and registration language still render directly below this
  * block in ComplianceFooter, so they are not lost.
+ *
+ * 2026-09-23 (David approved): "or investment advice" was cut from the first
+ * sentence — the ComplianceFooter paragraph directly below already states the
+ * site "does not constitute investment advice", so the footer said it twice.
  */
 
 export const CALCULATOR_NOTES_ANCHOR = "calculator-notes";
@@ -27,11 +31,11 @@ export const CALCULATOR_DISCLAIMER: readonly DisclaimerSegment[] = [
   { bold: "Calculator for illustrative purposes only" },
   {
     text:
-      " and should not be relied on for a precise cost analysis. Figures are hypothetical, based on the assumptions entered here, and are not a forecast, a guarantee, or investment advice. Actual results will vary and your fees may change. ",
+      " and should not be relied on for a precise cost analysis. Figures are hypothetical, based on the assumptions entered here, and are not a forecast or a guarantee. Actual results will vary and your fees may change. ",
   },
-  { bold: "Asset-based fee." },
+  { bold: "Asset-based fee:" },
   { text: " The percentage charged may decrease as portfolio size increases. " },
-  { bold: "Flat fee." },
+  { bold: "Flat fee:" },
   { text: " There is no guarantee that the fee will remain flat or $100 per month." },
 ] as const;
 
