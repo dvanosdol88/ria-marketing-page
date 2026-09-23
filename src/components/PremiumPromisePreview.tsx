@@ -2,7 +2,7 @@
 
 import { useId, useMemo, useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { formatCurrencyFloored } from "@/lib/format";
 
@@ -173,7 +173,7 @@ function PanelLink({
       }`}
     >
       {label}
-      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+      <ExternalLink className="h-4 w-4" aria-hidden="true" />
     </a>
   );
 }

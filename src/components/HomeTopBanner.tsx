@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowUpRight, CheckCircle2, ShieldCheck } from "lucide-react";
+import { ExternalLink, CheckCircle2, ShieldCheck } from "lucide-react";
 import { homeTopBanners, type HomeTopBannerId } from "@/config/homeTopBanners";
 import { formatCurrency } from "@/lib/format";
 
@@ -101,7 +101,7 @@ export function HomeTopBanner({ bannerId, savings, years }: HomeTopBannerProps) 
                 <span className="mt-1 hidden sm:block">{banner.ctaLabel}</span>
                 <span className="block sm:hidden">{banner.mobileCtaLabel}</span>
               </span>
-              <ArrowUpRight className="h-5 w-5 shrink-0 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ExternalLink className="h-5 w-5 shrink-0 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </div>
         </div>

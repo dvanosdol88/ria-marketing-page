@@ -22,7 +22,7 @@ export const faqItems: FaqItem[] = [
     id: "afford-100-per-month",
     question: "How can you offer these services for only $100/month?*",
     answer:
-      "Until very recently, it wasn't possible. But today, with advances in technology and AI*, nearly all back-office functions can be automated, leaving us time, allowing us to spend nearly all of our time working with clients.\n\nEven more importantly, we don't have massive marketing budgets, tens of millions in executive overhead, and $100 billion legacy IT budgets.\n\n* AI is not used for any financial advice or recommendations.",
+      "Until very recently, it wasn't possible. But today, with advances in technology and AI*, nearly all back-office functions can be automated, leaving us time, allowing us to spend nearly all of our time working with clients.\n\nWe also don't have massive marketing budgets, tens of millions in executive overhead, and $100 billion legacy IT budgets.\n\n* AI is not used for any financial advice or recommendations.",
   },
   {
     id: "what-am-i-giving-up",

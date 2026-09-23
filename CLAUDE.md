@@ -85,3 +85,10 @@ Then verify:
 - `npm run build`
 - `/eddm-evals` shows the new candidates
 - no existing candidates disappeared
+
+## Convention: outbound links (David, 2026-09-23)
+
+Every link that leaves the site (to smarterwaywealth.com or anywhere else) uses ONE icon: the
+box-with-arrow external-link icon (lucide `ExternalLink`). Never the bare diagonal arrow
+(`ArrowUpRight`), and never a text label like "Leaving site" — the icon alone says it. Same rule
+on smarterwaywealth.com, so both sites stay uniform.

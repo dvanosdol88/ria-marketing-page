@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 type SmarterWayWealthVisitCardProps = {
   advancedCalculatorHref: string;
@@ -124,7 +124,7 @@ export function SmarterWayWealthVisitCard({
                 aria-hidden="true"
                 className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/12 transition-colors duration-200 group-hover:bg-white/22"
               >
-                <ArrowUpRight
+                <ExternalLink
                   aria-hidden="true"
                   className="h-4 w-4 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                   strokeWidth={2.5}

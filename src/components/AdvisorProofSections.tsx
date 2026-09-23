@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  ArrowUpRight,
   CalendarDays,
   CheckCircle2,
   ChevronDown,
@@ -791,7 +790,7 @@ function LowFrictionUpgradeSection() {
         >
           <span className="flex items-center justify-between gap-4">
             <span className="inline-flex h-12 w-12 items-center justify-center rounded-md bg-white/12 text-white ring-1 ring-white/20">
-              <ArrowUpRight
+              <ExternalLink
                 className="h-6 w-6 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                 aria-hidden="true"
               />
