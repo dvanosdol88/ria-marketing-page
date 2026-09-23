@@ -25,11 +25,19 @@ const PRIVACY_URL = "https://smarterwaywealth.com/privacy";
  * its duplicate pointers to those same pages and joins that footer as one unit.
  * Every regulatory statement stays word for word.
  */
-export default function ComplianceFooter({ linksAbove = false }: { linksAbove?: boolean } = {}) {
+export default function ComplianceFooter({
+  linksAbove = false,
+  surfaceClassName = "bg-[#EEF0F5]",
+}: {
+  linksAbove?: boolean;
+  /** Ground colour, so the block can join a footer that is not the site grey
+   *  (the One Percent Blues page is pale blue). */
+  surfaceClassName?: string;
+} = {}) {
   return (
     <section
       id="disclosures"
-      className={`${linksAbove ? "" : "border-t border-neutral-200 "}bg-[#EEF0F5] text-neutral-600`}
+      className={`${linksAbove ? "" : "border-t border-neutral-200 "}${surfaceClassName} text-neutral-600`}
     >
       <div className={`mx-auto max-w-[1100px] px-4 sm:px-6 ${linksAbove ? "pb-10 pt-0 text-[13px] leading-6 text-[#52657A]" : "py-8 text-xs leading-relaxed"}`}>
         {linksAbove ? <hr className="mb-6 border-[#D8E0E8]" /> : null}

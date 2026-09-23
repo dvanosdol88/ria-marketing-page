@@ -1,5 +1,14 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-09-23 — One Percent Blues footer: same single-footer cleanup as the homepage
+**Agent:** Claude (Cowork, cloud workspace) | **Surface:** onepercentblues.com footer (BluesFooter + ComplianceFooter) | **Status:** preview only — awaiting David's approval before merge
+- why: David asked for the #298 icon rule and single-footer cleanup on the One Percent Blues page too.
+- changed: legal links once at the top with the leave-site icon (1.25em), flush with the text; calculator disclaimer full width beneath (was a narrow side column); regulatory block joins as one unit on the same pale-blue ground (`ComplianceFooter linksAbove surfaceClassName="bg-[#EEF3FF]"`), so the inline "verify on IAPD" and the "For important disclosures… Privacy Policy." sentence no longer repeat the link row.
+- removed: the bold line "Smarter Way Wealth, LLC · Connecticut-registered investment adviser · CRD #342140" — the registration sentence directly below states the same three facts (text kept in `bluesCopy.footerLine` for an easy restore).
+- added: ComplianceFooter `surfaceClassName` prop (default unchanged, #EEF0F5).
+- proof: blues-source-locks 5/5, blues-host-routing, home-wwwh 28/28, tsc, lint, build; /blues footer at 712px and 390px shows one left edge (24px / 16px), one ground colour, no duplicate pointers.
+- next: smarterwaywealth.com mirror of ComplianceFooter handed to the SWW session (project doc claude/handoff-yapt-to-sww.md).
+
 ### 2026-09-23 — Desktop client-value list, balanced quote cards, "!" closing line, unbounded outbound-link icon
 **Agent:** Claude (Cowork, cloud workspace) | **Surface:** homepage + every outbound link | **PR:** [#298](https://github.com/dvanosdol88/ria-marketing-page/pull/298) (`81ff6a0`) | **Status:** deployed and production-proved
 - changed: "What you get for $100/month" is one stacked list at every width (the desktop two-column grid paired a 1-line item with a 3-line one and orphaned **More**); desktop gets a 16px type step; card is now opaque so the floating $ / = glyphs no longer show through.
