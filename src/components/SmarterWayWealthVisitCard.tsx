@@ -6,18 +6,20 @@ type SmarterWayWealthVisitCardProps = {
   surfaceClassName?: string;
 };
 
+/* Row copy (David, 2026-09-23): the rows are link labels, not sentences, so
+   each opens with a capital and none ends in a period. */
 const FIRM_DESTINATIONS = [
   {
     href: "https://smarterwaywealth.com/how",
     label: "Find out how we work",
     location: "home_firm_visit_card_how",
-    text: "find out how we work.",
+    text: "Find out how we work",
   },
   {
     href: "https://smarterwaywealth.com/#david",
     label: "Learn more about David",
     location: "home_firm_visit_card_david",
-    text: "learn more about David.",
+    text: "Learn more about David",
   },
   {
     href: "https://smarterwaywealth.com/faq",
@@ -26,7 +28,7 @@ const FIRM_DESTINATIONS = [
        changed. Only `text` — what the visitor reads — is David's new line. */
     label: "See our frequently asked questions",
     location: "home_firm_visit_card_faq",
-    text: "See ALL of our FAQs.",
+    text: "See ALL of our FAQs",
   },
 ] as const;
 
@@ -39,7 +41,7 @@ export function SmarterWayWealthVisitCard({
       href: advancedCalculatorHref,
       label: "Use the advanced calculator and see how we do the math",
       location: "home_firm_visit_card_calculator",
-      text: "use the advanced calculator and see how we do the math",
+      text: "Use the advanced calculator and see how we do the math",
     },
     ...FIRM_DESTINATIONS,
   ];

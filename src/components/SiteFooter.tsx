@@ -40,9 +40,13 @@ export function SiteFooter() {
     <>
       <footer className="border-t border-neutral-200 bg-[#EEF0F5]">
         <div className="mx-auto max-w-[1100px] px-4 py-10 sm:px-6">
-          <div className="flex flex-col gap-6 sm:flex-row sm:justify-between sm:items-start">
-            {/* Left: Logo + Disclaimer */}
-            <div className="max-w-2xl space-y-3">
+          {/* Stacked, not side by side (David, 2026-09-23: "this is still
+              showing up as a column"). Logo and legal links share the top
+              row; the calculator disclaimer runs the full width beneath them,
+              on the same measure as the regulatory text below, instead of
+              being squeezed into a narrow column beside the links. */}
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <Link href={"/" as any} aria-label="Smarter Way Wealth home">
                 <Image
                   src="/brand/logo.svg"
@@ -52,57 +56,55 @@ export function SiteFooter() {
                   className="h-6 w-auto opacity-75 grayscale"
                 />
               </Link>
-              {/* The calculator disclaimer itself, not a paraphrase of it. This
-                  slot used to hold "Calculator projections are hypothetical and
-                  for illustrative purposes only. They are not a guarantee of
-                  future returns." — a weaker restatement of the real disclaimer
-                  that sat further up the page, so the site said the same thing
-                  twice and neither one was clearly the operative version
-                  (David, 2026-08-12).
-
-                  Only where the calculator is. The footer is site-wide, and
-                  this text speaks of "the assumptions entered here" — which on
-                  /faq or /privacy would refer to assumptions the page gives the
-                  reader no way to enter. The home page is the only route that
-                  renders the calculator, and therefore the only one carrying
-                  the markers that link down to this. */}
-              {isCalculatorPage ? <CalculatorNotes /> : null}
+              <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-neutral-500">
+                <a
+                  href={DISCLOSURES_URL}
+                  className="hover:text-neutral-700 no-underline"
+                >
+                  Disclosures
+                </a>
+                <a
+                  href={ADV_BROCHURE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-neutral-700 no-underline"
+                >
+                  ADV Brochure (PDF)
+                </a>
+                <a
+                  href={IAPD_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-neutral-700 no-underline"
+                >
+                  Verify on IAPD
+                </a>
+                {/* One link, not two. "Privacy" and "Privacy Policy" sat side by
+                    side pointing at the same page once both were aimed at the
+                    firm site. */}
+                <a
+                  href={PRIVACY_URL}
+                  className="hover:text-neutral-700 no-underline"
+                >
+                  Privacy Policy
+                </a>
+              </div>
             </div>
+            {/* The calculator disclaimer itself, not a paraphrase of it. This
+                slot used to hold "Calculator projections are hypothetical and
+                for illustrative purposes only. They are not a guarantee of
+                future returns." — a weaker restatement of the real disclaimer
+                that sat further up the page, so the site said the same thing
+                twice and neither one was clearly the operative version
+                (David, 2026-08-12).
 
-            {/* Right: Legal links */}
-            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-neutral-500 shrink-0">
-              <a
-                href={DISCLOSURES_URL}
-                className="hover:text-neutral-700 no-underline"
-              >
-                Disclosures
-              </a>
-              <a
-                href={ADV_BROCHURE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-neutral-700 no-underline"
-              >
-                ADV Brochure (PDF)
-              </a>
-              <a
-                href={IAPD_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-neutral-700 no-underline"
-              >
-                Verify on IAPD
-              </a>
-              {/* One link, not two. "Privacy" and "Privacy Policy" sat side by
-                  side pointing at the same page once both were aimed at the
-                  firm site. */}
-              <a
-                href={PRIVACY_URL}
-                className="hover:text-neutral-700 no-underline"
-              >
-                Privacy Policy
-              </a>
-            </div>
+                Only where the calculator is. The footer is site-wide, and
+                this text speaks of "the assumptions entered here" — which on
+                /faq or /privacy would refer to assumptions the page gives the
+                reader no way to enter. The home page is the only route that
+                renders the calculator, and therefore the only one carrying
+                the markers that link down to this. */}
+            {isCalculatorPage ? <CalculatorNotes /> : null}
           </div>
         </div>
       </footer>

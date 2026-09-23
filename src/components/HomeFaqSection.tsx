@@ -237,7 +237,9 @@ export function HomeFaqSection({
             aria-hidden="true"
             className={`absolute left-0 top-0 flex flex-col items-center ${t.heading}`}
           >
-            <span className="rotate-[-4deg] font-serif text-xl font-[800] italic leading-none sm:text-2xl">
+            {/* Shifted right so the V, not the middle of the word, sits over the
+                insertion mark (David, 2026-09-23). The caret itself has not moved. */}
+            <span className="translate-x-[0.85em] rotate-[-4deg] font-serif text-xl font-[800] italic leading-none sm:text-2xl">
               Very
             </span>
             <span className="-mt-0.5 text-lg font-black leading-none">⌄</span>
@@ -276,8 +278,11 @@ export function HomeFaqSection({
               question={
                 <>
                   <span className="font-normal">
-                    The S&amp;P 500, my portfolio, and my advisory fees have all doubled in the past few years.
-                    <sup className="ml-0.5 font-normal text-[#6E7883]">1</sup>
+                    {/* The marker sits tight against the period, in the sentence's own
+                        ink and weight, so it reads as part of the first sentence rather
+                        than a stray mark in front of the bold question (David,
+                        2026-09-23). */}
+                    The S&amp;P 500, my portfolio, and my advisory fees have all doubled in the past few years.<sup className="font-normal">1</sup>
                   </span>{" "}
                   <span className="font-bold">
                     Does that mean my advisor is doing double the work?

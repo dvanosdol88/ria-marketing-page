@@ -29,9 +29,9 @@ export const CALCULATOR_DISCLAIMER: readonly DisclaimerSegment[] = [
     text:
       " and should not be relied on for a precise cost analysis. Figures are hypothetical, based on the assumptions entered here, and are not a forecast, a guarantee, or investment advice. Actual results will vary and your fees may change. ",
   },
-  { bold: "Asset-based fee." },
+  { bold: "Asset-based fee:" },
   { text: " The percentage charged may decrease as portfolio size increases. " },
-  { bold: "Flat fee." },
+  { bold: "Flat fee:" },
   { text: " There is no guarantee that the fee will remain flat or $100 per month." },
 ] as const;
 
