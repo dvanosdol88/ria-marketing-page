@@ -245,7 +245,7 @@ test("the fit-to-quotes region reuses the Smarter Way Wealth math field with the
   assert.match(firmVisitCardSource, /surfaceClassName = "bg-\[#EEF0F5\]"/);
 });
 
-test("the firm visit card is one solid green visual unit with separate tracked destinations", () => {
+test("the firm visit card is one brand-green visual unit with separate tracked destinations", () => {
   const flatCard = flatten(firmVisitCardSource);
   const destinations = [
     [
@@ -263,8 +263,10 @@ test("the firm visit card is one solid green visual unit with separate tracked d
   ];
 
   assert.match(flatCard, /href="https:\/\/smarterwaywealth\.com\/"/);
-  assert.match(flatCard, /src="\/brand\/logo\.svg"/);
-  assert.match(flatCard, /alt="Smarter Way Wealth"/);
+  // 2026-09-23 (David picked A1): the wordmark is set in the logo face rather
+  // than placed as the padded logo image, so it can sit flush left.
+  assert.match(flatCard, /font-logo/);
+  assert.match(flatCard, /aria-label="Smarter Way Wealth"/);
   assert.match(flatCard, /data-posthog-cta="true"/);
   assert.match(flatCard, /data-posthog-cta-label="Visit Smarter Way Wealth"/);
   assert.match(flatCard, /data-posthog-cta-location="home_firm_visit_card"/);
@@ -281,8 +283,16 @@ test("the firm visit card is one solid green visual unit with separate tracked d
     /pt-\[667px\]/,
     "the empty phone-height spacer's job moved to the quote deck (2026-08-13)",
   );
-  assert.match(flatCard, /bg-\[#007A2F\]/, "the visual unit uses solid brand green");
-  assert.doesNotMatch(flatCard, /gradient/, "the visual unit stays solid rather than decorative");
+  // DECISION CHANGED, 2026-09-23 (David): the flat #007A2F lock is replaced by a
+  // gradient that runs, like the logo's bars, from brighter to darker brand
+  // green. Every stop must come from the brand ramp, and the logo's light greens
+  // stay out of the fill because white text on them is unreadable.
+  assert.match(
+    flatCard,
+    /bg-\[linear-gradient\(135deg,#008435_0%,#00682B_32%,#004D20_66%,#002A11_100%\)\]/,
+    "the visual unit uses the brand-ramp gradient",
+  );
+  assert.doesNotMatch(flatCard, /bg-\[[^\]]*(#66D980|#33BF60)/i, "the logo's light greens never sit behind white text");
   assert.match(flatCard, /target="_blank"/);
   assert.match(flatCard, /rel="noreferrer"/);
   assert.match(flatCard, />Visit<\/span>/);
