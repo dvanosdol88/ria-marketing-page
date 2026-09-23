@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-15",
+  "version": "2026-09-23",
   "owner": "Smarter Way Wealth marketing analytics",
   "posthog": {
     "recommendedProjectShape": "Use one PostHog project for youarepayingtoomuch.com and smarterwaywealth.com so the cross-site journey can be analyzed in one place.",
@@ -21,7 +21,8 @@
       "first_utm_term",
       "is_eddm_visitor",
       "campaign_attribution_method",
-      "legacy_eddm_qr"
+      "legacy_eddm_qr",
+      "self_test"
     ]
   },
   "sharedProperties": {
@@ -30,8 +31,9 @@
     "site_origin": "Current origin.",
     "first_landing_url": "First URL registered for the browser/person.",
     "first_landing_domain": "First landing hostname registered for the browser/person.",
-    "campaign_attribution_method": "How campaign properties were obtained: explicit_utm or legacy_qr_signature.",
-    "legacy_eddm_qr": "True when the exact untagged URL embedded in the 2026 printer proofs supplied the EDDM attribution."
+    "campaign_attribution_method": "How campaign properties were obtained: explicit_utm, legacy_qr_signature, or clean_root_launch.",
+    "legacy_eddm_qr": "True when the exact untagged URL embedded in the 2026 printer proofs supplied the EDDM attribution.",
+    "self_test": "True on owner/agent stress-test traffic after ?selftest=1. Public visit and mailer-scan aggregates omit this traffic."
   },
   "crossSiteHandoff": {
     "from": "youarepayingtoomuch.com",
@@ -84,7 +86,8 @@
       ],
       "semanticRules": [
         "Emit once per browser tab session only when is_eddm_visitor=true.",
-        "Accept only the complete launch_5k/print/qr_code UTM tuple or the exact legacy printer signature; a loose utm_source=eddm is not a scan.",
+        "Accept the complete launch_5k/print/qr_code UTM tuple, the exact legacy printer signature, or a first-touch clean-root homepage landing; a loose utm_source=eddm is not a scan.",
+        "Omit owner/agent self-test traffic (?selftest=1 cookie/localStorage) from the public visit and mailer-scan aggregates.",
         "Sanitize $current_url to origin/path and approved UTM keys; never include calculator assumptions in this event URL.",
         "Use this event for immediate scan alerts; keep $pageview as the complete campaign landing ledger.",
         "The public RIA Builder counter is an aggregate receipt and stores no visitor-level record."

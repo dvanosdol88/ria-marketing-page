@@ -13,6 +13,7 @@ import {
   publicMailerScanHeaders,
   requestHeadersCameFromThisSite,
 } from "@/lib/mailerScanPolicy";
+import { hasSelfTestCookie } from "@/lib/selfTestTraffic";
 
 export const dynamic = "force-dynamic";
 
@@ -86,6 +87,10 @@ export async function POST(request: NextRequest) {
 
   if (isLikelyBotUserAgent(request.headers.get("user-agent") ?? "")) {
     return NextResponse.json({ counted: false, reason: "automated_traffic" });
+  }
+
+  if (hasSelfTestCookie(request.headers.get("cookie") ?? "")) {
+    return NextResponse.json({ counted: false, reason: "self_test" });
   }
 
   try {

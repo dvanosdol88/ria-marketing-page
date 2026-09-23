@@ -22,12 +22,16 @@ Together, they tell the story:
 Watch these numbers first:
 
 - Visits from the QR/mail campaign.
-- Visits from the physical 2026 mailer, identified by
-  `legacy_eddm_qr = true` even though its printed QR lacks UTMs.
+- Visits from the physical 2026 mailer. Printed pieces may land on the clean
+  root (`clean_root_launch`) or the four-parameter printer-proof URL
+  (`legacy_eddm_qr = true`). Both count as `launch_5k` scans.
 - Immediate scan alerts use `eddm_qr_landed`, one per browser tab session.
   The visible RIA Builder counter is an aggregate receipt that begins when the
   counter release goes live. It favors avoiding duplicate increments over blind
   retries, so use the PostHog dashboard for authoritative historical totals.
+- David's own stress-testing is omitted from the public visit/scan totals after
+  one visit to `https://youarepayingtoomuch.com/?selftest=1` on that browser.
+  Use `?selftest=0` to start counting again.
 - Percent who start the calculator.
 - Percent who reach a result.
 - Percent who click through to Smarter Way Wealth.
@@ -143,8 +147,17 @@ https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1
 
 Its events must carry the standard `launch_5k` UTM properties plus
 `campaign_attribution_method=legacy_qr_signature` and
-`legacy_eddm_qr=true`. Both the legacy printer-proof URL and the canonical
-tagged EDDM QR URL must open the existing fee calculator directly without
-reordering the home page.
+`legacy_eddm_qr=true`. A clean-root landing
+(`https://youarepayingtoomuch.com/`) must use
+`campaign_attribution_method=clean_root_launch` and still increment the
+public mailer-scan counter. Both the legacy printer-proof URL and the
+canonical clean-root QR URL must open the existing fee calculator directly
+without reordering the home page.
+
+To keep owner clicks out of the RIA Builder homepage numbers, open
+`https://youarepayingtoomuch.com/?selftest=1` once on that browser. The site
+stores a first-party `yapt_selftest` cookie and `sww_self_test` localStorage
+flag, then strips the query so the URL is safe to look at. Recipients who
+scan a mailer are unaffected. Use `?selftest=0` to clear the flag.
 
 For production claims, local success is not enough. Production verification is required.

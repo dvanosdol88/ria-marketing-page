@@ -93,6 +93,15 @@ jobs:
       - name: Credentials layout
         run: npm run test:credentials-layout
 
+      - name: Mailer scan contract
+        run: npm run test:mailer-scan-contract
+
+      - name: Mailer scan policy
+        run: npm run test:mailer-scan-policy
+
+      - name: Campaign attribution
+        run: npm run test:campaign-attribution
+
       - name: Mailer QR attribution
         run: npm run test:eddm-attribution
 

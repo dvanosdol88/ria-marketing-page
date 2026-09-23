@@ -23,6 +23,7 @@
     "test:home-wwwh": "node --test tests/home-wwwh.mjs",
     "test:mailer-scan-contract": "node tests/mailer-scan-contract.mjs",
     "test:mailer-scan-policy": "node --experimental-strip-types tests/mailer-scan-policy.mjs",
+    "test:campaign-attribution": "node --experimental-strip-types tests/campaign-attribution.mjs",
     "test:active-direct-start": "node --test tests/active-direct-start.mjs",
     "test:calculator-canon-manifest": "node --test tests/calculator-canon-manifest.mjs",
     "test:share-one-tap": "node --test tests/share-one-tap.mjs",

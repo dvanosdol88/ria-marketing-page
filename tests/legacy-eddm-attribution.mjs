@@ -104,6 +104,57 @@ async function waitForCondition(predicate, description) {
   throw new Error(`Timed out waiting for ${description}`);
 }
 
+async function stubPostHogRoutes(context, capturedEvents = []) {
+  await context.route("https://us-assets.i.posthog.com/**", async (route) => {
+    const url = new URL(route.request().url());
+    if (url.pathname.includes("/config")) {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          config: {},
+          supportedCompression: ["base64"],
+        }),
+      });
+      return;
+    }
+    await route.fulfill({
+      status: 200,
+      contentType: "application/javascript",
+      body: "/* optional PostHog extension disabled in test */",
+    });
+  });
+  await context.route("https://us.i.posthog.com/**", async (route) => {
+    const decodedEvents = decodePostHogEvents(route.request().postDataBuffer());
+    capturedEvents.push(...decodedEvents);
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: '{"status":1}',
+    });
+  });
+}
+
+async function stubMailerScanRoute(
+  context,
+  baseUrl,
+  { scanReceipts, trafficReceipts },
+) {
+  await context.route(`${baseUrl}/api/analytics/mailer-scans`, async (route) => {
+    const body = JSON.parse(route.request().postData() ?? "{}");
+    if (body.kind === "visit") {
+      trafficReceipts.push(body);
+    } else {
+      scanReceipts.push(body);
+    }
+    await route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: '{"counted":true}',
+    });
+  });
+}
+
 function assertLegacyAttribution(event) {
   assert.equal(event.properties.utm_source, "eddm");
   assert.equal(event.properties.utm_medium, "print");
@@ -177,6 +228,11 @@ try {
     agentInfo.campaigns.eddmLaunchQr.url,
     "https://youarepayingtoomuch.com/",
     "agent-readable campaign metadata must publish the clean site root",
+  );
+  assert.equal(
+    agentInfo.campaigns.eddmLaunchQr.cleanRootAttribution
+      .campaign_attribution_method,
+    "clean_root_launch",
   );
 
   browser = await chromium.launch({ headless: true });
@@ -544,8 +600,75 @@ try {
   );
   await directStartPage.close();
 
+  const cleanRootEvents = [];
+  const cleanRootScans = [];
+  const cleanRootVisits = [];
+  const cleanRootContext = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    userAgent:
+      "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 " +
+      "(KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36",
+  });
+  await stubPostHogRoutes(cleanRootContext, cleanRootEvents);
+  await stubMailerScanRoute(cleanRootContext, baseUrl, {
+    scanReceipts: cleanRootScans,
+    trafficReceipts: cleanRootVisits,
+  });
+  const cleanRootPage = await cleanRootContext.newPage();
+  await cleanRootPage.goto(`${baseUrl}/`, { waitUntil: "domcontentloaded" });
+  await cleanRootPage.getByRole("heading", { level: 1 }).waitFor();
+  await waitForCondition(
+    () => cleanRootVisits.length === 1,
+    "a clean-root launch visit receipt",
+  );
+  await waitForCondition(
+    () => cleanRootScans.length === 1,
+    "a clean-root launch mailer-scan receipt",
+  );
+  assert.deepEqual(cleanRootScans[0], {
+    attributionMethod: "clean_root_launch",
+  });
+  await waitForCapturedEvent(cleanRootEvents, "eddm_qr_landed");
+  await cleanRootContext.close();
+
+  const selfTestScans = [];
+  const selfTestVisits = [];
+  const selfTestContext = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    userAgent:
+      "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 " +
+      "(KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36",
+  });
+  await stubPostHogRoutes(selfTestContext);
+  await stubMailerScanRoute(selfTestContext, baseUrl, {
+    scanReceipts: selfTestScans,
+    trafficReceipts: selfTestVisits,
+  });
+  const selfTestPage = await selfTestContext.newPage();
+  await selfTestPage.goto(`${baseUrl}/?selftest=1`, {
+    waitUntil: "domcontentloaded",
+  });
+  await selfTestPage.getByRole("heading", { level: 1 }).waitFor();
+  await selfTestPage.waitForFunction(
+    () => window.localStorage.getItem("sww_self_test") === "true",
+  );
+  await selfTestPage.goto(`${baseUrl}/`, { waitUntil: "domcontentloaded" });
+  await selfTestPage.getByRole("heading", { level: 1 }).waitFor();
+  await selfTestPage.waitForTimeout(2000);
+  assert.equal(
+    selfTestVisits.length,
+    0,
+    "self-test traffic must not increment the public visit total",
+  );
+  assert.equal(
+    selfTestScans.length,
+    0,
+    "self-test traffic must not increment the public mailer-scan total",
+  );
+  await selfTestContext.close();
+
   console.log(
-    "The canonical QR destination is the clean root; legacy QR URLs and foreign explicit UTM traffic stay at the page top; the legacy EDDM direct-start journey points to Smarter Way Wealth secure onboarding; attribution survives URL cleanup; every firm handoff enforces a UTM-only query, including the advanced-calculator path.",
+    "The canonical QR destination is the clean root and now counts as a launch_5k mailer scan; legacy QR URLs and foreign explicit UTM traffic stay at the page top; self-test traffic is omitted from public totals; the legacy EDDM direct-start journey points to Smarter Way Wealth secure onboarding; attribution survives URL cleanup; every firm handoff enforces a UTM-only query, including the advanced-calculator path.",
   );
 } finally {
   await browser?.close();

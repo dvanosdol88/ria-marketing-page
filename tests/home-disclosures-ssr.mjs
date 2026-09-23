@@ -18,36 +18,12 @@
  */
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { createServer } from "node:net";
-import { execFileSync, spawn } from "node:child_process";
-
-async function getUnusedPort() {
-  const server = createServer();
-  await new Promise((resolve, reject) => {
-    server.once("error", reject);
-    server.listen(0, "127.0.0.1", resolve);
-  });
-  const { port } = server.address();
-  await new Promise((resolve) => server.close(resolve));
-  return port;
-}
-
-async function waitForPage(url, child) {
-  let lastError;
-  for (let attempt = 0; attempt < 90; attempt += 1) {
-    if (child.exitCode !== null) {
-      throw new Error(`next dev exited early with code ${child.exitCode}`);
-    }
-    try {
-      const response = await fetch(url);
-      if (response.ok) return;
-    } catch (error) {
-      lastError = error;
-    }
-    await new Promise((resolve) => setTimeout(resolve, 500));
-  }
-  throw new Error(`Timed out waiting for ${url}: ${lastError?.message ?? "no response"}`);
-}
+import {
+  getUnusedPort,
+  startNextDev,
+  stopNextDev,
+  waitForPage,
+} from "./lib/nextDevHarness.mjs";
 
 // Read the disclaimer straight out of the config so the test cannot drift from
 // the copy. Parsed rather than imported: Node's TS support varies by version.
@@ -69,12 +45,9 @@ let nextProcess;
 try {
   const port = await getUnusedPort();
   const base = `http://127.0.0.1:${port}`;
-  nextProcess = spawn(
-    process.execPath,
-    ["node_modules/next/dist/bin/next", "dev", "--hostname", "127.0.0.1", "--port", String(port)],
-    { cwd: process.cwd(), stdio: "ignore", windowsHide: true },
-  );
-  await waitForPage(`${base}/`, nextProcess);
+  const started = startNextDev(port);
+  nextProcess = started.child;
+  await waitForPage(`${base}/`, nextProcess, started.logs);
 
   // Every URL shape that can render a marker must also render the disclaimer.
   const urls = ["/", "/?mode=calculator-first", "/?variant=final-home"];
@@ -131,11 +104,5 @@ try {
     `Disclaimer is server-rendered on ${urls.length} URL shapes, every marker resolves, and the calculator endpoint matches the page.`,
   );
 } finally {
-  if (nextProcess?.pid && nextProcess.exitCode === null) {
-    if (process.platform === "win32") {
-      execFileSync("taskkill", ["/pid", String(nextProcess.pid), "/T", "/F"], { stdio: "ignore" });
-    } else {
-      nextProcess.kill("SIGTERM");
-    }
-  }
+  await stopNextDev(nextProcess);
 }

@@ -3,6 +3,7 @@ export const RIA_BUILDER_ORIGIN = "https://riabuilder.dvo88.com";
 export const ALLOWED_MAILER_ATTRIBUTION_METHODS = new Set([
   "explicit_utm",
   "legacy_qr_signature",
+  "clean_root_launch",
 ]);
 
 const BOT_USER_AGENT_PATTERN =
@@ -17,6 +18,12 @@ const APPROVED_EDDM_UTM = {
 
 type CampaignProperties = Record<string, unknown>;
 
+function hasApprovedLaunchUtms(properties: CampaignProperties) {
+  return Object.entries(APPROVED_EDDM_UTM).every(
+    ([key, value]) => properties[key] === value,
+  );
+}
+
 export function isApprovedMailerCampaign(properties: CampaignProperties) {
   if (
     properties.campaign_attribution_method === "legacy_qr_signature" &&
@@ -25,11 +32,13 @@ export function isApprovedMailerCampaign(properties: CampaignProperties) {
     return true;
   }
 
+  if (properties.campaign_attribution_method === "clean_root_launch") {
+    return hasApprovedLaunchUtms(properties);
+  }
+
   return (
     properties.campaign_attribution_method === "explicit_utm" &&
-    Object.entries(APPROVED_EDDM_UTM).every(
-      ([key, value]) => properties[key] === value,
-    )
+    hasApprovedLaunchUtms(properties)
   );
 }
 

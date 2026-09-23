@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-09-23 — Count clean-root EDDM scans and exclude owner self-test visits
+**Agent:** Cursor | **Surface:** mailer-scan attribution + public traffic totals | **Goal:** RIA Builder homepage numbers during the launch_5k drop
+- changed: first-touch landings on `/` with no campaign query now attribute as `clean_root_launch` and increment the public mailer-scan counter / `eddm_qr_landed`, matching already-printed clean-root QRs. Legacy four-parameter printer-proof URLs and the full approved UTM tuple still count; loose UTMs, search-engine referrers, and same-origin clicks still do not.
+- changed: `?selftest=1` persists a first-party `yapt_selftest` cookie and `sww_self_test` localStorage flag so David's repeated clicks are omitted from the public visit and scan totals. `?selftest=0` clears the flag. No IP allowlist. The aggregate endpoint still returns counts only.
+- preserved: bot rejection, same-origin POST checks, RIA Builder-only CORS, and the published QR destination (`https://youarepayingtoomuch.com/`).
+- verified: unit tests for attribution/policy/self-test plus the EDDM Playwright suite; TypeScript/lint/build as recorded on the PR.
+- deployed: not deployed. PR against main; ready for CoS squash-merge of #299.
+
 ### 2026-09-23 — Desktop client-value list, balanced quote cards, "!" closing line, unbounded outbound-link icon
 **Agent:** Claude (Cowork, cloud workspace) | **Surface:** homepage + every outbound link | **PR:** [#298](https://github.com/dvanosdol88/ria-marketing-page/pull/298) (`81ff6a0`) | **Status:** deployed and production-proved
 - changed: "What you get for $100/month" is one stacked list at every width (the desktop two-column grid paired a 1-line item with a 3-line one and orphaned **More**); desktop gets a 16px type step; card is now opaque so the floating $ / = glyphs no longer show through.
@@ -637,7 +645,7 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - `/privacy` page with CT Data Privacy Act-aware notice, canonical disclosures, and a `#disclosures` anchor target.
 - Secondary surfaces: `/our-math`, `/faq`, `/how-it-works`, `/how-it-works/substitution`, `/save`, `/save-a-ton`, `/gallery`, `/improve-your-tools`, `/upgrade-your-advice`, `/meaning`, `/experiment`, `/mobile-calculator` (carries advisory-relationship disclosure near heading), `/components/calendar`. API routes for quiz vote.
 - OpenGraph + Twitter Card metadata defaults set in root layout.
-- Agent-readable launch surfaces are live: `/llms.txt`, `/agent-info.json`, `/robots.txt`, `/sitemap.xml`, `/api/calculator`, and JSON-LD in the root layout. The EDDM launch QR source of truth is `src/config/campaignLinks.ts`; public QR image is `/assets/yaptom_default_inputs_qr.png`.
+- Agent-readable launch surfaces are live: `/llms.txt`, `/agent-info.json`, `/robots.txt`, `/sitemap.xml`, `/api/calculator`, and JSON-LD in the root layout. The EDDM launch QR source of truth is `src/config/campaignLinks.ts`; public QR image is `/assets/yaptom_default_inputs_qr.png` and still decodes to the clean root. Clean-root, legacy printer-proof, and full `launch_5k` UTM landings count as mailer scans; `?selftest=1` omits owner traffic from the public visit/scan totals.
 - Sentry error tracking wired (`@sentry/nextjs`), Renovate dep-update bot active.
 - PostHog launch telemetry is wired for the direct-mail funnel: SDK/autocapture/session replay plus direct capture for pageviews, calculator milestones, CTAs, and cross-site Smarter Way Wealth handoffs. Analytics maintenance rules live in `docs/analytics-agent-protocol.md` and event shape lives in `docs/analytics-event-contract.json`.
 - Stack: Next.js, React 19, TypeScript, Tailwind, Recharts. Build: `next build`. Lint: `eslint . --ext .js,.jsx,.ts,.tsx`. No test framework configured.

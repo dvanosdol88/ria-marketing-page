@@ -13,37 +13,13 @@
  * before any scroll collapses it.
  */
 import assert from "node:assert/strict";
-import { createServer } from "node:net";
-import { spawn } from "node:child_process";
 import { chromium } from "playwright";
-
-async function getUnusedPort() {
-  const server = createServer();
-  await new Promise((resolve, reject) => {
-    server.once("error", reject);
-    server.listen(0, "127.0.0.1", resolve);
-  });
-  const { port } = server.address();
-  await new Promise((resolve) => server.close(resolve));
-  return port;
-}
-
-async function waitForPage(url, child) {
-  let lastError;
-  for (let attempt = 0; attempt < 90; attempt += 1) {
-    if (child.exitCode !== null) {
-      throw new Error(`next dev exited early with code ${child.exitCode}`);
-    }
-    try {
-      const response = await fetch(url);
-      if (response.ok) return;
-    } catch (error) {
-      lastError = error;
-    }
-    await new Promise((resolve) => setTimeout(resolve, 500));
-  }
-  throw new Error(`Timed out waiting for ${url}: ${lastError?.message ?? "no response"}`);
-}
+import {
+  getUnusedPort,
+  startNextDev,
+  stopNextDev,
+  waitForPage,
+} from "./lib/nextDevHarness.mjs";
 
 /* A heading's line box is taller than its letters: half-leading above, and
    below the baseline a descender slot that "The Fee Calculator" — which has no
@@ -142,12 +118,9 @@ const measurements = [];
 try {
   const port = await getUnusedPort();
   const url = `http://127.0.0.1:${port}/`;
-  nextProcess = spawn(
-    process.execPath,
-    ["node_modules/next/dist/bin/next", "dev", "--hostname", "127.0.0.1", "--port", String(port)],
-    { cwd: process.cwd(), stdio: "ignore", windowsHide: true },
-  );
-  await waitForPage(url, nextProcess);
+  const started = startNextDev(port);
+  nextProcess = started.child;
+  await waitForPage(url, nextProcess, started.logs);
 
   browser = await chromium.launch({ headless: true });
 
@@ -337,7 +310,5 @@ try {
   );
 } finally {
   await browser?.close();
-  if (nextProcess && nextProcess.exitCode === null) {
-    nextProcess.kill();
-  }
+  await stopNextDev(nextProcess);
 }
