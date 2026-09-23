@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { ArrowUpRight, ChevronRight } from "lucide-react";
+import { ExternalLink, ChevronRight } from "lucide-react";
 import { faqItems } from "@/data/faq";
 
 /**
@@ -209,7 +209,10 @@ function storedAnswer(id: string) {
     .filter((paragraph) => !paragraph.trimStart().startsWith("* AI is not used"))
     .map((paragraph) => (
       <p key={paragraph.slice(0, 32)} className={ANSWER_CLASS}>
-        {paragraph}
+        {/* Footnote markers ("AI*") are set as superscripts, not inline stars. */}
+        {paragraph.split("*").map((part, i) =>
+          i === 0 ? part : [<sup key={i} className="ml-0.5 text-[#6E7883]">*</sup>, part],
+        )}
       </p>
     ));
 }
@@ -324,7 +327,7 @@ export function HomeFaqSection({
             {/* The door out, and the last row of the same card. It is indented
                 to the answer column so all three rows share a left edge, but it
                 is not a question: it wears the tinted ground of a card footer
-                and the ringed diagonal arrow this project uses for every
+                and the ringed external-link icon (box + arrow) this project uses for every
                 outbound link. The arrow stays immediately after the words
                 rather than out at the right margin (David, 2026-08-14: "Put the
                 narrow circle closer to it") — it is inside the text span, not a
@@ -340,17 +343,14 @@ export function HomeFaqSection({
                 data-posthog-cta-location="home_faq_all_questions"
                 className={`group block !no-underline transition-colors duration-150 hover:bg-[#F1F6F3] ${ROW_X} ${ROW_Y} ${ROW_FOCUS}`}
               >
-                <span className="grid grid-cols-[auto_1fr] items-start gap-3">
-                  <span className={`pt-1 text-[10px] font-extrabold uppercase tracking-[0.12em] ${t.chevron}`}>
-                    Leaving site
-                  </span>
+                <span className="block">
                   <span className="text-[17px] font-semibold leading-7 !text-[#333B45] transition-colors duration-150 group-hover:!text-[#10233A] sm:text-lg">
                     Read all of the FAQs on smarterwaywealth.com.
                     <span
                       aria-hidden="true"
                       className={`ml-2 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white align-middle ring-1 ring-inset ring-[#CFD6DF] transition-colors duration-200 ${t.doorHover}`}
                     >
-                      <ArrowUpRight className={`h-4 w-4 ${t.arrow}`} strokeWidth={2.5} />
+                      <ExternalLink className={`h-4 w-4 ${t.arrow}`} strokeWidth={2.5} />
                     </span>
                   </span>
                 </span>
