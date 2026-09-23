@@ -38,7 +38,28 @@ assert.equal(
   true,
 );
 
+assert.equal(
+  isApprovedMailerCampaign({
+    utm_source: "eddm",
+    utm_medium: "print",
+    utm_campaign: "launch_5k",
+    utm_content: "qr_code",
+    campaign_attribution_method: "clean_root_launch",
+    legacy_eddm_qr: false,
+  }),
+  true,
+);
+assert.equal(
+  isApprovedMailerCampaign({
+    campaign_attribution_method: "clean_root_launch",
+    legacy_eddm_qr: false,
+  }),
+  false,
+  "clean-root launch still requires the inferred launch_5k UTM tuple",
+);
+
 assert.equal(ALLOWED_MAILER_ATTRIBUTION_METHODS.has("explicit_utm"), true);
+assert.equal(ALLOWED_MAILER_ATTRIBUTION_METHODS.has("clean_root_launch"), true);
 assert.equal(ALLOWED_MAILER_ATTRIBUTION_METHODS.has("unknown"), false);
 assert.equal(isLikelyBotUserAgent("HeadlessChrome launch proof"), true);
 assert.equal(isLikelyBotUserAgent("Mobile Safari"), false);

@@ -2,6 +2,7 @@ import posthog from "posthog-js";
 import {
   POSTHOG_UTM_KEYS,
   resolveCampaignAttribution,
+  resolveCleanRootLaunchAttribution,
   type CampaignAttribution,
 } from "@/lib/campaignAttribution";
 
@@ -43,21 +44,32 @@ function readStoredCampaignAttribution(): CampaignAttribution | null {
 export function getPostHogCampaignProperties(
   currentUrl = window.location.href,
 ): PostHogProperties {
-  const attribution = resolveCampaignAttribution(
-    new URL(currentUrl, window.location.origin).searchParams,
-  );
+  const url = new URL(currentUrl, window.location.origin);
+  const explicitOrLegacy = resolveCampaignAttribution(url.searchParams);
 
-  if (attribution) {
-    storeCampaignAttribution(attribution);
-    return attribution;
+  if (explicitOrLegacy) {
+    storeCampaignAttribution(explicitOrLegacy);
+    return explicitOrLegacy;
   }
 
-  return (
-    readStoredCampaignAttribution() ?? {
-      is_eddm_visitor: false,
-      legacy_eddm_qr: false,
-    }
-  );
+  const stored = readStoredCampaignAttribution();
+  if (stored) return stored;
+
+  const cleanRoot = resolveCleanRootLaunchAttribution(url.searchParams, {
+    pathname: url.pathname,
+    referrer: typeof document === "undefined" ? "" : document.referrer,
+    origin: url.origin,
+  });
+
+  if (cleanRoot) {
+    storeCampaignAttribution(cleanRoot);
+    return cleanRoot;
+  }
+
+  return {
+    is_eddm_visitor: false,
+    legacy_eddm_qr: false,
+  };
 }
 
 function buildPostHogProperties(properties: PostHogProperties) {

@@ -12,6 +12,10 @@ import {
   MAILER_SCAN_SESSION_KEY,
   isMailerQrCampaign,
 } from "@/lib/mailerScan";
+import {
+  SELF_TEST_QUERY_PARAM,
+  shouldExcludePublicTraffic,
+} from "@/lib/selfTestTraffic";
 
 let eventReportedInMemory = false;
 let receiptRecordedInMemory = false;
@@ -53,10 +57,13 @@ function reportScanReceipt(attributionMethod: string) {
         body: JSON.stringify({ attributionMethod }),
         keepalive: true,
       });
-      if (response.ok) {
-        receiptRecordedInMemory = true;
-        setSessionFlag(MAILER_SCAN_RECEIPT_SESSION_KEY);
-      }
+      if (!response.ok) return;
+      const payload = (await response.json().catch(() => ({}))) as {
+        counted?: boolean;
+      };
+      if (payload.counted === false) return;
+      receiptRecordedInMemory = true;
+      setSessionFlag(MAILER_SCAN_RECEIPT_SESSION_KEY);
     } catch {
       // Leave the receipt unmarked so a later navigation/reload may try again.
     }
@@ -79,11 +86,14 @@ function reportTrafficVisit() {
     body: JSON.stringify({ kind: "visit" }),
     keepalive: true,
   })
-    .then((response) => {
-      if (response.ok) {
-        visitRecordedInMemory = true;
-        setSessionFlag(TRAFFIC_VISIT_SESSION_KEY);
-      }
+    .then(async (response) => {
+      if (!response.ok) return;
+      const payload = (await response.json().catch(() => ({}))) as {
+        counted?: boolean;
+      };
+      if (payload.counted === false) return;
+      visitRecordedInMemory = true;
+      setSessionFlag(TRAFFIC_VISIT_SESSION_KEY);
     })
     .catch(() => {
       // Leave unmarked so a later navigation may try again.
@@ -91,6 +101,14 @@ function reportTrafficVisit() {
     .finally(() => {
       visitInFlight = null;
     });
+}
+
+function stripSelfTestQueryFromLocation() {
+  const url = new URL(window.location.href);
+  if (!url.searchParams.has(SELF_TEST_QUERY_PARAM)) return;
+  url.searchParams.delete(SELF_TEST_QUERY_PARAM);
+  const nextUrl = `${url.pathname}${url.search}${url.hash}`;
+  window.history.replaceState(window.history.state, "", nextUrl);
 }
 
 function reportMailerScan(currentUrl: string) {
@@ -123,11 +141,20 @@ export function PostHogPageView() {
 
   useEffect(() => {
     if (pathname) {
-      let url = window.location.origin + pathname;
-      if (searchParams.toString()) {
-        url += `?${searchParams.toString()}`;
+      const search = searchParams.toString();
+      const excludePublicTraffic = shouldExcludePublicTraffic(search);
+      if (searchParams.has(SELF_TEST_QUERY_PARAM)) {
+        stripSelfTestQueryFromLocation();
       }
-      capturePostHogEvent("$pageview", { $current_url: url });
+      let url = window.location.origin + pathname;
+      if (search) {
+        url += `?${search}`;
+      }
+      capturePostHogEvent("$pageview", {
+        $current_url: url,
+        ...(excludePublicTraffic ? { self_test: true } : {}),
+      });
+      if (excludePublicTraffic) return;
       reportTrafficVisit();
       reportMailerScan(url);
     }

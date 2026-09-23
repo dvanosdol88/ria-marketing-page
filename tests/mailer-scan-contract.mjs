@@ -15,12 +15,15 @@ assert.doesNotMatch(posthog, /sendDirectPostHogEvent|getDistinctId/);
 assert.match(pageView, /MAILER_SCAN_SESSION_KEY/);
 assert.match(pageView, /eddm_qr_landed|MAILER_SCAN_EVENT/);
 assert.match(pageView, /\/api\/analytics\/mailer-scans/);
+assert.match(pageView, /shouldExcludePublicTraffic|selftest/);
 assert.match(route, /buildMailerScanUpdate/);
 assert.match(route, /requestHeadersCameFromThisSite/);
+assert.match(route, /hasSelfTestCookie|self_test/);
 assert.match(metric, /isMailerQrCampaign/);
 assert.match(policy, /Access-Control-Allow-Origin/);
 assert.match(policy, /riabuilder\.dvo88\.com/);
 assert.match(policy, /bot\|crawler\|spider\|headless/i);
+assert.match(policy, /clean_root_launch/);
 
 console.log(
   "Mailer scan contract uses the initialized PostHog client, one session receipt, bot filtering, an aggregate-only counter, and RIA Builder-only read CORS.",

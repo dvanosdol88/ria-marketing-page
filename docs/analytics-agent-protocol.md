@@ -42,13 +42,33 @@ The printer-approved 2026 launch proofs contain this legacy URL:
 https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1
 ```
 
-Production must recognize that exact four-value signature as the same EDDM
-`launch_5k` campaign while leaving the visitor at the top of the home page.
+Production must count all of these as the same EDDM `launch_5k` mailer scan
+while leaving the visitor at the top of the home page:
+
+- the clean root (`campaign_attribution_method=clean_root_launch`)
+- the exact four-value printer-proof signature
+  (`campaign_attribution_method=legacy_qr_signature`, `legacy_eddm_qr=true`)
+- the complete approved UTM tuple
+  (`utm_source=eddm`, `utm_medium=print`, `utm_campaign=launch_5k`,
+  `utm_content=qr_code`; `campaign_attribution_method=explicit_utm`)
+
 New QR codes use the clean root URL and carry no calculator state, campaign
-query, anchor, or fragment.
-Events inferred from the printer-proof URL must include
-`campaign_attribution_method=legacy_qr_signature` and
-`legacy_eddm_qr=true`. Explicit UTM parameters always take precedence.
+query, anchor, or fragment. The live public PNG at
+`/assets/yaptom_default_inputs_qr.png` must keep decoding to that clean root
+so already-printed pieces and the published asset stay aligned.
+
+Clean-root attribution applies only to a first-touch landing on `/` with no
+campaign or calculator query. Same-origin clicks and search-engine referrers
+do not become mailer scans. Explicit UTM parameters always take precedence
+over the clean-root and legacy signatures. Events inferred from the
+printer-proof URL must include `campaign_attribution_method=legacy_qr_signature`
+and `legacy_eddm_qr=true`.
+
+Owner / agent stress-tests must not inflate the public RIA Builder visit or
+scan totals. Opt in on that browser with `?selftest=1` (sets a first-party
+`yapt_selftest` cookie and `sww_self_test` localStorage flag). Opt out with
+`?selftest=0`. Do not hard-code IP addresses. Recipients who scan a mailer
+never receive this flag. The aggregate endpoint still exposes only counts.
 
 When an attributed visitor follows a link from this site to
 `smarterwaywealth.com`, carry only the available `utm_source`, `utm_medium`,

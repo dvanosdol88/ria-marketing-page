@@ -25,6 +25,15 @@
         "campaign_attribution_method": "legacy_qr_signature",
         "legacy_eddm_qr": true
       },
+      "cleanRootAttribution": {
+        "campaign_attribution_method": "clean_root_launch",
+        "legacy_eddm_qr": false
+      },
+      "selfTest": {
+        "optIn": "https://youarepayingtoomuch.com/?selftest=1",
+        "optOut": "https://youarepayingtoomuch.com/?selftest=0",
+        "effect": "Omits that browser from the public visit and mailer-scan aggregates. No IP allowlist."
+      },
       "requiredForAnalytics": true,
       "sourceOfTruth": "src/config/campaignLinks.ts"
     }

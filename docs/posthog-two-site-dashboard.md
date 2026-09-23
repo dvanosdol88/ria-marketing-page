@@ -37,7 +37,7 @@ The live dashboard was created on 2026-06-04 with the following saved insights. 
    - Type: trend
    - Event: `$pageview`
    - Filter: `utm_source = eddm` OR `is_eddm_visitor = true`
-   - Audit breakdown: `campaign_attribution_method`; the mailed printer proofs should report `legacy_qr_signature`.
+   - Audit breakdown: `campaign_attribution_method`; mailed printer proofs report `legacy_qr_signature`, and clean-root QR landings report `clean_root_launch`.
    - Breakdown: `site_domain`
    - Question answered: are mailer/QR scans arriving, and which site are they hitting?
 
@@ -189,8 +189,16 @@ site recognizes its exact calculator signature as the same campaign and adds:
 - `campaign_attribution_method = legacy_qr_signature`
 - `legacy_eddm_qr = true`
 
-Keep a launch-day view filtered by `legacy_eddm_qr = true` so scans from the
-physical mail piece are visible independently of explicitly tagged test visits.
+The published QR PNG and already-printed clean-root pieces land on `/` with
+no query. Those first-touch homepage landings add:
+
+- `campaign_attribution_method = clean_root_launch`
+- the same `launch_5k` UTM properties
+
+Keep a launch-day view broken down by `campaign_attribution_method` so
+clean-root, printer-proof, and tagged scans stay separable. Filter
+`self_test = true` (or the public aggregate after `?selftest=1`) when
+reviewing numbers David generated himself.
 
 Create the immediate notification as a PostHog workflow triggered by
 `eddm_qr_landed`. Test with a synthetic event first, then enable only after the
