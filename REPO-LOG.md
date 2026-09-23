@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-09-23 — Sign-up pair: "Become a client" + "Book a 15-min call", client first, side by side
+**Agent:** Claude (Cowork, cloud workspace) | **Surface:** homepage SignupCta (home_post_calculator) | **Status:** preview only — awaiting David's approval before merge
+- why: David picked option 1 (client first) for BOTH sites so youarepayingtoomuch.com and smarterwaywealth.com use one naming system.
+- changed: "Sign me up — Become a client" → "Become a client" (sub-line "$100/month, flat"); "See if I'm a good fit / Schedule a 15-minute talk with David" → "Book a 15-min call" (sub-line "Talk with David first"); side by side at md+ with equal 80px height, stacked on phones; both keep the leave-site icon (1.25em).
+- preserved: destinations, PostHog labels and locations (series continuous), disclosure line, colors.
+- proof: home-signup-buttons, home-assumptions-client-value, home-assumptions-sync (375 / 1280px), home-wwwh 28/28, stylized-service-icons, tsc, lint, build; screenshots at 1280px and 390px.
+- next: same labels/order on smarterwaywealth.com (handoff: project doc claude/handoff-yapt-to-sww.md).
+
 ### 2026-09-23 — Desktop client-value list, balanced quote cards, "!" closing line, unbounded outbound-link icon
 **Agent:** Claude (Cowork, cloud workspace) | **Surface:** homepage + every outbound link | **PR:** [#298](https://github.com/dvanosdol88/ria-marketing-page/pull/298) (`81ff6a0`) | **Status:** deployed and production-proved
 - changed: "What you get for $100/month" is one stacked list at every width (the desktop two-column grid paired a 1-line item with a 3-line one and orphaned **More**); desktop gets a 16px type step; card is now opaque so the floating $ / = glyphs no longer show through.

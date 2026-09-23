@@ -5,11 +5,13 @@ import test from "node:test";
 const source = readFileSync(new URL("../src/components/SignupCta.tsx", import.meta.url), "utf8");
 const home = source.split('if (variant === "block" && location === "home_post_calculator") {')[1]?.split('const primaryButtonClass')[0];
 
-test("homepage has two full-width actions without the wordy panel", () => {
+test("homepage has the two named actions, client first, without the wordy panel", () => {
   assert.ok(home);
-  assert.match(home, /Sign me up — Become a client/);
-  assert.match(home, /See if I&apos;m a good fit/);
-  assert.match(home, /Schedule a 15-minute talk with David/);
+  // 2026-09-23 (David, option 1 on both sites): one naming system, client first.
+  assert.match(home, /Become a client\s*<ExternalLink/);
+  assert.match(home, /Book a 15-min call\s*<ExternalLink/);
+  assert.ok(home.indexOf("Become a client") < home.indexOf("Book a 15-min call"), "client first");
+  assert.match(home, /grid gap-4 md:grid-cols-2/, "side by side from md up");
   assert.match(home, /bg-\[#008532\]/);
   assert.equal((home.match(/w-full items-center|w-full flex-col/g) ?? []).length, 2);
   assert.doesNotMatch(home, /eyebrow|SecondaryLink|bg-gradient/);

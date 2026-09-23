@@ -117,29 +117,40 @@ export function SignupCta({
               ))}
             </ul>
           </div>
-          <Link
-            href={signupCta.primary.href}
-            className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-md bg-[#064B84] px-6 py-4 text-center text-lg font-bold !text-white !no-underline shadow-sm transition hover:bg-[#053B6A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84]"
-            data-posthog-cta="true"
-            data-posthog-cta-label={signupCta.primary.label}
-            data-posthog-cta-location={`${location}_primary`}
-          >
-            Sign me up — Become a client
-            <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
-          </Link>
-          <a
-            href={signupCta.secondary.href}
-            className="flex min-h-[80px] w-full flex-col items-center justify-center gap-1 rounded-md bg-[#008532] px-6 py-4 text-center !text-white !no-underline shadow-sm transition hover:bg-[#006B28] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]"
-            data-posthog-cta="true"
-            data-posthog-cta-label={signupCta.secondary.label}
-            data-posthog-cta-location={`${location}_secondary`}
-          >
-            <span className="inline-flex items-center gap-2 text-lg font-bold">
-              See if I&apos;m a good fit
-              <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
-            </span>
-            <span className="text-sm">Schedule a 15-minute talk with David</span>
-          </a>
+          {/* DECISION, 2026-09-23 (David: "go with option 1 — client first — on
+              both sites"). One naming system across youarepayingtoomuch.com and
+              smarterwaywealth.com: "Become a client" leads, "Book a 15-min call"
+              follows. Side by side from md up, equal height; stacked on phones.
+              PostHog labels and locations are unchanged so the series stay
+              continuous. */}
+          <div className="grid gap-4 md:grid-cols-2">
+            <Link
+              href={signupCta.primary.href}
+              className="flex min-h-[80px] w-full flex-col items-center justify-center gap-1 rounded-md bg-[#064B84] px-6 py-4 text-center !text-white !no-underline shadow-sm transition hover:bg-[#053B6A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84]"
+              data-posthog-cta="true"
+              data-posthog-cta-label={signupCta.primary.label}
+              data-posthog-cta-location={`${location}_primary`}
+            >
+              <span className="inline-flex items-center gap-2 text-lg font-bold">
+                Become a client
+                <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
+              </span>
+              <span className="text-sm">$100/month, flat</span>
+            </Link>
+            <a
+              href={signupCta.secondary.href}
+              className="flex min-h-[80px] w-full flex-col items-center justify-center gap-1 rounded-md bg-[#008532] px-6 py-4 text-center !text-white !no-underline shadow-sm transition hover:bg-[#006B28] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]"
+              data-posthog-cta="true"
+              data-posthog-cta-label={signupCta.secondary.label}
+              data-posthog-cta-location={`${location}_secondary`}
+            >
+              <span className="inline-flex items-center gap-2 text-lg font-bold">
+                Book a 15-min call
+                <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
+              </span>
+              <span className="text-sm">Talk with David first</span>
+            </a>
+          </div>
           <p className="text-center text-xs leading-5 text-[#536278]">
             {signupCta.disclosure}
           </p>
