@@ -1,5 +1,11 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-40 — 2026-09-23 — FAQ copy fixes + uniform outbound-link icon (YAPT + SWW)
+**Agent:** Claude | **Surface:** homepage FAQ + every outbound link | **PR:** [#296](https://github.com/dvanosdol88/ria-marketing-page/pull/296) (`a97267d`); sister smarter-way-wealth#240 | **Status:** deployed and production-proved
+- changed: AI footnote asterisk in the $100/month answer renders as a superscript; "Even more importantly, we don't have" → "We also don't have" (shared FAQ data, both repos); removed the "Leaving site" label from the FAQ door.
+- changed: every outbound link uses the lucide `ExternalLink` box-with-arrow icon (replaced `ArrowUpRight` in five components; SWW gained icons on IAPD, ADV and CRD links). Convention recorded in both repos' CLAUDE.md.
+- proof: all PR checks green; origin/main `a97267d` Vercel success; live apex viewed at 375px with the answer open — superscript, new copy, no label, box-arrow icons. smarterwaywealth.com/faq serves the new copy.
+
 ### 02-33 — 2026-09-22 — Corrected FAQ annotations, affordability copy, and poll count display
 **Agent:** R2D2 | **Surface:** homepage FAQ and shared calculator poll | **PR:** [#294](https://github.com/dvanosdol88/ria-marketing-page/pull/294) (`144dfa3`) | **Status:** deployed and production-proved
 - changed: moved **Very** into a compact top insertion note with a downward caret, FAQ-heading color, and only a 1.5-character heading offset; moved **Leaving site** to the chevron gutter left of the outbound FAQ sentence.
