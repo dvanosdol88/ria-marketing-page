@@ -31,8 +31,8 @@ export default function ComplianceFooter({ linksAbove = false }: { linksAbove?: 
       id="disclosures"
       className={`${linksAbove ? "" : "border-t border-neutral-200 "}bg-[#EEF0F5] text-neutral-600`}
     >
-      <div className={`mx-auto max-w-[1100px] px-4 ${linksAbove ? "pb-8 pt-0" : "py-8"} text-xs leading-relaxed sm:px-6`}>
-        {linksAbove ? <hr className="mb-6 border-neutral-200" /> : null}
+      <div className={`mx-auto max-w-[1100px] px-4 sm:px-6 ${linksAbove ? "pb-10 pt-0 text-[13px] leading-6 text-[#52657A]" : "py-8 text-xs leading-relaxed"}`}>
+        {linksAbove ? <hr className="mb-6 border-[#D8E0E8]" /> : null}
         <p>
           Smarter Way Wealth, LLC is a registered investment adviser in the
           State of Connecticut (CRD #342140

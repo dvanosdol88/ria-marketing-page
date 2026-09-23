@@ -52,7 +52,7 @@ export function CalculatorNotes() {
       <p className="text-[13px] leading-6 text-[#52657A]">
         {CALCULATOR_DISCLAIMER.map((segment, index) =>
           "bold" in segment ? (
-            <span key={index} className="font-bold text-[#10233A]">
+            <span key={index} className={`font-bold text-[#10233A] ${segment.bold.length < 24 ? "whitespace-nowrap" : ""}`}>
               {segment.bold}
             </span>
           ) : (
