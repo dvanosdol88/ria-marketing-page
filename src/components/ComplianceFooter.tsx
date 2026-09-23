@@ -19,24 +19,36 @@ const IAPD_URL = "https://adviserinfo.sec.gov/firm/summary/342140";
 const DISCLOSURES_URL = "https://smarterwaywealth.com/disclosures";
 const PRIVACY_URL = "https://smarterwaywealth.com/privacy";
 
-export default function ComplianceFooter() {
+/**
+ * `linksAbove` — DECISION (David, 2026-09-23): when the footer directly above already
+ * carries the Disclosures / ADV / IAPD / Privacy link row, this block drops only
+ * its duplicate pointers to those same pages and joins that footer as one unit.
+ * Every regulatory statement stays word for word.
+ */
+export default function ComplianceFooter({ linksAbove = false }: { linksAbove?: boolean } = {}) {
   return (
     <section
       id="disclosures"
-      className="border-t border-neutral-200 bg-[#EEF0F5] text-neutral-600"
+      className={`${linksAbove ? "" : "border-t border-neutral-200 "}bg-[#EEF0F5] text-neutral-600`}
     >
-      <div className="mx-auto max-w-[1100px] px-4 py-8 text-xs leading-relaxed sm:px-6">
+      <div className={`mx-auto max-w-[1100px] px-4 sm:px-6 ${linksAbove ? "pb-10 pt-0 text-[13px] leading-6 text-[#52657A]" : "py-8 text-xs leading-relaxed"}`}>
+        {linksAbove ? <hr className="mb-6 border-[#D8E0E8]" /> : null}
         <p>
           Smarter Way Wealth, LLC is a registered investment adviser in the
-          State of Connecticut (CRD #342140 &mdash;{" "}
-          <a
-            href={IAPD_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-neutral-900"
-          >
-            verify on IAPD
-          </a>
+          State of Connecticut (CRD #342140
+          {linksAbove ? null : (
+            <>
+              {" "}&mdash;{" "}
+              <a
+                href={IAPD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-neutral-900"
+              >
+                verify on IAPD
+              </a>
+            </>
+          )}
           ). Registration does not imply a certain level of skill or training.
           Smarter Way Wealth transacts advisory business only with residents of
           states in which it is registered, or where it is excluded or exempted
@@ -50,15 +62,20 @@ export default function ComplianceFooter() {
           of principal.
         </p>
         <p className="mt-3">
-          For important disclosures, see our{" "}
-          <a href={DISCLOSURES_URL} className="underline hover:text-neutral-900">
-            disclosure documents
-          </a>
-          . For privacy information, see our{" "}
-          <a href={PRIVACY_URL} className="underline hover:text-neutral-900">
-            Privacy Policy
-          </a>
-          . For questions or concerns, contact us at{" "}
+          {linksAbove ? null : (
+            <>
+              For important disclosures, see our{" "}
+              <a href={DISCLOSURES_URL} className="underline hover:text-neutral-900">
+                disclosure documents
+              </a>
+              . For privacy information, see our{" "}
+              <a href={PRIVACY_URL} className="underline hover:text-neutral-900">
+                Privacy Policy
+              </a>
+              .{" "}
+            </>
+          )}
+          For questions or concerns, contact us at{" "}
           <a
             href={`mailto:${COMPLIANCE_EMAIL}`}
             className="underline hover:text-neutral-900"
