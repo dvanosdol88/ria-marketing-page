@@ -12,7 +12,7 @@ const flatten = (source) => source.replace(/\s+/g, " ");
 test("HOW uses matched stylized badges for included services and avoided costs", () => {
   const source = flatten(howSource);
 
-  assert.match(source, /import \{ BadgeCheck, BadgeDollarSign \} from "lucide-react"/);
+  assert.match(source, /import \{ BadgeCheck, BadgeDollarSign, Mail \} from "lucide-react"/);
   assert.match(source, /<BadgeCheck[^>]*fill-\[#E6F6EC\][^>]*text-\[#108843\]/);
   assert.match(source, /<BadgeDollarSign[^>]*fill-\[#FDECEC\][^>]*text-\[#C62828\]/);
   assert.doesNotMatch(source, /<Check\b|<DollarSign\b/);
