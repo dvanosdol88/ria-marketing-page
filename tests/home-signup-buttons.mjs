@@ -7,12 +7,13 @@ const home = source.split('if (variant === "block" && location === "home_post_ca
 
 test("homepage has two full-width actions without the wordy panel", () => {
   assert.ok(home);
-  assert.match(home, /Sign me up — Become a client/);
-  assert.match(home, /See if I&apos;m a good fit/);
-  assert.match(home, /Schedule a 15-minute talk with David/);
-  assert.match(home, /bg-\[#008532\][\s\S]*Sign me up — Become a client/);
-  assert.match(home, /bg-\[#008532\]/);
-  assert.equal((home.match(/w-full items-center|w-full flex-col/g) ?? []).length, 2);
+  // DECISION, 2026-09-24 (David, final word): stacked. Green Become a client
+  // on top; the small navy "Questions? / Schedule 15 minutes" centered below.
+  assert.match(home, /bg-\[#008532\][\s\S]*text-xl font-bold leading-6">\s*Become a client/);
+  assert.match(home, /\$100\/month, flat/);
+  assert.match(home, /data-schedule-call[\s\S]*self-center[\s\S]*bg-\[#064B84\][\s\S]*Questions\?[\s\S]*Schedule 15 minutes/);
+  assert.ok(home.indexOf("text-xl font-bold leading-6") < home.indexOf("data-schedule-call"), "client on top");
+  assert.doesNotMatch(home, /Sign me up|See if I&apos;m a good fit|Book a 15-min call/);
   assert.doesNotMatch(home, /eyebrow|SecondaryLink|bg-gradient/);
   assert.match(home, /signupCta\.disclosure/);
 });

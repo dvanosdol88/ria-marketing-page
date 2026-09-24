@@ -118,28 +118,37 @@ export function SignupCta({
               ))}
             </ul>
           </div>
+          {/* DECISION, 2026-09-24 (David, final word): stacked. Green Become a
+              client on top (label one size larger, same button size); the
+              call is a smaller navy button centered underneath, reading
+              "Questions?" above "Schedule 15 minutes". Same rule on
+              smarterwaywealth.com. PostHog labels and locations unchanged. */}
           <Link
             href={signupCta.primary.href}
-            className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-md bg-[#008532] px-6 py-4 text-center text-lg font-bold !text-white !no-underline shadow-sm transition hover:bg-[#006B28] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]"
+            className="flex min-h-[80px] w-full flex-col items-center justify-center gap-1 rounded-md bg-[#008532] px-6 py-4 text-center !text-white !no-underline shadow-sm transition hover:bg-[#006B28] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]"
             data-posthog-cta="true"
             data-posthog-cta-label={signupCta.primary.label}
             data-posthog-cta-location={`${location}_primary`}
           >
-            Sign me up — Become a client
-            <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
+            <span className="inline-flex items-center gap-2 text-xl font-bold leading-6">
+              Become a client
+              <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
+            </span>
+            <span className="text-sm">$100/month, flat</span>
           </Link>
           <a
             href={signupCta.secondary.href}
-            className="flex min-h-[80px] w-full flex-col items-center justify-center gap-1 rounded-md bg-[#008532] px-6 py-4 text-center !text-white !no-underline shadow-sm transition hover:bg-[#006B28] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]"
+            data-schedule-call
+            className="inline-flex min-h-[52px] flex-col items-center justify-center self-center rounded-md bg-[#064B84] px-[22px] py-1.5 text-center !text-white !no-underline shadow-sm transition hover:bg-[#053B6A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84]"
             data-posthog-cta="true"
             data-posthog-cta-label={signupCta.secondary.label}
             data-posthog-cta-location={`${location}_secondary`}
           >
-            <span className="inline-flex items-center gap-2 text-lg font-bold">
-              See if I&apos;m a good fit
-              <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
+            <span className="whitespace-nowrap text-xs font-semibold leading-tight text-white/85">Questions?</span>
+            <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-extrabold leading-tight">
+              Schedule 15 minutes
+              <ExternalLink aria-hidden="true" className="h-[1.1em] w-[1.1em] shrink-0" strokeWidth={2.5} />
             </span>
-            <span className="text-sm">Schedule a 15-minute talk with David</span>
           </a>
           <p className="text-center text-xs leading-5 text-[#536278]">
             {signupCta.disclosure}
