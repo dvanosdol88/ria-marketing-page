@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-09-24 — "Become a client" buttons are always green
+**Agent:** Cursor | **Surface:** every Become a client button / link-button / CTA | **Goal:** David 2026-09-24 color rule
+- changed: every "Become a client" button, link-button, and CTA now uses the existing green CTA fill (`#008532` / hover `#006B28`) instead of navy, cyan, or white. Homepage pair, SignupCta block/inline pills (including `/blues`), nav Sign Up / Become a Client, and `/upgrade-your-advice` proof CTAs.
+- documented: CLAUDE.md convention — "Become a client" buttons are always green on every site (David 2026-09-24).
+- preserved: copy, destinations, PostHog labels/locations, layout, and the secondary "See if I'm a good fit" green (already `#008532`).
+- verified: source-lock tests for the homepage pair and nav; TypeScript/lint/build as recorded on the PR.
+- deployed: not deployed. Left open if another in-flight PR touches the same files.
+
 ### 02-65 — 2026-09-24 — One Percent Blues gets the single footer
 **Agent:** Claude (desktop app) | **Surface:** onepercentblues.com footer | **PR:** [#304](https://github.com/dvanosdol88/ria-marketing-page/pull/304) (`c2d7487`) | **Status:** deployed and production-proved
 - changed: the Blues footer now uses the same single-footer layout as youarepayingtoomuch.com (#298, round 3). The four legal links (Disclosures, ADV Brochure (PDF), Verify on IAPD, Privacy Policy) appear once, at the top, each with the leave-site icon because all four leave this domain. The firm line and calculator disclaimer run full width beneath them. The regulatory block renders in its `linksAbove` form, which drops only the duplicate IAPD and "For important disclosures" pointers.
