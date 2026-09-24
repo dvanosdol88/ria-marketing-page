@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BadgeCheck, BadgeDollarSign } from "lucide-react";
+import { BadgeCheck, BadgeDollarSign, Mail } from "lucide-react";
 
 export const WWWH_ANSWERS = [
   {
@@ -78,6 +78,32 @@ const closingJoined = closingRestWords.join(" ");
 const closingEndMark = closingJoined.endsWith("!") ? "!" : "";
 const closingRemainder = closingEndMark ? closingJoined.slice(0, -1) : closingJoined;
 
+/* DECISION, 2026-09-24 (David): former clients need a visible way to reach
+   him, not an address in the fine print. The address shows under the link so
+   it still works on a computer with no mail app set up. Same on both sites. */
+const DAVID_EMAIL = "david@smarterwaywealth.com";
+
+function EmailDavidLink() {
+  return (
+    <a
+      href={`mailto:${DAVID_EMAIL}`}
+      data-posthog-cta-label="Email David"
+      data-posthog-cta-location="wwwh_who_email"
+      className="group mt-4 inline-flex items-start gap-2.5 text-[#064B84] !no-underline"
+    >
+      <Mail aria-hidden="true" className="mt-0.5 h-6 w-6 shrink-0 sm:mt-1" strokeWidth={2.25} />
+      <span className="flex min-w-0 flex-col">
+        <span className="text-lg font-bold leading-7 underline decoration-[#064B84]/40 underline-offset-4 group-hover:decoration-[#064B84] sm:text-xl sm:leading-8">
+          Email David
+        </span>
+        <span className="text-base leading-6 text-[#10233A]/75 [overflow-wrap:anywhere]">
+          {DAVID_EMAIL}
+        </span>
+      </span>
+    </a>
+  );
+}
+
 export function WhatWhyWhoHow() {
   return (
     <section
@@ -123,9 +149,12 @@ export function WhatWhyWhoHow() {
                     height={112}
                     className="h-20 w-20 shrink-0 rounded-full object-cover object-top ring-2 ring-[#10233A]/10 sm:h-28 sm:w-28"
                   />
-                  <p className="max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">
-                    {answer.body}
-                  </p>
+                  <div className="min-w-0">
+                    <p className="max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">
+                      {answer.body}
+                    </p>
+                    <EmailDavidLink />
+                  </div>
                 </div>
               ) : (
                 <p className="mt-2.5 max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">

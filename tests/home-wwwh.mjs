@@ -812,3 +812,13 @@ test("drawer state keeps closed navigation inert and open navigation keyboard-ac
   assert.match(navSource, /menuButtonRef\.current\?\.focus\(\)/);
   assert.doesNotMatch(navSource, /tabIndex=\{-1\}/);
 });
+
+// DECISION, 2026-09-24 (David): former clients need a visible way to reach
+// him, not an address in the fine print.
+test("WHO carries a visible Email David link with the address shown", () => {
+  const flat = answersSource.replace(/\s+/g, " ");
+  assert.match(flat, /const DAVID_EMAIL = "david@smarterwaywealth\.com"/);
+  assert.match(flat, /href=\{`mailto:\$\{DAVID_EMAIL\}`\}/);
+  assert.match(flat, /> Email David </);
+  assert.match(flat, /\{answer\.body\} <\/p> <EmailDavidLink \/>/);
+});
