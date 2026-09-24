@@ -97,3 +97,21 @@ Update (David, 2026-09-23): the icon is never bounded — no circle, ring, pill,
 and it is sized relative to the link text: `h-[1.25em] w-[1.25em] shrink-0` on inline links, so
 it scales with whatever text it follows. Standalone row icons (the green firm-visit card) use
 `h-6 w-6`. The sister site still needs the same update.
+
+## Convention: the two conversion buttons (David, 2026-09-24 — final word)
+
+- **Become a client** is always **green** (see below).
+- Every call button is **navy** (`#064B84`, hover `#053B6A`). Where it pairs with Become a client
+  the two are **stacked**: Become a client on top (label one size larger, same button size), the
+  smaller navy call **centered underneath**, reading **"Questions?"** above **"Schedule 15 minutes"**.
+  Never "Book a 15-min call" (too cliché).
+- Headers show only Become a client; the call lives in the stacked pairs.
+- The One Percent Blues diagnosis button is navy too; its campaign wording stays.
+- Same rule on smarterwaywealth.com (`ScheduleCallButton` there).
+
+## Convention: "Become a client" is always green (David, 2026-09-24)
+
+"Become a client" buttons are always green on every site (David 2026-09-24). Use the existing
+brand-green CTA fill already on the green CTA (`bg-[#008532]`, hover `#006B28`) — never navy,
+cyan, or white for this action. Same rule on youarepayingtoomuch.com, One Percent Blues
+(`/blues`, onepercentblues.com), and smarterwaywealth.com.

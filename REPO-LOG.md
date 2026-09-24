@@ -1,5 +1,15 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-70 — 2026-09-24 — Stacked buttons: green Become a client, small navy "Questions? / Schedule 15 minutes"
+**Agent:** Claude (desktop app) | **Surface:** homepage sign-up pair, every Become a client button, nav, /upgrade-your-advice, One Percent Blues diagnosis button | **Status:** PR open; production proof after merge
+- David's final button spec (2026-09-24): every **Become a client** button is green and every call button is **navy**. Where both appear they are stacked. Become a client goes on top, with its label one size larger and the button the same size. The call sits underneath as a smaller navy button, centered, reading "Questions?" above "Schedule 15 minutes". "Book a 15-min call" is retired as too cliché. Headers show only Become a client.
+- Includes the Cursor agent's green-button commit from #306 (cherry-picked, credited): the calculator pills, the fit-CTA divider, the /upgrade-your-advice card, and the nav Sign Up / Become a Client links are all green.
+- Homepage pair: "Become a client / $100/month, flat" is the 80px green button with a 20px label, full width. The navy call is 52px, centered underneath, and keeps the leave-site icon. Destinations, PostHog labels and locations are unchanged.
+- One Percent Blues: the "Get the cure — meet David" button is navy with white text. Its campaign wording is unchanged.
+- Not changed (flagged to David): the /become-a-client page's "Meet David for 15 minutes" button is a white pill on a navy card, so a navy button there would vanish. The calculator's secondary "Talk to David first…" stays a plain text link by design (not a button).
+- Rule recorded in CLAUDE.md. Supersedes #302 (side-by-side pair) and #306 (green only). Sister: smarter-way-wealth#253.
+- Proof (local): `tsc` clean; changed-file lint clean (one pre-existing warning); home-signup-buttons 2/2, home-wwwh 28/28, blues-source-locks 5/5, home-assumptions-client-value pass. A local render at 1280px and 390px showed green 81px with a 20px label, navy 52px, centered (offset 0), no horizontal overflow, and the Blues button navy.
+
 ### 02-68 — 2026-09-24 — Homepage quote marks now match the quote text color
 **Agent:** Claude (desktop app) | **Surface:** homepage quote cards (`FeeQuoteDeck`) | **Status:** see PR
 - changed (David): the opening and closing quotation marks on the homepage quote cards were brand green (#00A540) while the quote text is navy (#10233A). They now carry no color of their own and inherit the text color. David had asked for this before and was told it was done; #298 round 2 (2026-09-23) matched the marks' size and weight but left them green.

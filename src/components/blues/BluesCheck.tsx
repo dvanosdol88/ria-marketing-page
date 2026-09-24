@@ -171,7 +171,9 @@ export function BluesCheck({
               </div>
               <a
                 href={bluesCopy.primaryCta.href}
-                className="mt-4 flex min-h-[54px] items-center justify-center rounded-[14px] bg-white px-4 text-center text-base font-bold !text-[#1E3A8A] !no-underline transition-colors hover:bg-[#EEF3FF]"
+                /* Call buttons are navy on every site (David, 2026-09-24).
+                   The campaign wording stays. */
+                className="mt-4 flex min-h-[54px] items-center justify-center rounded-[14px] bg-[#064B84] px-4 text-center text-base font-bold !text-white !no-underline transition-colors hover:bg-[#053B6A]"
                 data-posthog-cta="true"
                 data-posthog-cta-label={bluesCopy.primaryCta.label}
                 data-posthog-cta-location="blues_diagnosis_meet"

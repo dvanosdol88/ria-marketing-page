@@ -733,7 +733,7 @@ test("desktop and mobile nav expose the active tracked onboarding CTA", () => {
   assert.match(navSource, /data-posthog-cta-location="site_nav_mobile"/);
   assert.match(navSource, /data-posthog-cta-location="site_nav_mobile_drawer"/);
   assert.match(navSource, />\s*Sign Up\s*<\/Link>/);
-  assert.match(navSource, /bg-\[#064B84\][^"\n]*text-white/);
+  assert.match(navSource, /bg-\[#008532\][^"\n]*text-white/);
   assert.match(navSource, /px-2\.5[^"\n]*min-\[360px\]:px-4/);
   assert.match(navSource, /absolute left-1\/2[^"\n]*-translate-x-1\/2/);
   assert.match(navSource, /const DESKTOP_PEER_LINK_CLASS/);
