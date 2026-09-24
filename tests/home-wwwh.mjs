@@ -821,4 +821,6 @@ test("WHO carries a visible Email David link with the address shown", () => {
   assert.match(flat, /href=\{`mailto:\$\{DAVID_EMAIL\}`\}/);
   assert.match(flat, /> Email David </);
   assert.match(flat, /\{answer\.body\} <\/p> <EmailDavidLink \/>/);
+  assert.match(flat, /!text-\[#064B84\]/, "navy, not the site-wide green link colour");
+  assert.match(flat, /col-span-2[^"]*sm:col-span-1 sm:col-start-2/, "below the photo on a phone");
 });
