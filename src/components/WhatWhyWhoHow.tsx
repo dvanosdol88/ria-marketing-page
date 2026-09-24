@@ -80,7 +80,10 @@ const closingRemainder = closingEndMark ? closingJoined.slice(0, -1) : closingJo
 
 /* DECISION, 2026-09-24 (David): former clients need a visible way to reach
    him, not an address in the fine print. The address shows under the link so
-   it still works on a computer with no mail app set up. Same on both sites. */
+   it still works on a computer with no mail app set up. Navy like the call
+   buttons (forced past the site-wide green link colour, which is too faint
+   here). On a phone it drops below the photo so the address never breaks
+   mid-word. Same on both sites. */
 const DAVID_EMAIL = "david@smarterwaywealth.com";
 
 function EmailDavidLink() {
@@ -89,7 +92,7 @@ function EmailDavidLink() {
       href={`mailto:${DAVID_EMAIL}`}
       data-posthog-cta-label="Email David"
       data-posthog-cta-location="wwwh_who_email"
-      className="group mt-4 inline-flex items-start gap-2.5 text-[#064B84] !no-underline"
+      className="group col-span-2 mt-4 inline-flex w-fit items-start gap-2.5 !text-[#064B84] !no-underline sm:col-span-1 sm:col-start-2"
     >
       <Mail aria-hidden="true" className="mt-0.5 h-6 w-6 shrink-0 sm:mt-1" strokeWidth={2.25} />
       <span className="flex min-w-0 flex-col">
@@ -139,7 +142,7 @@ export function WhatWhyWhoHow() {
                 /* WHO is the only answer about a person, so it gets the face that
                    goes with the name — photo left, answer beside it (David,
                    2026-08-11). */
-                <div className="mt-3 flex items-start gap-4 sm:gap-6">
+                <div className="mt-3 grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-4 sm:gap-x-6">
                   {/* Decorative: the sentence beside it opens with the same name,
                       so alt text here would announce "David Van Osdol" twice. */}
                   <Image
@@ -147,14 +150,12 @@ export function WhatWhyWhoHow() {
                     alt=""
                     width={112}
                     height={112}
-                    className="h-20 w-20 shrink-0 rounded-full object-cover object-top ring-2 ring-[#10233A]/10 sm:h-28 sm:w-28"
+                    className="h-20 w-20 shrink-0 rounded-full object-cover object-top ring-2 ring-[#10233A]/10 sm:row-span-2 sm:h-28 sm:w-28"
                   />
-                  <div className="min-w-0">
-                    <p className="max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">
-                      {answer.body}
-                    </p>
-                    <EmailDavidLink />
-                  </div>
+                  <p className="max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">
+                    {answer.body}
+                  </p>
+                  <EmailDavidLink />
                 </div>
               ) : (
                 <p className="mt-2.5 max-w-3xl text-lg leading-7 text-[#10233A] sm:text-xl sm:leading-8">
