@@ -1,10 +1,11 @@
 # REPO-LOG — ria-marketing-page
 
 ### 02-65 — 2026-09-24 — One Percent Blues gets the single footer
-**Agent:** Claude (desktop app) | **Surface:** onepercentblues.com footer | **Status:** PR open; production proof after merge
+**Agent:** Claude (desktop app) | **Surface:** onepercentblues.com footer | **PR:** [#304](https://github.com/dvanosdol88/ria-marketing-page/pull/304) (`c2d7487`) | **Status:** deployed and production-proved
 - changed: the Blues footer now uses the same single-footer layout as youarepayingtoomuch.com (#298, round 3). The four legal links (Disclosures, ADV Brochure (PDF), Verify on IAPD, Privacy Policy) appear once, at the top, each with the leave-site icon because all four leave this domain. The firm line and calculator disclaimer run full width beneath them. The regulatory block renders in its `linksAbove` form, which drops only the duplicate IAPD and "For important disclosures" pointers.
 - changed: `ComplianceFooter` gains an optional `ground` background class so the joined block keeps the Blues pale-blue ground (#EEF3FF). The default is unchanged (#EEF0F5), and every regulatory statement stays word for word.
 - sister: smarterwaywealth.com got the same footer in smarter-way-wealth#248, without the state-eligibility sentence per David's 2026-08-04 decision.
+- deployed: `/api/version` on youarepayingtoomuch.com returns `c2d7487`. A fresh Playwright run on https://onepercentblues.com/ at 1280px and 390px showed the four links once, each with the icon, one IAPD mention, no duplicate disclosures sentence, both blocks on rgb(238,243,255), and no horizontal overflow.
 - proof: `tsc --noEmit` clean; changed-file lint clean; blues-source-locks 5/5. A local /blues render showed the four links once with icons and no underline, one IAPD mention, no duplicate disclosures sentence, the footer and regulatory block both on rgb(238,243,255), and no horizontal overflow.
 
 ### 2026-09-23 — Count clean-root EDDM scans and exclude owner self-test visits
