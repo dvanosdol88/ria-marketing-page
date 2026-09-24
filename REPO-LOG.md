@@ -1,5 +1,10 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-68 — 2026-09-24 — Homepage quote marks now match the quote text color
+**Agent:** Claude (desktop app) | **Surface:** homepage quote cards (`FeeQuoteDeck`) | **Status:** see PR
+- changed (David): the opening and closing quotation marks on the homepage quote cards were brand green (#00A540) while the quote text is navy (#10233A). They now carry no color of their own and inherit the text color. David had asked for this before and was told it was done; #298 round 2 (2026-09-23) matched the marks' size and weight but left them green.
+- lock: `tests/home-wwwh.mjs` now asserts both mark spans have no color class, so green marks cannot return silently.
+
 ### 02-65 — 2026-09-24 — One Percent Blues gets the single footer
 **Agent:** Claude (desktop app) | **Surface:** onepercentblues.com footer | **PR:** [#304](https://github.com/dvanosdol88/ria-marketing-page/pull/304) (`c2d7487`) | **Status:** deployed and production-proved
 - changed: the Blues footer now uses the same single-footer layout as youarepayingtoomuch.com (#298, round 3). The four legal links (Disclosures, ADV Brochure (PDF), Verify on IAPD, Privacy Policy) appear once, at the top, each with the leave-site icon because all four leave this domain. The firm line and calculator disclaimer run full width beneath them. The regulatory block renders in its `linksAbove` form, which drops only the duplicate IAPD and "For important disclosures" pointers.

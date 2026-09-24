@@ -97,13 +97,14 @@ function QuoteCard({
       <div className="flex h-full min-w-0 flex-1 flex-col">
         <div className="flex flex-1 items-center justify-center">
           <blockquote className="text-center text-[15px] font-medium leading-6 text-[#10233A] sm:text-base sm:leading-7">
-            {/* Marks at the text's own size and weight (David, 2026-09-23) — at
-                font-black they read a size larger than the words they hold. */}
-            <span aria-hidden="true" className="mr-0.5 text-[#00A540]">
+            {/* Marks at the text's own size, weight and color (David, 2026-09-23;
+                color 2026-09-24) — bolder or green, they read louder than the
+                words they hold. */}
+            <span aria-hidden="true" className="mr-0.5">
               &ldquo;
             </span>
             {quote.quote}
-            <span aria-hidden="true" className="ml-0.5 text-[#00A540]">
+            <span aria-hidden="true" className="ml-0.5">
               &rdquo;
             </span>
           </blockquote>
