@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-65 — 2026-09-24 — One Percent Blues gets the single footer
+**Agent:** Claude (desktop app) | **Surface:** onepercentblues.com footer | **Status:** PR open; production proof after merge
+- changed: the Blues footer now uses the same single-footer layout as youarepayingtoomuch.com (#298, round 3). The four legal links (Disclosures, ADV Brochure (PDF), Verify on IAPD, Privacy Policy) appear once, at the top, each with the leave-site icon because all four leave this domain. The firm line and calculator disclaimer run full width beneath them. The regulatory block renders in its `linksAbove` form, which drops only the duplicate IAPD and "For important disclosures" pointers.
+- changed: `ComplianceFooter` gains an optional `ground` background class so the joined block keeps the Blues pale-blue ground (#EEF3FF). The default is unchanged (#EEF0F5), and every regulatory statement stays word for word.
+- sister: smarterwaywealth.com got the same footer in smarter-way-wealth#248, without the state-eligibility sentence per David's 2026-08-04 decision.
+- proof: `tsc --noEmit` clean; changed-file lint clean; blues-source-locks 5/5. A local /blues render showed the four links once with icons and no underline, one IAPD mention, no duplicate disclosures sentence, the footer and regulatory block both on rgb(238,243,255), and no horizontal overflow.
+
 ### 2026-09-23 — Count clean-root EDDM scans and exclude owner self-test visits
 **Agent:** Cursor | **Surface:** mailer-scan attribution + public traffic totals | **Goal:** RIA Builder homepage numbers during the launch_5k drop
 - changed: first-touch landings on `/` with no campaign query now attribute as `clean_root_launch` and increment the public mailer-scan counter / `eddm_qr_landed`, matching already-printed clean-root QRs. Legacy four-parameter printer-proof URLs and the full approved UTM tuple still count; loose UTMs, search-engine referrers, and same-origin clicks still do not.
