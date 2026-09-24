@@ -32,11 +32,16 @@ try {
   const today = new Intl.DateTimeFormat('en-CA', {
     timeZone: 'America/New_York',
   }).format(new Date());
+  // Journal headings are `### 2026-09-24 — …` (pre-Rack) or, since the Rack
+  // one-address rule (D:\AGENTS.md §12D, 2026-09-21), `### 02-70 — 2026-09-24
+  // — …` with the container address first. So match the date token anywhere
+  // on a `### ` heading line — not an exact heading prefix, and not body text.
   let logHasToday = false;
   try {
+    const headingWithToday = new RegExp('^### .*\\b' + today + '\\b', 'm');
     logHasToday =
       existsSync('REPO-LOG.md') &&
-      readFileSync('REPO-LOG.md', 'utf8').includes('### ' + today);
+      headingWithToday.test(readFileSync('REPO-LOG.md', 'utf8'));
   } catch {
     logHasToday = false;
   }

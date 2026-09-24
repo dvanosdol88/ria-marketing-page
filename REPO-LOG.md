@@ -1,5 +1,14 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-78 — 2026-09-24 — Stop hook accepts address-first REPO-LOG headings
+**Agent:** Claude (desktop app) | **Surface:** session Stop hook (`.claude/hooks/wrap-up-check.mjs`), wrap-up skill template, CI | **PR:** [#315](https://github.com/dvanosdol88/ria-marketing-page/pull/315) | **Status:** see PR
+- changed: the Stop hook decided whether today's journal entry exists with a plain `includes('### ' + today)`. Since the Rack one-address rule (D:\AGENTS.md §12D, 2026-09-21) every heading here starts with the container address, so the check never matched a correctly dated entry and blocked every session end with "commits exist today but REPO-LOG.md has no session entry for today" (seen 2026-09-24 in a read-only session whose commits belonged to other sessions). The hook now matches today's Eastern date on any `### ` heading line, so `### 2026-09-24 — …` and `### 02-70 — 2026-09-24 — …` both count and the date in body text does not. Still fail-open, ESM, node builtins only; the `stop_hook_active` loop guard and the dirty-worktree check are unchanged.
+- added: `tests/wrap-up-check-hook.mjs` (7 cases) runs the real hook as a child process in a throwaway git repository with an isolated git config; `npm run test:wrap-up-check-hook`, also a CI step beside the other file-only suite.
+- changed: the wrap-up skill's journal template still showed the pre-Rack `### YYYY-MM-DD —` heading; it now shows `### NN-NN — YYYY-MM-DD —` and says the hook accepts both.
+- verified: before the fix the hook exited 2 against this file (three same-day address-first headings, zero old-form) with the journal complaint; the RED run failed only the address-first case, with that exact message, while the six guard cases passed; GREEN 7/7; after the commit the hook exits 0 against this file with a clean worktree.
+- follow-up: smarter-way-wealth has a different `wrap-up-check.mjs` (UTC date, other wording) that carries the same `includes('### ' + today)` line. Its headings are still date-first, so it will break the same way the day they go address-first. Separate PR there, not this one.
+- deployed: no site-visible change; the hook ships with the merge to `main` (Vercel redeploys the same site).
+
 ### 02-77 — 2026-09-24 — Who section: visible "Email David" link
 **Agent:** Claude (desktop app) | **Surface:** homepage What/Why/Who/How, the Who answer | **PR:** [#312](https://github.com/dvanosdol88/ria-marketing-page/pull/312) (`19e8bc2`) + fix [#313](https://github.com/dvanosdol88/ria-marketing-page/pull/313) (`c0e78fa`) | **Status:** deployed and production-proved
 - David (2026-09-24): former clients have no visible way to reach him, even with the new site and the mailers, and they shouldn't have to look in the fine print (the compliance address in the footer).
