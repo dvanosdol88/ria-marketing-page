@@ -10,6 +10,7 @@ test("homepage has two full-width actions without the wordy panel", () => {
   assert.match(home, /Sign me up — Become a client/);
   assert.match(home, /See if I&apos;m a good fit/);
   assert.match(home, /Schedule a 15-minute talk with David/);
+  assert.match(home, /bg-\[#008532\][\s\S]*Sign me up — Become a client/);
   assert.match(home, /bg-\[#008532\]/);
   assert.equal((home.match(/w-full items-center|w-full flex-col/g) ?? []).length, 2);
   assert.doesNotMatch(home, /eyebrow|SecondaryLink|bg-gradient/);
