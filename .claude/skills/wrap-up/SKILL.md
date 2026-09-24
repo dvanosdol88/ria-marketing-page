@@ -30,7 +30,7 @@ If meaningful, append a session entry at the TOP of the `## Sessions`
 section (newest first) using the repo's exact template:
 
 ```markdown
-### YYYY-MM-DD — <Short workstream title>
+### NN-NN — YYYY-MM-DD — <Short workstream title>
 **Agent:** <agent name> | **Surface:** <area touched> | **Goal:** <id/link, if any>
 - changed: <what changed and why>
 - verified: <commands run and their results — honest evidence; "not run" is
@@ -38,6 +38,12 @@ section (newest first) using the repo's exact template:
 - deployed: <PR #/commit and production proof, or `not deployed`>
 - <optional: preserved / added / blockers / next steps / links>
 ```
+
+`NN-NN` is the Rack container address filed for the work (D:\AGENTS.md §12D:
+one address on the PR title, commit subject and this heading). Entries that
+predate the Rack rule keep the older `### YYYY-MM-DD — …` form; the Stop hook
+(`.claude/hooks/wrap-up-check.mjs`) accepts either shape as long as the heading
+carries today's Eastern date.
 
 If the site's capabilities changed, also update the `## Current
 Capabilities` section.

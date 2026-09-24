@@ -62,12 +62,15 @@ jobs:
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
 
-      # The source-lock suite is file-only. Every other suite starts its own
+      # The source-lock and Stop-hook suites are file-only. Every other suite starts its own
       # Next dev server on a free port and drives Chromium. They share one .next
       # directory, so they run one at a time. Named separately so a failure says
       # which check failed without opening the log.
       - name: Active direct-onboarding contract
         run: npm run test:active-direct-start
+
+      - name: Stop hook journal check (address-first REPO-LOG headings)
+        run: npm run test:wrap-up-check-hook
 
       - name: Source locks (WWWH, nav, spacing constants)
         run: npm run test:home-wwwh
