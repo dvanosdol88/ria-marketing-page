@@ -225,6 +225,16 @@ The dashboard is useful only if it changes decisions. Ask these every week:
 - Did any Sentry/PostHog error spike line up with lower conversion?
 - What one copy, layout, speed, or CTA test should be run next?
 
+### SWW browser and device segmentation
+
+Smarter Way Wealth sends direct PostHog capture requests rather than the browser
+SDK. Its events must carry the canonical browser context listed in
+`docs/analytics-event-contract.json`, including `$raw_user_agent`, `$browser`,
+`$os`, and `$device_type`. Use `$device_type` for the weekly mobile-versus-
+desktop split and keep Tablet visible as its own series; desktop-mode iPads are
+classified as iOS tablets. If SWW traffic appears as Automation or these fields
+are empty, treat that as instrumentation failure rather than visitor behavior.
+
 ## Live Creation Protocol
 
 Before creating or editing the dashboard in PostHog:

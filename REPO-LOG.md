@@ -1,5 +1,11 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-62 — 2026-09-24 — Synchronized the shared SWW browser-context contract
+**Agent:** Codex | **Surface:** shared PostHog event contract and dashboard operating guide | **Status:** documentation release candidate; production behavior owned by Smarter Way Wealth PR #241
+- Added the browser, operating-system, device, viewport, referrer, and direct-capture library properties emitted by Smarter Way Wealth to the canonical two-site event contract.
+- Added the decision rule for weekly device segmentation: keep tablets separate, classify desktop-mode iPads as iOS tablets, and treat missing context or Automation-only traffic as an instrumentation failure.
+- No event names, dashboard objects, runtime code, campaign URLs, or visitor data changed in this repository.
+
 ### 2026-09-23 — Count clean-root EDDM scans and exclude owner self-test visits
 **Agent:** Cursor | **Surface:** mailer-scan attribution + public traffic totals | **Goal:** RIA Builder homepage numbers during the launch_5k drop
 - changed: first-touch landings on `/` with no campaign query now attribute as `clean_root_launch` and increment the public mailer-scan counter / `eddm_qr_landed`, matching already-printed clean-root QRs. Legacy four-parameter printer-proof URLs and the full approved UTM tuple still count; loose UTMs, search-engine referrers, and same-origin clicks still do not.

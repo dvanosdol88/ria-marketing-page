@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-23",
+  "version": "2026-09-24",
   "owner": "Smarter Way Wealth marketing analytics",
   "posthog": {
     "recommendedProjectShape": "Use one PostHog project for youarepayingtoomuch.com and smarterwaywealth.com so the cross-site journey can be analyzed in one place.",
@@ -8,6 +8,20 @@
       "NEXT_PUBLIC_POSTHOG_HOST": "PostHog ingest host. Default: https://us.i.posthog.com"
     },
     "canonicalSiteProperty": "site_domain",
+    "swwDirectCaptureContextProperties": [
+      "$raw_user_agent",
+      "$browser",
+      "$os",
+      "$device_type",
+      "$screen_width",
+      "$screen_height",
+      "$viewport_width",
+      "$viewport_height",
+      "$pathname",
+      "$referrer",
+      "$referring_domain",
+      "$lib"
+    ],
     "campaignProperties": [
       "utm_source",
       "utm_medium",
@@ -33,7 +47,14 @@
     "first_landing_domain": "First landing hostname registered for the browser/person.",
     "campaign_attribution_method": "How campaign properties were obtained: explicit_utm, legacy_qr_signature, or clean_root_launch.",
     "legacy_eddm_qr": "True when the exact untagged URL embedded in the 2026 printer proofs supplied the EDDM attribution.",
-    "self_test": "True on owner/agent stress-test traffic after ?selftest=1. Public visit and mailer-scan aggregates omit this traffic."
+    "self_test": "True on owner/agent stress-test traffic after ?selftest=1. Public visit and mailer-scan aggregates omit this traffic.",
+    "$raw_user_agent": "Smarter Way Wealth direct-capture user agent used by PostHog traffic classification.",
+    "$browser": "Browser family derived on the Smarter Way Wealth site.",
+    "$os": "Operating-system family derived on the Smarter Way Wealth site; desktop-mode iPads resolve to iOS.",
+    "$device_type": "Desktop, Mobile, or Tablet derived on the Smarter Way Wealth site.",
+    "$referrer": "Sanitized referring URL, or $direct when absent.",
+    "$referring_domain": "Referring hostname, or $direct when absent.",
+    "$lib": "Capture implementation identifier; Smarter Way Wealth direct capture uses sww-direct."
   },
   "crossSiteHandoff": {
     "from": "youarepayingtoomuch.com",
