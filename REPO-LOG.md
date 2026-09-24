@@ -9,6 +9,15 @@
 - follow-up: smarter-way-wealth has a different `wrap-up-check.mjs` (UTC date, other wording) that carries the same `includes('### ' + today)` line. Its headings are still date-first, so it will break the same way the day they go address-first. Separate PR there, not this one.
 - deployed: no site-visible change; the hook ships with the merge to `main` (Vercel redeploys the same site).
 
+### 02-77 — 2026-09-24 — Who section: visible "Email David" link
+**Agent:** Claude (desktop app) | **Surface:** homepage What/Why/Who/How, the Who answer | **PR:** [#312](https://github.com/dvanosdol88/ria-marketing-page/pull/312) (`19e8bc2`) + fix [#313](https://github.com/dvanosdol88/ria-marketing-page/pull/313) (`c0e78fa`) | **Status:** deployed and production-proved
+- David (2026-09-24): former clients have no visible way to reach him, even with the new site and the mailers, and they shouldn't have to look in the fine print (the compliance address in the footer).
+- The Who answer now carries an **Email David** mail link to `david@smarterwaywealth.com` (his firm Google Workspace mailbox, already used on /how). The address shows beneath it so it still works on a computer with no mail app. Navy link (forced past the site-wide link colour) with an unbounded mail icon. Beside the paragraph from tablet width up; below the photo, full width, on phones. Clicks go through the existing mailto tracking as "Email David" at `wwwh_who_email`.
+- Found in the first production check and fixed in #313: smarterwaywealth.com rendered the link in the global bright green (too faint here), and on phones the address broke mid-word ("…co / m").
+- Process note: #313 on ria-marketing-page was merged while its `test` job was still running (my wait loop miscounted passes); that job then passed. No harm, but merges wait for every check.
+- Same change on both sites. Sister: smarter-way-wealth#255/#256.
+- Proof: `/api/version` returns `c0e78fa`. A fresh Playwright run on the apex of both sites at 1280, 390 and 320px: link present under Who, `href` `mailto:david@smarterwaywealth.com`, colour navy `rgb(6, 75, 132)`, address on one line (link height 52–56px), no horizontal overflow.
+
 ### 02-70 — 2026-09-24 — Stacked buttons: green Become a client, small navy "Questions? / Schedule 15 minutes"
 **Agent:** Claude (desktop app) | **Surface:** homepage sign-up pair, every Become a client button, nav, /upgrade-your-advice, One Percent Blues diagnosis button | **PR:** [#308](https://github.com/dvanosdol88/ria-marketing-page/pull/308) (`300c438`) | **Status:** deployed and production-proved
 - David's final button spec (2026-09-24): every **Become a client** button is green and every call button is **navy**. Where both appear they are stacked. Become a client goes on top, with its label one size larger and the button the same size. The call sits underneath as a smaller navy button, centered, reading "Questions?" above "Schedule 15 minutes". "Book a 15-min call" is retired as too cliché. Headers show only Become a client.
