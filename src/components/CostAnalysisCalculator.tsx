@@ -26,11 +26,6 @@ import { SignupCta } from "@/components/SignupCta";
 import { BluesOpening } from "@/components/blues/BluesOpening";
 import { bluesCalculatorTheme, bluesControlClasses, bluesCopy, bluesLinks } from "@/config/onePercentBlues";
 import { SmarterWayWealthVisitCard } from "@/components/SmarterWayWealthVisitCard";
-/* PremiumPromisePreview (the Save / Upgrade / Improve video panel) is
-   deliberately not imported here. It sat between the promise block and the
-   calculator, which kept the calculator heading off the first mobile screen.
-   Deprecated rather than deleted — the component still builds and is kept for
-   reuse here or on smarterwaywealth.com (David, 2026-08-10). */
 import { WhatWhyWhoHow } from "@/components/WhatWhyWhoHow";
 import {
   HomeCalculatorExperience,
@@ -650,6 +645,7 @@ export function CostAnalysisCalculator({
   const [state, setState] = useState<CalculatorState>(mergedState);
   const [assumptionsCustomized, setAssumptionsCustomized] = useState(false);
   const [activeCard, setActiveCard] = useState<"smarter" | "traditional" | null>(null);
+  const usesOpeningMarketingHero = experienceMode === "marketing";
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [shareFeedback, setShareFeedback] = useState<"idle" | "success" | "error">("idle");
   const [slidersExpanded, setSlidersExpanded] = useState(true);
@@ -721,15 +717,17 @@ export function CostAnalysisCalculator({
 
   const { setData: setSavingsBarData } = useSavingsBar();
   useEffect(() => {
+    if (!usesOpeningMarketingHero) return;
     setSavingsBarData({
       savings: projection.savings,
       years: state.years,
       annualFeePercent: state.annualFeePercent,
     });
-  }, [projection.savings, state.years, state.annualFeePercent, setSavingsBarData]);
+  }, [projection.savings, state.years, state.annualFeePercent, setSavingsBarData, usesOpeningMarketingHero]);
   useEffect(() => {
+    if (!usesOpeningMarketingHero) return;
     return () => setSavingsBarData(null);
-  }, [setSavingsBarData]);
+  }, [setSavingsBarData, usesOpeningMarketingHero]);
 
   const introStyle = useMemo<IntroStyle>(() => {
     const intro = paramsFromServer.get("intro");
@@ -846,9 +844,10 @@ export function CostAnalysisCalculator({
   }, [experienceMode, marketingVariantId, projection.savings, shareSummary, shareUrl, state.portfolioValue]);
 
   useEffect(() => {
+    if (!usesOpeningMarketingHero) return;
     if (typeof document === "undefined") return;
     setIsDarkMode(document.documentElement.classList.contains("dark"));
-  }, []);
+  }, [usesOpeningMarketingHero]);
 
   useEffect(() => {
     setChartReady(true);
@@ -871,9 +870,10 @@ export function CostAnalysisCalculator({
   const [showDesktopBar, setShowDesktopBar] = useState(false);
 
   useEffect(() => {
+    if (!usesOpeningMarketingHero) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Show bar when calculator is NOT intersecting AND we have scrolled down past it
         setShowDesktopBar(!entry.isIntersecting && entry.boundingClientRect.top < 0);
       },
       { threshold: 0 }
@@ -884,12 +884,11 @@ export function CostAnalysisCalculator({
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [usesOpeningMarketingHero]);
 
   const marketingVariant = homeMarketingVariants[marketingVariantId];
   const isCalculatorFirst = experienceMode === "calculator-first";
   const isSavingsCalculatorUpgrade = experienceMode === "savings-calculator-upgrade";
-  const usesOpeningMarketingHero = experienceMode === "marketing";
   /* One Percent Blues (src/app/(blues), onepercentblues.com): the same
      engine behind a blue opening. It shares the lean home's calculator
      behaviour — inputs view, chart heading, no view tabs, disclaimer in the
@@ -1503,18 +1502,6 @@ export function CostAnalysisCalculator({
       {usesOpeningMarketingHero && (
         <SignupCta location="marketing_page_bottom" />
       )}
-
-      {/* The disclaimer used to render here, as the last block before the site
-          footer. It now lives INSIDE that footer, beneath the grey logo, where
-          it replaced a weaker paraphrase of itself (David, 2026-08-12) — see
-          SiteFooter. Rendering it in both places is what made the page say the
-          same thing twice, so it must not come back here.
-
-          It reaches every variant by virtue of being in the site footer, which
-          matters: the markers live in the calculator layout and are selected by
-          variant, and when this block was gated on experience mode instead,
-          /?mode=calculator-first and /?variant=final-home rendered markers whose
-          anchors led nowhere. */}
     </>
   );
 }
