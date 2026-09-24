@@ -242,6 +242,10 @@ test("the fit-to-quotes region reuses the Smarter Way Wealth math field with the
   assert.match(flatQuotes, /mt-2 whitespace-nowrap text-center[^"]*">\s*Not an endorsement\./);
   assert.match(flatQuotes, /right-3[^\"]*bottom-2/);
   assert.match(flatQuotes, /px-4 pb-4 pt-\[38px\] sm:px-6 sm:pb-4 sm:pt-\[54px\]/);
+  // 2026-09-24 (David): the quote marks are the same color as the quote
+  // text — no color class of their own, so they inherit the blockquote's.
+  assert.match(flatQuotes, /<span aria-hidden="true" className="mr-0\.5"> &ldquo; <\/span>/);
+  assert.match(flatQuotes, /<span aria-hidden="true" className="ml-0\.5"> &rdquo; <\/span>/);
   assert.match(firmVisitCardSource, /surfaceClassName = "bg-\[#EEF0F5\]"/);
 });
 
