@@ -286,7 +286,7 @@ export function SiteNav() {
               data-posthog-cta="true"
               data-posthog-cta-label="Become a Client"
               data-posthog-cta-location="site_nav_mobile"
-              className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-md bg-[#064B84] px-2.5 text-sm font-bold !text-white !no-underline shadow-[0_6px_18px_rgba(6,75,132,0.26)] transition hover:bg-[#053B6A] hover:!text-white focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#062B43] min-[360px]:px-4"
+              className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-md bg-[#008532] px-2.5 text-sm font-bold !text-white !no-underline shadow-[0_6px_18px_rgba(6,75,132,0.26)] transition hover:bg-[#006B28] hover:!text-white focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#008532] min-[360px]:px-4"
             >
               Sign Up
             </Link>
@@ -366,8 +366,8 @@ export function SiteNav() {
                 data-posthog-cta="true"
                 data-posthog-cta-label="Become a Client"
                 data-posthog-cta-location="site_nav"
-                className={`${DESKTOP_PEER_LINK_CLASS} hover:text-[#043B68] focus-visible:outline-[#064B84]`}
-                style={{ color: "#064B84" }}
+                className={`${DESKTOP_PEER_LINK_CLASS} hover:text-[#006B28] focus-visible:outline-[#008532]`}
+                style={{ color: "#008532" }}
               >
                 Become a Client
                 <ExternalLink className="h-[1.25em] w-[1.25em] shrink-0" aria-hidden="true" />
@@ -472,8 +472,8 @@ export function SiteNav() {
             data-posthog-cta="true"
             data-posthog-cta-label="Become a Client"
             data-posthog-cta-location="site_nav_mobile_drawer"
-            className={`${DRAWER_PEER_LINK_CLASS} focus-visible:outline-[#064B84]`}
-            style={{ color: "#064B84" }}
+            className={`${DRAWER_PEER_LINK_CLASS} focus-visible:outline-[#008532]`}
+            style={{ color: "#008532" }}
           >
             Become a Client
             <ExternalLink className="h-[1.25em] w-[1.25em] shrink-0" aria-hidden="true" />

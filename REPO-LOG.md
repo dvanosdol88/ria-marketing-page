@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-69 — 2026-09-24 — Every Become a client button is green
+**Agent:** Claude (desktop app) | **Surface:** every "Become a client" button, link-button and CTA | **Status:** see PR
+- changed (David's rule, 2026-09-24: every "Become a client" button, link-button and CTA is always green on every site): each one now uses the site's existing CTA green (`#008532`, hover `#006B28`). Filled buttons carry white text. Covered: the homepage "Sign me up — Become a client" button (was navy); the "Become a client — $100/month" pill in both SignupCta variants, inline (was cyan) and block (was white, also used on `/blues`); the mobile nav "Sign Up" button (was navy); the desktop and mobile-drawer "Become a Client" nav links (text now green, was navy); and the two `/upgrade-your-advice` fit CTAs (were cyan and navy).
+- re-lands held PR #306 (Cursor, `0a73f95`), which was built but not merged at the conflict gate. This branch is cut fresh from main and keeps every change already on main, including 02-68.
+- documented: CLAUDE.md convention "Become a client" is always green (David 2026-09-24), covering this site, One Percent Blues and smarterwaywealth.com.
+- preserved: copy, destinations, PostHog labels and locations, layout, and the "See if I'm a good fit" button (already green).
+- lock: `tests/home-signup-buttons.mjs` asserts the homepage Become a client button is green; `tests/home-wwwh.mjs` asserts the mobile nav Sign Up button is green.
+
 ### 02-68 — 2026-09-24 — Homepage quote marks now match the quote text color
 **Agent:** Claude (desktop app) | **Surface:** homepage quote cards (`FeeQuoteDeck`) | **Status:** see PR
 - changed (David): the opening and closing quotation marks on the homepage quote cards were brand green (#00A540) while the quote text is navy (#10233A). They now carry no color of their own and inherit the text color. David had asked for this before and was told it was done; #298 round 2 (2026-09-23) matched the marks' size and weight but left them green.

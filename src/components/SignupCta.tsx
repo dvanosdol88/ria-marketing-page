@@ -24,13 +24,14 @@ type SignupCtaProps = {
 };
 
 const INLINE_PRIMARY_BUTTON_CLASS =
-  "flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#00D8FF] px-6 text-center text-base font-bold !text-[#052E45] !no-underline shadow-sm transition hover:bg-[#3FE3FF] hover:!text-[#052E45] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#00D8FF]";
+  "flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#008532] px-6 text-center text-base font-bold !text-white !no-underline shadow-sm transition hover:bg-[#006B28] hover:!text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]";
 
-/** The retained full-card CTA is intentionally quiet: the white pill is the
+/** The retained full-card CTA is intentionally quiet: the green pill is the
  * single primary action after the headline/body were deprecated. The group/
- * arrow treatment is presentation only — one button, same label, same door. */
+ * arrow treatment is presentation only — one button, same label, same door.
+ * "Become a client" buttons are always green on every site (David 2026-09-24). */
 const BLOCK_PRIMARY_BUTTON_CLASS =
-  "group flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-white px-6 text-center text-base font-bold !text-[#052E45] !no-underline shadow-[0_10px_26px_rgba(3,26,42,0.35)] transition hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_16px_34px_rgba(3,26,42,0.45)] hover:!text-[#052E45] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white";
+  "group flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#008532] px-6 text-center text-base font-bold !text-white !no-underline shadow-[0_10px_26px_rgba(3,26,42,0.35)] transition hover:-translate-y-0.5 hover:bg-[#006B28] hover:shadow-[0_16px_34px_rgba(3,26,42,0.45)] hover:!text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]";
 
 const HOME_CLIENT_VALUE_ITEMS = [
   { label: "Personal financial planning and tailored investment recommendations." },
@@ -119,7 +120,7 @@ export function SignupCta({
           </div>
           <Link
             href={signupCta.primary.href}
-            className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-md bg-[#064B84] px-6 py-4 text-center text-lg font-bold !text-white !no-underline shadow-sm transition hover:bg-[#053B6A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84]"
+            className="flex min-h-[56px] w-full items-center justify-center gap-2 rounded-md bg-[#008532] px-6 py-4 text-center text-lg font-bold !text-white !no-underline shadow-sm transition hover:bg-[#006B28] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]"
             data-posthog-cta="true"
             data-posthog-cta-label={signupCta.primary.label}
             data-posthog-cta-location={`${location}_primary`}
