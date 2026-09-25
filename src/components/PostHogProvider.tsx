@@ -2,6 +2,10 @@
 
 import posthog from 'posthog-js'
 import { PostHogProvider as PHProvider } from 'posthog-js/react'
+import {
+  sanitizePostHogCaptureResult,
+  sanitizePostHogNetworkRequest,
+} from '@/lib/telemetryPrivacy'
 
 if (typeof window !== "undefined") {
   const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
@@ -12,6 +16,9 @@ if (typeof window !== "undefined") {
     posthog.init(posthogKey, {
       api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com',
       autocapture: true,
+      mask_all_text: true,
+      mask_all_element_attributes: true,
+      before_send: sanitizePostHogCaptureResult,
       capture_pageleave: true,
       enable_heatmaps: true,
       person_profiles: 'always',
@@ -27,18 +34,9 @@ if (typeof window !== "undefined") {
         });
       },
       session_recording: {
-        maskAllInputs: false,
-        maskInputOptions: {
-          password: true,
-          email: true,
-          tel: true,
-        },
-        maskCapturedNetworkRequestFn: (request) => {
-          if (request.name) {
-            request.name = request.name.replace(/([?&](token|auth|email|phone|ssn)=)[^&]+/gi, '$1[REDACTED]');
-          }
-          return request;
-        },
+        maskAllInputs: true,
+        maskTextSelector: "*",
+        maskCapturedNetworkRequestFn: sanitizePostHogNetworkRequest,
       },
     })
   }

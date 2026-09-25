@@ -5,6 +5,10 @@ import {
   resolveCleanRootLaunchAttribution,
   type CampaignAttribution,
 } from "@/lib/campaignAttribution";
+import {
+  sanitizePostHogProperties,
+  sanitizeTelemetryUrl,
+} from "@/lib/telemetryPrivacy";
 
 export type PostHogProperties = Record<string, unknown>;
 
@@ -77,23 +81,14 @@ function buildPostHogProperties(properties: PostHogProperties) {
     typeof properties.$current_url === "string"
       ? properties.$current_url
       : window.location.href;
-  const currentUrl = new URL(sourceUrl, window.location.origin);
-  const safeSearch = new URLSearchParams();
-  POSTHOG_UTM_KEYS.forEach((key) => {
-    const value = currentUrl.searchParams.get(key);
-    if (value) safeSearch.set(key, value);
-  });
-  currentUrl.search = safeSearch.toString();
-  currentUrl.hash = "";
-
-  return {
+  return sanitizePostHogProperties({
     $host: window.location.hostname,
     site_domain: window.location.hostname,
     site_path: window.location.pathname,
     ...getPostHogCampaignProperties(sourceUrl),
     ...properties,
-    $current_url: currentUrl.toString(),
-  };
+    $current_url: sanitizeTelemetryUrl(sourceUrl),
+  });
 }
 
 export function capturePostHogEvent(eventName: string, properties: PostHogProperties = {}) {
@@ -102,9 +97,9 @@ export function capturePostHogEvent(eventName: string, properties: PostHogProper
 }
 
 export function registerPostHogProperties(properties: PostHogProperties) {
-  getBrowserPostHog()?.register?.(properties);
+  getBrowserPostHog()?.register?.(sanitizePostHogProperties(properties));
 }
 
 export function registerPostHogPropertiesOnce(properties: PostHogProperties) {
-  getBrowserPostHog()?.register_once?.(properties);
+  getBrowserPostHog()?.register_once?.(sanitizePostHogProperties(properties));
 }
