@@ -43,7 +43,6 @@ import {
   homeMarketingVariants,
 } from "@/config/homeMarketingVariants";
 import type { HomeTopBannerId } from "@/config/homeTopBanners";
-import { useSavingsBar } from "@/components/SavingsBarContext";
 import { capturePostHogEvent } from "@/lib/posthog";
 import {
   ADVANCED_CALCULATOR_URL,
@@ -718,18 +717,6 @@ export function CostAnalysisCalculator({
       projected_total_flat_fees: Math.round(projection.totalFlatFees),
     });
   }, [assumptionsCustomized, experienceMode, marketingVariantId, projection.savings, projection.totalFees, projection.totalFlatFees, state, totalAnnualFeePercent]);
-
-  const { setData: setSavingsBarData } = useSavingsBar();
-  useEffect(() => {
-    setSavingsBarData({
-      savings: projection.savings,
-      years: state.years,
-      annualFeePercent: state.annualFeePercent,
-    });
-  }, [projection.savings, state.years, state.annualFeePercent, setSavingsBarData]);
-  useEffect(() => {
-    return () => setSavingsBarData(null);
-  }, [setSavingsBarData]);
 
   const introStyle = useMemo<IntroStyle>(() => {
     const intro = paramsFromServer.get("intro");
