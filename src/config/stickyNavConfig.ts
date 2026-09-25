@@ -1,6 +1,5 @@
 /**
- * Shared measurements and motion for the mobile sticky section bars
- * (ProgressiveStickyBar SectionSegments + ProofSectionProgressCue).
+ * Shared measurements and motion for SiteNav and ProofSectionProgressCue.
  */
 export const DESKTOP_COLLAPSED_SITE_NAV_HEIGHT = 52;
 export const MOBILE_COLLAPSED_SITE_NAV_HEIGHT = 58;
