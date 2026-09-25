@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-09-25 — Remove retired sticky-savings shell
+**Agent:** Cursor Grok | **Surface:** root layout + unused ProgressiveStickyBar / SavingsBarContext | **PR:** [#316](https://github.com/dvanosdol88/ria-marketing-page/pull/316) | **Status:** not deployed
+- changed: `ProgressiveStickyBar` had zero mounts after David took it off the page. This PR deletes that component, deletes `SavingsBarContext`, unwraps `SavingsBarProvider` from `src/app/layout.tsx`, and removes the calculator writes that only fed the unused context.
+- preserved: `src/config/stickyNavConfig.ts` (SiteNav still uses it, including the old sticky-bar height in scroll-spy). Historical mentions in this log and the 2026-09-17 Blues plan were left alone.
+- overlap: open PR #303 gates the same `CostAnalysisCalculator` `setSavingsBarData` block behind `usesOpeningMarketingHero`. This PR removes the block; note that when merging.
+- verified: `npx tsc --noEmit` exit 0; `npm run lint` 0 errors (one pre-existing SiteNav `<img>` warning); `npm run build` compiled (Next.js 16.3.3); CI-equivalent test scripts passed. Browser: production before vs local `:3010` after on `/blues` and `/` — same headlines, no sticky savings bar, diagnosis card and calculator still update.
+- deployed: `not deployed`
+
 ### 02-78 — 2026-09-24 — Stop hook accepts address-first REPO-LOG headings
 **Agent:** Claude (desktop app) | **Surface:** session Stop hook (`.claude/hooks/wrap-up-check.mjs`), wrap-up skill template, CI | **PR:** [#315](https://github.com/dvanosdol88/ria-marketing-page/pull/315) | **Status:** see PR
 - changed: the Stop hook decided whether today's journal entry exists with a plain `includes('### ' + today)`. Since the Rack one-address rule (D:\AGENTS.md §12D, 2026-09-21) every heading here starts with the container address, so the check never matched a correctly dated entry and blocked every session end with "commits exist today but REPO-LOG.md has no session entry for today" (seen 2026-09-24 in a read-only session whose commits belonged to other sessions). The hook now matches today's Eastern date on any `### ` heading line, so `### 2026-09-24 — …` and `### 02-70 — 2026-09-24 — …` both count and the date in body text does not. Still fail-open, ESM, node builtins only; the `stop_hook_active` loop guard and the dirty-worktree check are unchanged.
