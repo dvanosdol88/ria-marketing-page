@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 02-99 — 2026-09-26 — What/Why/Who/How headings end with question marks
+**Agent:** Claude (desktop app) | **Surface:** homepage What/Why/Who/How section | **PR:** [#318](https://github.com/dvanosdol88/ria-marketing-page/pull/318) | **Status:** see PR
+- David (2026-09-26): match smarterwaywealth.com (Rack 02-96, smarter-way-wealth#262). "What is Smarter Way Wealth?" (the mark inside the same black semibold span as the firm name), then "Why?", "Who?", "How?" in the green heading. The 2026-08-12 "only WHAT is completed into a question" comment stays, with a dated DECISION CHANGED note under it.
+- added: a check in `tests/home-wwwh.mjs`, anchored to the heading's closing tag after the cubic reviewer pointed out the first version would pass with the mark outside the heading. The same tightening went into the SWW copy (Rack 03-00).
+- verified locally: `tests/home-wwwh.mjs` 30/30; ESLint clean on the component. Production proof follows the merge.
+- not mirrored here: the other 02-96 changes (closing band copy, progress path, Home/Email David in the menu) have no counterpart on this site.
+
 ### 02-78 — 2026-09-24 — Stop hook accepts address-first REPO-LOG headings
 **Agent:** Claude (desktop app) | **Surface:** session Stop hook (`.claude/hooks/wrap-up-check.mjs`), wrap-up skill template, CI | **PR:** [#315](https://github.com/dvanosdol88/ria-marketing-page/pull/315) | **Status:** see PR
 - changed: the Stop hook decided whether today's journal entry exists with a plain `includes('### ' + today)`. Since the Rack one-address rule (D:\AGENTS.md §12D, 2026-09-21) every heading here starts with the container address, so the check never matched a correctly dated entry and blocked every session end with "commits exist today but REPO-LOG.md has no session entry for today" (seen 2026-09-24 in a read-only session whose commits belonged to other sessions). The hook now matches today's Eastern date on any `### ` heading line, so `### 2026-09-24 — …` and `### 02-70 — 2026-09-24 — …` both count and the date in body text does not. Still fail-open, ESM, node builtins only; the `stop_hook_active` loop guard and the dirty-worktree check are unchanged.
