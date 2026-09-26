@@ -824,3 +824,13 @@ test("WHO carries a visible Email David link with the address shown", () => {
   assert.match(flat, /!text-\[#064B84\]/, "navy, not the site-wide green link colour");
   assert.match(flat, /col-span-2[^"]*sm:col-span-1 sm:col-start-2/, "below the photo on a phone");
 });
+
+// DECISION, 2026-09-26 (David, Rack 02-99, mirroring smarterwaywealth.com
+// 02-96): each WWWH heading ends with a question mark; on "What" it follows
+// the firm name in the same black semibold type.
+test("every WWWH heading reads as a question", () => {
+  const flat = answersSource.replace(/\s+/g, " ");
+  assert.match(flat, /<span className="font-semibold">Smarter Way Wealth\?<\/span>/);
+  assert.match(flat, /\) : \( "\?" \)\} <\/h2>/, "Why and Who end with a question mark inside the heading");
+  assert.match(flat, /\{WWWH_HOW\.label\}\?<\/h2>/, "How ends with a question mark");
+});
