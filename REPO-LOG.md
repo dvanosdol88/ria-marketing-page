@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-09-26 — Blues host: stop green manifest and eval crawl leaks
+**Agent:** Cursor Grok | **Surface:** onepercentblues.com host passthrough + robots | **PR:** [#317](https://github.com/dvanosdol88/ria-marketing-page/pull/317) | **Status:** not deployed
+- changed: dropped `site.webmanifest` from the blue-host passthrough so the green PWA file no longer stays on onepercentblues.com. The Blues layout already sets `manifest: null`; a direct request now 307s to youarepayingtoomuch.com like every other non-blue path.
+- changed: Blues `robots.txt` now mirrors the green Disallow list (`/api/eddm-evals/` and the eval page paths). `/api/*` still passes through on the blue host, so those lines were the missing crawl rule.
+- preserved: favicon passthrough, calculator, `CostAnalysisCalculator.tsx`, `HomeCalculatorExperience.tsx`, and the files open PRs #303 and #316 change.
+- verified: `npx tsc --noEmit` exit 0; `npm run lint` 0 errors (one pre-existing SiteNav `<img>` warning); `npm run build` compiled (Next.js 16.3.3); CI-equivalent test scripts passed, including blues-source-locks 5/5 and blues-host-routing (robots Disallows + `/site.webmanifest` 307).
+- deployed: `not deployed`
+
 ### 02-78 — 2026-09-24 — Stop hook accepts address-first REPO-LOG headings
 **Agent:** Claude (desktop app) | **Surface:** session Stop hook (`.claude/hooks/wrap-up-check.mjs`), wrap-up skill template, CI | **PR:** [#315](https://github.com/dvanosdol88/ria-marketing-page/pull/315) | **Status:** see PR
 - changed: the Stop hook decided whether today's journal entry exists with a plain `includes('### ' + today)`. Since the Rack one-address rule (D:\AGENTS.md §12D, 2026-09-21) every heading here starts with the container address, so the check never matched a correctly dated entry and blocked every session end with "commits exist today but REPO-LOG.md has no session entry for today" (seen 2026-09-24 in a read-only session whose commits belonged to other sessions). The hook now matches today's Eastern date on any `### ` heading line, so `### 2026-09-24 — …` and `### 02-70 — 2026-09-24 — …` both count and the date in body text does not. Still fail-open, ESM, node builtins only; the `stop_hook_active` loop guard and the dirty-worktree check are unchanged.
