@@ -831,6 +831,6 @@ test("WHO carries a visible Email David link with the address shown", () => {
 test("every WWWH heading reads as a question", () => {
   const flat = answersSource.replace(/\s+/g, " ");
   assert.match(flat, /<span className="font-semibold">Smarter Way Wealth\?<\/span>/);
-  assert.match(flat, /\) : \( "\?" \)\}/, "Why and Who end with a question mark");
+  assert.match(flat, /\) : \( "\?" \)\} <\/h2>/, "Why and Who end with a question mark inside the heading");
   assert.match(flat, /\{WWWH_HOW\.label\}\?<\/h2>/, "How ends with a question mark");
 });
