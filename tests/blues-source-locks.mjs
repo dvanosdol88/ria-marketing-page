@@ -11,7 +11,7 @@ import test from "node:test";
 
 const read = (relativePath) => readFile(new URL(relativePath, import.meta.url), "utf8");
 
-const [config, opening, check, calculator, nextConfig, rootLayout, siteLayout, bluesLayout, bluesPage] =
+const [config, opening, check, calculator, nextConfig, rootLayout, siteLayout, bluesLayout, bluesPage, bluesRobots] =
   await Promise.all([
     read("../src/config/onePercentBlues.ts"),
     read("../src/components/blues/BluesOpening.tsx"),
@@ -22,6 +22,7 @@ const [config, opening, check, calculator, nextConfig, rootLayout, siteLayout, b
     read("../src/app/(site)/layout.tsx"),
     read("../src/app/(blues)/blues/layout.tsx"),
     read("../src/app/(blues)/blues/page.tsx"),
+    read("../src/app/(blues)/blues/robots.txt/route.ts"),
   ]);
 
 test("the approved headline and check copy have one source", () => {
@@ -89,4 +90,19 @@ test("host rules: the blue domain is one page and the other hostnames redirect t
   }
   assert.match(nextConfig, /destination: `\$\{GREEN_ORIGIN\}\/:path`/);
   assert.match(nextConfig, /\(\?!\$\{BLUES_PASSTHROUGH\}\)\.\+/, "the catch-all must never match '/'");
+  assert.ok(
+    !nextConfig.includes("webmanifest"),
+    "the green PWA manifest must bounce off the blue host, not stay in the passthrough",
+  );
+  for (const line of [
+    "Disallow: /api/quiz/",
+    "Disallow: /api/eddm-evals/",
+    "Disallow: /gallery",
+    "Disallow: /eddm-evals",
+    "Disallow: /evals",
+    "Disallow: /calculator-evals",
+    "Disallow: /url-evals",
+  ]) {
+    assert.ok(bluesRobots.includes(line), `blues robots must include ${line}`);
+  }
 });
