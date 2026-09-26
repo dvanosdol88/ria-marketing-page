@@ -20,6 +20,10 @@ const BLUES_PASSTHROUGH =
 const nextConfig = {
   reactStrictMode: true,
   typedRoutes: false,
+  // Container 02-90: stop `next dev` from appending its generated
+  // "BEGIN:nextjs-agent-rules" block to AGENTS.md whenever an AI agent starts
+  // a preview. David had it removed; without this it came back on every run.
+  agentRules: false,
   serverExternalPackages: ["firebase-admin"],
   /**
    * Retired routes, 2026-08-14. David simplified this site to drive visitors
