@@ -14,7 +14,7 @@ const bluesHost = { type: "host", value: BLUES_HOST };
 // Paths the blue host must keep serving itself. The catch-all below uses `.+`
 // (not `.*`) so "/" itself never matches it — the rewrite owns "/".
 const BLUES_PASSTHROUGH =
-  "api/|_next/|blues(?:/|$)|brand/|images/|assets/|monitoring|favicon|apple-touch-icon|site\\.webmanifest|robots\\.txt|sitemap\\.xml|llms\\.txt";
+  "api/|_next/|blues(?:/|$)|brand/|images/|assets/|monitoring|favicon|apple-touch-icon|robots\\.txt|sitemap\\.xml|llms\\.txt";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

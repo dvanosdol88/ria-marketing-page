@@ -132,7 +132,19 @@ try {
     !/(href|content|src)="[^"]*host=onepercentblues.com/.test(html),
     "the rewrite's host value must not leak into the page's links, images or share URLs",
   );
-  assert.match(await text("/robots.txt", blues), /Sitemap: https:\/\/onepercentblues\.com\/sitemap\.xml/);
+  const bluesRobots = await text("/robots.txt", blues);
+  assert.match(bluesRobots, /Sitemap: https:\/\/onepercentblues\.com\/sitemap\.xml/);
+  for (const line of [
+    "Disallow: /api/quiz/",
+    "Disallow: /api/eddm-evals/",
+    "Disallow: /gallery",
+    "Disallow: /eddm-evals",
+    "Disallow: /evals",
+    "Disallow: /calculator-evals",
+    "Disallow: /url-evals",
+  ]) {
+    assert.ok(bluesRobots.includes(line), `blue-host robots.txt must include ${line}`);
+  }
   assert.match(await text("/sitemap.xml", blues), /<loc>https:\/\/onepercentblues\.com\/<\/loc>/);
   assert.match(await text("/llms.txt", blues), /# One Percent Blues/);
   assert.match(
@@ -158,6 +170,12 @@ try {
   };
   await expectRedirect("/our-math", blues, "https://youarepayingtoomuch.com/our-math", [307]);
   await expectRedirect("/become-a-client", blues, "https://youarepayingtoomuch.com/become-a-client", [307]);
+  await expectRedirect(
+    "/site.webmanifest",
+    blues,
+    "https://youarepayingtoomuch.com/site.webmanifest",
+    [307],
+  );
   await expectRedirect("/?fee=1.5", { Host: "1percentblues.com" }, "https://onepercentblues.com/?fee=1.5", [308]);
   await expectRedirect("/", { Host: "www.1percentblues.com" }, "https://onepercentblues.com/", [308]);
   await expectRedirect("/", { Host: "www.onepercentblues.com" }, "https://onepercentblues.com/", [308]);
