@@ -1,10 +1,11 @@
 # REPO-LOG — ria-marketing-page
 
 ### 02-99 — 2026-09-26 — What/Why/Who/How headings end with question marks
-**Agent:** Claude (desktop app) | **Surface:** homepage What/Why/Who/How section | **PR:** [#318](https://github.com/dvanosdol88/ria-marketing-page/pull/318) | **Status:** see PR
+**Agent:** Claude (desktop app) | **Surface:** homepage What/Why/Who/How section | **PR:** [#318](https://github.com/dvanosdol88/ria-marketing-page/pull/318) (`2e7305d`) | **Rack:** 02-99 | **Status:** deployed and production-proved
 - David (2026-09-26): match smarterwaywealth.com (Rack 02-96, smarter-way-wealth#262). "What is Smarter Way Wealth?" (the mark inside the same black semibold span as the firm name), then "Why?", "Who?", "How?" in the green heading. The 2026-08-12 "only WHAT is completed into a question" comment stays, with a dated DECISION CHANGED note under it.
 - added: a check in `tests/home-wwwh.mjs`, anchored to the heading's closing tag after the cubic reviewer pointed out the first version would pass with the mark outside the heading. The same tightening went into the SWW copy (Rack 03-00).
-- verified locally: `tests/home-wwwh.mjs` 30/30; ESLint clean on the component. Production proof follows the merge.
+- verified locally: `tests/home-wwwh.mjs` 30/30; ESLint clean on the component. CI: the second `test` run failed once in First-screen geometry (the dev server could not fetch Google Fonts: "next/font/google ... Module not found"), unrelated and identical code had passed minutes earlier; the rerun passed.
+- Production proof (2026-09-26 ~8:15 AM EDT): `/api/version` returns `2e7305dd6078d7f55f6a41e30b4b8b89a30aa768` (source vercel). A fresh Playwright run on the apex at 1280 and 375px read the four headings as "What is Smarter Way Wealth? | Why? | Who? | How?", with "Smarter Way Wealth?" inside the semibold span and no horizontal overflow. Before/after apex screenshots are in the 02-99 / 03-00 brief.
 - not mirrored here: the other 02-96 changes (closing band copy, progress path, Home/Email David in the menu) have no counterpart on this site.
 
 ### 02-78 — 2026-09-24 — Stop hook accepts address-first REPO-LOG headings
