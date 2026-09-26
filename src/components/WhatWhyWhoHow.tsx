@@ -122,7 +122,12 @@ export function WhatWhyWhoHow() {
                   four, so it sets up the pattern the other three inherit without
                   having to repeat it (David, 2026-08-12). The completion is set
                   in the body's size, weight and ink so the question word still
-                  carries the heading. */}
+                  carries the heading.
+
+                  DECISION CHANGED, 2026-09-26 (David, Rack 02-99, mirroring
+                  smarterwaywealth.com 02-96): every heading ends with a question
+                  mark. On WHAT it follows the firm name inside the same black
+                  semibold; Why?, Who? and How? carry it in the green heading. */}
               <h2 className={WWWH_LABEL_CLASS}>
                 {answer.label}
                 {answer.key === "what" ? (
@@ -134,9 +139,11 @@ export function WhatWhyWhoHow() {
                      question word, which keeps the heading. */
                   <span className="text-xl font-normal tracking-normal text-[#10233A] sm:text-2xl">
                     {" "}
-                    is <span className="font-semibold">Smarter Way Wealth</span>
+                    is <span className="font-semibold">Smarter Way Wealth?</span>
                   </span>
-                ) : null}
+                ) : (
+                  "?"
+                )}
               </h2>
               {answer.key === "who" ? (
                 /* WHO is the only answer about a person, so it gets the face that
@@ -166,7 +173,7 @@ export function WhatWhyWhoHow() {
           ))}
 
           <div className="pt-8 sm:pt-9">
-            <h2 className={WWWH_LABEL_CLASS}>{WWWH_HOW.label}</h2>
+            <h2 className={WWWH_LABEL_CLASS}>{WWWH_HOW.label}?</h2>
             {/* Lines within each list sit close together so each list reads as one
                 block; gap-y keeps the two groups clearly apart when they stack on
                 a phone (David, 2026-08-11). Each column opens with a rule in its
