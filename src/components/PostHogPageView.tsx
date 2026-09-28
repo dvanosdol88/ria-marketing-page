@@ -16,6 +16,10 @@ import {
   SELF_TEST_QUERY_PARAM,
   shouldExcludePublicTraffic,
 } from "@/lib/selfTestTraffic";
+import {
+  buildPageviewCurrentUrl,
+  isBluesAnalyticsHost,
+} from "@/lib/bluesAnalyticsHost";
 
 let eventReportedInMemory = false;
 let receiptRecordedInMemory = false;
@@ -146,15 +150,13 @@ export function PostHogPageView() {
       if (searchParams.has(SELF_TEST_QUERY_PARAM)) {
         stripSelfTestQueryFromLocation();
       }
-      let url = window.location.origin + pathname;
-      if (search) {
-        url += `?${search}`;
-      }
+      const url = buildPageviewCurrentUrl(window.location);
       capturePostHogEvent("$pageview", {
         $current_url: url,
         ...(excludePublicTraffic ? { self_test: true } : {}),
       });
       if (excludePublicTraffic) return;
+      if (isBluesAnalyticsHost(window.location.hostname)) return;
       reportTrafficVisit();
       reportMailerScan(url);
     }
