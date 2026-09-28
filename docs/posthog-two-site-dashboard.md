@@ -78,6 +78,11 @@ The live dashboard was created on 2026-06-04 with the following saved insights. 
    - Event: `cta_clicked`
    - Filter: `cta_host` contains `smarterwaywealth.com`
    - Breakdown: `cta_location`
+   - On the calculator homepage, `home_post_calculator_primary` and
+     `home_post_calculator_secondary` are the CTA pair above the quote cards;
+     `home_post_faq_primary` and `home_post_faq_secondary` are the repeated pair
+     after the FAQ. The header client button remains `site_nav`. These are
+     distinct placements of the existing event and labels, not new events.
    - The solid-green post-calculator firm handoff keeps its home-doorway event
      at `cta_location=home_firm_visit_card` and
      `cta_label=Visit Smarter Way Wealth`. Its four destination rows use

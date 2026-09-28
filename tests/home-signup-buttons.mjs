@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 const source = readFileSync(new URL("../src/components/SignupCta.tsx", import.meta.url), "utf8");
-const home = source.split('if (variant === "block" && location === "home_post_calculator") {')[1]?.split('const primaryButtonClass')[0];
+const home = source.split('function HomeActionPair')[1]?.split('export function SignupCta')[0];
 
 test("homepage has two full-width actions without the wordy panel", () => {
   assert.ok(home);
@@ -25,4 +25,10 @@ test("homepage retains destinations and measurement identities", () => {
     assert.ok(home.includes(`data-posthog-cta-label={signupCta.${kind}.label}`));
     assert.ok(home.includes('data-posthog-cta-location={`${location}_' + kind + '`}'));
   }
+});
+
+test("the same action pair can render after the FAQ without repeating the client-value list", () => {
+  assert.match(source, /location === "home_post_calculator" \|\| location === "home_post_faq"/);
+  assert.match(source, /location === "home_post_calculator" && <div/);
+  assert.match(source, /<HomeActionPair location=\{location\} \/>/);
 });
