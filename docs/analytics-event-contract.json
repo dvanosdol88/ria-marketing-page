@@ -148,7 +148,9 @@
         "cta_location",
         "opens_new_tab"
       ],
-      "semanticRules": [],
+      "semanticRules": [
+        "On youarepayingtoomuch.com, home_post_calculator_primary/secondary and home_post_faq_primary/secondary identify the same two CTA choices at distinct homepage positions."
+      ],
       "ownerFiles": [
         "src/components/PostHogCtaTracker.tsx",
         "D:/smarter-way-wealth/src/components/PostHogCtaTracker.js"

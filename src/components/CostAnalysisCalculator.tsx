@@ -1470,11 +1470,10 @@ export function CostAnalysisCalculator({
         </section>
       )}
 
-      {/* The FAQ is the last thing on the page now, and the nav's FAQ item
-          scrolls here rather than leaving for /faq — that route is retired
-          (David, 2026-08-14). Two questions and a door to the firm site's
-          full set. */}
+      {/* The nav's FAQ item scrolls here rather than leaving for /faq. */}
       {isSavingsCalculatorUpgrade && <HomeFaqSection topPaddingClassName="pt-0" />}
+
+      {isSavingsCalculatorUpgrade && <SignupCta location="home_post_faq" />}
 
       {/* One Percent Blues: the site's standard conversion block, then the
           same three FAQ questions, both on the page gradient. */}

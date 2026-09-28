@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 03-32 — 2026-09-28 — One green header CTA and a second CTA pair after FAQ
+**Agent:** Codex | **Surface:** youarepayingtoomuch.com navigation and homepage | **Status:** locally verified; production proof pending
+
+- Removed the redundant Smarter Way Wealth text links from desktop navigation and the mobile drawer; the existing logo still links to the firm site. Replaced the desktop Become a Client text link with a solid green button using the same client offer as the pair above the quote cards. The mobile header Sign Up and drawer client action remain green.
+- Reused the existing green client and navy 15-minute call pair immediately after the homepage FAQ, before the footer. Destinations and event labels remain the same; new `home_post_faq_primary/secondary` locations distinguish the second placement.
+- Local proof: focused navigation/CTA checks passed 33/33; full lint exited with 0 errors and one pre-existing image warning; the production build passed. A headless production-build render at 390px and 1440px showed the FAQ above the repeated pair and the footer below it, the correct client and meeting destinations, and no horizontal overflow. The desktop header rendered both expanded and collapsed without overlap. PR checks, merge, and live apex proof remain.
+
 ### 02-99 — 2026-09-26 — What/Why/Who/How headings end with question marks
 **Agent:** Claude (desktop app) | **Surface:** homepage What/Why/Who/How section | **PR:** [#318](https://github.com/dvanosdol88/ria-marketing-page/pull/318) (`2e7305d`) | **Rack:** 02-99 | **Status:** deployed and production-proved
 - David (2026-09-26): match smarterwaywealth.com (Rack 02-96, smarter-way-wealth#262). "What is Smarter Way Wealth?" (the mark inside the same black semibold span as the firm name), then "Why?", "Who?", "How?" in the green heading. The 2026-08-12 "only WHAT is completed into a question" comment stays, with a dated DECISION CHANGED note under it.
