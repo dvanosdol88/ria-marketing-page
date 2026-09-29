@@ -345,7 +345,9 @@ export function HomeFaqSection({
                 rel="noreferrer"
                 data-posthog-cta="true"
                 data-posthog-cta-label="Read all FAQs on Smarter Way Wealth"
-                data-posthog-cta-location="home_faq_all_questions"
+                data-posthog-cta-location={
+                  tone === "blues" ? "blues_faq_all_questions" : "home_faq_all_questions"
+                }
                 className={`group block !no-underline transition-colors duration-150 hover:bg-[#F1F6F3] ${ROW_X} ${ROW_Y} ${ROW_FOCUS}`}
               >
                 <span className="block">

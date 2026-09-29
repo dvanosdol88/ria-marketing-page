@@ -16,6 +16,12 @@ assert.match(pageView, /MAILER_SCAN_SESSION_KEY/);
 assert.match(pageView, /eddm_qr_landed|MAILER_SCAN_EVENT/);
 assert.match(pageView, /\/api\/analytics\/mailer-scans/);
 assert.match(pageView, /shouldExcludePublicTraffic|selftest/);
+assert.match(pageView, /buildPageviewCurrentUrl\(window\.location\)/);
+assert.doesNotMatch(pageView, /window\.location\.origin \+ pathname/);
+assert.match(
+  pageView,
+  /if \(isBluesAnalyticsHost\(window\.location\.hostname\)\) return;\s*reportTrafficVisit\(\);\s*reportMailerScan\(url\);/,
+);
 assert.match(route, /buildMailerScanUpdate/);
 assert.match(route, /requestHeadersCameFromThisSite/);
 assert.match(route, /hasSelfTestCookie|self_test/);
