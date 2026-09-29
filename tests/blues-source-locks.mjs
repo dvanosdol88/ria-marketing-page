@@ -90,3 +90,28 @@ test("host rules: the blue domain is one page and the other hostnames redirect t
   assert.match(nextConfig, /destination: `\$\{GREEN_ORIGIN\}\/:path`/);
   assert.match(nextConfig, /\(\?!\$\{BLUES_PASSTHROUGH\}\)\.\+/, "the catch-all must never match '/'");
 });
+
+test("the blue layout overrides every icon slot with the blues mark", () => {
+  assert.match(bluesLayout, /icon: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
+  assert.match(bluesLayout, /shortcut: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
+  assert.match(bluesLayout, /apple: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
+  assert.doesNotMatch(bluesLayout, /apple-touch-icon\.png|favicon-\d+x\d+\.png|logo-icon\.svg/);
+});
+
+test("the blue host rewrites conventional favicon paths to the blues icon", async () => {
+  const config = await read("../next.config.mjs");
+  assert.match(
+    config,
+    /source: "\/:file\(\(\?:favicon\|apple-touch-icon\)\.\*\)"[\s\S]*destination: "\/brand\/blues-icon\.svg"/,
+  );
+});
+
+test("root not-found uses blues chrome on the blue host and green chrome elsewhere", async () => {
+  const notFound = await read("../src/app/not-found.tsx");
+  assert.match(notFound, /BluesHeader/);
+  assert.match(notFound, /BluesFooter/);
+  assert.match(notFound, /SiteNav/);
+  assert.match(notFound, /SiteFooter/);
+  assert.match(notFound, /headers\(\)/);
+  assert.match(notFound, /BLUES_ORIGIN/);
+});

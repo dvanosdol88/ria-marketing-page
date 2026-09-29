@@ -176,6 +176,43 @@ try {
   assert.equal(og.status, 200);
   assert.match(og.headers["content-type"] ?? "", /image\/png/);
 
+  // 5. Conventional icon paths on the blue host serve the blue mark.
+  const bluesIcon = await text("/brand/blues-icon.svg", blues);
+  assert.match(bluesIcon, /#1E3A8A/);
+  for (const path of ["/favicon.ico", "/favicon-32x32.png", "/apple-touch-icon.png"]) {
+    const icon = await get(port, path, blues);
+    assert.equal(icon.status, 200, `${path} on the blue host must stay on this host`);
+    assert.equal(icon.body, bluesIcon, `${path} on the blue host must serve the blues icon`);
+  }
+  const greenFavicon = await get(port, "/favicon.ico");
+  assert.equal(greenFavicon.status, 200);
+  assert.notEqual(greenFavicon.body, bluesIcon, "the green host keeps its own favicon");
+  html = await text("/", blues);
+  assert.match(html, /\/brand\/blues-icon\.svg/);
+  assert.ok(
+    !/apple-touch-icon\.png|favicon-16x16\.png|favicon-32x32\.png|\/brand\/logo-icon\.svg/.test(html),
+    "the blue page must not link the green apple/png fallbacks",
+  );
+
+  // 6. Passthrough 404s on the blue host wear blue chrome, not the green nav.
+  for (const path of ["/blues/nope", "/brand/missing.svg"]) {
+    const missing = await get(port, path, blues);
+    assert.equal(missing.status, 404, `${path} on the blue host must 404`);
+    assert.ok(missing.body.includes('data-theme="blues"'), `${path} must use blue chrome`);
+    assert.ok(missing.body.includes("One Percent"), `${path} must show the blues wordmark`);
+    assert.ok(
+      !missing.body.includes('aria-label="Mobile navigation"'),
+      `${path} must not wear the green nav`,
+    );
+  }
+  const greenMissing = await get(port, "/definitely-missing-page-for-blues-chrome");
+  assert.equal(greenMissing.status, 404);
+  assert.ok(
+    greenMissing.body.includes('aria-label="Mobile navigation"'),
+    "the green host 404 keeps the green nav",
+  );
+  assert.ok(!greenMissing.body.includes('data-theme="blues"'), "the green host 404 must not use blue chrome");
+
   console.log(
     "Blue front door: page, agent files, redirects and share card all behave; the green home is unchanged.",
   );
