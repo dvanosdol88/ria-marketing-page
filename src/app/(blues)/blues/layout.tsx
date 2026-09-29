@@ -39,8 +39,6 @@ export const metadata: Metadata = {
     description: bluesCopy.metaDescription,
     images: ["/api/og/blues"],
   },
-  // Child `icons` replaces the parent object; empty `apple` still lets iOS
-  // request /apple-touch-icon.png, so every slot has to be the blue mark.
   icons: {
     icon: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
     shortcut: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],

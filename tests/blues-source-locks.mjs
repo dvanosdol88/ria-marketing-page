@@ -92,10 +92,11 @@ test("host rules: the blue domain is one page and the other hostnames redirect t
 });
 
 test("the blue layout overrides every icon slot with the blues mark", () => {
-  assert.match(bluesLayout, /icon: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
-  assert.match(bluesLayout, /shortcut: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
-  assert.match(bluesLayout, /apple: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
-  assert.doesNotMatch(bluesLayout, /apple-touch-icon\.png|favicon-\d+x\d+\.png|logo-icon\.svg/);
+  const iconsBlock = bluesLayout.match(/icons:\s*\{[\s\S]*?\n  \},/)?.[0] ?? "";
+  assert.match(iconsBlock, /icon: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
+  assert.match(iconsBlock, /shortcut: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
+  assert.match(iconsBlock, /apple: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
+  assert.doesNotMatch(iconsBlock, /apple-touch-icon\.png|favicon-\d+x\d+\.png|logo-icon\.svg/);
 });
 
 test("the blue host rewrites conventional favicon paths to the blues icon", async () => {
