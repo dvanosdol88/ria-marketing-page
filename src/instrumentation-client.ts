@@ -1,9 +1,10 @@
 import * as Sentry from "@sentry/nextjs";
+import { sanitizeSentryEvent } from "@/lib/telemetryPrivacy";
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
 
-  sendDefaultPii: true,
+  sendDefaultPii: false,
 
   // 100% in dev, 10% in production
   tracesSampleRate: process.env.NODE_ENV === "development" ? 1.0 : 0.1,
@@ -12,10 +13,16 @@ Sentry.init({
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
 
+  beforeSend: sanitizeSentryEvent,
+  beforeSendTransaction: sanitizeSentryEvent,
+
   enableLogs: true,
 
   integrations: [
-    Sentry.replayIntegration(),
+    Sentry.replayIntegration({
+      maskAllText: true,
+      blockAllMedia: true,
+    }),
   ],
 });
 
