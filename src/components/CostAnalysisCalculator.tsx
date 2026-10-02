@@ -35,7 +35,6 @@ import { WhatWhyWhoHow } from "@/components/WhatWhyWhoHow";
 import {
   HomeCalculatorExperience,
   type CalculatorSimpleControlNodes,
-  type CalculatorSliderNodes,
 } from "@/components/HomeCalculatorExperience";
 import {
   HomeCalculatorTheme,
@@ -920,7 +919,7 @@ export function CostAnalysisCalculator({
   const monthlyFlatFee = annualFlatFee / 12;
   const annualAumFeeEstimate = state.portfolioValue * (totalAnnualFeePercent / 100);
 
-  const collapseControl = (
+  const collapseControl = usesLeanCalculator ? undefined : (
     <button
       type="button"
       onClick={() => setSlidersExpanded((prev) => !prev)}
@@ -932,7 +931,7 @@ export function CostAnalysisCalculator({
     </button>
   );
 
-  const shareAction = (
+  const shareAction = usesLeanCalculator ? undefined : (
     <div className="flex w-full max-w-sm flex-col items-stretch gap-2 sm:max-w-xs">
       <button
         type="button"
@@ -961,22 +960,13 @@ export function CostAnalysisCalculator({
     </p>
   );
 
-  const helperNotes = (
+  const helperNotes = usesLeanCalculator ? undefined : (
     <>
       <p className={`text-center text-xs ${calculatorTheme.helperTextClassName}`}>
         Compares our {formatCurrency(monthlyFlatFee)}/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
-        {isOnePercentBlues ? (
-          /* Absolute, plain <a>: /our-math on the blue host redirects to the
-             green domain, and a next/link prefetch of a cross-domain redirect
-             fails CORS on every page view. */
-          <a href={bluesLinks.ourMath} className={calculatorTheme.linkClassName}>
-            For finance nerds
-          </a>
-        ) : (
-          <Link href="/our-math" className={calculatorTheme.linkClassName}>
-            For finance nerds
-          </Link>
-        )}
+        <Link href="/our-math" className={calculatorTheme.linkClassName}>
+          For finance nerds
+        </Link>
       </p>
       <div className={`mx-auto mt-4 max-w-2xl space-y-2 text-center text-xs leading-snug ${calculatorTheme.helperTextClassName}`}>
         <p>
@@ -993,7 +983,7 @@ export function CostAnalysisCalculator({
     </>
   );
 
-  const calculatorSliders: CalculatorSliderNodes = {
+  const calculatorSliders = usesLeanCalculator ? undefined : {
     advisoryFee: (
       <PillSlider
         label="Advisory fee"
@@ -1142,7 +1132,9 @@ export function CostAnalysisCalculator({
     ),
   };
 
-  const renderChart = (className: string) => (
+  const renderChart = usesLeanCalculator
+    ? undefined
+    : (className: string) => (
     <div className={`relative w-full ${className} ${calculatorTheme.chartFrameClassName}`}>
       {chartReady ? (
         <ProFeeChart

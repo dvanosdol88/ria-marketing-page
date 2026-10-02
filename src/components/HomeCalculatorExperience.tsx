@@ -95,14 +95,14 @@ type HomeCalculatorExperienceProps = {
   totalFlatFees: number;
   annualAumFeeEstimate: number;
   annualFlatFee: number;
-  shareAction: ReactNode;
+  shareAction?: ReactNode;
   disclosure: ReactNode;
-  helperNotes: ReactNode;
-  collapseControl: ReactNode;
-  slidersExpanded: boolean;
-  sliders: CalculatorSliderNodes;
+  helperNotes?: ReactNode;
+  collapseControl?: ReactNode;
+  slidersExpanded?: boolean;
+  sliders?: CalculatorSliderNodes;
   simpleControls: CalculatorSimpleControlNodes;
-  renderChart: (className: string) => ReactNode;
+  renderChart?: (className: string) => ReactNode;
   activeScenario: Scenario | null;
   advancedCalculatorHref: string;
   assumptionsCustomized: boolean;
@@ -628,7 +628,12 @@ function ConsoleControlGroup({
   );
 }
 
-function DirectMailCalculatorExperience(props: HomeCalculatorExperienceProps) {
+function DirectMailCalculatorExperience(
+  props: HomeCalculatorExperienceProps & {
+    sliders: CalculatorSliderNodes;
+    renderChart: (className: string) => ReactNode;
+  },
+) {
   const {
     activeScenario,
     annualFlatFee,
@@ -772,7 +777,12 @@ function DirectMailCalculatorExperience(props: HomeCalculatorExperienceProps) {
   );
 }
 
-function FeeReceiptCalculatorExperience(props: HomeCalculatorExperienceProps) {
+function FeeReceiptCalculatorExperience(
+  props: HomeCalculatorExperienceProps & {
+    sliders: CalculatorSliderNodes;
+    renderChart: (className: string) => ReactNode;
+  },
+) {
   const {
     annualAumFeeEstimate,
     annualFlatFee,
@@ -2585,7 +2595,12 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   );
 }
 
-function AdvisorCalculatorExperience(props: HomeCalculatorExperienceProps) {
+function AdvisorCalculatorExperience(
+  props: HomeCalculatorExperienceProps & {
+    sliders: CalculatorSliderNodes;
+    renderChart: (className: string) => ReactNode;
+  },
+) {
   const {
     activeScenario,
     collapseControl,
@@ -2693,13 +2708,20 @@ export function HomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     return <FinalHomeCalculatorExperience {...props} />;
   }
 
+  const { sliders, renderChart } = props;
+  if (!sliders || !renderChart) {
+    return null;
+  }
+
+  const sliderBackedProps = { ...props, sliders, renderChart };
+
   if (props.layout === "receipt") {
-    return <FeeReceiptCalculatorExperience {...props} />;
+    return <FeeReceiptCalculatorExperience {...sliderBackedProps} />;
   }
 
   if (props.layout === "advisor") {
-    return <AdvisorCalculatorExperience {...props} />;
+    return <AdvisorCalculatorExperience {...sliderBackedProps} />;
   }
 
-  return <DirectMailCalculatorExperience {...props} />;
+  return <DirectMailCalculatorExperience {...sliderBackedProps} />;
 }

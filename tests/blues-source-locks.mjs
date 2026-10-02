@@ -63,7 +63,6 @@ test("the blue page composes the shared engine in one-percent-blues mode", () =>
     calculator,
     /<SignupCta location="blues_post_calculator" surfaceClassName="bg-transparent" primaryHref=\{bluesLinks\.signup\} \/>/,
   );
-  assert.match(calculator, /<a href=\{bluesLinks\.ourMath\}/, "green routes are absolute plain links on the blue page");
   assert.match(calculator, /<HomeFaqSection tone="blues" \/>/);
   assert.match(
     calculator,
