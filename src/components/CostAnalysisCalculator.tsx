@@ -35,6 +35,7 @@ import { WhatWhyWhoHow } from "@/components/WhatWhyWhoHow";
 import {
   HomeCalculatorExperience,
   type CalculatorSimpleControlNodes,
+  type CalculatorSliderNodes,
 } from "@/components/HomeCalculatorExperience";
 import {
   HomeCalculatorTheme,
@@ -919,7 +920,7 @@ export function CostAnalysisCalculator({
   const monthlyFlatFee = annualFlatFee / 12;
   const annualAumFeeEstimate = state.portfolioValue * (totalAnnualFeePercent / 100);
 
-  const collapseControl = usesLeanCalculator ? undefined : (
+  const collapseControl = (
     <button
       type="button"
       onClick={() => setSlidersExpanded((prev) => !prev)}
@@ -931,7 +932,7 @@ export function CostAnalysisCalculator({
     </button>
   );
 
-  const shareAction = usesLeanCalculator ? undefined : (
+  const shareAction = (
     <div className="flex w-full max-w-sm flex-col items-stretch gap-2 sm:max-w-xs">
       <button
         type="button"
@@ -960,7 +961,7 @@ export function CostAnalysisCalculator({
     </p>
   );
 
-  const helperNotes = usesLeanCalculator ? undefined : (
+  const helperNotes = (
     <>
       <p className={`text-center text-xs ${calculatorTheme.helperTextClassName}`}>
         Compares our {formatCurrency(monthlyFlatFee)}/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
@@ -983,7 +984,7 @@ export function CostAnalysisCalculator({
     </>
   );
 
-  const calculatorSliders = usesLeanCalculator ? undefined : {
+  const calculatorSliders: CalculatorSliderNodes = {
     advisoryFee: (
       <PillSlider
         label="Advisory fee"
@@ -1132,9 +1133,7 @@ export function CostAnalysisCalculator({
     ),
   };
 
-  const renderChart = usesLeanCalculator
-    ? undefined
-    : (className: string) => (
+  const renderChart = (className: string) => (
     <div className={`relative w-full ${className} ${calculatorTheme.chartFrameClassName}`}>
       {chartReady ? (
         <ProFeeChart
