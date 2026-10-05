@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 04-57 - 2026-10-05 - Avoid duplicate Renovate CI
+**Agent:** Codex (David-authorized guest implementation) | **Surface:** CI | **Status:** draft review; not deployed
+- changed: removed only the `renovate/**` push branch trigger from `.github/workflows/ci.yml`; main push, pull_request, job names, failure notification and all 18 test commands remain.
+- why: Renovate PR updates otherwise execute both branch-push and proposed-merge checks. Retain the proposed-merge context: the reviewed same-head PR build failed while its branch build passed.
+- evidence: refreshed main `42a3664a`, no matching open CI/workflow/04-57 PR in the bounded search, one-line workflow diff and command-preservation/YAML validation; existing draft-PR checks provide integration proof.
+- deployed: not deployed; David authorized draft PR only, with no merge, protection or credential changes.
+- next: this Codex task monitors existing checks; Winnie coordinates the result and next decision. Original shared-checkout work is preserved.
+
 ### 03-32 — 2026-09-28 — One green header CTA and a second CTA pair after FAQ
 **Agent:** Codex | **Surface:** youarepayingtoomuch.com navigation and homepage | **PR:** [#324](https://github.com/dvanosdol88/ria-marketing-page/pull/324) (`25d48d6`) | **Status:** deployed and production-proved
 
