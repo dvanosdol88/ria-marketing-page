@@ -638,6 +638,7 @@ export function CostAnalysisCalculator({
   searchParams,
   marketingVariantId,
 }: Props) {
+  const eventMarketingVariant = experienceMode === "one-percent-blues" ? "one-percent-blues" : marketingVariantId;
   const paramsFromServer = useMemo(() => normalizeSearchParams(searchParams), [searchParams]);
   const mergedState = useMemo(
     () => ({
@@ -669,7 +670,7 @@ export function CostAnalysisCalculator({
         changed_fields: changedFields,
         first_changed_field: changedFields[0],
         experience_mode: experienceMode,
-        marketing_variant: marketingVariantId,
+        marketing_variant: eventMarketingVariant,
         calculated_asset_tier: getAssetTier(nextState.portfolioValue),
         portfolio_value: nextState.portfolioValue,
         annual_fee_percent: nextState.annualFeePercent,
@@ -681,7 +682,7 @@ export function CostAnalysisCalculator({
 
     setAssumptionsCustomized(true);
     setState((prev) => ({ ...prev, ...patch }));
-  }, [experienceMode, marketingVariantId, state]);
+  }, [experienceMode, eventMarketingVariant, state]);
 
   const totalAnnualFeePercent = state.annualFeePercent + state.mutualFundExpensePercent;
 
@@ -705,7 +706,7 @@ export function CostAnalysisCalculator({
     capturePostHogEvent("calculator_submitted", {
       submission_type: "instant_result_rendered",
       experience_mode: experienceMode,
-      marketing_variant: marketingVariantId,
+      marketing_variant: eventMarketingVariant,
       calculated_asset_tier: getAssetTier(state.portfolioValue),
       portfolio_value: state.portfolioValue,
       annual_fee_percent: state.annualFeePercent,
@@ -717,7 +718,7 @@ export function CostAnalysisCalculator({
       projected_total_asset_based_fees: Math.round(projection.totalFees),
       projected_total_flat_fees: Math.round(projection.totalFlatFees),
     });
-  }, [assumptionsCustomized, experienceMode, marketingVariantId, projection.savings, projection.totalFees, projection.totalFlatFees, state, totalAnnualFeePercent]);
+  }, [assumptionsCustomized, experienceMode, eventMarketingVariant, projection.savings, projection.totalFees, projection.totalFlatFees, state, totalAnnualFeePercent]);
 
   const { setData: setSavingsBarData } = useSavingsBar();
   useEffect(() => {
@@ -805,7 +806,7 @@ export function CostAnalysisCalculator({
       cta_location: "calculator_share",
       cta_type: "share_result",
       experience_mode: experienceMode,
-      marketing_variant: marketingVariantId,
+      marketing_variant: eventMarketingVariant,
       calculated_asset_tier: getAssetTier(state.portfolioValue),
       projected_savings: Math.round(projection.savings),
     });
@@ -843,7 +844,7 @@ export function CostAnalysisCalculator({
     }
 
     setShareFeedback("error");
-  }, [experienceMode, marketingVariantId, projection.savings, shareSummary, shareUrl, state.portfolioValue]);
+  }, [experienceMode, eventMarketingVariant, projection.savings, shareSummary, shareUrl, state.portfolioValue]);
 
   useEffect(() => {
     if (typeof document === "undefined") return;
