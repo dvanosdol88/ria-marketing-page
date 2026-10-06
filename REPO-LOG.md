@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-10-06 — Next.js 16.3.6 security bump (GHSA-vcvr-r3jv-pc5j)
+**Agent:** Cursor | **Surface:** Next.js runtime (youarepayingtoomuch.com + onepercentblues.com) | **PR:** [#332](https://github.com/dvanosdol88/ria-marketing-page/pull/332) (`f2cb872`) | **Status:** deployed and production-proved
+
+- changed: lockfile-only bump of `next` 16.3.3 → 16.3.6 to patch [GHSA-vcvr-r3jv-pc5j](https://github.com/advisories/GHSA-vcvr-r3jv-pc5j) (`next/og` Node `ImageResponse` RCE). `package.json` already allowed `^16.1.5`.
+- verified: PR #332 CI `verify` + `test` both success on `2a4393d` (first-screen and Blues host routing included; not the known Fraunces `next/font/google` flake). Local `npm ci` + `next build` printed Next.js 16.3.6; `next start` served homepage title "Investment Fee Calculator | You Are Paying Too Much" and `/blues` plus `Host: onepercentblues.com` as "Got the 1% Blues? | One Percent Blues" with `data-theme="blues"`.
+- deployed: squash-merged as `f2cb8724389639fc3d0683e5eae61ae49a520134`. Main CI [run 37484946245](https://github.com/dvanosdol88/ria-marketing-page/actions/runs/37484946245) `verify` + `test` success. Vercel production `D8FdVpRzoqFN24ML7iSRu41g1Jco` READY. Live `/api/version` on youarepayingtoomuch.com and onepercentblues.com returns that SHA (`source: vercel`). Apex homepage 200 with the YAPT title; onepercentblues.com 200 Blues chrome; 1percentblues.com 308 → onepercentblues.com.
+- overlap: nightly-audit drafts #333/#331/#330/#328/#329/#327/#326 do not touch `package-lock.json`. Lockfile PRs that need rebase: #275 (lock file maintenance) and renovate lockfile bumps #146/#144/#107/#60/#59.
+
 ### 03-32 — 2026-09-28 — One green header CTA and a second CTA pair after FAQ
 **Agent:** Codex | **Surface:** youarepayingtoomuch.com navigation and homepage | **PR:** [#324](https://github.com/dvanosdol88/ria-marketing-page/pull/324) (`25d48d6`) | **Status:** deployed and production-proved
 
