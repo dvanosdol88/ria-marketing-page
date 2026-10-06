@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { headers } from "next/headers";
-import { fraunces } from "@/app/fonts";
+import { fraunces } from "@/app/bluesFonts";
 import { BluesFooter } from "@/components/blues/BluesFooter";
 import { BluesHeader } from "@/components/blues/BluesHeader";
 import { SiteFooter } from "@/components/SiteFooter";
