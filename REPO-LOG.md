@@ -1,11 +1,14 @@
 # REPO-LOG — ria-marketing-page
 
 ### 05-03 — 2026-10-07 — Reddit Pixel switched on (ID a2_jp3m1rbbkshb)
-**Agent:** Claude | **Surface:** youarepayingtoomuch.com analytics | **Status:** shipped; production proof below
+**Agent:** Claude | **Surface:** youarepayingtoomuch.com analytics | **Status:** live; production proof recorded
 
 - context: David approved on 05-03/05-14 (2026-10-07): pixel on youarepayingtoomuch.com only, same four events and no-personal-data rules, self-test visits excluded. 05-03 is closed as answered by 05-14.
 - changed: `src/config/redditPixel.ts` — `REDDIT_PIXEL_ID` filled. No other behavior change; host scope, self-test exclusion and the event map are the 05-14 code.
 - verified: `npm run test:reddit-pixel` ok.
+- merged: PR #338 squash `2838baa`; Vercel production deployment for `2838baa` completed 2026-10-07T22:23Z.
+- production proof (headless Chromium, 2026-10-07T22:23:55Z, fresh browser contexts): `https://youarepayingtoomuch.com/` → `window.rdt` is a function; `200 www.redditstatic.com/ads/pixel.js`, `200 alb.reddit.com/rp?id=a2_jp3m1rbbkshb&event=PageVisit`, `200 pixel-config.reddit.com/pixels/a2_jp3m1rbbkshb/config`. `https://youarepayingtoomuch.com/?selftest=1` → no Reddit requests, `rdt` undefined. `https://smarterwaywealth.com/` → no Reddit requests. That proof visit sent one agent PageVisit to Reddit; no calculator or form events were sent.
+- remaining: Events Manager view is behind David's Reddit Ads sign-in; the PageVisit above should appear there.
 
 ### 05-14 — 2026-10-07 — Reddit Pixel (inert until the pixel ID is set)
 **Agent:** Claude | **Surface:** youarepayingtoomuch.com analytics + privacy page | **Status:** shipped dark; activates when `REDDIT_PIXEL_ID` is filled
