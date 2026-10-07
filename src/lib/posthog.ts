@@ -1,4 +1,5 @@
 import posthog from "posthog-js";
+import { mirrorPostHogEventToReddit } from "@/lib/redditPixel";
 import {
   POSTHOG_UTM_KEYS,
   resolveCampaignAttribution,
@@ -99,6 +100,7 @@ function buildPostHogProperties(properties: PostHogProperties) {
 export function capturePostHogEvent(eventName: string, properties: PostHogProperties = {}) {
   if (typeof window === "undefined") return;
   getBrowserPostHog()?.capture?.(eventName, buildPostHogProperties(properties));
+  mirrorPostHogEventToReddit(eventName);
 }
 
 export function registerPostHogProperties(properties: PostHogProperties) {

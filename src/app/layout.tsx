@@ -8,6 +8,7 @@ import { SavingsBarProvider } from "@/components/SavingsBarContext";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { PostHogPageView } from "@/components/PostHogPageView";
 import { Analytics } from "@vercel/analytics/next";
+import RedditPixel from "@/components/RedditPixel";
 
 /* The site's header, footer and JSON-LD moved to src/app/(site)/layout.tsx on
    2026-09-17 so the One Percent Blues front door (src/app/(blues)) can render
@@ -85,6 +86,7 @@ export default function RootLayout({
               <Suspense fallback={null}>
                 <PostHogPageView />
               </Suspense>
+              <RedditPixel />
               {children}
             </SavingsBarProvider>
           </ViewTransitions>

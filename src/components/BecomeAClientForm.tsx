@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { signupCta } from "@/config/signupCta";
+import { trackRedditEvent } from "@/lib/redditPixel";
 import {
   US_STATES,
   HOME_STATE,
@@ -47,6 +48,7 @@ export function BecomeAClientForm() {
       }
 
       setStatus("sent");
+      trackRedditEvent("SignUp");
       window.location.replace(
         payload.agreementSent === true
           ? "/become-a-client/confirmation?agreement=sent"

@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 05-14 — 2026-10-07 — Reddit Pixel (inert until the pixel ID is set)
+**Agent:** Claude | **Surface:** youarepayingtoomuch.com analytics + privacy page | **Status:** shipped dark; activates when `REDDIT_PIXEL_ID` is filled
+
+- changed: `src/config/redditPixel.ts` (ID, allowed hosts, PostHog→Reddit event map), `src/lib/redditPixel.ts` (Reddit's loader, no advanced matching), `src/components/RedditPixel.tsx` (PageVisit per route) in the root layout; `capturePostHogEvent` mirrors `calculator_started`→ViewContent and `calculator_submitted`→Lead; Become a Client success sends SignUp. Only event names cross over — no names, emails, amounts or results. Loads only on youarepayingtoomuch.com/www, never for self-test browsers, never on sibling campaign hosts.
+- privacy: new "Advertising measurement" section + Reddit in Third parties; same paragraph mirrored on smarterwaywealth.com/privacy (SWW PR #332).
+- verified: `tests/reddit-pixel.mjs` (host scope, empty-ID, self-test, event map) added to CI; eslint + tsc clean; `next build` exit 0.
+- remaining: David supplies the pixel ID from Reddit Ads Manager → Events Manager; one-line change, then prove events arrive in Events Manager.
+
 ### 2026-10-06 — Next.js 16.3.6 security bump (GHSA-vcvr-r3jv-pc5j)
 **Agent:** Cursor | **Surface:** Next.js runtime (youarepayingtoomuch.com + onepercentblues.com) | **PR:** [#332](https://github.com/dvanosdol88/ria-marketing-page/pull/332) (`f2cb872`) | **Status:** deployed and production-proved
 
