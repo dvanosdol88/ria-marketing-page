@@ -120,6 +120,9 @@ jobs:
       - name: One Percent Blues host routing
         run: npm run test:blues-host-routing
 
+      - name: Reddit pixel scope
+        run: npm run test:reddit-pixel
+
   notify-failure:
     needs: [verify, test]
     if: failure()

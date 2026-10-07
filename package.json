@@ -30,7 +30,8 @@
     "test:blues-source-locks": "node --test tests/blues-source-locks.mjs",
     "test:blues-host-routing": "node tests/blues-host-routing.mjs",
     "test:posthog-cta-tracker-mailto": "node tests/posthog-cta-tracker-mailto.mjs",
-    "test:wrap-up-check-hook": "node --test tests/wrap-up-check-hook.mjs"
+    "test:wrap-up-check-hook": "node --test tests/wrap-up-check-hook.mjs",
+    "test:reddit-pixel": "node --experimental-strip-types tests/reddit-pixel.mjs"
   },
   "dependencies": {
     "@sentry/nextjs": "^10.43.0",
