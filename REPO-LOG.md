@@ -7,6 +7,7 @@
 - privacy: new "Advertising measurement" section + Reddit in Third parties; same paragraph mirrored on smarterwaywealth.com/privacy (SWW PR #332).
 - verified: `tests/reddit-pixel.mjs` (host scope, empty-ID, self-test, event map) added to CI; eslint + tsc clean; `next build` exit 0.
 - remaining: David supplies the pixel ID from Reddit Ads Manager → Events Manager; one-line change, then prove events arrive in Events Manager.
+- merged: PR #336 squash `1961ed3` (CI verify + test green after one rerun of the known Fraunces font flake). Vercel created no production deployment for that push, so this journal commit re-triggers the Git-driven deploy.
 
 ### 2026-10-06 — Next.js 16.3.6 security bump (GHSA-vcvr-r3jv-pc5j)
 **Agent:** Cursor | **Surface:** Next.js runtime (youarepayingtoomuch.com + onepercentblues.com) | **PR:** [#332](https://github.com/dvanosdol88/ria-marketing-page/pull/332) (`f2cb872`) | **Status:** deployed and production-proved
