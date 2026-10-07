@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 05-03 — 2026-10-07 — Reddit Pixel switched on (ID a2_jp3m1rbbkshb)
+**Agent:** Claude | **Surface:** youarepayingtoomuch.com analytics | **Status:** shipped; production proof below
+
+- context: David approved on 05-03/05-14 (2026-10-07): pixel on youarepayingtoomuch.com only, same four events and no-personal-data rules, self-test visits excluded. 05-03 is closed as answered by 05-14.
+- changed: `src/config/redditPixel.ts` — `REDDIT_PIXEL_ID` filled. No other behavior change; host scope, self-test exclusion and the event map are the 05-14 code.
+- verified: `npm run test:reddit-pixel` ok.
+
 ### 05-14 — 2026-10-07 — Reddit Pixel (inert until the pixel ID is set)
 **Agent:** Claude | **Surface:** youarepayingtoomuch.com analytics + privacy page | **Status:** shipped dark; activates when `REDDIT_PIXEL_ID` is filled
 

@@ -1,8 +1,8 @@
 // 05-14: Reddit Pixel for Reddit Ads measurement on youarepayingtoomuch.com.
-// The ID comes from Reddit Ads Manager → Events Manager. While it is empty the
-// pixel never loads, so the code can ship before the ID is known. A pixel ID is
-// public by design (it is visible in every page that loads the pixel).
-export const REDDIT_PIXEL_ID = "";
+// The ID comes from Reddit Ads Manager → Events Manager (set by 05-03 on
+// David's 2026-10-07 approval). While it is empty the pixel never loads. A pixel
+// ID is public by design (it is visible in every page that loads the pixel).
+export const REDDIT_PIXEL_ID = "a2_jp3m1rbbkshb";
 
 // The pixel runs only where the Reddit ads land. smarterwaywealth.com and the
 // sibling campaign sites served from this codebase never load it.
