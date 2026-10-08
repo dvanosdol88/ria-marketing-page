@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 05-54 — 2026-10-08 — Scoreboard: exact mailer scans and unique visitors, no robots, no David
+**Agent:** Claude | **Surface:** mailer-scan counter (RIA Builder scoreboard source) | **Status:** shipping
+
+- why: ~1,100 mailers land Oct 8–9. Decoding the print-ready mailer PDF shows its QR carries the four-number printer signature, so scans are exact; the counter had also been adding plain-homepage first visits (clean_root_launch) as scans, which let robots, typed visits and agent checks in (71 "scans" vs 31 exact, all pre-drop tests).
+- changed: scans = printer-signature or full approved UTM landings only, once per browser; plain-homepage landings are visits, never scans. Visits = unique visitors (once per browser per Eastern day; all-time total counts a browser once). Scripted browsers (`navigator.webdriver`) send nothing; the server also rejects requests with no user agent or no Accept-Language, plus the existing bot UA list and self-test cookie. Fresh counter document `public_metrics/eddm_launch_2026_exact` from today; the old document stays as history.
+- unchanged: PostHog campaign attribution (clean-root visitors are still tagged in PostHog), self-test switch (`?selftest=1` once per device).
+- verified: mailer-scan-policy, mailer-scan-contract, campaign-attribution, and the headless phone-simulation attribution test (exact scan, plain-homepage visit-only, one visitor per day, robot ignored, self-test ignored); tsc + eslint clean; next build exit 0.
+
 ### 05-03 — 2026-10-07 — Reddit Pixel switched on (ID a2_jp3m1rbbkshb)
 **Agent:** Claude | **Surface:** youarepayingtoomuch.com analytics | **Status:** live; production proof recorded
 

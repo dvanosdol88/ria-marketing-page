@@ -27,7 +27,7 @@ assert.deepEqual(cleanRoot, {
   is_eddm_visitor: true,
   legacy_eddm_qr: false,
 });
-assert.equal(isApprovedMailerCampaign(cleanRoot), true);
+assert.equal(isApprovedMailerCampaign(cleanRoot), false, "05-54: plain-homepage landings are visits, not scans");
 assert.equal(
   resolveCampaignAttribution(""),
   null,
