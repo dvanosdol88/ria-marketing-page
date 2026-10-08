@@ -1,10 +1,7 @@
 import { FieldValue } from "firebase-admin/firestore";
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebaseAdmin";
-import {
-  MAILER_SCAN_COUNTER_DOC,
-  isLikelyBotUserAgent,
-} from "@/lib/mailerScan";
+import { MAILER_SCAN_COUNTER_DOC } from "@/lib/mailerScan";
 import {
   ALLOWED_MAILER_ATTRIBUTION_METHODS,
   buildMailerScanUpdate,
@@ -12,6 +9,7 @@ import {
   easternDayKey,
   publicMailerScanHeaders,
   requestHeadersCameFromThisSite,
+  requestLooksAutomated,
 } from "@/lib/mailerScanPolicy";
 import { hasSelfTestCookie } from "@/lib/selfTestTraffic";
 
@@ -20,6 +18,7 @@ export const dynamic = "force-dynamic";
 type ScanReceiptBody = {
   attributionMethod?: string;
   kind?: "visit";
+  firstEver?: boolean;
 };
 
 function publicDailyTraffic(value: unknown) {
@@ -85,7 +84,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  if (isLikelyBotUserAgent(request.headers.get("user-agent") ?? "")) {
+  if (requestLooksAutomated(request.headers)) {
     return NextResponse.json({ counted: false, reason: "automated_traffic" });
   }
 
@@ -104,6 +103,7 @@ export async function POST(request: NextRequest) {
             dayKey,
             FieldValue.increment,
             FieldValue.serverTimestamp,
+            body.firstEver !== false,
           ),
           { merge: true },
         );

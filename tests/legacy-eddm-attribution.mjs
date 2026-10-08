@@ -236,6 +236,19 @@ try {
   );
 
   browser = await chromium.launch({ headless: true });
+  // 05-54: the site ignores scripted browsers (navigator.webdriver). These
+  // contexts stand in for real phones, so present as a normal browser; the
+  // automated-browser case is asserted separately below.
+  const automatedNewContext = browser.newContext.bind(browser);
+  browser.newContext = async (options) => {
+    const humanContext = await automatedNewContext(options);
+    await humanContext.addInitScript(() => {
+      Object.defineProperty(Navigator.prototype, "webdriver", {
+        get: () => false,
+      });
+    });
+    return humanContext;
+  };
   const context = await browser.newContext({
     viewport: { width: 390, height: 844 },
     userAgent:
@@ -338,7 +351,7 @@ try {
     () => trafficReceipts.length === 1,
     "the first privacy-safe traffic receipt",
   );
-  assert.deepEqual(trafficReceipts[0], { kind: "visit" });
+  assert.deepEqual(trafficReceipts[0], { kind: "visit", firstEver: true });
   await waitForCondition(
     () => scanReceipts.length === 1,
     "the first aggregate receipt attempt",
@@ -619,17 +632,49 @@ try {
   await cleanRootPage.getByRole("heading", { level: 1 }).waitFor();
   await waitForCondition(
     () => cleanRootVisits.length === 1,
-    "a clean-root launch visit receipt",
+    "a plain-homepage unique-visitor receipt",
   );
-  await waitForCondition(
-    () => cleanRootScans.length === 1,
-    "a clean-root launch mailer-scan receipt",
+  await cleanRootPage.waitForTimeout(2000);
+  assert.equal(
+    cleanRootScans.length,
+    0,
+    "05-54: a plain-homepage landing is a visit, never a mailer scan",
   );
-  assert.deepEqual(cleanRootScans[0], {
-    attributionMethod: "clean_root_launch",
-  });
-  await waitForCapturedEvent(cleanRootEvents, "eddm_qr_landed");
+  assert.equal(
+    cleanRootEvents.filter((event) => event.event === "eddm_qr_landed").length,
+    0,
+    "05-54: a plain-homepage landing must not raise a mailer-scan event",
+  );
+  await cleanRootPage.goto(`${baseUrl}/`, { waitUntil: "domcontentloaded" });
+  await cleanRootPage.getByRole("heading", { level: 1 }).waitFor();
+  await cleanRootPage.waitForTimeout(1500);
+  assert.equal(
+    cleanRootVisits.length,
+    1,
+    "05-54: the same browser counts as one unique visitor per day",
+  );
   await cleanRootContext.close();
+
+  const robotScans = [];
+  const robotVisits = [];
+  const robotContext = await automatedNewContext({
+    viewport: { width: 390, height: 844 },
+    userAgent:
+      "Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 " +
+      "(KHTML, like Gecko) Chrome/140.0.0.0 Mobile Safari/537.36",
+  });
+  await stubPostHogRoutes(robotContext);
+  await stubMailerScanRoute(robotContext, baseUrl, {
+    scanReceipts: robotScans,
+    trafficReceipts: robotVisits,
+  });
+  const robotPage = await robotContext.newPage();
+  await robotPage.goto(mailerUrl, { waitUntil: "domcontentloaded" });
+  await robotPage.getByRole("heading", { level: 1 }).waitFor();
+  await robotPage.waitForTimeout(2000);
+  assert.equal(robotVisits.length, 0, "05-54: scripted browsers are not visitors");
+  assert.equal(robotScans.length, 0, "05-54: scripted browsers are not scans");
+  await robotContext.close();
 
   const selfTestScans = [];
   const selfTestVisits = [];
@@ -668,7 +713,7 @@ try {
   await selfTestContext.close();
 
   console.log(
-    "The canonical QR destination is the clean root and now counts as a launch_5k mailer scan; legacy QR URLs and foreign explicit UTM traffic stay at the page top; self-test traffic is omitted from public totals; the legacy EDDM direct-start journey points to Smarter Way Wealth secure onboarding; attribution survives URL cleanup; every firm handoff enforces a UTM-only query, including the advanced-calculator path.",
+    "The printed mailer QR (printer signature) counts as one exact scan per browser; a plain-homepage landing is a unique visit, never a scan; scripted browsers count as neither; legacy QR URLs and foreign explicit UTM traffic stay at the page top; self-test traffic is omitted from public totals; the legacy EDDM direct-start journey points to Smarter Way Wealth secure onboarding; attribution survives URL cleanup; every firm handoff enforces a UTM-only query, including the advanced-calculator path.",
   );
 } finally {
   await browser?.close();

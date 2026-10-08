@@ -9,6 +9,7 @@ import {
   isLikelyBotUserAgent,
   publicMailerScanHeaders,
   requestHeadersCameFromThisSite,
+  requestLooksAutomated,
 } from "../src/lib/mailerScanPolicy.ts";
 
 const approvedExplicitCampaign = {
@@ -47,7 +48,8 @@ assert.equal(
     campaign_attribution_method: "clean_root_launch",
     legacy_eddm_qr: false,
   }),
-  true,
+  false,
+  "05-54: a plain-homepage landing is never a mailer scan, even with inferred tags",
 );
 assert.equal(
   isApprovedMailerCampaign({
@@ -55,14 +57,25 @@ assert.equal(
     legacy_eddm_qr: false,
   }),
   false,
-  "clean-root launch still requires the inferred launch_5k UTM tuple",
+  "a plain-homepage landing is never a mailer scan",
 );
 
 assert.equal(ALLOWED_MAILER_ATTRIBUTION_METHODS.has("explicit_utm"), true);
-assert.equal(ALLOWED_MAILER_ATTRIBUTION_METHODS.has("clean_root_launch"), true);
+assert.equal(ALLOWED_MAILER_ATTRIBUTION_METHODS.has("clean_root_launch"), false);
+assert.equal(ALLOWED_MAILER_ATTRIBUTION_METHODS.has("legacy_qr_signature"), true);
 assert.equal(ALLOWED_MAILER_ATTRIBUTION_METHODS.has("unknown"), false);
 assert.equal(isLikelyBotUserAgent("HeadlessChrome launch proof"), true);
 assert.equal(isLikelyBotUserAgent("Mobile Safari"), false);
+assert.equal(
+  requestLooksAutomated(new Headers({ "user-agent": "Mozilla/5.0 Mobile Safari", "accept-language": "en-US" })),
+  false,
+);
+assert.equal(
+  requestLooksAutomated(new Headers({ "user-agent": "Mozilla/5.0 Mobile Safari" })),
+  true,
+  "a browser fetch always carries Accept-Language",
+);
+assert.equal(requestLooksAutomated(new Headers({ "accept-language": "en" })), true);
 
 const sameOriginHeaders = new Headers({
   host: "youarepayingtoomuch.com",
@@ -123,6 +136,15 @@ assert.deepEqual(visitUpdate, {
     },
   },
 });
+
+assert.deepEqual(
+  buildTrafficVisitUpdate("2026-10-08", increment, serverTimestamp, false),
+  {
+    lastVisitAt: { serverTimestamp: true },
+    daily: { "2026-10-08": { visits: { increment: 1 } } },
+  },
+  "a returning visitor adds to the day, not to all-time unique visitors",
+);
 
 console.log(
   "Mailer scan policy accepts only the approved campaign, rejects bots/cross-site posts, publishes RIA-only CORS, and builds a nested Firestore attribution map.",

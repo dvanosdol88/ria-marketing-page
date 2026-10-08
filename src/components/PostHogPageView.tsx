@@ -7,11 +7,15 @@ import {
   getPostHogCampaignProperties,
 } from "@/lib/posthog";
 import {
+  MAILER_SCAN_BROWSER_KEY,
   MAILER_SCAN_EVENT,
   MAILER_SCAN_RECEIPT_SESSION_KEY,
   MAILER_SCAN_SESSION_KEY,
+  VISITOR_DAY_KEY,
+  VISITOR_SEEN_KEY,
   isMailerQrCampaign,
 } from "@/lib/mailerScan";
+import { easternDayKey } from "@/lib/mailerScanPolicy";
 import {
   SELF_TEST_QUERY_PARAM,
   shouldExcludePublicTraffic,
@@ -32,6 +36,31 @@ function hasSessionFlag(key: string, memoryFallback: boolean) {
   }
 }
 
+// 05-54: scripted browsers (Playwright, Puppeteer, Selenium) announce themselves.
+function isAutomatedBrowser() {
+  try {
+    return window.navigator.webdriver === true;
+  } catch {
+    return false;
+  }
+}
+
+function readLocal(key: string) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function writeLocal(key: string, value: string) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Session and in-memory flags still prevent repeats for this visit.
+  }
+}
+
 function setSessionFlag(key: string) {
   try {
     window.sessionStorage.setItem(key, "true");
@@ -42,6 +71,8 @@ function setSessionFlag(key: string) {
 
 function reportScanReceipt(attributionMethod: string) {
   if (
+    isAutomatedBrowser() ||
+    readLocal(MAILER_SCAN_BROWSER_KEY) === "1" ||
     receiptRecordedInMemory ||
     hasSessionFlag(MAILER_SCAN_RECEIPT_SESSION_KEY, receiptRecordedInMemory) ||
     receiptInFlight
@@ -64,6 +95,7 @@ function reportScanReceipt(attributionMethod: string) {
       if (payload.counted === false) return;
       receiptRecordedInMemory = true;
       setSessionFlag(MAILER_SCAN_RECEIPT_SESSION_KEY);
+      writeLocal(MAILER_SCAN_BROWSER_KEY, "1");
     } catch {
       // Leave the receipt unmarked so a later navigation/reload may try again.
     }
@@ -73,17 +105,21 @@ function reportScanReceipt(attributionMethod: string) {
 }
 
 function reportTrafficVisit() {
+  const today = easternDayKey();
   if (
+    isAutomatedBrowser() ||
+    readLocal(VISITOR_DAY_KEY) === today ||
     visitRecordedInMemory ||
     hasSessionFlag(TRAFFIC_VISIT_SESSION_KEY, visitRecordedInMemory) ||
     visitInFlight
   )
     return;
 
+  const firstEver = readLocal(VISITOR_SEEN_KEY) !== "1";
   visitInFlight = fetch("/api/analytics/mailer-scans", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ kind: "visit" }),
+    body: JSON.stringify({ kind: "visit", firstEver }),
     keepalive: true,
   })
     .then(async (response) => {
@@ -94,6 +130,8 @@ function reportTrafficVisit() {
       if (payload.counted === false) return;
       visitRecordedInMemory = true;
       setSessionFlag(TRAFFIC_VISIT_SESSION_KEY);
+      writeLocal(VISITOR_DAY_KEY, today);
+      writeLocal(VISITOR_SEEN_KEY, "1");
     })
     .catch(() => {
       // Leave unmarked so a later navigation may try again.
