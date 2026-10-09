@@ -42,10 +42,11 @@ export async function recordMeasurement(db: Firestore, input: MeasurementInput, 
   const browserRef = db.doc(`${counterPath}/browser_markers/${hash(input.browserId)}`);
   const openingRef = db.doc(`${counterPath}/opening_receipts/${hash(`${input.browserId}:${input.openingId}`)}`);
   const day = easternDayKey(now);
+  const dayRef = db.doc(`${counterPath}/daily_browser_markers/${hash(`${input.browserId}:${day}`)}`);
   const stamp = now.toISOString();
   return db.runTransaction(async (transaction) => {
-    const [counterSnap, browserSnap, openingSnap] = await Promise.all([
-      transaction.get(counterRef), transaction.get(browserRef), transaction.get(openingRef),
+    const [counterSnap, browserSnap, openingSnap, daySnap] = await Promise.all([
+      transaction.get(counterRef), transaction.get(browserRef), transaction.get(openingRef), transaction.get(dayRef),
     ]);
     if (openingSnap.exists) {
       const previous = openingSnap.data()!;
@@ -56,7 +57,8 @@ export async function recordMeasurement(db: Firestore, input: MeasurementInput, 
     const legacy = !input.verification;
     const qrSeen = browser.qrSeen === true || (legacy && input.legacyQrSeen === true);
     const websiteSeen = browser.websiteSeen === true || (legacy && input.legacyWebsiteSeen === true);
-    const previousDay = browser.lastWebsiteDay ?? (legacy ? input.legacyWebsiteDay : null);
+    // Preserve prior server/local migration markers; a delayed older day cannot erase a counted day.
+    const daySeen = daySnap.exists || browser.lastWebsiteDay === day || (legacy && input.legacyWebsiteDay === day);
     const qrAccepted = eligibility.attributionMethod !== null;
     const qrFirstBrowser = qrAccepted && !qrSeen;
     const daily = { ...(counter.daily?.[day] ?? {}) };
@@ -66,7 +68,7 @@ export async function recordMeasurement(db: Firestore, input: MeasurementInput, 
       lastVisitAt: serverTimestamp(),
       measurementVersion: MEASUREMENT_VERSION,
     };
-    if (previousDay !== day) daily.visits = total(daily.visits) + 1;
+    if (!daySeen) daily.visits = total(daily.visits) + 1;
     if (qrAccepted) {
       update.qrOpenings = total(counter.qrOpenings) + 1;
       update.qrOpeningsStartedAt = iso(counter.qrOpeningsStartedAt) ?? stamp;
@@ -84,8 +86,11 @@ export async function recordMeasurement(db: Firestore, input: MeasurementInput, 
     update.daily = { [day]: daily };
     transaction.set(counterRef, update, { merge: true });
     transaction.set(browserRef, {
-      websiteSeen: true, qrSeen: qrSeen || qrAccepted, lastWebsiteDay: day, lastSeenAt: stamp,
+      websiteSeen: true, qrSeen: qrSeen || qrAccepted,
+      lastWebsiteDay: typeof browser.lastWebsiteDay === "string" && browser.lastWebsiteDay > day ? browser.lastWebsiteDay : day,
+      lastSeenAt: stamp,
     }, { merge: true });
+    transaction.set(dayRef, { recordedAt: stamp });
     transaction.set(openingRef, { qrAccepted, qrFirstBrowser, recordedAt: stamp });
     return { counted: true, qrAccepted, qrFirstBrowser, qrOpeningId: input.openingId, verification: input.verification };
   });

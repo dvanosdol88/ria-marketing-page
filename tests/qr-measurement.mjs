@@ -34,9 +34,12 @@ test("accepted document openings retry atomically; reopening adds openings, each
   assert.equal(db.records.get(EXACT_COUNTER).qrOpenings, 1);
   assert.equal(db.records.get(EXACT_COUNTER).count, 32);
   assert.equal(db.records.get(EXACT_COUNTER).visits, 10);
+  // Simulate a browser marker from before per-day receipts existed, without backfilling.
+  for (const path of db.records.keys()) if (path.includes("/daily_browser_markers/")) db.records.delete(path);
   const second = await recordMeasurement(db, input("opening-00000000002"), now);
   assert.equal(second.qrFirstBrowser, false);
   assert.equal(db.records.get(EXACT_COUNTER).qrOpenings, 2);
+  assert.equal(db.records.get(EXACT_COUNTER).daily["2026-10-09"].visits, 1);
   await recordMeasurement(db, input("opening-00000000003", { browserId: "browser-00000000002" }), now);
   assert.equal(db.records.get(EXACT_COUNTER).count, 33);
   assert.equal(db.records.get(EXACT_COUNTER).visits, 11);
@@ -78,6 +81,21 @@ test("ordinary and verification visitors never add QR prospects; verification ig
   await recordMeasurement(db, input("opening-00000000003", { landing: landingEvidence(site), verification: true }), now);
   assert.equal(db.records.get(VERIFICATION_COUNTER).visits, 1);
   assert.equal(db.records.get(VERIFICATION_COUNTER).qrOpenings, 1);
+});
+
+test("daily browser markers survive out-of-order Eastern midnight commits", async () => {
+  const db = memoryDb({ [HISTORY_COUNTER]: { count: 72, visits: 172 } });
+  const times = ["2026-10-10T04:00:00.010Z", "2026-10-10T03:59:59.990Z", "2026-10-10T04:00:00.030Z"];
+  for (const [index, time] of times.entries()) {
+    await recordMeasurement(db, input(`opening-0000000000${index + 1}`), new Date(time));
+  }
+  const counter = db.records.get(EXACT_COUNTER);
+  assert.equal(counter.daily["2026-10-10"].visits, 1);
+  assert.equal(counter.daily["2026-10-09"].visits, 1);
+  assert.equal(counter.visits, 1);
+  assert.equal(counter.count, 1);
+  assert.equal(counter.qrOpenings, 3);
+  assert.deepEqual(db.records.get(HISTORY_COUNTER), { count: 72, visits: 172 });
 });
 
 test("public aggregates retain saved history and starts, with null opening coverage before first acceptance", async () => {

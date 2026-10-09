@@ -69,7 +69,9 @@ history from `public_metrics/eddm_launch_2026` without modifying it.
 
 Private dedup records below the counter store SHA-256 hashes of random anonymous
 browser/opening identifiers, seen flags and timestamps. A server transaction
-updates dedup markers and aggregate totals together. No raw browser IDs, landing
+updates dedup markers and aggregate totals together. Separate hashed browser/day
+markers preserve daily uniqueness even when delayed requests commit out of order
+across Eastern midnight. No raw browser IDs, landing
 URLs, calculator inputs, IP addresses or personal information are stored in these
 receipts or exposed by GET. Browser identity uses local storage, a first-party
 cookie, then session storage/memory fallback. Existing local dedup flags preserve
@@ -80,8 +82,12 @@ Owner exclusion (`?selftest=1`, existing persistent flag/cookie) suppresses norm
 QR events and counts. `?qrtest=1` is an ordinary preparation link: it sets a
 session-only phone-verification marker/cookie and displays a small fixed notice
 with an accessible Exit test button. The original printed card URL then records
-separate verification openings/uniques even if owner exclusion is active. These
-events carry `self_test:true` and `qr_verification:true`. `?qrtest=0` or Exit test
+separate verification openings/uniques even if owner exclusion is active. Requests
+are verification when either the server cookie or the explicit boolean
+request flag is true, so blocked cookies or an older tab's session marker cannot
+silently turn a test into a prospect. A false request flag cannot disable a server
+test cookie. Callers can only opt themselves out of prospect totals into test.
+These events carry `self_test:true` and `qr_verification:true`. `?qrtest=0` or Exit test
 clears the mode; it never alters normal legacy dedup flags. Recognized bots and
 browser automation remain excluded in both modes. Real phone/card and email
 proof remain separate from local automated tests.

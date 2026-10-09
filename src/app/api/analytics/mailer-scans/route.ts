@@ -31,13 +31,14 @@ export async function POST(request: NextRequest) {
   if (!MEASUREMENT_HOSTS.has(host)) return NextResponse.json({ counted: false, reason: "other_host" });
   if (requestLooksAutomated(request.headers)) return NextResponse.json({ counted: false, reason: "automated_traffic" });
   const cookies = request.headers.get("cookie") ?? "";
-  const verification = hasQrVerificationCookie(cookies);
-  if (hasSelfTestCookie(cookies) && !verification) return NextResponse.json({ counted: false, reason: "self_test" });
   let body: unknown;
   try { body = await request.json(); } catch { return NextResponse.json({ error: "Invalid landing evidence." }, { status: 400 }); }
   if (!validMeasurementInput(body) || body.landing.hostname.toLowerCase() !== host) {
     return NextResponse.json({ error: "Invalid landing evidence." }, { status: 400 });
   }
+  // A caller may exclude itself into test totals; it cannot disable the server's test marker.
+  const verification = hasQrVerificationCookie(cookies) || body.verification === true;
+  if (hasSelfTestCookie(cookies) && !verification) return NextResponse.json({ counted: false, reason: "self_test" });
   try {
     return NextResponse.json(await recordMeasurement(getAdminDb(), { ...body, verification }, new Date(), FieldValue.serverTimestamp));
   } catch (error) {

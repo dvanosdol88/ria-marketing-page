@@ -13,6 +13,7 @@ function environment(url = site, options = {}) {
   const localStorage = options.localStorage ?? storage(), sessionStorage = options.sessionStorage ?? storage();
   const cookies = options.cookies ?? new Map();
   globalThis.document = { get cookie() { return Array.from(cookies).map(([key, value]) => `${key}=${value}`).join("; "); }, set cookie(value) {
+    if (options.blockCookies) return;
     const [pair, ...attributes] = value.split(";"); const [key, content] = pair.split("=");
     if (!content || attributes.some((v) => v.trim() === "Max-Age=0")) cookies.delete(key); else cookies.set(key, content);
   } };
@@ -59,8 +60,8 @@ test("blocked local storage falls back to a cookie across documents; failed resp
     if (first) { first = false; throw Error("lost response"); }
     return { ok: true, json: async () => receipt };
   };
-  const module = await freshBrowserModule(); assert.equal(await module.reportDocumentMeasurement(), null);
-  const retry = await module.reportDocumentMeasurement(); assert.equal(retry.duplicate, true);
+  const browserModule = await freshBrowserModule(); assert.equal(await browserModule.reportDocumentMeasurement(), null);
+  const retry = await browserModule.reportDocumentMeasurement(); assert.equal(retry.duplicate, true);
   assert.equal(requests[0].openingId, requests[1].openingId);
   assert.equal(db.records.get(EXACT_COUNTER).qrOpenings, 1);
   environment(`${site}?${printed}`, env); await (await freshBrowserModule()).reportDocumentMeasurement();
@@ -111,7 +112,7 @@ registerHooks({ resolve(specifier, context, nextResolve) {
   return nextResolve(specifier, context);
 } });
 
-test("API rejects claims without landing evidence and bot/owner/host writes; session cookie controls test separation", async () => {
+test("API rejects invalid/bot/owner/host writes; cookie or explicit true isolates verification", async () => {
   const { POST, GET } = await import("../src/app/api/analytics/mailer-scans/route.ts");
   globalThis.__measurementDb = memoryDb();
   const baseHeaders = { host: "youarepayingtoomuch.com", origin: "https://youarepayingtoomuch.com", "sec-fetch-site": "same-origin", "user-agent": "Mozilla/5.0 iPhone Safari", "accept-language": "en-US" };
@@ -121,19 +122,69 @@ test("API rejects claims without landing evidence and bot/owner/host writes; ses
   assert.equal((await POST(request(baseBody, { "user-agent": "Googlebot" }))).body.reason, "automated_traffic");
   assert.equal((await POST(request(baseBody, { "accept-language": "" }))).body.reason, "automated_traffic");
   assert.equal((await POST(request(baseBody, { cookie: "yapt_selftest=1" }))).body.reason, "self_test");
+  assert.equal((await POST(request({ ...baseBody, verification: "true" }, { cookie: "yapt_selftest=1" }))).body.reason, "self_test");
   assert.equal((await POST(request(baseBody, { host: "onepercentblues.com", origin: "https://onepercentblues.com" }))).body.reason, "other_host");
   assert.equal((await POST(request(baseBody, { origin: "https://example.com" }))).status, 403);
   assert.equal(globalThis.__measurementDb.records.size, 0);
-  const verification = await POST(request(baseBody, { cookie: "yapt_selftest=1; yapt_qr_verification=1" }));
+  const verification = await POST(request({ ...baseBody, verification: false }, { cookie: "yapt_selftest=1; yapt_qr_verification=1" }));
   assert.equal(verification.body.verification, true);
   assert.equal(globalThis.__measurementDb.records.has(EXACT_COUNTER), false);
-  const forged = await POST(request({ ...baseBody, verification: true, openingId: "opening-00000000002", landing: { ...baseBody.landing, search: "" } }));
-  assert.equal(forged.body.verification, false);
-  assert.equal(forged.body.qrAccepted, false);
-  const publicResult = await GET(); assert.equal(publicResult.body.verification.qrOpenings.total, 1);
+  const ownerTest = await POST(request({ ...baseBody, verification: true, openingId: "opening-00000000003" }, { cookie: "yapt_selftest=1" }));
+  assert.equal(ownerTest.body.verification, true);
+  const optedOut = await POST(request({ ...baseBody, verification: true, openingId: "opening-00000000002", landing: { ...baseBody.landing, search: "" } }));
+  assert.equal(optedOut.body.verification, true);
+  assert.equal(optedOut.body.qrAccepted, false);
+  assert.equal(globalThis.__measurementDb.records.has(EXACT_COUNTER), false);
+  assert.equal(globalThis.__measurementDb.records.get(VERIFICATION_COUNTER).visits, 1);
+  const publicResult = await GET(); assert.equal(publicResult.body.verification.qrOpenings.total, 2);
   assert.equal(publicResult.body.qrOpenings.total, null);
   assert.equal(JSON.stringify(publicResult.body).includes("browserId"), false);
 });
+
+test("blocked cookies keep an owner's phone verification out of prospect counters through the real handler", async () => {
+  const { POST } = await import("../src/app/api/analytics/mailer-scans/route.ts");
+  globalThis.__measurementDb = memoryDb();
+  const env = environment(`${site}?${printed}&qrtest=1`, { blockCookies: true });
+  env.localStorage.setItem("sww_self_test", "true");
+  env.localStorage.setItem("yapt_mailer_scan_counted", "1");
+  const receipt = await browserThroughHandler(POST);
+  assert.equal(env.cookies.size, 0);
+  assert.equal(receipt.verification, true);
+  assert.equal(receipt.qrAccepted, true);
+  assert.equal(globalThis.__measurementDb.records.has(EXACT_COUNTER), false);
+  assert.equal(globalThis.__measurementDb.records.get(VERIFICATION_COUNTER).count, 1);
+  assert.equal(env.localStorage.getItem("yapt_visitor_seen"), null);
+  assert.equal(env.localStorage.getItem("yapt_mailer_scan_counted"), "1");
+});
+
+test("a stale test tab remains verification after another tab clears the shared cookie", async () => {
+  const { POST } = await import("../src/app/api/analytics/mailer-scans/route.ts");
+  globalThis.__measurementDb = memoryDb();
+  const firstTab = environment(`${site}?qrtest=1`);
+  assert.equal(syncQrVerification(), true);
+  firstTab.localStorage.setItem("sww_self_test", "true");
+  environment(site, { cookies: firstTab.cookies, localStorage: firstTab.localStorage }); // second tab exits test
+  assert.equal(firstTab.cookies.has("yapt_qr_verification"), false);
+  window.sessionStorage = firstTab.sessionStorage;
+  window.location = new URL(`${site}?${printed}`); // first tab's independent session marker survives
+  assert.equal(syncQrVerification(), true);
+  const receipt = await browserThroughHandler(POST);
+  assert.equal(receipt.verification, true);
+  assert.equal(globalThis.__measurementDb.records.has(EXACT_COUNTER), false);
+  assert.equal(globalThis.__measurementDb.records.get(VERIFICATION_COUNTER).count, 1);
+});
+
+async function browserThroughHandler(POST) {
+  globalThis.fetch = async (_url, init) => {
+    const result = await POST({ headers: new Headers({
+      host: "youarepayingtoomuch.com", origin: "https://youarepayingtoomuch.com",
+      "sec-fetch-site": "same-origin", "user-agent": window.navigator.userAgent,
+      "accept-language": "en-US", cookie: document.cookie,
+    }), json: async () => JSON.parse(init.body) });
+    return { ok: result.status === 200, json: async () => result.body };
+  };
+  return (await freshBrowserModule()).reportDocumentMeasurement();
+}
 
 test("fresh ordinary/shared documents clear stale campaigns; a legitimate QR keeps campaign for conversions after cleanup", async () => {
   for (const query of ["", `${printed}&flat=1200&mfe=0`, `${printed}&shared=1`]) {

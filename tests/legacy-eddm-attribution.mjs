@@ -70,7 +70,7 @@ try {
       }
       if (url.pathname === "/api/analytics/mailer-scans") {
         const body = route.request().postDataJSON(); requests.push(body);
-        const verification = (route.request().headers().cookie ?? "").includes("yapt_qr_verification=1");
+        const verification = (route.request().headers().cookie ?? "").includes("yapt_qr_verification=1") || body.verification === true;
         const receipt = await recordMeasurement(db, { ...body, verification });
         await route.fulfill({ contentType: "application/json", body: JSON.stringify(receipt) }); return;
       }

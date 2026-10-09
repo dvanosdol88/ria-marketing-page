@@ -38,7 +38,7 @@
     "campaign_attribution_method": "Current arrivals: explicit_utm or legacy_qr_signature. clean_root_launch is historical only; fresh ordinary/shared arrivals clear prior campaign context.",
     "legacy_eddm_qr": "True when the exact untagged URL embedded in the 2026 printer proofs supplied the EDDM attribution.",
     "self_test": "True for owner exclusion or session-only phone verification. Normal prospect aggregates exclude these events.",
-    "qr_verification": "True only in qrtest phone verification mode; verification uses separate totals and can override owner exclusion, never robot exclusion."
+    "qr_verification": "True in phone verification mode; the server cookie or explicit boolean request flag opts activity into separate test totals. False cannot override a server test cookie. Verification can override owner exclusion, never robot exclusion."
   },
   "crossSiteHandoff": {
     "from": "youarepayingtoomuch.com",
