@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { fraunces } from "@/app/fonts";
+import { fraunces } from "@/app/bluesFonts";
 import { BluesFooter } from "@/components/blues/BluesFooter";
 import { BluesHeader } from "@/components/blues/BluesHeader";
 import { BLUES_ORIGIN, bluesCopy, bluesJsonLd } from "@/config/onePercentBlues";
@@ -41,6 +41,8 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
+    shortcut: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
   },
 };
 
