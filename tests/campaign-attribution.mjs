@@ -21,13 +21,8 @@ const cleanRoot = resolveCleanRootLaunchAttribution("", {
   referrer: "",
   origin: "https://youarepayingtoomuch.com",
 });
-assert.deepEqual(cleanRoot, {
-  ...launchUtms,
-  campaign_attribution_method: "clean_root_launch",
-  is_eddm_visitor: true,
-  legacy_eddm_qr: false,
-});
-assert.equal(isApprovedMailerCampaign(cleanRoot), false, "05-54: plain-homepage landings are visits, not scans");
+assert.equal(cleanRoot, null, "ordinary homepages no longer infer mailer attribution");
+assert.equal(isApprovedMailerCampaign(cleanRoot ?? {}), false);
 assert.equal(
   resolveCampaignAttribution(""),
   null,
@@ -37,7 +32,7 @@ assert.equal(
 const selfTestRoot = resolveCleanRootLaunchAttribution("selftest=1", {
   pathname: "/",
 });
-assert.equal(selfTestRoot?.campaign_attribution_method, "clean_root_launch");
+assert.equal(selfTestRoot, null);
 
 assert.equal(
   resolveCleanRootLaunchAttribution("", { pathname: "/become-a-client" }),
@@ -106,5 +101,5 @@ assert.equal(hasSelfTestCookie("yapt_selftest=0"), false);
 assert.equal(hasSelfTestCookie(""), false);
 
 console.log(
-  "Clean-root launch, legacy printer-proof, and full EDDM UTMs attribute as launch_5k; unapproved UTMs, search, and on-site clicks do not; selftest flags parse without an IP list.",
+  "Only the printer-proof and full EDDM UTMs attribute as launch_5k; unapproved UTMs, search, and on-site clicks do not; selftest flags parse without an IP list.",
 );

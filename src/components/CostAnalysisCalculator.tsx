@@ -5,6 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { Check, ChevronDown, ChevronUp, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
+import { buildSharedResultQuery } from "@/lib/qrLanding";
 import {
   CalculatorState,
   DEFAULT_STATE,
@@ -738,7 +739,7 @@ export function CostAnalysisCalculator({
 
   const shareUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
-    const query = buildQueryFromState(state, paramsFromServer);
+    const query = buildSharedResultQuery(buildQueryFromState(state, paramsFromServer));
     const base = `${window.location.origin}${window.location.pathname}`;
     return `${base}?${query}`;
   }, [paramsFromServer, state]);

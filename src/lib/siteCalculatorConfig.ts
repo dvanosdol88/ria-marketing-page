@@ -12,6 +12,7 @@
  * the sister repo's copy of this file even though the VALUES differ.
  */
 
+import { buildSharedResultQuery } from "./qrLanding.ts";
 const CALCULATOR_PATH = "/";
 
 export interface SiteCalculatorConfig {
@@ -98,7 +99,7 @@ export const siteCalculatorConfig: SiteCalculatorConfig = {
   domain: "youarepayingtoomuch.com",
   displayDomain: "youarepayingtoomuch.com",
   calculatorPath: CALCULATOR_PATH,
-  buildCanonicalUrl: (origin, query) => `${origin}/?${query}#calculator`,
+  buildCanonicalUrl: (origin, query) => `${origin}/?${buildSharedResultQuery(query)}#calculator`,
   buildShareCardPath: (query) => `/api/og?${query}`,
   firmDisplayName: "Smarter Way Wealth",
   brandAttributionLine: "Smarter Way Wealth, LLC · Connecticut-registered RIA · CRD #342140",

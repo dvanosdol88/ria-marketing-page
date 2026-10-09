@@ -1,140 +1,48 @@
-import { FieldValue } from "firebase-admin/firestore";
 import { NextRequest, NextResponse } from "next/server";
+import { FieldValue } from "firebase-admin/firestore";
 import { getAdminDb } from "@/lib/firebaseAdmin";
-import { MAILER_SCAN_COUNTER_DOC } from "@/lib/mailerScan";
-import {
-  ALLOWED_MAILER_ATTRIBUTION_METHODS,
-  buildMailerScanUpdate,
-  buildTrafficVisitUpdate,
-  easternDayKey,
-  publicMailerScanHeaders,
-  requestHeadersCameFromThisSite,
-  requestLooksAutomated,
-} from "@/lib/mailerScanPolicy";
+import { publicMailerScanHeaders, requestHeadersCameFromThisSite, requestLooksAutomated } from "@/lib/mailerScanPolicy";
 import { hasSelfTestCookie } from "@/lib/selfTestTraffic";
+import { hasQrVerificationCookie } from "@/lib/qrVerification";
+import { MEASUREMENT_HOSTS } from "@/lib/qrLanding";
+import { EXACT_COUNTER, HISTORY_COUNTER, VERIFICATION_COUNTER, recordMeasurement, validMeasurementInput, publicMeasurementResponse } from "@/lib/qrMeasurement";
 
 export const dynamic = "force-dynamic";
-
-type ScanReceiptBody = {
-  attributionMethod?: string;
-  kind?: "visit";
-  firstEver?: boolean;
-};
-
-function publicDailyTraffic(value: unknown) {
-  if (!value || typeof value !== "object") return [];
-  return Object.entries(value as Record<string, unknown>)
-    .filter(([date]) => /^\d{4}-\d{2}-\d{2}$/.test(date))
-    .map(([date, raw]) => {
-      const day =
-        raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
-      return {
-        date,
-        scans: typeof day.scans === "number" && day.scans >= 0 ? day.scans : 0,
-        visits:
-          typeof day.visits === "number" && day.visits >= 0 ? day.visits : 0,
-      };
-    })
-    .sort((a, b) => a.date.localeCompare(b.date))
-    .slice(-30);
-}
-
 export async function GET() {
   try {
-    const snapshot = await getAdminDb().doc(MAILER_SCAN_COUNTER_DOC).get();
-    const data = snapshot.data();
-    const count = typeof data?.count === "number" ? data.count : 0;
-    const visits = typeof data?.visits === "number" ? data.visits : 0;
-    const lastScanAt = data?.lastScanAt?.toDate?.().toISOString?.() ?? null;
-
-    return NextResponse.json(
-      {
-        count,
-        lastScanAt,
-        label: "Mailer QR scans",
-        scans: { total: count, lastScanAt },
-        visits: { total: visits },
-        daily: publicDailyTraffic(data?.daily),
-        timeZone: "America/New_York",
-      },
-      { headers: publicMailerScanHeaders() },
-    );
+    const db = getAdminDb();
+    const [exact, history, verification] = await Promise.all([
+      db.doc(EXACT_COUNTER).get(), db.doc(HISTORY_COUNTER).get(), db.doc(VERIFICATION_COUNTER).get(),
+    ]);
+    return NextResponse.json(publicMeasurementResponse(exact.data(), history.data(), verification.data()), { headers: publicMailerScanHeaders() });
   } catch (error) {
     console.error("Mailer scan counter read failed", error);
-    return NextResponse.json(
-      { error: "Mailer scan count is temporarily unavailable." },
-      { status: 503, headers: publicMailerScanHeaders() },
-    );
+    return NextResponse.json({ error: "Mailer scan count is temporarily unavailable." }, { status: 503, headers: publicMailerScanHeaders() });
   }
 }
-
 export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 204,
-    headers: {
-      ...publicMailerScanHeaders(),
-      "Access-Control-Allow-Methods": "GET, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-    },
-  });
+  return new NextResponse(null, { status: 204, headers: {
+    ...publicMailerScanHeaders(), "Access-Control-Allow-Methods": "GET, OPTIONS", "Access-Control-Allow-Headers": "Content-Type",
+  } });
 }
-
 export async function POST(request: NextRequest) {
-  if (!requestHeadersCameFromThisSite(request.headers)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  if (!requestHeadersCameFromThisSite(request.headers)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const host = (request.headers.get("x-forwarded-host")?.split(",")[0]?.trim() ?? request.headers.get("host") ?? "").toLowerCase();
+  if (!MEASUREMENT_HOSTS.has(host)) return NextResponse.json({ counted: false, reason: "other_host" });
+  if (requestLooksAutomated(request.headers)) return NextResponse.json({ counted: false, reason: "automated_traffic" });
+  const cookies = request.headers.get("cookie") ?? "";
+  let body: unknown;
+  try { body = await request.json(); } catch { return NextResponse.json({ error: "Invalid landing evidence." }, { status: 400 }); }
+  if (!validMeasurementInput(body) || body.landing.hostname.toLowerCase() !== host) {
+    return NextResponse.json({ error: "Invalid landing evidence." }, { status: 400 });
   }
-
-  if (requestLooksAutomated(request.headers)) {
-    return NextResponse.json({ counted: false, reason: "automated_traffic" });
-  }
-
-  if (hasSelfTestCookie(request.headers.get("cookie") ?? "")) {
-    return NextResponse.json({ counted: false, reason: "self_test" });
-  }
-
+  // A caller may exclude itself into test totals; it cannot disable the server's test marker.
+  const verification = hasQrVerificationCookie(cookies) || body.verification === true;
+  if (hasSelfTestCookie(cookies) && !verification) return NextResponse.json({ counted: false, reason: "self_test" });
   try {
-    const body = (await request.json()) as ScanReceiptBody;
-    const dayKey = easternDayKey();
-    if (body.kind === "visit") {
-      await getAdminDb()
-        .doc(MAILER_SCAN_COUNTER_DOC)
-        .set(
-          buildTrafficVisitUpdate(
-            dayKey,
-            FieldValue.increment,
-            FieldValue.serverTimestamp,
-            body.firstEver !== false,
-          ),
-          { merge: true },
-        );
-      return NextResponse.json({ counted: true });
-    }
-
-    if (!ALLOWED_MAILER_ATTRIBUTION_METHODS.has(body.attributionMethod ?? "")) {
-      return NextResponse.json(
-        { error: "Invalid campaign attribution." },
-        { status: 400 },
-      );
-    }
-
-    await getAdminDb()
-      .doc(MAILER_SCAN_COUNTER_DOC)
-      .set(
-        buildMailerScanUpdate(
-          body.attributionMethod ?? "",
-          FieldValue.increment,
-          FieldValue.serverTimestamp,
-          dayKey,
-        ),
-        { merge: true },
-      );
-
-    return NextResponse.json({ counted: true });
+    return NextResponse.json(await recordMeasurement(getAdminDb(), { ...body, verification }, new Date(), FieldValue.serverTimestamp));
   } catch (error) {
     console.error("Mailer scan counter increment failed", error);
-    return NextResponse.json(
-      { error: "Mailer scan could not be counted." },
-      { status: 503 },
-    );
+    return NextResponse.json({ error: "Mailer scan could not be counted." }, { status: 503 });
   }
 }

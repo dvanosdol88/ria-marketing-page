@@ -3,9 +3,10 @@ import { mirrorPostHogEventToReddit } from "@/lib/redditPixel";
 import {
   POSTHOG_UTM_KEYS,
   resolveCampaignAttribution,
-  resolveCleanRootLaunchAttribution,
   type CampaignAttribution,
 } from "@/lib/campaignAttribution";
+import { MEASUREMENT_HOSTS } from "@/lib/qrLanding";
+import { syncQrVerification } from "@/lib/qrVerification";
 
 export type PostHogProperties = Record<string, unknown>;
 
@@ -13,6 +14,7 @@ type BrowserPostHog = {
   capture?: (eventName: string, properties?: PostHogProperties) => void;
   register?: (properties: PostHogProperties) => void;
   register_once?: (properties: PostHogProperties) => void;
+  unregister?: (key: string) => void;
 };
 
 function getBrowserPostHog() {
@@ -21,6 +23,24 @@ function getBrowserPostHog() {
 }
 
 const CAMPAIGN_SESSION_STORAGE_KEY = "sww_campaign_attribution";
+const documentArrival = typeof window === "undefined" ? null : window.location.href;
+let documentCampaignInitialized = false;
+let documentCampaign: CampaignAttribution | null = null;
+
+function resolveDocumentCampaign(url: URL) {
+  const campaign = resolveCampaignAttribution(url.searchParams);
+  if (campaign?.is_eddm_visitor && (!MEASUREMENT_HOSTS.has(url.hostname.toLowerCase()) || url.pathname !== "/")) return null;
+  return campaign;
+}
+
+export function initializeDocumentCampaign(currentUrl = documentArrival ?? window.location.href) {
+  if (documentCampaignInitialized) return;
+  documentCampaignInitialized = true;
+  documentCampaign = resolveDocumentCampaign(new URL(currentUrl, window.location.origin));
+  [...POSTHOG_UTM_KEYS, "campaign_attribution_method", "is_eddm_visitor", "legacy_eddm_qr"].forEach((key) => getBrowserPostHog()?.unregister?.(key));
+  try { window.sessionStorage.removeItem(CAMPAIGN_SESSION_STORAGE_KEY); } catch { /* Memory fallback. */ }
+  if (documentCampaign) storeCampaignAttribution(documentCampaign);
+}
 
 function storeCampaignAttribution(attribution: CampaignAttribution) {
   try {
@@ -46,38 +66,26 @@ export function getPostHogCampaignProperties(
   currentUrl = window.location.href,
 ): PostHogProperties {
   const url = new URL(currentUrl, window.location.origin);
-  const explicitOrLegacy = resolveCampaignAttribution(url.searchParams);
+  initializeDocumentCampaign();
+  const explicitOrLegacy = resolveDocumentCampaign(url);
 
   if (explicitOrLegacy) {
     storeCampaignAttribution(explicitOrLegacy);
     return explicitOrLegacy;
   }
 
-  const stored = readStoredCampaignAttribution();
+  const stored = documentCampaign ?? readStoredCampaignAttribution();
   if (stored) return stored;
 
-  const cleanRoot = resolveCleanRootLaunchAttribution(url.searchParams, {
-    pathname: url.pathname,
-    referrer: typeof document === "undefined" ? "" : document.referrer,
-    origin: url.origin,
-  });
-
-  if (cleanRoot) {
-    storeCampaignAttribution(cleanRoot);
-    return cleanRoot;
-  }
-
   return {
+    ...Object.fromEntries(POSTHOG_UTM_KEYS.map((key) => [key, null])),
+    campaign_attribution_method: null,
     is_eddm_visitor: false,
     legacy_eddm_qr: false,
   };
 }
 
-function buildPostHogProperties(properties: PostHogProperties) {
-  const sourceUrl =
-    typeof properties.$current_url === "string"
-      ? properties.$current_url
-      : window.location.href;
+export function safeAnalyticsUrl(sourceUrl: string) {
   const currentUrl = new URL(sourceUrl, window.location.origin);
   const safeSearch = new URLSearchParams();
   POSTHOG_UTM_KEYS.forEach((key) => {
@@ -86,6 +94,11 @@ function buildPostHogProperties(properties: PostHogProperties) {
   });
   currentUrl.search = safeSearch.toString();
   currentUrl.hash = "";
+  return currentUrl.toString();
+}
+
+function buildPostHogProperties(properties: PostHogProperties) {
+  const sourceUrl = typeof properties.$current_url === "string" ? properties.$current_url : window.location.href;
 
   return {
     $host: window.location.hostname,
@@ -93,13 +106,14 @@ function buildPostHogProperties(properties: PostHogProperties) {
     site_path: window.location.pathname,
     ...getPostHogCampaignProperties(sourceUrl),
     ...properties,
-    $current_url: currentUrl.toString(),
+    $current_url: safeAnalyticsUrl(sourceUrl),
   };
 }
 
 export function capturePostHogEvent(eventName: string, properties: PostHogProperties = {}) {
   if (typeof window === "undefined") return;
-  getBrowserPostHog()?.capture?.(eventName, buildPostHogProperties(properties));
+  const verification = syncQrVerification();
+  getBrowserPostHog()?.capture?.(eventName, buildPostHogProperties({ ...properties, ...(verification ? { self_test: true, qr_verification: true } : {}) }));
   mirrorPostHogEventToReddit(eventName);
 }
 

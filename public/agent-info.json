@@ -26,8 +26,10 @@
         "legacy_eddm_qr": true
       },
       "cleanRootAttribution": {
-        "campaign_attribution_method": "clean_root_launch",
-        "legacy_eddm_qr": false
+        "campaign_attribution_method": null,
+        "legacy_eddm_qr": false,
+        "enabled": false,
+        "note": "05-66: ordinary homepages cannot prove QR traffic. Historical inferred data is preserved."
       },
       "selfTest": {
         "optIn": "https://youarepayingtoomuch.com/?selftest=1",

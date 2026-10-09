@@ -21,10 +21,7 @@ export const LEGACY_EDDM_QR_PARAMS = {
   utm_content: "qr_code",
 } as const;
 
-// Public QR PNGs encode this clean root. Production attributes a first-touch
-// landing on `/` with no campaign query as launch_5k (`clean_root_launch`) so
-// already-printed clean-root mailers count. The exact four-parameter printer
-// proof remains a separate `legacy_qr_signature`. Owner stress-tests use
-// `?selftest=1` (see src/lib/selfTestTraffic.ts) and are omitted from the
-// public RIA Builder totals.
+// Public QR PNGs retain the clean root. It cannot distinguish a scan from
+// ordinary homepage traffic and no longer infers EDDM attribution (05-66).
+// The printed card's four exact parameters remain legacy_qr_signature.
 export const EDDM_LAUNCH_QR_URL = `${SITE_ORIGIN}/`;
