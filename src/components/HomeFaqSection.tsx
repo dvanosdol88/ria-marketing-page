@@ -110,21 +110,19 @@ type FaqTone = "light" | "blues";
    (src/app/(blues)), with the accents in that page's blue. */
 const FAQ_TONES: Record<
   FaqTone,
-  { section: string; heading: string; chevron: string; arrow: string; doorHover: string }
+  { section: string; heading: string; chevron: string; arrow: string }
 > = {
   light: {
     section: "bg-[#EEF0F5]",
     heading: "text-[#10233A]",
     chevron: "text-[#007A2F]",
     arrow: "text-[#007A2F]",
-    doorHover: "group-hover:bg-[#F2FBF5] group-hover:ring-[#00A540]",
   },
   blues: {
     section: "bg-transparent",
     heading: "text-white",
     chevron: "text-[#2563EB]",
     arrow: "text-[#2563EB]",
-    doorHover: "group-hover:bg-[#EEF3FF] group-hover:ring-[#2563EB]",
   },
 };
 

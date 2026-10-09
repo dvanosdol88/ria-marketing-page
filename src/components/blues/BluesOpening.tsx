@@ -1,5 +1,3 @@
-"use client";
-
 import { bluesCopy, bluesDiagnoses } from "@/config/onePercentBlues";
 import { formatCurrency } from "@/lib/format";
 import { BluesCheck } from "./BluesCheck";
