@@ -41,6 +41,8 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
+    shortcut: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
   },
 };
 

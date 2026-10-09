@@ -82,6 +82,11 @@ const nextConfig = {
         { source: "/robots.txt", has: [bluesHost], destination: "/blues/robots.txt" },
         { source: "/sitemap.xml", has: [bluesHost], destination: "/blues/sitemap.xml" },
         { source: "/llms.txt", has: [bluesHost], destination: "/blues/llms.txt" },
+        {
+          source: "/:file((?:favicon|apple-touch-icon).*)",
+          has: [bluesHost],
+          destination: "/brand/blues-icon.svg",
+        },
       ],
     };
   },
