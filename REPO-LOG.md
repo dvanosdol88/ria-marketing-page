@@ -1,5 +1,11 @@
 # REPO-LOG — ria-marketing-page
 
+### 05-58: agents here carry the plain-English rule (2026-10-09)
+
+- Request (David): every agent, everywhere, must speak plain English to him; no jargon unless he asks or it is critical to clarify.
+- Change: the fleet-wide rule (master D:\PLAIN-ENGLISH.md) now sits word for word at the top of this repo's agent instruction files.
+- Verification: instructions only; no runtime change.
+
 ### 05-54 — 2026-10-08 — Scoreboard: exact mailer scans and unique visitors, no robots, no David
 **Agent:** Claude | **Surface:** mailer-scan counter (RIA Builder scoreboard source) | **Status:** shipping
 
