@@ -965,18 +965,9 @@ export function CostAnalysisCalculator({
     <>
       <p className={`text-center text-xs ${calculatorTheme.helperTextClassName}`}>
         Compares our {formatCurrency(monthlyFlatFee)}/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
-        {isOnePercentBlues ? (
-          /* Absolute, plain <a>: /our-math on the blue host redirects to the
-             green domain, and a next/link prefetch of a cross-domain redirect
-             fails CORS on every page view. */
-          <a href={bluesLinks.ourMath} className={calculatorTheme.linkClassName}>
-            For finance nerds
-          </a>
-        ) : (
-          <Link href="/our-math" className={calculatorTheme.linkClassName}>
-            For finance nerds
-          </Link>
-        )}
+        <Link href="/our-math" className={calculatorTheme.linkClassName}>
+          For finance nerds
+        </Link>
       </p>
       <div className={`mx-auto mt-4 max-w-2xl space-y-2 text-center text-xs leading-snug ${calculatorTheme.helperTextClassName}`}>
         <p>
