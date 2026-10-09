@@ -1,202 +1,51 @@
 "use client";
-
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
-import {
-  capturePostHogEvent,
-  getPostHogCampaignProperties,
-} from "@/lib/posthog";
-import {
-  MAILER_SCAN_BROWSER_KEY,
-  MAILER_SCAN_EVENT,
-  MAILER_SCAN_RECEIPT_SESSION_KEY,
-  MAILER_SCAN_SESSION_KEY,
-  VISITOR_DAY_KEY,
-  VISITOR_SEEN_KEY,
-  isMailerQrCampaign,
-} from "@/lib/mailerScan";
-import { easternDayKey } from "@/lib/mailerScanPolicy";
-import {
-  SELF_TEST_QUERY_PARAM,
-  shouldExcludePublicTraffic,
-} from "@/lib/selfTestTraffic";
-
-let eventReportedInMemory = false;
-let receiptRecordedInMemory = false;
-let receiptInFlight: Promise<void> | null = null;
-let visitRecordedInMemory = false;
-let visitInFlight: Promise<void> | null = null;
-const TRAFFIC_VISIT_SESSION_KEY = "sww_traffic_visit_recorded";
-
-function hasSessionFlag(key: string, memoryFallback: boolean) {
-  try {
-    return window.sessionStorage.getItem(key) === "true";
-  } catch {
-    return memoryFallback;
-  }
-}
-
-// 05-54: scripted browsers (Playwright, Puppeteer, Selenium) announce themselves.
-function isAutomatedBrowser() {
-  try {
-    return window.navigator.webdriver === true;
-  } catch {
-    return false;
-  }
-}
-
-function readLocal(key: string) {
-  try {
-    return window.localStorage.getItem(key);
-  } catch {
-    return null;
-  }
-}
-
-function writeLocal(key: string, value: string) {
-  try {
-    window.localStorage.setItem(key, value);
-  } catch {
-    // Session and in-memory flags still prevent repeats for this visit.
-  }
-}
-
-function setSessionFlag(key: string) {
-  try {
-    window.sessionStorage.setItem(key, "true");
-  } catch {
-    // The in-memory fallback still prevents duplicates for this page lifetime.
-  }
-}
-
-function reportScanReceipt(attributionMethod: string) {
-  if (
-    isAutomatedBrowser() ||
-    readLocal(MAILER_SCAN_BROWSER_KEY) === "1" ||
-    receiptRecordedInMemory ||
-    hasSessionFlag(MAILER_SCAN_RECEIPT_SESSION_KEY, receiptRecordedInMemory) ||
-    receiptInFlight
-  ) {
-    return;
-  }
-
-  receiptInFlight = (async () => {
-    try {
-      const response = await fetch("/api/analytics/mailer-scans", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ attributionMethod }),
-        keepalive: true,
-      });
-      if (!response.ok) return;
-      const payload = (await response.json().catch(() => ({}))) as {
-        counted?: boolean;
-      };
-      if (payload.counted === false) return;
-      receiptRecordedInMemory = true;
-      setSessionFlag(MAILER_SCAN_RECEIPT_SESSION_KEY);
-      writeLocal(MAILER_SCAN_BROWSER_KEY, "1");
-    } catch {
-      // Leave the receipt unmarked so a later navigation/reload may try again.
-    }
-  })().finally(() => {
-    receiptInFlight = null;
-  });
-}
-
-function reportTrafficVisit() {
-  const today = easternDayKey();
-  if (
-    isAutomatedBrowser() ||
-    readLocal(VISITOR_DAY_KEY) === today ||
-    visitRecordedInMemory ||
-    hasSessionFlag(TRAFFIC_VISIT_SESSION_KEY, visitRecordedInMemory) ||
-    visitInFlight
-  )
-    return;
-
-  const firstEver = readLocal(VISITOR_SEEN_KEY) !== "1";
-  visitInFlight = fetch("/api/analytics/mailer-scans", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ kind: "visit", firstEver }),
-    keepalive: true,
-  })
-    .then(async (response) => {
-      if (!response.ok) return;
-      const payload = (await response.json().catch(() => ({}))) as {
-        counted?: boolean;
-      };
-      if (payload.counted === false) return;
-      visitRecordedInMemory = true;
-      setSessionFlag(TRAFFIC_VISIT_SESSION_KEY);
-      writeLocal(VISITOR_DAY_KEY, today);
-      writeLocal(VISITOR_SEEN_KEY, "1");
-    })
-    .catch(() => {
-      // Leave unmarked so a later navigation may try again.
-    })
-    .finally(() => {
-      visitInFlight = null;
-    });
-}
-
-function stripSelfTestQueryFromLocation() {
-  const url = new URL(window.location.href);
-  if (!url.searchParams.has(SELF_TEST_QUERY_PARAM)) return;
-  url.searchParams.delete(SELF_TEST_QUERY_PARAM);
-  const nextUrl = `${url.pathname}${url.search}${url.hash}`;
-  window.history.replaceState(window.history.state, "", nextUrl);
-}
-
-function reportMailerScan(currentUrl: string) {
-  const campaign = getPostHogCampaignProperties(currentUrl);
-  if (!isMailerQrCampaign(campaign)) return;
-
-  if (
-    !eventReportedInMemory &&
-    !hasSessionFlag(MAILER_SCAN_SESSION_KEY, eventReportedInMemory)
-  ) {
-    capturePostHogEvent(MAILER_SCAN_EVENT, {
-      $current_url: currentUrl,
-      scan_kind: "mailer_qr_landing",
-    });
-    eventReportedInMemory = true;
-    setSessionFlag(MAILER_SCAN_SESSION_KEY);
-  }
-
-  const attributionMethod =
-    typeof campaign.campaign_attribution_method === "string"
-      ? campaign.campaign_attribution_method
-      : "explicit_utm";
-
-  reportScanReceipt(attributionMethod);
-}
+import { useEffect, useState } from "react";
+import { capturePostHogEvent, initializeDocumentCampaign, registerPostHogProperties } from "@/lib/posthog";
+import { MEASUREMENT_VERSION, landingEvidence, resolveLanding } from "@/lib/qrLanding";
+import { browserIsAutomated, claimQrEvent, currentDocumentLandingUrl, reportDocumentMeasurement } from "@/lib/qrMeasurementBrowser";
+import { exitQrVerification, syncQrVerification } from "@/lib/qrVerification";
+import { shouldExcludePublicTraffic } from "@/lib/selfTestTraffic";
 
 export function PostHogPageView() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
+  const [verification, setVerification] = useState(false);
   useEffect(() => {
-    if (pathname) {
-      const search = searchParams.toString();
-      const excludePublicTraffic = shouldExcludePublicTraffic(search);
-      if (searchParams.has(SELF_TEST_QUERY_PARAM)) {
-        stripSelfTestQueryFromLocation();
-      }
-      let url = window.location.origin + pathname;
-      if (search) {
-        url += `?${search}`;
-      }
-      capturePostHogEvent("$pageview", {
-        $current_url: url,
-        ...(excludePublicTraffic ? { self_test: true } : {}),
+    if (!pathname) return;
+    const arriving = currentDocumentLandingUrl();
+    initializeDocumentCampaign(arriving);
+    const testMode = syncQrVerification();
+    setVerification(testMode);
+    const owner = shouldExcludePublicTraffic(searchParams);
+    registerPostHogProperties({ self_test: owner || testMode, qr_verification: testMode });
+    capturePostHogEvent("$pageview", {
+      $current_url: `${window.location.origin}${pathname}${searchParams.size ? `?${searchParams}` : ""}`,
+      ...(owner || testMode ? { self_test: true } : {}),
+      ...(testMode ? { qr_verification: true } : {}),
+    });
+    if (browserIsAutomated()) return;
+    void reportDocumentMeasurement().then((receipt) => {
+      if (!receipt || !claimQrEvent(receipt)) return;
+      const attributionMethod = resolveLanding(landingEvidence(arriving)).attributionMethod;
+      capturePostHogEvent("eddm_qr_landed", {
+        $current_url: arriving, scan_kind: "mailer_qr_landing",
+        campaign_attribution_method: attributionMethod, is_eddm_visitor: true,
+        legacy_eddm_qr: attributionMethod === "legacy_qr_signature",
+        measurement_version: MEASUREMENT_VERSION, qr_opening_id: receipt.qrOpeningId,
+        qr_first_browser: receipt.qrFirstBrowser, qr_verification: receipt.verification,
+        ...(receipt.verification ? { self_test: true } : {}),
       });
-      if (excludePublicTraffic) return;
-      reportTrafficVisit();
-      reportMailerScan(url);
+    });
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("qrtest") || url.searchParams.has("selftest")) {
+      url.searchParams.delete("qrtest"); url.searchParams.delete("selftest");
+      window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
     }
   }, [pathname, searchParams]);
-
-  return null;
+  if (!verification) return null;
+  return <aside role="status" aria-label="QR verification mode" className="fixed bottom-3 left-3 right-3 z-[100] flex items-center justify-between gap-3 rounded-xl border border-amber-700 bg-amber-50 px-3 py-2 text-sm text-amber-950 shadow-lg sm:left-auto sm:max-w-sm">
+    <span><strong>QR test mode</strong><br />Your visits stay out of prospect totals.</span>
+    <button type="button" className="min-h-11 shrink-0 rounded-lg border border-amber-800 px-3 font-semibold focus-visible:outline focus-visible:outline-2" onClick={() => { exitQrVerification(); registerPostHogProperties({ self_test: shouldExcludePublicTraffic(), qr_verification: false }); setVerification(false); }}>Exit test</button>
+  </aside>;
 }

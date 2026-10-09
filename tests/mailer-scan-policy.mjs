@@ -149,3 +149,5 @@ assert.deepEqual(
 console.log(
   "Mailer scan policy accepts only the approved campaign, rejects bots/cross-site posts, publishes RIA-only CORS, and builds a nested Firestore attribution map.",
 );
+// 05-66 behavior checks run under the existing policy gate (no CI changes).
+await import("./qr-browser-policy.mjs");

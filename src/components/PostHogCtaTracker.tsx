@@ -6,6 +6,7 @@ import {
   getPostHogCampaignProperties,
   registerPostHogProperties,
   registerPostHogPropertiesOnce,
+  safeAnalyticsUrl,
 } from "@/lib/posthog";
 import {
   buildPrivacySafeFirmHandoffHref,
@@ -46,7 +47,7 @@ export function PostHogCtaTracker() {
       ...campaignProperties,
     });
     registerPostHogPropertiesOnce({
-      first_landing_url: window.location.href,
+      first_landing_url: safeAnalyticsUrl(window.location.href),
       first_landing_domain: window.location.hostname,
       ...Object.fromEntries(
         POSTHOG_UTM_KEYS.flatMap((key) => {

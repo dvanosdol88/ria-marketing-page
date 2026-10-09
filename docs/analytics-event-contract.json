@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-23",
+  "version": "2026-10-09 / 05-66",
   "owner": "Smarter Way Wealth marketing analytics",
   "posthog": {
     "recommendedProjectShape": "Use one PostHog project for youarepayingtoomuch.com and smarterwaywealth.com so the cross-site journey can be analyzed in one place.",
@@ -22,18 +22,23 @@
       "is_eddm_visitor",
       "campaign_attribution_method",
       "legacy_eddm_qr",
-      "self_test"
+      "self_test",
+      "qr_verification",
+      "measurement_version",
+      "qr_opening_id",
+      "qr_first_browser"
     ]
   },
   "sharedProperties": {
     "site_domain": "Current hostname, used to split YAPTOM and SWW traffic.",
     "site_path": "Current pathname.",
     "site_origin": "Current origin.",
-    "first_landing_url": "First URL registered for the browser/person.",
+    "first_landing_url": "Sanitized first landing origin/path and approved UTM fields only; never raw calculator inputs.",
     "first_landing_domain": "First landing hostname registered for the browser/person.",
-    "campaign_attribution_method": "How campaign properties were obtained: explicit_utm, legacy_qr_signature, or clean_root_launch.",
+    "campaign_attribution_method": "Current arrivals: explicit_utm or legacy_qr_signature. clean_root_launch is historical only; fresh ordinary/shared arrivals clear prior campaign context.",
     "legacy_eddm_qr": "True when the exact untagged URL embedded in the 2026 printer proofs supplied the EDDM attribution.",
-    "self_test": "True on owner/agent stress-test traffic after ?selftest=1. Public visit and mailer-scan aggregates omit this traffic."
+    "self_test": "True for owner exclusion or session-only phone verification. Normal prospect aggregates exclude these events.",
+    "qr_verification": "True only in qrtest phone verification mode; verification uses separate totals and can override owner exclusion, never robot exclusion."
   },
   "crossSiteHandoff": {
     "from": "youarepayingtoomuch.com",
@@ -74,7 +79,7 @@
     {
       "name": "eddm_qr_landed",
       "site": "youarepayingtoomuch.com",
-      "purpose": "One explicit alertable milestone for each mailed-QR browser session.",
+      "purpose": "One receipt-confirmed mailed QR document opening, including reopening/reloading the printed address.",
       "requiredProperties": [
         "$current_url",
         "site_domain",
@@ -82,15 +87,21 @@
         "scan_kind",
         "is_eddm_visitor",
         "campaign_attribution_method",
-        "legacy_eddm_qr"
+        "legacy_eddm_qr",
+        "measurement_version",
+        "qr_opening_id",
+        "qr_first_browser",
+        "qr_verification"
       ],
       "semanticRules": [
-        "Emit once per browser tab session only when is_eddm_visitor=true.",
-        "Accept the complete launch_5k/print/qr_code UTM tuple, the exact legacy printer signature, or a first-touch clean-root homepage landing; a loose utm_source=eddm is not a scan.",
-        "Omit owner/agent self-test traffic (?selftest=1 cookie/localStorage) from the public visit and mailer-scan aggregates.",
+        "Emit once per accepted qualifying document opening after the server receipt; retries, rerenders and parameter cleanup keep that opening ID.",
+        "Resolve from the arriving URL on youarepayingtoomuch.com/www root only: exact portfolio=1000000&years=20&growth=8&fee=1 signature or full approved launch_5k/print/qr_code UTMs. Reject duplicate parameters, shared=1 and older calculator-result additions such as flat/mfe. Ordinary default homepages do not qualify.",
+        "New share links carry shared=1 and remove EDDM UTMs. Fresh ordinary/shared document arrivals clear stale campaign context; legitimate campaign conversion events retain context within the current document.",
+        "Normal owner/selftest and recognized bots/automation create no normal QR receipt/event. qrtest=1 enables session-only separately labeled verification; qrtest=0 or Exit test clears it. Verification sets self_test:true and qr_verification:true; bots/automation remain excluded.",
+        "measurement_version is 05-66; qr_opening_id correlates the receipt; qr_first_browser comes from that receipt; qr_verification is always explicit false/true.",
         "Sanitize $current_url to origin/path and approved UTM keys; never include calculator assumptions in this event URL.",
-        "Use this event for immediate scan alerts; keep $pageview as the complete campaign landing ledger.",
-        "The public RIA Builder counter is an aggregate receipt and stores no visitor-level record."
+        "Preserve exact count/visits and daily fields and saved historical mixed totals without reset/backfill. Add QR openings and per-metric start dates; QR opening coverage is null until its first accepted opening.",
+        "Private server dedup markers store SHA-256 hashes of random anonymous browser/opening identifiers, boolean seen flags and timestamps only. Public GET exposes aggregates; never expose/store raw IDs, URLs, IPs, calculator values or personal information in receipts."
       ],
       "ownerFiles": [
         "src/components/PostHogPageView.tsx",
@@ -238,6 +249,6 @@
     "Calculator numeric assumptions may be captured because they are anonymous modeling inputs, but do not combine them with identified user profiles without a new compliance/privacy review.",
     "PostHog session replay may show calculator numbers. Password, email, and telephone inputs must stay masked.",
     "Sentry should receive technical error context, not marketing funnel payloads or sensitive user-entered financial details.",
-    "The public mailer counter stores only a total, attribution-method totals, and the latest server timestamp; it stores no browser identifier, IP address, location, URL, calculator input, or visitor-level record."
+    "The public mailer counter exposes aggregates only. Its private dedup markers store hashed anonymous random IDs, seen flags and timestamps; never raw browser IDs, URLs, IPs, numeric calculator inputs or personal information. History remains unchanged."
   ]
 }
