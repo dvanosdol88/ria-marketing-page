@@ -1,7 +1,7 @@
 "use client";
 
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Check, ChevronDown, ChevronUp, Minus, Plus, Share2 } from "lucide-react";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
@@ -50,6 +50,11 @@ import {
 } from "@/config/advancedCalculator";
 
 type IntroStyle = "rule" | "panel" | "quote";
+
+function introStyleFromSearch(params: URLSearchParams): IntroStyle {
+  const intro = params.get("intro");
+  return intro === "rule" || intro === "quote" ? intro : "panel";
+}
 
 function getAssetTier(portfolioValue: number) {
   if (portfolioValue < 500000) return "under_500k";
@@ -731,11 +736,6 @@ export function CostAnalysisCalculator({
     return () => setSavingsBarData(null);
   }, [setSavingsBarData]);
 
-  const introStyle = useMemo<IntroStyle>(() => {
-    const intro = paramsFromServer.get("intro");
-    return intro === "rule" || intro === "quote" ? intro : "panel";
-  }, [paramsFromServer]);
-
   const shareUrl = useMemo(() => {
     if (typeof window === "undefined") return "";
     const query = buildQueryFromState(state, paramsFromServer);
@@ -898,7 +898,6 @@ export function CostAnalysisCalculator({
   const isOnePercentBlues = experienceMode === "one-percent-blues";
   const usesLeanCalculator = isSavingsCalculatorUpgrade || isOnePercentBlues;
   const calculatorTheme = isOnePercentBlues ? bluesCalculatorTheme : marketingVariant.calculator;
-  const reducedMotion = useReducedMotion();
 
   const quoteSectionStyle = isDarkMode
     ? {
@@ -1285,7 +1284,7 @@ export function CostAnalysisCalculator({
           annualFeePercent={state.annualFeePercent}
           annualFlatFee={state.annualFlatFee}
           annualGrowthPercent={state.annualGrowthPercent}
-          introStyle={introStyle}
+          introStyle={introStyleFromSearch(paramsFromServer)}
           mutualFundExpensePercent={state.mutualFundExpensePercent}
           portfolioValue={state.portfolioValue}
           savings={projection.savings}
@@ -1437,7 +1436,6 @@ export function CostAnalysisCalculator({
           renderChart={renderChart}
           activeScenario={activeCard}
           assumptionsCustomized={assumptionsCustomized}
-          advancedCalculatorHref={advancedCalculatorHref}
           showViewTabs={!usesLeanCalculator}
           initialView={usesLeanCalculator ? "inputs" : "header"}
           showChartHeading={usesLeanCalculator}
