@@ -1,8 +1,8 @@
 import { BLUES_ORIGIN } from "@/config/onePercentBlues";
 
 /* Served at onepercentblues.com/sitemap.xml by the host rewrite. The blue
-   host is one page by design (every other path redirects to the green site),
-   so the sitemap lists exactly that page. */
+   host is one campaign page (known green doors bounce; unknown paths 404
+   here), so the sitemap lists exactly that page. */
 export const dynamic = "force-static";
 
 const BODY = `<?xml version="1.0" encoding="UTF-8"?>
