@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
 import { fraunces } from "@/app/fonts";
@@ -9,12 +10,35 @@ import { BLUES_ORIGIN } from "@/config/onePercentBlues";
 
 export const dynamic = "force-dynamic";
 
-/* The root not-found renders outside every route group. Green chrome is the
-   default; the blue host keeps its own header/footer so passthrough 404s
-   (/blues/nope, /brand/missing.svg) never wear the YAPT nav. */
-export default async function NotFound() {
+async function isBluesHost() {
   const host = ((await headers()).get("host") ?? "").split(":")[0].toLowerCase();
-  const isBlues = host === new URL(BLUES_ORIGIN).hostname;
+  return host === new URL(BLUES_ORIGIN).hostname;
+}
+
+/* Root 404 lives outside every route group, so it inherits the green site
+   title unless we override it. Unknown blue-host paths must read as Blues. */
+export async function generateMetadata(): Promise<Metadata> {
+  if (!(await isBluesHost())) {
+    return { title: "Page not found | You Are Paying Too Much" };
+  }
+  return {
+    metadataBase: new URL(BLUES_ORIGIN),
+    title: "Page not found | One Percent Blues",
+    manifest: null,
+    icons: {
+      icon: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
+      shortcut: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
+      apple: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
+    },
+  };
+}
+
+/* The root not-found renders outside every route group. Green chrome is the
+   default; the blue host keeps its own header/footer so unknown paths and
+   missing assets (/this-does-not-exist-xyz, /blues/nope, /brand/missing.svg)
+   never wear the YAPT nav. */
+export default async function NotFound() {
+  const isBlues = await isBluesHost();
 
   if (isBlues) {
     return (

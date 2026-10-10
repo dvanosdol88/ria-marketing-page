@@ -81,14 +81,22 @@ test("site chrome lives on the route groups, never on the root layout", () => {
   assert.match(bluesLayout, /metadataBase: new URL\(BLUES_ORIGIN\)/);
 });
 
-test("host rules: the blue domain is one page and the other hostnames redirect there", () => {
+test("host rules: known green doors bounce; unknown paths stay for the blues 404", () => {
   assert.match(nextConfig, /beforeFiles: \[/);
   assert.match(nextConfig, /\{ source: "\/", has: \[bluesHost\], destination: "\/blues" \}/);
   for (const host of ["1percentblues.com", "www.1percentblues.com"]) {
     assert.ok(nextConfig.includes(`"${host}"`), `${host} must redirect to onepercentblues.com`);
   }
-  assert.match(nextConfig, /destination: `\$\{GREEN_ORIGIN\}\/:path`/);
-  assert.match(nextConfig, /\(\?!\$\{BLUES_PASSTHROUGH\}\)\.\+/, "the catch-all must never match '/'");
+  assert.match(nextConfig, /BLUES_GREEN_PATHS/);
+  for (const path of ["/our-math", "/become-a-client", "/privacy"]) {
+    assert.ok(nextConfig.includes(`"${path}"`), `green bounce missing: ${path}`);
+  }
+  assert.match(nextConfig, /destination: `\$\{GREEN_ORIGIN\}\$\{source\}`/);
+  assert.doesNotMatch(
+    nextConfig,
+    /BLUES_PASSTHROUGH|\(\?!\s*\$\{BLUES_PASSTHROUGH\}\)/,
+    "a catch-all bounce would send unknown blue-host paths to the green 404",
+  );
 });
 
 test("the blue layout overrides every icon slot with the blues mark", () => {
@@ -115,4 +123,6 @@ test("root not-found uses blues chrome on the blue host and green chrome elsewhe
   assert.match(notFound, /SiteFooter/);
   assert.match(notFound, /headers\(\)/);
   assert.match(notFound, /BLUES_ORIGIN/);
+  assert.match(notFound, /generateMetadata/);
+  assert.match(notFound, /Page not found \| One Percent Blues/);
 });

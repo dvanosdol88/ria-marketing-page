@@ -1,5 +1,11 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-10-10 — Unknown Blues addresses stay on the blue 404
+**Agent:** Cursor Grok | **Surface:** onepercentblues.com missing-page handling | **Goal:** follow-up to merged #326
+- changed: a made-up address on onepercentblues.com no longer hops to the green site. It stays on the blue host and shows the blue missing-page screen with a real 404. Real green-site doors such as Our Math and Become a client still hop over. The short 1percentblues.com name still lands on onepercentblues.com.
+- verified: pending local typecheck and full test run on this branch.
+- deployed: `not deployed`
+
 ### 05-66 — 2026-10-09 — Separate QR openings, unique browsers and phone verification
 **Agent:** Windows Codex (guest; Claude remains the marketing/calculator lead) | **Surface:** website measurement and sharing | **Status:** deployed; real printed-card and delivered-email proof pending
 

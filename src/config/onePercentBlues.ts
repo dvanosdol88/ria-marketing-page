@@ -109,10 +109,10 @@ export const bluesDiagnoses: Record<BluesDiagnosisKey, { heading: string; lead: 
 };
 
 /** Cross-domain doors from the blue page. Plain absolute links, never
- *  next/link: on onepercentblues.com every green route redirects to the green
- *  domain, and a client-side prefetch of a redirecting route fails CORS on
- *  every page view. The UTM tags keep the campaign visible in PostHog once
- *  the visitor lands on the green site. */
+ *  next/link: these known green doors redirect to the green domain, and a
+ *  client-side prefetch of a redirecting route fails CORS on every page view.
+ *  The UTM tags keep the campaign visible in PostHog once the visitor lands
+ *  on the green site. */
 export const bluesLinks = {
   signup:
     "https://youarepayingtoomuch.com/become-a-client?utm_source=onepercentblues&utm_medium=referral&utm_campaign=one_percent_blues",

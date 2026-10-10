@@ -2,11 +2,11 @@
  * One Percent Blues — host-routing contract against a real dev server.
  *
  * The blue front door is host-based: onepercentblues.com serves /blues at
- * "/", the three other hostnames redirect there, and every other path on the
- * blue host bounces to the green site. None of that is visible to the
- * source-lock tests, so this one starts Next, sends requests with spoofed Host
- * headers and reads what comes back — including that the green home is
- * untouched.
+ * "/", the three other hostnames redirect there, known green doors bounce to
+ * the green site, and unknown paths stay on the blue host as a Blues 404.
+ * None of that is visible to the source-lock tests, so this one starts Next,
+ * sends requests with spoofed Host headers and reads what comes back —
+ * including that the green home is untouched.
  *
  * node:http rather than fetch: undici's fetch silently replaces a caller-set
  * Host header with the connection's own, so a spoofed host never reaches the
@@ -158,9 +158,16 @@ try {
   };
   await expectRedirect("/our-math", blues, "https://youarepayingtoomuch.com/our-math", [307]);
   await expectRedirect("/become-a-client", blues, "https://youarepayingtoomuch.com/become-a-client", [307]);
+  await expectRedirect("/privacy", blues, "https://youarepayingtoomuch.com/privacy", [307]);
   await expectRedirect("/?fee=1.5", { Host: "1percentblues.com" }, "https://onepercentblues.com/?fee=1.5", [308]);
   await expectRedirect("/", { Host: "www.1percentblues.com" }, "https://onepercentblues.com/", [308]);
   await expectRedirect("/", { Host: "www.onepercentblues.com" }, "https://onepercentblues.com/", [308]);
+  await expectRedirect(
+    "/this-does-not-exist-xyz",
+    { Host: "1percentblues.com" },
+    "https://onepercentblues.com/this-does-not-exist-xyz",
+    [308],
+  );
   const bluesSelf = await get(port, "/blues", blues);
   assert.equal(bluesSelf.status, 308, "/blues on the blue host must redirect to /");
   assert.match(bluesSelf.headers.location ?? "", /^(https?:\/\/[^/]+)?\/$/);
@@ -194,12 +201,26 @@ try {
     "the blue page must not link the green apple/png fallbacks",
   );
 
-  // 6. Passthrough 404s on the blue host wear blue chrome, not the green nav.
-  for (const path of ["/blues/nope", "/brand/missing.svg"]) {
+  // 6. Unknown paths and missing assets on the blue host stay there, return
+  //    HTTP 404, and wear blue chrome — they must not 307 to the green site.
+  for (const path of ["/this-does-not-exist-xyz", "/blues/nope", "/brand/missing.svg"]) {
     const missing = await get(port, path, blues);
     assert.equal(missing.status, 404, `${path} on the blue host must 404`);
+    assert.equal(
+      missing.headers.location,
+      undefined,
+      `${path} on the blue host must not redirect to the green site`,
+    );
     assert.ok(missing.body.includes('data-theme="blues"'), `${path} must use blue chrome`);
     assert.ok(missing.body.includes("One Percent"), `${path} must show the blues wordmark`);
+    assert.ok(
+      missing.body.includes("Page not found") && missing.body.includes("One Percent Blues"),
+      `${path} must use the Blues 404 title, not the green site title`,
+    );
+    assert.ok(
+      !missing.body.includes("You Are Paying Too Much"),
+      `${path} must not leak the green site title`,
+    );
     assert.ok(
       !missing.body.includes('aria-label="Mobile navigation"'),
       `${path} must not wear the green nav`,
