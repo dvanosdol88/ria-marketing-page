@@ -21,10 +21,34 @@ export async function generateMetadata(): Promise<Metadata> {
   if (!(await isBluesHost())) {
     return { title: "Page not found | You Are Paying Too Much" };
   }
+  const title = "Page not found | One Percent Blues";
+  const description = "That page is not on One Percent Blues. Head back to the fee check.";
   return {
     metadataBase: new URL(BLUES_ORIGIN),
-    title: "Page not found | One Percent Blues",
+    title,
+    description,
     manifest: null,
+    openGraph: {
+      type: "website",
+      siteName: "One Percent Blues",
+      url: `${BLUES_ORIGIN}/`,
+      title,
+      description,
+      images: [
+        {
+          url: "/api/og/blues",
+          width: 1200,
+          height: 630,
+          alt: "Got the 1% Blues?",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ["/api/og/blues"],
+    },
     icons: {
       icon: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
       shortcut: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],

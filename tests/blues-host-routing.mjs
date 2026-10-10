@@ -213,13 +213,19 @@ try {
     );
     assert.ok(missing.body.includes('data-theme="blues"'), `${path} must use blue chrome`);
     assert.ok(missing.body.includes("One Percent"), `${path} must show the blues wordmark`);
-    assert.ok(
-      missing.body.includes("Page not found") && missing.body.includes("One Percent Blues"),
+    assert.match(
+      missing.body,
+      /<title>Page not found \| One Percent Blues<\/title>/,
       `${path} must use the Blues 404 title, not the green site title`,
+    );
+    assert.match(
+      missing.body,
+      /og:site_name" content="One Percent Blues"/,
+      `${path} must not advertise the green site name`,
     );
     assert.ok(
       !missing.body.includes("You Are Paying Too Much"),
-      `${path} must not leak the green site title`,
+      `${path} must not leak the green site name`,
     );
     assert.ok(
       !missing.body.includes('aria-label="Mobile navigation"'),
