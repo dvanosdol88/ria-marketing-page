@@ -4,7 +4,7 @@
 **Agent:** Cursor Grok | **Surface:** onepercentblues.com missing-page handling | **Goal:** follow-up to merged #326
 - changed: a made-up address on onepercentblues.com no longer hops to the green site. It stays on the blue host and shows the blue missing-page screen with a real 404. Real green-site doors such as Our Math and Become a client still hop over. The short 1percentblues.com name still lands on onepercentblues.com.
 - verified: typecheck passed; lint 0 errors (existing navigation-image warning only). Blues source locks 8/8 and Blues host routing passed, including a made-up blue-host address staying 404 with blue chrome. Remaining CI suites that ran here passed (homepage first screen, disclosures, refresh, calculator typing, advisor batch, credentials, share, canon, Reddit pixel, campaign, mailer contract, wrap-up hook). Two scripts only pass on this machine with an extra type-stripping flag; one mailer-policy script needs a newer Node than 22.14. Production build compiled as part of the mailer-attribution check.
-- deployed: `not deployed`
+- deployed: `not deployed` (PR #344; GitHub verify + test both green on `536e463`)
 
 ### 05-66 — 2026-10-09 — Separate QR openings, unique browsers and phone verification
 **Agent:** Windows Codex (guest; Claude remains the marketing/calculator lead) | **Surface:** website measurement and sharing | **Status:** deployed; real printed-card and delivered-email proof pending
