@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { BLUES_ORIGIN } from "@/config/onePercentBlues";
 
-export const bluesIconMetadata = {
+export const bluesIconMetadata: NonNullable<Metadata["icons"]> = {
   icon: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
   shortcut: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
   apple: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
-} as const;
+};
 
 const BLUES_NOT_FOUND_TITLE = "Page not found | One Percent Blues";
 const BLUES_NOT_FOUND_DESCRIPTION =

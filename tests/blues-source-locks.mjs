@@ -103,7 +103,7 @@ test("host rules: known green doors bounce; unknown paths stay for the blues 404
 
 test("the blue layout overrides every icon slot with the blues mark", async () => {
   const icons = await read("../src/components/blues/bluesIcons.ts");
-  const iconsBlock = icons.match(/export const bluesIconMetadata[\s\S]*?\n\} as const;/)?.[0] ?? "";
+  const iconsBlock = icons.match(/export const bluesIconMetadata[\s\S]*?\n\};/)?.[0] ?? "";
   assert.match(bluesLayout, /icons:\s*bluesIconMetadata/);
   assert.match(iconsBlock, /icon: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
   assert.match(iconsBlock, /shortcut: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
