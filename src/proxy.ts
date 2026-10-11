@@ -8,11 +8,14 @@ import { isBluesContentHost, requestHostname } from "@/lib/bluesHost";
  * page already 404s there (#344); these routes used to return green payloads
  * instead. Apex and www both 404. The 1percentblues.com aliases are not in
  * this matcher’s host check — they keep their 308 to the apex.
+ *
+ * Next.js 16 names this file proxy.ts (the older middleware.ts name still
+ * works but prints a deprecation warning on every build).
  */
 const BLUES_GATED_API =
   /^\/api\/(?:become-a-client|gallery\/statuses|eddm-evals(?:\/|$))/;
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   if (!isBluesContentHost(requestHostname(request.headers))) {
     return NextResponse.next();
   }

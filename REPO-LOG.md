@@ -5,7 +5,7 @@
 - changed: a request for the phone-home-screen file or the large Android icons on onepercentblues.com now stays on that host and returns the blue name, blue color, and blue mark. It does not hop to the green site (that hop is what open #317 still does, which fights the later “stay on blue” rule from #344).
 - changed: the internal mailer-review, gallery-status, and become-a-client tools now answer “not found” on onepercentblues.com and www. They are unchanged on youarepayingtoomuch.com. The short 1percentblues.com name still lands on onepercentblues.com.
 - preserved: shared blue chrome, blue crash screen, analytics skip, and leave-site icon from merged #346. The shared host helper now does both jobs.
-- verified: pending rebase onto #346 (typecheck, lint, full test suite).
+- verified: typecheck passed; lint 0 errors (existing navigation-image warning only). Blues source locks 9/9 and Blues host routing passed, including the blue install file, blue Android icons, and the three internal tools answering “not found” on the blue host. Remaining CI suites that ran here passed (homepage first screen, disclosures, refresh, calculator typing, advisor batch, credentials, share, canon, Reddit pixel, campaign, mailer contract and policy, wrap-up hook, mailer QR journey). Rebased onto #346. Production build compiled as part of the mailer-attribution check and listed the blue install file as its own route.
 - deployed: `not deployed` (PR #345)
 
 ### 2026-10-11 — Blues nightly audit: keep blue traffic and screens on blue
