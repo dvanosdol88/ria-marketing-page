@@ -3,8 +3,8 @@
 ### 2026-10-11 — Blues nightly audit: keep blue traffic and screens on blue
 **Agent:** Cursor Grok | **Surface:** onepercentblues.com chrome, missing-page, crash screen, page counts | **Goal:** nightly audit 2026-10-11
 - changed: Blue-host visits no longer add to the green site's Vercel page counts. The blue header/footer/gradient and blue icon now come from one shared helper, used by the blue page, the blue missing-page screen, and a new blue crash screen. The blue "Become a client" button that leaves for the green site now uses the same leave-site icon as other outbound links. A made-up blue-host address still stays on the blue missing-page screen (same host check as #344). The green missing-page screen still has to wait for that host check because both hosts share one missing-page file; a catch-all rewrite would break the #344 rule.
-- verified: pending on this branch (typecheck, lint, full test suite).
-- deployed: `not deployed`
+- verified: typecheck passed; lint 0 errors (existing navigation-image warning only). Full CI test job passed, including Blues source locks and Blues host routing (made-up blue-host address still 404 with blue chrome). Extra file checks also passed (audit cleanup, homepage signup buttons, service icons, client-value). Production build compiled as part of the mailer-attribution check.
+- deployed: `not deployed` (PR #346)
 
 ### 2026-10-10 — Unknown Blues addresses stay on the blue 404
 **Agent:** Cursor Grok | **Surface:** onepercentblues.com missing-page handling | **Goal:** follow-up to merged #326
