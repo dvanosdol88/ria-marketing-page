@@ -71,14 +71,16 @@ test("the blue page composes the shared engine in one-percent-blues mode", () =>
   );
 });
 
-test("site chrome lives on the route groups, never on the root layout", () => {
+test("site chrome lives on the route groups, never on the root layout", async () => {
+  const chrome = await read("../src/components/blues/BluesChrome.tsx");
   assert.doesNotMatch(rootLayout, /SiteNav|SiteFooter|application\/ld\+json/);
   assert.match(siteLayout, /<SiteNav \/>/);
   assert.match(siteLayout, /<SiteFooter \/>/);
-  assert.match(bluesLayout, /data-theme="blues"/);
-  assert.match(bluesLayout, /<BluesHeader \/>/);
-  assert.match(bluesLayout, /<BluesFooter \/>/);
+  assert.match(bluesLayout, /<BluesChrome>/);
   assert.match(bluesLayout, /metadataBase: new URL\(BLUES_ORIGIN\)/);
+  assert.match(chrome, /data-theme="blues"/);
+  assert.match(chrome, /<BluesHeader \/>/);
+  assert.match(chrome, /<BluesFooter \/>/);
 });
 
 test("host rules: known green doors bounce; unknown paths stay for the blues 404", () => {
@@ -99,8 +101,10 @@ test("host rules: known green doors bounce; unknown paths stay for the blues 404
   );
 });
 
-test("the blue layout overrides every icon slot with the blues mark", () => {
-  const iconsBlock = bluesLayout.match(/icons:\s*\{[\s\S]*?\n  \},/)?.[0] ?? "";
+test("the blue layout overrides every icon slot with the blues mark", async () => {
+  const icons = await read("../src/components/blues/bluesIcons.ts");
+  const iconsBlock = icons.match(/export const bluesIconMetadata[\s\S]*?\n\};/)?.[0] ?? "";
+  assert.match(bluesLayout, /icons:\s*bluesIconMetadata/);
   assert.match(iconsBlock, /icon: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
   assert.match(iconsBlock, /shortcut: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
   assert.match(iconsBlock, /apple: \[\{ url: "\/brand\/blues-icon\.svg", type: "image\/svg\+xml" \}\]/);
@@ -117,13 +121,14 @@ test("the blue host rewrites conventional favicon paths to the blues icon", asyn
 
 test("root not-found uses blues chrome on the blue host and green chrome elsewhere", async () => {
   const notFound = await read("../src/app/not-found.tsx");
-  assert.match(notFound, /BluesHeader/);
-  assert.match(notFound, /BluesFooter/);
+  const icons = await read("../src/components/blues/bluesIcons.ts");
+  assert.match(notFound, /BluesChrome/);
   assert.match(notFound, /SiteNav/);
   assert.match(notFound, /SiteFooter/);
   assert.match(notFound, /headers\(\)/);
   assert.match(notFound, /BLUES_ORIGIN/);
   assert.match(notFound, /generateMetadata/);
-  assert.match(notFound, /Page not found \| One Percent Blues/);
-  assert.match(notFound, /siteName: "One Percent Blues"/);
+  assert.match(notFound, /bluesNotFoundMetadata/);
+  assert.match(icons, /Page not found \| One Percent Blues/);
+  assert.match(icons, /siteName: "One Percent Blues"/);
 });
