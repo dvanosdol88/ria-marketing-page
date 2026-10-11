@@ -2,16 +2,43 @@
 
 import * as Sentry from "@sentry/nextjs";
 import NextError from "next/error";
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
+import { BluesChrome } from "@/components/blues/BluesChrome";
+import { BluesCrashPanel } from "@/components/blues/BluesCrashPanel";
+import { isBluesHostname } from "@/lib/bluesHost";
+
+function subscribe() {
+  return () => {};
+}
 
 export default function GlobalError({
   error,
+  reset,
 }: {
   error: Error & { digest?: string };
+  reset: () => void;
 }) {
   useEffect(() => {
     Sentry.captureException(error);
   }, [error]);
+
+  const isBlues = useSyncExternalStore(
+    subscribe,
+    () => isBluesHostname(window.location.hostname),
+    () => false,
+  );
+
+  if (isBlues) {
+    return (
+      <html lang="en">
+        <body>
+          <BluesChrome>
+            <BluesCrashPanel error={error} reset={reset} />
+          </BluesChrome>
+        </body>
+      </html>
+    );
+  }
 
   return (
     <html lang="en">

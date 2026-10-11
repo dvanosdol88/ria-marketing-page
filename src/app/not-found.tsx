@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
-import { fraunces } from "@/app/fonts";
-import { BluesFooter } from "@/components/blues/BluesFooter";
-import { BluesHeader } from "@/components/blues/BluesHeader";
+import { BluesChrome } from "@/components/blues/BluesChrome";
+import { bluesNotFoundMetadata } from "@/components/blues/bluesIcons";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { BLUES_ORIGIN } from "@/config/onePercentBlues";
+import { isBluesHostname } from "@/lib/bluesHost";
 
-export const dynamic = "force-dynamic";
-
+/*
+ * Unknown blue-host addresses share this root missing-page file with the green
+ * site. Reading the host is what keeps those addresses on the blue screen.
+ * That read makes this file request-time for both hosts — a Blues-only
+ * force-dynamic flag is not available here, and a catch-all rewrite would
+ * send unknown blue-host paths through a path the #344 contract forbids.
+ */
 async function isBluesHost() {
-  const host = ((await headers()).get("host") ?? "").split(":")[0].toLowerCase();
-  return host === new URL(BLUES_ORIGIN).hostname;
+  return isBluesHostname((await headers()).get("host"));
 }
 
 /* Root 404 lives outside every route group, so it inherits the green site
@@ -21,39 +25,9 @@ export async function generateMetadata(): Promise<Metadata> {
   if (!(await isBluesHost())) {
     return { title: "Page not found | You Are Paying Too Much" };
   }
-  const title = "Page not found | One Percent Blues";
-  const description = "That page is not on One Percent Blues. Head back to the fee check.";
   return {
+    ...bluesNotFoundMetadata(),
     metadataBase: new URL(BLUES_ORIGIN),
-    title,
-    description,
-    manifest: null,
-    openGraph: {
-      type: "website",
-      siteName: "One Percent Blues",
-      url: `${BLUES_ORIGIN}/`,
-      title,
-      description,
-      images: [
-        {
-          url: "/api/og/blues",
-          width: 1200,
-          height: 630,
-          alt: "Got the 1% Blues?",
-        },
-      ],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: ["/api/og/blues"],
-    },
-    icons: {
-      icon: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
-      shortcut: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
-      apple: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
-    },
   };
 }
 
@@ -66,11 +40,7 @@ export default async function NotFound() {
 
   if (isBlues) {
     return (
-      <div
-        data-theme="blues"
-        className={`${fraunces.variable} min-h-screen bg-[linear-gradient(180deg,#1E3A8A_0%,#2563EB_42%,#60A5FA_100%)] text-white`}
-      >
-        <BluesHeader />
+      <BluesChrome>
         <main className="mx-auto flex min-h-[60vh] max-w-[1040px] flex-col items-center justify-center gap-6 px-4 py-20 text-center sm:px-6">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/15 text-2xl font-semibold text-white">
             404
@@ -88,8 +58,7 @@ export default async function NotFound() {
             Back to One Percent Blues
           </Link>
         </main>
-        <BluesFooter />
-      </div>
+      </BluesChrome>
     );
   }
 
