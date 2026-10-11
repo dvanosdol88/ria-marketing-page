@@ -4,9 +4,10 @@
  * The blue front door is host-based: onepercentblues.com serves /blues at
  * "/", the three other hostnames redirect there, known green doors bounce to
  * the green site, and unknown paths stay on the blue host as a Blues 404.
- * None of that is visible to the source-lock tests, so this one starts Next,
- * sends requests with spoofed Host headers and reads what comes back —
- * including that the green home is untouched.
+ * The blue host also serves its own PWA file and icon, and 404s internal
+ * green-only APIs. None of that is visible to the source-lock tests, so this
+ * one starts Next, sends requests with spoofed Host headers and reads what
+ * comes back — including that the green home is untouched.
  *
  * node:http rather than fetch: undici's fetch silently replaces a caller-set
  * Host header with the connection's own, so a spoofed host never reaches the
@@ -29,10 +30,10 @@ async function getUnusedPort() {
   return port;
 }
 
-function get(port, path, headers = {}) {
+function request(port, path, { method = "GET", headers = {}, body } = {}) {
   return new Promise((resolve, reject) => {
     const req = httpRequest(
-      { host: "127.0.0.1", port, path, method: "GET", headers },
+      { host: "127.0.0.1", port, path, method, headers },
       (res) => {
         const chunks = [];
         res.on("data", (chunk) => chunks.push(chunk));
@@ -46,8 +47,13 @@ function get(port, path, headers = {}) {
       },
     );
     req.on("error", reject);
-    req.end();
+    if (body !== undefined) req.end(body);
+    else req.end();
   });
+}
+
+function get(port, path, headers = {}) {
+  return request(port, path, { headers });
 }
 
 async function waitForPage(port, child) {
@@ -240,8 +246,96 @@ try {
   );
   assert.ok(!greenMissing.body.includes('data-theme="blues"'), "the green host 404 must not use blue chrome");
 
+  // 7. PWA files on the blue host stay there with Blues branding — they must
+  //    not 307 to the green site (open #317) and must not serve the green name,
+  //    theme color, or icons.
+  const bluesManifest = await get(port, "/site.webmanifest", blues);
+  assert.equal(bluesManifest.status, 200, "blue-host /site.webmanifest must stay on this host");
+  assert.equal(
+    bluesManifest.headers.location,
+    undefined,
+    "blue-host /site.webmanifest must not redirect to the green site",
+  );
+  assert.match(bluesManifest.body, /"name"\s*:\s*"One Percent Blues"/);
+  assert.match(bluesManifest.body, /#1E3A8A/);
+  assert.match(bluesManifest.body, /\/brand\/blues-icon\.svg/);
+  assert.ok(!bluesManifest.body.includes("Smarter Way Wealth"), "blue manifest must not use the green PWA name");
+  assert.ok(!bluesManifest.body.includes("#00A540"), "blue manifest must not use the green theme color");
+  assert.ok(
+    !bluesManifest.body.includes("android-chrome-192x192.png"),
+    "blue manifest must not point at the green Android icons",
+  );
+  const greenManifest = await get(port, "/site.webmanifest");
+  assert.equal(greenManifest.status, 200);
+  assert.match(greenManifest.body, /Smarter Way Wealth/);
+  assert.match(greenManifest.body, /#00A540/);
+  for (const path of ["/android-chrome-192x192.png", "/android-chrome-512x512.png"]) {
+    const icon = await get(port, path, blues);
+    assert.equal(icon.status, 200, `${path} on the blue host must stay on this host`);
+    assert.equal(icon.headers.location, undefined, `${path} on the blue host must not redirect to the green site`);
+    assert.equal(icon.body, bluesIcon, `${path} on the blue host must serve the blues icon`);
+    const greenIcon = await get(port, path);
+    assert.equal(greenIcon.status, 200, `${path} on the green host stays the green PNG`);
+    assert.notEqual(greenIcon.body, bluesIcon, `${path} on the green host must not become the blues icon`);
+  }
+  await expectRedirect(
+    "/site.webmanifest",
+    { Host: "1percentblues.com" },
+    "https://onepercentblues.com/site.webmanifest",
+    [308],
+  );
+
+  // 8. Internal / green-only APIs 404 on the blue host (and www). They stay
+  //    live on the green host. The short 1percent name still 308s to the apex.
+  const gatedApis = [
+    { path: "/api/eddm-evals/catalog", method: "GET" },
+    { path: "/api/eddm-evals/state", method: "GET" },
+    { path: "/api/eddm-evals/file/docs/eddm-evals/README.md", method: "GET" },
+    { path: "/api/gallery/statuses", method: "GET" },
+    {
+      path: "/api/become-a-client",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "{}",
+    },
+  ];
+  for (const { path, method, headers = {}, body } of gatedApis) {
+    const blocked = await request(port, path, { method, headers: { ...headers, ...blues }, body });
+    assert.equal(blocked.status, 404, `${method} ${path} on the blue host must 404`);
+    assert.equal(
+      blocked.headers.location,
+      undefined,
+      `${method} ${path} on the blue host must not redirect to the green site`,
+    );
+    const wwwBlocked = await request(port, path, {
+      method,
+      headers: { ...headers, Host: "www.onepercentblues.com" },
+      body,
+    });
+    assert.ok(
+      wwwBlocked.status === 404 ||
+        (wwwBlocked.status === 308 &&
+          new URL(wwwBlocked.headers.location ?? "", "http://invalid.test").href ===
+            new URL(`https://onepercentblues.com${path}`).href),
+      `${method} ${path} on www.onepercentblues.com must 404 or keep the existing 308 to the apex`,
+    );
+    await expectRedirect(path, { Host: "1percentblues.com" }, `https://onepercentblues.com${path}`, [308]);
+  }
+  const greenCatalog = await get(port, "/api/eddm-evals/catalog");
+  assert.notEqual(greenCatalog.status, 404, "green host /api/eddm-evals/catalog must stay available");
+  const greenStatuses = await get(port, "/api/gallery/statuses");
+  assert.notEqual(greenStatuses.status, 404, "green host /api/gallery/statuses must stay available");
+  const greenSignup = await request(port, "/api/become-a-client", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: "{}",
+  });
+  assert.notEqual(greenSignup.status, 404, "green host /api/become-a-client must stay available");
+  const bluesShare = await get(port, "/api/og/blues?portfolio=1000000&years=20&growth=8&fee=1", blues);
+  assert.equal(bluesShare.status, 200, "the blue share-card API must stay available on the blue host");
+
   console.log(
-    "Blue front door: page, agent files, redirects and share card all behave; the green home is unchanged.",
+    "Blue front door: page, agent files, redirects, Blues PWA files, gated APIs and share card all behave; the green home is unchanged.",
   );
 } finally {
   if (nextProcess?.pid && nextProcess.exitCode === null) {

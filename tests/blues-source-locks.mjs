@@ -115,8 +115,34 @@ test("the blue host rewrites conventional favicon paths to the blues icon", asyn
   const config = await read("../next.config.mjs");
   assert.match(
     config,
-    /source: "\/:file\(\(\?:favicon\|apple-touch-icon\)\.\*\)"[\s\S]*destination: "\/brand\/blues-icon\.svg"/,
+    /source: "\/:file\(\(\?:favicon\|apple-touch-icon\|android-chrome\)\.\*\)"[\s\S]*destination: "\/brand\/blues-icon\.svg"/,
   );
+});
+
+test("the blue host serves its own PWA file and does not bounce it to green", async () => {
+  const [config, bluesManifest, middleware] = await Promise.all([
+    read("../next.config.mjs"),
+    read("../src/app/(blues)/blues/site.webmanifest/route.ts"),
+    read("../src/middleware.ts"),
+  ]);
+  const greenPaths = config.match(/const BLUES_GREEN_PATHS = \[([\s\S]*?)\];/)?.[1] ?? "";
+  assert.doesNotMatch(
+    greenPaths,
+    /webmanifest|android-chrome/,
+    "a 307 of the green PWA files would conflict with the stay-on-blue 404 rule",
+  );
+  assert.match(
+    config,
+    /source: "\/site\.webmanifest"[\s\S]*destination: "\/blues\/site\.webmanifest"/,
+  );
+  assert.match(bluesManifest, /name: "One Percent Blues"/);
+  assert.match(bluesManifest, /theme_color: "#1E3A8A"/);
+  assert.match(bluesManifest, /src: "\/brand\/blues-icon\.svg"/);
+  assert.doesNotMatch(bluesManifest, /Smarter Way Wealth|#00A540|android-chrome-\d+x\d+\.png/);
+  assert.match(middleware, /\/api\/become-a-client/);
+  assert.match(middleware, /\/api\/gallery\/statuses/);
+  assert.match(middleware, /\/api\/eddm-evals/);
+  assert.match(middleware, /status: 404/);
 });
 
 test("root not-found uses blues chrome on the blue host and green chrome elsewhere", async () => {

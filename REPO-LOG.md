@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-10-11 — Blues host: stop green PWA and internal-tool leaks
+**Agent:** Cursor Grok | **Surface:** onepercentblues.com install file, icons, and internal tools | **Goal:** nightly audit after #344 / #326
+- changed: a request for the phone-home-screen file or the large Android icons on onepercentblues.com now stays on that host and returns the blue name, blue color, and blue mark. It does not hop to the green site (that hop is what open #317 still does, which fights the later “stay on blue” rule from #344).
+- changed: the internal mailer-review, gallery-status, and become-a-client tools now answer “not found” on onepercentblues.com and www. They are unchanged on youarepayingtoomuch.com. The short 1percentblues.com name still lands on onepercentblues.com.
+- preserved: shared blue chrome, blue crash screen, analytics skip, and leave-site icon from merged #346. The shared host helper now does both jobs.
+- verified: pending rebase onto #346 (typecheck, lint, full test suite).
+- deployed: `not deployed` (PR #345)
+
 ### 2026-10-11 — Blues nightly audit: keep blue traffic and screens on blue
 **Agent:** Cursor Grok | **Surface:** onepercentblues.com chrome, missing-page, crash screen, page counts | **Goal:** nightly audit 2026-10-11
 - changed: Blue-host visits no longer add to the green site's Vercel page counts. The blue header/footer/gradient and blue icon now come from one shared helper, used by the blue page, the blue missing-page screen, and a new blue crash screen. The blue "Become a client" button that leaves for the green site now uses the same leave-site icon as other outbound links. A made-up blue-host address still stays on the blue missing-page screen (same host check as #344). The green missing-page screen still has to wait for that host check because both hosts share one missing-page file; a catch-all rewrite would break the #344 rule.
