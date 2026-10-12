@@ -142,8 +142,29 @@ test("the blue host serves its own PWA file and does not bounce it to green", as
   assert.match(proxy, /\/api\/become-a-client/);
   assert.match(proxy, /\/api\/gallery\/statuses/);
   assert.match(proxy, /\/api\/eddm-evals/);
+  assert.match(proxy, /\/api\/savings-rates/);
+  assert.match(proxy, /\/api\/analytics\/mailer-scans/);
+  assert.match(proxy, /\/api\/calculator/);
+  assert.match(proxy, /\/api\/version/);
+  assert.match(proxy, /\/agent-info\.json/);
+  const matcher = proxy.match(/matcher:\s*\[([\s\S]*?)\]/)?.[1] ?? "";
+  assert.doesNotMatch(matcher, /"\/api\/og"/);
+  assert.doesNotMatch(matcher, /"\/api\/quiz/);
+  assert.match(proxy, /no-canvas download fallback/);
+  assert.match(proxy, /isBluesHostname/);
+  assert.doesNotMatch(proxy, /isBluesContentHost/);
   assert.match(proxy, /status: 404/);
   assert.match(proxy, /export function proxy/);
+});
+
+test("the shared Blues host helper is one function, not unused host lists", async () => {
+  const bluesHost = await read("../src/lib/bluesHost.ts");
+  assert.match(bluesHost, /export function isBluesHostname/);
+  assert.match(bluesHost, /export function requestHostname/);
+  assert.doesNotMatch(
+    bluesHost,
+    /BLUES_APEX_HOST|BLUES_WWW_HOST|BLUES_CONTENT_HOSTS|BLUES_ALIAS_HOSTS|isBluesContentHost/,
+  );
 });
 
 test("root not-found uses blues chrome on the blue host and green chrome elsewhere", async () => {

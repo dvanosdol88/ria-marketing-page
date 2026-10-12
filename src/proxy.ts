@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { isBluesContentHost, requestHostname } from "@/lib/bluesHost";
+import { isBluesHostname, requestHostname } from "@/lib/bluesHost";
 
 /**
  * Green-only / internal APIs have no business on the Blues host. A made-up
@@ -9,22 +9,37 @@ import { isBluesContentHost, requestHostname } from "@/lib/bluesHost";
  * instead. Apex and www both 404. The 1percentblues.com aliases are not in
  * this matcher’s host check — they keep their 308 to the apex.
  *
+ * /api/og stays live: the shared calculator’s no-canvas download fallback
+ * still points at the green share card (HomeCalculatorExperience, open #327).
+ * /api/og/blues stays live as the blue card. The quiz vote/reset routes stay
+ * live: the shared calculator poll on the blue page calls them.
+ *
  * Next.js 16 names this file proxy.ts (the older middleware.ts name still
  * works but prints a deprecation warning on every build).
  */
-const BLUES_GATED_API =
-  /^\/api\/(?:become-a-client|gallery\/statuses|eddm-evals(?:\/|$))/;
+const BLUES_GATED_PATH =
+  /^\/(?:api\/(?:become-a-client|gallery\/statuses|eddm-evals(?:\/|$)|savings-rates|analytics\/mailer-scans|calculator|version)|agent-info\.json)/;
 
 export function proxy(request: NextRequest) {
-  if (!isBluesContentHost(requestHostname(request.headers))) {
+  if (!isBluesHostname(requestHostname(request.headers))) {
     return NextResponse.next();
   }
-  if (BLUES_GATED_API.test(request.nextUrl.pathname)) {
+  if (BLUES_GATED_PATH.test(request.nextUrl.pathname)) {
     return new NextResponse(null, { status: 404 });
   }
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/api/become-a-client", "/api/gallery/statuses", "/api/eddm-evals", "/api/eddm-evals/:path*"],
+  matcher: [
+    "/api/become-a-client",
+    "/api/gallery/statuses",
+    "/api/eddm-evals",
+    "/api/eddm-evals/:path*",
+    "/api/savings-rates",
+    "/api/analytics/mailer-scans",
+    "/api/calculator",
+    "/api/version",
+    "/agent-info.json",
+  ],
 };

@@ -39,6 +39,11 @@ test("the green page-count tag is skipped on the Blues host", () => {
   assert.match(siteAnalytics, /isBluesHostname/);
   assert.match(bluesHost, /www\.\$\{BLUES_HOST\}/);
   assert.match(bluesHost, /name === BLUES_HOST/);
+  assert.match(bluesHost, /export function isBluesHostname/);
+  assert.doesNotMatch(
+    bluesHost,
+    /BLUES_APEX_HOST|BLUES_WWW_HOST|BLUES_CONTENT_HOSTS|BLUES_ALIAS_HOSTS|isBluesContentHost/,
+  );
 });
 
 test("the blue layout and the root 404 share one chrome and icon helper", () => {

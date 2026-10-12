@@ -298,6 +298,11 @@ try {
       headers: { "Content-Type": "application/json" },
       body: "{}",
     },
+    { path: "/api/savings-rates", method: "GET" },
+    { path: "/api/analytics/mailer-scans", method: "GET" },
+    { path: "/api/calculator", method: "GET" },
+    { path: "/api/version", method: "GET" },
+    { path: "/agent-info.json", method: "GET" },
   ];
   for (const { path, method, headers = {}, body } of gatedApis) {
     const blocked = await request(port, path, { method, headers: { ...headers, ...blues }, body });
@@ -331,8 +336,29 @@ try {
     body: "{}",
   });
   assert.notEqual(greenSignup.status, 404, "green host /api/become-a-client must stay available");
+  for (const path of [
+    "/api/og",
+    "/api/savings-rates",
+    "/api/analytics/mailer-scans",
+    "/api/calculator",
+    "/api/version",
+    "/agent-info.json",
+  ]) {
+    const green = await get(port, path);
+    assert.notEqual(green.status, 404, `green host ${path} must stay available`);
+  }
   const bluesShare = await get(port, "/api/og/blues?portfolio=1000000&years=20&growth=8&fee=1", blues);
   assert.equal(bluesShare.status, 200, "the blue share-card API must stay available on the blue host");
+  assert.match(bluesShare.headers["content-type"] ?? "", /image\/png/);
+  const bluesGreenShare = await get(port, "/api/og?portfolio=1000000&years=20&growth=8&fee=1", blues);
+  assert.equal(
+    bluesGreenShare.status,
+    200,
+    "the green share-card fallback must work on the blue host",
+  );
+  assert.match(bluesGreenShare.headers["content-type"] ?? "", /image\/png/);
+  const bluesQuiz = await get(port, "/api/quiz/vote", blues);
+  assert.notEqual(bluesQuiz.status, 404, "the quiz API must stay available on the blue host");
 
   console.log(
     "Blue front door: page, agent files, redirects, Blues PWA files, gated APIs and share card all behave; the green home is unchanged.",
