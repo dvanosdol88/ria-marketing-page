@@ -13,6 +13,8 @@
  */
 
 import { buildSharedResultQuery } from "./qrLanding.ts";
+import { BLUES_HOST } from "@/config/onePercentBlues";
+import { isBluesHostname } from "@/lib/bluesHost";
 const CALCULATOR_PATH = "/";
 
 export interface SiteCalculatorConfig {
@@ -95,12 +97,37 @@ export interface SiteCalculatorConfig {
   detailsPresentation: "inline" | "modal";
 }
 
+/* This install also serves the blue front door, onepercentblues.com
+   (src/config/onePercentBlues.ts), from the same canon share/poll stack.
+   ShareMyResults reads displayDomain straight off this object, so the
+   per-host difference lives here as values resolved from the visitor's host,
+   leaving the canon files byte-identical. The share panel only renders after
+   a tap, so the host is always a real browser hostname when these are read
+   for display. The blue page emits `bluesShareSite.displayDomain` as an
+   SSR-visible `data-blues-share-domain` marker. */
+const GREEN_SHARE_DOMAIN = "youarepayingtoomuch.com";
+const GREEN_SHARE_CARD_ROUTE = "/api/og";
+
+export const bluesShareSite = {
+  displayDomain: BLUES_HOST,
+  /** Blue twin of `/api/og`; reads the same query shape (parseCalculatorState)
+   * and is the card the blue page's own OG tags already point at. */
+  shareCardRoute: "/api/og/blues",
+} as const;
+
+function onBluesShareHost(): boolean {
+  return typeof window !== "undefined" && isBluesHostname(window.location.hostname);
+}
+
 export const siteCalculatorConfig: SiteCalculatorConfig = {
-  domain: "youarepayingtoomuch.com",
-  displayDomain: "youarepayingtoomuch.com",
+  domain: GREEN_SHARE_DOMAIN,
+  get displayDomain() {
+    return onBluesShareHost() ? bluesShareSite.displayDomain : GREEN_SHARE_DOMAIN;
+  },
   calculatorPath: CALCULATOR_PATH,
   buildCanonicalUrl: (origin, query) => `${origin}/?${buildSharedResultQuery(query)}#calculator`,
-  buildShareCardPath: (query) => `/api/og?${query}`,
+  buildShareCardPath: (query) =>
+    `${onBluesShareHost() ? bluesShareSite.shareCardRoute : GREEN_SHARE_CARD_ROUTE}?${query}`,
   firmDisplayName: "Smarter Way Wealth",
   brandAttributionLine: "Smarter Way Wealth, LLC · Connecticut-registered RIA · CRD #342140",
   verifyMathPath: "/our-math",
