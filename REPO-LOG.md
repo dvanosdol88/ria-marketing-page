@@ -6,8 +6,8 @@
 - changed: the shared host helper keeps one check (apex + www). The unused extra host names and the duplicate “content host” wrapper are gone.
 - preserved: internal-tool 404s from #345; blue chrome, crash screen, analytics skip, and leave-site icon from #346. Open drafts #303 #316 #317 #321 #322 #327–#333 were not edited except the existing host-test files this cleanup has to extend.
 - caller check: no Blues page calls the newly gated doors. The shared calculator’s share-download fallback still names the green share card, but the blue page’s own share image is the blue card, and that file is owned by open #327 so this cleanup did not retarget it. The quiz poll on the blue page is why the quiz door stays open.
-- verified: pending on this PR
-- deployed: `not deployed`
+- verified: typecheck passed; lint 0 errors (existing navigation-image warning only). Blues source locks 10/10, Blues audit cleanup 4/4, and Blues host routing passed (new green-only doors 404 on blue; blue share card and quiz stay live; green host unchanged).
+- deployed: `not deployed` (PR #347)
 
 ### 2026-10-11 — Blues host: stop green PWA and internal-tool leaks
 **Agent:** Cursor Grok | **Surface:** onepercentblues.com install file, icons, and internal tools | **Goal:** nightly audit after #344 / #326
