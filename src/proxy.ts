@@ -9,9 +9,9 @@ import { isBluesHostname, requestHostname } from "@/lib/bluesHost";
  * instead. Apex and www both 404. The 1percentblues.com aliases are not in
  * this matcher’s host check — they keep their 308 to the apex.
  *
- * /api/og is the green share card only. /api/og/blues stays live (the matcher
- * is the exact path, not /api/og/:path*). The quiz vote/reset routes stay
- * live: the shared calculator poll on the blue page calls them.
+ * /api/og is the green share card only. /api/og/blues stays live because the
+ * matcher lists that exact path and no children. The quiz vote/reset routes
+ * stay live: the shared calculator poll on the blue page calls them.
  *
  * Next.js 16 names this file proxy.ts (the older middleware.ts name still
  * works but prints a deprecation warning on every build).
