@@ -1,5 +1,14 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-10-12 — Blues host: finish green-only API isolation
+**Agent:** Cursor Grok | **Surface:** onepercentblues.com host gate | **Goal:** nightly audit after #345 / #346
+- changed: the remaining green-only machine doors now say “not found” on onepercentblues.com and www: the green share card, the savings-rate feed, the mailer-scan counter, the calculator JSON feed, the deploy version stamp, and the green agent-info file. The blue share card and the quiz poll stay live on the blue host. They are unchanged on youarepayingtoomuch.com. The short 1percentblues.com name still lands on onepercentblues.com.
+- changed: the shared host helper keeps one check (apex + www). The unused extra host names and the duplicate “content host” wrapper are gone.
+- preserved: internal-tool 404s from #345; blue chrome, crash screen, analytics skip, and leave-site icon from #346. Open drafts #303 #316 #317 #321 #322 #327–#333 were not edited except the existing host-test files this cleanup has to extend.
+- caller check: no Blues page calls the newly gated doors. The shared calculator’s share-download fallback still names the green share card, but the blue page’s own share image is the blue card, and that file is owned by open #327 so this cleanup did not retarget it. The quiz poll on the blue page is why the quiz door stays open.
+- verified: pending on this PR
+- deployed: `not deployed`
+
 ### 2026-10-11 — Blues host: stop green PWA and internal-tool leaks
 **Agent:** Cursor Grok | **Surface:** onepercentblues.com install file, icons, and internal tools | **Goal:** nightly audit after #344 / #326
 - changed: a request for the phone-home-screen file or the large Android icons on onepercentblues.com now stays on that host and returns the blue name, blue color, and blue mark. It does not hop to the green site (that hop is what open #317 still does, which fights the later “stay on blue” rule from #344).
