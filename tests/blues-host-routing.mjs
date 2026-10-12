@@ -349,6 +349,7 @@ try {
   }
   const bluesShare = await get(port, "/api/og/blues?portfolio=1000000&years=20&growth=8&fee=1", blues);
   assert.equal(bluesShare.status, 200, "the blue share-card API must stay available on the blue host");
+  assert.match(bluesShare.headers["content-type"] ?? "", /image\/png/);
   const bluesGreenShare = await get(port, "/api/og?portfolio=1000000&years=20&growth=8&fee=1", blues);
   assert.equal(
     bluesGreenShare.status,
