@@ -11,6 +11,10 @@ David is a financial advisor (CFA, CFP) running a business, not a programmer. He
 
 # CLAUDE.md (Project)
 
+## David's website change approval — mandatory
+
+Before new or resumed work, read this repo's `AGENTS.md` and [website change approval policy](docs/website-change-approval.md). It overrides broader ship-by-default, proactive-fix, mobile-improvement and agent-readiness instructions. David approves the exact proposed visitor-facing change once; routine maintenance preserves approved wording, appearance, calculations and behavior. Never publish uncertain changes or agent-selected editorial improvements without David's approval.
+
 ## Project: RIA-marketing-page
 - Domain: youarepayingtoomuch.com (no dashes)
 - Purpose: Fee calculator/visualization tool showing the impact of investment fees over time
@@ -42,7 +46,7 @@ Effective 2026-05-22, this site is **mobile-first**, not mobile-aware. Design an
 
 - Layout reasoning starts at ~375px width. Typography, spacing, tap targets, and information density are decided there first.
 - Desktop is a progressive enhancement of the mobile layout, not the source of truth that gets shrunk down.
-- No need to retroactively re-audit existing pages for mobile-first compliance. Only flag and fix glaring mobile breaks (overflow, illegible text, broken tap targets) you encounter during normal work.
+- No need to retroactively re-audit existing pages for mobile-first compliance. Flag glaring mobile breaks (overflow, illegible text, broken tap targets) you encounter during normal work. Fix them only within David-approved scope or as maintenance preserving approved wording, appearance, calculations and behavior; otherwise show a draft for approval.
 - When touching a section for any reason, proactively surface 1–3 mobile-first improvement opportunities (typography stairs, content density, tap target size, layout reflow, hover-only interactions) with concrete options for David to pick from. Don't apply them unprompted — just call them out alongside the requested change.
 
 ## Project Backlog
