@@ -185,3 +185,12 @@ test("root not-found uses blues chrome on the blue host and green chrome elsewhe
   assert.match(icons, /Page not found \| One Percent Blues/);
   assert.match(icons, /siteName: "One Percent Blues"/);
 });
+
+test("the share and poll panels show the blue domain and blue card on the blue host", async () => {
+  const shareConfig = await read("../src/lib/siteCalculatorConfig.ts");
+  assert.match(shareConfig, /displayDomain: BLUES_HOST/);
+  assert.match(shareConfig, /shareCardRoute: "\/api\/og\/blues"/);
+  assert.match(shareConfig, /isBluesHostname\(window\.location\.hostname\)/);
+  assert.match(shareConfig, /GREEN_SHARE_DOMAIN = "youarepayingtoomuch\.com"/);
+  assert.match(bluesPage, /data-blues-share-domain=\{bluesShareSite\.displayDomain\}/);
+});

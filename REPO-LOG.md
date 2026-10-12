@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 05-78 — 2026-10-12 — Blues share and poll panels show onepercentblues.com and the blue card
+**Agent:** Claude (Rack seat, Linux) | **Surface:** onepercentblues.com "Share my results" and poll panels | **Status:** PR open
+- changed: on onepercentblues.com (apex and www) the share panel, which the poll's "Share my results" button also opens, now prints onepercentblues.com on its card preview and drawn card, and its no-canvas card fallback/download uses the blue card `/api/og/blues` instead of the green `/api/og`. youarepayingtoomuch.com keeps its own domain and green card. The difference lives only in the per-site config (`siteCalculatorConfig.ts`, resolved from the visitor's host with the shared `isBluesHostname` helper), so the canon files (ShareMyResults, Quiz, SocialShareRow, shareSummary) stay byte-identical with the sister repo and no canon hash changed. No wording or design changed.
+- added: the blue page's `<main>` carries an SSR-visible `data-blues-share-domain="onepercentblues.com"` marker (invisible), plus a Blues source-lock test for the config and marker.
+- coordinated: open #327 edits HomeCalculatorExperience/CostAnalysisCalculator; this change touches neither, and #327 does not touch the share card. #347's log note that retargeting the share fallback "belongs to #327" is handled here instead.
+- verified (local): typecheck clean; Blues source locks 11/11, calculator canon manifest, and share one-tap passed; lint clean on changed files.
+
 ### 05-75 — 2026-10-12 — The green site's /blues address now forwards to onepercentblues.com
 **Agent:** Claude (Rack seat, Linux) | **Surface:** youarepayingtoomuch.com/blues routing | **Status:** deployed and proven live (PR #348)
 - changed: youarepayingtoomuch.com/blues no longer serves a second copy of the One Percent Blues page on the green domain. It answers with a permanent 308 to https://onepercentblues.com/, keeping any query string (for example `?check=yny`). Addresses under it (such as /blues/robots.txt) forward to the same file at the blue root (onepercentblues.com/robots.txt). The short-name domains (1percentblues.com and www) now reach the blue home from /blues in one hop instead of two. Only the routing table and its tests changed; no wording or design changed. onepercentblues.com itself is untouched: its home still serves the blue page through the same internal rewrite, and its own /blues still 308s to "/".
