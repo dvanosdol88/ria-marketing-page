@@ -87,9 +87,9 @@ try {
   const blues = { Host: "onepercentblues.com" };
   const text = async (path, headers) => (await get(port, path, headers)).body;
 
-  // 1. /blues on the default host serves the page with what the brief requires,
-  //    and none of the green chrome.
-  let html = await text("/blues");
+  // 1. The blue host serves the page with what the brief requires, and none
+  //    of the green chrome. (/blues on any other host 308s away; see 3.)
+  let html = await text("/", blues);
   for (const needle of [
     "Got the",
     "1% Blues?",
@@ -101,7 +101,7 @@ try {
     "Do you pay a percentage of your portfolio for advice?",
     "Your numbers, not ours.",
   ]) {
-    assert.ok(html.includes(needle), `/blues must contain ${needle}`);
+    assert.ok(html.includes(needle), `the blue page must contain ${needle}`);
   }
   assert.ok(!html.includes('aria-label="Mobile navigation"'), "the green nav must not render on the blue page");
   // The green hero is the "opening-promise" section; "What would you do with"
@@ -111,10 +111,10 @@ try {
   // Every disclaimer marker on the blue page must resolve (same guard as
   // tests/home-disclosures-ssr.mjs keeps on the green home).
   for (const target of new Set([...html.matchAll(/href="#(calculator-notes[^"]*)"/g)].map((m) => m[1]))) {
-    assert.ok(html.includes(`id="${target}"`), `/blues: a marker points at #${target}, which is not on the page`);
+    assert.ok(html.includes(`id="${target}"`), `blue page: a marker points at #${target}, which is not on the page`);
   }
   // A link can carry a completed check; its diagnosis then renders server-side.
-  html = await text("/blues?check=yny");
+  html = await text("/?check=yny", blues);
   assert.ok(html.includes("Yep. That&#x27;s the 1% Blues.") || html.includes("Yep. That's the 1% Blues."),
     "?check=yny must render the full diagnosis in the server HTML");
   assert.ok(html.includes("Estimated advisory-fee difference"), "the diagnosis carries the receipt label");
@@ -177,6 +177,12 @@ try {
   const bluesSelf = await get(port, "/blues", blues);
   assert.equal(bluesSelf.status, 308, "/blues on the blue host must redirect to /");
   assert.match(bluesSelf.headers.location ?? "", /^(https?:\/\/[^/]+)?\/$/);
+  // Rack 05-75: /blues on the green host (or any non-blue host) is not a
+  // second copy of the blue page; it 308s to the blue home.
+  await expectRedirect("/blues", {}, "https://onepercentblues.com/", [308]);
+  await expectRedirect("/blues", { Host: "youarepayingtoomuch.com" }, "https://onepercentblues.com/", [308]);
+  await expectRedirect("/blues?check=yny", {}, "https://onepercentblues.com/?check=yny", [308]);
+  await expectRedirect("/blues/robots.txt", {}, "https://onepercentblues.com/robots.txt", [308]);
 
   // 4. The green home is untouched and the share card renders.
   html = await text("/");

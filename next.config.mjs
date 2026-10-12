@@ -78,6 +78,16 @@ const nextConfig = {
       })),
       // On the blue host the page's own address is "/", never "/blues".
       { source: "/blues", has: [bluesHost], destination: "/", permanent: true },
+      // Rack 05-75: on every other host /blues was a duplicate of the blue
+      // page on the green domain. Send it (and anything under it) to the blue
+      // home. Rewrites into /blues on the blue host are not re-matched here.
+      { source: "/blues", missing: [bluesHost], destination: `${BLUES_ORIGIN}/`, permanent: true },
+      {
+        source: "/blues/:path*",
+        missing: [bluesHost],
+        destination: `${BLUES_ORIGIN}/:path*`,
+        permanent: true,
+      },
       // Known green doors only. Unknown blue-host paths fall through to the
       // Blues-branded 404 instead of a catch-all hop to the green site.
       ...BLUES_GREEN_PATHS.map((source) => ({

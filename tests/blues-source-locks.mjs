@@ -94,6 +94,11 @@ test("host rules: known green doors bounce; unknown paths stay for the blues 404
     assert.ok(nextConfig.includes(`"${path}"`), `green bounce missing: ${path}`);
   }
   assert.match(nextConfig, /destination: `\$\{GREEN_ORIGIN\}\$\{source\}`/);
+  // Rack 05-75: /blues off the blue host 308s to the blue home, not a duplicate page.
+  assert.match(
+    nextConfig,
+    /\{ source: "\/blues", missing: \[bluesHost\], destination: `\$\{BLUES_ORIGIN\}\/`, permanent: true \}/,
+  );
   assert.doesNotMatch(
     nextConfig,
     /BLUES_PASSTHROUGH|\(\?!\s*\$\{BLUES_PASSTHROUGH\}\)/,
