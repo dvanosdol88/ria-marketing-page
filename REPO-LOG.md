@@ -1,11 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
 ### 05-75 — 2026-10-12 — The green site's /blues address now forwards to onepercentblues.com
-**Agent:** Claude (Rack seat, Linux) | **Surface:** youarepayingtoomuch.com/blues routing | **Status:** in review (PR pending)
+**Agent:** Claude (Rack seat, Linux) | **Surface:** youarepayingtoomuch.com/blues routing | **Status:** deployed and proven live (PR #348)
 - changed: youarepayingtoomuch.com/blues no longer serves a second copy of the One Percent Blues page on the green domain. It answers with a permanent 308 to https://onepercentblues.com/, keeping any query string (for example `?check=yny`). Addresses under it (such as /blues/robots.txt) forward to the same file at the blue root (onepercentblues.com/robots.txt). The short-name domains (1percentblues.com and www) now reach the blue home from /blues in one hop instead of two. Only the routing table and its tests changed; no wording or design changed. onepercentblues.com itself is untouched: its home still serves the blue page through the same internal rewrite, and its own /blues still 308s to "/".
 - coordinated: open drafts #317 and #328 edit the same two files (routing table + host-routing test). This change adds two lines next to the existing blue-host /blues rule and moves the test's page-content checks from green-host /blues to the blue host's "/", so either draft rebases with at most a small adjacent-line merge.
 - verified (local): Blues source locks 10/10 and Blues host routing passed, including the new checks: /blues on the default host and on youarepayingtoomuch.com answers 308 to https://onepercentblues.com/, /blues?check=yny keeps its query, /blues/robots.txt forwards to the blue robots file, and 1percentblues.com/blues reaches the blue home in one hop.
-- deployed: `not deployed` (production proof to follow on merge)
+- review: cubic raised two points; both fixed in one push (short-name /blues in one hop; precise log wording). PR CI `verify` and `test` passed on the final head, and main CI passed on the merge commit.
+- deployed: PR #348 squash-merged 2026-10-12 10:34 UTC as `9ab9486`; youarepayingtoomuch.com/api/version reported that commit.
+- proven live (2026-10-12 10:39 UTC, production): youarepayingtoomuch.com/blues → 308, Location https://onepercentblues.com/; /blues?check=yny → 308 to https://onepercentblues.com/?check=yny; /blues/robots.txt → 308 to https://onepercentblues.com/robots.txt; 1percentblues.com/blues → 308 to https://onepercentblues.com/ in one hop. onepercentblues.com/ still 200 with the blue page; onepercentblues.com/blues still 308 to /; green home 200.
 
 ### 2026-10-12 — Blues host: finish green-only API isolation
 **Agent:** Cursor Grok | **Surface:** onepercentblues.com host gate | **Goal:** nightly audit after #345 / #346
