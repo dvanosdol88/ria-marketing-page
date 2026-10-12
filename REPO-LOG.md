@@ -1,11 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
 ### 05-78 — 2026-10-12 — Blues share and poll panels show onepercentblues.com and the blue card
-**Agent:** Claude (Rack seat, Linux) | **Surface:** onepercentblues.com "Share my results" and poll panels | **Status:** PR open
+**Agent:** Claude (Rack seat, Linux) | **Surface:** onepercentblues.com "Share my results" and poll panels | **Status:** deployed and proven live (PR #350)
 - changed: on onepercentblues.com (apex and www) the share panel, which the poll's "Share my results" button also opens, now prints onepercentblues.com on its card preview and drawn card, and its no-canvas card fallback/download uses the blue card `/api/og/blues` instead of the green `/api/og`. youarepayingtoomuch.com keeps its own domain and green card. The difference lives only in the per-site config (`siteCalculatorConfig.ts`, resolved from the visitor's host with the shared `isBluesHostname` helper), so the canon files (ShareMyResults, Quiz, SocialShareRow, shareSummary) stay byte-identical with the sister repo and no canon hash changed. No wording or design changed.
 - added: the blue page's `<main>` carries an SSR-visible `data-blues-share-domain="onepercentblues.com"` marker (invisible), plus a Blues source-lock test for the config and marker.
 - coordinated: open #327 edits HomeCalculatorExperience/CostAnalysisCalculator; this change touches neither, and #327 does not touch the share card. #347's log note that retargeting the share fallback "belongs to #327" is handled here instead.
 - verified (local): typecheck clean; Blues source locks 11/11, calculator canon manifest, and share one-tap passed; lint clean on changed files.
+- deployed: PR #350 squash-merged 2026-10-12 10:52 UTC as `8ed61a3`; main CI passed on the merge commit; youarepayingtoomuch.com/api/version reported `8ed61a3`.
+- proven live (2026-10-12 ~11:00 UTC, production, headless Chromium; the poll vote was answered inside the test browser so no real vote or analytics were recorded): onepercentblues.com server HTML carries `data-blues-share-domain="onepercentblues.com"` (green home has none). On onepercentblues.com and www, the opened share panel and the share panel opened from the poll show onepercentblues.com and never youarepayingtoomuch.com; the drawn card prints onepercentblues.com; the no-canvas download goes to https://onepercentblues.com/api/og/blues?... (200 image/png). On youarepayingtoomuch.com the same panels show youarepayingtoomuch.com and the download goes to /api/og (200 image/png).
 
 ### 05-75 — 2026-10-12 — The green site's /blues address now forwards to onepercentblues.com
 **Agent:** Claude (Rack seat, Linux) | **Surface:** youarepayingtoomuch.com/blues routing | **Status:** deployed and proven live (PR #348)
