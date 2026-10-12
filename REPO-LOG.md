@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 05-75 — 2026-10-12 — The green site's /blues address now forwards to onepercentblues.com
+**Agent:** Claude (Rack seat, Linux) | **Surface:** youarepayingtoomuch.com/blues routing | **Status:** in review (PR pending)
+- changed: youarepayingtoomuch.com/blues no longer serves a second copy of the One Percent Blues page on the green domain. It answers with a permanent 308 to https://onepercentblues.com/, keeping any query string (for example `?check=yny`). Addresses under it (such as /blues/robots.txt) forward to the same file at the blue root (onepercentblues.com/robots.txt). The short-name domains (1percentblues.com and www) now reach the blue home from /blues in one hop instead of two. Only the routing table and its tests changed; no wording or design changed. onepercentblues.com itself is untouched: its home still serves the blue page through the same internal rewrite, and its own /blues still 308s to "/".
+- coordinated: open drafts #317 and #328 edit the same two files (routing table + host-routing test). This change adds two lines next to the existing blue-host /blues rule and moves the test's page-content checks from green-host /blues to the blue host's "/", so either draft rebases with at most a small adjacent-line merge.
+- verified (local): Blues source locks 10/10 and Blues host routing passed, including the new checks: /blues on the default host and on youarepayingtoomuch.com answers 308 to https://onepercentblues.com/, /blues?check=yny keeps its query, /blues/robots.txt forwards to the blue robots file, and 1percentblues.com/blues reaches the blue home in one hop.
+- deployed: `not deployed` (production proof to follow on merge)
+
 ### 2026-10-12 — Blues host: finish green-only API isolation
 **Agent:** Cursor Grok | **Surface:** onepercentblues.com host gate | **Goal:** nightly audit after #345 / #346
 - changed: the remaining green-only machine doors now say “not found” on onepercentblues.com and www: the savings-rate feed, the mailer-scan counter, the calculator JSON feed, the deploy version stamp, and the green agent-info file. The blue share card, the quiz poll, and the green share-card path stay live on the blue host. The green share-card path is still the shared calculator’s no-canvas download fallback (owned by open #327), so it was left open. They are unchanged on youarepayingtoomuch.com. The short 1percentblues.com name still lands on onepercentblues.com.

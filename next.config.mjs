@@ -69,6 +69,18 @@ const nextConfig = {
       },
       { source: "/faq", destination: "/#faq", permanent: true },
 
+      // Rack 05-75: on every other host /blues was a duplicate of the blue
+      // page on the green domain. Send it to the blue home, and /blues/<file>
+      // to the same file at the blue root, in one hop. Listed ahead of the
+      // alias catch-all so the short names skip the /blues hop too. Rewrites
+      // into /blues on the blue host are not re-matched here.
+      { source: "/blues", missing: [bluesHost], destination: `${BLUES_ORIGIN}/`, permanent: true },
+      {
+        source: "/blues/:path*",
+        missing: [bluesHost],
+        destination: `${BLUES_ORIGIN}/:path*`,
+        permanent: true,
+      },
       // One Percent Blues: the three other hostnames land on onepercentblues.com.
       ...["1percentblues.com", "www.1percentblues.com", `www.${BLUES_HOST}`].map((host) => ({
         source: "/:path*",
