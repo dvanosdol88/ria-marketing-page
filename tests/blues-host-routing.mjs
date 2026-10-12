@@ -183,6 +183,7 @@ try {
   await expectRedirect("/blues", { Host: "youarepayingtoomuch.com" }, "https://onepercentblues.com/", [308]);
   await expectRedirect("/blues?check=yny", {}, "https://onepercentblues.com/?check=yny", [308]);
   await expectRedirect("/blues/robots.txt", {}, "https://onepercentblues.com/robots.txt", [308]);
+  await expectRedirect("/blues", { Host: "1percentblues.com" }, "https://onepercentblues.com/", [308]);
 
   // 4. The green home is untouched and the share card renders.
   html = await text("/");

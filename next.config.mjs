@@ -69,6 +69,18 @@ const nextConfig = {
       },
       { source: "/faq", destination: "/#faq", permanent: true },
 
+      // Rack 05-75: on every other host /blues was a duplicate of the blue
+      // page on the green domain. Send it to the blue home, and /blues/<file>
+      // to the same file at the blue root, in one hop. Listed ahead of the
+      // alias catch-all so the short names skip the /blues hop too. Rewrites
+      // into /blues on the blue host are not re-matched here.
+      { source: "/blues", missing: [bluesHost], destination: `${BLUES_ORIGIN}/`, permanent: true },
+      {
+        source: "/blues/:path*",
+        missing: [bluesHost],
+        destination: `${BLUES_ORIGIN}/:path*`,
+        permanent: true,
+      },
       // One Percent Blues: the three other hostnames land on onepercentblues.com.
       ...["1percentblues.com", "www.1percentblues.com", `www.${BLUES_HOST}`].map((host) => ({
         source: "/:path*",
@@ -78,16 +90,6 @@ const nextConfig = {
       })),
       // On the blue host the page's own address is "/", never "/blues".
       { source: "/blues", has: [bluesHost], destination: "/", permanent: true },
-      // Rack 05-75: on every other host /blues was a duplicate of the blue
-      // page on the green domain. Send it (and anything under it) to the blue
-      // home. Rewrites into /blues on the blue host are not re-matched here.
-      { source: "/blues", missing: [bluesHost], destination: `${BLUES_ORIGIN}/`, permanent: true },
-      {
-        source: "/blues/:path*",
-        missing: [bluesHost],
-        destination: `${BLUES_ORIGIN}/:path*`,
-        permanent: true,
-      },
       // Known green doors only. Unknown blue-host paths fall through to the
       // Blues-branded 404 instead of a catch-all hop to the green site.
       ...BLUES_GREEN_PATHS.map((source) => ({
