@@ -298,7 +298,6 @@ try {
       headers: { "Content-Type": "application/json" },
       body: "{}",
     },
-    { path: "/api/og", method: "GET" },
     { path: "/api/savings-rates", method: "GET" },
     { path: "/api/analytics/mailer-scans", method: "GET" },
     { path: "/api/calculator", method: "GET" },
@@ -350,6 +349,12 @@ try {
   }
   const bluesShare = await get(port, "/api/og/blues?portfolio=1000000&years=20&growth=8&fee=1", blues);
   assert.equal(bluesShare.status, 200, "the blue share-card API must stay available on the blue host");
+  const bluesGreenShare = await get(port, "/api/og?portfolio=1000000&years=20&growth=8&fee=1", blues);
+  assert.notEqual(
+    bluesGreenShare.status,
+    404,
+    "the green share-card path stays available on the blue host until the shared calculator fallback is retargeted",
+  );
   const bluesQuiz = await get(port, "/api/quiz/vote", blues);
   assert.notEqual(bluesQuiz.status, 404, "the quiz API must stay available on the blue host");
 

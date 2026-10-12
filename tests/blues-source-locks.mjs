@@ -142,16 +142,15 @@ test("the blue host serves its own PWA file and does not bounce it to green", as
   assert.match(proxy, /\/api\/become-a-client/);
   assert.match(proxy, /\/api\/gallery\/statuses/);
   assert.match(proxy, /\/api\/eddm-evals/);
-  assert.match(proxy, /\/api\/og/);
   assert.match(proxy, /\/api\/savings-rates/);
   assert.match(proxy, /\/api\/analytics\/mailer-scans/);
   assert.match(proxy, /\/api\/calculator/);
   assert.match(proxy, /\/api\/version/);
   assert.match(proxy, /\/agent-info\.json/);
   const matcher = proxy.match(/matcher:\s*\[([\s\S]*?)\]/)?.[1] ?? "";
-  assert.match(matcher, /"\/api\/og"/);
-  assert.doesNotMatch(matcher, /"\/api\/og\//);
+  assert.doesNotMatch(matcher, /"\/api\/og"/);
   assert.doesNotMatch(matcher, /"\/api\/quiz/);
+  assert.match(proxy, /no-canvas download fallback/);
   assert.match(proxy, /isBluesHostname/);
   assert.doesNotMatch(proxy, /isBluesContentHost/);
   assert.match(proxy, /status: 404/);
