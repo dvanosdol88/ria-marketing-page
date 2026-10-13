@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-10-13 — Remove retired sticky-savings shell
+**Agent:** Cursor Grok | **Surface:** root layout + unused ProgressiveStickyBar / SavingsBarContext | **PR:** [#316](https://github.com/dvanosdol88/ria-marketing-page/pull/316) | **Status:** not deployed
+- changed: `ProgressiveStickyBar` had zero mounts after David took it off the page. This PR deletes that component, deletes `SavingsBarContext`, unwraps `SavingsBarProvider` from `src/app/layout.tsx`, and removes the calculator writes that only fed the unused context. Rebased onto current main after Blues host isolation (#345, #346, #347); those PRs did not delete this shell. Kept `RedditPixel` in the root layout.
+- preserved: `src/config/stickyNavConfig.ts` (SiteNav still uses it, including the old sticky-bar height in scroll-spy). Historical mentions in this log and the 2026-09-17 Blues plan were left alone.
+- overlap: open PR #303 gates the same `CostAnalysisCalculator` `setSavingsBarData` block behind `usesOpeningMarketingHero`. This PR removes the block; note that when merging.
+- verified: rebase conflicts resolved in `src/app/layout.tsx` only. Typecheck/lint/CI on this revision.
+- deployed: `not deployed`
+
 ### 05-78 — 2026-10-12 — Blues share and poll panels show onepercentblues.com and the blue card
 **Agent:** Claude (Rack seat, Linux) | **Surface:** onepercentblues.com "Share my results" and poll panels | **Status:** deployed and proven live (PR #350)
 - changed: on onepercentblues.com (apex and www) the share panel, which the poll's "Share my results" button also opens, now prints onepercentblues.com on its card preview and drawn card, and its no-canvas card fallback/download uses the blue card `/api/og/blues` instead of the green `/api/og`. youarepayingtoomuch.com keeps its own domain and green card. The difference lives only in the per-site config (`siteCalculatorConfig.ts`, resolved from the visitor's host with the shared `isBluesHostname` helper), so the canon files (ShareMyResults, Quiz, SocialShareRow, shareSummary) stay byte-identical with the sister repo and no canon hash changed. No wording or design changed.
