@@ -6,8 +6,8 @@
 - changed: the shared missing-page screen now uses the same host helper as the rest of the blue front door (forwarded host, then host), so a proxy in front cannot flip it to the green missing-page screen. No visitor wording changed.
 - preserved: those drafts themselves were not edited. No visitor wording changed.
 - coordinated: #317 and #328 both edit the host-routing and source-lock tests this PR extends (the /api/og 404 checks). #328 also still has an older missing-page file. #327 owns the home calculator file; this PR changes one share-card line there so blues mode is known on first paint. Those drafts will rebase across adjacent-line merges. #316 landed on main during review; this branch was rebased over it. #303 #353 do not overlap this change.
-- verified: local typecheck, lint (existing nav-image warning only), Blues source locks, Blues audit cleanup, calculator canon, one-tap share, and Blues host routing all passed. GitHub CI `verify` and `test` green on `8f24787`; Vercel preview Ready. PR #354 marked ready; not merged.
-- deployed: `not deployed` (PR #354)
+- verified: local typecheck, lint (existing nav-image warning only), Blues source locks, Blues audit cleanup, calculator canon, one-tap share, and Blues host routing all passed. GitHub CI `verify` and `test` green; Vercel preview Ready. Proven live 2026-10-13: youarepayingtoomuch.com/api/version is `d9c7776`; the green share picture still works there; onepercentblues.com/api/og/blues still returns a picture; onepercentblues.com/api/og now says not found.
+- deployed: PR #354 squash-merged 2026-10-13 as `d9c7776`; live.
 
 ### 2026-10-13 — Remove retired sticky-savings shell
 **Agent:** Cursor Grok | **Surface:** root layout + unused ProgressiveStickyBar / SavingsBarContext | **PR:** [#316](https://github.com/dvanosdol88/ria-marketing-page/pull/316) | **Status:** not deployed
