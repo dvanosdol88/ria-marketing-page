@@ -4,7 +4,8 @@
 **Agent:** Cursor Grok | **Surface:** onepercentblues.com share card and missing-page host check | **Goal:** nightly cleanup after #350 / #347
 - changed: the blue page now picks the blue share picture from blues mode, so the first HTML is already the blue card. It no longer waits for the browser address. The green share-picture door now says “not found” on onepercentblues.com and www. The blue card and the poll stay live. youarepayingtoomuch.com is unchanged.
 - changed: the shared missing-page screen now uses the same host helper as the rest of the blue front door (forwarded host, then host), so a proxy in front cannot flip it to the green missing-page screen. No visitor wording changed.
-- preserved: open drafts #303 #316 #317 #353 were not edited. The calculator files those drafts own were left alone except the one share-card line in the home calculator that has to pass blues mode through.
+- preserved: those drafts themselves were not edited. No visitor wording changed.
+- coordinated: #317 and #328 both edit the host-routing and source-lock tests this PR extends (the /api/og 404 checks). #328 also still has an older missing-page file. #327 owns the home calculator file; this PR changes one share-card line there so blues mode is known on first paint. Those drafts will rebase across adjacent-line merges. #303 #316 #353 do not overlap this change.
 - verified: local typecheck, lint (existing nav-image warning only), Blues source locks, Blues audit cleanup, calculator canon, one-tap share, and Blues host routing all passed. GitHub CI `verify` and `test` green on `8f24787`; Vercel preview Ready. PR #354 marked ready; not merged.
 - deployed: `not deployed` (PR #354)
 

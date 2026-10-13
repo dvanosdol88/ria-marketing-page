@@ -180,7 +180,7 @@ test("root not-found uses blues chrome on the blue host and green chrome elsewhe
   assert.match(notFound, /SiteNav/);
   assert.match(notFound, /SiteFooter/);
   assert.match(notFound, /headers\(\)/);
-  assert.match(notFound, /requestHostname/);
+  assert.match(notFound, /requestHostname\(await headers\(\)\)/);
   assert.match(notFound, /BLUES_ORIGIN/);
   assert.match(notFound, /generateMetadata/);
   assert.match(notFound, /bluesNotFoundMetadata/);
