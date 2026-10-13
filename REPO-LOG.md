@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-10-13 — Blue share card on first paint; green card 404s on blue
+**Agent:** Cursor Grok | **Surface:** onepercentblues.com share card and missing-page host check | **Goal:** nightly cleanup after #350 / #347
+- changed: the blue page now picks the blue share picture from blues mode, so the first HTML is already the blue card. It no longer waits for the browser address. The green share-picture door now says “not found” on onepercentblues.com and www. The blue card and the poll stay live. youarepayingtoomuch.com is unchanged.
+- changed: the shared missing-page screen now uses the same host helper as the rest of the blue front door (forwarded host, then host), so a proxy in front cannot flip it to the green missing-page screen. No visitor wording changed.
+- preserved: open drafts #303 #316 #317 #353 were not edited. The calculator files those drafts own were left alone except the one share-card line in the home calculator that has to pass blues mode through.
+- verified: pending PR checks (source locks, host routing, lint, build).
+- deployed: `not deployed`
+
 ### 2026-10-13 — Remove retired sticky-savings shell
 **Agent:** Cursor Grok | **Surface:** root layout + unused ProgressiveStickyBar / SavingsBarContext | **PR:** [#316](https://github.com/dvanosdol88/ria-marketing-page/pull/316) | **Status:** not deployed
 - changed: `ProgressiveStickyBar` had zero mounts after David took it off the page. This PR deletes that component, deletes `SavingsBarContext`, unwraps `SavingsBarProvider` from `src/app/layout.tsx`, and removes the calculator writes that only fed the unused context. Rebased onto current main after Blues host isolation (#345, #346, #347); those PRs did not delete this shell. Kept `RedditPixel` in the root layout.

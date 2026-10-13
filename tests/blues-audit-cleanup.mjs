@@ -56,6 +56,7 @@ test("the blue layout and the root 404 share one chrome and icon helper", () => 
   assert.match(chrome, /<BluesFooter \/>/);
   assert.match(icons, /\/brand\/blues-icon\.svg/);
   assert.match(notFound, /headers\(\)/);
+  assert.match(notFound, /requestHostname/);
   assert.doesNotMatch(notFound, /export const dynamic = "force-dynamic"/);
 });
 

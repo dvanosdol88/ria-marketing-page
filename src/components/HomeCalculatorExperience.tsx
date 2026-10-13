@@ -33,7 +33,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { SMARTER_WAY_WEALTH_ORIGIN } from "@/config/campaignLinks";
 import { NoteMarker } from "@/components/CalculatorNotes";
 import { buildShareSummary } from "@/lib/shareSummary";
-import { siteCalculatorConfig } from "@/lib/siteCalculatorConfig";
+import { isBluesShareMode, shareCardPathForMode, siteCalculatorConfig } from "@/lib/siteCalculatorConfig";
 import { ShareMyResults } from "@/components/calculator/ShareMyResults";
 import { Quiz } from "./Quiz";
 
@@ -1624,7 +1624,7 @@ function SeeOurMathBento({
     annualFeePercent,
     mutualFundExpensePercent,
   });
-  const shareCardPath = siteCalculatorConfig.buildShareCardPath(shareQuery);
+  const shareCardPath = shareCardPathForMode(shareQuery, isBluesShareMode(accent));
   const canonicalUrl = origin ? siteCalculatorConfig.buildCanonicalUrl(origin, shareQuery) : "";
   const shareSummary = canonicalUrl
     ? buildShareSummary({

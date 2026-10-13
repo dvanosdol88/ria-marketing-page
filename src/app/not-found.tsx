@@ -6,7 +6,7 @@ import { bluesNotFoundMetadata } from "@/components/blues/bluesIcons";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { BLUES_ORIGIN } from "@/config/onePercentBlues";
-import { isBluesHostname } from "@/lib/bluesHost";
+import { isBluesHostname, requestHostname } from "@/lib/bluesHost";
 
 /*
  * Unknown blue-host addresses share this root missing-page file with the green
@@ -16,7 +16,7 @@ import { isBluesHostname } from "@/lib/bluesHost";
  * send unknown blue-host paths through a path the #344 contract forbids.
  */
 async function isBluesHost() {
-  return isBluesHostname((await headers()).get("host"));
+  return isBluesHostname(requestHostname(await headers()));
 }
 
 /* Root 404 lives outside every route group, so it inherits the green site

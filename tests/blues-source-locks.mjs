@@ -153,9 +153,10 @@ test("the blue host serves its own PWA file and does not bounce it to green", as
   assert.match(proxy, /\/api\/version/);
   assert.match(proxy, /\/agent-info\.json/);
   const matcher = proxy.match(/matcher:\s*\[([\s\S]*?)\]/)?.[1] ?? "";
-  assert.doesNotMatch(matcher, /"\/api\/og"/);
+  assert.match(matcher, /"\/api\/og"/);
+  assert.doesNotMatch(matcher, /"\/api\/og\/blues"/);
   assert.doesNotMatch(matcher, /"\/api\/quiz/);
-  assert.match(proxy, /no-canvas download fallback/);
+  assert.match(proxy, /og\(\?!\\?\//);
   assert.match(proxy, /isBluesHostname/);
   assert.doesNotMatch(proxy, /isBluesContentHost/);
   assert.match(proxy, /status: 404/);
@@ -179,6 +180,7 @@ test("root not-found uses blues chrome on the blue host and green chrome elsewhe
   assert.match(notFound, /SiteNav/);
   assert.match(notFound, /SiteFooter/);
   assert.match(notFound, /headers\(\)/);
+  assert.match(notFound, /requestHostname/);
   assert.match(notFound, /BLUES_ORIGIN/);
   assert.match(notFound, /generateMetadata/);
   assert.match(notFound, /bluesNotFoundMetadata/);
@@ -188,9 +190,13 @@ test("root not-found uses blues chrome on the blue host and green chrome elsewhe
 
 test("the share and poll panels show the blue domain and blue card on the blue host", async () => {
   const shareConfig = await read("../src/lib/siteCalculatorConfig.ts");
+  const experience = await read("../src/components/HomeCalculatorExperience.tsx");
   assert.match(shareConfig, /displayDomain: BLUES_HOST/);
   assert.match(shareConfig, /shareCardRoute: "\/api\/og\/blues"/);
-  assert.match(shareConfig, /isBluesHostname\(window\.location\.hostname\)/);
+  assert.match(shareConfig, /export function isBluesShareMode/);
+  assert.match(shareConfig, /export function shareCardPathForMode/);
+  assert.doesNotMatch(shareConfig, /window\.location/);
   assert.match(shareConfig, /GREEN_SHARE_DOMAIN = "youarepayingtoomuch\.com"/);
+  assert.match(experience, /shareCardPathForMode\(shareQuery, isBluesShareMode\(accent\)\)/);
   assert.match(bluesPage, /data-blues-share-domain=\{bluesShareSite\.displayDomain\}/);
 });

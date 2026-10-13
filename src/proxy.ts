@@ -9,16 +9,16 @@ import { isBluesHostname, requestHostname } from "@/lib/bluesHost";
  * instead. Apex and www both 404. The 1percentblues.com aliases are not in
  * this matcher’s host check — they keep their 308 to the apex.
  *
- * /api/og stays live: the shared calculator’s no-canvas download fallback
- * still points at the green share card (HomeCalculatorExperience, open #327).
- * /api/og/blues stays live as the blue card. The quiz vote/reset routes stay
- * live: the shared calculator poll on the blue page calls them.
+ * /api/og 404s here: blues mode now uses the blue card on the first paint,
+ * so the green share-card path is a green-only door. /api/og/blues stays
+ * live as the blue card. The quiz vote/reset routes stay live: the shared
+ * calculator poll on the blue page calls them.
  *
  * Next.js 16 names this file proxy.ts (the older middleware.ts name still
  * works but prints a deprecation warning on every build).
  */
 const BLUES_GATED_PATH =
-  /^\/(?:api\/(?:become-a-client|gallery\/statuses|eddm-evals(?:\/|$)|savings-rates|analytics\/mailer-scans|calculator|version)|agent-info\.json)/;
+  /^\/(?:api\/(?:become-a-client|gallery\/statuses|eddm-evals(?:\/|$)|savings-rates|analytics\/mailer-scans|calculator|version|og(?!\/))|agent-info\.json)/;
 
 export function proxy(request: NextRequest) {
   if (!isBluesHostname(requestHostname(request.headers))) {
@@ -40,6 +40,7 @@ export const config = {
     "/api/analytics/mailer-scans",
     "/api/calculator",
     "/api/version",
+    "/api/og",
     "/agent-info.json",
   ],
 };
