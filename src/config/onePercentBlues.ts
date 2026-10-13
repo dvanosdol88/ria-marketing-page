@@ -69,7 +69,7 @@ export const bluesCheckQuestions: ReadonlyArray<{
   },
 ];
 
-export const EMPTY_BLUES_ANSWERS: BluesAnswers = { q1: null, q2: null, q3: null };
+const EMPTY_BLUES_ANSWERS: BluesAnswers = { q1: null, q2: null, q3: null };
 
 /** The three answers as a URL value — `?check=yny` is q1 yes, q2 no, q3 yes —
  *  so a link can carry a completed check and the diagnosis card renders in
