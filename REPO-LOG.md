@@ -1,5 +1,14 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-10-13 — Blue share card on first paint; green card 404s on blue
+**Agent:** Cursor Grok | **Surface:** onepercentblues.com share card and missing-page host check | **Goal:** nightly cleanup after #350 / #347
+- changed: the blue page now picks the blue share picture from blues mode, so the first HTML is already the blue card. It no longer waits for the browser address. The green share-picture door now says “not found” on onepercentblues.com and www. The blue card and the poll stay live. youarepayingtoomuch.com is unchanged.
+- changed: the shared missing-page screen now uses the same host helper as the rest of the blue front door (forwarded host, then host), so a proxy in front cannot flip it to the green missing-page screen. No visitor wording changed.
+- preserved: those drafts themselves were not edited. No visitor wording changed.
+- coordinated: #317 and #328 both edit the host-routing and source-lock tests this PR extends (the /api/og 404 checks). #328 also still has an older missing-page file. #327 owns the home calculator file; this PR changes one share-card line there so blues mode is known on first paint. Those drafts will rebase across adjacent-line merges. #316 landed on main during review; this branch was rebased over it. #303 #353 do not overlap this change.
+- verified: local typecheck, lint (existing nav-image warning only), Blues source locks, Blues audit cleanup, calculator canon, one-tap share, and Blues host routing all passed. GitHub CI `verify` and `test` green on `8f24787`; Vercel preview Ready. PR #354 marked ready; not merged.
+- deployed: `not deployed` (PR #354)
+
 ### 2026-10-13 — Remove retired sticky-savings shell
 **Agent:** Cursor Grok | **Surface:** root layout + unused ProgressiveStickyBar / SavingsBarContext | **PR:** [#316](https://github.com/dvanosdol88/ria-marketing-page/pull/316) | **Status:** not deployed
 - changed: `ProgressiveStickyBar` had zero mounts after David took it off the page. This PR deletes that component, deletes `SavingsBarContext`, unwraps `SavingsBarProvider` from `src/app/layout.tsx`, and removes the calculator writes that only fed the unused context. Rebased onto current main after Blues host isolation (#345, #346, #347); those PRs did not delete this shell. Kept `RedditPixel` in the root layout.

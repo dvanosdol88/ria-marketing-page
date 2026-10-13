@@ -128,6 +128,7 @@ try {
   );
   html = await text("/?portfolio=2000000&years=20&growth=8&fee=1", blues);
   assert.ok(html.includes("/api/og/blues?"), "the blue share card must carry the scenario query");
+  assert.ok(!html.includes("/api/og?"), "the blue first paint must not name the green share-card path");
   assert.ok(!html.includes("$788,306"), "a custom scenario must not show the default number");
   // Next appends the unconsumed `has` host match to the rewritten query; the
   // page must drop it so it never reaches the address bar or the share links.
@@ -309,6 +310,7 @@ try {
     { path: "/api/analytics/mailer-scans", method: "GET" },
     { path: "/api/calculator", method: "GET" },
     { path: "/api/version", method: "GET" },
+    { path: "/api/og", method: "GET" },
     { path: "/agent-info.json", method: "GET" },
   ];
   for (const { path, method, headers = {}, body } of gatedApis) {
@@ -358,12 +360,12 @@ try {
   assert.equal(bluesShare.status, 200, "the blue share-card API must stay available on the blue host");
   assert.match(bluesShare.headers["content-type"] ?? "", /image\/png/);
   const bluesGreenShare = await get(port, "/api/og?portfolio=1000000&years=20&growth=8&fee=1", blues);
+  assert.equal(bluesGreenShare.status, 404, "the green share-card path must 404 on the blue host");
   assert.equal(
-    bluesGreenShare.status,
-    200,
-    "the green share-card fallback must work on the blue host",
+    bluesGreenShare.headers.location,
+    undefined,
+    "the green share-card path must not redirect to the green site",
   );
-  assert.match(bluesGreenShare.headers["content-type"] ?? "", /image\/png/);
   const bluesQuiz = await get(port, "/api/quiz/vote", blues);
   assert.notEqual(bluesQuiz.status, 404, "the quiz API must stay available on the blue host");
 

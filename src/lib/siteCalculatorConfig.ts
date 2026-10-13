@@ -13,8 +13,7 @@
  */
 
 import { buildSharedResultQuery } from "./qrLanding.ts";
-import { BLUES_HOST } from "@/config/onePercentBlues";
-import { isBluesHostname } from "@/lib/bluesHost";
+import { BLUES_HOST, bluesCalculatorTheme } from "@/config/onePercentBlues";
 const CALCULATOR_PATH = "/";
 
 export interface SiteCalculatorConfig {
@@ -100,11 +99,13 @@ export interface SiteCalculatorConfig {
 /* This install also serves the blue front door, onepercentblues.com
    (src/config/onePercentBlues.ts), from the same canon share/poll stack.
    ShareMyResults reads displayDomain straight off this object, so the
-   per-host difference lives here as values resolved from the visitor's host,
-   leaving the canon files byte-identical. The share panel only renders after
-   a tap, so the host is always a real browser hostname when these are read
-   for display. The blue page emits `bluesShareSite.displayDomain` as an
-   SSR-visible `data-blues-share-domain` marker. */
+   per-page difference lives here, leaving the canon files byte-identical.
+   The share-card path is chosen from blues mode (the one-percent-blues
+   calculator accent), which is known on the server and the first paint —
+   not from a window hostname sniff that would force the green card into
+   the first HTML. The blue page also emits `bluesShareSite.displayDomain`
+   as an SSR-visible `data-blues-share-domain` marker for the share panel,
+   which only reads displayDomain after a tap. */
 const GREEN_SHARE_DOMAIN = "youarepayingtoomuch.com";
 const GREEN_SHARE_CARD_ROUTE = "/api/og";
 
@@ -115,19 +116,31 @@ export const bluesShareSite = {
   shareCardRoute: "/api/og/blues",
 } as const;
 
-function onBluesShareHost(): boolean {
-  return typeof window !== "undefined" && isBluesHostname(window.location.hostname);
+/** True when the calculator is in one-percent-blues mode (blue accent). */
+export function isBluesShareMode(accent: { hex: string } | null | undefined): boolean {
+  return accent?.hex === bluesCalculatorTheme.accent.hex;
+}
+
+function bluesModeFromDocument(): boolean {
+  if (typeof document === "undefined") return false;
+  return Boolean(document.querySelector("[data-blues-share-domain]"));
+}
+
+/** Share-card image path for this page's mode. Blues mode uses the blue
+ *  card so the first server HTML is already right; the green home stays
+ *  on `/api/og`. */
+export function shareCardPathForMode(query: string, bluesMode: boolean): string {
+  return `${bluesMode ? bluesShareSite.shareCardRoute : GREEN_SHARE_CARD_ROUTE}?${query}`;
 }
 
 export const siteCalculatorConfig: SiteCalculatorConfig = {
   domain: GREEN_SHARE_DOMAIN,
   get displayDomain() {
-    return onBluesShareHost() ? bluesShareSite.displayDomain : GREEN_SHARE_DOMAIN;
+    return bluesModeFromDocument() ? bluesShareSite.displayDomain : GREEN_SHARE_DOMAIN;
   },
   calculatorPath: CALCULATOR_PATH,
   buildCanonicalUrl: (origin, query) => `${origin}/?${buildSharedResultQuery(query)}#calculator`,
-  buildShareCardPath: (query) =>
-    `${onBluesShareHost() ? bluesShareSite.shareCardRoute : GREEN_SHARE_CARD_ROUTE}?${query}`,
+  buildShareCardPath: (query) => shareCardPathForMode(query, bluesModeFromDocument()),
   firmDisplayName: "Smarter Way Wealth",
   brandAttributionLine: "Smarter Way Wealth, LLC · Connecticut-registered RIA · CRD #342140",
   verifyMathPath: "/our-math",
