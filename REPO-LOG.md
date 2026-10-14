@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-10-14 — Cleanup-draft sweep: shared legal links; close install-file bounce
+**Agent:** Cursor Grok | **Surface:** green and blue footers + FAQ notes; onepercentblues.com install file | **Goal:** Rack Committee 10/12 cleanup-draft sweep (#317, #321)
+- changed: both footers now use one shared legal-links block (same four addresses, same leave-site icon). Old FAQ design notes were trimmed; the tone map and the “See also” strip stay. Visitor wording is unchanged.
+- closed: #317 still sent the blue phone-home-screen file to the green site. Stay-on-blue has been the rule since #344/#345, so that draft was closed.
+- preserved: no visitor wording changes. FAQ answers, legal labels, and icon size are the same.
+- verified: rebase of #321 onto current main applied cleanly. Local typecheck/lint and the footer/FAQ source locks plus disclosures check follow in this PR.
+- deployed: `not deployed`
+
 ### 2026-10-13 — Blue share card on first paint; green card 404s on blue
 **Agent:** Cursor Grok | **Surface:** onepercentblues.com share card and missing-page host check | **Goal:** nightly cleanup after #350 / #347
 - changed: the blue page now picks the blue share picture from blues mode, so the first HTML is already the blue card. It no longer waits for the browser address. The green share-picture door now says “not found” on onepercentblues.com and www. The blue card and the poll stay live. youarepayingtoomuch.com is unchanged.
