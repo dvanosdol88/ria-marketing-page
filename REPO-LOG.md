@@ -4,7 +4,7 @@
 **Agent:** Cursor Grok | **Surface:** backlog/spec, blue crash screens, two leftover green bits | **Goal:** nightly cleanup
 - changed: backlog now records that youarepayingtoomuch.com/blues already forwards to onepercentblues.com (#348). The leftover share item is only “poll chrome is still green.” The Blues host-rules write-up now matches the live allowlist and stay-on-blue missing-page behavior.
 - changed: a site-wide crash now loads the same site stylesheet. Blue crash screens send the error the same way the site-wide crash screen does.
-- changed: on the blue page, the share-error fallback box uses the same blue control colors as the steppers, and the “read all FAQs” row uses the blue hover already defined for that page. No visitor wording changed.
+- changed: on the blue page, the share-error fallback box uses the same blue control colors as the steppers, and the “read all FAQs” row uses the blue hover already defined for that page (review fix: those colors now use a direct hover so they actually paint). No visitor wording changed.
 - preserved: Quiz.tsx and open drafts #322 #327–#333 #353 were not edited.
 - verified: typecheck clean; lint 0 errors (existing nav-image warning only); Blues source locks 11/11; Blues audit cleanup 4/4; calculator canon; wrap-up hook; one-tap share; production build compiled.
 - deployed: `not deployed` (PR #356)
