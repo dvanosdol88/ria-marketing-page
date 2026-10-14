@@ -225,7 +225,7 @@ export function HomeFaqSection({
                 data-posthog-cta="true"
                 data-posthog-cta-label="Read all FAQs on Smarter Way Wealth"
                 data-posthog-cta-location="home_faq_all_questions"
-                className={`group block !no-underline transition-colors duration-150 hover:bg-[#F1F6F3] ${ROW_X} ${ROW_Y} ${ROW_FOCUS}`}
+                className={`group block !no-underline transition-colors duration-150 ${t.doorHover} ${ROW_X} ${ROW_Y} ${ROW_FOCUS}`}
               >
                 <span className="block">
                   <span className="text-[17px] font-semibold leading-7 !text-[#333B45] transition-colors duration-150 group-hover:!text-[#10233A] sm:text-lg">

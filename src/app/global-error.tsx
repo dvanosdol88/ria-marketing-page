@@ -3,6 +3,7 @@
 import * as Sentry from "@sentry/nextjs";
 import NextError from "next/error";
 import { useEffect, useSyncExternalStore } from "react";
+import "./globals.css";
 import { BluesChrome } from "@/components/blues/BluesChrome";
 import { BluesCrashPanel } from "@/components/blues/BluesCrashPanel";
 import { isBluesHostname } from "@/lib/bluesHost";

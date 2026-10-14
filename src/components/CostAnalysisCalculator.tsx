@@ -934,7 +934,11 @@ export function CostAnalysisCalculator({
           aria-label="Shareable result link"
           value={shareUrl}
           onFocus={(event) => event.currentTarget.select()}
-          className="h-10 w-full rounded-md border border-[#C9D8E4] bg-white px-3 text-xs font-semibold text-[#213B56] shadow-sm outline-none focus:border-[#108843] focus:ring-2 focus:ring-[#108843]/20"
+          className={`h-10 w-full px-3 text-xs font-semibold text-[#213B56] outline-none ${
+            isOnePercentBlues
+              ? bluesControlClasses.frameClassName
+              : "rounded-md border border-[#C9D8E4] bg-white shadow-sm focus:border-[#108843] focus:ring-2 focus:ring-[#108843]/20"
+          }`}
         />
       ) : null}
     </div>

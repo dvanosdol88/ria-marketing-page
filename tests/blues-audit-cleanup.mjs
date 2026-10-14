@@ -19,6 +19,8 @@ const [
   bluesLayout,
   bluesGroupError,
   bluesPageError,
+  bluesCrashPanel,
+  globalError,
   signup,
 ] = await Promise.all([
   read("../src/app/layout.tsx"),
@@ -30,6 +32,8 @@ const [
   read("../src/app/(blues)/blues/layout.tsx"),
   read("../src/app/(blues)/error.tsx"),
   read("../src/app/(blues)/blues/error.tsx"),
+  read("../src/components/blues/BluesCrashPanel.tsx"),
+  read("../src/app/global-error.tsx"),
   read("../src/components/SignupCta.tsx"),
 ]);
 
@@ -64,6 +68,10 @@ test("a Blues crash uses the same chrome instead of the generic Next screen", ()
   assert.match(bluesGroupError, /BluesChrome/);
   assert.match(bluesGroupError, /BluesCrashPanel/);
   assert.match(bluesPageError, /BluesCrashPanel/);
+  assert.match(globalError, /import\s+["']\.\/globals\.css["']/);
+  assert.match(bluesCrashPanel, /Sentry\.captureException/);
+  assert.match(bluesGroupError, /Sentry\.captureException/);
+  assert.match(bluesPageError, /Sentry\.captureException/);
 });
 
 test("an off-site Blues sign-up button uses the leave-site icon", () => {
