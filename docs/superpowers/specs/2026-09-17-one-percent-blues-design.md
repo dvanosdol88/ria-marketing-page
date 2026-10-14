@@ -103,19 +103,24 @@ Rewrites (`beforeFiles`, so they beat the static files in `public/`), all with `
 | `/robots.txt` | `/blues/robots.txt` |
 | `/sitemap.xml` | `/blues/sitemap.xml` |
 | `/llms.txt` | `/blues/llms.txt` |
+| `/site.webmanifest` | `/blues/site.webmanifest` |
+| conventional favicon / apple-touch-icon / android-chrome paths | `/brand/blues-icon.svg` |
 
 Redirects (added to the existing list):
 
 | host | source | destination | status |
 |---|---|---|---|
+| every host except `onepercentblues.com` | `/blues` | `https://onepercentblues.com/` | 308 |
+| every host except `onepercentblues.com` | `/blues/:path*` | `https://onepercentblues.com/:path*` | 308 |
 | `1percentblues.com`, `www.1percentblues.com`, `www.onepercentblues.com` | `/:path*` | `https://onepercentblues.com/:path*` | 308 |
 | `onepercentblues.com` | `/blues` | `/` | 308 |
-| `onepercentblues.com` | `/:path((?!api/\|_next/\|blues\|brand/\|images/\|assets/\|monitoring\|favicon\|apple-touch-icon\|site\.webmanifest\|robots\.txt\|sitemap\.xml\|llms\.txt).+)` | `https://youarepayingtoomuch.com/:path` | 307 |
+| `onepercentblues.com` | each path in `BLUES_GREEN_PATHS` | `https://youarepayingtoomuch.com` + the same path | 307 |
 
-The last rule is what keeps the blue domain to one page: `/our-math`, `/become-a-client`, `/privacy` and
-every other green route bounce to the green domain instead of rendering green pages under a blue address.
-Assets, the share-card and calculator APIs, and Next internals are excluded. `.+` (not `.*`) so `/` itself
-never matches.
+`BLUES_GREEN_PATHS` is an allowlist of known green doors: `/our-math`, `/become-a-client` and its
+subpaths, `/privacy`, `/save-a-ton`, `/upgrade-your-advice`, `/improve-your-tools`,
+`/mobile-calculator`, `/meaning`, `/experiment`, `/gallery`, `/components/:path*`. Those bounce to
+youarepayingtoomuch.com with the same path (307). This is an allowlist, not a catch-all: a made-up
+path on onepercentblues.com stays on the blue host and hits the Blues-branded 404.
 
 ### 3.3 The page (`/blues`)
 
