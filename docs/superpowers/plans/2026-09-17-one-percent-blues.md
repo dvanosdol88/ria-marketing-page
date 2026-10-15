@@ -1267,17 +1267,18 @@ test("host rules: the blue domain is one page, the other hostnames redirect ther
 const blues = { Host: "onepercentblues.com" };
 const get = (path, headers = {}) => fetch(`${base}${path}`, { headers, redirect: "manual" });
 
-// 1. /blues on the default host serves the page with the required content and no green nav
-let html = await (await get("/blues")).text();
+// 1. /blues on any non-blue host 308s to onepercentblues.com (query preserved)
+const greenBlues = await get("/blues");
+assert.equal(greenBlues.status, 308);
+assert.equal(greenBlues.headers.get("location"), "https://onepercentblues.com/");
+
+// 2. the blue host serves the page at / (required content, no green nav) and its own agent files
+let html = await (await get("/", blues)).text();
 for (const needle of ["Got the", "1% Blues?", "$788,306", 'id="calculator"', 'id="calculator-notes"', "Registration does not imply", 'data-theme="blues"', "Do you pay a percentage of your portfolio for advice?"]) {
-  assert.ok(html.includes(needle), `/blues must contain ${needle}`);
+  assert.ok(html.includes(needle), `blue / must contain ${needle}`);
 }
 assert.ok(!html.includes('aria-label="Mobile navigation"'), "the green nav must not render on the blue page");
 assert.ok(!html.includes("What would you do with"), "the green hero must not render on the blue page");
-
-// 2. the blue host serves the page at / and its own agent files
-html = await (await get("/", blues)).text();
-assert.ok(html.includes('data-theme="blues"') && html.includes("1% Blues?"), "Host: onepercentblues.com must serve the blue page at /");
 html = await (await get("/?portfolio=2000000&years=20&growth=8&fee=1", blues)).text();
 assert.ok(html.includes("/api/og/blues?"), "the blue OG card must carry the scenario query");
 assert.ok(!html.includes("$788,306"), "a custom scenario must not show the default number");
@@ -1341,7 +1342,7 @@ gh pr create --title "One Percent Blues: blue front door on onepercentblues.com"
 ```
 Watch CI (`verify` + `test`), fix, re-push. Merge with `gh pr merge --squash` when green.
 
-- [ ] **Step 3: Deploy truth** — read the production deployment from the platform (Vercel MCP `list_deployments`/`get_deployment`, team `dvo`, project `you-are-paying-too-much.com`): `READY`, `target=production`, commit == `origin/main` HEAD. Then `curl -sI https://youarepayingtoomuch.com/blues` → 200 and the page HTML contains `1% Blues?`.
+- [ ] **Step 3: Deploy truth** — read the production deployment from the platform (Vercel MCP `list_deployments`/`get_deployment`, team `dvo`, project `you-are-paying-too-much.com`): `READY`, `target=production`, commit == `origin/main` HEAD. Then `curl -sI https://youarepayingtoomuch.com/blues` → 308 to `https://onepercentblues.com/`.
 
 - [ ] **Step 4: Attach the domains** (project config, explicitly requested): `vercel domains add onepercentblues.com you-are-paying-too-much.com --scope dvo`, then `1percentblues.com`, `www.onepercentblues.com`, `www.1percentblues.com`. `vercel domains inspect onepercentblues.com --scope dvo` must show the project. (No deploy commands.)
 

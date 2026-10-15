@@ -109,9 +109,7 @@ const nextConfig = {
         { source: "/robots.txt", has: [bluesHost], destination: "/blues/robots.txt" },
         { source: "/sitemap.xml", has: [bluesHost], destination: "/blues/sitemap.xml" },
         { source: "/llms.txt", has: [bluesHost], destination: "/blues/llms.txt" },
-        // Stay on this host with Blues branding. Do not add these paths to
-        // BLUES_GREEN_PATHS — a 307 to the green site is the open #317
-        // approach and it conflicts with the #344 stay-on-blue rule.
+        // Stay on this host with Blues branding. Do not add these paths to BLUES_GREEN_PATHS.
         {
           source: "/site.webmanifest",
           has: [bluesHost],

@@ -1,8 +1,4 @@
-/* Served at onepercentblues.com/site.webmanifest by the host rewrite in
-   next.config.mjs. The green PWA file in public/ must not leak onto this host
-   (name, theme color, or icons). Do not bounce the request to the green site
-   — that is the open #317 approach and it conflicts with the #344 rule that
-   unknown/non-blue paths stay on this host. */
+/* Served at onepercentblues.com/site.webmanifest by the host rewrite; stay on this host with Blues branding. */
 export const dynamic = "force-static";
 
 const BODY = {

@@ -5,7 +5,7 @@ import { bluesCopy } from "@/config/onePercentBlues";
 
 const BLUES_GROUND = "bg-[#EEF3FF]";
 const LEGAL_LINK_CLASS =
-  "inline-flex items-center gap-1 !text-[#10233A] no-underline hover:!text-[#007A2F]";
+  "inline-flex items-center gap-1 !text-[#10233A] no-underline hover:!text-[#1E40AF]";
 
 /** DECISION (David, 2026-09-23 on the green site; applied here 2026-09-24):
  *  the same single footer as SiteFooter — the four legal links once, at the
