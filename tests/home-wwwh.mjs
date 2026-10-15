@@ -688,30 +688,20 @@ test("site navigation is the simplified pair, with the retired items gone", () =
   );
 });
 
-test("desktop and mobile nav expose the branded outbound firm link with tracking", () => {
+test("the firm logo remains linked while the redundant firm text links are gone", () => {
   assert.match(
     navSource,
     /const SMARTER_WAY_WEALTH_URL = "https:\/\/smarterwaywealth\.com\/"/,
   );
   assert.equal(
     navSource.match(/href=\{SMARTER_WAY_WEALTH_URL\}/g)?.length,
-    5,
-    "desktop, mobile and drawer logos plus both navigation links must lead to the firm site",
+    3,
+    "desktop, mobile and drawer logos still lead to the firm site",
   );
   assert.equal(
-    navSource.match(/data-posthog-cta-label="Smarter Way Wealth"/g)?.length,
-    2,
-    "both firm links must preserve the CTA label",
-  );
-  assert.match(navSource, /data-posthog-cta-location="site_nav"/);
-  assert.match(navSource, /data-posthog-cta-location="site_nav_mobile"/);
-  assert.ok(
-    (navSource.match(/target="_blank"/g)?.length ?? 0) >= 2,
-    "both outbound firm links must open a new tab",
-  );
-  assert.ok(
-    (navSource.match(/rel="noreferrer"/g)?.length ?? 0) >= 2,
-    "both outbound firm links must protect the opener",
+    navSource.match(/data-posthog-cta-label="Smarter Way Wealth"/g)?.length ?? 0,
+    0,
+    "the removed firm text links must not leave tracked ghost CTAs",
   );
   assert.match(navSource, /min-h-11/);
   assert.match(navSource, /min-h-12/);
@@ -736,22 +726,18 @@ test("desktop and mobile nav expose the active tracked onboarding CTA", () => {
   assert.match(navSource, /bg-\[#008532\][^"\n]*text-white/);
   assert.match(navSource, /px-2\.5[^"\n]*min-\[360px\]:px-4/);
   assert.match(navSource, /absolute left-1\/2[^"\n]*-translate-x-1\/2/);
-  assert.match(navSource, /const DESKTOP_PEER_LINK_CLASS/);
-  assert.match(navSource, /const DRAWER_PEER_LINK_CLASS/);
+  assert.match(navSource, /const DESKTOP_CLIENT_BUTTON_CLASS =[\s\S]*bg-\[#008532\]/);
+  assert.match(navSource, /const DRAWER_CLIENT_BUTTON_CLASS =[\s\S]*bg-\[#008532\]/);
   assert.equal(
     navSource.match(/<ExternalLink className=/g)?.length,
-    4,
-    "firm and client peer links must each carry the same leave-page arrow",
+    2,
+    "only the desktop and drawer client buttons carry an arrow",
   );
 
   const desktopStart = navSource.indexOf("Desktop Layout");
-  const desktopFirmIndex = navSource.indexOf(
-    'data-posthog-cta-label="Smarter Way Wealth"',
-    desktopStart,
-  );
   const desktopClientIndex = navSource.indexOf('data-posthog-cta-label="Become a Client"', desktopStart);
-  assert.ok(desktopFirmIndex >= 0, "desktop firm link must render");
-  assert.ok(desktopClientIndex > desktopFirmIndex, "desktop client link must follow the firm link");
+  assert.ok(desktopClientIndex >= 0, "desktop client button must render");
+  assert.match(navSource.slice(desktopClientIndex, desktopClientIndex + 300), /className=\{`\$\{DESKTOP_CLIENT_BUTTON_CLASS\}/);
 });
 
 test("homepage FAQ reflects the approved affordability, insertion-note, and custody edits", () => {
@@ -776,6 +762,10 @@ test("the math field reaches the FAQ boundary without decorating the FAQ itself"
   const flatCalculator = flatten(calculatorSource);
   assert.match(flatCalculator, /<SmarterWayWealthVisitCard [^>]*surfaceClassName="bg-transparent" \/> <div aria-hidden="true" className="h-10 sm:h-14" \/> <\/div> <\/section>/);
   assert.match(flatCalculator, /<HomeFaqSection topPaddingClassName="pt-0" \/>/);
+  const faqIndex = flatCalculator.indexOf('<HomeFaqSection topPaddingClassName="pt-0" />');
+  const finalCtaIndex = flatCalculator.indexOf('<SignupCta location="home_post_faq" />');
+  const bluesIndex = flatCalculator.indexOf('<SignupCta location="blues_post_calculator"');
+  assert.ok(faqIndex >= 0 && finalCtaIndex > faqIndex && finalCtaIndex < bluesIndex);
 });
 
 test("quote swipes keep the surrounding homepage anchored", () => {

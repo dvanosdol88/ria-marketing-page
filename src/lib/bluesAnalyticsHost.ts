@@ -1,8 +1,8 @@
-const BLUES_ANALYTICS_HOSTS = new Set(["onepercentblues.com", "www.onepercentblues.com"]);
+import { isBluesHostname } from "./bluesHost";
 
 /** Address-bar host for the One Percent Blues front door, including www. */
 export function isBluesAnalyticsHost(hostname: string): boolean {
-  return BLUES_ANALYTICS_HOSTS.has(hostname.trim().toLowerCase().replace(/\.$/, ""));
+  return isBluesHostname(hostname.trim().replace(/\.$/, ""));
 }
 
 /** Build `$pageview` `$current_url` from the address bar, not a rewritten Next path. */

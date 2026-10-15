@@ -60,11 +60,11 @@ test("pageview URL uses the address-bar path, not a rewritten /blues path", () =
 test("PostHogPageView builds $current_url from window.location and skips blues mailer counts", async () => {
   const pageView = await read("../src/components/PostHogPageView.tsx");
   assert.match(pageView, /buildPageviewCurrentUrl\(window\.location\)/);
-  assert.doesNotMatch(pageView, /window\.location\.origin \+ pathname/);
+  assert.doesNotMatch(pageView, /window\.location\.origin \+ pathname|origin\}\$\{pathname\}/);
   assert.match(pageView, /isBluesAnalyticsHost\(window\.location\.hostname\)/);
   assert.match(
     pageView,
-    /if \(isBluesAnalyticsHost\(window\.location\.hostname\)\) return;\s*reportTrafficVisit\(\);\s*reportMailerScan\(url\);/,
+    /if \(isBluesAnalyticsHost\(window\.location\.hostname\)\) return;\s*void reportDocumentMeasurement\(\)/,
   );
 });
 

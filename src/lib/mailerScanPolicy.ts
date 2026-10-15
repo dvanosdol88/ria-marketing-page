@@ -1,9 +1,12 @@
 export const RIA_BUILDER_ORIGIN = "https://riabuilder.dvo88.com";
 
+// 05-54: only an exact mailer QR landing is a scan. The printed mailer QR
+// carries the four-number printer signature; a plain-homepage landing
+// (clean_root_launch) cannot be told apart from a typed visit or a robot,
+// so it is counted as a visit, never as a scan.
 export const ALLOWED_MAILER_ATTRIBUTION_METHODS = new Set([
   "explicit_utm",
   "legacy_qr_signature",
-  "clean_root_launch",
 ]);
 
 const BOT_USER_AGENT_PATTERN =
@@ -33,7 +36,7 @@ export function isApprovedMailerCampaign(properties: CampaignProperties) {
   }
 
   if (properties.campaign_attribution_method === "clean_root_launch") {
-    return hasApprovedLaunchUtms(properties);
+    return false;
   }
 
   return (
@@ -44,6 +47,14 @@ export function isApprovedMailerCampaign(properties: CampaignProperties) {
 
 export function isLikelyBotUserAgent(userAgent: string) {
   return BOT_USER_AGENT_PATTERN.test(userAgent);
+}
+
+// Real browsers always send a user agent and Accept-Language with a fetch;
+// scripted visitors frequently omit one or name themselves.
+export function requestLooksAutomated(headers: Pick<Headers, "get">) {
+  const userAgent = headers.get("user-agent") ?? "";
+  if (!userAgent || isLikelyBotUserAgent(userAgent)) return true;
+  return !headers.get("accept-language");
 }
 
 export function publicMailerScanHeaders() {
@@ -94,13 +105,16 @@ export function easternDayKey(date = new Date()) {
   return `${value("year")}-${value("month")}-${value("day")}`;
 }
 
+// A browser reports once per Eastern day. `visits` is all-time unique
+// visitors (first report ever); `daily[day].visits` is that day's uniques.
 export function buildTrafficVisitUpdate<TIncrement, TTimestamp>(
   dayKey: string,
   increment: (value: number) => TIncrement,
   serverTimestamp: () => TTimestamp,
+  firstEver = true,
 ) {
   return {
-    visits: increment(1),
+    ...(firstEver ? { visits: increment(1) } : {}),
     lastVisitAt: serverTimestamp(),
     daily: {
       [dayKey]: { visits: increment(1) },

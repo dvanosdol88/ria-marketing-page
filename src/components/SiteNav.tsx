@@ -19,10 +19,10 @@ import {
 const COLLAPSE_SCROLL_Y = 158;
 const EXPAND_SCROLL_Y = 104;
 const SMARTER_WAY_WEALTH_URL = "https://smarterwaywealth.com/";
-const DESKTOP_PEER_LINK_CLASS =
-  "ml-3 inline-flex min-h-11 items-center gap-2 rounded-md px-3 py-2 text-sm font-extrabold transition-colors duration-200 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2";
-const DRAWER_PEER_LINK_CLASS =
-  "mt-3 flex min-h-12 items-center justify-between gap-3 rounded-lg px-3 py-3.5 text-base font-extrabold transition-colors duration-200 hover:bg-neutral-50 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2";
+const DESKTOP_CLIENT_BUTTON_CLASS =
+  "ml-3 inline-flex flex-col items-center justify-center gap-0.5 rounded-md bg-[#008532] px-4 py-2 !text-white !no-underline transition hover:bg-[#006B28] hover:!text-white focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#008532]";
+const DRAWER_CLIENT_BUTTON_CLASS =
+  "mt-3 flex min-h-12 items-center justify-center gap-2 rounded-md bg-[#008532] px-4 py-3 text-base font-bold !text-white !no-underline transition hover:bg-[#006B28] hover:!text-white focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#008532]";
 
 /**
  * Site-wide navigation bar — "Authority" style with collapsing behavior.
@@ -36,7 +36,7 @@ const DRAWER_PEER_LINK_CLASS =
  * DOM (grid-stacked) to avoid layout shifts.
  *
  * Mobile: hamburger + centered logo + compact Sign Up CTA.
- * Desktop: logo left + spaced nav links right, ending with two peer links.
+ * Desktop: logo left + spaced nav links right, ending with the client button.
  * Drawer uses CSS transitions (always in DOM) for reliability.
  */
 export function SiteNav() {
@@ -342,35 +342,18 @@ export function SiteNav() {
                   </Link>
                 );
               })}
-              <a
-                href={SMARTER_WAY_WEALTH_URL}
-                target="_blank"
-                rel="noreferrer"
-                data-posthog-cta="true"
-                data-posthog-cta-label="Smarter Way Wealth"
-                data-posthog-cta-location="site_nav"
-                /* A link, not a button (David, 2026-08-14). It wore a green
-                   bordered pill, which made it the only button in the header
-                   and set up a competition with the page's actual CTA. The
-                   arrow stays — it is what says "this leaves the site" — and
-                   the brand green keeps it the most prominent thing in the
-                   nav without pretending to be an action. */
-                className={`${DESKTOP_PEER_LINK_CLASS} hover:text-[#005A22] focus-visible:outline-[#007A2F]`}
-                style={{ color: "#007A2F" }}
-              >
-                Smarter Way Wealth
-                <ExternalLink className="h-[1.25em] w-[1.25em] shrink-0" aria-hidden="true" />
-              </a>
               <Link
                 href={SIGNUP_PATH as any}
                 data-posthog-cta="true"
                 data-posthog-cta-label="Become a Client"
                 data-posthog-cta-location="site_nav"
-                className={`${DESKTOP_PEER_LINK_CLASS} hover:text-[#006B28] focus-visible:outline-[#008532]`}
-                style={{ color: "#008532" }}
+                className={`${DESKTOP_CLIENT_BUTTON_CLASS} ${collapsed ? "min-h-11" : "min-h-[60px]"}`}
               >
-                Become a Client
-                <ExternalLink className="h-[1.25em] w-[1.25em] shrink-0" aria-hidden="true" />
+                <span className="inline-flex items-center gap-2 text-sm font-bold">
+                  Become a Client
+                  <ExternalLink className="h-[1.1em] w-[1.1em] shrink-0" aria-hidden="true" />
+                </span>
+                <span className={collapsed ? "hidden" : "text-xs"}>$100/month, flat</span>
               </Link>
             </nav>
           </div>
@@ -451,32 +434,16 @@ export function SiteNav() {
               </Link>
             );
           })}
-          <a
-            href={SMARTER_WAY_WEALTH_URL}
-            target="_blank"
-            rel="noreferrer"
-            onClick={closeDrawer}
-            data-posthog-cta="true"
-            data-posthog-cta-label="Smarter Way Wealth"
-            data-posthog-cta-location="site_nav_mobile"
-            /* Matches the desktop treatment above — link, not button. */
-            className={`${DRAWER_PEER_LINK_CLASS} focus-visible:outline-[#007A2F]`}
-            style={{ color: "#007A2F" }}
-          >
-            Smarter Way Wealth
-            <ExternalLink className="h-[1.25em] w-[1.25em] shrink-0" aria-hidden="true" />
-          </a>
           <Link
             href={SIGNUP_PATH as any}
             onClick={closeDrawer}
             data-posthog-cta="true"
             data-posthog-cta-label="Become a Client"
             data-posthog-cta-location="site_nav_mobile_drawer"
-            className={`${DRAWER_PEER_LINK_CLASS} focus-visible:outline-[#008532]`}
-            style={{ color: "#008532" }}
+            className={DRAWER_CLIENT_BUTTON_CLASS}
           >
             Become a Client
-            <ExternalLink className="h-[1.25em] w-[1.25em] shrink-0" aria-hidden="true" />
+            <ExternalLink className="h-[1.1em] w-[1.1em] shrink-0" aria-hidden="true" />
           </Link>
         </div>
 

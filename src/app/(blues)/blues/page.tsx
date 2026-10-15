@@ -4,6 +4,7 @@ import { BLUES_ORIGIN, bluesCopy } from "@/config/onePercentBlues";
 import { buildQueryFromState, parseCalculatorState } from "@/lib/calculatorState";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { formatCurrency } from "@/lib/format";
+import { bluesShareSite } from "@/lib/siteCalculatorConfig";
 
 type BluesSearchParams = Record<string, string | string[] | undefined>;
 
@@ -96,7 +97,7 @@ export default async function OnePercentBluesPage({
   const calculatorState = parseCalculatorState(normalizeSearchParams(resolvedSearchParams));
 
   return (
-    <main className="flex flex-col pb-10">
+    <main className="flex flex-col pb-10" data-blues-share-domain={bluesShareSite.displayDomain}>
       <CostAnalysisCalculator
         initialState={calculatorState}
         searchParams={resolvedSearchParams}

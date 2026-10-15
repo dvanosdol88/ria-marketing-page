@@ -4,9 +4,8 @@ Tracked items for youarepayingtoomuch.com. One-liner per item with enough contex
 
 ## One Percent Blues (onepercentblues.com) — follow-ups from the 2026-09-17 build
 
-- [ ] **Blue share card + poll accents need a canon change.** On the blue page the canon share panel (`ShareMyResults.tsx`) still prints "youarepayingtoomuch.com" on the card face and uses the green `/api/og` fallback image, and the poll's vote button (`Quiz.tsx`) is green — both files are hash-locked with `D:\smarter-way-wealth`. Fix = add a per-page display domain / accent hook to `siteCalculatorConfig` (shape change) and sync both repos in one session. *(added 2026-09-17)*
+- [ ] **Poll chrome is still green.** The poll vote button on the blue page (`Quiz.tsx`) is still green; that file is hash-locked with the sister repo. Share-card domain/image already follow the visitor's host. *(added 2026-09-17; share card done 2026-10-12)*
 - [ ] **Three green literals left in `CostAnalysisCalculator.tsx`** (`SimpleRangeControl` focus ring, the share-error fallback input focus, the pre-hydration placeholder bar) are not on the blue page's normal path; route them through `theme.accent` if they ever show. *(added 2026-09-17)*
-- [ ] **youarepayingtoomuch.com/blues also serves the blue page** (canonical points at onepercentblues.com). Once the domain is proven live, decide whether to redirect that path to the blue apex. *(added 2026-09-17)*
 - [ ] **Cross-domain sign-up attribution.** "Become a client" from the blue page lands on youarepayingtoomuch.com/become-a-client with `utm_source=onepercentblues`; confirm PostHog stitches the two-site journey (the blue pageview + the green form) before reading conversion numbers. *(added 2026-09-17)*
 
 ## Build & Tooling
@@ -31,6 +30,10 @@ Tracked items for youarepayingtoomuch.com. One-liner per item with enough contex
 - [ ] **#112** — Vitest test infra + 2.6k-line unit-test addition (draft, 2026-04-20). User decision: adopt the framework now or defer. Decision required before this can be merged or closed. *(added 2026-05-17)*
 - [ ] **#62** — `recovery/calculator-clean-20260227`: 178 add / 553 del mobile redesign of sticky header + calculator. 11+ weeks old; calculator has been polished multiple times since (#129, etc.). Likely superseded — verify nothing useful remains, then close. *(added 2026-05-17)*
 - [ ] **#48** — `cursor/openclaw-installation-37e2`: 9.9k-line exploratory branch from 2026-02-16. `docs/openclaw-automation-ideas.md` already captures the concept. Action: close as exploratory unless there's specific code worth salvaging. *(added 2026-05-17)*
+
+## Done (2026-10-14 nightly)
+
+- [x] **youarepayingtoomuch.com/blues also serves the blue page** (canonical points at onepercentblues.com). Shipped as PR #348 (2026-10-12): youarepayingtoomuch.com/blues now permanently forwards to onepercentblues.com/. *(added 2026-09-17; done 2026-10-12)*
 
 ## Done (2026-05-17 session)
 
