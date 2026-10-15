@@ -70,8 +70,10 @@ test("a Blues crash uses the same chrome instead of the generic Next screen", ()
   assert.match(bluesPageError, /BluesCrashPanel/);
   assert.match(globalError, /import\s+["']\.\/globals\.css["']/);
   assert.match(bluesCrashPanel, /Sentry\.captureException/);
-  assert.match(bluesGroupError, /Sentry\.captureException/);
-  assert.match(bluesPageError, /Sentry\.captureException/);
+  assert.doesNotMatch(bluesGroupError, /Sentry\.captureException/);
+  assert.doesNotMatch(bluesPageError, /Sentry\.captureException/);
+  // Unknown host must not assume "not Blues" — that first-painted the green Next screen.
+  assert.doesNotMatch(globalError, /\(\)\s*=>\s*false/);
 });
 
 test("an off-site Blues sign-up button uses the leave-site icon", () => {

@@ -19,17 +19,27 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    Sentry.captureException(error);
-  }, [error]);
-
-  const isBlues = useSyncExternalStore(
+  const isBluesHost = useSyncExternalStore<boolean | null>(
     subscribe,
     () => isBluesHostname(window.location.hostname),
-    () => false,
+    () => null,
   );
 
-  if (isBlues) {
+  useEffect(() => {
+    if (isBluesHost === false) {
+      Sentry.captureException(error);
+    }
+  }, [error, isBluesHost]);
+
+  if (isBluesHost === null) {
+    return (
+      <html lang="en">
+        <body />
+      </html>
+    );
+  }
+
+  if (isBluesHost) {
     return (
       <html lang="en">
         <body>
