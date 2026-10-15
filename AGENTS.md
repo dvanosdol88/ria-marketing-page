@@ -11,6 +11,10 @@ David is a financial advisor (CFA, CFP) running a business, not a programmer. He
 
 # AGENTS.md (Project)
 
+## David's website change approval — mandatory
+
+Before new or resumed work, read [the website change approval policy](docs/website-change-approval.md). David owns the wording and visitor experience; approval is once per exact proposed change, not once per PR. Routine maintenance may ship only while preserving approved wording, appearance, calculations and behavior. Uncertain changes remain unpublished drafts. This policy takes precedence over broader automatic shipping, proactive fixes, mobile improvements and agent-readiness guidance.
+
 ## Project: RIA-marketing-page
 - Domain: youarepayingtoomuch.com (no dashes)
 - Purpose: Fee calculator/visualization tool showing the impact of investment fees over time
@@ -23,13 +27,13 @@ Effective 2026-05-22, `youarepayingtoomuch.com` is mobile-first, not merely mobi
 
 - Make layout, typography, spacing, tap targets, and information density work first around a 375px-wide mobile viewport.
 - Treat desktop as a progressive enhancement of the mobile experience, not the source design that gets compressed afterward.
-- Do not perform a retroactive mobile-first audit of the full site unless explicitly requested. During normal work, flag and fix only glaring mobile issues such as overflow, illegible text, broken tap targets, or incoherent stacking.
+- Do not perform a retroactive mobile-first audit of the full site unless explicitly requested. During normal work, flag glaring mobile issues such as overflow, illegible text, broken tap targets, or incoherent stacking. Fix them only within David-approved scope or as maintenance that preserves approved wording, appearance, calculations and behavior; otherwise show a draft for approval.
 
 
 
 ## Workflow
 
-**Ship by default:** After a task completes successfully (tsc/lint/build pass, user-requested work verified), commit and push to `main` and verify production unless the user explicitly said not to ship, said "wait" or "bundle later", or the change is exploratory/WIP. Do not ask "want me to ship?" when the task is done — ship it.
+**Ship by default within approved scope:** The website change approval policy above must be satisfied first. After a task completes successfully (tsc/lint/build pass, user-requested work verified), commit and push to `main` and verify production unless the user explicitly said not to ship, said "wait" or "bundle later", or the change is exploratory/WIP. Do not ask "want me to ship?" when the task is done — ship it.
 
 ## Global Constraints
 

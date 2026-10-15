@@ -33,6 +33,12 @@
 - overlap: open PR #303 gates the same `CostAnalysisCalculator` `setSavingsBarData` block behind `usesOpeningMarketingHero`. This PR removes the block; note that when merging.
 - verified: rebase conflicts resolved in `src/app/layout.tsx` only. Typecheck/lint/CI on this revision.
 - deployed: `not deployed`
+### 2026-10-12 — 05-94 David controls wording and visitor experience changes
+**Agent:** Windows Codex | **Scope:** standing agent instructions only | **Release:** policy delivered through this entry's PR; no website code/content changed
+- David approved the four selected rules in the [source chat](codex://threads/01a1260b-d353-7870-890b-daa645566904): no unapproved visitor-facing changes; exact proposal/preview approval once per change; maintenance preserves approved experience; uncertain changes remain drafts.
+- Added `docs/website-change-approval.md`, required it from `AGENTS.md` and `CLAUDE.md`, and made conflicting mobile/automatic-shipping guidance subordinate. Guest agents inherit the project rules. Record real approval; checks and AI review cannot substitute for it.
+- Verified identical policy across both sites, all required entrypoint links and boundaries, whitespace checks and documentation-only diff. No application build/browser exercise is warranted because no runtime files changed. Remote default-branch readback is the completion proof.
+- Limitation: standing instructions do not constitute an automatic publishing lock or proof that existing sessions on other machines reloaded them. Current production content is not retroactively certified as approved.
 
 ### 05-78 — 2026-10-12 — Blues share and poll panels show onepercentblues.com and the blue card
 **Agent:** Claude (Rack seat, Linux) | **Surface:** onepercentblues.com "Share my results" and poll panels | **Status:** deployed and proven live (PR #350)
