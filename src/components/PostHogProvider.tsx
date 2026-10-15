@@ -12,6 +12,9 @@ if (typeof window !== "undefined") {
     process.env.NEXT_PUBLIC_POSTHOG_TEST_MODE === "true";
 
   if (posthogKey && !(posthog as typeof posthog & { __loaded?: boolean }).__loaded) {
+    // 05-51: a browser marked as David's own (?selftest=1, cleared by ?selftest=0) is never
+    // recorded; its events still carry self_test=true and are filtered from dashboards.
+    const ownerBrowser = shouldExcludePublicTraffic(window.location.search);
     posthog.init(posthogKey, {
       api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com',
       autocapture: true,
@@ -34,13 +37,18 @@ if (typeof window !== "undefined") {
         initializeDocumentCampaign();
         const verification = syncQrVerification();
         ph.register({ ...getPostHogCampaignProperties(), self_test: shouldExcludePublicTraffic(window.location.search) || verification, qr_verification: verification });
+        // 05-51: the project's "filter test accounts" cohort keys on this person property.
+        if (ownerBrowser || verification) ph.setPersonProperties({ $internal_or_test_user: true });
         ph.capture("posthog_client_loaded", {
           site_domain: window.location.hostname,
           site_path: window.location.pathname,
         });
       },
+      // 05-51: session recordings are on for this site (David, 2026-10-13). Every typed
+      // field is masked so recordings never show what a visitor enters.
+      disable_session_recording: ownerBrowser,
       session_recording: {
-        maskAllInputs: false,
+        maskAllInputs: true,
         maskInputOptions: {
           password: true,
           email: true,

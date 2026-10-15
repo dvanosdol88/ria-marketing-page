@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
 import { getAdminDb } from "@/lib/firebaseAdmin";
-import { publicMailerScanHeaders, requestHeadersCameFromThisSite, requestLooksAutomated } from "@/lib/mailerScanPolicy";
+import { publicMailerScanHeaders, requestHeadersCameFromThisSite, requestIsFromPhone, requestLooksAutomated } from "@/lib/mailerScanPolicy";
 import { hasSelfTestCookie } from "@/lib/selfTestTraffic";
 import { hasQrVerificationCookie } from "@/lib/qrVerification";
 import { MEASUREMENT_HOSTS } from "@/lib/qrLanding";
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
   const verification = hasQrVerificationCookie(cookies) || body.verification === true;
   if (hasSelfTestCookie(cookies) && !verification) return NextResponse.json({ counted: false, reason: "self_test" });
   try {
-    return NextResponse.json(await recordMeasurement(getAdminDb(), { ...body, verification }, new Date(), FieldValue.serverTimestamp));
+    return NextResponse.json(await recordMeasurement(getAdminDb(), { ...body, verification, phone: requestIsFromPhone(request.headers) }, new Date(), FieldValue.serverTimestamp));
   } catch (error) {
     console.error("Mailer scan counter increment failed", error);
     return NextResponse.json({ error: "Mailer scan could not be counted." }, { status: 503 });

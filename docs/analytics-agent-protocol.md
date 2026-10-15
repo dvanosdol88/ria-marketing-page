@@ -78,6 +78,15 @@ cookie, then session storage/memory fallback. Existing local dedup flags preserv
 already-counted lifetime/daily totals during migration. If all storage is blocked,
 identity lasts only for that document; do not promise cross-reload uniqueness.
 
+05-51 (David approved 2026-10-13): the mailer-scan count (`count`, `scans`,
+daily `scans`) adds only phones. The server decides from the request
+(`Sec-CH-UA-Mobile: ?1`, else an iPhone/iPod/Android-Mobile/`Mobi` user agent;
+iPad/tablets are not phones); the browser cannot claim it. A first QR opening
+from a computer or tablet adds to the separate raw total `nonPhoneQrVisitors`
+(daily `nonPhoneScans`) instead. `qrOpenings` stays an all-device raw total.
+Owner browsers (`?selftest=1`) are never session-recorded and are marked
+`$internal_or_test_user=true`, which the project's test-account filter removes.
+
 Owner exclusion (`?selftest=1`, existing persistent flag/cookie) suppresses normal
 QR events and counts. `?qrtest=1` is an ordinary preparation link: it sets a
 session-only phone-verification marker/cookie and displays a small fixed notice

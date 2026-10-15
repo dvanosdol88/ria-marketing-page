@@ -57,6 +57,18 @@ export function requestLooksAutomated(headers: Pick<Headers, "get">) {
   return !headers.get("accept-language");
 }
 
+// 05-51: the printed mailer QR code is scanned with a phone. Computers and tablets
+// opening the same link are kept out of the scan count (Client Hints first, then user agent).
+export function requestIsFromPhone(headers: Pick<Headers, "get">) {
+  const mobileHint = headers.get("sec-ch-ua-mobile")?.trim();
+  if (mobileHint === "?1") return true;
+  const userAgent = headers.get("user-agent") ?? "";
+  if (/iPad|Tablet/i.test(userAgent)) return false;
+  if (/iPhone|iPod/.test(userAgent)) return true;
+  if (/Android/.test(userAgent)) return /Mobile/.test(userAgent);
+  return /Mobi/.test(userAgent);
+}
+
 export function publicMailerScanHeaders() {
   return {
     "Access-Control-Allow-Origin": RIA_BUILDER_ORIGIN,

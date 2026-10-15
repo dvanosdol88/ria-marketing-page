@@ -151,3 +151,16 @@ console.log(
 );
 // 05-66 behavior checks run under the existing policy gate (no CI changes).
 await import("./qr-browser-policy.mjs");
+
+{
+  const { requestIsFromPhone } = await import("../src/lib/mailerScanPolicy.ts");
+  const h = (ua, hint) => new Headers({ "user-agent": ua, ...(hint ? { "sec-ch-ua-mobile": hint } : {}) });
+  assert.equal(requestIsFromPhone(h("Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari/604.1")), true);
+  assert.equal(requestIsFromPhone(h("Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 Chrome/129.0 Mobile Safari/537.36")), true);
+  assert.equal(requestIsFromPhone(h("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/129.0 Safari/537.36", "?0")), false);
+  assert.equal(requestIsFromPhone(h("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 Safari/605.1.15")), false);
+  assert.equal(requestIsFromPhone(h("Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148")), false);
+  assert.equal(requestIsFromPhone(h("Mozilla/5.0 (Linux; Android 14; SM-X710) AppleWebKit/537.36 Chrome/129.0 Safari/537.36")), false);
+  assert.equal(requestIsFromPhone(h("Mozilla/5.0 (Linux; Android 10; K) Chrome/129.0", "?1")), true);
+  console.log("05-51 phone detection checks passed");
+}

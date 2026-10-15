@@ -10,6 +10,9 @@ export const UNIQUE_STARTED_AT = "2026-10-08T18:32:08Z";
 export type MeasurementInput = {
   browserId: string; openingId: string; landing: LandingEvidence;
   verification: boolean;
+  // 05-51: set by the server from the request's user agent, never trusted from the body.
+  // Only phones add to the mailer-scan count; other devices are kept as a separate raw total.
+  phone?: boolean;
   legacyQrSeen?: boolean; legacyWebsiteSeen?: boolean; legacyWebsiteDay?: string | null;
 };
 export type MeasurementReceipt = {
@@ -61,6 +64,7 @@ export async function recordMeasurement(db: Firestore, input: MeasurementInput, 
     const daySeen = daySnap.exists || browser.lastWebsiteDay === day || (legacy && input.legacyWebsiteDay === day);
     const qrAccepted = eligibility.attributionMethod !== null;
     const qrFirstBrowser = qrAccepted && !qrSeen;
+    const phone = input.phone !== false;
     const daily = { ...(counter.daily?.[day] ?? {}) };
     const update: Record<string, unknown> = {
       visits: total(counter.visits) + (websiteSeen ? 0 : 1),
@@ -73,14 +77,19 @@ export async function recordMeasurement(db: Firestore, input: MeasurementInput, 
       update.qrOpenings = total(counter.qrOpenings) + 1;
       update.qrOpeningsStartedAt = iso(counter.qrOpeningsStartedAt) ?? stamp;
       update.qrVisitorsStartedAt = iso(counter.qrVisitorsStartedAt) ?? (legacy ? UNIQUE_STARTED_AT : stamp);
-      update.count = total(counter.count) + (qrFirstBrowser ? 1 : 0);
-      update.lastScanAt = serverTimestamp();
       daily.qrOpenings = total(daily.qrOpenings) + 1;
-      if (qrFirstBrowser) {
+      if (phone) update.lastScanAt = serverTimestamp();
+      if (qrFirstBrowser && phone) {
+        update.count = total(counter.count) + 1;
         daily.scans = total(daily.scans) + 1;
         update.byAttribution = {
           [eligibility.attributionMethod!]: total(counter.byAttribution?.[eligibility.attributionMethod!]) + 1,
         };
+      } else if (qrFirstBrowser) {
+        // 05-51: a mailer link opened on a computer or tablet is not a phone scan.
+        update.nonPhoneQrVisitors = total(counter.nonPhoneQrVisitors) + 1;
+        update.nonPhoneQrVisitorsStartedAt = iso(counter.nonPhoneQrVisitorsStartedAt) ?? stamp;
+        daily.nonPhoneScans = total(daily.nonPhoneScans) + 1;
       }
     }
     update.daily = { [day]: daily };
@@ -103,16 +112,17 @@ export function publicMeasurement(data: Record<string, any> = {}, verification =
   const lastScanAt = iso(data.lastScanAt);
   return {
     count, lastScanAt, label: "Mailer QR browsers",
-    scans: { total: count, lastScanAt }, visits: { total: visits },
+    scans: { total: count, lastScanAt, phoneOnly: true }, visits: { total: visits },
+    nonPhoneQrVisitors: { total: total(data.nonPhoneQrVisitors), startedAt: iso(data.nonPhoneQrVisitorsStartedAt) },
     qrOpenings: { total: started ? total(data.qrOpenings) : null, startedAt: started },
     qrVisitors: { total: count, startedAt: iso(data.qrVisitorsStartedAt) ?? (verification ? null : UNIQUE_STARTED_AT) },
     websiteVisitors: { total: visits, startedAt: iso(data.websiteVisitorsStartedAt) ?? (verification ? null : UNIQUE_STARTED_AT) },
     daily: Object.entries(data.daily ?? {}).filter(([date]) => /^\d{4}-\d{2}-\d{2}$/.test(date))
       .map(([date, raw]) => {
         const day = raw && typeof raw === "object" ? raw as Record<string, unknown> : {};
-        return { date, scans: total(day.scans), visits: total(day.visits), qrOpenings: startedDay && date >= startedDay ? total(day.qrOpenings) : null, qrVisitors: total(day.scans), websiteVisitors: total(day.visits) };
+        return { date, scans: total(day.scans), visits: total(day.visits), qrOpenings: startedDay && date >= startedDay ? total(day.qrOpenings) : null, qrVisitors: total(day.scans), nonPhoneScans: total(day.nonPhoneScans), websiteVisitors: total(day.visits) };
       }).sort((a, b) => a.date.localeCompare(b.date)).slice(-30),
-    dailyQrVisitorsMeaning: "Browsers first added to the QR counter that day; returning QR browsers add openings only.",
+    dailyQrVisitorsMeaning: "Phone browsers first added to the QR counter that day; returning QR browsers add openings only. Computers and tablets are counted separately as nonPhoneScans.",
   };
 }
 export function publicMeasurementResponse(exact: Record<string, any> = {}, history: Record<string, any> = {}, verification: Record<string, any> = {}, now = new Date()) {
