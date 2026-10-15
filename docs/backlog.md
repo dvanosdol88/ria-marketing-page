@@ -5,7 +5,7 @@ Tracked items for youarepayingtoomuch.com. One-liner per item with enough contex
 ## One Percent Blues (onepercentblues.com) — follow-ups from the 2026-09-17 build
 
 - [ ] **Poll chrome is still green.** The poll vote button on the blue page (`Quiz.tsx`) is still green; that file is hash-locked with the sister repo. Share-card domain/image already follow the visitor's host. *(added 2026-09-17; share card done 2026-10-12)*
-- [ ] **Three green literals left in `CostAnalysisCalculator.tsx`** (`SimpleRangeControl` focus ring, the share-error fallback input focus, the pre-hydration placeholder bar) are not on the blue page's normal path; route them through `theme.accent` if they ever show. *(added 2026-09-17)*
+- [ ] **Two green literals left in `CostAnalysisCalculator.tsx`** (`SimpleRangeControl` focus ring, the pre-hydration placeholder bar) are not on the blue page's normal path; route them through `theme.accent` if they ever show. *(added 2026-09-17; share-error focus done 2026-10-14)*
 - [ ] **Cross-domain sign-up attribution.** "Become a client" from the blue page lands on youarepayingtoomuch.com/become-a-client with `utm_source=onepercentblues`; confirm PostHog stitches the two-site journey (the blue pageview + the green form) before reading conversion numbers. *(added 2026-09-17)*
 
 ## Build & Tooling

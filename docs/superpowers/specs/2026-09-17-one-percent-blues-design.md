@@ -56,11 +56,13 @@ the single short paragraph from `src/config/calculatorNotes.ts`, the account min
 ## 3. Architecture — one engine, two front doors
 
 ```
-  onepercentblues.com/        ──rewrite──▶  /blues            (blue skin)
-  onepercentblues.com/x       ──redirect─▶  youarepayingtoomuch.com/x   (anything that is not the page or an asset)
-  1percentblues.com/*         ──redirect─▶  onepercentblues.com/*
-  www.onepercentblues.com/*   ──redirect─▶  onepercentblues.com/*
-  youarepayingtoomuch.com/*   unchanged    (green site, untouched)
+  youarepayingtoomuch.com/blues ──308──▶  onepercentblues.com/   (query preserved)
+  onepercentblues.com/          ──rewrite──▶  /blues            (blue skin)
+  onepercentblues.com/<known green door> ──307──▶ youarepayingtoomuch.com/<same path>
+  onepercentblues.com/<unknown> ──404──▶  Blues 404 (stay on blue; allowlist, not catch-all)
+  1percentblues.com/*           ──redirect─▶  onepercentblues.com/*
+  www.onepercentblues.com/*     ──redirect─▶  onepercentblues.com/*
+  youarepayingtoomuch.com/*     unchanged except /blues above
 ```
 
 ### 3.1 Route groups (why files move)
@@ -189,12 +191,13 @@ URL sync, PostHog `calculator_*` events, share and poll wiring are reused as-is.
 - `tests/blues-source-locks.mjs` (node:test, no browser): headline, three questions, diagnosis outcomes,
   primary CTA target, host rules present in `next.config.mjs`, canon files not imported anywhere new.
 - `tests/blues-host-routing.mjs` (real `next dev`, `node:http` requests with `Host` headers, redirects read
-  and never followed): `/blues` serves the page
-  with "Got the 1% Blues?", the default number, `id="calculator"`, the disclaimer anchor and the compliance
-  text, and no green nav; `Host: onepercentblues.com` on `/`, `/robots.txt`, `/sitemap.xml`, `/llms.txt`
-  serves the blue versions; `/our-math` on that host redirects to youarepayingtoomuch.com; `1percentblues.com`
-  and `www.onepercentblues.com` redirect to onepercentblues.com with the query preserved; the green home on
-  the default host is unchanged; `/api/og/blues` returns a PNG.
+  and never followed): `/blues` on the green apex (and any non-blue host) 308s to
+  `https://onepercentblues.com/`; `Host: onepercentblues.com` on `/` serves the page with "Got the 1% Blues?",
+  the default number, `id="calculator"`, the disclaimer anchor and the compliance text, and no green nav;
+  `/robots.txt`, `/sitemap.xml`, `/llms.txt` serve the blue versions; known green doors such as `/our-math`
+  on that host redirect to youarepayingtoomuch.com; unknown paths stay on the blue host as a Blues 404;
+  `1percentblues.com` and `www.onepercentblues.com` redirect to onepercentblues.com with the query preserved;
+  the green home on the default host is unchanged; `/api/og/blues` returns a PNG.
 - Both wired into `package.json` and the CI test job. All existing suites keep passing (the source-lock
   suite's path update is the only edit).
 
@@ -203,7 +206,7 @@ URL sync, PostHog `calculator_*` events, share and poll wiring are reused as-is.
 Short-lived branch → PR → CI green → merge to `main` (the merge is the deploy). Then, in order:
 
 1. Platform read: the production deployment is `READY` and its commit is `origin/main` HEAD.
-2. Prove `/blues` on the green apex serves the page (works before any domain is attached).
+2. Prove `/blues` on the green apex 308s to `https://onepercentblues.com/` (query string preserved).
 3. Attach `onepercentblues.com` and `1percentblues.com` to the Vercel project `you-are-paying-too-much.com`
    (team `dvo`) — both already live in the team's domain list and resolve to Vercel, so attaching is the
    only step. `www` variants added alongside so the code redirects can catch them.
