@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     "How Smarter Way Wealth, LLC collects, uses, and protects information from visitors to youarepayingtoomuch.com.",
 };
 
-const LAST_UPDATED = "2026-10-07";
+const LAST_UPDATED = "2026-10-15";
 
 export default function PrivacyPolicy() {
   return (
@@ -65,11 +65,11 @@ export default function PrivacyPolicy() {
           purpose of operating, securing, and improving the site.
         </p>
         <p>
-          PostHog may also record a replay of a browsing session, including page
-          navigation and interactions. Password, email, and telephone input
-          fields are configured to be masked in these recordings. You should
-          still avoid entering sensitive financial or personal information into
-          ordinary website fields.
+          PostHog also records a replay of browsing sessions on this site,
+          including page navigation, scrolling, and clicks. Everything typed
+          into form fields is configured to be masked in these recordings. You
+          should still avoid entering sensitive financial or personal
+          information into ordinary website fields.
         </p>
 
         <h2 id="advertising-measurement" className="pt-4 text-lg font-semibold text-neutral-900">

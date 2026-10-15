@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-10-15 — 05-51 Phone-only mailer scans; masked session recordings; owner visits excluded
+**Agent:** Claude | **Surface:** mailer-scan counter, PostHog session recording, privacy page | **Approval:** David approved all four 05-51 measurement changes on 2026-10-13 (2026-10-08 brief) | **Status:** see PR
+- changed: the mailer QR scan count now adds only phones (server-side check of the request's mobile hint / user agent). Computers and tablets opening the printed link go to a separate raw total, `nonPhoneQrVisitors` (daily `nonPhoneScans`); all-device `qrOpenings` is unchanged. Past totals are untouched.
+- changed: session recordings (already switched on in the PostHog project) now mask every typed field (`maskAllInputs: true`, was password/email/phone only). Owner browsers (`?selftest=1`) are not recorded and are marked `$internal_or_test_user=true`; the project's test-account filter also now excludes `self_test=true` events (live PostHog setting, 2026-10-15).
+- changed: privacy page wording on session replays updated to match (all typed fields masked); last-updated 2026-10-15.
+- verified locally: typecheck clean; lint 0 errors (existing warning only); mailer-scan policy/contract, EDDM attribution, campaign attribution, Blues isolation, QR measurement 22/22 incl. new phone-only test; production build succeeded.
+
 ### 2026-10-14 — Nightly cleanup: Blues docs, crash reports, leftover green
 **Agent:** Cursor Grok | **Surface:** backlog/spec, blue crash screens, two leftover green bits | **Goal:** nightly cleanup
 - changed: backlog now records that youarepayingtoomuch.com/blues already forwards to onepercentblues.com (#348). The leftover share item is only “poll chrome is still green.” The Blues host-rules write-up now matches the live allowlist and stay-on-blue missing-page behavior.

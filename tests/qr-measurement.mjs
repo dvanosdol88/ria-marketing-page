@@ -123,3 +123,22 @@ test("public aggregates retain saved history and starts, with null opening cover
   assert.equal(validMeasurementInput({ attributionMethod: "legacy_qr_signature" }), false);
   assert.equal(validMeasurementInput(input()), true);
 });
+
+test("05-51: only phones add mailer scans; computers and tablets are kept as a separate raw total", async () => {
+  const db = memoryDb({ [EXACT_COUNTER]: { count: 31, visits: 9 } });
+  await recordMeasurement(db, input("opening-00000000001", { phone: false }), now);
+  let counter = db.records.get(EXACT_COUNTER);
+  assert.equal(counter.count, 31);
+  assert.equal(counter.nonPhoneQrVisitors, 1);
+  assert.equal(counter.qrOpenings, 1);
+  assert.equal(counter.daily["2026-10-09"].nonPhoneScans, 1);
+  assert.equal(counter.daily["2026-10-09"].scans, undefined);
+  await recordMeasurement(db, input("opening-00000000002", { browserId: "browser-00000000002", phone: true }), now);
+  counter = db.records.get(EXACT_COUNTER);
+  assert.equal(counter.count, 32);
+  assert.equal(counter.daily["2026-10-09"].scans, 1);
+  const pub = publicMeasurementResponse(counter, {}, {}, now);
+  assert.equal(pub.scans.total, 32);
+  assert.equal(pub.scans.phoneOnly, true);
+  assert.equal(pub.nonPhoneQrVisitors.total, 1);
+});
