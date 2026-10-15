@@ -1,6 +1,6 @@
 "use client";
 
-import { fraunces } from "@/app/fonts";
+import { fraunces } from "@/app/bluesFonts";
 import { BluesFooter } from "@/components/blues/BluesFooter";
 import { BluesHeader } from "@/components/blues/BluesHeader";
 
