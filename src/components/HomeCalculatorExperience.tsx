@@ -104,7 +104,6 @@ type HomeCalculatorExperienceProps = {
   simpleControls: CalculatorSimpleControlNodes;
   renderChart: (className: string) => ReactNode;
   activeScenario: Scenario | null;
-  advancedCalculatorHref: string;
   assumptionsCustomized: boolean;
   showViewTabs?: boolean;
   initialView?: "header" | "inputs";
@@ -1541,7 +1540,6 @@ function MathExpandButton({
 }
 
 function SeeOurMathBento({
-  advancedCalculatorHref,
   annualFeePercent,
   annualFlatFee,
   annualGrowthPercent,
@@ -1557,7 +1555,6 @@ function SeeOurMathBento({
   totalFlatFees,
   years,
 }: {
-  advancedCalculatorHref: string;
   annualFeePercent: number;
   annualFlatFee: number;
   annualGrowthPercent: number;
@@ -2091,7 +2088,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
      green variants pass calculatorAccentGreen, the blue page its own set. */
   const accent = props.theme.accent;
   const {
-    advancedCalculatorHref,
     annualFeePercent,
     annualFlatFee,
     annualGrowthPercent,
@@ -2561,7 +2557,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
 
         <div className="mx-4 mt-4 pb-5 sm:mx-7">
           <SeeOurMathBento
-            advancedCalculatorHref={advancedCalculatorHref}
             annualFeePercent={annualFeePercent}
             annualFlatFee={annualFlatFee}
             annualGrowthPercent={annualGrowthPercent}
