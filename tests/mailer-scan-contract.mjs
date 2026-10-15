@@ -7,6 +7,12 @@ assert.match(ph, /getBrowserPostHog\(\)\?\.capture/);
 assert.doesNotMatch(ph, /sendDirectPostHogEvent|getDistinctId/);
 assert.match(page, /claimQrEvent\(receipt\)/);
 assert.match(page, /qr_opening_id: receipt.qrOpeningId/);
+assert.match(page, /buildPageviewCurrentUrl\(window\.location\)/);
+assert.doesNotMatch(page, /window\.location\.origin \+ pathname|origin\}\$\{pathname\}/);
+assert.match(
+  page,
+  /if \(isBluesAnalyticsHost\(window\.location\.hostname\)\) return;\s*void reportDocumentMeasurement\(\)/,
+);
 assert.match(route, /validMeasurementInput/);
 assert.match(route, /recordMeasurement/);
 assert.match(route, /hasQrVerificationCookie/);

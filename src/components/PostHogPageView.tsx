@@ -6,6 +6,10 @@ import { MEASUREMENT_VERSION, landingEvidence, resolveLanding } from "@/lib/qrLa
 import { browserIsAutomated, claimQrEvent, currentDocumentLandingUrl, reportDocumentMeasurement } from "@/lib/qrMeasurementBrowser";
 import { exitQrVerification, syncQrVerification } from "@/lib/qrVerification";
 import { shouldExcludePublicTraffic } from "@/lib/selfTestTraffic";
+import {
+  buildPageviewCurrentUrl,
+  isBluesAnalyticsHost,
+} from "@/lib/bluesAnalyticsHost";
 
 export function PostHogPageView() {
   const pathname = usePathname();
@@ -20,11 +24,12 @@ export function PostHogPageView() {
     const owner = shouldExcludePublicTraffic(searchParams);
     registerPostHogProperties({ self_test: owner || testMode, qr_verification: testMode });
     capturePostHogEvent("$pageview", {
-      $current_url: `${window.location.origin}${pathname}${searchParams.size ? `?${searchParams}` : ""}`,
+      $current_url: buildPageviewCurrentUrl(window.location),
       ...(owner || testMode ? { self_test: true } : {}),
       ...(testMode ? { qr_verification: true } : {}),
     });
     if (browserIsAutomated()) return;
+    if (isBluesAnalyticsHost(window.location.hostname)) return;
     void reportDocumentMeasurement().then((receipt) => {
       if (!receipt || !claimQrEvent(receipt)) return;
       const attributionMethod = resolveLanding(landingEvidence(arriving)).attributionMethod;
