@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     "How Smarter Way Wealth, LLC collects, uses, and protects information from visitors to youarepayingtoomuch.com.",
 };
 
-const LAST_UPDATED = "2026-09-15";
+const LAST_UPDATED = "2026-10-07";
 
 export default function PrivacyPolicy() {
   return (
@@ -72,6 +72,26 @@ export default function PrivacyPolicy() {
           ordinary website fields.
         </p>
 
+        <h2 id="advertising-measurement" className="pt-4 text-lg font-semibold text-neutral-900">
+          Advertising measurement
+        </h2>
+        <p>
+          On youarepayingtoomuch.com we use the Reddit Pixel, an advertising
+          measurement tool from Reddit, Inc., to learn whether our Reddit ads
+          lead people to use the fee calculator. It tells Reddit when a visit,
+          a calculator start, a calculator result, or a Become a Client request
+          happens, together with standard browser and device information and an
+          identifier stored in your browser. We do not send Reddit your name,
+          email address, phone number, portfolio amount, or calculator results.
+          Reddit handles this information under its own{" "}
+          <a href="https://www.reddit.com/policies/privacy-policy" className="underline" target="_blank" rel="noopener noreferrer">
+            privacy policy
+          </a>
+          . You can limit ad personalization in your Reddit account settings or
+          block third-party cookies in your browser. Smarterwaywealth.com does
+          not use the Reddit Pixel.
+        </p>
+
         <h2 id="how-we-use-information" className="pt-4 text-lg font-semibold text-neutral-900">
           How we use information
         </h2>
@@ -89,8 +109,9 @@ export default function PrivacyPolicy() {
           Our sites are hosted on Vercel, use Google Firebase to store direct
           onboarding requests, Sentry for error monitoring, PostHog for product
           analytics and session replay, and Calendly for meeting scheduling on
-          smarterwaywealth.com. These providers process data on our behalf
-          under their own privacy practices.
+          smarterwaywealth.com. On youarepayingtoomuch.com we also use Reddit
+          for advertising measurement, as described above. These providers
+          process data on our behalf or under their own privacy practices.
         </p>
 
         <h2 id="disclosures" className="pt-4 text-lg font-semibold text-neutral-900">

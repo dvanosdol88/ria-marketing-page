@@ -42,39 +42,61 @@ The printer-approved 2026 launch proofs contain this legacy URL:
 https://youarepayingtoomuch.com/?portfolio=1000000&years=20&growth=8&fee=1
 ```
 
-Production must count all of these as the same EDDM `launch_5k` mailer scan
-while leaving the visitor at the top of the home page:
+05-66 measurement resolves the arriving URL, before calculator cleanup, on the
+production root (`youarepayingtoomuch.com` or `www.youarepayingtoomuch.com`).
+The printed four exact parameters and the full approved EDDM UTM tuple qualify.
+Ordinary homepages with identical displayed defaults do not. Clean-root launch
+inference is historical only; existing events/data are retained. Shared results
+(old flat/mfe additions or new `shared=1`) and duplicate query parameters do not
+qualify. New shared URLs carry `shared=1` and remove EDDM UTMs. Public QR image
+assets remain unchanged; the original printed card address remains unchanged.
 
-- the clean root (`campaign_attribution_method=clean_root_launch`)
-- the exact four-value printer-proof signature
-  (`campaign_attribution_method=legacy_qr_signature`, `legacy_eddm_qr=true`)
-- the complete approved UTM tuple
-  (`utm_source=eddm`, `utm_medium=print`, `utm_campaign=launch_5k`,
-  `utm_content=qr_code`; `campaign_attribution_method=explicit_utm`)
+`eddm_qr_landed` follows an accepted server receipt once per qualifying document
+opening/reload. It includes `measurement_version='05-66'`, `qr_opening_id`,
+receipt-derived `qr_first_browser`, and explicit `qr_verification`. React rerenders,
+URL cleanup and retries reuse the opening ID. Reopening the printed address creates
+another opening; lifetime QR and website unique-browser counts still count each
+browser once. Website daily uniques count once per Eastern day. Daily QR uniques
+mean browsers first added to the QR counter that day, not every returning browser.
 
-New QR codes use the clean root URL and carry no calculator state, campaign
-query, anchor, or fragment. The live public PNG at
-`/assets/yaptom_default_inputs_qr.png` must keep decoding to that clean root
-so already-printed pieces and the published asset stay aligned.
+`public_metrics/eddm_launch_2026_exact` retains count/visits/daily data. Additive
+GET fields are `qrOpenings`, `qrVisitors`, `websiteVisitors` (total and startedAt),
+`asOf`, `timeZone`, opening-aware daily rows, a saved mixed-history summary, and
+separate `verification` aggregates. Existing unique counters started
+2026-10-08T18:32:08Z; QR opening total/start and prior daily opening coverage are
+null until the first accepted opening. Never reset/backfill; read older mixed
+history from `public_metrics/eddm_launch_2026` without modifying it.
 
-Clean-root attribution applies only to a first-touch landing on `/` with no
-campaign or calculator query. Same-origin clicks and search-engine referrers
-do not become mailer scans. Explicit UTM parameters always take precedence
-over the clean-root and legacy signatures. Events inferred from the
-printer-proof URL must include `campaign_attribution_method=legacy_qr_signature`
-and `legacy_eddm_qr=true`.
+Private dedup records below the counter store SHA-256 hashes of random anonymous
+browser/opening identifiers, seen flags and timestamps. A server transaction
+updates dedup markers and aggregate totals together. Separate hashed browser/day
+markers preserve daily uniqueness even when delayed requests commit out of order
+across Eastern midnight. No raw browser IDs, landing
+URLs, calculator inputs, IP addresses or personal information are stored in these
+receipts or exposed by GET. Browser identity uses local storage, a first-party
+cookie, then session storage/memory fallback. Existing local dedup flags preserve
+already-counted lifetime/daily totals during migration. If all storage is blocked,
+identity lasts only for that document; do not promise cross-reload uniqueness.
 
-Owner / agent stress-tests must not inflate the public RIA Builder visit or
-scan totals. Opt in on that browser with `?selftest=1` (sets a first-party
-`yapt_selftest` cookie and `sww_self_test` localStorage flag). Opt out with
-`?selftest=0`. Do not hard-code IP addresses. Recipients who scan a mailer
-never receive this flag. The aggregate endpoint still exposes only counts.
+Owner exclusion (`?selftest=1`, existing persistent flag/cookie) suppresses normal
+QR events and counts. `?qrtest=1` is an ordinary preparation link: it sets a
+session-only phone-verification marker/cookie and displays a small fixed notice
+with an accessible Exit test button. The original printed card URL then records
+separate verification openings/uniques even if owner exclusion is active. Requests
+are verification when either the server cookie or the explicit boolean
+request flag is true, so blocked cookies or an older tab's session marker cannot
+silently turn a test into a prospect. A false request flag cannot disable a server
+test cookie. Callers can only opt themselves out of prospect totals into test.
+These events carry `self_test:true` and `qr_verification:true`. `?qrtest=0` or Exit test
+clears the mode; it never alters normal legacy dedup flags. Recognized bots and
+browser automation remain excluded in both modes. Real phone/card and email
+proof remain separate from local automated tests.
 
-When an attributed visitor follows a link from this site to
-`smarterwaywealth.com`, carry only the available `utm_source`, `utm_medium`,
-`utm_campaign`, `utm_content`, and `utm_term` values into the destination URL.
-Do not carry calculator assumptions, PostHog distinct IDs, browser/session IDs,
-or visitor-entered information across the domain boundary.
+Fresh ordinary/shared document entry clears stale campaign attribution; legitimate
+QR context survives later calculator cleanup and conversion events in that same
+document. Firm-site handoffs allow only available UTM fields, never calculator
+assumptions, browser/session IDs or visitor-entered information. Analytics URL
+stripping remains in place.
 
 Legacy campaign parameters retained only for attribution of existing mail:
 

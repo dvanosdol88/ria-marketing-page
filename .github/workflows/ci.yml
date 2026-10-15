@@ -78,6 +78,9 @@ jobs:
       - name: Source locks (One Percent Blues)
         run: npm run test:blues-source-locks
 
+      - name: Blues analytics isolation
+        run: npm run test:blues-analytics-isolation
+
       - name: First-screen geometry
         run: npm run test:home-first-screen
 
@@ -119,6 +122,9 @@ jobs:
 
       - name: One Percent Blues host routing
         run: npm run test:blues-host-routing
+
+      - name: Reddit pixel scope
+        run: npm run test:reddit-pixel
 
   notify-failure:
     needs: [verify, test]
