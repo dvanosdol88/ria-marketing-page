@@ -39,7 +39,7 @@ test("the savings hero names every live calculator assumption and links to the e
 
 test("the homepage signup invitation explains the approved $100 monthly service without changing either CTA", () => {
   const home = signup
-    .split('if (variant === "block" && location === "home_post_calculator") {')[1]
+    .split('if (variant === "block" && (location === "home_post_calculator" || location === "home_post_faq")) {')[1]
     ?.split("const primaryButtonClass")[0];
 
   assert.ok(home);
@@ -55,9 +55,9 @@ test("the homepage signup invitation explains the approved $100 monthly service 
   assert.match(home, /BadgeCheck/);
   assert.match(home, /ExternalLink/);
 
-  assert.match(home, /Become a client\s*<ExternalLink/);
-  assert.match(home, /Questions\?[\s\S]*Schedule 15 minutes/);
-  assert.match(home, /href=\{signupCta\.primary\.href\}/);
-  assert.match(home, /href=\{signupCta\.secondary\.href\}/);
+  assert.match(signup, /Become a client\s*<ExternalLink/);
+  assert.match(signup, /Questions\?[\s\S]*Schedule 15 minutes/);
+  assert.match(signup, /href=\{signupCta\.primary\.href\}/);
+  assert.match(signup, /href=\{signupCta\.secondary\.href\}/);
   assert.match(whatWhyWhoHow, /style=\{\{ borderBottom: "none" \}\}/);
 });

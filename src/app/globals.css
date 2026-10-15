@@ -350,12 +350,3 @@ body {
     color: #1e3a8a;
   }
 }
-[data-theme="blues"] .custom-slider {
-  background: linear-gradient(to right, #2563eb 0%, #2563eb var(--value-percent, 50%), #e5e7eb var(--value-percent, 50%), #e5e7eb 100%);
-}
-[data-theme="blues"] .custom-slider::-webkit-slider-thumb {
-  background: #2563eb;
-}
-[data-theme="blues"] .custom-slider::-moz-range-thumb {
-  background: #2563eb;
-}

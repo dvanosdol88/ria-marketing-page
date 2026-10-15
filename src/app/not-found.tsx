@@ -1,28 +1,46 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
-import { fraunces } from "@/app/bluesFonts";
-import { BluesFooter } from "@/components/blues/BluesFooter";
-import { BluesHeader } from "@/components/blues/BluesHeader";
+import { BluesChrome } from "@/components/blues/BluesChrome";
+import { bluesNotFoundMetadata } from "@/components/blues/bluesIcons";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteNav } from "@/components/SiteNav";
 import { BLUES_ORIGIN } from "@/config/onePercentBlues";
+import { isBluesHostname, requestHostname } from "@/lib/bluesHost";
 
-export const dynamic = "force-dynamic";
+/*
+ * Unknown blue-host addresses share this root missing-page file with the green
+ * site. Reading the host is what keeps those addresses on the blue screen.
+ * That read makes this file request-time for both hosts — a Blues-only
+ * force-dynamic flag is not available here, and a catch-all rewrite would
+ * send unknown blue-host paths through a path the #344 contract forbids.
+ */
+async function isBluesHost() {
+  return isBluesHostname(requestHostname(await headers()));
+}
+
+/* Root 404 lives outside every route group, so it inherits the green site
+   title unless we override it. Unknown blue-host paths must read as Blues. */
+export async function generateMetadata(): Promise<Metadata> {
+  if (!(await isBluesHost())) {
+    return { title: "Page not found | You Are Paying Too Much" };
+  }
+  return {
+    ...bluesNotFoundMetadata(),
+    metadataBase: new URL(BLUES_ORIGIN),
+  };
+}
 
 /* The root not-found renders outside every route group. Green chrome is the
-   default; the blue host keeps its own header/footer so passthrough 404s
-   (/blues/nope, /brand/missing.svg) never wear the YAPT nav. */
+   default; the blue host keeps its own header/footer so unknown paths and
+   missing assets (/this-does-not-exist-xyz, /blues/nope, /brand/missing.svg)
+   never wear the YAPT nav. */
 export default async function NotFound() {
-  const host = ((await headers()).get("host") ?? "").split(":")[0].toLowerCase();
-  const isBlues = host === new URL(BLUES_ORIGIN).hostname;
+  const isBlues = await isBluesHost();
 
   if (isBlues) {
     return (
-      <div
-        data-theme="blues"
-        className={`${fraunces.variable} min-h-screen bg-[linear-gradient(180deg,#1E3A8A_0%,#2563EB_42%,#60A5FA_100%)] text-white`}
-      >
-        <BluesHeader />
+      <BluesChrome>
         <main className="mx-auto flex min-h-[60vh] max-w-[1040px] flex-col items-center justify-center gap-6 px-4 py-20 text-center sm:px-6">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/15 text-2xl font-semibold text-white">
             404
@@ -40,8 +58,7 @@ export default async function NotFound() {
             Back to One Percent Blues
           </Link>
         </main>
-        <BluesFooter />
-      </div>
+      </BluesChrome>
     );
   }
 

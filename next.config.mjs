@@ -4,17 +4,31 @@ import { withSentryConfig } from "@sentry/nextjs";
  * One Percent Blues — the second front door (docs/superpowers/specs/
  * 2026-09-17-one-percent-blues-design.md §3.2). onepercentblues.com serves
  * the blue page at /blues through a host rewrite; the other three hostnames
- * redirect there; and any path on the blue host that is not the page or an
- * asset bounces to the green domain, so the blue address stays one page.
+ * redirect there. Known green-site doors typed on the blue host still bounce
+ * to youarepayingtoomuch.com. Unknown paths stay on the blue host and render
+ * the Blues 404 — they must not follow a catch-all to the green site.
  */
 const BLUES_HOST = "onepercentblues.com";
 const BLUES_ORIGIN = `https://${BLUES_HOST}`;
 const GREEN_ORIGIN = "https://youarepayingtoomuch.com";
 const bluesHost = { type: "host", value: BLUES_HOST };
-// Paths the blue host must keep serving itself. The catch-all below uses `.+`
-// (not `.*`) so "/" itself never matches it — the rewrite owns "/".
-const BLUES_PASSTHROUGH =
-  "api/|_next/|blues(?:/|$)|brand/|images/|assets/|monitoring|favicon|apple-touch-icon|site\\.webmanifest|robots\\.txt|sitemap\\.xml|llms\\.txt";
+// Green-site pages (and their subpaths) that still bounce when typed on the
+// blue host. This is an allowlist, not a catch-all: a made-up path stays on
+// onepercentblues.com and hits the Blues 404.
+const BLUES_GREEN_PATHS = [
+  "/our-math",
+  "/become-a-client",
+  "/become-a-client/:path*",
+  "/privacy",
+  "/save-a-ton",
+  "/upgrade-your-advice",
+  "/improve-your-tools",
+  "/mobile-calculator",
+  "/meaning",
+  "/experiment",
+  "/gallery",
+  "/components/:path*",
+];
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -55,6 +69,18 @@ const nextConfig = {
       },
       { source: "/faq", destination: "/#faq", permanent: true },
 
+      // Rack 05-75: on every other host /blues was a duplicate of the blue
+      // page on the green domain. Send it to the blue home, and /blues/<file>
+      // to the same file at the blue root, in one hop. Listed ahead of the
+      // alias catch-all so the short names skip the /blues hop too. Rewrites
+      // into /blues on the blue host are not re-matched here.
+      { source: "/blues", missing: [bluesHost], destination: `${BLUES_ORIGIN}/`, permanent: true },
+      {
+        source: "/blues/:path*",
+        missing: [bluesHost],
+        destination: `${BLUES_ORIGIN}/:path*`,
+        permanent: true,
+      },
       // One Percent Blues: the three other hostnames land on onepercentblues.com.
       ...["1percentblues.com", "www.1percentblues.com", `www.${BLUES_HOST}`].map((host) => ({
         source: "/:path*",
@@ -64,13 +90,14 @@ const nextConfig = {
       })),
       // On the blue host the page's own address is "/", never "/blues".
       { source: "/blues", has: [bluesHost], destination: "/", permanent: true },
-      // Everything else on the blue host belongs to the green site.
-      {
-        source: `/:path((?!${BLUES_PASSTHROUGH}).+)`,
+      // Known green doors only. Unknown blue-host paths fall through to the
+      // Blues-branded 404 instead of a catch-all hop to the green site.
+      ...BLUES_GREEN_PATHS.map((source) => ({
+        source,
         has: [bluesHost],
-        destination: `${GREEN_ORIGIN}/:path`,
+        destination: `${GREEN_ORIGIN}${source}`,
         permanent: false,
-      },
+      })),
     ];
   },
   async rewrites() {
@@ -82,8 +109,16 @@ const nextConfig = {
         { source: "/robots.txt", has: [bluesHost], destination: "/blues/robots.txt" },
         { source: "/sitemap.xml", has: [bluesHost], destination: "/blues/sitemap.xml" },
         { source: "/llms.txt", has: [bluesHost], destination: "/blues/llms.txt" },
+        // Stay on this host with Blues branding. Do not add these paths to
+        // BLUES_GREEN_PATHS — a 307 to the green site is the open #317
+        // approach and it conflicts with the #344 stay-on-blue rule.
         {
-          source: "/:file((?:favicon|apple-touch-icon).*)",
+          source: "/site.webmanifest",
+          has: [bluesHost],
+          destination: "/blues/site.webmanifest",
+        },
+        {
+          source: "/:file((?:favicon|apple-touch-icon|android-chrome).*)",
           has: [bluesHost],
           destination: "/brand/blues-icon.svg",
         },

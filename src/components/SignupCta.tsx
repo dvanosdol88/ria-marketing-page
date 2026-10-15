@@ -164,11 +164,14 @@ export function SignupCta({
 
   const primaryButtonClass =
     variant === "block" ? BLOCK_PRIMARY_BUTTON_CLASS : INLINE_PRIMARY_BUTTON_CLASS;
+  const primaryLeavesSite = Boolean(primaryHref && /^https?:\/\//i.test(primaryHref));
 
   const primaryContent = (
     <>
       {signupCta.primary.label}
-      {variant === "block" ? (
+      {primaryLeavesSite ? (
+        <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
+      ) : variant === "block" ? (
         <ArrowRight
           aria-hidden="true"
           className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:translate-x-1"

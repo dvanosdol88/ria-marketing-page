@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { fraunces } from "@/app/bluesFonts";
-import { BluesFooter } from "@/components/blues/BluesFooter";
-import { BluesHeader } from "@/components/blues/BluesHeader";
+import { BluesChrome } from "@/components/blues/BluesChrome";
+import { bluesIconMetadata } from "@/components/blues/bluesIcons";
 import { BLUES_ORIGIN, bluesCopy, bluesJsonLd } from "@/config/onePercentBlues";
 
 /**
@@ -39,11 +38,7 @@ export const metadata: Metadata = {
     description: bluesCopy.metaDescription,
     images: ["/api/og/blues"],
   },
-  icons: {
-    icon: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
-    shortcut: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
-    apple: [{ url: "/brand/blues-icon.svg", type: "image/svg+xml" }],
-  },
+  icons: bluesIconMetadata,
 };
 
 export const viewport: Viewport = {
@@ -52,17 +47,12 @@ export const viewport: Viewport = {
 
 export default function BluesLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div
-      data-theme="blues"
-      className={`${fraunces.variable} min-h-screen bg-[linear-gradient(180deg,#1E3A8A_0%,#2563EB_42%,#60A5FA_100%)] text-white`}
-    >
+    <BluesChrome>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(bluesJsonLd) }}
       />
-      <BluesHeader />
       {children}
-      <BluesFooter />
-    </div>
+    </BluesChrome>
   );
 }
