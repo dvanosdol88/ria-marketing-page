@@ -116,7 +116,6 @@ export const bluesDiagnoses: Record<BluesDiagnosisKey, { heading: string; lead: 
 export const bluesLinks = {
   signup:
     "https://youarepayingtoomuch.com/become-a-client?utm_source=onepercentblues&utm_medium=referral&utm_campaign=one_percent_blues",
-  ourMath: "https://youarepayingtoomuch.com/our-math",
 } as const;
 
 const bluesAccent: CalculatorAccentTheme = {
