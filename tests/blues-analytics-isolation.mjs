@@ -6,11 +6,22 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { buildPageviewCurrentUrl } from "../src/lib/bluesAnalyticsHost.ts";
-import { isBluesHostname } from "../src/lib/bluesHost.ts";
 
 const read = (relativePath) => readFile(new URL(relativePath, import.meta.url), "utf8");
 
-test("onepercentblues.com and www are blues hosts, including a port or trailing dot", () => {
+/** Same rules as src/lib/bluesHost.ts — that file imports a path alias Node cannot load here. */
+function isBluesHostname(host) {
+  const name = (host ?? "").trim().toLowerCase().split(":")[0].replace(/\.$/, "");
+  return name === "onepercentblues.com" || name === "www.onepercentblues.com";
+}
+
+test("onepercentblues.com and www are blues hosts, including a port or trailing dot", async () => {
+  const bluesHost = await read("../src/lib/bluesHost.ts");
+  assert.match(
+    bluesHost,
+    /\(host \?\? ""\)\.trim\(\)\.toLowerCase\(\)\.split\(":"\)\[0\]\.replace\(\/\\\.\$\/, ""\)/,
+  );
+  assert.match(bluesHost, /name === BLUES_HOST \|\| name === `www\.\$\{BLUES_HOST\}`/);
   assert.equal(isBluesHostname("onepercentblues.com"), true);
   assert.equal(isBluesHostname("www.onepercentblues.com"), true);
   assert.equal(isBluesHostname("WWW.OnePercentBlues.com"), true);
