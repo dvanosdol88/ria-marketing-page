@@ -34,7 +34,7 @@ export default function GlobalError({
   if (isBluesHost === null) {
     return (
       <html lang="en">
-        <body />
+        <body style={{ backgroundColor: "transparent" }} />
       </html>
     );
   }
@@ -42,7 +42,7 @@ export default function GlobalError({
   if (isBluesHost) {
     return (
       <html lang="en">
-        <body>
+        <body className="bg-[#1E3A8A]">
           <BluesChrome>
             <BluesCrashPanel error={error} reset={reset} />
           </BluesChrome>

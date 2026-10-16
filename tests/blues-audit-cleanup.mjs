@@ -44,6 +44,7 @@ test("the green page-count tag is skipped on the Blues host", () => {
   assert.match(bluesHost, /www\.\$\{BLUES_HOST\}/);
   assert.match(bluesHost, /name === BLUES_HOST/);
   assert.match(bluesHost, /export function isBluesHostname/);
+  assert.match(bluesHost, /split\(":"\)\[0\]\.replace\(/);
   assert.doesNotMatch(
     bluesHost,
     /BLUES_APEX_HOST|BLUES_WWW_HOST|BLUES_CONTENT_HOSTS|BLUES_ALIAS_HOSTS|isBluesContentHost/,
@@ -74,6 +75,15 @@ test("a Blues crash uses the same chrome instead of the generic Next screen", ()
   assert.doesNotMatch(bluesPageError, /Sentry\.captureException/);
   // Unknown host must not assume "not Blues" — that first-painted the green Next screen.
   assert.doesNotMatch(globalError, /\(\)\s*=>\s*false/);
+  // Empty first paint must not flash the green-site grey; a known Blues crash is navy.
+  assert.match(globalError, /backgroundColor:\s*["']transparent["']/);
+  assert.match(globalError, /className="bg-\[#1E3A8A\]"/);
+});
+
+test("the blue body is navy, not the green-site grey", async () => {
+  const css = await read("../src/app/globals.css");
+  assert.match(css, /body:has\(\[data-theme="blues"\]\)/);
+  assert.match(rootLayout, /has-\[\[data-theme=blues\]\]:bg-\[#1E3A8A\]/);
 });
 
 test("an off-site Blues sign-up button uses the leave-site icon", () => {

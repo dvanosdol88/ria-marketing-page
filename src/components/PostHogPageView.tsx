@@ -6,10 +6,8 @@ import { MEASUREMENT_VERSION, landingEvidence, resolveLanding } from "@/lib/qrLa
 import { browserIsAutomated, claimQrEvent, currentDocumentLandingUrl, reportDocumentMeasurement } from "@/lib/qrMeasurementBrowser";
 import { exitQrVerification, syncQrVerification } from "@/lib/qrVerification";
 import { shouldExcludePublicTraffic } from "@/lib/selfTestTraffic";
-import {
-  buildPageviewCurrentUrl,
-  isBluesAnalyticsHost,
-} from "@/lib/bluesAnalyticsHost";
+import { buildPageviewCurrentUrl } from "@/lib/bluesAnalyticsHost";
+import { isBluesHostname } from "@/lib/bluesHost";
 
 export function PostHogPageView() {
   const pathname = usePathname();
@@ -19,7 +17,8 @@ export function PostHogPageView() {
     if (!pathname) return;
     const arriving = currentDocumentLandingUrl();
     initializeDocumentCampaign(arriving);
-    const testMode = syncQrVerification();
+    const onBlues = isBluesHostname(window.location.hostname);
+    const testMode = onBlues ? false : syncQrVerification();
     setVerification(testMode);
     const owner = shouldExcludePublicTraffic(searchParams);
     registerPostHogProperties({ self_test: owner || testMode, qr_verification: testMode });
@@ -29,19 +28,20 @@ export function PostHogPageView() {
       ...(testMode ? { qr_verification: true } : {}),
     });
     if (browserIsAutomated()) return;
-    if (isBluesAnalyticsHost(window.location.hostname)) return;
-    void reportDocumentMeasurement().then((receipt) => {
-      if (!receipt || !claimQrEvent(receipt)) return;
-      const attributionMethod = resolveLanding(landingEvidence(arriving)).attributionMethod;
-      capturePostHogEvent("eddm_qr_landed", {
-        $current_url: arriving, scan_kind: "mailer_qr_landing",
-        campaign_attribution_method: attributionMethod, is_eddm_visitor: true,
-        legacy_eddm_qr: attributionMethod === "legacy_qr_signature",
-        measurement_version: MEASUREMENT_VERSION, qr_opening_id: receipt.qrOpeningId,
-        qr_first_browser: receipt.qrFirstBrowser, qr_verification: receipt.verification,
-        ...(receipt.verification ? { self_test: true } : {}),
+    if (!onBlues) {
+      void reportDocumentMeasurement().then((receipt) => {
+        if (!receipt || !claimQrEvent(receipt)) return;
+        const attributionMethod = resolveLanding(landingEvidence(arriving)).attributionMethod;
+        capturePostHogEvent("eddm_qr_landed", {
+          $current_url: arriving, scan_kind: "mailer_qr_landing",
+          campaign_attribution_method: attributionMethod, is_eddm_visitor: true,
+          legacy_eddm_qr: attributionMethod === "legacy_qr_signature",
+          measurement_version: MEASUREMENT_VERSION, qr_opening_id: receipt.qrOpeningId,
+          qr_first_browser: receipt.qrFirstBrowser, qr_verification: receipt.verification,
+          ...(receipt.verification ? { self_test: true } : {}),
+        });
       });
-    });
+    }
     const url = new URL(window.location.href);
     if (url.searchParams.has("qrtest") || url.searchParams.has("selftest")) {
       url.searchParams.delete("qrtest"); url.searchParams.delete("selftest");

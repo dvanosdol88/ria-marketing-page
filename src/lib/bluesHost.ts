@@ -8,9 +8,12 @@ import { BLUES_HOST } from "@/config/onePercentBlues";
  * check so their existing 308 to onepercentblues.com is unchanged.
  */
 
-/** Apex and www. Production sends www to the apex first; both still count as Blues. */
+/**
+ * Apex and www. Production sends www to the apex first; both still count as Blues.
+ * Strip a port and a trailing FQDN dot so callers cannot disagree on the same host.
+ */
 export function isBluesHostname(host: string | null | undefined): boolean {
-  const name = (host ?? "").split(":")[0].toLowerCase();
+  const name = (host ?? "").trim().toLowerCase().split(":")[0].replace(/\.$/, "");
   return name === BLUES_HOST || name === `www.${BLUES_HOST}`;
 }
 
