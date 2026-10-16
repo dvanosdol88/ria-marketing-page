@@ -62,17 +62,15 @@ export function BluesCheck({
   }, [diagnosis, reduceMotion]);
 
   const answer = useCallback((id: BluesQuestionId, value: BluesAnswer) => {
-    setAnswers((prev) => {
-      const next = { ...prev, [id]: value };
-      capturePostHogEvent("blues_check_answered", { question: id, answer: value });
-      const result = diagnoseBlues(next);
-      if (result && !completedRef.current) {
-        completedRef.current = true;
-        capturePostHogEvent("blues_check_completed", { diagnosis: result });
-      }
-      return next;
-    });
-  }, []);
+    const next = { ...answers, [id]: value };
+    setAnswers(next);
+    capturePostHogEvent("blues_check_answered", { question: id, answer: value });
+    const result = diagnoseBlues(next);
+    if (result && !completedRef.current) {
+      completedRef.current = true;
+      capturePostHogEvent("blues_check_completed", { diagnosis: result });
+    }
+  }, [answers]);
 
   return (
     <>
