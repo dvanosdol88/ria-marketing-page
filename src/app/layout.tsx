@@ -72,7 +72,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${dmSans.variable} bg-[#EEF0F5] text-neutral-900`}>
+      <body className={`${inter.variable} ${dmSans.variable} bg-[#EEF0F5] text-neutral-900 has-[[data-theme=blues]]:bg-[#1E3A8A]`}>
         <PostHogProvider>
           <ViewTransitions>
             <PostHogCtaTracker />
