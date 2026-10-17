@@ -130,3 +130,13 @@ it scales with whatever text it follows. Standalone row icons (the green firm-vi
 brand-green CTA fill already on the green CTA (`bg-[#008532]`, hover `#006B28`) — never navy,
 cyan, or white for this action. Same rule on youarepayingtoomuch.com, One Percent Blues
 (`/blues`, onepercentblues.com), and smarterwaywealth.com.
+
+## 07-64 — Linux working-copy preparation (2026-10-16)
+
+- Claude remains the accountable lead. Keep the existing Claude project home and conversation history in the shared [05-64 directory](https://github.com/dvanosdol88/dvo88-command-center/blob/main/docs/project-records/README.md).
+- Approved destination: `~/projects/ria-marketing-page` on `david-HP-Laptop-1`. Container [07-64](https://www.dvo88.com/rack?card=07-64) owns the move. Preparation is **not a completed cutover**: read its latest return for actual locations and checks before starting new work.
+- PC copies are retained recovery/reference copies during preparation. Do not delete, overwrite, relocate or repurpose them; preserve active sessions and unique work. An exact measured removal list on 07-64 and David's approval must precede any PC removal.
+- Linux shared rules live under `~/d/` (the equivalent of `D:\`); cross-project references use the corresponding sibling under `~/projects/`. Keep this repository, its remote history and its existing journal; do not create a competing Claude home.
+- Use Node 24.15.0 or a compatible newer patch for current locked dependencies. Run one build/test workload at a time on the laptop: recent memory exhaustion closed applications. A successful check does not establish unattended reliability.
+- Never copy credential files or client records into a new checkout. Existing vault and production configuration stay unchanged. Production behavior, visitor wording, permissions and Portfolio PM are outside this move. Never use the backup drive for staging.
+- For cross-site calculator checks, set `CALCULATOR_CANON_SIBLING_ROOT` to the other Linux repository explicitly; the older test default names the Windows folder and otherwise skips the comparison.
