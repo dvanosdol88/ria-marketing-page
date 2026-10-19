@@ -1,7 +1,7 @@
 {
   "meta": {
     "datasetVersion": 1,
-    "lastFullVerification": "2026-07-31",
+    "lastFullVerification": "2026-08-10",
     "policy": "standard-rates-only",
     "policyNotes": "Only standard, nationally available, no-strings APYs are listed. Promotional, new-customer, limited-time, and activity-conditioned rates are excluded. Every row must be verifiable against the institution's own published rate page plus at least one independent public source. If a row cannot be re-verified, it is marked stale and keeps its last verified figure and date; unverified numbers are never published."
   },
@@ -13,7 +13,7 @@
     "savingsApyPercent": 0.38,
     "moneyMarketApyPercent": 0.65,
     "interestCheckingApyPercent": 0.07,
-    "lastVerified": "2026-07-31"
+    "lastVerified": "2026-08-10"
   },
   "bigBankAnchor": {
     "label": "Chase Savings (standard rate, all balance tiers)",
@@ -40,7 +40,7 @@
         "minToOpen": "$100",
         "conditions": "APY applies to all balances",
         "institutionRateAsOf": null,
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-08-10",
         "verification": "verified",
         "sources": [
           {
@@ -70,7 +70,7 @@
         "minToOpen": "$0",
         "conditions": "APY applies to all balances",
         "institutionRateAsOf": null,
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-08-10",
         "verification": "verified",
         "sources": [
           {
@@ -100,7 +100,7 @@
         "minToOpen": "$100",
         "conditions": "APY applies to all balances",
         "institutionRateAsOf": "2026-07-13",
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-08-10",
         "verification": "verified",
         "sources": [
           {
@@ -130,7 +130,7 @@
         "minToOpen": "$0",
         "conditions": "APY applies to all balances",
         "institutionRateAsOf": null,
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-08-10",
         "verification": "verified",
         "sources": [
           {
@@ -162,7 +162,7 @@
         "minToOpen": "$0",
         "conditions": "APY applies to all balances",
         "institutionRateAsOf": null,
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-08-10",
         "verification": "verified",
         "sources": [
           {
@@ -192,7 +192,7 @@
         "minToOpen": "$100",
         "conditions": "APY applies to all balance tiers",
         "institutionRateAsOf": "2026-04-14",
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-08-10",
         "verification": "verified",
         "sources": [
           {
@@ -222,7 +222,7 @@
         "minToOpen": "$1,000",
         "conditions": "$1,000 daily minimum to earn APY and avoid a $10 monthly fee",
         "institutionRateAsOf": "2026-07-27",
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-08-10",
         "verification": "verified",
         "sources": [
           {
@@ -323,7 +323,7 @@
           "ct-top5",
           "ny-top5"
         ],
-        "ctSharePercent": 23.0,
+        "ctSharePercent": 23,
         "nySharePercent": 4.9,
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
@@ -496,7 +496,7 @@
           "regional"
         ],
         "institutionRateAsOf": null,
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-08-10",
         "verification": "verified",
         "autoCheck": true,
         "sources": [
@@ -522,9 +522,9 @@
       {
         "institution": "Capital One",
         "product": "360 Performance Savings",
-        "apyPercent": 3.0,
+        "apyPercent": 3,
         "verifyString": "3.00",
-        "apyNote": "Capital One's mainline consumer savings is itself high-yield \u2014 flat rate on all balances, no minimums; there is no lower standard product.",
+        "apyNote": "Capital One's mainline consumer savings is itself high-yield — flat rate on all balances, no minimums; there is no lower standard product.",
         "group": "online-arm",
         "tags": [
           "regional"
@@ -564,7 +564,7 @@
           "regional",
           "ct-top5"
         ],
-        "ctSharePercent": 5.0,
+        "ctSharePercent": 5,
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
         "verification": "verified",
@@ -635,7 +635,7 @@
         ],
         "ctSharePercent": 22.8,
         "institutionRateAsOf": "2026-07-31",
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-08-10",
         "verification": "verified",
         "autoCheck": true,
         "sources": [
@@ -668,7 +668,7 @@
         "tags": [
           "ct-top5"
         ],
-        "ctSharePercent": 11.0,
+        "ctSharePercent": 11,
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
         "verification": "verified",
@@ -705,7 +705,7 @@
         ],
         "nySharePercent": 8.7,
         "institutionRateAsOf": "2026-07-31",
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-08-10",
         "verification": "verified",
         "autoCheck": true,
         "sources": [
