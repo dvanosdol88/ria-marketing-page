@@ -1,5 +1,15 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-10-16 — 07-64 Prepare Linux copy without declaring cutover
+**Agent:** Linux Codex (guest; Claude remains lead) | **Surface:** project working-copy preparation
+- why: David selected Plan A in 06-79; preparation must preserve existing Claude homes and all unique work before PC removal.
+- changed: instructions identify the intended `~/projects/ria-marketing-page` destination and preserve PC/reference copies. The actual prepared clone remains in the assigned Codex checkout's ignored `tmp/07-64/ria-marketing-page`; it is not yet the main working copy.
+- evidence: full GitHub clone, fresh all-branch parity and `git fsck --full` passed. Locked dependencies installed. Current completed checks and limitations are in the [07-64 shared handoff](https://github.com/dvanosdol88/dvo88-command-center/blob/codex/07-64-linux-project-homes/docs/operations/2026-10-16-07-64-linux-project-handoff.md). The Rack holds the final attempt return.
+- limits: recent laptop memory-exhaustion kills; staged checks use a contained compatible Node patch and sequential workloads. PC access failed before connecting, so PC-only work and exact removal savings are unknown. No PC removal, backup-drive write, credential move or client-data access.
+- run-log: Rack 07-64, attempt e6215815-93b4-4ba0-908a-366a3d2029f1; actual provider session 01a14772-8f4b-74b0-96c5-38080aa3c5e5.
+- deployed: not deployed; documentation preparation only. No visitor-facing source or production setting changed.
+- next: Windows worker inventories actual copies; next 07-64 worker reconciles unique work, completes destination setup and checks, and requests approval of an exact measured removal list before deleting anything.
+
 ### 2026-10-15 — 05-51 Phone-only mailer scans; masked session recordings; owner visits excluded
 **Agent:** Claude | **Surface:** mailer-scan counter, PostHog session recording, privacy page | **Approval:** David approved all four 05-51 measurement changes on 2026-10-13 (2026-10-08 brief) | **Status:** see PR
 - changed: the mailer QR scan count now adds only phones (server-side check of the request's mobile hint / user agent). Computers and tablets opening the printed link go to a separate raw total, `nonPhoneQrVisitors` (daily `nonPhoneScans`); all-device `qrOpenings` is unchanged. Past totals are untouched.
