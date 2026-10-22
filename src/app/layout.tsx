@@ -6,6 +6,7 @@ import { inter, dmSans } from "./fonts";
 import { PostHogCtaTracker } from "@/components/PostHogCtaTracker";
 import { PostHogProvider } from "@/components/PostHogProvider";
 import { PostHogPageView } from "@/components/PostHogPageView";
+import GoogleAdsTag from "@/components/GoogleAdsTag";
 import RedditPixel from "@/components/RedditPixel";
 import { SiteAnalytics } from "@/components/SiteAnalytics";
 
@@ -80,6 +81,7 @@ export default function RootLayout({
               <PostHogPageView />
             </Suspense>
             <RedditPixel />
+            <GoogleAdsTag />
             {children}
           </ViewTransitions>
         </PostHogProvider>
