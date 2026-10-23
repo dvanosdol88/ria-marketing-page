@@ -27,7 +27,7 @@ These are standing agent instructions and a required pre-release scope check. Th
 The required `wording-approval` check compares built pages before and after a
 pull request on phone and desktop, across the green and Blues hosts. It reads
 page text, labels, alternative text, search metadata, structured search text,
-local text resources and explored buttons, tabs and disclosures. It runs the
+local text resources and explored buttons, tabs and disclosures. Comparison-only pages render the real loading and crash panels inside the isolated build; those pages are never included in the production build. It runs the
 candidate inside a container without repository credentials; the trusted
 browser and approval reader stay outside it. Missing pages, build failures,
 uncovered dynamic pages and missing approval evidence block publication.

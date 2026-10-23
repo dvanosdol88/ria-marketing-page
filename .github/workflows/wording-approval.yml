@@ -65,9 +65,11 @@ jobs:
         run: |
           npm ci
           npx playwright install --with-deps chromium
-          node --test tests/wording/compare.test.mjs tests/wording/extract.test.mjs
+          node --test tests/wording/compare.test.mjs tests/wording/extract.test.mjs tests/wording/probes.test.mjs
       - name: Build isolated candidate
-        run: docker build -f trusted/scripts/wording/Dockerfile -t wording-site site
+        run: |
+          node trusted/scripts/wording/prepare-probes.mjs site
+          docker build -f trusted/scripts/wording/Dockerfile -t wording-site site
       - name: Read built website wording outside candidate container
         run: |
           docker network create --internal wording-isolated
