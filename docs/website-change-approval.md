@@ -21,3 +21,39 @@ Approved by David on 2026-10-12 in [the source chat](codex://threads/01a1260b-d3
 ## Enforcement boundary
 
 These are standing agent instructions and a required pre-release scope check. This change does not install an automatic publishing lock, change repository permissions, or claim that already-running sessions on other machines have loaded the new instructions. New and resumed work must read this policy before continuing.
+
+## 10-10 — wording publication check
+
+The required `wording-approval` check compares built pages before and after a
+pull request on phone and desktop, across the green and Blues hosts. It reads
+page text, labels, alternative text, search metadata, structured search text,
+local text resources and explored buttons, tabs and disclosures. Comparison-only pages render the real loading and crash panels inside the isolated build; those pages are never included in the production build. It runs the
+candidate inside a container without repository credentials; the trusted
+browser and approval reader stay outside it. Missing pages, build failures,
+uncovered dynamic pages and missing approval evidence block publication.
+
+Wording-identical maintenance needs no approval. Design is outside this
+wording-only check. Site Change Watch remains the separate after-publication
+watch. The Nightly Audit Engineer's cleanup PRs use this same required check;
+there is no second wording hold in this repository.
+
+Agents share the owner's GitHub identity, so GitHub approvals cannot establish
+that David himself answered. The supported evidence is a direct Google or
+personal-key answer on a David-only Rack question. The question must carry the
+complete `before` and `after` proposal generated in the run's `wording-proposal`
+artifact, its repository, PR number and digest. The server independently hashes
+those displayed words and refuses a mismatch. Relays, deputies, labels, files,
+comments and agent-written approvals never grant this check.
+
+Add `Wording approval card: <card UUID>` on its own line to the PR description.
+After David answers, rerun **Website wording approval** for that PR number.
+Approval follows the exact words, not commit IDs. Changes larger than the
+current complete-display limit remain blocked; never truncate a proposal to
+fit. The same collector is intended for the sister site's separate work item.
+
+Coverage is bounded browser exploration, not a mathematical proof over every
+possible interactive input. New dynamically generated page routes fail closed
+until covered. Error-only and input-dependent states require dedicated journey
+coverage; do not claim that arbitrary client-side behavior has been exhaustively
+explored. Protection still depends on the repository's required-check settings;
+changes to those settings are not approvals of website wording.

@@ -1,5 +1,18 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-10-23 — 10-10 Required built wording publication check
+**Agent:** Linux Codex | **Surface:** marketing / Blues | **Work ID:** 10-10
+- changed: added before/after built-page wording capture across six green/Blues hosts, desktop and phone, with text, labels, alt text, metadata and explored local controls. Candidate builds run in isolated containers; trusted scripts compare their actual browser output outside them.
+- why: wording changes must wait for David's direct approval while wording-identical maintenance passes. Shared GitHub identity is not accepted as human proof; the runtime Rack read binds complete displayed words to repository and PR without tying approval to a commit.
+- tests: comparator tests cover unchanged maintenance, changed words/metadata/alt, exact direct evidence, unavailable service, incomplete snapshots and oversized proposals. Production build passed locally. Browser and GitHub enforcement proof are still in progress.
+- limits: complete proposals over 6,000 characters per side block rather than truncate. Browser journeys are bounded; conditional error/input states need explicit coverage. A real direct David approval remains required for the approval-positive proof; no approval is invented.
+- run-log: 10-10 attempt 215f2a99-5f54-4691-8d40-66ebccaaaa84, provider thread 01a16a22-c93f-72a2-92d0-2005762d1b8d; saved under the assigned Codex checkout's ignored tmp/10-10/.
+- deployed: not deployed at commit time; required-check protection is not enabled until the workflow is on main and proven. No visitor wording or Portfolio PM changes.
+- repair: reader activation handles off-screen/covered controls without changing layout. Existing runner browser libraries are retained; unrelated system-font downloads were taking over ten minutes, so only the browser binary is installed. Real browser regression tests still run.
+- repair: first GitHub isolation proof built successfully but could not reach Docker’s published port on an internal network. Keep runtime isolation, connect directly from the runner to the internal container address, and retain container logs for diagnosis. The old check stays blocking until the complete repaired comparison passes; no bypass or fake status.
+- next: finish deterministic browser comparison; merge through existing CI, require wording-approval, prove changed-word blocking and dependency-only passing, then request David's real test approval.
+
+
 ### 09-85 — 2026-10-23 — Next.js 16.3.8 security update
 **Agent:** Cursor Grok | **Surface:** site platform (Next.js) | **Goal:** [PR #357](https://github.com/dvanosdol88/ria-marketing-page/pull/357) / [Rack 09-85](https://www.dvo88.com/rack?card=09-85)
 - changed: the site now installs Next.js 16.3.8 (was 16.3.6 on the lockfile; main still listed `^16.1.5`). Matching Next helper packages moved with it. No visitor wording, layout, calculator math, or buttons changed. This is the vendor security patch for the Next.js issues listed on the pull request.
