@@ -1,4 +1,19 @@
+<!-- PLAIN-ENGLISH:START v1 2026-10-09 (master: D:\PLAIN-ENGLISH.md, container 05-58; edit the master, never this copy) -->
+## Speak plain English to David — every agent, every machine, every message
+
+David is a financial advisor (CFA, CFP) running a business, not a programmer. He has asked for this many times; drifting from it is a defect, not a style choice.
+
+1. **Plain English, bottom line first.** Say what happened, what it means for him, and anything he must do, in words a non-programmer gets at a glance.
+2. **No technical jargon** (file paths, code, commands, error text, version numbers, infrastructure or tool names) unless David asks for it, or one term is truly needed to avoid confusion; then explain it in a few plain words.
+3. **Talk in products, features and benefits**, not plumbing. Technical detail belongs in the work records, not in what you say to him.
+4. **Hold the line during long technical work**, which is exactly when agents drift. Before sending, reread your reply: if a sentence needs a programmer to understand it, rewrite it or cut it.
+<!-- PLAIN-ENGLISH:END -->
+
 # CLAUDE.md (Project)
+
+## David's website change approval — mandatory
+
+Before new or resumed work, read this repo's `AGENTS.md` and [website change approval policy](docs/website-change-approval.md). It overrides broader ship-by-default, proactive-fix, mobile-improvement and agent-readiness instructions. David approves the exact proposed visitor-facing change once; routine maintenance preserves approved wording, appearance, calculations and behavior. Never publish uncertain changes or agent-selected editorial improvements without David's approval.
 
 ## Project: RIA-marketing-page
 - Domain: youarepayingtoomuch.com (no dashes)
@@ -31,7 +46,7 @@ Effective 2026-05-22, this site is **mobile-first**, not mobile-aware. Design an
 
 - Layout reasoning starts at ~375px width. Typography, spacing, tap targets, and information density are decided there first.
 - Desktop is a progressive enhancement of the mobile layout, not the source of truth that gets shrunk down.
-- No need to retroactively re-audit existing pages for mobile-first compliance. Only flag and fix glaring mobile breaks (overflow, illegible text, broken tap targets) you encounter during normal work.
+- No need to retroactively re-audit existing pages for mobile-first compliance. Flag glaring mobile breaks (overflow, illegible text, broken tap targets) you encounter during normal work. Fix them only within David-approved scope or as maintenance preserving approved wording, appearance, calculations and behavior; otherwise show a draft for approval.
 - When touching a section for any reason, proactively surface 1–3 mobile-first improvement opportunities (typography stairs, content density, tap target size, layout reflow, hover-only interactions) with concrete options for David to pick from. Don't apply them unprompted — just call them out alongside the requested change.
 
 ## Project Backlog

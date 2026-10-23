@@ -1,4 +1,19 @@
+<!-- PLAIN-ENGLISH:START v1 2026-10-09 (master: D:\PLAIN-ENGLISH.md, container 05-58; edit the master, never this copy) -->
+## Speak plain English to David — every agent, every machine, every message
+
+David is a financial advisor (CFA, CFP) running a business, not a programmer. He has asked for this many times; drifting from it is a defect, not a style choice.
+
+1. **Plain English, bottom line first.** Say what happened, what it means for him, and anything he must do, in words a non-programmer gets at a glance.
+2. **No technical jargon** (file paths, code, commands, error text, version numbers, infrastructure or tool names) unless David asks for it, or one term is truly needed to avoid confusion; then explain it in a few plain words.
+3. **Talk in products, features and benefits**, not plumbing. Technical detail belongs in the work records, not in what you say to him.
+4. **Hold the line during long technical work**, which is exactly when agents drift. Before sending, reread your reply: if a sentence needs a programmer to understand it, rewrite it or cut it.
+<!-- PLAIN-ENGLISH:END -->
+
 # AGENTS.md (Project)
+
+## David's website change approval — mandatory
+
+Before new or resumed work, read [the website change approval policy](docs/website-change-approval.md). David owns the wording and visitor experience; approval is once per exact proposed change, not once per PR. Routine maintenance may ship only while preserving approved wording, appearance, calculations and behavior. Uncertain changes remain unpublished drafts. This policy takes precedence over broader automatic shipping, proactive fixes, mobile improvements and agent-readiness guidance.
 
 ## Project: RIA-marketing-page
 - Domain: youarepayingtoomuch.com (no dashes)
@@ -12,13 +27,13 @@ Effective 2026-05-22, `youarepayingtoomuch.com` is mobile-first, not merely mobi
 
 - Make layout, typography, spacing, tap targets, and information density work first around a 375px-wide mobile viewport.
 - Treat desktop as a progressive enhancement of the mobile experience, not the source design that gets compressed afterward.
-- Do not perform a retroactive mobile-first audit of the full site unless explicitly requested. During normal work, flag and fix only glaring mobile issues such as overflow, illegible text, broken tap targets, or incoherent stacking.
+- Do not perform a retroactive mobile-first audit of the full site unless explicitly requested. During normal work, flag glaring mobile issues such as overflow, illegible text, broken tap targets, or incoherent stacking. Fix them only within David-approved scope or as maintenance that preserves approved wording, appearance, calculations and behavior; otherwise show a draft for approval.
 
 
 
 ## Workflow
 
-**Ship by default:** After a task completes successfully (tsc/lint/build pass, user-requested work verified), commit and push to `main` and verify production unless the user explicitly said not to ship, said "wait" or "bundle later", or the change is exploratory/WIP. Do not ask "want me to ship?" when the task is done — ship it.
+**Ship by default within approved scope:** The website change approval policy above must be satisfied first. After a task completes successfully (tsc/lint/build pass, user-requested work verified), commit and push to `main` and verify production unless the user explicitly said not to ship, said "wait" or "bundle later", or the change is exploratory/WIP. Do not ask "want me to ship?" when the task is done — ship it.
 
 ## Global Constraints
 

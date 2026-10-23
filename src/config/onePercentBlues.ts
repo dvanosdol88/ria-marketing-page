@@ -69,7 +69,7 @@ export const bluesCheckQuestions: ReadonlyArray<{
   },
 ];
 
-export const EMPTY_BLUES_ANSWERS: BluesAnswers = { q1: null, q2: null, q3: null };
+const EMPTY_BLUES_ANSWERS: BluesAnswers = { q1: null, q2: null, q3: null };
 
 /** The three answers as a URL value — `?check=yny` is q1 yes, q2 no, q3 yes —
  *  so a link can carry a completed check and the diagnosis card renders in
@@ -109,14 +109,13 @@ export const bluesDiagnoses: Record<BluesDiagnosisKey, { heading: string; lead: 
 };
 
 /** Cross-domain doors from the blue page. Plain absolute links, never
- *  next/link: on onepercentblues.com every green route redirects to the green
- *  domain, and a client-side prefetch of a redirecting route fails CORS on
- *  every page view. The UTM tags keep the campaign visible in PostHog once
- *  the visitor lands on the green site. */
+ *  next/link: these known green doors redirect to the green domain, and a
+ *  client-side prefetch of a redirecting route fails CORS on every page view.
+ *  The UTM tags keep the campaign visible in PostHog once the visitor lands
+ *  on the green site. */
 export const bluesLinks = {
   signup:
     "https://youarepayingtoomuch.com/become-a-client?utm_source=onepercentblues&utm_medium=referral&utm_campaign=one_percent_blues",
-  ourMath: "https://youarepayingtoomuch.com/our-math",
 } as const;
 
 const bluesAccent: CalculatorAccentTheme = {
