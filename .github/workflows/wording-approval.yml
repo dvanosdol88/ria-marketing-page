@@ -1,0 +1,133 @@
+name: Website wording approval
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pull:
+        description: Pull request to recheck after David answers
+        required: true
+        type: number
+permissions: {}
+concurrency:
+  group: wording-${{ github.event.pull_request.number || inputs.pull }}
+  cancel-in-progress: true
+jobs:
+  identify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      statuses: write
+    outputs:
+      pull: ${{ steps.pr.outputs.pull }}
+      base: ${{ steps.pr.outputs.base }}
+      head: ${{ steps.pr.outputs.head }}
+      card: ${{ steps.pr.outputs.card }}
+    steps:
+      - uses: actions/github-script@v8
+        id: pr
+        with:
+          script: |
+            const number = Number(context.payload.pull_request?.number || context.payload.inputs?.pull);
+            const {data:pr} = await github.rest.pulls.get({...context.repo,pull_number:number});
+            if (pr.state !== 'open' || pr.base.ref !== 'main' || pr.head.repo.full_name !== context.payload.repository.full_name) throw new Error('Only an open same-repository PR into main can be checked.');
+            const {data:main} = await github.rest.repos.getBranch({...context.repo,branch:'main'});
+            const match = (pr.body || '').match(/^Wording approval card:\s*([a-f0-9-]{36})\s*$/m);
+            core.setOutput('pull',number); core.setOutput('base',main.commit.sha); core.setOutput('head',pr.head.sha); core.setOutput('card',match?.[1] || '');
+            await github.rest.repos.createCommitStatus({...context.repo,sha:pr.head.sha,state:'pending',context:'wording-approval',description:'Comparing built website wording before publication.'});
+  capture:
+    needs: identify
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        side: [before, after]
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: trusted
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          allow-unsafe-pr-checkout: true
+          ref: ${{ matrix.side == 'before' && needs.identify.outputs.base || needs.identify.outputs.head }}
+          path: site
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Install trusted browser tooling
+        working-directory: trusted
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          node --test tests/wording/compare.test.mjs tests/wording/extract.test.mjs tests/wording/probes.test.mjs
+      - name: Build isolated candidate
+        run: |
+          node trusted/scripts/wording/prepare-probes.mjs site
+          docker build -f trusted/scripts/wording/Dockerfile -t wording-site site
+      - name: Read built website wording outside candidate container
+        run: |
+          docker network create --internal wording-isolated
+          docker run --detach --network wording-isolated --name wording-site --publish 127.0.0.1:3100:3000 wording-site
+          node trusted/scripts/wording/capture.mjs site snapshot.json 3100 trusted
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wording-${{ matrix.side }}
+          path: snapshot.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Stop candidate
+        if: always()
+        run: |
+          docker rm -f wording-site || true
+          docker network rm wording-isolated || true
+  decide:
+    needs: [identify, capture]
+    if: always() && needs.identify.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      statuses: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: trusted
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        if: needs.capture.result == 'success'
+        with:
+          pattern: wording-*
+          path: snapshots
+      - name: Compare and verify David's runtime approval
+        id: decision
+        if: needs.capture.result == 'success'
+        env:
+          REPOSITORY: ${{ github.repository }}
+          PULL: ${{ needs.identify.outputs.pull }}
+          CARD: ${{ needs.identify.outputs.card }}
+        run: node trusted/scripts/wording/compare.mjs snapshots/wording-before/snapshot.json snapshots/wording-after/snapshot.json wording-diff.json "$REPOSITORY" "$PULL" "$CARD"
+      - uses: actions/upload-artifact@v4
+        if: always() && needs.capture.result == 'success'
+        with:
+          name: wording-proposal
+          path: wording-diff.json
+          retention-days: 14
+      - uses: actions/github-script@v8
+        if: always()
+        env:
+          HEAD: ${{ needs.identify.outputs.head }}
+          BASE: ${{ needs.identify.outputs.base }}
+          PULL: ${{ needs.identify.outputs.pull }}
+          APPROVED: ${{ steps.decision.outcome == 'success' }}
+        with:
+          script: |
+            const {data:pr} = await github.rest.pulls.get({...context.repo,pull_number:Number(process.env.PULL)});
+            const {data:main} = await github.rest.repos.getBranch({...context.repo,branch:'main'});
+            const approved = process.env.APPROVED === 'true' && pr.head.sha === process.env.HEAD && main.commit.sha === process.env.BASE;
+            await github.rest.repos.createCommitStatus({...context.repo,sha:process.env.HEAD,state:approved?'success':'failure',context:'wording-approval',description:approved?'Wording unchanged or approved directly by David.':'Wording approval missing, comparison failed, or main changed. Recheck required.',target_url:`${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`});
+            if(!approved)core.setFailed('Publication stays blocked. Review the wording proposal and obtain David’s direct approval if words changed.');
