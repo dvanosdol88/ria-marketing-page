@@ -2,6 +2,7 @@
 
 import posthog from 'posthog-js'
 import { PostHogProvider as PHProvider } from 'posthog-js/react'
+import { isBluesHostname } from '@/lib/bluesHost'
 import { syncQrVerification } from '@/lib/qrVerification'
 import { shouldExcludePublicTraffic } from '@/lib/selfTestTraffic'
 import { getPostHogCampaignProperties, initializeDocumentCampaign } from '@/lib/posthog'
@@ -28,14 +29,16 @@ if (typeof window !== "undefined") {
       opt_out_useragent_filter: analyticsContractTest,
       before_send: (event) => {
         if (!event) return event;
-        const verification = syncQrVerification() || event.properties.qr_verification === true;
+        const onBlues = isBluesHostname(window.location.hostname);
+        const verification = (onBlues ? false : syncQrVerification()) || event.properties.qr_verification === true;
         event.properties.self_test = shouldExcludePublicTraffic(window.location.search) || verification;
         event.properties.qr_verification = verification;
         return event;
       },
       loaded: (ph) => {
         initializeDocumentCampaign();
-        const verification = syncQrVerification();
+        const onBlues = isBluesHostname(window.location.hostname);
+        const verification = onBlues ? false : syncQrVerification();
         ph.register({ ...getPostHogCampaignProperties(), self_test: shouldExcludePublicTraffic(window.location.search) || verification, qr_verification: verification });
         // 05-51: the project's "filter test accounts" cohort keys on this person property.
         if (ownerBrowser || verification) ph.setPersonProperties({ $internal_or_test_user: true });

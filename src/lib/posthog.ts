@@ -5,6 +5,7 @@ import {
   resolveCampaignAttribution,
   type CampaignAttribution,
 } from "@/lib/campaignAttribution";
+import { isBluesHostname } from "@/lib/bluesHost";
 import { MEASUREMENT_HOSTS } from "@/lib/qrLanding";
 import { syncQrVerification } from "@/lib/qrVerification";
 
@@ -112,7 +113,8 @@ function buildPostHogProperties(properties: PostHogProperties) {
 
 export function capturePostHogEvent(eventName: string, properties: PostHogProperties = {}) {
   if (typeof window === "undefined") return;
-  const verification = syncQrVerification();
+  const onBlues = isBluesHostname(window.location.hostname);
+  const verification = onBlues ? false : syncQrVerification();
   getBrowserPostHog()?.capture?.(eventName, buildPostHogProperties({ ...properties, ...(verification ? { self_test: true, qr_verification: true } : {}) }));
   mirrorPostHogEventToReddit(eventName);
 }
