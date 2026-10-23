@@ -62,7 +62,10 @@ jobs:
           node-version: 24
       - name: Install trusted browser tooling
         working-directory: trusted
-        run: npm ci && npx playwright install --with-deps chromium
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          node --test tests/wording/compare.test.mjs tests/wording/extract.test.mjs
       - name: Build isolated candidate
         run: docker build -f trusted/scripts/wording/Dockerfile -t wording-site site
       - name: Read built website wording outside candidate container

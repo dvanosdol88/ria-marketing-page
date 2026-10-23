@@ -16,7 +16,14 @@ export function compare(before, after, repository, pull) {
   const old = new Set(before.records), current = new Set(after.records);
   const removed = [...old].filter(x=>!current.has(x)).sort();
   const added = [...current].filter(x=>!old.has(x)).sort();
-  const proposal = {repository,pull,before:JSON.stringify(removed),after:JSON.stringify(added)};
+  // Repeated identical words across phone/desktop/control states are one
+  // editorial proposal per page, while occurrence counts stay in each phrase.
+  // If grouping would conceal a state-only change, retain the full detail.
+  const group=items=>[...new Set(items.map(x=>{const parts=x.split(' | ');return parts.length===4?`${parts[0]} | ${parts[3]}`:x;}))].sort();
+  let previous=group(removed), proposed=group(added);
+  if(JSON.stringify(previous)===JSON.stringify(proposed)){previous=removed;proposed=added;}
+  const describe=items=>items.length?items.map(value=>value.replace(/^([^ |]+) \| /,'On https://$1: ').replace(/\btext /,'Words: ').replace(/\bmeta description /,'Search description: ').replace(/\bmeta og:title /,'Social preview title: ').replace(/\btitle /,'Page title: ').replace(/\balt /,'Image description: ').replace(/\baria-label /,'Screen reader label: ').replace(/ \((\d+)\)$/,' (shown $1 times)')).join('\n'):'No wording.';
+  const proposal = {repository,pull,before:describe(previous),after:describe(proposed)};
   return {changed:!!(removed.length||added.length),...proposal,digest:digestProposal(proposal),removed,added};
 }
 export async function authorize(diff, cardId, fetcher=fetch) {

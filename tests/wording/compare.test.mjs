@@ -28,3 +28,10 @@ test('missing or partial snapshots and large unreviewable proposals fail closed'
  const diff=compare(snapshot(['x'.repeat(6100)]),snapshot(['new']),repository,1);
  assert.equal((await authorize(diff,'11111111-1111-1111-1111-111111111111')).approved,false);
 });
+test('repeated states form one complete wording proposal, without hiding state-only changes',()=>{
+ const old=snapshot(['home | phone | initial | text Old (1)','home | desktop | initial | text Old (1)']);
+ const next=snapshot(['home | phone | initial | text New (1)','home | desktop | initial | text New (1)']);
+ const diff=compare(old,next,repository,1);assert.equal(diff.before,'On https://home: Words: Old (shown 1 times)');assert.equal(diff.after,'On https://home: Words: New (shown 1 times)');
+ const moved=compare(snapshot(['home | phone | initial | text Old (1)']),snapshot(['home | phone | after choice | text Old (1)']),repository,1);assert.equal(moved.changed,true);assert.notEqual(moved.before,moved.after);
+ const removed=compare(snapshot(['home | phone | initial | text Old (2)']),snapshot(['home | phone | initial | text Old (1)']),repository,1);assert.notEqual(removed.before,removed.after);
+});

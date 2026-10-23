@@ -1,3 +1,4 @@
+import {extractPhrases} from './extract.mjs';
 import {readdir,readFile,writeFile} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
 import {createRequire} from 'node:module';
@@ -70,23 +71,7 @@ try{
         await page.waitForTimeout(1600);
         const prefix=target;
         async function collect(state='initial'){
-          const phrases=await page.evaluate(()=>{
-            const normalize=s=>String(s||'').replace(/\s+/g,' ').trim();
-            const out=[];
-            const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
-            while(walker.nextNode()){
-              const node=walker.currentNode;
-              if(node.parentElement.closest('script,style,noscript,nextjs-portal'))continue;
-              const text=normalize(node.textContent);if(text)out.push(`text ${text}`);
-            }
-            for(const el of document.querySelectorAll('[alt],[aria-label],[title],[placeholder],input[type=submit],input[type=button],meta[name],meta[property],title')){
-              if(el.tagName==='META') {const name=el.getAttribute('name')||el.getAttribute('property'); if(!['viewport','sentry-trace','baggage'].includes(name))out.push(`meta ${name} ${normalize(el.getAttribute('content'))}`);}
-              else if(el.tagName==='TITLE')out.push(`title ${normalize(el.textContent)}`);
-              else for(const attr of ['alt','aria-label','title','placeholder',...(['submit','button'].includes(el.type)?['value']:[])]) if(el.hasAttribute(attr))out.push(`${attr} ${normalize(el.getAttribute(attr))}`);
-            }
-            for(const script of document.querySelectorAll('script[type="application/ld+json"]'))out.push(`search data ${normalize(script.textContent)}`);
-            return out;
-          });
+          const phrases=await page.evaluate(extractPhrases);
           const counts=new Map();for(const phrase of phrases)counts.set(phrase,(counts.get(phrase)||0)+1);
           for(const [phrase,count] of counts)records.add(`${prefix} | ${viewport.width===390?'phone':'desktop'} | ${state} | ${phrase} (${count})`);
         }
