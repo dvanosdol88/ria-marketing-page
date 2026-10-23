@@ -7,3 +7,9 @@ test('off-screen active controls still expose their wording without enforcing a 
  try{const page=await browser.newPage();await page.setContent('<button style="position:fixed;left:-5000px" onclick="document.querySelector(\'p\').hidden=false">Close menu</button><p hidden>Additional disclosure</p>');assert.equal(await clickWordingControl(page.locator('button'),100),true);assert.equal(await page.locator('p').isVisible(),true);}
  finally{await browser.close();}
 });
+
+test('a sticky overlay cannot hide a control’s conditional wording from the reader',async()=>{
+ const browser=await chromium.launch({headless:true});
+ try{const page=await browser.newPage();await page.setContent('<button onclick="document.querySelector(\'p\').hidden=false">Show disclosure</button><div style="position:fixed;inset:0;z-index:20">Sticky cover</div><p hidden>Important conditional words</p>');assert.equal(await clickWordingControl(page.locator('button'),100),true);assert.equal(await page.locator('p').isVisible(),true);}
+ finally{await browser.close();}
+});
