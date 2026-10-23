@@ -25,6 +25,6 @@ test('only exact runtime evidence can approve a changed proposal',async()=>{
 });
 test('missing or partial snapshots and large unreviewable proposals fail closed',async()=>{
  for(const bad of [snapshot([]),{version:1,records:['word'],errors:['failed page']},{}])assert.throws(()=>compare(bad,snapshot(['new']),repository,1));
- const diff=compare(snapshot(['x'.repeat(700)]),snapshot(['new']),repository,1);
+ const diff=compare(snapshot(['x'.repeat(6100)]),snapshot(['new']),repository,1);
  assert.equal((await authorize(diff,'11111111-1111-1111-1111-111111111111')).approved,false);
 });

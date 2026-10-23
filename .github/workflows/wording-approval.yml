@@ -67,7 +67,8 @@ jobs:
         run: docker build -f trusted/scripts/wording/Dockerfile -t wording-site site
       - name: Read built website wording outside candidate container
         run: |
-          docker run --detach --name wording-site --publish 127.0.0.1:3100:3000 wording-site
+          docker network create --internal wording-isolated
+          docker run --detach --network wording-isolated --name wording-site --publish 127.0.0.1:3100:3000 wording-site
           node trusted/scripts/wording/capture.mjs site snapshot.json 3100 trusted
       - uses: actions/upload-artifact@v4
         with:
@@ -77,7 +78,9 @@ jobs:
           retention-days: 14
       - name: Stop candidate
         if: always()
-        run: docker rm -f wording-site || true
+        run: |
+          docker rm -f wording-site || true
+          docker network rm wording-isolated || true
   decide:
     needs: [identify, capture]
     if: always() && needs.identify.result == 'success'

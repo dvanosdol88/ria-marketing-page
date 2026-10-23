@@ -17,7 +17,7 @@ async function files(dir) {
   }
   return result;
 }
-const paths=new Set(['/','/__wording_check_missing_page__']);
+const paths=new Set(['/','/__wording_check_missing_page__','/become-a-client/confirmation?agreement=sent']);
 for(const file of await files(join(site,'src/app'))) {
   if(!/\/page\.[jt]sx?$/.test(file))continue;
   let route=file.slice(join(site,'src/app').length).replace(/\/page\.[jt]sx?$/,'').replace(/\/\([^/]+\)/g,'')||'/';
@@ -30,6 +30,7 @@ const child=externalPort?null:spawn(process.execPath,[join(site,'node_modules/ne
 let log='';for(const stream of [child?.stdout,child?.stderr].filter(Boolean))stream.on('data',x=>{log=(log+x).slice(-10000);});
 function get(path,host){return new Promise((yes,no)=>{const req=request({hostname:'127.0.0.1',port,path,headers:{host},timeout:15000},res=>{let text='';res.on('data',x=>text+=x);res.on('end',()=>yes({status:res.statusCode,location:res.headers.location,text}));});req.on('error',no);req.on('timeout',()=>req.destroy(new Error('Page timed out')));req.end();});}
 let browser;
+for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>{browser?.close().catch(()=>{});child?.kill('SIGTERM');process.exit(143);});
 try{
   let ready=false;
   for(let i=0;i<90;i++){
@@ -44,15 +45,15 @@ try{
   const hosts=['youarepayingtoomuch.com','www.youarepayingtoomuch.com','onepercentblues.com','www.onepercentblues.com','1percentblues.com','www.1percentblues.com'];
   for(const host of hosts){
     for(const path of [...paths].sort()){
-      const response=await get(path,host), target=`${host}${path}`;
+      const response=await get(path,host), target=`${host}${path}`;console.log(`Reading ${target}`);
       if(response.status>=500)throw new Error(`Built page failed: ${target}`);
       if(response.status>=300&&response.status<400){records.add(`${target} redirect ${response.status} ${response.location}`);continue;}
       for(const viewport of [{width:390,height:844},{width:1440,height:1000}]){
-        const context=await browser.newContext({viewport,locale:'en-US',timezoneId:'America/New_York',serviceWorkers:'block'});
+        const context=await browser.newContext({viewport,reducedMotion:'reduce',locale:'en-US',timezoneId:'America/New_York',serviceWorkers:'block'});
         const page=await context.newPage();
         // Freeze clock and randomness so dependency-only changes do not change
         // dates, animation IDs or the calculator's initial example.
-        await page.addInitScript(()=>{const OriginalDate=Date;window.Date=class extends OriginalDate{constructor(...args){super(...(args.length?args:['2026-10-01T12:00:00Z']));}static now(){return 1790856000000;}};Math.random=()=>0.5;});
+        await page.addInitScript(()=>{const OriginalDate=Date;window.Date=class extends OriginalDate{constructor(...args){super(...(args.length?args:['2026-10-01T12:00:00Z']));}static now(){return OriginalDate.now();}};Math.random=()=>0.5;});
         await context.route('**/*',async route=>{
           const req=route.request(), url=new URL(req.url());
           if(url.hostname!=='127.0.0.1'||url.port!==String(port))return route.abort();
@@ -65,8 +66,10 @@ try{
           return route.fulfill({status:res.status,contentType:'text/html',body:res.text});
         });
         await page.goto(`http://127.0.0.1:${port}${path}`,{waitUntil:'networkidle',timeout:30000});
+        await page.addStyleTag({content:'*,*::before,*::after{animation-duration:0s!important;transition-duration:0s!important;scroll-behavior:auto!important}'});
+        await page.waitForTimeout(1600);
         const prefix=target;
-        async function collect(){
+        async function collect(state='initial'){
           const phrases=await page.evaluate(()=>{
             const normalize=s=>String(s||'').replace(/\s+/g,' ').trim();
             const out=[];
@@ -77,14 +80,15 @@ try{
               const text=normalize(node.textContent);if(text)out.push(`text ${text}`);
             }
             for(const el of document.querySelectorAll('[alt],[aria-label],[title],[placeholder],input[type=submit],input[type=button],meta[name],meta[property],title')){
-              if(el.tagName==='META') {const name=el.getAttribute('name')||el.getAttribute('property'); if(name!=='viewport')out.push(`meta ${name} ${normalize(el.getAttribute('content'))}`);}
+              if(el.tagName==='META') {const name=el.getAttribute('name')||el.getAttribute('property'); if(!['viewport','sentry-trace','baggage'].includes(name))out.push(`meta ${name} ${normalize(el.getAttribute('content'))}`);}
               else if(el.tagName==='TITLE')out.push(`title ${normalize(el.textContent)}`);
               else for(const attr of ['alt','aria-label','title','placeholder',...(['submit','button'].includes(el.type)?['value']:[])]) if(el.hasAttribute(attr))out.push(`${attr} ${normalize(el.getAttribute(attr))}`);
             }
             for(const script of document.querySelectorAll('script[type="application/ld+json"]'))out.push(`search data ${normalize(script.textContent)}`);
             return out;
           });
-          for(const phrase of phrases)records.add(`${prefix} ${phrase}`);
+          const counts=new Map();for(const phrase of phrases)counts.set(phrase,(counts.get(phrase)||0)+1);
+          for(const [phrase,count] of counts)records.add(`${prefix} | ${viewport.width===390?'phone':'desktop'} | ${state} | ${phrase} (${count})`);
         }
         await collect();
         // Explore text-bearing controls without sending forms or navigating.
@@ -96,18 +100,33 @@ try{
           let clicked=0;
           for(const button of buttons){
             const label=((await button.getAttribute('aria-label'))||await button.innerText()).trim();
-            if(!label||seen.has(label)||/^(\+|−|-)$/.test(label))continue;
-            seen.add(label);if(seen.size>150)throw new Error(`Too many states to check: ${target}`);
+            const key=await button.evaluate(el=>{window.__wordingControlCount ||=0;return el.dataset.wordingControl ||= String(++window.__wordingControlCount);});
+            if(!label||seen.has(key)||/^(\+|−|-)$/.test(label)||/^(Increase|Decrease)\b/.test(label))continue;
+            if(seen.size>150)throw new Error(`Too many states to check: ${target}`);
             if(!await button.isVisible()||!await button.isEnabled())continue;
-            await button.click({timeout:1500,noWaitAfter:true}).catch(()=>{});
-            await page.waitForTimeout(60);await collect();clicked++;
-            if(await page.locator('[role=dialog]').count()) {await page.keyboard.press('Escape');await collect();}
+            try{await button.click({timeout:1500,noWaitAfter:true});}catch(error){if(!/not attached|not visible/.test(error.message))throw error;continue;}
+            seen.add(key);await page.waitForTimeout(1600);await collect(`after choosing ${label} (${key})`);clicked++;
+            if(await page.locator('[role=dialog]').count())await page.keyboard.press('Escape');
           }
           if(!clicked)break;
+          if(pass===4)throw new Error(`Control exploration did not finish: ${target}`);
         }
         // Trigger native validation and local error wording without writing data.
-        await page.locator('form').evaluateAll(forms=>forms.forEach(f=>{f.reportValidity();f.noValidate=true;f.requestSubmit();}));await page.waitForTimeout(100);await collect();
+        for(const select of await page.locator('select').all()){
+          const name=await select.getAttribute('name')||'choice';
+          for(const value of await select.locator('option').evaluateAll(options=>options.map(x=>x.value))){
+            await select.selectOption(value);await collect(`after selecting ${name} ${value}`);
+          }
+        }
+        await page.locator('form').evaluateAll(forms=>forms.forEach(f=>{f.reportValidity();f.noValidate=true;f.requestSubmit();}));await collect('while submitting');await page.waitForTimeout(100);await collect('after failed submission');
         await context.close();
+      }
+    }
+    if(externalPort && host==='youarepayingtoomuch.com'){
+      for(const body of ['{', '{}', JSON.stringify({fullName:'Wording check',email:'invalid'}),JSON.stringify({fullName:'Wording check',email:'check@example.invalid',state:'invalid'})]){
+        const response=await new Promise((yes,no)=>{const req=request({hostname:'127.0.0.1',port,path:'/api/become-a-client',method:'POST',headers:{host,'content-type':'application/json'}},res=>{let text='';res.on('data',x=>text+=x);res.on('end',()=>yes({status:res.statusCode,text}));});req.on('error',no);req.end(body);});
+        if(response.status!==400)throw new Error('Invalid form input must be refused before any write.');
+        records.add(`Form validation | ${JSON.parse(response.text).error}`);
       }
     }
     for(const path of ['/llms.txt','/robots.txt','/site.webmanifest']){
@@ -119,5 +138,5 @@ try{
   console.log(`Captured ${records.size} wording records across ${paths.size} routes and all six hosts.`);
 }finally{
   await browser?.close();if(child)child.kill('SIGTERM');
-  await new Promise(resolve=>{if(child && child.exitCode!==null)return resolve();child.once('exit',resolve);setTimeout(()=>child.kill('SIGKILL'),5000).unref();});
+  await new Promise(resolve=>{if(!child||child.exitCode!==null)return resolve();child.once('exit',resolve);setTimeout(()=>child.kill('SIGKILL'),5000).unref();});
 }

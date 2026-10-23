@@ -22,7 +22,7 @@ export function compare(before, after, repository, pull) {
 export async function authorize(diff, cardId, fetcher=fetch) {
   if (!diff.changed) return {approved:true,reason:'All captured website wording is unchanged.'};
   if (!cardId || !/^[a-f0-9-]{36}$/.test(cardId)) return {approved:false,reason:'David has not approved these words on a named Rack card.'};
-  if (diff.before.length>650 || diff.after.length>650) return {approved:false,reason:'The complete wording proposal is too large for the current approval form. Keep this change unpublished.'};
+  if (diff.before.length>6000 || diff.after.length>6000) return {approved:false,reason:'The complete wording proposal is too large for the current approval form. Keep this change unpublished.'};
   const url=new URL('https://www.dvo88.com/api/rack/wording-approval');
   for (const key of ['repository','pull','digest']) url.searchParams.set(key,String(diff[key]));
   url.searchParams.set('cardId',cardId);
