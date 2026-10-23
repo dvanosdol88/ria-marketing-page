@@ -1,3 +1,4 @@
+import {clickWordingControl} from './interact.mjs';
 import {extractPhrases} from './extract.mjs';
 import {readdir,readFile,writeFile} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
@@ -90,7 +91,7 @@ try{
             if(!label||seen.has(key)||/^(\+|−|-)$/.test(label)||/^(Increase|Decrease)\b/.test(label))continue;
             if(seen.size>150)throw new Error(`Too many states to check: ${target}`);
             if(!await button.isVisible()||!await button.isEnabled())continue;
-            try{await button.click({timeout:1500,noWaitAfter:true});}catch(error){if(!/not attached|not visible/.test(error.message))throw error;continue;}
+            if(!await clickWordingControl(button))continue;
             seen.add(key);await page.waitForTimeout(1600);await collect(`after choosing ${label} (${key})`);clicked++;
             if(await page.locator('[role=dialog]').count())await page.keyboard.press('Escape');
           }

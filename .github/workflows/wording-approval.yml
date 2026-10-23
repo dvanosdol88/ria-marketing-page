@@ -65,7 +65,7 @@ jobs:
         run: |
           npm ci
           npx playwright install --with-deps chromium
-          node --test tests/wording/compare.test.mjs tests/wording/extract.test.mjs tests/wording/probes.test.mjs
+          node --test tests/wording/compare.test.mjs tests/wording/extract.test.mjs tests/wording/probes.test.mjs tests/wording/interact.test.mjs
       - name: Build isolated candidate
         run: |
           node trusted/scripts/wording/prepare-probes.mjs site
