@@ -5,7 +5,7 @@
 - changed: the site now installs Next.js 16.3.8 (was 16.3.6 on the lockfile; main still listed `^16.1.5`). Matching Next helper packages moved with it. No visitor wording, layout, calculator math, or buttons changed. This is the vendor security patch for the Next.js issues listed on the pull request.
 - close-reason: Renovate, not a person, closed the pull request on 2026-10-22 16:18 UTC (title marked autoclosed, branch deleted) and reopened it the same evening at 21:58 UTC. No human comment argued against the upgrade.
 - verified: install, lint (0 errors; existing nav-image warning only), typecheck, production build (Next.js 16.3.8), and the full CI test suite all passed locally after rebasing onto current main.
-- deployed: not deployed yet — waiting for GitHub checks and the preview, then squash-merge of #357
+- deployed: PR #357 squash-merged 2026-10-23 as `fa3d7a4`. Production finished Ready and is serving that commit: `https://youarepayingtoomuch.com/api/version` reports `fa3d7a45eabf1e85d89529f7e1522bebce47e030`. Homepage, Privacy, and Our Math all answered 200 with the usual titles and no error page.
 
 ### 2026-10-22 — Google Ads tag (AW-18531165881) on youarepayingtoomuch.com + privacy page
 **Agent:** Claude (claude.ai, Marketing Campaigns project) | **Surface:** youarepayingtoomuch.com analytics + privacy page | **Approval:** David asked for the tag directly ("I need to add this code to YAPT", 2026-10-22) and approved the exact privacy wording ("Publish as written") in [the source session](https://claude.ai/code/session_01QZGcMDrE53wM7voXwVEoGP) | **Rack:** none — this session holds no Rack key | **Status:** tag live and production-proved; privacy wording shipped in this commit
