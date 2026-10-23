@@ -10,6 +10,7 @@ const [siteArg,output,externalPort,toolingArg]=process.argv.slice(2), site=resol
 const require=createRequire(join(resolve(toolingArg||site),'package.json'));
 const {chromium}=require('playwright');
 const records=new Set(), errors=[];
+const connectionHost=process.env.WORDING_CONNECT_HOST||'127.0.0.1';
 async function files(dir) {
   const result=[];
   for(const entry of await readdir(dir,{withFileTypes:true})) {
@@ -29,7 +30,7 @@ const server=createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r))
 const port=externalPort?Number(externalPort):server.address().port;await new Promise(r=>server.close(r));
 const child=externalPort?null:spawn(process.execPath,[join(site,'node_modules/next/dist/bin/next'),'start','-H','127.0.0.1','-p',String(port)],{cwd:site,stdio:['ignore','pipe','pipe'],env:{...process.env,NEXT_TELEMETRY_DISABLED:'1'}});
 let log='';for(const stream of [child?.stdout,child?.stderr].filter(Boolean))stream.on('data',x=>{log=(log+x).slice(-10000);});
-function get(path,host){return new Promise((yes,no)=>{const req=request({hostname:'127.0.0.1',port,path,headers:{host},timeout:15000},res=>{const chunks=[];res.on('data',x=>chunks.push(x));res.on('end',()=>{const bytes=Buffer.concat(chunks);yes({status:res.statusCode,location:res.headers.location,type:res.headers['content-type']||'application/octet-stream',bytes,text:bytes.toString('utf8')});});});req.on('error',no);req.on('timeout',()=>req.destroy(new Error('Page timed out')));req.end();});}
+function get(path,host){return new Promise((yes,no)=>{const req=request({hostname:connectionHost,port,path,headers:{host},timeout:15000},res=>{const chunks=[];res.on('data',x=>chunks.push(x));res.on('end',()=>{const bytes=Buffer.concat(chunks);yes({status:res.statusCode,location:res.headers.location,type:res.headers['content-type']||'application/octet-stream',bytes,text:bytes.toString('utf8')});});});req.on('error',no);req.on('timeout',()=>req.destroy(new Error('Page timed out')));req.end();});}
 let browser;
 for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>{browser?.close().catch(()=>{});child?.kill('SIGTERM');process.exit(143);});
 try{
@@ -109,7 +110,7 @@ try{
     }
     if(externalPort && host==='youarepayingtoomuch.com'){
       for(const body of ['{', '{}', JSON.stringify({fullName:'Wording check',email:'invalid'}),JSON.stringify({fullName:'Wording check',email:'check@example.invalid',state:'invalid'})]){
-        const response=await new Promise((yes,no)=>{const req=request({hostname:'127.0.0.1',port,path:'/api/become-a-client',method:'POST',headers:{host,'content-type':'application/json'}},res=>{let text='';res.on('data',x=>text+=x);res.on('end',()=>yes({status:res.statusCode,text}));});req.on('error',no);req.end(body);});
+        const response=await new Promise((yes,no)=>{const req=request({hostname:connectionHost,port,path:'/api/become-a-client',method:'POST',headers:{host,'content-type':'application/json'}},res=>{let text='';res.on('data',x=>text+=x);res.on('end',()=>yes({status:res.statusCode,text}));});req.on('error',no);req.end(body);});
         if(response.status!==400)throw new Error('Invalid form input must be refused before any write.');
         records.add(`Form validation | ${JSON.parse(response.text).error}`);
       }
