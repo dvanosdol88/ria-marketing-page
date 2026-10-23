@@ -77,7 +77,8 @@ jobs:
           site_ip="$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' wording-site)"
           echo "WORDING_CONNECT_HOST=$site_ip" >> "$GITHUB_ENV"
       - name: Confirm isolated website responds
-        run: curl --fail --retry 45 --retry-connrefused --retry-delay 1 --max-time 5 -H "Host: youarepayingtoomuch.com" "http://${WORDING_CONNECT_HOST}:3000/" --output /dev/null
+        run: |
+          curl --fail --retry 45 --retry-connrefused --retry-delay 1 --max-time 5 -H "Host: youarepayingtoomuch.com" "http://${WORDING_CONNECT_HOST}:3000/" --output /dev/null
       - name: Read built website wording outside candidate container
         run: node trusted/scripts/wording/capture.mjs site snapshot.json 3000 trusted
       - uses: actions/upload-artifact@v4
