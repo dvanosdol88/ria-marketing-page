@@ -64,7 +64,9 @@ jobs:
         working-directory: trusted
         run: |
           npm ci
-          npx playwright install --with-deps chromium
+          # Runner logs confirm the required shared libraries are already present.
+          # Avoid unrelated system-font downloads that stalled over ten minutes.
+          npx playwright install chromium
           node --test tests/wording/compare.test.mjs tests/wording/extract.test.mjs tests/wording/probes.test.mjs tests/wording/interact.test.mjs
       - name: Build isolated candidate
         run: |
