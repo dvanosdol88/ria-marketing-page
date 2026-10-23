@@ -29,7 +29,7 @@ const server=createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r))
 const port=externalPort?Number(externalPort):server.address().port;await new Promise(r=>server.close(r));
 const child=externalPort?null:spawn(process.execPath,[join(site,'node_modules/next/dist/bin/next'),'start','-H','127.0.0.1','-p',String(port)],{cwd:site,stdio:['ignore','pipe','pipe'],env:{...process.env,NEXT_TELEMETRY_DISABLED:'1'}});
 let log='';for(const stream of [child?.stdout,child?.stderr].filter(Boolean))stream.on('data',x=>{log=(log+x).slice(-10000);});
-function get(path,host){return new Promise((yes,no)=>{const req=request({hostname:'127.0.0.1',port,path,headers:{host},timeout:15000},res=>{let text='';res.on('data',x=>text+=x);res.on('end',()=>yes({status:res.statusCode,location:res.headers.location,text}));});req.on('error',no);req.on('timeout',()=>req.destroy(new Error('Page timed out')));req.end();});}
+function get(path,host){return new Promise((yes,no)=>{const req=request({hostname:'127.0.0.1',port,path,headers:{host},timeout:15000},res=>{const chunks=[];res.on('data',x=>chunks.push(x));res.on('end',()=>{const bytes=Buffer.concat(chunks);yes({status:res.statusCode,location:res.headers.location,type:res.headers['content-type']||'application/octet-stream',bytes,text:bytes.toString('utf8')});});});req.on('error',no);req.on('timeout',()=>req.destroy(new Error('Page timed out')));req.end();});}
 let browser;
 for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>{browser?.close().catch(()=>{});child?.kill('SIGTERM');process.exit(143);});
 try{
@@ -57,16 +57,16 @@ try{
         await page.addInitScript(()=>{const OriginalDate=Date;window.Date=class extends OriginalDate{constructor(...args){super(...(args.length?args:['2026-10-01T12:00:00Z']));}static now(){return OriginalDate.now();}};Math.random=()=>0.5;});
         await context.route('**/*',async route=>{
           const req=route.request(), url=new URL(req.url());
-          if(url.hostname!=='127.0.0.1'||url.port!==String(port))return route.abort();
+          if(url.hostname!==host)return route.abort();
           if(req.method()!=='GET')return route.fulfill({status:503,contentType:'application/json',body:'{"error":"Wording check: submission disabled"}'});
           if(url.pathname.startsWith('/api/'))return route.fulfill({status:503,contentType:'application/json',body:'{"error":"Wording check: network disabled"}'});
           const res=await get(url.pathname+url.search,host);
           if(res.status>=300&&res.status<400)return route.fulfill({status:200,contentType:'text/html',body:'<html><body></body></html>'});
-          // Use the browser's normal fetch for assets, preserving content type.
-          if(req.resourceType()!=='document')return route.continue({headers:{...req.headers(),host,'x-forwarded-host':host}});
-          return route.fulfill({status:res.status,contentType:'text/html',body:res.text});
+          // The browser keeps the real canonical origin, while every byte is
+          // read from this isolated built site. No production request is sent.
+          return route.fulfill({status:res.status,contentType:res.type,body:res.bytes});
         });
-        await page.goto(`http://127.0.0.1:${port}${path}`,{waitUntil:'networkidle',timeout:30000});
+        await page.goto(`https://${host}${path}`,{waitUntil:'networkidle',timeout:30000});
         await page.addStyleTag({content:'*,*::before,*::after{animation-duration:0s!important;transition-duration:0s!important;scroll-behavior:auto!important}'});
         await page.waitForTimeout(1600);
         const prefix=target;
