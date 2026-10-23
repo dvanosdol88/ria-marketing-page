@@ -1,0 +1,123 @@
+import {readdir,readFile,writeFile} from 'node:fs/promises';
+import {resolve,join} from 'node:path';
+import {createRequire} from 'node:module';
+import {spawn} from 'node:child_process';
+import {createServer} from 'node:net';
+import {request} from 'node:http';
+
+const [siteArg,output,externalPort,toolingArg]=process.argv.slice(2), site=resolve(siteArg);
+const require=createRequire(join(resolve(toolingArg||site),'package.json'));
+const {chromium}=require('playwright');
+const records=new Set(), errors=[];
+async function files(dir) {
+  const result=[];
+  for(const entry of await readdir(dir,{withFileTypes:true})) {
+    const path=join(dir,entry.name);
+    if(entry.isDirectory()) result.push(...await files(path)); else result.push(path);
+  }
+  return result;
+}
+const paths=new Set(['/','/__wording_check_missing_page__']);
+for(const file of await files(join(site,'src/app'))) {
+  if(!/\/page\.[jt]sx?$/.test(file))continue;
+  let route=file.slice(join(site,'src/app').length).replace(/\/page\.[jt]sx?$/,'').replace(/\/\([^/]+\)/g,'')||'/';
+  if(route.includes('[')) throw new Error(`A dynamic page requires explicit coverage: ${route}`);
+  paths.add(route);
+}
+const server=createServer();await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const port=externalPort?Number(externalPort):server.address().port;await new Promise(r=>server.close(r));
+const child=externalPort?null:spawn(process.execPath,[join(site,'node_modules/next/dist/bin/next'),'start','-H','127.0.0.1','-p',String(port)],{cwd:site,stdio:['ignore','pipe','pipe'],env:{...process.env,NEXT_TELEMETRY_DISABLED:'1'}});
+let log='';for(const stream of [child?.stdout,child?.stderr].filter(Boolean))stream.on('data',x=>{log=(log+x).slice(-10000);});
+function get(path,host){return new Promise((yes,no)=>{const req=request({hostname:'127.0.0.1',port,path,headers:{host},timeout:15000},res=>{let text='';res.on('data',x=>text+=x);res.on('end',()=>yes({status:res.statusCode,location:res.headers.location,text}));});req.on('error',no);req.on('timeout',()=>req.destroy(new Error('Page timed out')));req.end();});}
+let browser;
+try{
+  let ready=false;
+  for(let i=0;i<90;i++){
+    if(child && child.exitCode!==null)throw new Error(`Built site stopped: ${log}`);
+    try{await get('/','youarepayingtoomuch.com');ready=true;break;}catch{}
+    await new Promise(r=>setTimeout(r,500));
+  }
+  if(!ready)throw new Error('Built site did not start.');
+  browser=await chromium.launch({headless:true});
+  // Every canonical and alias host is checked. Only local GETs are permitted;
+  // analytics, live APIs, form writes and external redirects never reach the net.
+  const hosts=['youarepayingtoomuch.com','www.youarepayingtoomuch.com','onepercentblues.com','www.onepercentblues.com','1percentblues.com','www.1percentblues.com'];
+  for(const host of hosts){
+    for(const path of [...paths].sort()){
+      const response=await get(path,host), target=`${host}${path}`;
+      if(response.status>=500)throw new Error(`Built page failed: ${target}`);
+      if(response.status>=300&&response.status<400){records.add(`${target} redirect ${response.status} ${response.location}`);continue;}
+      for(const viewport of [{width:390,height:844},{width:1440,height:1000}]){
+        const context=await browser.newContext({viewport,locale:'en-US',timezoneId:'America/New_York',serviceWorkers:'block'});
+        const page=await context.newPage();
+        // Freeze clock and randomness so dependency-only changes do not change
+        // dates, animation IDs or the calculator's initial example.
+        await page.addInitScript(()=>{const OriginalDate=Date;window.Date=class extends OriginalDate{constructor(...args){super(...(args.length?args:['2026-10-01T12:00:00Z']));}static now(){return 1790856000000;}};Math.random=()=>0.5;});
+        await context.route('**/*',async route=>{
+          const req=route.request(), url=new URL(req.url());
+          if(url.hostname!=='127.0.0.1'||url.port!==String(port))return route.abort();
+          if(req.method()!=='GET')return route.fulfill({status:503,contentType:'application/json',body:'{"error":"Wording check: submission disabled"}'});
+          if(url.pathname.startsWith('/api/'))return route.fulfill({status:503,contentType:'application/json',body:'{"error":"Wording check: network disabled"}'});
+          const res=await get(url.pathname+url.search,host);
+          if(res.status>=300&&res.status<400)return route.fulfill({status:200,contentType:'text/html',body:'<html><body></body></html>'});
+          // Use the browser's normal fetch for assets, preserving content type.
+          if(req.resourceType()!=='document')return route.continue({headers:{...req.headers(),host,'x-forwarded-host':host}});
+          return route.fulfill({status:res.status,contentType:'text/html',body:res.text});
+        });
+        await page.goto(`http://127.0.0.1:${port}${path}`,{waitUntil:'networkidle',timeout:30000});
+        const prefix=target;
+        async function collect(){
+          const phrases=await page.evaluate(()=>{
+            const normalize=s=>String(s||'').replace(/\s+/g,' ').trim();
+            const out=[];
+            const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+            while(walker.nextNode()){
+              const node=walker.currentNode;
+              if(node.parentElement.closest('script,style,noscript,nextjs-portal'))continue;
+              const text=normalize(node.textContent);if(text)out.push(`text ${text}`);
+            }
+            for(const el of document.querySelectorAll('[alt],[aria-label],[title],[placeholder],input[type=submit],input[type=button],meta[name],meta[property],title')){
+              if(el.tagName==='META') {const name=el.getAttribute('name')||el.getAttribute('property'); if(name!=='viewport')out.push(`meta ${name} ${normalize(el.getAttribute('content'))}`);}
+              else if(el.tagName==='TITLE')out.push(`title ${normalize(el.textContent)}`);
+              else for(const attr of ['alt','aria-label','title','placeholder',...(['submit','button'].includes(el.type)?['value']:[])]) if(el.hasAttribute(attr))out.push(`${attr} ${normalize(el.getAttribute(attr))}`);
+            }
+            for(const script of document.querySelectorAll('script[type="application/ld+json"]'))out.push(`search data ${normalize(script.textContent)}`);
+            return out;
+          });
+          for(const phrase of phrases)records.add(`${prefix} ${phrase}`);
+        }
+        await collect();
+        // Explore text-bearing controls without sending forms or navigating.
+        // Discover new buttons after each pass so dialogs, tabs and disclosures
+        // introduced by a prior click are captured too. A hard cap fails closed.
+        const seen=new Set();
+        for(let pass=0;pass<5;pass++){
+          const buttons=await page.locator('button:not([type=submit]),summary,[role=tab]').all();
+          let clicked=0;
+          for(const button of buttons){
+            const label=((await button.getAttribute('aria-label'))||await button.innerText()).trim();
+            if(!label||seen.has(label)||/^(\+|−|-)$/.test(label))continue;
+            seen.add(label);if(seen.size>150)throw new Error(`Too many states to check: ${target}`);
+            if(!await button.isVisible()||!await button.isEnabled())continue;
+            await button.click({timeout:1500,noWaitAfter:true}).catch(()=>{});
+            await page.waitForTimeout(60);await collect();clicked++;
+            if(await page.locator('[role=dialog]').count()) {await page.keyboard.press('Escape');await collect();}
+          }
+          if(!clicked)break;
+        }
+        // Trigger native validation and local error wording without writing data.
+        await page.locator('form').evaluateAll(forms=>forms.forEach(f=>{f.reportValidity();f.noValidate=true;f.requestSubmit();}));await page.waitForTimeout(100);await collect();
+        await context.close();
+      }
+    }
+    for(const path of ['/llms.txt','/robots.txt','/site.webmanifest']){
+      const res=await get(path,host);if(res.status>=500)throw new Error(`Text resource failed: ${host}${path}`);
+      if(res.status===200)records.add(`${host}${path} ${res.text.replace(/\s+/g,' ').trim()}`);
+    }
+  }
+  await writeFile(output,JSON.stringify({version:1,records:[...records].sort(),errors},null,2));
+  console.log(`Captured ${records.size} wording records across ${paths.size} routes and all six hosts.`);
+}finally{
+  await browser?.close();if(child)child.kill('SIGTERM');
+  await new Promise(resolve=>{if(child && child.exitCode!==null)return resolve();child.once('exit',resolve);setTimeout(()=>child.kill('SIGKILL'),5000).unref();});
+}
