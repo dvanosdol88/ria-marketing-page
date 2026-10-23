@@ -62,17 +62,15 @@ export function BluesCheck({
   }, [diagnosis, reduceMotion]);
 
   const answer = useCallback((id: BluesQuestionId, value: BluesAnswer) => {
-    setAnswers((prev) => {
-      const next = { ...prev, [id]: value };
-      capturePostHogEvent("blues_check_answered", { question: id, answer: value });
-      const result = diagnoseBlues(next);
-      if (result && !completedRef.current) {
-        completedRef.current = true;
-        capturePostHogEvent("blues_check_completed", { diagnosis: result });
-      }
-      return next;
-    });
-  }, []);
+    const next = { ...answers, [id]: value };
+    setAnswers(next);
+    capturePostHogEvent("blues_check_answered", { question: id, answer: value });
+    const result = diagnoseBlues(next);
+    if (result && !completedRef.current) {
+      completedRef.current = true;
+      capturePostHogEvent("blues_check_completed", { diagnosis: result });
+    }
+  }, [answers]);
 
   return (
     <>
@@ -143,10 +141,7 @@ export function BluesCheck({
               <p className="mt-4 text-[11px] font-bold uppercase tracking-[0.12em] text-[#93C5FD]">
                 {bluesCopy.numberLabel}
               </p>
-              <p
-                className="mt-1 font-blues-serif text-[clamp(48px,14vw,84px)] font-bold leading-none tracking-[-0.03em] tabular-nums"
-                data-blues-savings={Math.round(savings)}
-              >
+              <p className="mt-1 font-blues-serif text-[clamp(48px,14vw,84px)] font-bold leading-none tracking-[-0.03em] tabular-nums">
                 {formatCurrency(savings)}
                 <a
                   href={disclaimerHref}
@@ -180,9 +175,6 @@ export function BluesCheck({
               >
                 {bluesCopy.primaryCta.label}
               </a>
-              {/* One button, one link — the site's single conversion pattern
-                  (src/config/signupCta.ts): the secondary step is a plain
-                  underlined link, never a second button of equal weight. */}
               <a
                 href={bluesCopy.secondaryCta.href}
                 className="mt-3 block min-h-11 py-2 text-center text-[15px] font-semibold !text-white underline decoration-white/50 underline-offset-4 transition-colors hover:decoration-white"

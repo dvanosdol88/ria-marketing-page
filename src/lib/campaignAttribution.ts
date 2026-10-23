@@ -2,7 +2,7 @@ import {
   LEGACY_EDDM_QR_PARAMS,
   SMARTER_WAY_WEALTH_ORIGIN,
 } from "../config/campaignLinks.ts";
-import { SELF_TEST_QUERY_PARAM } from "./selfTestTraffic.ts";
+import { hasDuplicateParameters, isSharedResult, resolveQrSearch } from "./qrLanding.ts";
 
 export const POSTHOG_UTM_KEYS = [
   "utm_source",
@@ -28,18 +28,6 @@ export type CampaignAttributionContext = {
   referrer?: string;
   origin?: string;
 };
-
-const SEARCH_ENGINE_HOSTS = [
-  "google.com",
-  "bing.com",
-  "duckduckgo.com",
-  "yahoo.com",
-  "baidu.com",
-  "yandex.com",
-  "yandex.ru",
-  "ecosia.org",
-  "brave.com",
-];
 
 const SMARTER_WAY_WEALTH_HOSTS = new Set([
   new URL(SMARTER_WAY_WEALTH_ORIGIN).hostname,
@@ -71,27 +59,12 @@ export function buildPrivacySafeFirmHandoffHref(
   return url.toString();
 }
 
-const LEGACY_EDDM_QR_SIGNATURE = {
-  portfolio: LEGACY_EDDM_QR_PARAMS.portfolio,
-  years: LEGACY_EDDM_QR_PARAMS.years,
-  growth: LEGACY_EDDM_QR_PARAMS.growth,
-  fee: LEGACY_EDDM_QR_PARAMS.fee,
-} as const;
-
-function matchesSearchSignature(
-  searchParams: URLSearchParams,
-  signature: Record<string, string>,
-) {
-  return Object.entries(signature).every(
-    ([key, value]) => searchParams.get(key) === value,
-  );
-}
-
 export function resolveCampaignAttribution(
   search: string | URLSearchParams,
 ): CampaignAttribution | null {
   const searchParams =
     typeof search === "string" ? new URLSearchParams(search) : search;
+  if (hasDuplicateParameters(searchParams) || isSharedResult(searchParams)) return null;
   const explicitUtmProperties = POSTHOG_UTM_KEYS.reduce<
     Partial<Record<(typeof POSTHOG_UTM_KEYS)[number], string>>
   >((properties, key) => {
@@ -104,17 +77,12 @@ export function resolveCampaignAttribution(
     return {
       ...explicitUtmProperties,
       campaign_attribution_method: "explicit_utm",
-      is_eddm_visitor:
-        explicitUtmProperties.utm_source?.toLowerCase() === "eddm",
+      is_eddm_visitor: resolveQrSearch(searchParams) === "explicit_utm",
       legacy_eddm_qr: false,
     };
   }
 
-  const matchesLegacyMailerQr =
-    matchesSearchSignature(searchParams, LEGACY_EDDM_QR_SIGNATURE) &&
-    !searchParams.has("variant");
-
-  if (!matchesLegacyMailerQr) return null;
+  if (resolveQrSearch(searchParams) !== "legacy_qr_signature") return null;
 
   return {
     ...launch5kUtmFields(),
@@ -133,51 +101,10 @@ function launch5kUtmFields() {
   };
 }
 
-function hostnameIsSearchEngine(hostname: string) {
-  const host = hostname.toLowerCase();
-  return SEARCH_ENGINE_HOSTS.some(
-    (engine) => host === engine || host.endsWith(`.${engine}`),
-  );
-}
-
-function referrerBlocksCleanRootLaunch(
-  referrer: string,
-  origin?: string,
-) {
-  if (!referrer) return false;
-  try {
-    const referrerUrl = new URL(referrer);
-    if (origin && referrerUrl.origin === origin) return true;
-    return hostnameIsSearchEngine(referrerUrl.hostname);
-  } catch {
-    return false;
-  }
-}
-
-function isCleanRootSearch(searchParams: URLSearchParams) {
-  if (POSTHOG_UTM_KEYS.some((key) => searchParams.has(key))) return false;
-  return Array.from(searchParams.keys()).every(
-    (key) => key === SELF_TEST_QUERY_PARAM,
-  );
-}
-
+// Historical events retain this method; new ordinary homepages cannot prove a scan.
 export function resolveCleanRootLaunchAttribution(
-  search: string | URLSearchParams,
-  context: CampaignAttributionContext = {},
+  _search: string | URLSearchParams,
+  _context: CampaignAttributionContext = {},
 ): CampaignAttribution | null {
-  const searchParams =
-    typeof search === "string" ? new URLSearchParams(search) : search;
-  const pathname = context.pathname ?? "/";
-  if (pathname !== "/" && pathname !== "") return null;
-  if (!isCleanRootSearch(searchParams)) return null;
-  if (referrerBlocksCleanRootLaunch(context.referrer ?? "", context.origin)) {
-    return null;
-  }
-
-  return {
-    ...launch5kUtmFields(),
-    campaign_attribution_method: "clean_root_launch",
-    is_eddm_visitor: true,
-    legacy_eddm_qr: false,
-  };
+  return null;
 }
