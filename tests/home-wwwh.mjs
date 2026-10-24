@@ -218,6 +218,24 @@ test("lean root composition retains the approved homepage order", () => {
   );
 });
 
+test("live final-c pages do not build the older slider, share, collapse, notes, or extra chart trees", () => {
+  assert.match(
+    calculatorSource,
+    /const usesLegacyCalculatorChrome = calculatorLayout !== "final-c";/,
+    "the live final-c path must skip the older calculator chrome",
+  );
+  const slidersStart = calculatorSource.indexOf("const calculatorSliders");
+  const slidersEnd = calculatorSource.indexOf("const controlClasses", slidersStart);
+  const slidersBlock = calculatorSource.slice(slidersStart, slidersEnd);
+  assert.match(slidersBlock, /usesLegacyCalculatorChrome/, "PillSlider trees stay behind the older-layout gate");
+  assert.match(slidersBlock, /<PillSlider/, "preview layouts still keep PillSlider");
+  assert.match(calculatorSource, /const collapseControl = usesLegacyCalculatorChrome \?/);
+  assert.match(calculatorSource, /const shareAction = usesLegacyCalculatorChrome \?/);
+  assert.match(calculatorSource, /const helperNotes = usesLegacyCalculatorChrome \?/);
+  assert.match(calculatorSource, /const renderChart = usesLegacyCalculatorChrome/);
+  assert.match(calculatorSource, /const percentLost = usesLegacyCalculatorChrome/);
+});
+
 test("the fit-to-quotes region reuses the Smarter Way Wealth math field with the requested emphasis", () => {
   const flatCalculator = flatten(calculatorSource);
   const flatQuotes = flatten(feeQuoteDeckSource);

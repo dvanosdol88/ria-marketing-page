@@ -65,6 +65,20 @@ function getAssetTier(portfolioValue: number) {
 
 const TIME_HORIZON_VALUES = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25, 30];
 
+const UNUSED_LEGACY_SLIDERS: CalculatorSliderNodes = {
+  advisoryFee: null,
+  mutualFundExpenses: null,
+  portfolio: null,
+  growth: null,
+  years: null,
+};
+
+function unusedLegacyRenderChart(_className: string) {
+  return null;
+}
+
+function unusedScenarioHighlight(_scenario: "smarter" | "traditional") {}
+
 type Props = {
   initialState: CalculatorState;
   searchParams: Record<string, string | string[] | undefined>;
@@ -639,6 +653,11 @@ export function CostAnalysisCalculator({
   marketingVariantId,
 }: Props) {
   const eventMarketingVariant = experienceMode === "one-percent-blues" ? "one-percent-blues" : marketingVariantId;
+  const marketingVariant = homeMarketingVariants[marketingVariantId];
+  const calculatorLayout = marketingVariant.calculatorLayout ?? marketingVariant.layout;
+  const usesLegacyCalculatorChrome = calculatorLayout !== "final-c";
+  const usesOpeningMarketingHero = experienceMode === "marketing";
+  const usesShareControls = usesLegacyCalculatorChrome || usesOpeningMarketingHero;
   const paramsFromServer = useMemo(() => normalizeSearchParams(searchParams), [searchParams]);
   const mergedState = useMemo(
     () => ({
@@ -651,7 +670,6 @@ export function CostAnalysisCalculator({
   const [state, setState] = useState<CalculatorState>(mergedState);
   const [assumptionsCustomized, setAssumptionsCustomized] = useState(false);
   const [activeCard, setActiveCard] = useState<"smarter" | "traditional" | null>(null);
-  const usesOpeningMarketingHero = experienceMode === "marketing";
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [shareFeedback, setShareFeedback] = useState<"idle" | "success" | "error">("idle");
   const [slidersExpanded, setSlidersExpanded] = useState(true);
@@ -722,11 +740,12 @@ export function CostAnalysisCalculator({
   }, [assumptionsCustomized, experienceMode, eventMarketingVariant, projection.savings, projection.totalFees, projection.totalFlatFees, state, totalAnnualFeePercent]);
 
   const shareUrl = useMemo(() => {
+    if (!usesShareControls) return "";
     if (typeof window === "undefined") return "";
     const query = buildSharedResultQuery(buildQueryFromState(state, paramsFromServer));
     const base = `${window.location.origin}${window.location.pathname}`;
     return `${base}?${query}`;
-  }, [paramsFromServer, state]);
+  }, [paramsFromServer, state, usesShareControls]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -767,21 +786,23 @@ export function CostAnalysisCalculator({
 
   const shareSummary = useMemo(
     () =>
-      [
-        "Smarter Way Wealth projection",
-        `Potential savings: ${formatCurrencyFloored(projection.savings)}`,
-        `Portfolio value: ${formatCurrency(state.portfolioValue)}`,
-        `Annual flat fee: ${formatCurrency(state.annualFlatFee)}`,
-        `Advisory fee: ${state.annualFeePercent.toFixed(2)}%`,
-        `Mutual fund expenses: ${state.mutualFundExpensePercent.toFixed(2)}%`,
-        `Total annual fee load: ${totalAnnualFeePercent.toFixed(2)}%`,
-        `Annual growth: ${state.annualGrowthPercent.toFixed(1)}%`,
-        `Time horizon: ${state.years} years`,
-        `Smarter Way Wealth value: ${formatCurrencyFloored(projection.finalValueWithoutFees)}`,
-        `Traditional asset-based fee value: ${formatCurrencyFloored(projection.finalValueWithFees)}`,
-        `Lost to asset-based fees: -${formatCurrencyFloored(projection.savings)}`,
-      ].join("\n"),
-    [projection.finalValueWithFees, projection.finalValueWithoutFees, projection.savings, state, totalAnnualFeePercent]
+      usesShareControls
+        ? [
+            "Smarter Way Wealth projection",
+            `Potential savings: ${formatCurrencyFloored(projection.savings)}`,
+            `Portfolio value: ${formatCurrency(state.portfolioValue)}`,
+            `Annual flat fee: ${formatCurrency(state.annualFlatFee)}`,
+            `Advisory fee: ${state.annualFeePercent.toFixed(2)}%`,
+            `Mutual fund expenses: ${state.mutualFundExpensePercent.toFixed(2)}%`,
+            `Total annual fee load: ${totalAnnualFeePercent.toFixed(2)}%`,
+            `Annual growth: ${state.annualGrowthPercent.toFixed(1)}%`,
+            `Time horizon: ${state.years} years`,
+            `Smarter Way Wealth value: ${formatCurrencyFloored(projection.finalValueWithoutFees)}`,
+            `Traditional asset-based fee value: ${formatCurrencyFloored(projection.finalValueWithFees)}`,
+            `Lost to asset-based fees: -${formatCurrencyFloored(projection.savings)}`,
+          ].join("\n")
+        : "",
+    [projection.finalValueWithFees, projection.finalValueWithoutFees, projection.savings, state, totalAnnualFeePercent, usesShareControls]
   );
 
   const shareResult = useCallback(async () => {
@@ -837,17 +858,18 @@ export function CostAnalysisCalculator({
   }, [usesOpeningMarketingHero]);
 
   useEffect(() => {
+    if (!usesLegacyCalculatorChrome) return;
     setChartReady(true);
-  }, []);
+  }, [usesLegacyCalculatorChrome]);
 
   useEffect(() => {
-    if (shareFeedback === "idle") return;
+    if (!usesShareControls || shareFeedback === "idle") return;
     const timeout = window.setTimeout(
       () => setShareFeedback("idle"),
       shareFeedback === "error" ? 12000 : 2200
     );
     return () => window.clearTimeout(timeout);
-  }, [shareFeedback]);
+  }, [shareFeedback, usesShareControls]);
 
   const handleCardTap = (card: "smarter" | "traditional") => {
     setActiveCard((prev) => (prev === card ? null : card));
@@ -873,7 +895,6 @@ export function CostAnalysisCalculator({
     return () => observer.disconnect();
   }, [usesOpeningMarketingHero]);
 
-  const marketingVariant = homeMarketingVariants[marketingVariantId];
   const isCalculatorFirst = experienceMode === "calculator-first";
   const isSavingsCalculatorUpgrade = experienceMode === "savings-calculator-upgrade";
   /* One Percent Blues (src/app/(blues), onepercentblues.com): the same
@@ -893,19 +914,25 @@ export function CostAnalysisCalculator({
         backgroundColor: homeCalculatorConfig.quoteSection.backgroundColor,
       };
 
-  const shareButtonLabel =
-    shareFeedback === "success" ? "Copied" : shareFeedback === "error" ? "Sharing unavailable" : "Share your result";
+  const shareButtonLabel = usesShareControls
+    ? shareFeedback === "success"
+      ? "Copied"
+      : shareFeedback === "error"
+        ? "Sharing unavailable"
+        : "Share your result"
+    : "Share your result";
   const ShareIcon = shareFeedback === "success" ? Check : Share2;
-  const percentLost =
-    projection.finalValueWithoutFees > 0
+  const percentLost = usesLegacyCalculatorChrome
+    ? projection.finalValueWithoutFees > 0
       ? Math.min(100, Math.max(0, (projection.savings / projection.finalValueWithoutFees) * 100))
-      : 0;
+      : 0
+    : 0;
 
   const annualFlatFee = state.annualFlatFee;
   const monthlyFlatFee = annualFlatFee / 12;
   const annualAumFeeEstimate = state.portfolioValue * (totalAnnualFeePercent / 100);
 
-  const collapseControl = (
+  const collapseControl = usesLegacyCalculatorChrome ? (
     <button
       type="button"
       onClick={() => setSlidersExpanded((prev) => !prev)}
@@ -915,9 +942,9 @@ export function CostAnalysisCalculator({
       {slidersExpanded ? "Collapse" : "Expand"}
       {slidersExpanded ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
     </button>
-  );
+  ) : null;
 
-  const shareAction = (
+  const shareAction = usesLegacyCalculatorChrome ? (
     <div className="flex w-full max-w-sm flex-col items-stretch gap-2 sm:max-w-xs">
       <button
         type="button"
@@ -942,7 +969,7 @@ export function CostAnalysisCalculator({
         />
       ) : null}
     </div>
-  );
+  ) : null;
 
   const disclosure = (
     <p className={`mt-3 text-xs leading-snug ${calculatorTheme.disclaimerClassName}`}>
@@ -950,7 +977,7 @@ export function CostAnalysisCalculator({
     </p>
   );
 
-  const helperNotes = (
+  const helperNotes = usesLegacyCalculatorChrome ? (
     <>
       <p className={`text-center text-xs ${calculatorTheme.helperTextClassName}`}>
         Compares our {formatCurrency(monthlyFlatFee)}/mo flat fee vs. a traditional AUM advisory fee, compounded monthly.{" "}
@@ -971,99 +998,101 @@ export function CostAnalysisCalculator({
         </p>
       </div>
     </>
-  );
+  ) : null;
 
-  const calculatorSliders: CalculatorSliderNodes = {
-    advisoryFee: (
-      <PillSlider
-        label="Advisory fee"
-        value={state.annualFeePercent}
-        onChange={(v) => updateCalculatorState({ annualFeePercent: v })}
-        format={(v) => `${v.toFixed(2)}%`}
-        variant="destructive"
-        theme={calculatorTheme.slider}
-        min={0}
-        max={3}
-        step={0.05}
-        labelAction={
-          !showMutualFundExpenses ? (
-            <button
-              type="button"
-              onClick={() => setShowMutualFundExpenses(true)}
-              className={`text-[11px] font-semibold tracking-wide transition-colors ${calculatorTheme.slider.addButtonClassName}`}
-            >
-              + add mutual fund expenses
-            </button>
-          ) : undefined
-        }
-      />
-    ),
-    mutualFundExpenses: showMutualFundExpenses ? (
-      <div className="mt-4">
-        <PillSlider
-          label="Mutual fund expenses"
-          value={state.mutualFundExpensePercent}
-          onChange={(v) => updateCalculatorState({ mutualFundExpensePercent: v })}
-          format={(v) => `${v.toFixed(2)}%`}
-          variant="destructive"
-          theme={calculatorTheme.slider}
-          pillColorOverride={marketingVariant.layout === "advisor" ? "#FB7185" : "#7F1D1D"}
-          min={0}
-          max={3}
-          step={0.05}
-          labelAction={
-            <button
-              type="button"
-              onClick={() => {
-                setShowMutualFundExpenses(false);
-                updateCalculatorState({ mutualFundExpensePercent: 0 });
-              }}
-              className={`text-[11px] font-semibold tracking-wide transition-colors ${calculatorTheme.slider.removeButtonClassName}`}
-            >
-              remove
-            </button>
-          }
-        />
-      </div>
-    ) : null,
-    portfolio: (
-      <PillSlider
-        label="Portfolio value"
-        value={state.portfolioValue}
-        onChange={(v) => updateCalculatorState({ portfolioValue: v })}
-        format={(v) => formatCurrency(v)}
-        variant="accumulation"
-        theme={calculatorTheme.slider}
-        min={250000}
-        max={5000000}
-        step={50000}
-      />
-    ),
-    growth: (
-      <PillSlider
-        label="Annual growth"
-        value={state.annualGrowthPercent}
-        onChange={(v) => updateCalculatorState({ annualGrowthPercent: v })}
-        format={(v) => `${v.toFixed(1)}%`}
-        variant="accumulation"
-        theme={calculatorTheme.slider}
-        min={4}
-        max={12}
-        step={0.5}
-      />
-    ),
-    years: (
-      <PillSlider
-        label="Time horizon"
-        value={state.years}
-        onChange={(v) => updateCalculatorState({ years: v })}
-        format={(v) => `${v} yrs`}
-        variant="accumulation"
-        theme={calculatorTheme.slider}
-        values={TIME_HORIZON_VALUES}
-      />
-    ),
-  };
+  const calculatorSliders: CalculatorSliderNodes = usesLegacyCalculatorChrome
+    ? {
+        advisoryFee: (
+          <PillSlider
+            label="Advisory fee"
+            value={state.annualFeePercent}
+            onChange={(v) => updateCalculatorState({ annualFeePercent: v })}
+            format={(v) => `${v.toFixed(2)}%`}
+            variant="destructive"
+            theme={calculatorTheme.slider}
+            min={0}
+            max={3}
+            step={0.05}
+            labelAction={
+              !showMutualFundExpenses ? (
+                <button
+                  type="button"
+                  onClick={() => setShowMutualFundExpenses(true)}
+                  className={`text-[11px] font-semibold tracking-wide transition-colors ${calculatorTheme.slider.addButtonClassName}`}
+                >
+                  + add mutual fund expenses
+                </button>
+              ) : undefined
+            }
+          />
+        ),
+        mutualFundExpenses: showMutualFundExpenses ? (
+          <div className="mt-4">
+            <PillSlider
+              label="Mutual fund expenses"
+              value={state.mutualFundExpensePercent}
+              onChange={(v) => updateCalculatorState({ mutualFundExpensePercent: v })}
+              format={(v) => `${v.toFixed(2)}%`}
+              variant="destructive"
+              theme={calculatorTheme.slider}
+              pillColorOverride={marketingVariant.layout === "advisor" ? "#FB7185" : "#7F1D1D"}
+              min={0}
+              max={3}
+              step={0.05}
+              labelAction={
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowMutualFundExpenses(false);
+                    updateCalculatorState({ mutualFundExpensePercent: 0 });
+                  }}
+                  className={`text-[11px] font-semibold tracking-wide transition-colors ${calculatorTheme.slider.removeButtonClassName}`}
+                >
+                  remove
+                </button>
+              }
+            />
+          </div>
+        ) : null,
+        portfolio: (
+          <PillSlider
+            label="Portfolio value"
+            value={state.portfolioValue}
+            onChange={(v) => updateCalculatorState({ portfolioValue: v })}
+            format={(v) => formatCurrency(v)}
+            variant="accumulation"
+            theme={calculatorTheme.slider}
+            min={250000}
+            max={5000000}
+            step={50000}
+          />
+        ),
+        growth: (
+          <PillSlider
+            label="Annual growth"
+            value={state.annualGrowthPercent}
+            onChange={(v) => updateCalculatorState({ annualGrowthPercent: v })}
+            format={(v) => `${v.toFixed(1)}%`}
+            variant="accumulation"
+            theme={calculatorTheme.slider}
+            min={4}
+            max={12}
+            step={0.5}
+          />
+        ),
+        years: (
+          <PillSlider
+            label="Time horizon"
+            value={state.years}
+            onChange={(v) => updateCalculatorState({ years: v })}
+            format={(v) => `${v} yrs`}
+            variant="accumulation"
+            theme={calculatorTheme.slider}
+            values={TIME_HORIZON_VALUES}
+          />
+        ),
+      }
+    : UNUSED_LEGACY_SLIDERS;
 
   /* On the blue page the four controls get the blue outline and fill
      (David, 2026-09-17: they were getting lost in the white). Elsewhere the
@@ -1122,72 +1151,74 @@ export function CostAnalysisCalculator({
     ),
   };
 
-  const renderChart = (className: string) => (
-    <div className={`relative w-full ${className} ${calculatorTheme.chartFrameClassName}`}>
-      {chartReady ? (
-        <ProFeeChart
-          data={projection.series}
-          finalLost={projection.savings}
-          finalValueWithoutFees={projection.finalValueWithoutFees}
-          finalValueWithFees={projection.finalValueWithFees}
-          showSummary={false}
-          activeScenario={activeCard}
-          portfolioValue={state.portfolioValue}
-          years={state.years}
-          annualGrowthPercent={state.annualGrowthPercent}
-          annualFeePercent={state.annualFeePercent}
-          mutualFundExpensePercent={state.mutualFundExpensePercent}
-          chartTheme={calculatorTheme.chart}
-        />
-      ) : (
-        <div className={`flex h-full flex-col justify-between p-5 sm:p-8 ${calculatorTheme.chartFrameClassName}`}>
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className={`text-xs font-bold uppercase tracking-[0.18em] ${calculatorTheme.chart.mutedTextClassName}`}>
-                Calculator result
-              </p>
-              <p className={`mt-3 text-3xl font-semibold tracking-normal sm:text-5xl ${calculatorTheme.chart.strongTextClassName}`}>
-                {formatCurrencyFloored(projection.savings)}
-              </p>
-              <p className={`mt-2 text-sm ${calculatorTheme.chart.mutedTextClassName}`}>
-                Projected wealth difference over {state.years} years.
-              </p>
+  const renderChart = usesLegacyCalculatorChrome
+    ? (className: string) => (
+        <div className={`relative w-full ${className} ${calculatorTheme.chartFrameClassName}`}>
+          {chartReady ? (
+            <ProFeeChart
+              data={projection.series}
+              finalLost={projection.savings}
+              finalValueWithoutFees={projection.finalValueWithoutFees}
+              finalValueWithFees={projection.finalValueWithFees}
+              showSummary={false}
+              activeScenario={activeCard}
+              portfolioValue={state.portfolioValue}
+              years={state.years}
+              annualGrowthPercent={state.annualGrowthPercent}
+              annualFeePercent={state.annualFeePercent}
+              mutualFundExpensePercent={state.mutualFundExpensePercent}
+              chartTheme={calculatorTheme.chart}
+            />
+          ) : (
+            <div className={`flex h-full flex-col justify-between p-5 sm:p-8 ${calculatorTheme.chartFrameClassName}`}>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className={`text-xs font-bold uppercase tracking-[0.18em] ${calculatorTheme.chart.mutedTextClassName}`}>
+                    Calculator result
+                  </p>
+                  <p className={`mt-3 text-3xl font-semibold tracking-normal sm:text-5xl ${calculatorTheme.chart.strongTextClassName}`}>
+                    {formatCurrencyFloored(projection.savings)}
+                  </p>
+                  <p className={`mt-2 text-sm ${calculatorTheme.chart.mutedTextClassName}`}>
+                    Projected wealth difference over {state.years} years.
+                  </p>
+                </div>
+                <div className="shrink-0 text-right">
+                  <p className="text-2xl font-bold text-red-700">{percentLost.toFixed(1)}%</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-red-700">lost</p>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="h-3 w-full rounded-full bg-slate-100 dark:bg-slate-800">
+                  <div className="h-3 rounded-full bg-[#007A2F]" style={{ width: "82%" }} />
+                </div>
+                <div className="h-3 w-full rounded-full bg-red-100 dark:bg-red-950/40">
+                  <div className="h-3 rounded-full bg-red-500" style={{ width: `${Math.max(8, Math.min(88, percentLost * 4))}%` }} />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+                <div>
+                  <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{formatCurrency(state.portfolioValue)}</p>
+                  <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Starting value</p>
+                </div>
+                <div>
+                  <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{state.annualGrowthPercent.toFixed(1)}%</p>
+                  <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Growth</p>
+                </div>
+                <div>
+                  <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{state.years} yrs</p>
+                  <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Time</p>
+                </div>
+                <div>
+                  <p className="font-semibold text-red-700">{totalAnnualFeePercent.toFixed(2)}%</p>
+                  <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Fee load</p>
+                </div>
+              </div>
             </div>
-            <div className="shrink-0 text-right">
-              <p className="text-2xl font-bold text-red-700">{percentLost.toFixed(1)}%</p>
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-red-700">lost</p>
-            </div>
-          </div>
-          <div className="space-y-3">
-            <div className="h-3 w-full rounded-full bg-slate-100 dark:bg-slate-800">
-              <div className="h-3 rounded-full bg-[#007A2F]" style={{ width: "82%" }} />
-            </div>
-            <div className="h-3 w-full rounded-full bg-red-100 dark:bg-red-950/40">
-              <div className="h-3 rounded-full bg-red-500" style={{ width: `${Math.max(8, Math.min(88, percentLost * 4))}%` }} />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
-            <div>
-              <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{formatCurrency(state.portfolioValue)}</p>
-              <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Starting value</p>
-            </div>
-            <div>
-              <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{state.annualGrowthPercent.toFixed(1)}%</p>
-              <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Growth</p>
-            </div>
-            <div>
-              <p className={`font-semibold ${calculatorTheme.chart.strongTextClassName}`}>{state.years} yrs</p>
-              <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Time</p>
-            </div>
-            <div>
-              <p className="font-semibold text-red-700">{totalAnnualFeePercent.toFixed(2)}%</p>
-              <p className={`text-xs ${calculatorTheme.chart.mutedTextClassName}`}>Fee load</p>
-            </div>
-          </div>
+          )}
         </div>
-      )}
-    </div>
-  );
+      )
+    : unusedLegacyRenderChart;
 
   const bluesHandoff = isOnePercentBlues ? (
     <div className="relative z-10 mx-auto w-full max-w-[1040px] px-4 pt-3 sm:px-6 sm:pt-5">
@@ -1390,7 +1421,7 @@ export function CostAnalysisCalculator({
         )}
 
         <HomeCalculatorExperience
-          layout={marketingVariant.calculatorLayout ?? marketingVariant.layout}
+          layout={calculatorLayout}
           theme={calculatorTheme}
           series={projection.series}
           savings={projection.savings}
@@ -1420,7 +1451,7 @@ export function CostAnalysisCalculator({
           showViewTabs={!usesLeanCalculator}
           initialView={usesLeanCalculator ? "inputs" : "header"}
           showChartHeading={usesLeanCalculator}
-          onHighlightScenario={handleCardTap}
+          onHighlightScenario={usesLegacyCalculatorChrome ? handleCardTap : unusedScenarioHighlight}
           onAssumptionChange={(patch) => updateCalculatorState(patch)}
         />
 
