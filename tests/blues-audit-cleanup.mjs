@@ -52,10 +52,16 @@ test("the green page-count tag is skipped on the Blues host", () => {
 });
 
 test("the blue layout and the root 404 share one chrome and icon helper", () => {
-  assert.match(bluesLayout, /<BluesChrome>/);
+  assert.match(bluesLayout, /from ["']@\/app\/bluesFonts["']/);
+  assert.match(bluesLayout, /bluesShellClassName/);
+  assert.match(bluesLayout, /data-theme="blues"/);
+  assert.match(bluesLayout, /<BluesHeader \/>/);
+  assert.match(bluesLayout, /<BluesFooter \/>/);
   assert.match(bluesLayout, /icons:\s*bluesIconMetadata/);
+  assert.doesNotMatch(bluesLayout, /BluesChrome/);
   assert.match(notFound, /<BluesChrome>/);
   assert.match(notFound, /bluesNotFoundMetadata/);
+  assert.match(chrome, /["']use client["']/);
   assert.match(chrome, /data-theme="blues"/);
   assert.match(chrome, /<BluesHeader \/>/);
   assert.match(chrome, /<BluesFooter \/>/);

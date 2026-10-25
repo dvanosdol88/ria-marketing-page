@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { BluesChrome } from "@/components/blues/BluesChrome";
+import { bluesShellClassName } from "@/app/bluesFonts";
+import { BluesFooter } from "@/components/blues/BluesFooter";
+import { BluesHeader } from "@/components/blues/BluesHeader";
 import { bluesIconMetadata } from "@/components/blues/bluesIcons";
 import { BLUES_ORIGIN, bluesCopy, bluesJsonLd } from "@/config/onePercentBlues";
 
@@ -47,12 +49,14 @@ export const viewport: Viewport = {
 
 export default function BluesLayout({ children }: { children: React.ReactNode }) {
   return (
-    <BluesChrome>
+    <div data-theme="blues" className={bluesShellClassName}>
+      <BluesHeader />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(bluesJsonLd) }}
       />
       {children}
-    </BluesChrome>
+      <BluesFooter />
+    </div>
   );
 }

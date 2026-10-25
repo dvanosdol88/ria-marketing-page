@@ -53,6 +53,7 @@ test("the diagnosis card waits for all three answers and links the disclaimer", 
   assert.match(check, /data-posthog-cta-location="blues_diagnosis_meet"/);
   assert.match(check, /data-posthog-cta-location="blues_diagnosis_calculator"/);
   assert.match(opening, /<noscript>/, "readers without JavaScript still get the number and the cure");
+  assert.doesNotMatch(opening, /["']use client["']/, "opening copy has no hooks or browser APIs");
 });
 
 test("the blue page composes the shared engine in one-percent-blues mode", () => {
@@ -75,8 +76,13 @@ test("site chrome lives on the route groups, never on the root layout", async ()
   assert.doesNotMatch(rootLayout, /SiteNav|SiteFooter|application\/ld\+json/);
   assert.match(siteLayout, /<SiteNav \/>/);
   assert.match(siteLayout, /<SiteFooter \/>/);
-  assert.match(bluesLayout, /<BluesChrome>/);
-  assert.match(bluesLayout, /metadataBase: new URL\(BLUES_ORIGIN\)/);
+  assert.match(bluesLayout, /from ["']@\/app\/bluesFonts["']/);
+  assert.match(bluesLayout, /bluesShellClassName/);
+  assert.match(bluesLayout, /data-theme="blues"/);
+  assert.match(bluesLayout, /<BluesHeader \/>/);
+  assert.match(bluesLayout, /<BluesFooter \/>/);
+  assert.doesNotMatch(bluesLayout, /BluesChrome/);
+  assert.match(chrome, /["']use client["']/);
   assert.match(chrome, /data-theme="blues"/);
   assert.match(chrome, /<BluesHeader \/>/);
   assert.match(chrome, /<BluesFooter \/>/);
