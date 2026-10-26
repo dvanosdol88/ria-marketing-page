@@ -65,10 +65,32 @@ test("the blue page composes the shared engine in one-percent-blues mode", () =>
     /<SignupCta location="blues_post_calculator" surfaceClassName="bg-transparent" primaryHref=\{bluesLinks\.signup\} \/>/,
   );
   assert.match(calculator, /<HomeFaqSection tone="blues" \/>/);
-  assert.match(
+  assert.match(calculator, /const calculatorLayout = isOnePercentBlues\s*\?\s*"final-c"/);
+  assert.match(calculator, /const calculatorTheme = isOnePercentBlues \? bluesCalculatorTheme/);
+  assert.doesNotMatch(
     calculator,
-    /const calculatorTheme = isOnePercentBlues \? bluesCalculatorTheme : marketingVariant\.calculator;/,
+    /isOnePercentBlues \? bluesCalculatorTheme : marketingVariant\.calculator/,
   );
+  assert.doesNotMatch(bluesPage, /marketingVariantId/);
+  assert.match(calculator, /from ["']next\/dynamic["']/);
+  for (const moduleName of [
+    "HomeMarketingHero",
+    "HomeTopBanner",
+    "QuoteTickerWithPortraits",
+    "FeeQuoteDeck",
+    "MathMotionField",
+    "WhatWhyWhoHow",
+    "ProFeeChart",
+    "PillSlider",
+    "SavingsLeadHero",
+    "StickyFeeBars",
+  ]) {
+    assert.doesNotMatch(
+      calculator,
+      new RegExp(`import(?:\\s+${moduleName}|\\s*\\{[^}]*\\b${moduleName}\\b)`),
+      `${moduleName} must stay out of the blue client graph`,
+    );
+  }
 });
 
 test("site chrome lives on the route groups, never on the root layout", async () => {

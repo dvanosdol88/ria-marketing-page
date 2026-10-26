@@ -1,8 +1,9 @@
 "use client";
 
-import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Check, ChevronDown, ChevronUp, Minus, Plus, Share2 } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { buildFeeProjection } from "@/lib/feeProjection";
 import { buildSharedResultQuery } from "@/lib/qrLanding";
@@ -14,27 +15,18 @@ import {
 } from "@/lib/calculatorState";
 import { formatCompactCurrency, formatCurrency, formatCurrencyFloored } from "@/lib/format";
 import { NoteMarker } from "@/components/CalculatorNotes";
-import QuoteTickerWithPortraits from "./QuoteTickerWithPortraits";
-import { ProFeeChart } from "@/components/charts/ProFeeChart";
 import { homeCalculatorConfig } from "@/config/homeCalculatorConfig";
-import { Odometer } from "@/components/Odometer";
-import { HomeMarketingHero } from "@/components/HomeMarketingHero";
-import { HomeTopBanner } from "@/components/HomeTopBanner";
-import { FeeQuoteDeck } from "@/components/FeeQuoteDeck";
-import { MathMotionField } from "@/components/MathMotionField";
 import { HomeFaqSection } from "@/components/HomeFaqSection";
 import { SignupCta } from "@/components/SignupCta";
 import { BluesOpening } from "@/components/blues/BluesOpening";
 import { bluesCalculatorTheme, bluesControlClasses, bluesCopy, bluesLinks } from "@/config/onePercentBlues";
 import { SmarterWayWealthVisitCard } from "@/components/SmarterWayWealthVisitCard";
-import { WhatWhyWhoHow } from "@/components/WhatWhyWhoHow";
 import {
   HomeCalculatorExperience,
   type CalculatorSimpleControlNodes,
   type CalculatorSliderNodes,
 } from "@/components/HomeCalculatorExperience";
 import {
-  HomeCalculatorTheme,
   HomeMarketingVariantId,
   homeMarketingVariants,
 } from "@/config/homeMarketingVariants";
@@ -43,6 +35,35 @@ import { capturePostHogEvent } from "@/lib/posthog";
 import {
   ADVANCED_CALCULATOR_URL,
 } from "@/config/advancedCalculator";
+
+const HomeMarketingHero = dynamic(() =>
+  import("@/components/HomeMarketingHero").then((mod) => mod.HomeMarketingHero),
+);
+const HomeTopBanner = dynamic(() =>
+  import("@/components/HomeTopBanner").then((mod) => mod.HomeTopBanner),
+);
+const QuoteTickerWithPortraits = dynamic(() => import("./QuoteTickerWithPortraits"));
+const FeeQuoteDeck = dynamic(() =>
+  import("@/components/FeeQuoteDeck").then((mod) => mod.FeeQuoteDeck),
+);
+const MathMotionField = dynamic(() =>
+  import("@/components/MathMotionField").then((mod) => mod.MathMotionField),
+);
+const WhatWhyWhoHow = dynamic(() =>
+  import("@/components/WhatWhyWhoHow").then((mod) => mod.WhatWhyWhoHow),
+);
+const ProFeeChart = dynamic(() =>
+  import("@/components/charts/ProFeeChart").then((mod) => mod.ProFeeChart),
+);
+const PillSlider = dynamic(() =>
+  import("@/components/PillSlider").then((mod) => mod.PillSlider),
+);
+const SavingsLeadHero = dynamic(() =>
+  import("@/components/SavingsLeadHero").then((mod) => mod.SavingsLeadHero),
+);
+const StickyFeeBars = dynamic(() =>
+  import("@/components/StickyFeeBars").then((mod) => mod.StickyFeeBars),
+);
 
 type IntroStyle = "rule" | "panel" | "quote";
 
@@ -58,10 +79,6 @@ function getAssetTier(portfolioValue: number) {
   if (portfolioValue < 5000000) return "2_5m_5m";
   return "5m_plus";
 }
-
-// ============================================================================
-// PILL SLIDER - Value-in-pill thumb with color-coded track
-// ============================================================================
 
 const TIME_HORIZON_VALUES = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25, 30];
 
@@ -82,27 +99,10 @@ function unusedScenarioHighlight(_scenario: "smarter" | "traditional") {}
 type Props = {
   initialState: CalculatorState;
   searchParams: Record<string, string | string[] | undefined>;
-  marketingVariantId: HomeMarketingVariantId;
+  marketingVariantId?: HomeMarketingVariantId;
   experienceMode?: "marketing" | "calculator-first" | "savings-calculator-upgrade" | "one-percent-blues";
   bannerId?: HomeTopBannerId;
 };
-
-interface PillSliderProps {
-  label: string;
-  value: number;
-  onChange: (v: number) => void;
-  format: (v: number) => string;
-  variant: "destructive" | "accumulation";
-  labelAction?: ReactNode;
-  pillColorOverride?: string;
-  theme: HomeCalculatorTheme["slider"];
-  // Standard mode (min/max/step)
-  min?: number;
-  max?: number;
-  step?: number;
-  // Array mode - overrides min/max/step when provided
-  values?: number[];
-}
 
 interface SimpleRangeControlProps {
   formatter: (value: number) => string;
@@ -335,134 +335,6 @@ function SimpleRangeControl({
   );
 }
 
-function PillSlider({
-  label,
-  value,
-  onChange,
-  format,
-  variant,
-  labelAction,
-  pillColorOverride,
-  theme,
-  min,
-  max,
-  step,
-  values,
-}: PillSliderProps) {
-  const isArrayMode = !!values;
-
-  // Array mode: find closest index for the current value
-  const arrayIdx = useMemo(() => {
-    if (!values) return 0;
-    let best = 0;
-    for (let i = 1; i < values.length; i++) {
-      if (Math.abs(values[i] - value) < Math.abs(values[best] - value)) best = i;
-    }
-    return best;
-  }, [value, values]);
-
-  const lastRef = useRef(isArrayMode ? arrayIdx : value);
-  const [isActive, setIsActive] = useState(false);
-
-  // Native input props
-  const inputMin = isArrayMode ? 0 : (min ?? 0);
-  const inputMax = isArrayMode ? values!.length - 1 : (max ?? 100);
-  const inputStep = isArrayMode ? 1 : (step ?? 1);
-  const inputValue = isArrayMode ? arrayIdx : value;
-
-  // Percentage for positioning
-  const pct =
-    inputMax > inputMin ? ((inputValue - inputMin) / (inputMax - inputMin)) * 100 : 0;
-
-  // Displayed value (resolved from array if needed)
-  const displayValue = isArrayMode ? values![arrayIdx] : value;
-
-  const basePillColor = variant === "destructive" ? theme.destructiveColor : theme.accumulationColor;
-  const pillColor = pillColorOverride ?? basePillColor;
-  const trackColor = variant === "destructive" ? theme.destructiveTrack : theme.accumulationTrack;
-
-  const precision = useMemo(() => {
-    if (isArrayMode || !step) return 0;
-    return step.toString().split(".")[1]?.length ?? 0;
-  }, [isArrayMode, step]);
-
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const raw = Number.parseFloat(e.target.value);
-      if (Number.isNaN(raw)) return;
-
-      if (isArrayMode) {
-        const newIdx = Math.round(raw);
-        const clamped = Math.min(values!.length - 1, Math.max(0, newIdx));
-        if (clamped !== lastRef.current) {
-          const newVal = values![clamped];
-          lastRef.current = clamped;
-          onChange(newVal);
-        }
-      } else {
-        const s = step ?? 1;
-        const snapped = Number((Math.round(raw / s) * s).toFixed(precision));
-        const clamped = Math.min(max ?? 100, Math.max(min ?? 0, snapped));
-        lastRef.current = clamped;
-        onChange(clamped);
-      }
-    },
-    [isArrayMode, values, min, max, step, precision, onChange]
-  );
-
-  return (
-    <div>
-      <div className="mb-0 flex items-center justify-between gap-3">
-        <p className={`text-[13px] font-semibold uppercase tracking-wider ${theme.labelClassName}`}>
-          {label}
-        </p>
-        {labelAction}
-      </div>
-      <div className="relative flex h-12 items-center">
-        {/* Track background */}
-        <div className={`absolute inset-x-0 h-1 rounded-full ${theme.trackClassName}`} />
-        {/* Track fill */}
-        <div
-          className="absolute left-0 h-1 rounded-full transition-[width] duration-75"
-          style={{ width: `${pct}%`, backgroundColor: trackColor }}
-        />
-        {/* Native range input - 48px hit zone (exceeds 44px HIG min). */}
-        <input
-          type="range"
-          min={inputMin}
-          max={inputMax}
-          step={inputStep}
-          value={inputValue}
-          onChange={handleChange}
-          onPointerDown={(e) => {
-            if (e.pointerType === "touch") setIsActive(true);
-          }}
-          onPointerUp={() => setIsActive(false)}
-          onPointerCancel={() => setIsActive(false)}
-          onPointerLeave={() => setIsActive(false)}
-          className="pill-slider-input absolute inset-x-0 z-20 h-12 w-full cursor-grab opacity-0 active:cursor-grabbing"
-          aria-label={label}
-        />
-        {/* Visual pill thumb - translucent blue halo on touch only; no scaling. */}
-        <div
-          className="pointer-events-none absolute z-10 flex h-9 items-center justify-center rounded-full px-3.5 transition-[box-shadow] duration-150"
-          style={{
-            left: `${pct}%`,
-            transform: `translateX(-${pct}%)`,
-            backgroundColor: pillColor,
-            boxShadow: isActive
-              ? "0 0 0 8px rgba(59,130,246,0.22), 0 0 0 14px rgba(59,130,246,0.10), 0 2px 12px rgba(0,0,0,0.2)"
-              : "0 2px 12px rgba(0,0,0,0.2)",
-          }}
-        >
-          <span className="text-sm font-bold tabular-nums text-white whitespace-nowrap">
-            {format(displayValue)}
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function normalizeSearchParams(searchParams: Record<string, string | string[] | undefined>) {
   const params = new URLSearchParams();
@@ -476,174 +348,6 @@ function normalizeSearchParams(searchParams: Record<string, string | string[] | 
   return params;
 }
 
-function SavingsLeadHero({
-  annualFeePercent,
-  annualFlatFee,
-  annualGrowthPercent,
-  introStyle,
-  mutualFundExpensePercent,
-  portfolioValue,
-  savings,
-  years,
-}: {
-  annualFeePercent: number;
-  annualFlatFee: number;
-  annualGrowthPercent: number;
-  introStyle: IntroStyle;
-  mutualFundExpensePercent: number;
-  portfolioValue: number;
-  savings: number;
-  years: number;
-}) {
-  const currentFees = `${annualFeePercent.toFixed(2)}% asset-based fee${
-    mutualFundExpensePercent > 0
-      ? ` + ${mutualFundExpensePercent.toFixed(2)}% fund expenses`
-      : ""
-  }`;
-  /* The promise reads in full the moment the page paints. It used to fade in
-     one clause at a time and swap the name between "David" and "Smarter Way
-     Wealth" on scroll; that sequence was retired (David, 2026-08-10) because
-     the statement now sits on the first mobile screen, where a line that
-     rewrites itself under the visitor reads as distracting rather than
-     deliberate. */
-  const statement = (
-    <>
-      <span className="block text-center">Smarter Way Wealth</span>
-      <span className="block">
-        delivers{" "}
-        <span className="text-[#007A2F]">
-          personal, real human fiduciary advice and planning
-        </span>{" "}
-        for a simple{" "}
-        <span className="whitespace-nowrap">$100/month. Period.</span>
-      </span>
-    </>
-  );
-  const introContent =
-    introStyle === "panel" ? (
-      <div className="relative mx-auto max-w-4xl px-0 py-6 sm:px-10 sm:py-8">
-        <div
-          data-home-promise-divider="top"
-          className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]"
-        />
-        <p className="mx-auto max-w-3xl text-2xl font-semibold leading-[1.14] tracking-normal text-[#10233A] sm:text-[clamp(1.55rem,3.8vw,2.35rem)]">
-          {statement}
-        </p>
-        <p className="mx-auto mt-6 max-w-3xl text-center text-[clamp(1.15rem,3.15vw,2rem)] font-medium leading-[1.14] tracking-normal text-[#10233A] sm:mt-7">
-          <span className="whitespace-nowrap">David Van Osdol,</span>{" "}
-          <span className="whitespace-nowrap">CFA, CFP®</span>
-        </p>
-        <div className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-transparent via-[#108843] to-transparent shadow-[0_1px_0_rgba(255,255,255,0.75)]" />
-      </div>
-    ) : introStyle === "quote" ? (
-      <div className="mx-auto max-w-4xl px-3 py-8 sm:py-10">
-        <div className="mx-auto max-w-3xl border-l-[6px] border-[#108843] pl-6 text-left">
-          <p className="text-[clamp(1.55rem,3.8vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
-            {statement}
-          </p>
-        </div>
-      </div>
-    ) : (
-      <div className="mx-auto max-w-4xl py-7 sm:py-9">
-        <div className="mx-auto h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
-        <p className="mx-auto mt-7 max-w-3xl text-[clamp(1.55rem,3.8vw,2.35rem)] font-semibold leading-[1.14] tracking-normal text-[#10233A]">
-          {statement}
-        </p>
-        <div className="mx-auto mt-7 h-1.5 w-[min(570px,72%)] rounded-full bg-[#108843]" />
-      </div>
-    );
-  const introBlock = <div className="mt-10 sm:mt-[90px]">{introContent}</div>;
-
-  /* Mobile spacing here is a fixed budget, not a free choice. Two rules
-     compete: the page must breathe, and "The Fee Calculator" must still be on
-     the first screen (David, 2026-08-10, -11 and -12). The pre-simplification
-     padding totals about 158px more than fits above the fold on a phone, so
-     these values give back 56px of it — the most the heading can absorb — split
-     in proportion to the original three gaps. Desktop was never tightened and
-     keeps its original values through the sm: steps.
-
-     2026-08-12: each of the three gaps gained 6px, paid for by 7px trimmed from
-     the mobile header. 8px was tried first and rendered fine at 393px wide, but
-     tests/home-first-screen.mjs measures 390px too — where the layout runs a
-     few pixels taller and the heading's letterforms crossed the fold on an
-     iPhone 14. Trust that test, not a screenshot at one width.
-
-     Later the same day David asked for 5px more between the header and the top
-     of the "?" (44px → 49px), with everything below pushed down in turn. Done,
-     and it spent the budget exactly: the heading's letters ended at 659px on an
-     iPhone 14, which is the fold — zero margin — and 8px above it on an
-     iPhone 15/16.
-
-     DECISION CHANGED, 2026-08-14 — read before "fixing" this back. David asked
-     for another 5px in BOTH gaps (header → "?" 49px → 54px, and promise → The
-     Fee Calculator 73px → 78px) and explicitly released the first-screen
-     constraint that had been rationing them: "I'm not concerned about the fee
-     calculator being below the fold on older phones, I think the visual clarity
-     is more important — if they came to the site from the QR code, they will at
-     least scroll down some." So the heading may now cross the fold on the
-     smallest profiles by design. tests/home-first-screen.mjs still measures the
-     geometry and still asserts the heading is actually PAINTED (the invisible-
-     heading defect it was written for is unrelated to the fold and must stay
-     caught); only its fold-clearance expectation moved. */
-  return (
-    <section
-      data-url-eval-section="opening-promise"
-      className="w-full bg-[#EEF0F5] pb-11 text-center text-[#10233A] sm:pb-[110px]"
-    >
-      <div className="relative isolate overflow-hidden bg-gradient-to-b from-[#E7EAF0] via-[#EAEDF3] to-[#EEF0F5] px-4 pt-[69px] pb-10 sm:pt-20 sm:pb-[90px]">
-        {/* The decorative mark uses the bundled DM Sans face instead of an
-            external font stylesheet. That keeps its visible top stable when a
-            browser or CI runner cannot reach a font CDN. At 48.6% the measured
-            mobile gap stays inside David's approved 54px ±1px guard on both
-            Windows and Linux font rasterizers.
-            Desktop is untouched. tests/home-first-screen.mjs measures the gap
-            for real — trust it over arithmetic here. */}
-        <div
-          aria-hidden="true"
-          data-hero-mark
-          className="pointer-events-none absolute left-1/2 top-[48.6%] z-0 -translate-x-1/2 -translate-y-1/2 scale-y-[1.05] select-none text-[12.5rem] font-bold leading-none text-white sm:top-[50%] sm:text-[17rem]"
-          style={{ fontFamily: "var(--font-logo)" }}
-        >
-          ?
-        </div>
-        <div className="relative z-10 mx-auto max-w-6xl">
-          {/* Two lines, always. The question line carries a smaller floor than
-              the dollar line so it stays unbroken at 375px instead of orphaning
-              "with" on a third line; both lines converge on the same size once
-              the viewport is wide enough for the fluid step to take over. */}
-          <h1 className="font-semibold leading-[1.06] tracking-normal">
-            <span className="block text-[clamp(1.7rem,4.8vw,4rem)]">What would you do with</span>
-            <span className="block text-[clamp(2.25rem,4.8vw,4rem)] text-[#007A2F] tabular-nums">
-              {formatCurrencyFloored(savings)}
-              <NoteMarker />
-            </span>
-          </h1>
-          {/* One step down, and the attribution line below the promise with it:
-              the two of them paid for the 5px David added to each of the three
-              gaps on 2026-08-12. */}
-          <p className="mt-3 text-sm font-medium leading-snug text-[#10233A]/80 sm:text-base">
-            Potential savings over {years} years.
-          </p>
-        </div>
-      </div>
-      <p
-        data-home-assumptions
-        className="mx-auto max-w-4xl px-4 text-xs leading-4 text-[#52657A] sm:text-sm"
-      >
-        Based on a {formatCurrency(portfolioValue)} portfolio · {currentFees} ·{" "}
-        {annualGrowthPercent.toFixed(2)}% annual growth · {years} years · compared with{" "}
-        {formatCurrency(annualFlatFee / 12)}/month flat fee.{" "}
-        <a
-          href="#calculator-assumptions"
-          className="whitespace-nowrap font-semibold text-[#064B84] underline decoration-[#064B84]/40 underline-offset-2"
-        >
-          Use my numbers
-        </a>
-      </p>
-      <div className="mx-auto max-w-6xl px-4">{introBlock}</div>
-    </section>
-  );
-}
 
 export function CostAnalysisCalculator({
   bannerId = "founder-proof",
@@ -652,9 +356,15 @@ export function CostAnalysisCalculator({
   searchParams,
   marketingVariantId,
 }: Props) {
-  const eventMarketingVariant = experienceMode === "one-percent-blues" ? "one-percent-blues" : marketingVariantId;
-  const marketingVariant = homeMarketingVariants[marketingVariantId];
-  const calculatorLayout = marketingVariant.calculatorLayout ?? marketingVariant.layout;
+  const isOnePercentBlues = experienceMode === "one-percent-blues";
+  const eventMarketingVariant = isOnePercentBlues ? "one-percent-blues" : marketingVariantId;
+  const marketingVariant = isOnePercentBlues
+    ? undefined
+    : homeMarketingVariants[marketingVariantId as HomeMarketingVariantId];
+  const calculatorLayout = isOnePercentBlues
+    ? "final-c"
+    : (marketingVariant!.calculatorLayout ?? marketingVariant!.layout);
+  const calculatorTheme = isOnePercentBlues ? bluesCalculatorTheme : marketingVariant!.calculator;
   const usesLegacyCalculatorChrome = calculatorLayout !== "final-c";
   const usesOpeningMarketingHero = experienceMode === "marketing";
   const usesShareControls = usesLegacyCalculatorChrome || usesOpeningMarketingHero;
@@ -902,9 +612,7 @@ export function CostAnalysisCalculator({
      behaviour — inputs view, chart heading, no view tabs, disclaimer in the
      footer rather than the card — but not its grey section ground or the
      sections below it. */
-  const isOnePercentBlues = experienceMode === "one-percent-blues";
   const usesLeanCalculator = isSavingsCalculatorUpgrade || isOnePercentBlues;
-  const calculatorTheme = isOnePercentBlues ? bluesCalculatorTheme : marketingVariant.calculator;
 
   const quoteSectionStyle = isDarkMode
     ? {
@@ -1035,7 +743,7 @@ export function CostAnalysisCalculator({
               format={(v) => `${v.toFixed(2)}%`}
               variant="destructive"
               theme={calculatorTheme.slider}
-              pillColorOverride={marketingVariant.layout === "advisor" ? "#FB7185" : "#7F1D1D"}
+              pillColorOverride={marketingVariant?.layout === "advisor" ? "#FB7185" : "#7F1D1D"}
               min={0}
               max={3}
               step={0.05}
@@ -1304,7 +1012,7 @@ export function CostAnalysisCalculator({
         />
       )}
 
-      {usesOpeningMarketingHero && (
+      {usesOpeningMarketingHero && marketingVariant && (
         <HomeMarketingHero
           variant={marketingVariant}
           savings={projection.savings}
@@ -1319,81 +1027,15 @@ export function CostAnalysisCalculator({
         />
       )}
 
-      {/* Mobile Sticky Fee Bar */}
       {usesOpeningMarketingHero && (
-        <div
-          className={`fixed left-0 right-0 top-[58px] z-40 bg-white/95 backdrop-blur-sm transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] transform-gpu dark:bg-slate-900/90 md:hidden ${
-            showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
-          }`}
-        >
-          <div className="flex h-12 items-center justify-center px-4">
-            <div
-              className="flex items-center gap-2 rounded-full px-4 py-1.5 shadow-sm"
-              style={{
-                backgroundColor: isDarkMode
-                  ? homeCalculatorConfig.cards.lostToFeesDarkBg
-                  : homeCalculatorConfig.cards.lostToFeesBg,
-                color: homeCalculatorConfig.cards.lostToFeesText
-              }}
-            >
-              <Odometer value={Math.floor(projection.savings / 1000) * 1000} prefix="$" duration={1000} className="text-lg font-bold" />
-              <NoteMarker />
-              <span className="text-xs font-bold uppercase tracking-wider">
-                lost to asset-based fees!
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Desktop Sticky Fee Bar */}
-      {usesOpeningMarketingHero && (
-        <div
-          className={`fixed left-0 right-0 top-[52px] z-40 hidden bg-white/95 backdrop-blur-sm transition-all duration-800 ease-[cubic-bezier(0.22,1,0.36,1)] transform-gpu md:block ${
-            showDesktopBar ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-full opacity-0"
-          }`}
-        >
-          <div className="mx-auto flex h-11 max-w-5xl items-center justify-center gap-6 px-4 text-sm font-medium">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500 dark:text-slate-400">SMARTER Way ({formatCurrency(monthlyFlatFee)}/mo):</span>
-              <Odometer
-                value={Math.floor(projection.finalValueWithoutFees / 1000) * 1000}
-                prefix="$"
-                duration={800}
-                className="font-bold text-[#00A540]"
-              />
-            </div>
-
-            <div
-              className="flex items-center gap-2 rounded-lg px-3 py-1 shadow-sm"
-              style={{
-                backgroundColor: isDarkMode
-                  ? homeCalculatorConfig.cards.lostToFeesDarkBg
-                  : homeCalculatorConfig.cards.lostToFeesBg,
-                color: homeCalculatorConfig.cards.lostToFeesText
-              }}
-            >
-              <span className="text-[10px] font-bold uppercase tracking-wider opacity-80">Lost to Fees:</span>
-              <Odometer
-                value={Math.floor(projection.savings / 1000) * 1000}
-                prefix="-$"
-                duration={800}
-                className="font-bold"
-              />
-              <NoteMarker />
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500 dark:text-slate-400">AUM Advisor:</span>
-              <Odometer
-                value={Math.floor(projection.finalValueWithFees / 1000) * 1000}
-                prefix="$"
-                duration={800}
-                className="font-bold text-gray-900 dark:text-slate-100"
-              />
-            </div>
-          </div>
-        </div>
+        <StickyFeeBars
+          isDarkMode={isDarkMode}
+          monthlyFlatFee={monthlyFlatFee}
+          savings={projection.savings}
+          showDesktopBar={showDesktopBar}
+          smarterValue={projection.finalValueWithoutFees}
+          traditionalValue={projection.finalValueWithFees}
+        />
       )}
 
       <section
