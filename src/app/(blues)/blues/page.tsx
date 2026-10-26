@@ -101,7 +101,6 @@ export default async function OnePercentBluesPage({
       <CostAnalysisCalculator
         initialState={calculatorState}
         searchParams={resolvedSearchParams}
-        marketingVariantId="final-home"
         experienceMode="one-percent-blues"
       />
     </main>
