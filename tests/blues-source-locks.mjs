@@ -53,6 +53,7 @@ test("the diagnosis card waits for all three answers and links the disclaimer", 
   assert.match(check, /data-posthog-cta-location="blues_diagnosis_meet"/);
   assert.match(check, /data-posthog-cta-location="blues_diagnosis_calculator"/);
   assert.match(opening, /<noscript>/, "readers without JavaScript still get the number and the cure");
+  assert.doesNotMatch(opening, /["']use client["']/, "opening copy has no hooks or browser APIs");
 });
 
 test("the blue page composes the shared engine in one-percent-blues mode", () => {
@@ -64,10 +65,32 @@ test("the blue page composes the shared engine in one-percent-blues mode", () =>
     /<SignupCta location="blues_post_calculator" surfaceClassName="bg-transparent" primaryHref=\{bluesLinks\.signup\} \/>/,
   );
   assert.match(calculator, /<HomeFaqSection tone="blues" \/>/);
-  assert.match(
+  assert.match(calculator, /const calculatorLayout = isOnePercentBlues\s*\?\s*"final-c"/);
+  assert.match(calculator, /const calculatorTheme = isOnePercentBlues \? bluesCalculatorTheme/);
+  assert.doesNotMatch(
     calculator,
-    /const calculatorTheme = isOnePercentBlues \? bluesCalculatorTheme : marketingVariant\.calculator;/,
+    /isOnePercentBlues \? bluesCalculatorTheme : marketingVariant\.calculator/,
   );
+  assert.doesNotMatch(bluesPage, /marketingVariantId/);
+  assert.match(calculator, /from ["']next\/dynamic["']/);
+  for (const moduleName of [
+    "HomeMarketingHero",
+    "HomeTopBanner",
+    "QuoteTickerWithPortraits",
+    "FeeQuoteDeck",
+    "MathMotionField",
+    "WhatWhyWhoHow",
+    "ProFeeChart",
+    "PillSlider",
+    "SavingsLeadHero",
+    "StickyFeeBars",
+  ]) {
+    assert.doesNotMatch(
+      calculator,
+      new RegExp(`import(?:\\s+${moduleName}|\\s*\\{[^}]*\\b${moduleName}\\b)`),
+      `${moduleName} must stay out of the blue client graph`,
+    );
+  }
 });
 
 test("site chrome lives on the route groups, never on the root layout", async () => {
@@ -75,8 +98,13 @@ test("site chrome lives on the route groups, never on the root layout", async ()
   assert.doesNotMatch(rootLayout, /SiteNav|SiteFooter|application\/ld\+json/);
   assert.match(siteLayout, /<SiteNav \/>/);
   assert.match(siteLayout, /<SiteFooter \/>/);
-  assert.match(bluesLayout, /<BluesChrome>/);
-  assert.match(bluesLayout, /metadataBase: new URL\(BLUES_ORIGIN\)/);
+  assert.match(bluesLayout, /from ["']@\/app\/bluesFonts["']/);
+  assert.match(bluesLayout, /bluesShellClassName/);
+  assert.match(bluesLayout, /data-theme="blues"/);
+  assert.match(bluesLayout, /<BluesHeader \/>/);
+  assert.match(bluesLayout, /<BluesFooter \/>/);
+  assert.doesNotMatch(bluesLayout, /BluesChrome/);
+  assert.match(chrome, /["']use client["']/);
   assert.match(chrome, /data-theme="blues"/);
   assert.match(chrome, /<BluesHeader \/>/);
   assert.match(chrome, /<BluesFooter \/>/);

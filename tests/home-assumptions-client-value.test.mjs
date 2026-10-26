@@ -2,10 +2,10 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-const calculator = readFileSync(
-  new URL("../src/components/CostAnalysisCalculator.tsx", import.meta.url),
-  "utf8",
-);
+const calculator = [
+  readFileSync(new URL("../src/components/CostAnalysisCalculator.tsx", import.meta.url), "utf8"),
+  readFileSync(new URL("../src/components/SavingsLeadHero.tsx", import.meta.url), "utf8"),
+].join("\n");
 const calculatorExperience = readFileSync(
   new URL("../src/components/HomeCalculatorExperience.tsx", import.meta.url),
   "utf8",

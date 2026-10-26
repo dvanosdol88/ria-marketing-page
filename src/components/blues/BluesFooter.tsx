@@ -7,11 +7,7 @@ const BLUES_GROUND = "bg-[#EEF3FF]";
 const LEGAL_LINK_CLASS =
   "inline-flex items-center gap-1 !text-[#10233A] no-underline hover:!text-[#1E40AF]";
 
-/** DECISION (David, 2026-09-23 on the green site; applied here 2026-09-24):
- *  the same single footer as SiteFooter — the four legal links once, at the
- *  top, each with the leave-site icon (all four leave this domain), then the
- *  firm line and the calculator disclaimer every `*` marker links to — on the
- *  pale-blue ground, joined by the regulatory block in its `linksAbove` form. */
+/** Same footer order as the green site: legal links, firm line, notes, then the regulatory block. */
 export function BluesFooter() {
   return (
     <>

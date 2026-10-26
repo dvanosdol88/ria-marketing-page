@@ -8,19 +8,11 @@ import { SiteNav } from "@/components/SiteNav";
 import { BLUES_ORIGIN } from "@/config/onePercentBlues";
 import { isBluesHostname, requestHostname } from "@/lib/bluesHost";
 
-/*
- * Unknown blue-host addresses share this root missing-page file with the green
- * site. Reading the host is what keeps those addresses on the blue screen.
- * That read makes this file request-time for both hosts — a Blues-only
- * force-dynamic flag is not available here, and a catch-all rewrite would
- * send unknown blue-host paths through a path the #344 contract forbids.
- */
+/* Root 404: blue host uses Blues chrome; everyone else uses the green site chrome. */
 async function isBluesHost() {
   return isBluesHostname(requestHostname(await headers()));
 }
 
-/* Root 404 lives outside every route group, so it inherits the green site
-   title unless we override it. Unknown blue-host paths must read as Blues. */
 export async function generateMetadata(): Promise<Metadata> {
   if (!(await isBluesHost())) {
     return { title: "Page not found | You Are Paying Too Much" };
@@ -31,10 +23,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-/* The root not-found renders outside every route group. Green chrome is the
-   default; the blue host keeps its own header/footer so unknown paths and
-   missing assets (/this-does-not-exist-xyz, /blues/nope, /brand/missing.svg)
-   never wear the YAPT nav. */
 export default async function NotFound() {
   const isBlues = await isBluesHost();
 
