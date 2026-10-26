@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-10-26 — 10-61 Refresh the Sentry security update without publishing
+**Agent:** Linux Codex | **Surface:** marketing / Blues | **Work ID:** 10-61
+- changed: merged current main into existing Renovate [PR #366](https://github.com/dvanosdol88/ria-marketing-page/pull/366), retaining Sentry 10.75.2 and main's Next 16.4.1. The application diff against main remains package-lock.json only; this entry records the work. No wording, approval logic, tests, or workflow changes were authored.
+- evidence: main dd573fd and original Renovate head f6d2c938 merged cleanly. Local install/build/tests and fresh remote checks follow this commit; their actual results and exact final head are recorded on [container 10-61](https://www.dvo88.com/rack?card=10-61), not assumed here.
+- run-log: attempt 2832db80-a2af-4327-92ae-787b82fabbc4; provider session 01a1792d-2db2-71a3-a086-bd92b0f7854a; evidence in the assigned persistent Codex checkout's ignored tmp/10-61/.
+- deployed: not deployed; explicit task scope forbids merging or closing #366. Test-only draft #369 remains untouched; no Portfolio PM edits, reports or direct notifications.
+- next: validate the refreshed head and return the exact checks. If wording approval alone blocks, preserve it and return for David's direct approval; never bypass or manually retrigger it.
+
 ### 2026-10-23 — 10-11 Verify the installed wording block and preserve the owner test
 **Agent:** Linux Codex | **Surface:** marketing / Blues | **Work ID:** 10-11
 - found: fresh GitHub reads supersede the stale start-over request. Related work 10-08/10-10 already shipped the built-page comparison in #368 and the isolated-network repair in #371. Continue that work; do not rebuild it or reopen returned attempts.
