@@ -142,7 +142,7 @@ export default function MeaningPage() {
             <h1 className="mt-2 text-4xl font-semibold tracking-tight sm:text-5xl">
               The task isn’t the job.
               <br className="hidden sm:block" />
-              The job is to help people.
+              The job is to serve people.
             </h1>
 
             <div className="mt-6 rounded-xl border bg-white p-6">
