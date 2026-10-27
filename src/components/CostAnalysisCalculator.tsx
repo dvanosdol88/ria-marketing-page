@@ -939,29 +939,7 @@ export function CostAnalysisCalculator({
 
   const calculatorHandoff = isSavingsCalculatorUpgrade ? (
     <div className="section-shell relative z-10 pt-2 sm:pt-3">
-      {/* NEVER hide this block behind an entrance animation. `initial={false}`
-          means it renders in its final state — visible — in the server HTML and
-          stays visible whether or not JavaScript ever arrives.
-
-          It holds "The Fee Calculator", the one thing besides the hero and the
-          promise that David wants on the first screen. It used to fade in via
-          whileInView with a -40px margin, meaning it had to be 40px inside the
-          viewport before it would paint. On a phone it never is: at an iPhone
-          14's real height the heading sat at rest with opacity 0, so a visitor
-          arriving from the mailed QR code saw blank space where the heading
-          should be, and only got it after scrolling. It measured as comfortably
-          above the fold the whole time, which is why three rounds of spacing
-          work never caught it — the geometry test was sizing every profile's
-          viewport at 852px tall, where the trigger always fires.
-
-          Animating on mount instead was the first fix and was still wrong: an
-          `initial` of opacity 0 puts opacity 0 in the server HTML, so a slow
-          hydration or no JavaScript leaves the heading invisible for exactly
-          the visitors least able to wait for it.
-
-          (Found 2026-08-12; tests/home-first-screen.mjs now measures each
-          profile at its own height and asserts the heading is actually
-          painted.) */}
+      {/* NEVER hide this block behind an entrance animation; tests/home-first-screen.mjs asserts the heading is painted. */}
       <motion.div
         initial={false}
         animate={{ opacity: 1, y: 0 }}
@@ -977,10 +955,6 @@ export function CostAnalysisCalculator({
             an asset-based fee.
           </p>
         </div>
-        {/* The "Potential savings" badge that sat here was removed as
-            redundant (David, 2026-08-14): the same figure already headlines
-            the hero above and the results block below, so a third copy beside
-            the heading only competed with them. */}
       </motion.div>
     </div>
   ) : null;
@@ -1099,12 +1073,6 @@ export function CostAnalysisCalculator({
 
       </section>
 
-      {/* The lean root flow is calculator, WWWH, one primary conversion CTA,
-          the swipeable fee-quote deck (which now carries the intentional
-          pause before the firm handoff — David approved this placement from
-          the 2026-08-13 mockups), one unified firm handoff, then notes.
-          Legacy proof and repeated conversion sections remain reusable
-          off-root. */}
       {isSavingsCalculatorUpgrade && <WhatWhyWhoHow />}
 
       {isSavingsCalculatorUpgrade && (
@@ -1122,7 +1090,6 @@ export function CostAnalysisCalculator({
         </section>
       )}
 
-      {/* The nav's FAQ item scrolls here rather than leaving for /faq. */}
       {isSavingsCalculatorUpgrade && <HomeFaqSection topPaddingClassName="pt-0" />}
 
       {isSavingsCalculatorUpgrade && <SignupCta location="home_post_faq" />}
