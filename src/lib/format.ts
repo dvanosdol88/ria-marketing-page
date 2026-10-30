@@ -50,9 +50,3 @@ export function formatCurrencyFloored(value: number): string {
   const floored = Math.floor((value || 0) / 1000) * 1000;
   return fmtMoney(floored);
 }
-
-// NOTE: Existing callers pass whole numbers (e.g. 8 for 8%), not decimals.
-// fmtPct() above expects decimals (0.08) — don't confuse the two.
-export function formatPercent(value: number): string {
-  return `${value.toFixed(1)}%`;
-}
