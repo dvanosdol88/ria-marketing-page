@@ -39,7 +39,7 @@ test("the savings hero names every live calculator assumption and links to the e
 
 test("the homepage signup invitation explains the approved $100 monthly service without changing either CTA", () => {
   const home = signup
-    .split('if (variant === "block" && (location === "home_post_calculator" || location === "home_post_faq")) {')[1]
+    .split('if (location === "home_post_calculator" || location === "home_post_faq") {')[1]
     ?.split("const primaryButtonClass")[0];
 
   assert.ok(home);

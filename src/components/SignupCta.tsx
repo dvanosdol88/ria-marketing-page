@@ -5,15 +5,7 @@ import { signupCta } from "@/config/signupCta";
 type SignupCtaProps = {
   /** PostHog CTA location tag so each placement is distinguishable. */
   location: string;
-  /**
-   * "block" — the page's closing ask, a full dark card.
-   * "inline" — compact, sits directly under the calculator result while the
-   * number is still on screen. Pass `savingsLabel` to carry it into the copy.
-   */
-  variant?: "block" | "inline";
-  /** Formatted savings figure (e.g. "$184,000"). Inline variant only. */
-  savingsLabel?: string | null;
-  /** Outer band background for the block variant. The One Percent Blues page
+  /** Outer band background for the full-card ask. The One Percent Blues page
    *  passes bg-transparent so the card floats on its gradient. */
   surfaceClassName?: string;
   /** Absolute destination for the primary button, rendered as a plain <a>
@@ -22,9 +14,6 @@ type SignupCtaProps = {
    *  cross-domain, and a client-side prefetch of that redirect fails CORS. */
   primaryHref?: string;
 };
-
-const INLINE_PRIMARY_BUTTON_CLASS =
-  "flex min-h-[48px] w-full items-center justify-center rounded-full bg-[#008532] px-6 text-center text-base font-bold !text-white !no-underline shadow-sm transition hover:bg-[#006B28] hover:!text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]";
 
 /** The retained full-card CTA is intentionally quiet: the green pill is the
  * single primary action after the headline/body were deprecated. The group/
@@ -106,14 +95,12 @@ function HomeActionPair({ location }: { location: string }) {
 
 export function SignupCta({
   location,
-  variant = "block",
-  savingsLabel = null,
   surfaceClassName = "bg-[#EEF0F5]",
   primaryHref,
 }: SignupCtaProps) {
   // The homepage uses David's compact two-choice layout. Other placements keep
   // their existing presentation and all analytics labels remain stable.
-  if (variant === "block" && (location === "home_post_calculator" || location === "home_post_faq")) {
+  if (location === "home_post_calculator" || location === "home_post_faq") {
     return (
       <section className={`w-full ${surfaceClassName} px-4 pb-4 pt-10 sm:px-6 sm:pb-6 sm:pt-14`}>
         <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
@@ -162,8 +149,7 @@ export function SignupCta({
     );
   }
 
-  const primaryButtonClass =
-    variant === "block" ? BLOCK_PRIMARY_BUTTON_CLASS : INLINE_PRIMARY_BUTTON_CLASS;
+  const primaryButtonClass = BLOCK_PRIMARY_BUTTON_CLASS;
   const primaryLeavesSite = Boolean(primaryHref && /^https?:\/\//i.test(primaryHref));
 
   const primaryContent = (
@@ -171,13 +157,13 @@ export function SignupCta({
       {signupCta.primary.label}
       {primaryLeavesSite ? (
         <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
-      ) : variant === "block" ? (
+      ) : (
         <ArrowRight
           aria-hidden="true"
           className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:translate-x-1"
           strokeWidth={2.75}
         />
-      ) : null}
+      )}
     </>
   );
 
@@ -202,25 +188,6 @@ export function SignupCta({
       {primaryContent}
     </Link>
   );
-
-  if (variant === "inline") {
-    return (
-      <section className="mt-4 w-full rounded-lg bg-[#064B84] p-5 text-white sm:p-6">
-        <h2 className="text-balance text-xl font-black leading-tight sm:text-2xl">
-          {savingsLabel
-            ? `That ${savingsLabel} doesn't have to go to fees.`
-            : signupCta.block.headline}
-        </h2>
-        <div className="mt-4">{primary}</div>
-        <div className="mt-4">
-          <SecondaryLink location={location} />
-        </div>
-        <p className="mt-4 text-[11px] leading-4 text-white/60">
-          {signupCta.disclosure}
-        </p>
-      </section>
-    );
-  }
 
   return (
     <section className={`w-full ${surfaceClassName} px-4 py-10 sm:px-6 sm:py-14`}>
