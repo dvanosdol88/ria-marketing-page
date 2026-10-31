@@ -100,16 +100,22 @@ type HomeCalculatorExperienceProps = {
   helperNotes: ReactNode;
   collapseControl: ReactNode;
   slidersExpanded: boolean;
-  sliders: CalculatorSliderNodes;
+  sliders?: CalculatorSliderNodes;
   simpleControls: CalculatorSimpleControlNodes;
-  renderChart: (className: string) => ReactNode;
+  renderChart?: (className: string) => ReactNode;
   activeScenario: Scenario | null;
   assumptionsCustomized: boolean;
   showViewTabs?: boolean;
   initialView?: "header" | "inputs";
   showChartHeading?: boolean;
-  onHighlightScenario: (scenario: Scenario) => void;
+  onHighlightScenario?: (scenario: Scenario) => void;
   onAssumptionChange: (patch: CalculatorAssumptionPatch) => void;
+};
+
+type LegacyCalculatorChromeProps = HomeCalculatorExperienceProps & {
+  sliders: CalculatorSliderNodes;
+  renderChart: (className: string) => ReactNode;
+  onHighlightScenario: (scenario: Scenario) => void;
 };
 
 function formatCompactCurrency(value: number) {
@@ -627,7 +633,7 @@ function ConsoleControlGroup({
   );
 }
 
-function DirectMailCalculatorExperience(props: HomeCalculatorExperienceProps) {
+function DirectMailCalculatorExperience(props: LegacyCalculatorChromeProps) {
   const {
     activeScenario,
     annualFlatFee,
@@ -771,7 +777,7 @@ function DirectMailCalculatorExperience(props: HomeCalculatorExperienceProps) {
   );
 }
 
-function FeeReceiptCalculatorExperience(props: HomeCalculatorExperienceProps) {
+function FeeReceiptCalculatorExperience(props: LegacyCalculatorChromeProps) {
   const {
     annualAumFeeEstimate,
     annualFlatFee,
@@ -1389,15 +1395,6 @@ function FinalHomeLineChart({
   );
 }
 
-/**
- * Two parallel proportional bars under the line chart that surface the
- * same two ending values shown in the big stat cards above. The flat-fee
- * (green) bar always renders at 100% width — it's the larger value — and
- * the asset-based (blue) bar renders at its proportional share of that
- * total. When `barActive` is true (hover, mobile tap, or VS pin), a red
- * overlay fades in on top of the green bar covering only the differential
- * region, plus a caption appears with the dollar/percentage gap.
- */
 /**
  * The results, as arithmetic.
  *
@@ -2580,7 +2577,7 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
   );
 }
 
-function AdvisorCalculatorExperience(props: HomeCalculatorExperienceProps) {
+function AdvisorCalculatorExperience(props: LegacyCalculatorChromeProps) {
   const {
     activeScenario,
     collapseControl,
@@ -2688,13 +2685,15 @@ export function HomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
     return <FinalHomeCalculatorExperience {...props} />;
   }
 
+  const legacyProps = props as LegacyCalculatorChromeProps;
+
   if (props.layout === "receipt") {
-    return <FeeReceiptCalculatorExperience {...props} />;
+    return <FeeReceiptCalculatorExperience {...legacyProps} />;
   }
 
   if (props.layout === "advisor") {
-    return <AdvisorCalculatorExperience {...props} />;
+    return <AdvisorCalculatorExperience {...legacyProps} />;
   }
 
-  return <DirectMailCalculatorExperience {...props} />;
+  return <DirectMailCalculatorExperience {...legacyProps} />;
 }
