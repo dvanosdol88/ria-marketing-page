@@ -82,20 +82,6 @@ function getAssetTier(portfolioValue: number) {
 
 const TIME_HORIZON_VALUES = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25, 30];
 
-const UNUSED_LEGACY_SLIDERS: CalculatorSliderNodes = {
-  advisoryFee: null,
-  mutualFundExpenses: null,
-  portfolio: null,
-  growth: null,
-  years: null,
-};
-
-function unusedLegacyRenderChart(_className: string) {
-  return null;
-}
-
-function unusedScenarioHighlight(_scenario: "smarter" | "traditional") {}
-
 type Props = {
   initialState: CalculatorState;
   searchParams: Record<string, string | string[] | undefined>;
@@ -708,7 +694,7 @@ export function CostAnalysisCalculator({
     </>
   ) : null;
 
-  const calculatorSliders: CalculatorSliderNodes = usesLegacyCalculatorChrome
+  const calculatorSliders: CalculatorSliderNodes | undefined = usesLegacyCalculatorChrome
     ? {
         advisoryFee: (
           <PillSlider
@@ -800,7 +786,7 @@ export function CostAnalysisCalculator({
           />
         ),
       }
-    : UNUSED_LEGACY_SLIDERS;
+    : undefined;
 
   /* On the blue page the four controls get the blue outline and fill
      (David, 2026-09-17: they were getting lost in the white). Elsewhere the
@@ -926,7 +912,7 @@ export function CostAnalysisCalculator({
           )}
         </div>
       )
-    : unusedLegacyRenderChart;
+    : undefined;
 
   const bluesHandoff = isOnePercentBlues ? (
     <div className="relative z-10 mx-auto w-full max-w-[1040px] px-4 pt-3 sm:px-6 sm:pt-5">
@@ -1067,7 +1053,7 @@ export function CostAnalysisCalculator({
           showViewTabs={!usesLeanCalculator}
           initialView={usesLeanCalculator ? "inputs" : "header"}
           showChartHeading={usesLeanCalculator}
-          onHighlightScenario={usesLegacyCalculatorChrome ? handleCardTap : unusedScenarioHighlight}
+          onHighlightScenario={usesLegacyCalculatorChrome ? handleCardTap : undefined}
           onAssumptionChange={(patch) => updateCalculatorState(patch)}
         />
 
