@@ -366,7 +366,6 @@ export function CostAnalysisCalculator({
   const [state, setState] = useState<CalculatorState>(mergedState);
   const [assumptionsCustomized, setAssumptionsCustomized] = useState(false);
   const [activeCard, setActiveCard] = useState<"smarter" | "traditional" | null>(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [shareFeedback, setShareFeedback] = useState<"idle" | "success" | "error">("idle");
   const [slidersExpanded, setSlidersExpanded] = useState(true);
   const [showMutualFundExpenses, setShowMutualFundExpenses] = useState(
@@ -548,12 +547,6 @@ export function CostAnalysisCalculator({
   }, [experienceMode, eventMarketingVariant, projection.savings, shareSummary, shareUrl, state.portfolioValue]);
 
   useEffect(() => {
-    if (!usesOpeningMarketingHero) return;
-    if (typeof document === "undefined") return;
-    setIsDarkMode(document.documentElement.classList.contains("dark"));
-  }, [usesOpeningMarketingHero]);
-
-  useEffect(() => {
     if (!usesLegacyCalculatorChrome) return;
     setChartReady(true);
   }, [usesLegacyCalculatorChrome]);
@@ -600,13 +593,9 @@ export function CostAnalysisCalculator({
      sections below it. */
   const usesLeanCalculator = isSavingsCalculatorUpgrade || isOnePercentBlues;
 
-  const quoteSectionStyle = isDarkMode
-    ? {
-        backgroundColor: "#0B1220",
-      }
-    : {
-        backgroundColor: homeCalculatorConfig.quoteSection.backgroundColor,
-      };
+  const quoteSectionStyle = {
+    backgroundColor: homeCalculatorConfig.quoteSection.backgroundColor,
+  };
 
   const shareButtonLabel = usesShareControls
     ? shareFeedback === "success"
@@ -989,7 +978,7 @@ export function CostAnalysisCalculator({
 
       {usesOpeningMarketingHero && (
         <StickyFeeBars
-          isDarkMode={isDarkMode}
+          isDarkMode={false}
           monthlyFlatFee={monthlyFlatFee}
           savings={projection.savings}
           showDesktopBar={showDesktopBar}
