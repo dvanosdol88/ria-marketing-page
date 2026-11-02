@@ -61,11 +61,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
       - name: Install Chromium
-        # --with-deps also installs system fonts and can stall the runner for
-        # the whole job budget. Shared libraries are already on ubuntu-latest;
-        # the wording-approval workflow uses the same browser-only install.
-        run: npx playwright install chromium
+        # Local CLI, no --with-deps (apt/font installs have stalled this job),
+        # and a timed retry when the Playwright CDN hangs.
+        run: |
+          for attempt in 1 2 3; do
+            if timeout 120 ./node_modules/.bin/playwright install chromium; then
+              exit 0
+            fi
+            echo "Chromium install attempt ${attempt} failed; retrying"
+            sleep 5
+          done
+          exit 1
 
       # The source-lock and Stop-hook suites are file-only. Every other suite starts its own
       # Next dev server on a free port and drives Chromium. They share one .next
