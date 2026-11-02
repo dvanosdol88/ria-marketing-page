@@ -54,7 +54,6 @@ src/
 - framer-motion: ^12.28.1
 - lucide-react: ^0.454.0
 - next: ^14.2.4
-- next-view-transitions: ^0.3.5
 - playwright: ^1.57.0
 - react: ^18.3.1
 - react-dom: ^18.3.1

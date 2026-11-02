@@ -42,25 +42,20 @@ jobs:
   # the wait stays close to the slower of the pair rather than their sum.
   test:
     runs-on: ubuntu-latest
+    # Browsers ship in this image. Live Playwright CDN downloads from the
+    # hosted runner have been hanging for the full job budget.
+    container:
+      image: mcr.microsoft.com/playwright:v1.58.2-noble
     # Roughly 2 minutes in practice. These suites drive a real browser against a
     # real dev server, so a stuck page or a settle loop that never converges
     # would otherwise hold the PR for GitHub's 6-hour default.
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 'lts/*'
-          cache: 'npm'
-
       - name: Install dependencies
         run: npm ci
-
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
 
       # The source-lock and Stop-hook suites are file-only. Every other suite starts its own
       # Next dev server on a free port and drives Chromium. They share one .next

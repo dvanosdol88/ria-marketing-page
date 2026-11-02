@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { ViewTransitions } from "next-view-transitions";
 import { Suspense } from "react";
 import "./globals.css";
 import { inter, dmSans } from "./fonts";
@@ -75,15 +74,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${dmSans.variable} bg-[#EEF0F5] text-neutral-900 has-[[data-theme=blues]]:bg-[#1E3A8A]`}>
         <PostHogProvider>
-          <ViewTransitions>
-            <PostHogCtaTracker />
-            <Suspense fallback={null}>
-              <PostHogPageView />
-            </Suspense>
-            <RedditPixel />
-            <GoogleAdsTag />
-            {children}
-          </ViewTransitions>
+          <PostHogCtaTracker />
+          <Suspense fallback={null}>
+            <PostHogPageView />
+          </Suspense>
+          <RedditPixel />
+          <GoogleAdsTag />
+          {children}
         </PostHogProvider>
         <SiteAnalytics />
       </body>

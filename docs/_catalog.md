@@ -1684,12 +1684,11 @@ Group content that spans categories so David can compare across batches:
 ### layout.tsx — utility
 **Path:** `src/app/layout.tsx`
 **Size:** 0.6KB
-**Summary:** Root layout with Inter font, ViewTransitions, and base metadata.
+**Summary:** Root layout with Inter font and base metadata.
 
 **Brand color check:** N/A — no colors defined, uses neutral-50/900 body classes.
 
 **Notable:**
-- Uses `next-view-transitions` ViewTransitions wrapper
 - Imports Inter font from `./fonts`
 - Metadata: title "Upgrade. Improve. Save.", description "Landing calculator and proof for advisory fees."
 - Body: `inter.variable bg-neutral-50 text-neutral-900`

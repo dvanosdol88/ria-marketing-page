@@ -16,8 +16,8 @@ type SignupCtaProps = {
 };
 
 /** The retained full-card CTA is intentionally quiet: the green pill is the
- * single primary action after the headline/body were deprecated. The group/
- * arrow treatment is presentation only — one button, same label, same door.
+ * single primary action. The group/arrow treatment is presentation only —
+ * one button, same label, same door.
  * "Become a client" buttons are always green on every site (David 2026-09-24). */
 const BLOCK_PRIMARY_BUTTON_CLASS =
   "group flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#008532] px-6 text-center text-base font-bold !text-white !no-underline shadow-[0_10px_26px_rgba(3,26,42,0.35)] transition hover:-translate-y-0.5 hover:bg-[#006B28] hover:shadow-[0_16px_34px_rgba(3,26,42,0.45)] hover:!text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]";
@@ -193,8 +193,7 @@ export function SignupCta({
     <section className={`w-full ${surfaceClassName} px-4 py-10 sm:px-6 sm:py-14`}>
       <div className="relative mx-auto max-w-3xl overflow-hidden rounded-2xl bg-gradient-to-br from-[#0A5A9C] via-[#064B84] to-[#04324F] p-6 text-white shadow-[0_22px_54px_rgba(6,75,132,0.30)] sm:p-10">
         {/* Quiet brand mark in the card's corner — the same three rising bars
-            as the logo, screened way back. Identity, not decoration; carries
-            no copy, so the deprecated headline/body stay deprecated. */}
+            as the logo, screened way back. Identity, not decoration. */}
         <div aria-hidden="true" className="pointer-events-none absolute -right-4 -top-8 flex items-end gap-2.5 opacity-[0.08] sm:-right-2 sm:gap-3">
           <span className="h-16 w-6 rounded-sm bg-white sm:h-20 sm:w-7" />
           <span className="h-24 w-6 rounded-sm bg-white sm:h-32 sm:w-7" />
