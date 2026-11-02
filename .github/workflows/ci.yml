@@ -44,8 +44,10 @@ jobs:
     runs-on: ubuntu-latest
     # Roughly 2 minutes in practice. These suites drive a real browser against a
     # real dev server, so a stuck page or a settle loop that never converges
-    # would otherwise hold the PR for GitHub's 6-hour default.
-    timeout-minutes: 15
+    # would otherwise hold the PR for GitHub's 6-hour default. Chromium install
+    # has taken the full previous 15-minute cap on this runner, so the cap is
+    # 25 minutes to leave room for the suites after a slow browser download.
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v6
