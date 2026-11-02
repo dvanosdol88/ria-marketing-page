@@ -19,7 +19,7 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { createPortal } from "react-dom";
-import { formatCurrency, formatCurrencyFloored } from "@/lib/format";
+import { formatCompactCurrency, formatCurrency, formatCurrencyFloored } from "@/lib/format";
 import { MIN_HORIZON_YEARS, buildQueryFromState } from "@/lib/calculatorState";
 import {
   calculatorAccentGreen,
@@ -117,29 +117,6 @@ type LegacyCalculatorChromeProps = HomeCalculatorExperienceProps & {
   renderChart: (className: string) => ReactNode;
   onHighlightScenario: (scenario: Scenario) => void;
 };
-
-function formatCompactCurrency(value: number) {
-  const amount = value || 0;
-  const absAmount = Math.abs(amount);
-
-  if (absAmount >= 1000000) {
-    const millions = amount / 1000000;
-    const formatted = Number.isInteger(millions)
-      ? millions.toFixed(0)
-      : millions.toFixed(2).replace(/0+$/, "").replace(/\.$/, "");
-    return `$${formatted}M`;
-  }
-
-  if (absAmount >= 1000) {
-    const thousands = amount / 1000;
-    const formatted = Number.isInteger(thousands)
-      ? thousands.toFixed(0)
-      : thousands.toFixed(1).replace(/0+$/, "").replace(/\.$/, "");
-    return `$${formatted}k`;
-  }
-
-  return formatCurrency(amount);
-}
 
 // Animates a numeric value from 0 → `target` over `durationMs` whenever `active`
 // flips from false → true. Live `target` changes while active keep the displayed
@@ -2546,11 +2523,6 @@ function FinalHomeCalculatorExperience(props: HomeCalculatorExperienceProps) {
         {showViewTabs ? null : (
           <div className="mt-3 border-t border-[#DFE6EE] pt-1">{assumptionGrid}</div>
         )}
-
-        {/* The two paragraphs that used to sit here — how the asset-based fee is
-            modeled, and the illustrative-only caveat — are now notes 2 and 1 at
-            the foot of the page, reachable from the superscript beside each
-            figure they actually govern (David, 2026-08-11). */}
 
         <div className="mx-4 mt-4 pb-5 sm:mx-7">
           <SeeOurMathBento

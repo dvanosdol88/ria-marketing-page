@@ -28,9 +28,10 @@ const DRAWER_CLIENT_BUTTON_CLASS =
  * Site-wide navigation bar — "Authority" style with collapsing behavior.
  *
  * Two states driven by scroll position:
- *   Initial (scrollY ≤ 100): Full-height bar, full logo with wordmark, no shadow.
- *   Collapsed (scrollY > 100): Compact bar (~52px desktop, 48px mobile),
+ *   Initial (scrollY ≤ 158): Full-height bar, full logo with wordmark, no shadow.
+ *   Collapsed (scrollY > 158): Compact bar (~52px desktop, 48px mobile),
  *     icon-only logo (ascending green bars), light shadow.
+ *   Re-expands after collapsing once scrollY falls to 104 or below.
  *
  * Logo swap uses an opacity cross-fade — both logo elements are always in the
  * DOM (grid-stacked) to avoid layout shifts.
