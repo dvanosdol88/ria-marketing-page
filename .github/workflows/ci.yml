@@ -62,7 +62,10 @@ jobs:
         run: npm ci
 
       - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+        # --with-deps also installs system fonts and can stall the runner for
+        # the whole job budget. Shared libraries are already on ubuntu-latest;
+        # the wording-approval workflow uses the same browser-only install.
+        run: npx playwright install chromium
 
       # The source-lock and Stop-hook suites are file-only. Every other suite starts its own
       # Next dev server on a free port and drives Chromium. They share one .next
