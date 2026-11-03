@@ -1,26 +1,5 @@
 /**
- * The home page's single disclaimer.
- *
- * This started as four numbered notes, one per claim. David cut it to a single
- * paragraph (2026-08-11): "That copy is WAY too wordy." The superscript marker
- * beside each figure survives — it still gives a reader one tap to the
- * disclaimer instead of a hunt — but there is now one destination rather than
- * four.
- *
- * Held as alternating segments rather than one string so the three bolded
- * lead-ins David specified stay exactly where he put them, and so the API and
- * the SSR test can derive the plain text from the same source the page renders.
- *
- * Kept deliberately short at David's direction. Longer statements were cut, not
- * overlooked — do not re-add them without asking him. The account minimum in
- * particular is settled: it stays off this page.
- *
- * Risk-of-loss and registration language still render directly below this
- * block in ComplianceFooter, so they are not lost.
- *
- * 2026-09-23 (David approved): "or investment advice" was cut from the first
- * sentence — the ComplianceFooter paragraph directly below already states the
- * site "does not constitute investment advice", so the footer said it twice.
+ * Alternating bold/text segments so the API and SSR test can derive the same plain text the page renders.
  */
 
 export const CALCULATOR_NOTES_ANCHOR = "calculator-notes";

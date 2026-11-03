@@ -2,11 +2,7 @@ import type { CalculatorAccentTheme, HomeCalculatorTheme } from "@/config/homeMa
 import { SMARTER_WAY_WEALTH_MEET_URL } from "@/config/campaignLinks";
 
 /**
- * One Percent Blues — the blue front door to the fee calculator, served on
- * onepercentblues.com. Spec: docs/superpowers/specs/2026-09-17-one-percent-
- * blues-design.md. Every visible string on the page lives here so the copy
- * has one source and the source-lock test (tests/blues-source-locks.mjs) has
- * one file to read.
+ * One Percent Blues copy lives here so the source-lock test has one file to read.
  */
 
 export const BLUES_HOST = "onepercentblues.com";
@@ -83,7 +79,7 @@ export function parseBluesAnswers(value: string | null | undefined): BluesAnswer
   return { q1: toAnswer(q1), q2: toAnswer(q2), q3: toAnswer(q3) };
 }
 
-export type BluesDiagnosisKey = "full" | "mild" | "unsure";
+type BluesDiagnosisKey = "full" | "mild" | "unsure";
 
 /** Null until all three questions are answered. */
 export function diagnoseBlues(answers: BluesAnswers): BluesDiagnosisKey | null {
@@ -136,10 +132,7 @@ const bluesAccent: CalculatorAccentTheme = {
   focusWithinRingClassName: "focus-within:ring-[#2563EB]/20",
 };
 
-/** The calculator's four stepper controls (portfolio, years, growth, fee)
- *  sit in a white card on the blue page and were getting lost (David,
- *  2026-09-17). Blue outline, pale-blue fill and blue +/- so they read as
- *  the thing to touch. Green site keeps its own defaults. */
+/** Blue-page steppers keep a blue outline on the white card; the green site keeps its own defaults. */
 export const bluesControlClasses = {
   frameClassName:
     "rounded-md border-[1.5px] border-[#2563EB] bg-[#EEF3FF] shadow-[0_1px_0_rgba(37,99,235,0.18)] focus-within:border-[#1E3A8A] focus-within:ring-2 focus-within:ring-[#2563EB]/30",

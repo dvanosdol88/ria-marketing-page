@@ -33,14 +33,14 @@ export const DEFAULT_STATE: CalculatorState = {
   mutualFundExpensePercent: 0,
 };
 
-export function parseNumber(value: string | null, fallback: number, min: number, max: number): number {
+function parseNumber(value: string | null, fallback: number, min: number, max: number): number {
   if (!value) return fallback;
   const parsed = Number.parseFloat(value);
   if (Number.isNaN(parsed)) return fallback;
   return Math.min(Math.max(parsed, min), max);
 }
 
-export function parseInteger(value: string | null, fallback: number, min: number, max: number): number {
+function parseInteger(value: string | null, fallback: number, min: number, max: number): number {
   if (!value) return fallback;
   const parsed = Number.parseFloat(value);
   if (Number.isNaN(parsed)) return fallback;

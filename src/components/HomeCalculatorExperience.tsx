@@ -1560,12 +1560,7 @@ function SeeOurMathBento({
   const feeBarWidth = `${Math.min(Math.max(directFeeShare, 0), 100)}%`;
   const compoundingBarWidth = `${Math.min(Math.max(compoundingShare, 0), 100)}%`;
 
-  // Share stack wiring (canon program Phase B1, docs/plans/2026-08-12-
-  // calculator-canon.md in the sister repo). This site's calculator has no
-  // market-mode/tiered-fee state (that's a smarterwaywealth.com-only
-  // "advanced add-on"), so returnLabel/feeLabel are always the single-rate,
-  // steady-growth phrasing — the same shape buildShareSummary's regexes
-  // already recognize on the canon side.
+  // Share stack: this site has no market-mode/tiered-fee state, so returnLabel/feeLabel stay the single-rate phrasing buildShareSummary already recognizes.
   useEffect(() => {
     setOrigin(window.location.origin);
   }, []);
@@ -1605,18 +1600,7 @@ function SeeOurMathBento({
         pollUrl: `${canonicalUrl.replace(/#calculator$/, "")}#poll`,
       })
     : null;
-  /* The poll's own "Share my results" button opens THIS panel. Since the
-     2026-08-16 reorder the panel sits ABOVE the poll rather than below it, so
-     opening it without moving the viewport would expand a panel the visitor
-     cannot see and the click would read as broken.
-
-     ShareMyResults already nudges itself into view on open, but with
-     block:"nearest" — the right call when the panel opens BELOW the tapped
-     button, and the wrong one here: the panel is taller than a phone viewport
-     and sits above it, so "nearest" brings its bottom edge up and lands the
-     visitor at the end of the panel. This runs after that one (canon fires at
-     160ms) and re-aims at the top of the section, so the visitor arrives at
-     the heading with scroll-mt-24 keeping the sticky header off it. */
+  /* The poll's "Share my results" button opens this panel above the poll, so scroll to the section start rather than nearest. */
   const openSharePanel = () => {
     setSharePanelOpen(true);
     window.setTimeout(() => {
@@ -1652,21 +1636,7 @@ function SeeOurMathBento({
 
   return (
     <>
-      {/* ORDER CHANGED, 2026-08-14 (David): "View calculation details" now sits
-          directly under the calculator, ahead of the poll and the share card.
-          It is the only one of the three that is about the number the visitor
-          just produced, so it belongs against the calculator; voting and
-          sharing are both things you do afterwards. The rule below separates
-          the two ideas — read your result, then act on it.
-
-          HALVED, 2026-08-16 (David: "make that about half of its existing
-          height"). It was 82px on a phone because it was built like the two
-          cards below it — full card padding wrapped around a 40px icon button —
-          when all it actually is is a link to a dialog. It is now a single 42px
-          strip: the padding drops to py-2, the icon drops to a 24px disc, and
-          the whole row became the button rather than just the icon, so halving
-          the height GREW the tap target from a 40px square to the full width of
-          the card. The label is clickable now too, which it never was. */}
+      {/* Details sit under the calculator; share then poll follow. */}
       <motion.section
         whileHover={{ y: -2, scale: 1.004 }}
         transition={{ duration: 0.8, ease: [0.165, 0.84, 0.44, 1] }}
@@ -1693,16 +1663,7 @@ function SeeOurMathBento({
 
       <div aria-hidden="true" className="mb-5 h-px w-full bg-[#D8E2EA]" />
 
-      {/* Share & results — canon share stack (docs/plans/2026-08-12-
-          calculator-canon.md, Phase B1). Same component set as the sister
-          site (smarterwaywealth.com): ShareMyResults + SocialShareRow, wired
-          to this component's own live state via siteCalculatorConfig.
-
-          ORDER REVERSED AGAIN, 2026-08-16 (David: "Vote | Share — switch those
-          so share comes first"). Sharing is the higher-value action of the two
-          and it is the one that leaves the site with the visitor's own number
-          attached; the poll is a curiosity. It now sits directly under the
-          details strip, with the poll beneath it. */}
+      {/* Canon share stack: ShareMyResults then the poll. */}
       <motion.section
         ref={shareSectionRef}
         whileHover={{ y: -3, scale: 1.004 }}
@@ -1711,13 +1672,6 @@ function SeeOurMathBento({
         className="mb-4 min-w-0 scroll-mt-24 rounded-lg border border-[#D8E2EA] bg-white p-5 shadow-[0_12px_32px_rgba(17,33,52,0.06)] transition-[border-color,box-shadow] duration-300 hover:border-[#C2D4E1] hover:shadow-[0_18px_44px_rgba(17,33,52,0.09)] sm:p-6"
       >
         <div className="min-w-0">
-          {/* One heading, one button (2026-08-17, David's checked change list
-              from the One Tap to Share research). The 2026-08-16 pass had
-              already reworded the eyebrow/heading pair; this one removes the
-              eyebrow outright — "SHARE" over "Send this comparison" over a
-              button reading "Share my results" was still the same idea three
-              times in 40 vertical pixels, and NN/g's visual-hierarchy
-              guidance wants each level to add information, not restate it. */}
           <h3 id="home-share-results-heading" className="text-lg font-semibold text-[#10233A] sm:text-xl">
             Send this comparison
           </h3>
@@ -1735,12 +1689,6 @@ function SeeOurMathBento({
           />
         </div>
 
-        {/* Moved below the control and rewritten (2026-08-16). It used to sit
-            up beside the heading, where a reassurance nobody had asked for yet
-            competed with the heading for the first read; fine print belongs
-            after the thing it qualifies. "PostHog" is the name of a vendor the
-            visitor has no reason to know — the claim is unchanged in scope,
-            only in language. */}
         <p className="mt-3 text-xs font-medium leading-5 text-[#667587]">
           Nothing you enter here is sent to our analytics.
         </p>
