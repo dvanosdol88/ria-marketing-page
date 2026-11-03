@@ -9,10 +9,7 @@ import GoogleAdsTag from "@/components/GoogleAdsTag";
 import RedditPixel from "@/components/RedditPixel";
 import { SiteAnalytics } from "@/components/SiteAnalytics";
 
-/* The site's header, footer and JSON-LD moved to src/app/(site)/layout.tsx on
-   2026-09-17 so the One Percent Blues front door (src/app/(blues)) can render
-   its own chrome. This root layout carries only what BOTH front doors share:
-   the document, fonts, analytics and providers. */
+/* Site header, footer and JSON-LD live on the (site) and (blues) layouts so each front door can render its own chrome. */
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://youarepayingtoomuch.com"),
