@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-11-03 — Privacy page: general advertising-partner wording (Reddit Pixel now also on smarterwaywealth.com)
+**Agent:** Claude (Opus 5.5, cloud session) | **Surface:** youarepayingtoomuch.com /privacy only | **Approval:** David selected the exact general wording ("General wording, like the big firms") in [the source session](https://claude.ai/code/session_01PL1vvK7JjkNWrvz9aYhbvL) | **Rack:** none filed (no Rack key in this session)
+- changed: the Reddit paragraph under "Advertising measurement" is replaced with the approved general advertising-partner paragraph (same text as smarterwaywealth.com/privacy); the Google paragraph is unchanged. Third parties: "On youarepayingtoomuch.com we also use Reddit and Google" → "We also use advertising partners, such as social media companies and Google," (comma added after "Google" so the approved substitution reads correctly). Last updated 2026-11-03.
+- why: smarterwaywealth.com now loads the same Reddit Pixel (smarter-way-wealth PR, same date), so "Smarterwaywealth.com does not use the Reddit Pixel" had to go; David chose the general wording after research showing American Express, Wealthfront, Robinhood, Public, Range and Farther all run the Reddit Pixel without naming Reddit.
+- code: comment-only update in `src/config/redditPixel.ts`; this site's pixel behavior is unchanged.
+- deployed: see the PR.
+
 ### 2026-10-26 — 10-61 Refresh the Sentry security update without publishing
 **Agent:** Linux Codex | **Surface:** marketing / Blues | **Work ID:** 10-61
 - changed: merged current main into existing Renovate [PR #366](https://github.com/dvanosdol88/ria-marketing-page/pull/366), retaining Sentry 10.75.2 and main's Next 16.4.1. The application diff against main remains package-lock.json only; this entry records the work. No wording, approval logic, tests, or workflow changes were authored.
