@@ -108,6 +108,40 @@ test("site chrome lives on the route groups, never on the root layout", async ()
   assert.match(chrome, /data-theme="blues"/);
   assert.match(chrome, /<BluesHeader \/>/);
   assert.match(chrome, /<BluesFooter \/>/);
+  assert.match(chrome, /from ["']@\/app\/bluesLook["']/);
+  assert.doesNotMatch(chrome, /bluesFonts|next\/font/);
+});
+
+test("crash and missing-page shells never compile the Google font", async () => {
+  const [fonts, look, globalError, bluesGroupError, bluesPageError, siteError, notFound] =
+    await Promise.all([
+      read("../src/app/bluesFonts.ts"),
+      read("../src/app/bluesLook.ts"),
+      read("../src/app/global-error.tsx"),
+      read("../src/app/(blues)/error.tsx"),
+      read("../src/app/(blues)/blues/error.tsx"),
+      read("../src/app/(site)/error.tsx"),
+      read("../src/app/not-found.tsx"),
+    ]);
+  const chrome = await read("../src/components/blues/BluesChrome.tsx");
+
+  assert.match(fonts, /from ["']next\/font\/google["']/);
+  assert.match(fonts, /from ["']\.\/bluesLook["']/);
+  assert.match(look, /Georgia/);
+  assert.match(look, /serif/);
+  assert.doesNotMatch(look, /from ["']next\/font/);
+
+  for (const [name, source] of [
+    ["global-error", globalError],
+    ["blues group error", bluesGroupError],
+    ["blues page error", bluesPageError],
+    ["site error", siteError],
+    ["not-found", notFound],
+    ["BluesChrome", chrome],
+  ]) {
+    assert.doesNotMatch(source, /from ["']next\/font/, `${name} must not import next/font`);
+    assert.doesNotMatch(source, /from ["']@\/app\/bluesFonts["']/, `${name} must not import the live Fraunces module`);
+  }
 });
 
 test("host rules: known green doors bounce; unknown paths stay for the blues 404", () => {
