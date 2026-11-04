@@ -4,8 +4,9 @@
 // ID is public by design (it is visible in every page that loads the pixel).
 export const REDDIT_PIXEL_ID = "a2_jp3m1rbbkshb";
 
-// The pixel runs only where the Reddit ads land. smarterwaywealth.com and the
-// sibling campaign sites served from this codebase never load it.
+// The pixel runs only on youarepayingtoomuch.com from this codebase; sibling
+// campaign sites served from here never load it. smarterwaywealth.com loads
+// the same pixel from its own repo (2026-11-03).
 export const REDDIT_PIXEL_HOSTS = new Set([
   "youarepayingtoomuch.com",
   "www.youarepayingtoomuch.com",
