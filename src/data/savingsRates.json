@@ -1,19 +1,19 @@
 {
   "meta": {
     "datasetVersion": 1,
-    "lastFullVerification": "2026-07-31",
+    "lastFullVerification": "2026-11-05",
     "policy": "standard-rates-only",
     "policyNotes": "Only standard, nationally available, no-strings APYs are listed. Promotional, new-customer, limited-time, and activity-conditioned rates are excluded. Every row must be verifiable against the institution's own published rate page plus at least one independent public source. If a row cannot be re-verified, it is marked stale and keeps its last verified figure and date; unverified numbers are never published."
   },
   "fdic": {
     "sourceName": "FDIC National Rates and Rate Caps",
     "sourceUrl": "https://www.fdic.gov/national-rates-and-rate-caps",
-    "ratesAsOf": "2026-07-20",
+    "ratesAsOf": "2026-10-19",
     "updateCadence": "Published monthly, on the third Monday of each month",
     "savingsApyPercent": 0.38,
-    "moneyMarketApyPercent": 0.65,
+    "moneyMarketApyPercent": 0.63,
     "interestCheckingApyPercent": 0.07,
-    "lastVerified": "2026-07-31"
+    "lastVerified": "2026-11-05"
   },
   "bigBankAnchor": {
     "label": "Chase Savings (standard rate, all balance tiers)",
@@ -35,12 +35,12 @@
       {
         "institution": "Bread Savings",
         "product": "High-Yield Savings",
-        "apyPercent": 3.95,
-        "verifyString": "3.95",
+        "apyPercent": 4.05,
+        "verifyString": "4.05",
         "minToOpen": "$100",
         "conditions": "APY applies to all balances",
-        "institutionRateAsOf": null,
-        "lastVerified": "2026-07-31",
+        "institutionRateAsOf": "2026-11-05",
+        "lastVerified": "2026-11-05",
         "verification": "verified",
         "sources": [
           {
@@ -71,7 +71,7 @@
         "conditions": "APY applies to all balances",
         "institutionRateAsOf": null,
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "sources": [
           {
             "name": "EverBank Performance Savings page",
@@ -100,7 +100,7 @@
         "minToOpen": "$100",
         "conditions": "APY applies to all balances",
         "institutionRateAsOf": "2026-07-13",
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-11-05",
         "verification": "verified",
         "sources": [
           {
@@ -125,12 +125,12 @@
       {
         "institution": "Zynlo Bank",
         "product": "Tomorrow Savings",
-        "apyPercent": 3.85,
-        "verifyString": "3.85",
+        "apyPercent": 4.1,
+        "verifyString": "4.10",
         "minToOpen": "$0",
         "conditions": "APY applies to all balances",
-        "institutionRateAsOf": null,
-        "lastVerified": "2026-07-31",
+        "institutionRateAsOf": "2026-10-27",
+        "lastVerified": "2026-11-05",
         "verification": "verified",
         "sources": [
           {
@@ -157,12 +157,12 @@
       {
         "institution": "Zynlo Bank",
         "product": "Money Market",
-        "apyPercent": 3.9,
-        "verifyString": "3.90",
+        "apyPercent": 4.05,
+        "verifyString": "4.05",
         "minToOpen": "$0",
         "conditions": "APY applies to all balances",
-        "institutionRateAsOf": null,
-        "lastVerified": "2026-07-31",
+        "institutionRateAsOf": "2026-10-27",
+        "lastVerified": "2026-11-05",
         "verification": "verified",
         "sources": [
           {
@@ -187,12 +187,12 @@
       {
         "institution": "Quontic Bank",
         "product": "Money Market",
-        "apyPercent": 3.8,
-        "verifyString": "3.80",
+        "apyPercent": 3.9,
+        "verifyString": "3.90",
         "minToOpen": "$100",
         "conditions": "APY applies to all balance tiers",
-        "institutionRateAsOf": "2026-04-14",
-        "lastVerified": "2026-07-31",
+        "institutionRateAsOf": "2026-11-05",
+        "lastVerified": "2026-11-05",
         "verification": "verified",
         "sources": [
           {
@@ -217,12 +217,12 @@
       {
         "institution": "CFG Bank",
         "product": "High Yield Money Market",
-        "apyPercent": 3.8,
-        "verifyString": "3.80",
+        "apyPercent": 4.05,
+        "verifyString": "4.05",
         "minToOpen": "$1,000",
         "conditions": "$1,000 daily minimum to earn APY and avoid a $10 monthly fee",
-        "institutionRateAsOf": "2026-07-27",
-        "lastVerified": "2026-07-31",
+        "institutionRateAsOf": "2026-10-27",
+        "lastVerified": "2026-11-05",
         "verification": "verified",
         "sources": [
           {
@@ -323,7 +323,7 @@
           "ct-top5",
           "ny-top5"
         ],
-        "ctSharePercent": 23.0,
+        "ctSharePercent": 23,
         "nySharePercent": 4.9,
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
@@ -361,7 +361,7 @@
         ],
         "institutionRateAsOf": null,
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
@@ -495,8 +495,8 @@
         "tags": [
           "regional"
         ],
-        "institutionRateAsOf": null,
-        "lastVerified": "2026-07-31",
+        "institutionRateAsOf": "2026-09-28",
+        "lastVerified": "2026-11-05",
         "verification": "verified",
         "autoCheck": true,
         "sources": [
@@ -522,15 +522,15 @@
       {
         "institution": "Capital One",
         "product": "360 Performance Savings",
-        "apyPercent": 3.0,
-        "verifyString": "3.00",
-        "apyNote": "Capital One's mainline consumer savings is itself high-yield \u2014 flat rate on all balances, no minimums; there is no lower standard product.",
+        "apyPercent": 3.2,
+        "verifyString": "3.20",
+        "apyNote": "Capital One's mainline consumer savings is itself high-yield — flat rate on all balances, no minimums; there is no lower standard product.",
         "group": "online-arm",
         "tags": [
           "regional"
         ],
-        "institutionRateAsOf": "2026-07-31",
-        "lastVerified": "2026-07-31",
+        "institutionRateAsOf": "2026-11-05",
+        "lastVerified": "2026-11-05",
         "verification": "verified",
         "autoCheck": false,
         "sources": [
@@ -564,10 +564,10 @@
           "regional",
           "ct-top5"
         ],
-        "ctSharePercent": 5.0,
+        "ctSharePercent": 5,
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
@@ -635,7 +635,7 @@
         ],
         "ctSharePercent": 22.8,
         "institutionRateAsOf": "2026-07-31",
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-11-02",
         "verification": "verified",
         "autoCheck": true,
         "sources": [
@@ -668,7 +668,7 @@
         "tags": [
           "ct-top5"
         ],
-        "ctSharePercent": 11.0,
+        "ctSharePercent": 11,
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
         "verification": "verified",
@@ -696,16 +696,16 @@
       {
         "institution": "Goldman Sachs Bank USA",
         "product": "Marcus Online Savings",
-        "apyPercent": 3.4,
-        "verifyString": "3.40",
+        "apyPercent": 3.5,
+        "verifyString": "3.50",
         "apyNote": "No tiers or minimums; a separate 3-month referral rate boost is promotional and excluded.",
         "group": "online-arm",
         "tags": [
           "ny-top5"
         ],
         "nySharePercent": 8.7,
-        "institutionRateAsOf": "2026-07-31",
-        "lastVerified": "2026-07-31",
+        "institutionRateAsOf": "2026-11-05",
+        "lastVerified": "2026-11-05",
         "verification": "verified",
         "autoCheck": true,
         "sources": [
@@ -731,16 +731,16 @@
       {
         "institution": "Morgan Stanley Private Bank",
         "product": "Premium Savings (via E*TRADE)",
-        "apyPercent": 3.5,
-        "verifyString": "3.50",
-        "apyNote": "Standard base rate, open to the general public with no minimum; the advertised 4.00% is a 6-month promotional rate and is excluded.",
+        "apyPercent": 3.75,
+        "verifyString": "3.75",
+        "apyNote": "Standard base rate, open to the general public with no minimum; the advertised 4.25% is a 6-month promotional rate and is excluded.",
         "group": "online-arm",
         "tags": [
           "ny-top5"
         ],
         "nySharePercent": 8.1,
-        "institutionRateAsOf": "2026-07-31",
-        "lastVerified": "2026-07-31",
+        "institutionRateAsOf": "2026-11-05",
+        "lastVerified": "2026-11-05",
         "verification": "verified",
         "autoCheck": false,
         "sources": [

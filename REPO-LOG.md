@@ -1,5 +1,13 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-11-05 — Savings-rate re-check on PR 384; wording stop
+**Agent:** Cursor Grok | **Surface:** youareearningtoolittle.com / savings-rate dataset | **Goal:** [PR #384](https://github.com/dvanosdol88/ria-marketing-page/pull/384)
+- changed: re-checked live bank pages on 2026-11-05 (US Eastern). Published confirmed standard APYs in `src/data/savingsRates.json` and set the full-check date to November 5, 2026. FDIC national averages stay 0.38% savings / 0.63% money market as of October 19, 2026. EverBank stays at the last confirmed 3.90% (the 4.20% on its page is new-accounts only). Citi and TD stay at their last confirmed figures — those banks do not show a rate without a ZIP or location.
+- wording stop: the highest confirmed standard account would change from Bread Savings to Zynlo Bank Tomorrow Savings. That changes visitor-facing bank names and the “up to” headline, so this branch was pushed and **not merged**.
+- verified: each changed figure was read from the bank’s own page today; independent Bankrate pages agreed where they loaded. Never invented a rate.
+- deployed: `not deployed` — left on PR #384 for David’s wording approval. Live https://youareearningtoolittle.com still shows Verified July 31, 2026 and Bread Savings 3.95%. Older weekly refresh PRs left open.
+- next: David must approve the exact before/after visitor wording (Bread → Zynlo, 3.95% → 4.10%, July 31 → November 5) before this can go live.
+
 ### 2026-10-26 — 10-61 Refresh the Sentry security update without publishing
 **Agent:** Linux Codex | **Surface:** marketing / Blues | **Work ID:** 10-61
 - changed: merged current main into existing Renovate [PR #366](https://github.com/dvanosdol88/ria-marketing-page/pull/366), retaining Sentry 10.75.2 and main's Next 16.4.1. The application diff against main remains package-lock.json only; this entry records the work. No wording, approval logic, tests, or workflow changes were authored.
