@@ -1,20 +1,15 @@
 import { withSentryConfig } from "@sentry/nextjs";
 
 /**
- * One Percent Blues — the second front door (docs/superpowers/specs/
- * 2026-09-17-one-percent-blues-design.md §3.2). onepercentblues.com serves
- * the blue page at /blues through a host rewrite; the other three hostnames
- * redirect there. Known green-site doors typed on the blue host still bounce
- * to youarepayingtoomuch.com. Unknown paths stay on the blue host and render
- * the Blues 404 — they must not follow a catch-all to the green site.
+ * One Percent Blues host rules: onepercentblues.com rewrites / to /blues; the
+ * other three hostnames redirect there; known green doors on the blue host
+ * bounce to youarepayingtoomuch.com; unknown paths stay for the Blues 404.
  */
 const BLUES_HOST = "onepercentblues.com";
 const BLUES_ORIGIN = `https://${BLUES_HOST}`;
 const GREEN_ORIGIN = "https://youarepayingtoomuch.com";
 const bluesHost = { type: "host", value: BLUES_HOST };
-// Green-site pages (and their subpaths) that still bounce when typed on the
-// blue host. This is an allowlist, not a catch-all: a made-up path stays on
-// onepercentblues.com and hits the Blues 404.
+// Allowlist of green-site pages that bounce from the blue host; a made-up path stays for the Blues 404.
 const BLUES_GREEN_PATHS = [
   "/our-math",
   "/become-a-client",
@@ -40,22 +35,8 @@ const nextConfig = {
   agentRules: false,
   serverExternalPackages: ["firebase-admin"],
   /**
-   * Retired routes, 2026-08-14. David simplified this site to drive visitors
-   * to smarterwaywealth.com faster, which meant deleting /save, /savings-rates
-   * and /how-it-works along with their nav items, and folding /faq into the
-   * homepage as two questions plus a link to the firm site's full set.
-   *
-   * These are permanent (308) rather than deletions-to-404 because he asked
-   * for redirects explicitly: nothing already printed is known to point at
-   * them — every mailer and QR code lands on "/" with calculator parameters,
-   * verified against src/config/campaignLinks.ts and
-   * tests/legacy-eddm-attribution.mjs — but a redirect costs nothing and
-   * protects anything in the mail, in a search index, or in someone's
-   * bookmarks.
-   *
-   * /how-it-works's client-facing content did not vanish with it: the
-   * technology-and-AI opening, the published-models paragraph and the meeting
-   * availability all moved to smarterwaywealth.com/how in the same session.
+   * Retired routes stay as permanent redirects so old printed, indexed, or
+   * bookmarked URLs still land somewhere useful.
    */
   async redirects() {
     return [
@@ -69,11 +50,7 @@ const nextConfig = {
       },
       { source: "/faq", destination: "/#faq", permanent: true },
 
-      // Rack 05-75: on every other host /blues was a duplicate of the blue
-      // page on the green domain. Send it to the blue home, and /blues/<file>
-      // to the same file at the blue root, in one hop. Listed ahead of the
-      // alias catch-all so the short names skip the /blues hop too. Rewrites
-      // into /blues on the blue host are not re-matched here.
+      // Off the blue host, /blues and /blues/<file> 308 to the same path on onepercentblues.com.
       { source: "/blues", missing: [bluesHost], destination: `${BLUES_ORIGIN}/`, permanent: true },
       {
         source: "/blues/:path*",

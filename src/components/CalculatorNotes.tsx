@@ -4,20 +4,6 @@ import {
   disclaimerHref,
 } from "@/config/calculatorNotes";
 
-/**
- * The marker beside a figure the disclaimer governs.
- *
- * An asterisk in the muted grey, not a numeral in the figure's own colour.
- * There is only one note on this page, so a number implied a list that does not
- * exist, and at the hero's size it read as loudly as the dollar figure it was
- * annotating (David, 2026-08-12).
- *
- * Still a real link, which is what it gained when it stopped being a bare
- * asterisk: one tap reaches the disclaimer, and a screen reader announces where
- * it goes rather than reading "star". Padding grows the hit box without growing
- * the line box, so the marker keeps its footnote scale while staying tappable
- * with a thumb — the bare glyph was roughly 4x9px.
- */
 export function NoteMarker() {
   return (
     <a
@@ -30,17 +16,7 @@ export function NoteMarker() {
   );
 }
 
-/**
- * The disclaimer, rendered inside the site footer directly beneath the grey
- * logo — the slot that held a shorter paragraph saying the same thing in weaker
- * words ("Calculator projections are hypothetical and for illustrative purposes
- * only"). Two disclaimers, one of them the real one, is worse than one, so
- * David had this take that paragraph's place rather than sit above it
- * (2026-08-12).
- *
- * It keeps its own id and focus target because every marker on the page links
- * here.
- */
+/** The disclaimer keeps its own id because every marker on the page links here. */
 export function CalculatorNotes() {
   return (
     <div

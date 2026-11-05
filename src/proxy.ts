@@ -4,18 +4,8 @@ import type { NextRequest } from "next/server";
 import { isBluesHostname, requestHostname } from "@/lib/bluesHost";
 
 /**
- * Green-only / internal APIs have no business on the Blues host. A made-up
- * page already 404s there (#344); these routes used to return green payloads
- * instead. Apex and www both 404. The 1percentblues.com aliases are not in
- * this matcher’s host check — they keep their 308 to the apex.
- *
- * /api/og 404s here: blues mode now uses the blue card on the first paint,
- * so the green share-card path is a green-only door. /api/og/blues stays
- * live as the blue card. The quiz vote/reset routes stay live: the shared
- * calculator poll on the blue page calls them.
- *
- * Next.js 16 names this file proxy.ts (the older middleware.ts name still
- * works but prints a deprecation warning on every build).
+ * On the Blues host, green-only APIs (including /api/og, but not /api/og/blues
+ * or the shared quiz vote routes) 404.
  */
 const BLUES_GATED_PATH =
   /^\/(?:api\/(?:become-a-client|gallery\/statuses|eddm-evals(?:\/|$)|savings-rates|analytics\/mailer-scans|calculator|version|og(?!\/))|agent-info\.json)/;

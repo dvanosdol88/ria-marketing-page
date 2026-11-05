@@ -1,21 +1,7 @@
 import { SMARTER_WAY_WEALTH_MEET_URL } from "@/config/campaignLinks";
 
 /**
- * The single conversion pattern for the whole site: one primary button and one
- * secondary link, never two equal buttons.
- *
- * Before this existed the site offered seven differently-worded next steps
- * ("Get started", "Meet David — pick a time", "See if SWW is a good fit", …),
- * all of which landed on the same 15-minute call. A visitor who had already
- * decided had no faster door than a visitor who was still unsure.
- *
- * Primary  — the person who is sold. Goes to Smarter Way Wealth's secure
- *            email-verification entrance.
- * Secondary — the person who is not. Goes to the existing 15-minute fit call.
- *
- * The secondary link is what protects the primary: naming the hesitation out
- * loud ("Not sure yet?") gives an unready visitor somewhere to go that isn't
- * the back button. Keep both, keep the weighting.
+ * One primary button and one secondary link, never two equal buttons.
  */
 
 export const SIGNUP_PATH = "https://smarterwaywealth.com/onboarding/verify";
@@ -26,7 +12,7 @@ export const signupCta = {
     href: SIGNUP_PATH,
   },
   secondary: {
-    /** Names the doubt on purpose — see the note above. */
+    /** Names the doubt on purpose so the secondary door stays a link, not a second button. */
     prompt: "Not sure yet?",
     label: "Talk to David first for 15 minutes to see if you are a good fit",
     href: SMARTER_WAY_WEALTH_MEET_URL,

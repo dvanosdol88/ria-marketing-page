@@ -6,11 +6,8 @@ import { bluesIconMetadata } from "@/components/blues/bluesIcons";
 import { BLUES_ORIGIN, bluesCopy, bluesJsonLd } from "@/config/onePercentBlues";
 
 /**
- * One Percent Blues — the blue front door, served on onepercentblues.com by
- * the host rewrite in next.config.mjs (/ → /blues). Own metadata base, share
- * card, icon, JSON-LD and chrome; everything else (fonts, analytics,
- * providers) comes from the root layout it shares with the green site.
- * Spec: docs/superpowers/specs/2026-09-17-one-percent-blues-design.md.
+ * One Percent Blues owns its metadata, share card, icon, JSON-LD and chrome;
+ * fonts, analytics and providers come from the shared root layout.
  */
 
 export const metadata: Metadata = {
