@@ -1,5 +1,11 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-11-06 — Menu says "Fee Calculator" (matching smarterwaywealth.com)
+**Agent:** Claude (Opus 5.5, Windows desktop app) | **Surface:** youarepayingtoomuch.com header menu | **Rack:** none (the Rack answered "temporarily offline to stop unexpected cloud spending" on 2026-11-06)
+- approval: David, 2026-11-06, asked "Should I build A + B with "Fee Calculator" in both sites' menus?" and answered "Yes, build it" (policy 05-94). On this site that approval covers only the menu label; the rest of the menu redesign is smarterwaywealth.com only. Source chat: claude://claude.ai/epitaxy/local_5d93973f-5b93-464e-b1c5-577be4abf9a8
+- changed: the calculator menu item reads "Fee Calculator" (was "Your Fee Calculator" since 2026-08-14). `ctaLabel` stays "Fee Calculator", so PostHog's click history is one series. The calculator heading, buttons, 404 and error pages keep "Your Fee Calculator".
+- evidence: see PR.
+
 ### 2026-10-26 — 10-61 Refresh the Sentry security update without publishing
 **Agent:** Linux Codex | **Surface:** marketing / Blues | **Work ID:** 10-61
 - changed: merged current main into existing Renovate [PR #366](https://github.com/dvanosdol88/ria-marketing-page/pull/366), retaining Sentry 10.75.2 and main's Next 16.4.1. The application diff against main remains package-lock.json only; this entry records the work. No wording, approval logic, tests, or workflow changes were authored.
