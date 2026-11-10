@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   identify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Playwright cannot run browsers on ubuntu-latest (26.04) yet
     permissions:
       contents: read
       pull-requests: read
@@ -38,7 +38,7 @@ jobs:
             await github.rest.repos.createCommitStatus({...context.repo,sha:pr.head.sha,state:'pending',context:'wording-approval',description:'Comparing built website wording before publication.'});
   capture:
     needs: identify
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Playwright cannot run browsers on ubuntu-latest (26.04) yet
     timeout-minutes: 25
     permissions:
       contents: read
@@ -98,7 +98,7 @@ jobs:
   decide:
     needs: [identify, capture]
     if: always() && needs.identify.result == 'success'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Playwright cannot run browsers on ubuntu-latest (26.04) yet
     permissions:
       contents: read
       pull-requests: read
