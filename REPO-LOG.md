@@ -1,10 +1,24 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-11-10 — David's own order is the approval; the wording lock accepts his order receipt
+**Agent:** Claude Code (Windows) | **Source chat:** claude://claude.ai/epitaxy/local_a09fab98-597f-4048-8bf4-ab27bbe822f2 | **Rack:** none (the Rack was offline)
+- David: "Only AUTHORIZED changes. In other words, no freelancing. But if I set it, the AI should still be able to publish it." He then approved the proposal with "Yes, set it up".
+- `docs/website-change-approval.md` was rewritten. David's own specific order authorizes building and publishing, with no second OK. No freelancing. If the agent chose the words, David sees the exact wording once. Only David can order, and only directly. Every visitor-facing PR carries `David's order:` / `Source chat:` / `Ordered:` receipt lines. Maintenance is unchanged. A weekday 5 PM change list goes to David (Monday covers the weekend). AGENTS.md and CLAUDE.md summaries match.
+- The wording lock (`wording-approval`) now passes changed words when the PR body carries a complete receipt. The trusted base-branch controller reads the body as data, and the Rack card path is kept. Tests cover complete, bold/curly and incomplete receipts. The lock cannot prove David said the words; the chat link and his daily list catch a false receipt.
+
 ### 2026-11-06 — Menu says "Fee Calculator" (matching smarterwaywealth.com)
 **Agent:** Claude (Opus 5.5, Windows desktop app) | **Surface:** youarepayingtoomuch.com header menu | **Rack:** none (the Rack answered "temporarily offline to stop unexpected cloud spending" on 2026-11-06)
 - approval: David, 2026-11-06, asked "Should I build A + B with "Fee Calculator" in both sites' menus?" and answered "Yes, build it" (policy 05-94). On this site that approval covers only the menu label; the rest of the menu redesign is smarterwaywealth.com only. Source chat: claude://claude.ai/epitaxy/local_5d93973f-5b93-464e-b1c5-577be4abf9a8
 - changed: the calculator menu item reads "Fee Calculator" (was "Your Fee Calculator" since 2026-08-14). `ctaLabel` stays "Fee Calculator", so PostHog's click history is one series. The calculator heading, buttons, 404 and error pages keep "Your Fee Calculator".
 - evidence: see PR.
+
+### 2026-11-04 — Privacy fix: Reddit Pixel stays silent on personalized calculator pages
+**Agent:** Claude (Opus 5.5, cloud session) | **Surface:** youarepayingtoomuch.com / onepercentblues.com Reddit Pixel (no visitor-facing change) | **Rack:** none filed (no Rack key in this session) | **Source:** [session](https://claude.ai/code/session_01PL1vvK7JjkNWrvz9aYhbvL)
+- found (2026-11-04, live, all Reddit requests intercepted): this pixel's Reddit server config has `esc.page_metadata: true`, so pixel.js attaches the page `<head>` metadata (`pm`: title, description, og:/twitter: tags, JSON-LD) to events once the config loads (cached for repeat visits). On a personalized link such as `/?portfolio=1234567&…`, the description and share-image URL carry the visitor's portfolio amount, so the ViewContent/Lead events after landing sent "$1,234,567" to Reddit, contrary to the privacy page. Present since the pixel went live 2026-10-07. The page address field itself (`esurl`) has always been path-only.
+- changed: `src/lib/redditPixel.ts` adds `metadataCarriesVisitorScenario()`; the pixel neither loads nor sends while og:image / og:url / twitter:image carry any calculator value other than the shared default scenario (flat 1200, portfolio 1000000, years 20, growth 8, fee 1, mfe 0); `RedditPixel.tsx` also checks the address before each PageVisit (head metadata can lag a client-side navigation). Typing in the calculator changes only the address via replaceState, not the head, so ordinary visitors stay measured.
+- not fixable in code: the pixel config also holds two codeless click events made in Reddit's Event Setup Tool (Lead on "Become a Client $100/month, flat" and CSS selectors; ViewContent on a CSS selector). pixel.js fires those itself; David asked to delete them in Events Manager.
+- verified locally (production build served as youarepayingtoomuch.com, Reddit intercepted): personalized link → pixel.js never loads, zero Reddit requests; default visit + typing $2,468,000 → PageVisit, ViewContent, Lead sent with default-only metadata ($1,000,000 / $788,306), typed amount absent. `tests/reddit-pixel.mjs` extended (default vs visitor scenarios) and passes; eslint + tsc clean; `next build` exit 0.
+- deployed: see the PR; production proof pending.
 
 ### 2026-10-26 — 10-61 Refresh the Sentry security update without publishing
 **Agent:** Linux Codex | **Surface:** marketing / Blues | **Work ID:** 10-61
