@@ -41,9 +41,10 @@ export interface SiteNavLink {
  */
 export const siteNavLinks: SiteNavLink[] = [
   {
-    /* Renamed 2026-08-14 (David): the calculator is "Your Fee Calculator"
-       across both sites. ctaLabel keeps the analytics history continuous. */
-    label: "Your Fee Calculator",
+    /* DECISION CHANGED, 2026-11-06 (David): the menu says "Fee Calculator" on
+       both sites; headings, pages and buttons keep "Your Fee Calculator"
+       (named 2026-08-14). ctaLabel keeps the analytics history continuous. */
+    label: "Fee Calculator",
     ctaLabel: "Fee Calculator",
     href: "/#calculator",
     tier: "primary",

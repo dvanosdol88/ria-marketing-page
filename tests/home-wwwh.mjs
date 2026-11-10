@@ -689,14 +689,14 @@ test("site navigation is the simplified pair, with the retired items gone", () =
   // which is retired.
   assert.match(navConfigSource, /label: "FAQ",\s*href: "\/#faq"/);
 
-  // DECISION CHANGED, 2026-08-14: the calculator is named "Your Fee Calculator"
-  // across both sites (David). The nav item keeps an explicit ctaLabel of the
-  // ORIGINAL "Fee Calculator" so PostHog's click history for it stays one
-  // continuous series instead of splitting at the rename — assert both.
-  const feeIndex = navConfigSource.indexOf('label: "Your Fee Calculator"');
-  assert.ok(feeIndex >= 0, "Your Fee Calculator must exist");
+  // DECISION CHANGED, 2026-11-06 (David): the menu item reads "Fee Calculator"
+  // on both sites; the calculator itself is still "Your Fee Calculator"
+  // (2026-08-14). The nav item keeps an explicit ctaLabel of "Fee Calculator"
+  // so PostHog's click history for it stays one continuous series — assert both.
+  const feeIndex = navConfigSource.indexOf('label: "Fee Calculator"');
+  assert.ok(feeIndex >= 0, "Fee Calculator must exist");
   const objectEnd = navConfigSource.indexOf("},", feeIndex);
-  assert.ok(objectEnd > feeIndex, "Your Fee Calculator config object must close");
+  assert.ok(objectEnd > feeIndex, "Fee Calculator config object must close");
   const feeSource = navConfigSource.slice(feeIndex, objectEnd);
   assert.match(feeSource, /href: "\/#calculator"/);
   assert.match(feeSource, /track: true/);
