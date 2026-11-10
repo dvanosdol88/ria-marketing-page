@@ -25,7 +25,12 @@
 - changed: the Reddit paragraph under "Advertising measurement" is replaced with the approved general advertising-partner paragraph (same text as smarterwaywealth.com/privacy); the Google paragraph is unchanged. Third parties: "On youarepayingtoomuch.com we also use Reddit and Google" → "We also use advertising partners, such as social media companies and Google," (comma added after "Google" so the approved substitution reads correctly). Last updated 2026-11-03.
 - why: smarterwaywealth.com now loads the same Reddit Pixel (smarter-way-wealth PR, same date), so "Smarterwaywealth.com does not use the Reddit Pixel" had to go; David chose the general wording after research showing American Express, Wealthfront, Robinhood, Public, Range and Farther all run the Reddit Pixel without naming Reddit.
 - code: comment-only update in `src/config/redditPixel.ts`; this site's pixel behavior is unchanged.
-- deployed: see the PR.
+- released 2026-11-10 (Claude Code, Fable 5.2, Windows desktop app; Rack: none, dvo88.com was switched off):
+  - David's order: "General wording"
+  - Source chat: claude://claude.ai/epitaxy/local_b6b297cb-7688-4d9e-b485-bc0b8118cd3e
+  - Ordered: 2026-11-10 2:44 PM ET
+  - context: David had also approved a narrower change on 2026-11-10 (remove only "Smarterwaywealth.com does not use the Reddit Pixel", PR #391). Shown both, with this paragraph quoted in full and the question "Which privacy wording should go live with the pixel on smarterwaywealth.com?", he answered "General wording". PR #391 is closed unmerged. "Last updated" reads 2026-11-10, the day the wording went live. Released together with smarter-way-wealth PR #398.
+- deployed / verified in production: see the PR's closing comment.
 
 ### 2026-10-26 — 10-61 Refresh the Sentry security update without publishing
 **Agent:** Linux Codex | **Surface:** marketing / Blues | **Work ID:** 10-61
