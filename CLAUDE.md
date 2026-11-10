@@ -13,7 +13,7 @@ David is a financial advisor (CFA, CFP) running a business, not a programmer. He
 
 ## David's website change approval — mandatory
 
-Before new or resumed work, read this repo's `AGENTS.md` and [website change approval policy](docs/website-change-approval.md). It overrides broader ship-by-default, proactive-fix, mobile-improvement and agent-readiness instructions. David approves the exact proposed visitor-facing change once; routine maintenance preserves approved wording, appearance, calculations and behavior. Never publish uncertain changes or agent-selected editorial improvements without David's approval.
+Before new or resumed work, read this repo's `AGENTS.md` and [website change approval policy](docs/website-change-approval.md) (loosened by David 2026-11-10). It overrides broader ship-by-default, proactive-fix, mobile-improvement and agent-readiness instructions. David's own specific order is the approval: build, publish and prove it live with no second OK, and put his verbatim words in the PR's receipt lines (`David's order:` / `Source chat:` / `Ordered:`). No freelancing: nothing he did not order ships; if you chose the words, show him the exact wording once first. Routine maintenance preserves approved wording, appearance, calculations and behavior.
 
 ## Project: RIA-marketing-page
 - Domain: youarepayingtoomuch.com (no dashes)

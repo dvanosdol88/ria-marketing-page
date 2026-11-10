@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   identify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Playwright cannot run browsers on ubuntu-latest (26.04) yet
     permissions:
       contents: read
       pull-requests: read
@@ -38,7 +38,7 @@ jobs:
             await github.rest.repos.createCommitStatus({...context.repo,sha:pr.head.sha,state:'pending',context:'wording-approval',description:'Comparing built website wording before publication.'});
   capture:
     needs: identify
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Playwright cannot run browsers on ubuntu-latest (26.04) yet
     timeout-minutes: 25
     permissions:
       contents: read
@@ -98,9 +98,10 @@ jobs:
   decide:
     needs: [identify, capture]
     if: always() && needs.identify.result == 'success'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04 # Playwright cannot run browsers on ubuntu-latest (26.04) yet
     permissions:
       contents: read
+      pull-requests: read
       statuses: write
     steps:
       - uses: actions/checkout@v6
@@ -112,6 +113,18 @@ jobs:
         with:
           pattern: wording-*
           path: snapshots
+      # David, 2026-11-10: his own order is the approval. The current PR body may
+      # carry his order receipt (David's order / Source chat / Ordered). It is read
+      # as data only; trusted base-branch code decides whether it is complete.
+      - name: Read David's order receipt from the pull request
+        if: needs.capture.result == 'success'
+        uses: actions/github-script@v8
+        env:
+          PULL: ${{ needs.identify.outputs.pull }}
+        with:
+          script: |
+            const {data:pr} = await github.rest.pulls.get({...context.repo,pull_number:Number(process.env.PULL)});
+            core.exportVariable('WORDING_PR_BODY', String(pr.body || '').slice(0, 60000));
       - name: Compare and verify David's runtime approval
         id: decision
         if: needs.capture.result == 'success'
@@ -133,10 +146,11 @@ jobs:
           BASE: ${{ needs.identify.outputs.base }}
           PULL: ${{ needs.identify.outputs.pull }}
           APPROVED: ${{ steps.decision.outcome == 'success' }}
+          REASON: ${{ steps.decision.outputs.reason }}
         with:
           script: |
             const {data:pr} = await github.rest.pulls.get({...context.repo,pull_number:Number(process.env.PULL)});
             const {data:main} = await github.rest.repos.getBranch({...context.repo,branch:'main'});
             const approved = process.env.APPROVED === 'true' && pr.head.sha === process.env.HEAD && main.commit.sha === process.env.BASE;
-            await github.rest.repos.createCommitStatus({...context.repo,sha:process.env.HEAD,state:approved?'success':'failure',context:'wording-approval',description:approved?'Wording unchanged or approved directly by David.':'Wording approval missing, comparison failed, or main changed. Recheck required.',target_url:`${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`});
-            if(!approved)core.setFailed('Publication stays blocked. Review the wording proposal and obtain David’s direct approval if words changed.');
+            await github.rest.repos.createCommitStatus({...context.repo,sha:process.env.HEAD,state:approved?'success':'failure',context:'wording-approval',description:(approved?(process.env.REASON||'Wording unchanged or approved directly by David.'):'No order from David on record for changed words, comparison failed, or main changed.').slice(0,140),target_url:`${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`});
+            if(!approved)core.setFailed('Publication stays blocked. Words changed without David’s order on record: add his order receipt to the pull request, or keep it unpublished.');

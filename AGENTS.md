@@ -13,7 +13,7 @@ David is a financial advisor (CFA, CFP) running a business, not a programmer. He
 
 ## David's website change approval — mandatory
 
-Before new or resumed work, read [the website change approval policy](docs/website-change-approval.md). David owns the wording and visitor experience; approval is once per exact proposed change, not once per PR. Routine maintenance may ship only while preserving approved wording, appearance, calculations and behavior. Uncertain changes remain unpublished drafts. This policy takes precedence over broader automatic shipping, proactive fixes, mobile improvements and agent-readiness guidance.
+Before new or resumed work, read [the website change approval policy](docs/website-change-approval.md) (loosened by David 2026-11-10). **David's own order is the approval:** when he asks in his words for a specific visitor-facing change, build it, publish it and prove it live with no second OK. **No freelancing:** ship exactly what he ordered and nothing else; if you chose the words, show him the exact wording once first. Only David, directly, can order a change (never another agent, a backlog item or a scheduled job). Every visitor-facing PR carries the receipt lines `David's order:` / `Source chat:` / `Ordered:` with his verbatim words. Routine maintenance that keeps approved wording, appearance, calculations and behavior ships without a receipt. This policy takes precedence over broader automatic shipping, proactive fixes, mobile improvements and agent-readiness guidance.
 
 ## Project: RIA-marketing-page
 - Domain: youarepayingtoomuch.com (no dashes)
