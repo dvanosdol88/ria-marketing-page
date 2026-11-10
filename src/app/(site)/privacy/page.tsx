@@ -88,8 +88,7 @@ export default function PrivacyPolicy() {
             privacy policy
           </a>
           . You can limit ad personalization in your Reddit account settings or
-          block third-party cookies in your browser. Smarterwaywealth.com does
-          not use the Reddit Pixel.
+          block third-party cookies in your browser.
         </p>
         <p>
           On youarepayingtoomuch.com we also use the Google tag, an advertising

@@ -1,5 +1,12 @@
 # REPO-LOG — ria-marketing-page
 
+### 2026-11-10 — Privacy page: remove "Smarterwaywealth.com does not use the Reddit Pixel"
+**Agent:** Claude Code (Fable 5.2, Windows desktop app) | **Surface:** youarepayingtoomuch.com/privacy (one sentence) | **Rack:** none (dvo88.com was switched off on 2026-11-10, so no card could be filed)
+- approval: David in chat, 2026-11-10 12:43 PM ET. Shown the proposal to install the Reddit Pixel on smarterwaywealth.com, he quoted "The last sentence, 'Smarterwaywealth.com does not use the Reddit Pixel', is removed." and answered: "This is all we need. We previously checked other financial firms' disclosures, and they do not need to say that we use Reddit." (policy 05-94: direct, specific request.)
+- changed: that one sentence is removed from the Advertising measurement section, because smarterwaywealth.com now loads the same Reddit Pixel (smarter-way-wealth repo, same day). Nothing else on the page changed; the Reddit Pixel code on this site is untouched.
+- verified: lint and build results are in the PR.
+- deployed: see PR; production proof follows the merge.
+
 ### 2026-10-26 — 10-61 Refresh the Sentry security update without publishing
 **Agent:** Linux Codex | **Surface:** marketing / Blues | **Work ID:** 10-61
 - changed: merged current main into existing Renovate [PR #366](https://github.com/dvanosdol88/ria-marketing-page/pull/366), retaining Sentry 10.75.2 and main's Next 16.4.1. The application diff against main remains package-lock.json only; this entry records the work. No wording, approval logic, tests, or workflow changes were authored.
