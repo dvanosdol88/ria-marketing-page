@@ -37,9 +37,53 @@ function isSelfTestBrowser() {
   );
 }
 
+// 2026-11-03: Reddit's pixel.js attaches the page's <head> metadata (title,
+// description, og:/twitter: tags) to every event once its server config
+// (esc.page_metadata) loads. On a personalized calculator link that metadata
+// holds the visitor's portfolio amount and result, so the pixel must stay
+// silent whenever the head describes anything but the shared default scenario.
+const SCENARIO_KEYS = ["portfolio", "years", "flat", "growth", "fee", "mfe", "return", "end", "feeMode", "tiers"];
+const DEFAULT_SCENARIO: Record<string, string> = {
+  flat: "1200",
+  portfolio: "1000000",
+  years: "20",
+  growth: "8",
+  fee: "1",
+  mfe: "0",
+};
+
+export function metadataCarriesVisitorScenario(urls: Array<string | null | undefined>) {
+  for (const raw of urls) {
+    if (!raw) continue;
+    let url: URL;
+    try {
+      url = new URL(raw, "https://metadata.invalid");
+    } catch {
+      return true; // unreadable: assume personal
+    }
+    for (const key of SCENARIO_KEYS) {
+      const value = url.searchParams.get(key);
+      if (value !== null && DEFAULT_SCENARIO[key] !== value) return true;
+    }
+  }
+  return false;
+}
+
+function pageMetadataIsPersonal() {
+  const urls = Array.from(
+    document.querySelectorAll<HTMLMetaElement>(
+      'meta[property="og:image"], meta[property="og:url"], meta[name="twitter:image"]',
+    ),
+  ).map((meta) => meta.content);
+  return metadataCarriesVisitorScenario(urls);
+}
+
 function shouldRunHere() {
   if (typeof window === "undefined") return false;
-  return redditPixelAllowed(window.location.hostname, REDDIT_PIXEL_ID, isSelfTestBrowser());
+  return (
+    redditPixelAllowed(window.location.hostname, REDDIT_PIXEL_ID, isSelfTestBrowser()) &&
+    !pageMetadataIsPersonal()
+  );
 }
 
 // Reddit's published loader, written out so it can be tested: queue calls
