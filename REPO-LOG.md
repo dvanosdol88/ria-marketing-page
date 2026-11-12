@@ -1,3 +1,9 @@
+### 2026-11-12 — Privacy page general advertising-partner wording released (PR #386)
+**Agent:** Claude (Opus 5.5, claude.ai cloud session, morning-brief follow-up) | **Surface:** youarepayingtoomuch.com/privacy | **Source chat:** https://claude.ai/code/session_01PL1vvKeqZ5tQoW23hQk5BQ
+- David's order (2026-11-12, early afternoon ET), answering the morning brief's "Reddit Pixel + privacy wording: A) Keep holding · B) Approve both · C) Drop the pixel": "2B". Wording is the 2026-11-10 "General wording" order.
+- changed today: "Last updated" 2026-11-10 → 2026-11-12, the day it goes live. Companion: dvanosdol88/smarter-way-wealth#398.
+- earlier `test` failure was the CI build failing to download a Google font (network), not this change.
+
 # REPO-LOG — ria-marketing-page
 
 ### 2026-11-10 — David's own order is the approval; the wording lock accepts his order receipt
@@ -13,12 +19,24 @@
 - evidence: see PR.
 
 ### 2026-11-04 — Privacy fix: Reddit Pixel stays silent on personalized calculator pages
-**Agent:** Claude (Opus 5.5, cloud session) | **Surface:** youarepayingtoomuch.com / onepercentblues.com Reddit Pixel (no visitor-facing change) | **Rack:** none filed (no Rack key in this session) | **Source:** [session](https://claude.ai/code/session_01PL1vvK7JjkNWrvz9aYhbvL)
+**Agent:** Claude (Opus 5.5, cloud session) | **Surface:** youarepayingtoomuch.com Reddit Pixel (no visitor-facing change) | **Rack:** none filed (no Rack key in this session) | **Source:** [session](https://claude.ai/code/session_01PL1vvK7JjkNWrvz9aYhbvL)
 - found (2026-11-04, live, all Reddit requests intercepted): this pixel's Reddit server config has `esc.page_metadata: true`, so pixel.js attaches the page `<head>` metadata (`pm`: title, description, og:/twitter: tags, JSON-LD) to events once the config loads (cached for repeat visits). On a personalized link such as `/?portfolio=1234567&…`, the description and share-image URL carry the visitor's portfolio amount, so the ViewContent/Lead events after landing sent "$1,234,567" to Reddit, contrary to the privacy page. Present since the pixel went live 2026-10-07. The page address field itself (`esurl`) has always been path-only.
 - changed: `src/lib/redditPixel.ts` adds `metadataCarriesVisitorScenario()`; the pixel neither loads nor sends while og:image / og:url / twitter:image carry any calculator value other than the shared default scenario (flat 1200, portfolio 1000000, years 20, growth 8, fee 1, mfe 0); `RedditPixel.tsx` also checks the address before each PageVisit (head metadata can lag a client-side navigation). Typing in the calculator changes only the address via replaceState, not the head, so ordinary visitors stay measured.
 - not fixable in code: the pixel config also holds two codeless click events made in Reddit's Event Setup Tool (Lead on "Become a Client $100/month, flat" and CSS selectors; ViewContent on a CSS selector). pixel.js fires those itself; David asked to delete them in Events Manager.
 - verified locally (production build served as youarepayingtoomuch.com, Reddit intercepted): personalized link → pixel.js never loads, zero Reddit requests; default visit + typing $2,468,000 → PageVisit, ViewContent, Lead sent with default-only metadata ($1,000,000 / $788,306), typed amount absent. `tests/reddit-pixel.mjs` extended (default vs visitor scenarios) and passes; eslint + tsc clean; `next build` exit 0.
-- deployed: see the PR; production proof pending.
+- deployed: PR #388 merged by David 2026-11-10 13:03 EST (merge 4039fe60); youarepayingtoomuch.com/api/version served 4039fe60 at 13:04 EST. Production proof 13:05 EST, fresh Chromium with every alb.reddit.com request intercepted: `/?portfolio=1234567&fee=1&years=20&growth=8` → pixel.js never loads, zero Reddit requests; `/` then typing $2,468,000 → PageVisit, ViewContent, Lead sent with default-only metadata ($1,000,000 / $788,306), typed amount absent. Correction: this entry first listed onepercentblues.com as a surface; the pixel runs only on youarepayingtoomuch.com. Still open: the two Reddit-side codeless click events (Lead ×6 triggers, ViewContent ×1) remain in the pixel config as of 2026-11-10.
+
+### 2026-11-03 — Privacy page: general advertising-partner wording (Reddit Pixel now also on smarterwaywealth.com)
+**Agent:** Claude (Opus 5.5, cloud session) | **Surface:** youarepayingtoomuch.com /privacy only | **Approval:** David selected the exact general wording ("General wording, like the big firms") in [the source session](https://claude.ai/code/session_01PL1vvK7JjkNWrvz9aYhbvL) | **Rack:** none filed (no Rack key in this session)
+- changed: the Reddit paragraph under "Advertising measurement" is replaced with the approved general advertising-partner paragraph (same text as smarterwaywealth.com/privacy); the Google paragraph is unchanged. Third parties: "On youarepayingtoomuch.com we also use Reddit and Google" → "We also use advertising partners, such as social media companies and Google," (comma added after "Google" so the approved substitution reads correctly). Last updated 2026-11-03.
+- why: smarterwaywealth.com now loads the same Reddit Pixel (smarter-way-wealth PR, same date), so "Smarterwaywealth.com does not use the Reddit Pixel" had to go; David chose the general wording after research showing American Express, Wealthfront, Robinhood, Public, Range and Farther all run the Reddit Pixel without naming Reddit.
+- code: comment-only update in `src/config/redditPixel.ts`; this site's pixel behavior is unchanged.
+- released 2026-11-10 (Claude Code, Fable 5.2, Windows desktop app; Rack: none, dvo88.com was switched off):
+  - David's order: "General wording"
+  - Source chat: claude://claude.ai/epitaxy/local_b6b297cb-7688-4d9e-b485-bc0b8118cd3e
+  - Ordered: 2026-11-10 2:44 PM ET
+  - context: David had also approved a narrower change on 2026-11-10 (remove only "Smarterwaywealth.com does not use the Reddit Pixel", PR #391). Shown both, with this paragraph quoted in full and the question "Which privacy wording should go live with the pixel on smarterwaywealth.com?", he answered "General wording". PR #391 is closed unmerged. "Last updated" reads 2026-11-10, the day the wording went live. Released together with smarter-way-wealth PR #398.
+- deployed / verified in production: see the PR's closing comment.
 
 ### 2026-10-26 — 10-61 Refresh the Sentry security update without publishing
 **Agent:** Linux Codex | **Surface:** marketing / Blues | **Work ID:** 10-61
