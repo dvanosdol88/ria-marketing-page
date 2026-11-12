@@ -1,3 +1,9 @@
+### 2026-11-12 — Privacy page general advertising-partner wording released (PR #386)
+**Agent:** Claude (Opus 5.5, claude.ai cloud session, morning-brief follow-up) | **Surface:** youarepayingtoomuch.com/privacy | **Source chat:** https://claude.ai/code/session_01PL1vvKeqZ5tQoW23hQk5BQ
+- David's order (2026-11-12, early afternoon ET), answering the morning brief's "Reddit Pixel + privacy wording: A) Keep holding · B) Approve both · C) Drop the pixel": "2B". Wording is the 2026-11-10 "General wording" order.
+- changed today: "Last updated" 2026-11-10 → 2026-11-12, the day it goes live. Companion: dvanosdol88/smarter-way-wealth#398.
+- earlier `test` failure was the CI build failing to download a Google font (network), not this change.
+
 # REPO-LOG — ria-marketing-page
 
 ### 2026-11-10 — David's own order is the approval; the wording lock accepts his order receipt

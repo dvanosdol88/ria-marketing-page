@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     "How Smarter Way Wealth, LLC collects, uses, and protects information from visitors to youarepayingtoomuch.com.",
 };
 
-const LAST_UPDATED = "2026-11-10";
+const LAST_UPDATED = "2026-11-12";
 
 export default function PrivacyPolicy() {
   return (
