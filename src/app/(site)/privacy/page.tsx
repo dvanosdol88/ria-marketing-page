@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     "How Smarter Way Wealth, LLC collects, uses, and protects information from visitors to youarepayingtoomuch.com.",
 };
 
-const LAST_UPDATED = "2026-11-12";
+const LAST_UPDATED = "2026-11-13";
 
 export default function PrivacyPolicy() {
   return (
@@ -26,50 +26,27 @@ export default function PrivacyPolicy() {
           Information we collect
         </h2>
         <p>
-          The site offers a fee-savings calculator. Calculator assumptions such
-          as portfolio value, fees, growth rate, and time horizon are processed
-          in your browser, may be reflected in the URL, and may be included in
-          analytics events so that we can understand how the tool is used.
-          Calculator results are hypothetical and are not an account
-          application. Do not enter confidential or personally identifying
-          information into the calculator.
+          The site offers a fee calculator. The assumptions you enter, such as
+          portfolio value, fees, growth rate, and time horizon, may appear in
+          the page address and in our site analytics. Results are hypothetical
+          and are not an account application. Please do not enter confidential
+          or personally identifying information into the calculator.
         </p>
         <p>
-          If you submit a vote on an interactive poll, contact us, or sign up
-          to be notified, we receive the information you choose to share
-          (such as your selection or contact details).
+          If you vote in a poll, contact us, sign up to be notified, or use the
+          Become a Client form, we receive the information you choose to share,
+          such as your name, email address, state, and any optional note. We use Become a
+          Client details to assess fit and follow up with the advisory agreement
+          and required disclosures. Please do not include account numbers,
+          passwords, or other sensitive information in a note.
         </p>
         <p>
-          If you use the Become a Client form, we receive your name, email
-          address, state, and any
-          optional note you provide. We use that information to assess fit and
-          follow up with the advisory agreement and required disclosures.
-          Please do not include account numbers, passwords, or other sensitive
-          information in the optional note.
-        </p>
-        <p>
-          If you continue to smarterwaywealth.com and schedule a meeting
-          through its embedded Calendly scheduler, Calendly receives the
-          information needed to arrange the meeting, including your name,
-          email address, conferencing choice, and any optional note you choose
-          to provide. Please do not include account numbers, passwords, or
-          other sensitive information in that note. We do not send your
-          Calendly form responses to PostHog.
-        </p>
-        <p>
-          Our hosting provider (Vercel), error-monitoring provider (Sentry), and
-          analytics provider (PostHog) may receive standard technical and usage
-          data &mdash; such as IP address, browser and device information,
-          referring or campaign information, pages viewed, clicks, timestamps,
-          and an anonymous identifier stored in your browser &mdash; for the
-          purpose of operating, securing, and improving the site.
-        </p>
-        <p>
-          PostHog also records a replay of browsing sessions on this site,
-          including page navigation, scrolling, and clicks. Everything typed
-          into form fields is configured to be masked in these recordings. You
-          should still avoid entering sensitive financial or personal
-          information into ordinary website fields.
+          When you visit, our service providers automatically receive standard
+          technical and usage information, such as IP address, browser and
+          device information, referring or campaign information, pages viewed,
+          clicks, timestamps, and an identifier stored in your browser. This
+          site also records how visitors move through its pages, with anything
+          typed into form fields masked.
         </p>
 
         <h2 id="advertising-measurement" className="pt-4 text-lg font-semibold text-neutral-900">
@@ -90,23 +67,12 @@ export default function PrivacyPolicy() {
           use these tools.
         </p>
         <p>
-          On youarepayingtoomuch.com we also use the Google tag, an advertising
-          measurement tool from Google LLC, to learn whether our Google ads lead
-          people to the site. It tells Google when a page is viewed, together
-          with the ad-campaign details in the page address, standard browser and
-          device information, and an identifier stored in your browser. We do
-          not send Google your name, email address, phone number, portfolio
-          amount, or calculator results. Google handles this information under
-          its own{" "}
-          <a href="https://policies.google.com/privacy" className="underline" target="_blank" rel="noopener noreferrer">
-            privacy policy
-          </a>
-          . You can limit ad personalization in Google&rsquo;s{" "}
+          On this site, our advertising partners include Google. You can limit
+          Google ad personalization in Google&rsquo;s{" "}
           <a href="https://myadcenter.google.com/" className="underline" target="_blank" rel="noopener noreferrer">
             My Ad Center
-          </a>{" "}
-          or block third-party cookies in your browser. Smarterwaywealth.com
-          does not use the Google tag.
+          </a>
+          .
         </p>
 
         <h2 id="how-we-use-information" className="pt-4 text-lg font-semibold text-neutral-900">
@@ -123,13 +89,18 @@ export default function PrivacyPolicy() {
           Third parties
         </h2>
         <p>
-          Our sites are hosted on Vercel, use Google Firebase to store direct
-          onboarding requests, Sentry for error monitoring, PostHog for product
-          analytics and session replay, and Calendly for meeting scheduling on
-          smarterwaywealth.com. We also use advertising partners, such as social
-          media companies and Google, for advertising measurement, as described
-          above. These providers
-          process data on our behalf or under their own privacy practices.
+          We use service providers for website hosting, secure storage, error
+          monitoring, site analytics, and meeting scheduling, and advertising
+          partners as described above. These providers process information on
+          our behalf or under their own privacy policies.
+        </p>
+
+        <h2 id="do-not-track" className="pt-4 text-lg font-semibold text-neutral-900">
+          Do Not Track
+        </h2>
+        <p>
+          This site does not currently respond to browser &ldquo;Do Not
+          Track&rdquo; signals.
         </p>
 
         <h2 id="disclosures" className="pt-4 text-lg font-semibold text-neutral-900">

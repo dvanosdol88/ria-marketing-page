@@ -51,6 +51,7 @@ test("the active form and privacy notice describe the same collected fields", ()
   assert.doesNotMatch(formSource, /assetBand|investment accounts/);
   assert.doesNotMatch(apiSource, /assetBand|Please select a range/);
   assert.match(privacySource, /name, email[\s\S]*state[\s\S]*optional note/);
-  assert.match(privacySource, /Google Firebase to store direct[\s\S]*onboarding requests/);
+  // David, 2026-11-12: the privacy page names provider types, not brands.
+  assert.match(privacySource, /website hosting, secure storage/);
   assert.match(formSource, /Please don&apos;t include account numbers, passwords/);
 });
