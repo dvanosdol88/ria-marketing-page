@@ -47,8 +47,12 @@ test("direct onboarding is active and the paused experience is absent", () => {
   assert.match(nextConfigSource, /source: "\/become-a-client",[\s\S]{0,120}destination: "https:\/\/smarterwaywealth\.com\/onboarding\/verify"/);
   assert.match(nextConfigSource, /source: "\/become-a-client\/:path\*",[\s\S]{0,140}destination: "https:\/\/smarterwaywealth\.com\/onboarding\/verify"/);
   assert.match(nextConfigSource, /source: "\/meaning", missing: \[bluesHost\], destination: `\$\{GREEN_ORIGIN\}\/`, permanent: true/);
-  assert.match(apiSource, /LEGACY_FORM_RETIRED = true/);
-  assert.match(apiSource, /status: 410/);
+  assert.match(apiSource, /const LEGACY_FORM_RETIRED = true;/);
+  // The refusal sits after the input checks and before the first save.
+  const refusal = apiSource.indexOf("if (LEGACY_FORM_RETIRED) {");
+  assert.ok(refusal > apiSource.indexOf("Please select your state."));
+  assert.ok(refusal < apiSource.indexOf(".collection(LEADS_COLLECTION)"));
+  assert.match(apiSource.slice(refusal, refusal + 260), /status: 410/);
 });
 
 test("the active form and privacy notice describe the same collected fields", () => {

@@ -56,12 +56,6 @@ async function deliverAgreementPacket(): Promise<DeliveryResult> {
 const LEGACY_FORM_RETIRED = true;
 
 export async function POST(request: NextRequest) {
-  if (LEGACY_FORM_RETIRED) {
-    return NextResponse.json(
-      { error: "This form is retired. Sign up at https://smarterwaywealth.com/onboarding/verify" },
-      { status: 410 },
-    );
-  }
   let body: SignupBody;
   try {
     body = (await request.json()) as SignupBody;
@@ -85,6 +79,14 @@ export async function POST(request: NextRequest) {
   }
   if (!US_STATES.includes(state as (typeof US_STATES)[number])) {
     return NextResponse.json({ error: "Please select your state." }, { status: 400 });
+  }
+
+  // Retired: refuse here, after the input checks and before anything is saved.
+  if (LEGACY_FORM_RETIRED) {
+    return NextResponse.json(
+      { error: "This form is retired. Sign up at https://smarterwaywealth.com/onboarding/verify" },
+      { status: 410 },
+    );
   }
 
   // Record the lead BEFORE attempting delivery. Someone who never signs is
