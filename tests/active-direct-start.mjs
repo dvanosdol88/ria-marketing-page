@@ -45,7 +45,10 @@ test("direct onboarding is active and the paused experience is absent", () => {
   assert.doesNotMatch(sitemapSource, /become-a-client/);
   assert.doesNotMatch(llmsSource, /youarepayingtoomuch\.com\/become-a-client/);
   assert.match(nextConfigSource, /source: "\/become-a-client",[\s\S]{0,120}destination: "https:\/\/smarterwaywealth\.com\/onboarding\/verify"/);
-  assert.match(nextConfigSource, /source: "\/meaning", missing: \[bluesHost\], destination: "\/", permanent: true/);
+  assert.match(nextConfigSource, /source: "\/become-a-client\/:path\*",[\s\S]{0,140}destination: "https:\/\/smarterwaywealth\.com\/onboarding\/verify"/);
+  assert.match(nextConfigSource, /source: "\/meaning", missing: \[bluesHost\], destination: `\$\{GREEN_ORIGIN\}\/`, permanent: true/);
+  assert.match(apiSource, /LEGACY_FORM_RETIRED = true/);
+  assert.match(apiSource, /status: 410/);
 });
 
 test("the active form and privacy notice describe the same collected fields", () => {

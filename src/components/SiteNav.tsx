@@ -36,7 +36,7 @@ const DRAWER_CLIENT_BUTTON_CLASS =
  * Logo swap uses an opacity cross-fade — both logo elements are always in the
  * DOM (grid-stacked) to avoid layout shifts.
  *
- * Mobile: hamburger + centered logo + compact Become a client CTA.
+ * Mobile: hamburger + centered logo + compact Sign Up CTA.
  * Desktop: logo left + spaced nav links right, ending with the client button.
  * Drawer uses CSS transitions (always in DOM) for reliability.
  */
@@ -289,7 +289,7 @@ export function SiteNav() {
               data-posthog-cta-location="site_nav_mobile"
               className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-md bg-[#008532] px-2.5 text-sm font-bold !text-white !no-underline shadow-[0_6px_18px_rgba(6,75,132,0.26)] transition hover:bg-[#006B28] hover:!text-white focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#008532] min-[360px]:px-4"
             >
-              Become a client
+              Sign Up
             </Link>
           </div>
 

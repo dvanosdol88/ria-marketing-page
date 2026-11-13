@@ -64,7 +64,8 @@ const nextConfig = {
         destination: "https://smarterwaywealth.com/onboarding/verify",
         permanent: true,
       },
-      { source: "/meaning", missing: [bluesHost], destination: "/", permanent: true },
+      // Absolute, so the short Blues names cannot land it on the blue home.
+      { source: "/meaning", missing: [bluesHost], destination: `${GREEN_ORIGIN}/`, permanent: true },
 
       // Off the blue host, /blues and /blues/<file> 308 to the same path on onepercentblues.com.
       { source: "/blues", missing: [bluesHost], destination: `${BLUES_ORIGIN}/`, permanent: true },
