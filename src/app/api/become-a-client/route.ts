@@ -50,6 +50,11 @@ async function deliverAgreementPacket(): Promise<DeliveryResult> {
   return { delivered: false, reason: "esignature_provider_not_configured" };
 }
 
+// David, 2026-11-13: the three-field form is retired; sign-up is the secure
+// sign-up on smarterwaywealth.com. New submissions are refused so no new
+// personal details are saved. Flip this to reopen the old path.
+const LEGACY_FORM_RETIRED = true;
+
 export async function POST(request: NextRequest) {
   let body: SignupBody;
   try {
@@ -74,6 +79,14 @@ export async function POST(request: NextRequest) {
   }
   if (!US_STATES.includes(state as (typeof US_STATES)[number])) {
     return NextResponse.json({ error: "Please select your state." }, { status: 400 });
+  }
+
+  // Retired: refuse here, after the input checks and before anything is saved.
+  if (LEGACY_FORM_RETIRED) {
+    return NextResponse.json(
+      { error: "This form is retired. Sign up at https://smarterwaywealth.com/onboarding/verify" },
+      { status: 410 },
+    );
   }
 
   // Record the lead BEFORE attempting delivery. Someone who never signs is

@@ -351,7 +351,7 @@ export function SiteNav() {
                 className={`${DESKTOP_CLIENT_BUTTON_CLASS} ${collapsed ? "min-h-11" : "min-h-[60px]"}`}
               >
                 <span className="inline-flex items-center gap-2 text-sm font-bold">
-                  Become a Client
+                  Become a client
                   <ExternalLink className="h-[1.1em] w-[1.1em] shrink-0" aria-hidden="true" />
                 </span>
                 <span className={collapsed ? "hidden" : "text-xs"}>$100/month, flat</span>
@@ -443,7 +443,7 @@ export function SiteNav() {
             data-posthog-cta-location="site_nav_mobile_drawer"
             className={DRAWER_CLIENT_BUTTON_CLASS}
           >
-            Become a Client
+            Become a client
             <ExternalLink className="h-[1.1em] w-[1.1em] shrink-0" aria-hidden="true" />
           </Link>
         </div>

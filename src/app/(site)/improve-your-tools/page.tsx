@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { ExternalLink } from "lucide-react";
+import { SMARTER_WAY_WEALTH_MEET_URL } from "@/config/campaignLinks";
 import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
@@ -127,11 +129,21 @@ export default function ImproveYourToolsPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                {/* David, 2026-11-13: this button used to go nowhere ("#"). It is
+                    now the standard navy call button (09-24 standard). */}
                 <a
-                  href="#"
-                  className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-6 py-3 text-white font-semibold shadow-sm hover:bg-brand-700 transition-colors no-underline"
+                  href={SMARTER_WAY_WEALTH_MEET_URL}
+                  data-schedule-call
+                  data-posthog-cta="true"
+                  data-posthog-cta-label="Meet David"
+                  data-posthog-cta-location="improve_your_tools_cta"
+                  className="inline-flex min-h-[52px] flex-col items-center justify-center rounded-md bg-[#064B84] px-[22px] py-1.5 text-center !text-white !no-underline shadow-sm transition hover:bg-[#053B6A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84]"
                 >
-                  Schedule a Free Consultation →
+                  <span className="whitespace-nowrap text-xs font-semibold leading-tight text-white/85">Questions?</span>
+                  <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-extrabold leading-tight">
+                    Schedule 15 minutes
+                    <ExternalLink aria-hidden="true" className="h-[1.1em] w-[1.1em] shrink-0" strokeWidth={2.5} />
+                  </span>
                 </a>
 
                 <Link

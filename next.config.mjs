@@ -49,6 +49,23 @@ const nextConfig = {
         permanent: true,
       },
       { source: "/faq", destination: "/#faq", permanent: true },
+      // David, 2026-11-13: the old three-field form and the Meaning page are
+      // retired. Sign-up is the secure sign-up on smarterwaywealth.com. The blue
+      // host keeps its own bounce to the green site first (BLUES_GREEN_PATHS).
+      {
+        source: "/become-a-client",
+        missing: [bluesHost],
+        destination: "https://smarterwaywealth.com/onboarding/verify",
+        permanent: true,
+      },
+      {
+        source: "/become-a-client/:path*",
+        missing: [bluesHost],
+        destination: "https://smarterwaywealth.com/onboarding/verify",
+        permanent: true,
+      },
+      // Absolute, so the short Blues names cannot land it on the blue home.
+      { source: "/meaning", missing: [bluesHost], destination: `${GREEN_ORIGIN}/`, permanent: true },
 
       // Off the blue host, /blues and /blues/<file> 308 to the same path on onepercentblues.com.
       { source: "/blues", missing: [bluesHost], destination: `${BLUES_ORIGIN}/`, permanent: true },

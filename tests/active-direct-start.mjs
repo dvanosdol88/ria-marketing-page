@@ -14,6 +14,7 @@ const signupConfigSource = readSource("src/config/signupCta.ts");
 const privacySource = readSource("src/app/(site)/privacy/page.tsx");
 const llmsSource = readSource("public/llms.txt");
 const sitemapSource = readSource("public/sitemap.xml");
+const nextConfigSource = readSource("next.config.mjs");
 
 test("direct onboarding is active and the paused experience is absent", () => {
   const combined = [
@@ -38,8 +39,20 @@ test("direct onboarding is active and the paused experience is absent", () => {
     signupConfigSource,
     /export const SIGNUP_PATH = "https:\/\/smarterwaywealth\.com\/onboarding\/verify"/,
   );
-  assert.match(navSource, />\s*Become a Client\s*<ExternalLink/);
-  assert.match(sitemapSource, /<loc>https:\/\/youarepayingtoomuch\.com\/become-a-client<\/loc>/);
+  assert.match(navSource, />\s*Become a client\s*<ExternalLink/);
+  // David, 2026-11-13: the old form is retired. Its address forwards to the
+  // secure sign-up, so it is no longer listed for search engines or assistants.
+  assert.doesNotMatch(sitemapSource, /become-a-client/);
+  assert.doesNotMatch(llmsSource, /youarepayingtoomuch\.com\/become-a-client/);
+  assert.match(nextConfigSource, /source: "\/become-a-client",[\s\S]{0,120}destination: "https:\/\/smarterwaywealth\.com\/onboarding\/verify"/);
+  assert.match(nextConfigSource, /source: "\/become-a-client\/:path\*",[\s\S]{0,140}destination: "https:\/\/smarterwaywealth\.com\/onboarding\/verify"/);
+  assert.match(nextConfigSource, /source: "\/meaning", missing: \[bluesHost\], destination: `\$\{GREEN_ORIGIN\}\/`, permanent: true/);
+  assert.match(apiSource, /const LEGACY_FORM_RETIRED = true;/);
+  // The refusal sits after the input checks and before the first save.
+  const refusal = apiSource.indexOf("if (LEGACY_FORM_RETIRED) {");
+  assert.ok(refusal > apiSource.indexOf("Please select your state."));
+  assert.ok(refusal < apiSource.indexOf(".collection(LEADS_COLLECTION)"));
+  assert.match(apiSource.slice(refusal, refusal + 260), /status: 410/);
 });
 
 test("the active form and privacy notice describe the same collected fields", () => {
