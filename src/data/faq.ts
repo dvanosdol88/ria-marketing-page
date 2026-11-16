@@ -73,12 +73,6 @@ export const faqItems: FaqItem[] = [
       "Smarter Way Wealth coordinates with your estate attorney and CPA, models tax-aware withdrawal and Roth-conversion strategies, and reviews estate documents for advisory implications. The firm does not draft wills, trusts, or other estate documents (that requires an attorney), and does not file tax returns (that requires a CPA or enrolled agent).",
   },
   {
-    id: "whats-the-catch",
-    question: "What's the catch?",
-    answer:
-      "There isn't one. The catch with the traditional 1% AUM model is the compounding fee drag — on a 20-year horizon, a 1% annual fee typically surrenders 17% or more of the portfolio's total ending value. The flat-fee model simply removes that catch.\n\nThe trade-off is that the flat-fee model only works at scale through technology and operational efficiency, which is why most legacy firms have not adopted it.",
-  },
-  {
     id: "who-manages-the-money",
     question: "Who manages the money?",
     answer:
