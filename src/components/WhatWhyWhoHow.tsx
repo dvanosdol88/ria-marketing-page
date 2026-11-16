@@ -17,7 +17,7 @@ export const WWWH_ANSWERS = [
   {
     key: "who",
     label: "Who",
-    body: "David Van Osdol, CFA Charter Holder and CFP Professional with over 20 years’ experience. You will work directly with him.",
+    body: "David Van Osdol, CFA Charter Holder and CFP® Professional with over 20 years’ experience. You will work directly with him.",
   },
 ] as const;
 

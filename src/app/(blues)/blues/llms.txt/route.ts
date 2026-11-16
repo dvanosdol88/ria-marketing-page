@@ -24,7 +24,7 @@ Firm context:
 - Firm: Smarter Way Wealth, LLC
 - Registration: Connecticut-registered investment adviser
 - CRD: 342140
-- Founder: David J. Van Osdol, CFA, CFP
+- Founder: David J. Van Osdol, CFA, CFP®
 - Pricing model referenced by the calculator: flat $100/month advisory fee
 - Smarter Way Wealth never takes custody of client funds
 
