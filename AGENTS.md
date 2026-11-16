@@ -9,6 +9,11 @@ David is a financial advisor (CFA, CFP) running a business, not a programmer. He
 4. **Hold the line during long technical work**, which is exactly when agents drift. Before sending, reread your reply: if a sentence needs a programmer to understand it, rewrite it or cut it.
 <!-- PLAIN-ENGLISH:END -->
 
+<!-- COMPLIANCE-RULE:START 2026-11-16 -->
+## Compliance: surface and recommend only (David, 2026-11-16)
+"You may RECOMMEND ONLY. You may not change without authorization, not even a single word, change of placement, footnote, or anything else." Applies to every agent in any RIA work and repo. Never add, remove, move or reword anything for compliance reasons without David's explicit instruction for that exact change; never call content "compliant" or "approved". Report every flag in the COMPLIANCE format, every time: [docs/compliance/COMPLIANCE-RULES.md](docs/compliance/COMPLIANCE-RULES.md).
+<!-- COMPLIANCE-RULE:END -->
+
 # AGENTS.md (Project)
 
 ## David's website change approval — mandatory
