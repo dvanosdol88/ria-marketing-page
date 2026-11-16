@@ -9,7 +9,7 @@ export default function UpgradeYourAdvicePage() {
     founder: {
       "@type": "Person",
       name: "David J. Van Osdol",
-      jobTitle: "CFA Charterholder, CFP Practitioner",
+      jobTitle: "CFA Charterholder, CFP® Practitioner",
     },
   };
 

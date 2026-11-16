@@ -81,7 +81,7 @@ test("homepage WWWH keeps the locked order and exact approved answers", () => {
     ],
     [
       'label: "Who"',
-      "David Van Osdol, CFA Charter Holder and CFP Professional with over 20 years’ experience.",
+      "David Van Osdol, CFA Charter Holder and CFP® Professional with over 20 years’ experience.",
     ],
     ['label: "How"', "No need to move your accounts!"],
   ];

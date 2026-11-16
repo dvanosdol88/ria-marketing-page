@@ -21,6 +21,7 @@
     "test:home-assumptions-sync": "node tests/home-assumptions-sync.mjs",
     "test:refresh-position": "node tests/refresh-position.mjs",
     "test:home-wwwh": "node --test tests/home-wwwh.mjs",
+    "test:cfp-registered-mark": "node --test tests/cfp-registered-mark.mjs",
     "test:mailer-scan-contract": "node tests/mailer-scan-contract.mjs",
     "test:mailer-scan-policy": "node --experimental-strip-types tests/mailer-scan-policy.mjs",
     "test:campaign-attribution": "node --experimental-strip-types tests/campaign-attribution.mjs",

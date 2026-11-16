@@ -25,7 +25,7 @@ const siteJsonLd = [
       "@type": "Person",
       name: "David J. Van Osdol",
       jobTitle: "Founder",
-      honorificSuffix: "CFA, CFP",
+      honorificSuffix: "CFA, CFP®",
     },
     contactPoint: {
       "@type": "ContactPoint",

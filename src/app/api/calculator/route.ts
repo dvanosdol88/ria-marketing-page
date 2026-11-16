@@ -36,7 +36,7 @@ export function GET(request: Request) {
         crd: "342140",
         iapdUrl: "https://adviserinfo.sec.gov/firm/summary/342140",
         firmUrl: SMARTER_WAY_WEALTH_ORIGIN,
-        founder: "David J. Van Osdol, CFA, CFP",
+        founder: "David J. Van Osdol, CFA, CFP®",
       },
       assumptions: {
         portfolioValue: calculatorState.portfolioValue,

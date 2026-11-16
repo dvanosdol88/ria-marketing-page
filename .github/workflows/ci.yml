@@ -73,6 +73,9 @@ jobs:
       - name: Source locks (One Percent Blues)
         run: npm run test:blues-source-locks
 
+      - name: CFP registered mark
+        run: npm run test:cfp-registered-mark
+
       - name: Blues analytics isolation
         run: npm run test:blues-analytics-isolation
 
