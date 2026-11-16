@@ -1,3 +1,10 @@
+### 2026-11-16 — FAQ: "What's the catch?" deleted
+**Agent:** Claude (Opus 5.5, Linux desktop app) | **Surface:** youarepayingtoomuch.com, onepercentblues.com (shared FAQ data) | **Source chat:** claude://claude.ai/epitaxy/local_d875ffa6-fa3c-442d-b4a4-2e816be32198 | **Rack:** none (shut down)
+- David's order (2026-11-16 12:58 PM ET): "Yes, delete it there" — answering "Delete "What's the catch?" from the youarepayingtoomuch.com FAQ too?" after the same question was deleted on smarterwaywealth.com (#474).
+- changed: the `whats-the-catch` entry removed from `src/data/faq.ts`. Visitors see no change: the FAQ section here shows three other questions and links to the full list on smarterwaywealth.com, where it is already gone.
+- kept: every other question and answer, including the "$100/month?*" asterisk placement here (not in the order).
+- verification: home-wwwh, Blues source locks, Blues analytics isolation and CFP mark tests pass; lint clean on the file; production build passes.
+
 ### 2026-11-16 — CFP® registered mark added after "CFP" (youarepayingtoomuch.com and One Percent Blues)
 **Agent:** Claude (Opus 5.5, Claude Code) | **Surface:** youarepayingtoomuch.com, onepercentblues.com | **Source chat:** claude://claude.ai/epitaxy/local_d875ffa6-fa3c-442d-b4a4-2e816be32198 | **Rack:** none (shut down 2026-11-11)
 - David's order (2026-11-16, 10:26 AM ET): "On the home page "Work directly with David..."  Make sure the registered mark symbol is after CFP, then check the Rest of the website, youarepayingtoomuch.com, and the 1% blues, to make sure that that is consistent."
