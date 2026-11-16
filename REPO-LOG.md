@@ -1,3 +1,10 @@
+### 2026-11-16 — FAQ: the "$100/month" asterisk now sits only after "AI"
+**Agent:** Claude (Opus 5.5, Linux desktop app) | **Surface:** youarepayingtoomuch.com, onepercentblues.com (shared FAQ section) | **Source chat:** claude://claude.ai/epitaxy/local_d875ffa6-fa3c-442d-b4a4-2e816be32198 | **Rack:** none (shut down)
+- David's order (2026-11-16 1:46 PM ET): "Yes, move it there" — answering "Move the asterisk to after "AI" on youarepayingtoomuch.com too?", matching his smarterwaywealth.com change (#474).
+- changed: the superscript asterisk after "How can you offer these services for only $100/month?" removed; the answer already carries "AI*" and the footnote. The stored question text drops its "*" too (not shown on this site).
+- kept: every word; the answer, footnote and the other two questions.
+- verification: home-wwwh, home-first-screen, Blues source locks, Blues analytics isolation and CFP mark tests pass; `tests/02-33-visible-copy.test.mjs` has 2 failures that also fail on main without this change; build passes.
+
 ### 2026-11-16 — FAQ: "What's the catch?" deleted
 **Agent:** Claude (Opus 5.5, Linux desktop app) | **Surface:** youarepayingtoomuch.com, onepercentblues.com (shared FAQ data) | **Source chat:** claude://claude.ai/epitaxy/local_d875ffa6-fa3c-442d-b4a4-2e816be32198 | **Rack:** none (shut down)
 - David's order (2026-11-16 12:58 PM ET): "Yes, delete it there" — answering "Delete "What's the catch?" from the youarepayingtoomuch.com FAQ too?" after the same question was deleted on smarterwaywealth.com (#474).

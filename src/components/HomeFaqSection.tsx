@@ -174,7 +174,6 @@ export function HomeFaqSection({
                 question={
                   <span className="font-bold">
                     {KEPT_QUESTION_LABEL}
-                    <sup className="ml-0.5 font-normal text-[#6E7883]">*</sup>
                   </span>
                 }
                 answer={keptAnswer}
