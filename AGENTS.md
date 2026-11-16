@@ -12,6 +12,8 @@ David is a financial advisor (CFA, CFP) running a business, not a programmer. He
 <!-- COMPLIANCE-RULE:START 2026-11-16 -->
 ## Compliance: surface and recommend only (David, 2026-11-16)
 "You may RECOMMEND ONLY. You may not change without authorization, not even a single word, change of placement, footnote, or anything else." Applies to every agent in any RIA work and repo. Never add, remove, move or reword anything for compliance reasons without David's explicit instruction for that exact change; never call content "compliant" or "approved". Report every flag in the COMPLIANCE format, every time: [docs/compliance/COMPLIANCE-RULES.md](docs/compliance/COMPLIANCE-RULES.md).
+## Language: recommend only (David, 2026-11-16)
+"KNOCK IT OFF!!! ... Agents can recommend only." Never change David's words: not a word, spelling, capital, comma, name or placement, unless he told you to make that exact change. Dictation slips are his to fix: show his words as `Now:` and your reading as `Recommended:`. Every wording suggestion goes in its own `LANGUAGE` section: [docs/compliance/LANGUAGE-RULES.md](docs/compliance/LANGUAGE-RULES.md).
 <!-- COMPLIANCE-RULE:END -->
 
 # AGENTS.md (Project)
