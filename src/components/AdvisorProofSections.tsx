@@ -833,7 +833,7 @@ export function AdvisorProofSections() {
       <section className="px-4 pb-16 sm:px-6">
         <div className="mx-auto max-w-6xl border-t border-[#D5DEE8] pt-8">
           <p className="max-w-3xl text-xs leading-5 text-slate-500">
-            CFA and Chartered Financial Analyst are registered trademarks owned by CFA Institute. CFP marks are owned by CFP Board. Credentials do not guarantee investment results.
+            CFA and Chartered Financial Analyst are registered trademarks owned by CFA Institute. Credentials do not guarantee investment results.
           </p>
         </div>
       </section>
