@@ -1,3 +1,8 @@
+### 2026-11-17 — Round CFA credential on Upgrade your advice
+**Agent:** Windows Codex | **Surface:** youarepayingtoomuch.com/upgrade-your-advice | **Source chat:** codex://threads/01a1e677-3ef3-75b2-a8e8-eed1aac88508
+- Replaced the square artwork with the supplied round CFA Institute Member Charterholder badge in the existing credentials card. The position, display dimensions, copy, links and CFP® badge are unchanged.
+- The live YAPT homepage and One Percent Blues homepage had no CFA badge image. The only source reference was the Upgrade your advice card. Live verification of the new artwork follows release.
+
 ### 2026-11-17 — The YAPT “Learn more about David” link opens Meet David
 **Agent:** Windows Codex | **Surface:** youarepayingtoomuch.com | **Source chat:** codex://threads/01a1e677-3ef3-75b2-a8e8-eed1aac88508
 - The homepage card now links directly to the existing Meet David page at smarterwaywealth.com/about-david. Its label, appearance, opening in a new tab, and click tracking identity stay the same.
