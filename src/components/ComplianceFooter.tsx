@@ -3,6 +3,8 @@
 // Mirror this file to the smarterwaywealth.com repo (smarter-way-wealth) when the text changes.
 // Disclosures last updated 2026-04-28.
 
+import { CfpMarksNotice } from "@/components/CfpMarksNotice";
+
 const DISCLOSURES_LAST_UPDATED = "2026-04-28";
 const COMPLIANCE_EMAIL = "compliance@smarterwaywealth.com";
 const COMPLIANCE_PHONE_DISPLAY = "(646) 418-2867";
@@ -28,8 +30,11 @@ const PRIVACY_URL = "https://smarterwaywealth.com/privacy";
 export default function ComplianceFooter({
   linksAbove = false,
   ground = "bg-[#EEF0F5]",
+  cfpMarksNotice = false,
 }: {
   linksAbove?: boolean;
+  /** CFP Board's required tagline, only on pages that show the CFP® mark (David, 2026-11-17). */
+  cfpMarksNotice?: boolean;
   /** Background class, so the block can join a footer on another ground (the Blues page). */
   ground?: string;
 } = {}) {
@@ -98,6 +103,7 @@ export default function ComplianceFooter({
           </a>
           .
         </p>
+        {cfpMarksNotice ? <CfpMarksNotice className="mt-3" /> : null}
         <p className="mt-4 text-[11px] text-neutral-500">
           Disclosures last updated {DISCLOSURES_LAST_UPDATED}. &copy;{" "}
           {new Date().getFullYear()} Smarter Way Wealth, LLC. All rights

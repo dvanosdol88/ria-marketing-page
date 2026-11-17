@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import ComplianceFooter from "@/components/ComplianceFooter";
 import { CalculatorNotes } from "@/components/CalculatorNotes";
 import { LegalLinks } from "@/components/LegalLinks";
+import { CFP_MARK_ROUTES } from "@/components/CfpMarksNotice";
 
 /**
  * Shared site-wide footer. Renders the marketing footer block and the
@@ -43,7 +44,7 @@ export function SiteFooter() {
           </div>
         </div>
       </footer>
-      <ComplianceFooter linksAbove />
+      <ComplianceFooter linksAbove cfpMarksNotice={CFP_MARK_ROUTES.includes(pathname)} />
     </>
   );
 }

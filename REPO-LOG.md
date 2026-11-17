@@ -1,3 +1,10 @@
+### 2026-11-17 — CFP Board's required notice, only on pages that show the CFP® mark
+**Agent:** Windows Claude | **Surface:** youarepayingtoomuch.com (onepercentblues.com unchanged) | **Source chat:** claude://claude.ai/epitaxy/local_1dc78427-08a1-4165-9581-f1431487744f | **Rack:** none (shut down)
+- David's order (2026-11-17 11:59 AM ET): "add that on all sites that need it, but ONLY where it is required, no where else." ("that" = the CFP Board notice, register SWW-108 on the firm repo.)
+- changed: CFP Board's legal tagline, verbatim from cfp.net "How to Use the CFP Marks" (read 2026-11-17), joins the compliance small print only on `/`, `/upgrade-your-advice` and `/improve-your-tools`, the three pages that show the mark (checked live with collapsed sections open). Gated in `SiteFooter` by `CFP_MARK_ROUTES`; the Blues footer never passes it and the Blues page shows no mark.
+- kept: every other word, including the existing trademark line on Upgrade your advice ("CFP marks are owned by CFP Board."), which is left for David to keep or trim. smarterwaywealth.com got the same notice on its five mark-bearing pages (smarter-way-wealth #494).
+- verification: lint and type check clean; Blues source-lock and home tests pass; build passes. Live check follows the merge.
+
 ### 2026-11-17 — Match YAPT signup and scheduling buttons to Smarter Way Wealth
 **Agent:** Windows Codex | **Surface:** youarepayingtoomuch.com | **Source chat:** codex://threads/01a1e9bc-6ca8-71e3-819f-90562f5b41f3
 - Signup buttons now use "I'm Ready" with no price line. Signup and scheduling button styles use the firm site's green and navy treatments. Calculator controls, destinations, tracking identities, disclosures, and One Percent Blues are unchanged.
