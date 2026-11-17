@@ -34,12 +34,12 @@ test("direct onboarding is active and the paused experience is absent", () => {
   assert.match(formSource, /Send me the agreement/);
   assert.match(apiSource, /collection\(LEADS_COLLECTION\)/);
   assert.match(apiSource, /agreementDelivered: false/);
-  assert.match(signupConfigSource, /label: "Become a client — \$100\/month"/);
+  assert.match(signupConfigSource, /label: "I'm Ready"/);
   assert.match(
     signupConfigSource,
     /export const SIGNUP_PATH = "https:\/\/smarterwaywealth\.com\/onboarding\/verify"/,
   );
-  assert.match(navSource, />\s*Become a client\s*<ExternalLink/);
+  assert.match(navSource, />\s*\{signupCta\.primary\.label\}\s*<\/Link>/);
   // David, 2026-11-13: the old form is retired. Its address forwards to the
   // secure sign-up, so it is no longer listed for search engines or assistants.
   assert.doesNotMatch(sitemapSource, /become-a-client/);

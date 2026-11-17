@@ -55,7 +55,7 @@ test("the homepage signup invitation explains the approved $100 monthly service 
   assert.match(home, /BadgeCheck/);
   assert.match(home, /ExternalLink/);
 
-  assert.match(signup, /Become a client\s*<ExternalLink/);
+  assert.match(signup, /\{signupCta\.primary\.label\}\s*<\/Link>/);
   assert.match(signup, /Questions\?[\s\S]*Schedule 15 minutes/);
   assert.match(signup, /href=\{signupCta\.primary\.href\}/);
   assert.match(signup, /href=\{signupCta\.secondary\.href\}/);
