@@ -1,3 +1,9 @@
+### 2026-11-17 — Upgrade your advice: drop the short "CFP marks are owned by CFP Board." sentence
+**Agent:** Windows Claude | **Surface:** youarepayingtoomuch.com | **Source chat:** claude://claude.ai/epitaxy/local_1dc78427-08a1-4165-9581-f1431487744f | **Rack:** none (shut down)
+- David's order (2026-11-17 1:58 PM ET): "drop", replying to: "On youarepayingtoomuch.com, the Upgrade your advice page now names CFP Board's ownership twice: your existing short line, plus the full notice in the small print. Keeping or trimming the short line is your call". The written recommendation he was answering named the one sentence: drop "CFP marks are owned by CFP Board."
+- changed: that sentence only. "CFA and Chartered Financial Analyst are registered trademarks owned by CFA Institute." and "Credentials do not guarantee investment results." stay; CFP Board's full notice remains in the page's small print (#402).
+- verification: no local build (the drive had about 1 GB free); the repository's checks (verify, test, wording approval) and a live check follow.
+
 ### 2026-11-17 — Round CFA credential on Upgrade your advice
 **Agent:** Windows Codex | **Surface:** youarepayingtoomuch.com/upgrade-your-advice | **Source chat:** codex://threads/01a1e677-3ef3-75b2-a8e8-eed1aac88508
 - Replaced the square artwork with the supplied round CFA Institute Member Charterholder badge in the existing credentials card. The position, display dimensions, copy, links and CFP® badge are unchanged.
