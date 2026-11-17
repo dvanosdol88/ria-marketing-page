@@ -1,3 +1,9 @@
+### 2026-11-17 — Security patch: Next.js 16.4.1 → 16.4.5
+**Agent:** Windows Claude | **Surface:** youarepayingtoomuch.com and onepercentblues.com (no visible change) | **Rack:** none (shut down)
+- Why: the build stopped once on 2026-11-17 with Next.js's "known security vulnerability" notice. The advisories are GHSA-mfr8-8qww-v76h and GHSA-vc7v-qv4w-wrv8 (medium; cross-request cache/information leaks in `'use cache'`), both affecting up to 16.4.4 and fixed in 16.4.5. 16.4.5 is the smallest fixing release and has no open advisories.
+- changed: `next` range and lockfile only (16.4.1 → 16.4.5). `eslint-config-next` is not pinned to match and is unchanged. Routine maintenance: no wording, look, calculation or behavior change intended, so no receipt.
+- verification: no local build (the drive had about 1 GB free); the repository's checks (verify, test, wording approval, Vercel preview) and a live check on both domains follow.
+
 ### 2026-11-17 — Upgrade your advice: drop the short "CFP marks are owned by CFP Board." sentence
 **Agent:** Windows Claude | **Surface:** youarepayingtoomuch.com | **Source chat:** claude://claude.ai/epitaxy/local_1dc78427-08a1-4165-9581-f1431487744f | **Rack:** none (shut down)
 - David's order (2026-11-17 1:58 PM ET): "drop", replying to: "On youarepayingtoomuch.com, the Upgrade your advice page now names CFP Board's ownership twice: your existing short line, plus the full notice in the small print. Keeping or trimming the short line is your call". The written recommendation he was answering named the one sentence: drop "CFP marks are owned by CFP Board."
