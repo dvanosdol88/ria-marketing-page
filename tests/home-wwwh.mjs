@@ -278,7 +278,7 @@ test("the firm visit card is one brand-green visual unit with separate tracked d
       "advancedCalculatorHref",
     ],
     ["Find out how we work", "home_firm_visit_card_how", "https://smarterwaywealth.com/how"],
-    ["Learn more about David", "home_firm_visit_card_david", "https://smarterwaywealth.com/#david"],
+    ["Learn more about David", "home_firm_visit_card_david", "https://smarterwaywealth.com/about-david"],
     [
       "See our frequently asked questions",
       "home_firm_visit_card_faq",

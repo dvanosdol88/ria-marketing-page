@@ -1,3 +1,8 @@
+### 2026-11-17 — The YAPT “Learn more about David” link opens Meet David
+**Agent:** Windows Codex | **Surface:** youarepayingtoomuch.com | **Source chat:** codex://threads/01a1e677-3ef3-75b2-a8e8-eed1aac88508
+- The homepage card now links directly to the existing Meet David page at smarterwaywealth.com/about-david. Its label, appearance, opening in a new tab, and click tracking identity stay the same.
+- The destination returned 200 and identified itself as the canonical Meet David page. The existing home card test checks this link. Live confirmation of the YAPT link follows release.
+
 ### 2026-11-17 — CFP Board's required notice, only on pages that show the CFP® mark
 **Agent:** Windows Claude | **Surface:** youarepayingtoomuch.com (onepercentblues.com unchanged) | **Source chat:** claude://claude.ai/epitaxy/local_1dc78427-08a1-4165-9581-f1431487744f | **Rack:** none (shut down)
 - David's order (2026-11-17 11:59 AM ET): "add that on all sites that need it, but ONLY where it is required, no where else." ("that" = the CFP Board notice, register SWW-108 on the firm repo.)

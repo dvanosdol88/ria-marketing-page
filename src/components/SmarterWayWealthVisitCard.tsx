@@ -15,7 +15,7 @@ const FIRM_DESTINATIONS = [
     text: "Find out how we work",
   },
   {
-    href: "https://smarterwaywealth.com/#david",
+    href: "https://smarterwaywealth.com/about-david",
     label: "Learn more about David",
     location: "home_firm_visit_card_david",
     text: "Learn more about David",
