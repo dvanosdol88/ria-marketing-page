@@ -62,7 +62,7 @@ const adviceCards: ProofCard[] = [
     statLabel: "years experience",
     logos: [
       {
-        src: "/cfa-charterholder-badge.png",
+        src: "/cfa-member-charterholder-round.png",
         alt: "CFA Charterholder badge",
       },
       {
