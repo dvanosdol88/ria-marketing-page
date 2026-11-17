@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, ExternalLink } from "lucide-react";
-import { signupCta } from "@/config/signupCta";
+import { SCHEDULE_BUTTON_CLASS, SIGNUP_BUTTON_CLASS, signupCta } from "@/config/signupCta";
 
 type SignupCtaProps = {
   /** PostHog CTA location tag so each placement is distinguishable. */
@@ -15,11 +15,8 @@ type SignupCtaProps = {
   primaryHref?: string;
 };
 
-/** The retained full-card CTA is intentionally quiet: the green pill is the
- * single primary action. The group/arrow treatment is presentation only —
- * one button, same label, same door.
- * "Become a client" buttons are always green on every site (David 2026-09-24). */
-const BLOCK_PRIMARY_BUTTON_CLASS =
+/** Preserve the existing One Percent Blues button. */
+const BLUES_PRIMARY_BUTTON_CLASS =
   "group flex min-h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[#008532] px-6 text-center text-base font-bold !text-white !no-underline shadow-[0_10px_26px_rgba(3,26,42,0.35)] transition hover:-translate-y-0.5 hover:bg-[#006B28] hover:shadow-[0_16px_34px_rgba(3,26,42,0.45)] hover:!text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]";
 
 const HOME_CLIENT_VALUE_ITEMS = [
@@ -61,29 +58,24 @@ function HomeActionPair({ location }: { location: string }) {
     <>
       <Link
         href={signupCta.primary.href}
-        className="flex min-h-[80px] w-full flex-col items-center justify-center gap-1 rounded-md bg-[#008532] px-6 py-4 text-center !text-white !no-underline shadow-sm transition hover:bg-[#006B28] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532]"
+        className={`${SIGNUP_BUTTON_CLASS} w-full`}
         data-posthog-cta="true"
-        data-posthog-cta-label={signupCta.primary.label}
+        data-posthog-cta-label={signupCta.primary.analyticsLabel}
         data-posthog-cta-location={`${location}_primary`}
       >
-        <span className="inline-flex items-center gap-2 text-xl font-bold leading-6">
-          Become a client
-          <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
-        </span>
-        <span className="text-sm">$100/month, flat</span>
+        {signupCta.primary.label}
       </Link>
       <a
         href={signupCta.secondary.href}
         data-schedule-call
-        className="inline-flex min-h-[52px] flex-col items-center justify-center self-center rounded-md bg-[#064B84] px-[22px] py-1.5 text-center !text-white !no-underline shadow-sm transition hover:bg-[#053B6A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84]"
+        className={`${SCHEDULE_BUTTON_CLASS} self-center`}
         data-posthog-cta="true"
         data-posthog-cta-label={signupCta.secondary.label}
         data-posthog-cta-location={`${location}_secondary`}
       >
         <span className="whitespace-nowrap text-xs font-semibold leading-tight text-white/85">Questions?</span>
-        <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-extrabold leading-tight">
+        <span className="whitespace-nowrap text-sm font-extrabold leading-tight">
           Schedule 15 minutes
-          <ExternalLink aria-hidden="true" className="h-[1.1em] w-[1.1em] shrink-0" strokeWidth={2.5} />
         </span>
       </a>
       <p className="text-center text-xs leading-5 text-[#536278]">
@@ -98,8 +90,7 @@ export function SignupCta({
   surfaceClassName = "bg-[#EEF0F5]",
   primaryHref,
 }: SignupCtaProps) {
-  // The homepage uses David's compact two-choice layout. Other placements keep
-  // their existing presentation and all analytics labels remain stable.
+  // The homepage uses David's compact two-choice layout.
   if (location === "home_post_calculator" || location === "home_post_faq") {
     return (
       <section className={`w-full ${surfaceClassName} px-4 pb-4 pt-10 sm:px-6 sm:pb-6 sm:pt-14`}>
@@ -149,12 +140,16 @@ export function SignupCta({
     );
   }
 
-  const primaryButtonClass = BLOCK_PRIMARY_BUTTON_CLASS;
   const primaryLeavesSite = Boolean(primaryHref && /^https?:\/\//i.test(primaryHref));
-
-  const primaryContent = (
-    <>
-      {signupCta.primary.label}
+  const primary = primaryHref ? (
+    <a
+      href={primaryHref}
+      className={BLUES_PRIMARY_BUTTON_CLASS}
+      data-posthog-cta="true"
+      data-posthog-cta-label={signupCta.primary.analyticsLabel}
+      data-posthog-cta-location={`${location}_primary`}
+    >
+      {signupCta.primary.analyticsLabel}
       {primaryLeavesSite ? (
         <ExternalLink aria-hidden="true" className="h-[1.25em] w-[1.25em] shrink-0" strokeWidth={2.5} />
       ) : (
@@ -164,28 +159,16 @@ export function SignupCta({
           strokeWidth={2.75}
         />
       )}
-    </>
-  );
-
-  const primary = primaryHref ? (
-    <a
-      href={primaryHref}
-      className={primaryButtonClass}
-      data-posthog-cta="true"
-      data-posthog-cta-label={signupCta.primary.label}
-      data-posthog-cta-location={`${location}_primary`}
-    >
-      {primaryContent}
     </a>
   ) : (
     <Link
       href={signupCta.primary.href}
-      className={primaryButtonClass}
+      className={`${SIGNUP_BUTTON_CLASS} w-full`}
       data-posthog-cta="true"
-      data-posthog-cta-label={signupCta.primary.label}
+      data-posthog-cta-label={signupCta.primary.analyticsLabel}
       data-posthog-cta-location={`${location}_primary`}
     >
-      {primaryContent}
+      {signupCta.primary.label}
     </Link>
   );
 

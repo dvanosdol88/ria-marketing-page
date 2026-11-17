@@ -742,22 +742,15 @@ test("desktop and mobile nav expose the active tracked onboarding CTA", () => {
   assert.match(navSource, /data-posthog-cta-location="site_nav"/);
   assert.match(navSource, /data-posthog-cta-location="site_nav_mobile"/);
   assert.match(navSource, /data-posthog-cta-location="site_nav_mobile_drawer"/);
-  assert.match(navSource, />\s*Sign Up\s*<\/Link>/);
-  assert.match(navSource, /bg-\[#008532\][^"\n]*text-white/);
-  assert.match(navSource, /px-2\.5[^"\n]*min-\[360px\]:px-4/);
+  assert.equal(navSource.match(/>\s*\{signupCta\.primary\.label\}\s*<\/Link>/g)?.length, 3);
+  assert.doesNotMatch(navSource, /\$100\/month, flat/);
+  assert.match(navSource, /px-1\.5[^"\n]*min-\[360px\]:px-4/);
   assert.match(navSource, /absolute left-1\/2[^"\n]*-translate-x-1\/2/);
-  assert.match(navSource, /const DESKTOP_CLIENT_BUTTON_CLASS =[\s\S]*bg-\[#008532\]/);
-  assert.match(navSource, /const DRAWER_CLIENT_BUTTON_CLASS =[\s\S]*bg-\[#008532\]/);
-  assert.equal(
-    navSource.match(/<ExternalLink className=/g)?.length,
-    2,
-    "only the desktop and drawer client buttons carry an arrow",
-  );
 
   const desktopStart = navSource.indexOf("Desktop Layout");
   const desktopClientIndex = navSource.indexOf('data-posthog-cta-label="Become a Client"', desktopStart);
   assert.ok(desktopClientIndex >= 0, "desktop client button must render");
-  assert.match(navSource.slice(desktopClientIndex, desktopClientIndex + 300), /className=\{`\$\{DESKTOP_CLIENT_BUTTON_CLASS\}/);
+  assert.match(navSource.slice(desktopClientIndex, desktopClientIndex + 300), /className=\{`\$\{HEADER_CLIENT_BUTTON_CLASS\}/);
 });
 
 test("homepage FAQ reflects the approved affordability, insertion-note, and custody edits", () => {

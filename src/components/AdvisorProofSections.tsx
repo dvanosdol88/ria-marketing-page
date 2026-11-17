@@ -15,6 +15,7 @@ import {
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "framer-motion";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { fitCta } from "@/config/fitCtaConfig";
+import { SIGNUP_BUTTON_CLASS, signupCta } from "@/config/signupCta";
 import { goodFitCardConfig } from "@/config/goodFitCardConfig";
 import {
   getStickyScrollTriggerY,
@@ -209,14 +210,8 @@ export function FitCtaDivider({
           <div className="flex flex-col items-start gap-3 lg:items-stretch">
             <a
               href={fitCta.href}
-              /* "Become a client" buttons are always green on every site
-                 (David 2026-09-24). Same fill as the homepage green CTA. */
-              className="fit-cta-action inline-flex min-h-14 w-full items-center justify-center rounded-md px-5 py-3 text-center text-base font-extrabold !text-white !no-underline shadow-[0_12px_28px_rgba(6,36,23,0.14)] transition-transform duration-200 ease-out hover:!text-white hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(6,36,23,0.22)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#008532] sm:w-auto sm:px-8 sm:text-lg lg:w-full"
-              style={{
-                background: "#008532",
-                border: "1px solid #006B28",
-                textDecoration: "none",
-              }}
+              data-posthog-cta-label={signupCta.primary.analyticsLabel}
+              className={`${SIGNUP_BUTTON_CLASS} w-full sm:w-auto lg:w-full`}
             >
               {fitCta.label}
             </a>
@@ -785,6 +780,7 @@ function LowFrictionUpgradeSection() {
 
         <a
           href={fitCta.href}
+          data-posthog-cta-label={`Next StepsOne flat fee. $100 a month.${signupCta.primary.analyticsLabel}`}
           className="group flex min-h-[224px] flex-col justify-between bg-[#008532] p-6 !text-white !no-underline shadow-[0_18px_44px_rgba(6,75,132,0.22)] transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-[#006B28] hover:!text-white hover:shadow-[0_24px_58px_rgba(6,75,132,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#008532] sm:min-h-[260px] lg:min-h-0"
         >
           <span className="flex items-center justify-between gap-4">

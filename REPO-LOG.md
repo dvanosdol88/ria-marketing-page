@@ -1,3 +1,8 @@
+### 2026-11-17 — Match YAPT signup and scheduling buttons to Smarter Way Wealth
+**Agent:** Windows Codex | **Surface:** youarepayingtoomuch.com | **Source chat:** codex://threads/01a1e9bc-6ca8-71e3-819f-90562f5b41f3
+- Signup buttons now use "I'm Ready" with no price line. Signup and scheduling button styles use the firm site's green and navy treatments. Calculator controls, destinations, tracking identities, disclosures, and One Percent Blues are unchanged.
+- Focused source checks and headless browser checks passed. At 320, 375, and 1440 pixels, the new label fits, the home page buttons match the firm site's styles, and signup, scheduling, and calculator entry links retain their destinations. Release requires a fresh check on the public site.
+
 ### 2026-11-16 — FAQ: the "$100/month" asterisk now sits only after "AI"
 **Agent:** Claude (Opus 5.5, Linux desktop app) | **Surface:** youarepayingtoomuch.com, onepercentblues.com (shared FAQ section) | **Source chat:** claude://claude.ai/epitaxy/local_d875ffa6-fa3c-442d-b4a4-2e816be32198 | **Rack:** none (shut down)
 - David's order (2026-11-16 1:46 PM ET): "Yes, move it there" — answering "Move the asterisk to after "AI" on youarepayingtoomuch.com too?", matching his smarterwaywealth.com change (#474).

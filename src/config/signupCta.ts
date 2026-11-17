@@ -6,9 +6,17 @@ import { SMARTER_WAY_WEALTH_MEET_URL } from "@/config/campaignLinks";
 
 export const SIGNUP_PATH = "https://smarterwaywealth.com/onboarding/verify";
 
+// Match the signup and scheduling buttons on smarterwaywealth.com.
+export const SIGNUP_BUTTON_CLASS =
+  "inline-flex min-h-12 items-center justify-center rounded-md bg-[#007A2F] px-6 py-3 text-lg font-extrabold leading-6 !text-white !no-underline transition-colors hover:bg-[#00682B] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-[#66F0AC]";
+
+export const SCHEDULE_BUTTON_CLASS =
+  "inline-flex min-h-10 shrink-0 flex-col items-center justify-center rounded-md bg-[#064B84] px-4 py-1.5 text-center !text-white !no-underline transition-colors hover:bg-[#053B6A] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-[#064B84]";
+
 export const signupCta = {
   primary: {
-    label: "Become a client — $100/month",
+    label: "I'm Ready",
+    analyticsLabel: "Become a client — $100/month",
     href: SIGNUP_PATH,
   },
   secondary: {

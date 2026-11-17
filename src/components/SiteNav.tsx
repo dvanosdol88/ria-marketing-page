@@ -4,9 +4,9 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ExternalLink, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { siteNavLinks } from "@/config/siteNavConfig";
-import { SIGNUP_PATH } from "@/config/signupCta";
+import { SIGNUP_PATH, signupCta } from "@/config/signupCta";
 import {
   DESKTOP_SITE_NAV_MEDIA_QUERY,
   getSiteNavScrollTriggerY,
@@ -19,10 +19,10 @@ import {
 const COLLAPSE_SCROLL_Y = 158;
 const EXPAND_SCROLL_Y = 104;
 const SMARTER_WAY_WEALTH_URL = "https://smarterwaywealth.com/";
-const DESKTOP_CLIENT_BUTTON_CLASS =
-  "ml-3 inline-flex flex-col items-center justify-center gap-0.5 rounded-md bg-[#008532] px-4 py-2 !text-white !no-underline transition hover:bg-[#006B28] hover:!text-white focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#008532]";
+const HEADER_CLIENT_BUTTON_CLASS =
+  "inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-md bg-[#007A2F] text-sm font-extrabold !text-white !no-underline transition-colors hover:bg-[#00682B] focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-[#66F0AC]";
 const DRAWER_CLIENT_BUTTON_CLASS =
-  "mt-3 flex min-h-12 items-center justify-center gap-2 rounded-md bg-[#008532] px-4 py-3 text-base font-bold !text-white !no-underline transition hover:bg-[#006B28] hover:!text-white focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#008532]";
+  "mt-3 flex min-h-12 items-center justify-center rounded-md border-2 border-[#00A540] bg-[#00A540] px-5 text-base font-bold uppercase tracking-[0.04em] !text-white !no-underline transition-colors hover:border-[#008435] hover:bg-[#008435]";
 
 /**
  * Site-wide navigation bar — "Authority" style with collapsing behavior.
@@ -36,7 +36,7 @@ const DRAWER_CLIENT_BUTTON_CLASS =
  * Logo swap uses an opacity cross-fade — both logo elements are always in the
  * DOM (grid-stacked) to avoid layout shifts.
  *
- * Mobile: hamburger + centered logo + compact Sign Up CTA.
+ * Mobile: hamburger + centered logo + compact signup CTA.
  * Desktop: logo left + spaced nav links right, ending with the client button.
  * Drawer uses CSS transitions (always in DOM) for reliability.
  */
@@ -287,9 +287,9 @@ export function SiteNav() {
               data-posthog-cta="true"
               data-posthog-cta-label="Become a Client"
               data-posthog-cta-location="site_nav_mobile"
-              className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-md bg-[#008532] px-2.5 text-sm font-bold !text-white !no-underline shadow-[0_6px_18px_rgba(6,75,132,0.26)] transition hover:bg-[#006B28] hover:!text-white focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#008532] min-[360px]:px-4"
+              className={`${HEADER_CLIENT_BUTTON_CLASS} ml-auto min-h-11 px-1.5 min-[360px]:px-4`}
             >
-              Sign Up
+              {signupCta.primary.label}
             </Link>
           </div>
 
@@ -348,13 +348,9 @@ export function SiteNav() {
                 data-posthog-cta="true"
                 data-posthog-cta-label="Become a Client"
                 data-posthog-cta-location="site_nav"
-                className={`${DESKTOP_CLIENT_BUTTON_CLASS} ${collapsed ? "min-h-11" : "min-h-[60px]"}`}
+                className={`${HEADER_CLIENT_BUTTON_CLASS} ml-3 px-4 ${collapsed ? "min-h-11" : "min-h-12"}`}
               >
-                <span className="inline-flex items-center gap-2 text-sm font-bold">
-                  Become a client
-                  <ExternalLink className="h-[1.1em] w-[1.1em] shrink-0" aria-hidden="true" />
-                </span>
-                <span className={collapsed ? "hidden" : "text-xs"}>$100/month, flat</span>
+                {signupCta.primary.label}
               </Link>
             </nav>
           </div>
@@ -443,8 +439,7 @@ export function SiteNav() {
             data-posthog-cta-location="site_nav_mobile_drawer"
             className={DRAWER_CLIENT_BUTTON_CLASS}
           >
-            Become a client
-            <ExternalLink className="h-[1.1em] w-[1.1em] shrink-0" aria-hidden="true" />
+            {signupCta.primary.label}
           </Link>
         </div>
 

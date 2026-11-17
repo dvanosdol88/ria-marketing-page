@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import { SCHEDULE_BUTTON_CLASS } from "@/config/signupCta";
 import { SMARTER_WAY_WEALTH_MEET_URL } from "@/config/campaignLinks";
 import Image from "next/image";
 import Zoom from "react-medium-image-zoom";
@@ -137,12 +137,11 @@ export default function ImproveYourToolsPage() {
                   data-posthog-cta="true"
                   data-posthog-cta-label="Meet David"
                   data-posthog-cta-location="improve_your_tools_cta"
-                  className="inline-flex min-h-[52px] flex-col items-center justify-center rounded-md bg-[#064B84] px-[22px] py-1.5 text-center !text-white !no-underline shadow-sm transition hover:bg-[#053B6A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#064B84]"
+                  className={SCHEDULE_BUTTON_CLASS}
                 >
                   <span className="whitespace-nowrap text-xs font-semibold leading-tight text-white/85">Questions?</span>
-                  <span className="inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-extrabold leading-tight">
+                  <span className="whitespace-nowrap text-sm font-extrabold leading-tight">
                     Schedule 15 minutes
-                    <ExternalLink aria-hidden="true" className="h-[1.1em] w-[1.1em] shrink-0" strokeWidth={2.5} />
                   </span>
                 </a>
 
