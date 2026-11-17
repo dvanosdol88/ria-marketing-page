@@ -1512,3 +1512,7 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 - added: `src/components/ComplianceFooter.tsx`, `src/app/privacy/page.tsx`
 - deployed: https://youarepayingtoomuch.com — verified live via curl (3 inline disclosures, footer present site-wide, `/privacy` returns 200, `/mobile-calculator` carries advisory disclosure, `/our-math` `/faq` `/how-it-works` `/save` `/gallery` all 200)
 - next: add `robots.txt` with explicit AI-bot allow policy, `sitemap.xml`, `/llms.txt`; add JSON-LD `Organization` + `FinancialService` + `WebApplication` (calculator) + `FAQPage` (`/faq`) schemas; consider exposing `/api/calculate?…` JSON endpoint mirroring `buildFeeProjection` so agents can call rather than scrape; investigate preexisting tailwind tokens-import build warning; mirror any compliance-footer wording change to `D:\smarter-way-wealth\src\components\ComplianceFooter.js`
+### 2026-11-17 — CFA badge opens the matching verification page
+
+- David requested that the round CFA badge on YAPT open the same CFA Institute verification page as SWW. Added the public credential link in a new tab and made it keyboard accessible. The companion mark and the badge layout are retained.
+- Source chat: codex://threads/01a1e677-3ef3-75b2-a8e8-eed1aac88508, 2026-11-17 3:06 PM ET.

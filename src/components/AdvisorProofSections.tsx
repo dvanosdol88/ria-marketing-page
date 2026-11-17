@@ -45,6 +45,7 @@ type ProofCard = {
   logos?: {
     src: string;
     alt: string;
+    href?: string;
   }[];
 };
 
@@ -64,6 +65,7 @@ const adviceCards: ProofCard[] = [
       {
         src: "/cfa-member-charterholder-round.png",
         alt: "CFA Charterholder badge",
+        href: "https://credentials.cfainstitute.org/4c9dfd34-b051-4fbe-918e-a67f33e03100#acc.SkBLMXQd",
       },
       {
         src: "/CFP_Logomark_Primary.png",
@@ -577,7 +579,7 @@ function ProofAccordionCard({
           <div
             data-credential-badges={card.eyebrow === "Credentials" ? "" : undefined}
             className="mx-auto mt-4 flex w-fit justify-center gap-3 sm:gap-4 lg:mt-0"
-            aria-hidden="true"
+            aria-hidden={card.logos.some((logo) => logo.href) ? undefined : true}
           >
             {card.logos.map((logo) => {
               const isCfp = logo.src === "/CFP_Logomark_Primary.png";
@@ -595,13 +597,17 @@ function ProofAccordionCard({
                         : "relative block h-[86px] w-[86px] sm:h-24 sm:w-24"
                   }
                 >
-                  <Image
+                  {logo.href ? (
+                    <a href={logo.href} target="_blank" rel="noopener noreferrer" aria-label={logo.alt} className="absolute inset-0 rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#108843]">
+                      <Image src={logo.src} alt="" fill className="object-contain drop-shadow-[0_8px_16px_rgba(17,33,52,0.12)]" sizes={isCredentials ? "115px" : "96px"} />
+                    </a>
+                  ) : <Image
                     src={logo.src}
                     alt=""
                     fill
                     className="object-contain drop-shadow-[0_8px_16px_rgba(17,33,52,0.12)]"
                     sizes={isCredentials ? (isCfp ? "144px" : "115px") : isCfp ? "120px" : "96px"}
-                  />
+                  />}
                 </span>
               );
             })}
