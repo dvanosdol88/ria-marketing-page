@@ -38,13 +38,13 @@ onepercentblues.com, mailers, paid ads, video and social.
 **Who else:** RIA Chief coordinates and is David's business partner. Connor gives the advisory compliance
 second look. David decides on publishing, sending and spending.
 
-## Status (2026-11-17)
+## Status (2026-11-18)
 
 | Item | State |
 |---|---|
 | Role decided | Yes, by David, 2026-11-17 (above). |
-| Mark as a chat agent in RIA Builder | **Not working.** RIA Builder removed Mark on 2026-11-15 (no Mark tab or conversation; Team is Chief and Connor). His old background worker on the cloud machine may still be running, but its requests fail. Running is not the same as usable. |
-| Restoring Mark in RIA Builder | Not started. Needs David's go-ahead as a build. Done means: David opens a Mark tab at riabuilder.dvo88.com, sends a message, and gets a signed reply from Mark that is saved in his history. |
+| Mark as a chat agent in RIA Builder | **Working (proven live 2026-11-18 10:31 AM ET).** Mark tab at riabuilder.dvo88.com answered a test message, signed "— Mark". In the Team group chat, one `@team` message got answers from Chief, Connor and Mark. Reach him with `@mark` in Team or his own tab. |
+| Saved campaign-draft tool | Not restored (David, 2026-11-18). Mark drafts in chat when asked. |
 | Mark's previous instructions | Preserved in RIA Builder history (removed in PR #269, 2026-11-15); the role above supersedes them. |
 
 ## The marketing map (where everything lives)
