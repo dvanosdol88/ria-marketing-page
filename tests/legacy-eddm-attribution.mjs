@@ -64,6 +64,14 @@ try {
         await route.fulfill({ contentType: url.pathname.includes("config") ? "application/json" : "application/javascript", body: url.pathname.includes("config") ? '{"config":{},"supportedCompression":["base64"]}' : "/* disabled in local test */" }); return;
       }
       if (url.hostname !== host) { await route.fulfill({ status: 200, body: "" }); return; }
+      // Analytics now go through the site's own /ingest path (2026-11-18).
+      if (url.pathname.startsWith("/ingest/")) {
+        if (url.pathname.startsWith("/ingest/static/") || url.pathname.startsWith("/ingest/array/") || url.pathname.includes("config")) {
+          await route.fulfill({ contentType: url.pathname.includes("config") ? "application/json" : "application/javascript", body: url.pathname.includes("config") ? '{"config":{},"supportedCompression":["base64"]}' : "/* disabled in local test */" }); return;
+        }
+        events.push(...decodeEvents(route.request().postDataBuffer()));
+        await route.fulfill({ contentType: "application/json", body: '{"status":1}' }); return;
+      }
       if (url.pathname === "/_vercel/insights/script.js") {
         // The hosting platform serves this adapter; local next start does not.
         await route.fulfill({ contentType: "application/javascript", body: "/* platform adapter excluded from local QR proof */" }); return;
