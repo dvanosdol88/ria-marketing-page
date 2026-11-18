@@ -5,16 +5,17 @@ import { publicMailerScanHeaders, requestHeadersCameFromThisSite, requestIsFromP
 import { hasSelfTestCookie } from "@/lib/selfTestTraffic";
 import { hasQrVerificationCookie } from "@/lib/qrVerification";
 import { MEASUREMENT_HOSTS } from "@/lib/qrLanding";
+import { SERVER_COUNTER } from "@/lib/qrServerCount";
 import { EXACT_COUNTER, HISTORY_COUNTER, VERIFICATION_COUNTER, recordMeasurement, validMeasurementInput, publicMeasurementResponse } from "@/lib/qrMeasurement";
 
 export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const db = getAdminDb();
-    const [exact, history, verification] = await Promise.all([
-      db.doc(EXACT_COUNTER).get(), db.doc(HISTORY_COUNTER).get(), db.doc(VERIFICATION_COUNTER).get(),
+    const [exact, history, verification, server] = await Promise.all([
+      db.doc(EXACT_COUNTER).get(), db.doc(HISTORY_COUNTER).get(), db.doc(VERIFICATION_COUNTER).get(), db.doc(SERVER_COUNTER).get(),
     ]);
-    return NextResponse.json(publicMeasurementResponse(exact.data(), history.data(), verification.data()), { headers: publicMailerScanHeaders() });
+    return NextResponse.json(publicMeasurementResponse(exact.data(), history.data(), verification.data(), new Date(), server.data()), { headers: publicMailerScanHeaders() });
   } catch (error) {
     console.error("Mailer scan counter read failed", error);
     return NextResponse.json({ error: "Mailer scan count is temporarily unavailable." }, { status: 503, headers: publicMailerScanHeaders() });
