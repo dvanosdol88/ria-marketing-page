@@ -17,8 +17,16 @@ if (typeof window !== "undefined") {
     // recorded; its events still carry self_test=true and are filtered from dashboards.
     const ownerBrowser = shouldExcludePublicTraffic(window.location.search);
     posthog.init(posthogKey, {
-      api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST ?? 'https://us.i.posthog.com',
+      // First-party path (see next.config.mjs) so ad blockers no longer hide visitors.
+      api_host: '/ingest',
+      ui_host: 'https://us.posthog.com',
       autocapture: true,
+      // David, 2026-11-18: frustration signs, page speed on real phones, and a
+      // record whenever something breaks for a visitor.
+      rageclick: true,
+      capture_dead_clicks: true,
+      capture_performance: { web_vitals: true },
+      capture_exceptions: true,
       capture_pageleave: true,
       enable_heatmaps: true,
       person_profiles: 'always',
