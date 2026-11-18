@@ -115,8 +115,17 @@ const nextConfig = {
           destination: "/brand/blues-icon.svg",
         },
       ],
+      // Analytics through our own address (David, 2026-11-18, "Yes, turn on 1–5"):
+      // ad blockers drop requests to the analytics company's address, so visitors
+      // using one were invisible. Same data, same place, just a first-party path.
+      afterFiles: [
+        { source: "/ingest/static/:path*", destination: "https://us-assets.i.posthog.com/static/:path*" },
+        { source: "/ingest/:path*", destination: "https://us.i.posthog.com/:path*" },
+      ],
     };
   },
+  // Required by the analytics path above (its endpoints end in a slash).
+  skipTrailingSlashRedirect: true,
   outputFileTracingIncludes: {
     "/api/eddm-evals/**/*": [
       "./docs/eddm-evals/**/*",
