@@ -142,3 +142,31 @@ test("05-51: only phones add mailer scans; computers and tablets are kept as a s
   assert.equal(pub.scans.phoneOnly, true);
   assert.equal(pub.nonPhoneQrVisitors.total, 1);
 });
+
+test("David's own Nov 5 scan is shown apart; campaign total adds pre-counter strangers; server counter is reported", async () => {
+  const { classifyServerQrRequest, recordServerQrRequest, SERVER_COUNTER } = await import("../src/lib/qrServerCount.ts");
+  const exact = { count: 2, daily: { "2026-11-05": { scans: 1 }, "2026-11-14": { scans: 1 } } };
+  const response = publicMeasurementResponse(exact, {}, {}, now);
+  assert.equal(response.count, 1);
+  assert.equal(response.daily.find((d) => d.date === "2026-11-05").scans, 0);
+  assert.equal(response.campaign.strangerScans, 2);
+  assert.equal(response.campaign.startedOn, "2026-09-14");
+  const phone = new Headers({ "user-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) Mobile/15E148", "accept-language": "en-US", "x-vercel-ip-city": "Bridgeport", "x-vercel-ip-country-region": "CT" });
+  const url = { hostname: "youarepayingtoomuch.com", pathname: "/", search: `?${printed}` };
+  const scan = classifyServerQrRequest(url, phone);
+  assert.deepEqual(scan, { phone: true, firstVisit: true, place: "Bridgeport, CT" });
+  assert.equal(classifyServerQrRequest({ ...url, search: "" }, phone), null);
+  assert.equal(classifyServerQrRequest({ ...url, search: `?${printed}&selftest=1` }, phone), null);
+  assert.equal(classifyServerQrRequest(url, new Headers({ "user-agent": "Googlebot", "accept-language": "en" })), null);
+  const returning = new Headers(phone); returning.set("cookie", "yapt_qr_seen=1");
+  assert.equal(classifyServerQrRequest(url, returning).firstVisit, false);
+  const tester = new Headers(phone); tester.set("cookie", "yapt_selftest=1");
+  assert.equal(classifyServerQrRequest(url, tester), null);
+  const db = memoryDb({});
+  await recordServerQrRequest(db, scan, now);
+  await recordServerQrRequest(db, { ...scan, firstVisit: false }, now);
+  const saved = publicMeasurementResponse({}, {}, {}, now, db.records.get(SERVER_COUNTER)).serverCount;
+  assert.equal(saved.requests, 2);
+  assert.equal(saved.newPhones, 1);
+  assert.equal(saved.recent[0].place, "Bridgeport, CT");
+});

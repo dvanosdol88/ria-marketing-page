@@ -2,11 +2,23 @@ import { createHash } from "node:crypto";
 import type { Firestore } from "firebase-admin/firestore";
 import { easternDayKey } from "./mailerScanPolicy.ts";
 import { resolveLanding, MEASUREMENT_VERSION, type LandingEvidence } from "./qrLanding.ts";
+import { publicServerCount } from "./qrServerCount.ts";
 
 export const EXACT_COUNTER = "public_metrics/eddm_launch_2026_exact";
 export const HISTORY_COUNTER = "public_metrics/eddm_launch_2026";
 export const VERIFICATION_COUNTER = "public_metrics/eddm_launch_2026_verification";
 export const UNIQUE_STARTED_AT = "2026-10-08T18:32:08Z";
+// David, 2026-11-18: "I was the West Haven visitor." His own iPhone was counted as a
+// scan on Nov 5 (same browser that visits from his home). It is shown, never as a stranger.
+export const OWNER_SCANS: ReadonlyArray<{ date: string; note: string }> = [
+  { date: "2026-11-05", note: "David's own iPhone (West Haven)" },
+];
+// The mailing began Sep 14, but this counter started Oct 8. Stranger scans found in the
+// older analytics records (2026-11-18 audit) fill the gap; David's own test visits are left out.
+export const CAMPAIGN_STARTED_ON = "2026-09-14";
+export const PRE_COUNTER_STRANGER_SCANS: ReadonlyArray<{ date: string; place: string }> = [
+  { date: "2026-09-26", place: "Lawrence, MA" },
+];
 export type MeasurementInput = {
   browserId: string; openingId: string; landing: LandingEvidence;
   verification: boolean;
@@ -105,8 +117,13 @@ export async function recordMeasurement(db: Firestore, input: MeasurementInput, 
   });
 }
 
+function ownerScansOn(date: string, verification: boolean) {
+  return verification ? 0 : OWNER_SCANS.filter((scan) => scan.date === date).length;
+}
 export function publicMeasurement(data: Record<string, any> = {}, verification = false) {
-  const count = total(data.count), visits = total(data.visits);
+  // Only subtract an owner scan the counter actually recorded on that day.
+  const ownerTotal = verification ? 0 : OWNER_SCANS.filter((scan) => total(data.daily?.[scan.date]?.scans) > 0).length;
+  const count = Math.max(0, total(data.count) - ownerTotal), visits = total(data.visits);
   const started = iso(data.qrOpeningsStartedAt);
   const startedDay = started ? easternDayKey(new Date(started)) : null;
   const lastScanAt = iso(data.lastScanAt);
@@ -120,14 +137,25 @@ export function publicMeasurement(data: Record<string, any> = {}, verification =
     daily: Object.entries(data.daily ?? {}).filter(([date]) => /^\d{4}-\d{2}-\d{2}$/.test(date))
       .map(([date, raw]) => {
         const day = raw && typeof raw === "object" ? raw as Record<string, unknown> : {};
-        return { date, scans: total(day.scans), visits: total(day.visits), qrOpenings: startedDay && date >= startedDay ? total(day.qrOpenings) : null, qrVisitors: total(day.scans), nonPhoneScans: total(day.nonPhoneScans), websiteVisitors: total(day.visits) };
+        const scans = Math.max(0, total(day.scans) - ownerScansOn(date, verification));
+        return { date, scans, visits: total(day.visits), qrOpenings: startedDay && date >= startedDay ? total(day.qrOpenings) : null, qrVisitors: scans, nonPhoneScans: total(day.nonPhoneScans), websiteVisitors: total(day.visits) };
       }).sort((a, b) => a.date.localeCompare(b.date)).slice(-30),
     dailyQrVisitorsMeaning: "Phone browsers first added to the QR counter that day; returning QR browsers add openings only. Computers and tablets are counted separately as nonPhoneScans.",
   };
 }
-export function publicMeasurementResponse(exact: Record<string, any> = {}, history: Record<string, any> = {}, verification: Record<string, any> = {}, now = new Date()) {
+export function publicMeasurementResponse(exact: Record<string, any> = {}, history: Record<string, any> = {}, verification: Record<string, any> = {}, now = new Date(), server: Record<string, any> = {}) {
+  const current = publicMeasurement(exact);
   return {
-    ...publicMeasurement(exact), asOf: now.toISOString(), timeZone: "America/New_York", measurementVersion: MEASUREMENT_VERSION,
+    ...current,
+    campaign: {
+      startedOn: CAMPAIGN_STARTED_ON,
+      strangerScans: current.count + PRE_COUNTER_STRANGER_SCANS.length,
+      meaning: "Different phones that opened the printed QR link since the first mail drop, not counting David's own phone.",
+      beforeCounter: PRE_COUNTER_STRANGER_SCANS,
+      ownerScansExcluded: OWNER_SCANS,
+    },
+    serverCount: publicServerCount(server),
+    asOf: now.toISOString(), timeZone: "America/New_York", measurementVersion: MEASUREMENT_VERSION,
     history: { count: total(history.count), visits: total(history.visits), lastUpdatedAt: iso(history.lastUpdatedAt) ?? [iso(history.lastScanAt), iso(history.lastVisitAt)].filter((v): v is string => !!v).sort().at(-1) ?? null, note: "Older mixed history; includes inferred homepage scans. Preserved as saved, never added to current totals." },
     verification: publicMeasurement(verification, true),
   };
