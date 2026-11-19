@@ -1,8 +1,8 @@
 import { BLUES_ORIGIN } from "@/config/onePercentBlues";
 
 /* Served at onepercentblues.com/llms.txt by the host rewrite. Short index for
-   AI agents; the structured endpoint and the math page live on the green
-   domain and are linked rather than duplicated. */
+   AI agents; the structured endpoint lives on the green domain and is linked
+   rather than duplicated. */
 export const dynamic = "force-static";
 
 const BODY = `# One Percent Blues

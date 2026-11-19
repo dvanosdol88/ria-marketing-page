@@ -4,8 +4,8 @@
 - Source chat: https://claude.ai/code/session_01PL1vvFoe2d24LkCCkHdHMM
 - Ordered: 2026-11-19 5:41 PM ET
 - Context: David said youarepayingtoomuch.com "is now only supposed to be a single page", then was asked about these four pages (Save a ton, Upgrade your advice, Improve your tools, Our math) and answered as above.
-- changed: the four pages are deleted, so their addresses show "not found" (no forwarding, as ordered). They are out of the sitemap and both llms.txt files. The CFP® notice page list now names only the home page. The credentials-layout test, which only exercised the deleted Upgrade page, is removed.
-- not changed: the home page, the privacy page, One Percent Blues, and the leftover pages /gallery, /experiment, /mobile-calculator and /components/calendar (shown to David on the sitemap page for his call). On the One Percent Blues host, /our-math still bounces to the green host, where it now shows not found.
+- changed: the four pages are deleted, so their addresses show "not found" (no forwarding, as ordered). They are out of the sitemap and both llms.txt files. The CFP® notice page list now names only the home page. The credentials-layout test, which only exercised the deleted Upgrade page, is removed, along with its step in the CI checks.
+- not changed: the home page, the privacy page, One Percent Blues, and the leftover pages /gallery, /experiment, /mobile-calculator and /components/calendar (shown to David on the sitemap page for his call). On the One Percent Blues host, /our-math, /save-a-ton, /upgrade-your-advice and /improve-your-tools still bounce to the green host (the One Percent Blues forwarding list in next.config.mjs is unchanged), where they now show not found.
 - visit counts before removal (last 30 days, site analytics): Upgrade your advice 2 people; the other three none; home 267.
 
 ### 2026-11-17 — Security patch: Next.js 16.4.1 → 16.4.5
