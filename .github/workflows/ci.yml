@@ -94,9 +94,6 @@ jobs:
       - name: Advisor calculator batch
         run: npm run test:advisor-calculator-batch
 
-      - name: Credentials layout
-        run: npm run test:credentials-layout
-
       - name: Mailer scan contract
         run: npm run test:mailer-scan-contract
 

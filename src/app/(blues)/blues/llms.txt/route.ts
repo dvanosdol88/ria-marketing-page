@@ -1,8 +1,8 @@
 import { BLUES_ORIGIN } from "@/config/onePercentBlues";
 
 /* Served at onepercentblues.com/llms.txt by the host rewrite. Short index for
-   AI agents; the structured endpoint and the math page live on the green
-   domain and are linked rather than duplicated. */
+   AI agents; the structured endpoint lives on the green domain and is linked
+   rather than duplicated. */
 export const dynamic = "force-static";
 
 const BODY = `# One Percent Blues
@@ -13,7 +13,6 @@ Primary URLs:
 
 - The page (check, diagnosis, calculator, FAQ): ${BLUES_ORIGIN}/
 - Structured calculator API (prefer this over scraping): https://youarepayingtoomuch.com/api/calculator
-- Math and assumptions: https://youarepayingtoomuch.com/our-math
 - Full FAQ: https://smarterwaywealth.com/faq
 - Firm site: https://smarterwaywealth.com/
 - 15-minute video meeting with the founder: https://smarterwaywealth.com/meet

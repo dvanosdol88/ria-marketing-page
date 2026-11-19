@@ -1,3 +1,13 @@
+### 2026-11-19 — youarepayingtoomuch.com becomes a single page: four extra pages removed
+**Agent:** Claude (Opus 5.5, claude.ai cloud session) | **Surface:** /save-a-ton, /upgrade-your-advice, /improve-your-tools, /our-math, sitemap, llms.txt | **Source chat:** https://claude.ai/code/session_01PL1vvFoe2d24LkCCkHdHMM
+- David's order: "I don't want those pages to show at all, so we don't have to worry about forwarding."
+- Source chat: https://claude.ai/code/session_01PL1vvFoe2d24LkCCkHdHMM
+- Ordered: 2026-11-19 5:41 PM ET
+- Context: David said youarepayingtoomuch.com "is now only supposed to be a single page", then was asked about these four pages (Save a ton, Upgrade your advice, Improve your tools, Our math) and answered as above.
+- changed: the four pages are deleted, so their addresses show "not found" (no forwarding, as ordered). They are out of the sitemap and both llms.txt files. The CFP® notice page list now names only the home page. The credentials-layout test, which only exercised the deleted Upgrade page, is removed, along with its step in the CI checks.
+- not changed: the home page, the privacy page, One Percent Blues, and the leftover pages /gallery, /experiment, /mobile-calculator and /components/calendar (shown to David on the sitemap page for his call). On the One Percent Blues host, /our-math, /save-a-ton, /upgrade-your-advice and /improve-your-tools still bounce to the green host (the One Percent Blues forwarding list in next.config.mjs is unchanged), where they now show not found.
+- visit counts before removal (last 30 days, site analytics): Upgrade your advice 2 people; the other three none; home 267.
+
 ### 2026-11-19 — One Percent Blues: "Talk to David first" link becomes the navy "Questions? / Schedule 15 minutes" button
 **Agent:** Claude (Opus 5.5, claude.ai cloud session) | **Surface:** the sign-up card under the calculator (One Percent Blues; same card on the older marketing pages) | **Source chat:** https://claude.ai/code/session_01PL1vvFoe2d24LkCCkHdHMM
 - David's order: "2. yes change it"

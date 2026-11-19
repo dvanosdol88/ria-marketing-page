@@ -23,8 +23,6 @@ export const CFP_MARKS_NOTICE =
  */
 export const CFP_MARK_ROUTES: readonly string[] = [
   "/",
-  "/upgrade-your-advice",
-  "/improve-your-tools",
 ];
 
 export function CfpMarksNotice({ className = "" }: { className?: string }) {
