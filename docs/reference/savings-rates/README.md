@@ -5,7 +5,7 @@ David's order (2026-11-19, reply to the morning brief): "compare that to what yo
 ## Where things stand
 - The visible `/savings-rates` page on youarepayingtoomuch.com (YAPT) was retired on 2026-08-14 (PR #227, commit `0a62fd9`); `/savings-rates` now redirects to `/`.
 - What remains on YAPT is the data and its public feed (`/api/savings-rates`), plus the weekly verifier. **youareearningtoolittle.com (YETL) reads its rates from that feed** — YETL's own llms.txt names it "the canonical dataset this site renders", and YETL has no feed of its own. Deleting the feed before YETL has its own copy would break YETL.
-- Data last verified 2026-07-31. The 2026-11-16 weekly check (bot PR #395) could no longer confirm any of the 7 top rates on the banks' pages.
+- Data last verified 2026-07-31. The 2026-11-16 weekly check (bot PR #395) could no longer confirm any of the 7 top rates on the banks' pages. Yet `src/data/savingsRates.json` still labels every row `"verification": "verified"`, and the feed still serves them to YETL. The data's own policy (`meta.policyNotes`) says a row that cannot be re-verified must be marked stale. Marking those rows stale is the first step before any handoff (needs David's OK, since it changes what YETL shows).
 
 ## Screenshots
 - `old-yapt-savings-rates-desktop.png` — the retired YAPT page, rebuilt from the last version before removal.
