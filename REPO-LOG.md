@@ -1,3 +1,12 @@
+### 2026-11-19 — One Percent Blues: "Talk to David first" link becomes the navy "Questions? / Schedule 15 minutes" button
+**Agent:** Claude (Opus 5.5, claude.ai cloud session) | **Surface:** the sign-up card under the calculator (One Percent Blues; same card on the older marketing pages) | **Source chat:** https://claude.ai/code/session_01PL1vvFoe2d24LkCCkHdHMM
+- David's order: "2. yes change it"
+- Source chat: https://claude.ai/code/session_01PL1vvFoe2d24LkCCkHdHMM
+- Ordered: 2026-11-19 5:34 PM ET
+- Context: David was asked about "the Talk to David first for 15 minutes to see if you are a good fit link, under the green sign-up button, on onepercentblues.com: keep it as is, or tell me the words". The change made is the Oct 30 audit's recommendation, which is David's 09-24 standard call button.
+- changed: the underlined text link is now the navy "Questions?" / "Schedule 15 minutes" button, same destination (smarterwaywealth.com/meet), same click label for analytics. "Not sure yet?" above it and "No obligation. Nobody will try to sell you anything." below it are unchanged.
+- not changed: anything else on the card or page.
+
 ### 2026-11-17 — Security patch: Next.js 16.4.1 → 16.4.5
 **Agent:** Windows Claude | **Surface:** youarepayingtoomuch.com and onepercentblues.com (no visible change) | **Rack:** none (shut down)
 - Why: the build stopped once on 2026-11-17 with Next.js's "known security vulnerability" notice. The advisories are GHSA-mfr8-8qww-v76h and GHSA-vc7v-qv4w-wrv8 (medium; cross-request cache/information leaks in `'use cache'`), both affecting up to 16.4.4 and fixed in 16.4.5. 16.4.5 is the smallest fixing release and has no open advisories.

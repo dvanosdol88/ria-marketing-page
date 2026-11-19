@@ -28,22 +28,28 @@ const HOME_CLIENT_VALUE_ITEMS = [
 ] as const;
 
 /**
- * Secondary next step. Deliberately a plain underlined link, never a second
- * button — two buttons of equal weight make the visitor classify themselves
- * before they can act, and most resolve that by doing nothing.
+ * Secondary next step under the sign-up button. David, 2026-11-19 ("yes change
+ * it"): the old "Talk to David first for 15 minutes to see if you are a good
+ * fit" text link is now the standard navy "Questions? / Schedule 15 minutes"
+ * call button (09-24 standard, Oct 30 audit). The click label stays the same
+ * so analytics history is continuous.
  */
 function SecondaryLink({ location }: { location: string }) {
   return (
-    <div className="text-center">
+    <div className="flex flex-col items-center text-center">
       <p className="text-sm text-white/90">{signupCta.secondary.prompt}</p>
       <a
         href={signupCta.secondary.href}
-        className="mt-1 inline-flex min-h-[44px] items-center text-sm font-semibold !text-[#8ED3A8] underline decoration-[#8ED3A8]/60 underline-offset-4 transition hover:!text-[#B6E8C8]"
+        data-schedule-call
+        className={`${SCHEDULE_BUTTON_CLASS} mt-2 ring-1 ring-white/40`}
         data-posthog-cta="true"
         data-posthog-cta-label={signupCta.secondary.label}
         data-posthog-cta-location={`${location}_secondary`}
       >
-        {signupCta.secondary.label}
+        <span className="whitespace-nowrap text-xs font-semibold leading-tight text-white/85">Questions?</span>
+        <span className="whitespace-nowrap text-sm font-extrabold leading-tight">
+          Schedule 15 minutes
+        </span>
       </a>
       <p className="text-xs leading-5 text-white/70">
         {signupCta.secondary.reassurance}

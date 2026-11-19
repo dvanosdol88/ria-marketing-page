@@ -1,7 +1,9 @@
 import { SMARTER_WAY_WEALTH_MEET_URL } from "@/config/campaignLinks";
 
 /**
- * One primary button and one secondary link, never two equal buttons.
+ * One primary sign-up button, with the smaller navy "Questions? / Schedule 15
+ * minutes" call button underneath (David's 09-24 standard; on the card used by
+ * One Percent Blues since 2026-11-19).
  */
 
 export const SIGNUP_PATH = "https://smarterwaywealth.com/onboarding/verify";
@@ -20,7 +22,8 @@ export const signupCta = {
     href: SIGNUP_PATH,
   },
   secondary: {
-    /** Names the doubt on purpose so the secondary door stays a link, not a second button. */
+    /** "Not sure yet?" sits above the navy call button on the card. `label` is
+     *  now the analytics click label only; visitors see "Questions? / Schedule 15 minutes". */
     prompt: "Not sure yet?",
     label: "Talk to David first for 15 minutes to see if you are a good fit",
     href: SMARTER_WAY_WEALTH_MEET_URL,
