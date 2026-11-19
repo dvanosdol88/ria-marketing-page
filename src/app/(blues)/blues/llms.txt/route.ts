@@ -13,7 +13,6 @@ Primary URLs:
 
 - The page (check, diagnosis, calculator, FAQ): ${BLUES_ORIGIN}/
 - Structured calculator API (prefer this over scraping): https://youarepayingtoomuch.com/api/calculator
-- Math and assumptions: https://youarepayingtoomuch.com/our-math
 - Full FAQ: https://smarterwaywealth.com/faq
 - Firm site: https://smarterwaywealth.com/
 - 15-minute video meeting with the founder: https://smarterwaywealth.com/meet

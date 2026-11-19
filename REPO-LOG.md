@@ -1,3 +1,13 @@
+### 2026-11-19 — youarepayingtoomuch.com becomes a single page: four extra pages removed
+**Agent:** Claude (Opus 5.5, claude.ai cloud session) | **Surface:** /save-a-ton, /upgrade-your-advice, /improve-your-tools, /our-math, sitemap, llms.txt | **Source chat:** https://claude.ai/code/session_01PL1vvFoe2d24LkCCkHdHMM
+- David's order: "I don't want those pages to show at all, so we don't have to worry about forwarding."
+- Source chat: https://claude.ai/code/session_01PL1vvFoe2d24LkCCkHdHMM
+- Ordered: 2026-11-19 5:41 PM ET
+- Context: David said youarepayingtoomuch.com "is now only supposed to be a single page", then was asked about these four pages (Save a ton, Upgrade your advice, Improve your tools, Our math) and answered as above.
+- changed: the four pages are deleted, so their addresses show "not found" (no forwarding, as ordered). They are out of the sitemap and both llms.txt files. The CFP® notice page list now names only the home page. The credentials-layout test, which only exercised the deleted Upgrade page, is removed.
+- not changed: the home page, the privacy page, One Percent Blues, and the leftover pages /gallery, /experiment, /mobile-calculator and /components/calendar (shown to David on the sitemap page for his call). On the One Percent Blues host, /our-math still bounces to the green host, where it now shows not found.
+- visit counts before removal (last 30 days, site analytics): Upgrade your advice 2 people; the other three none; home 267.
+
 ### 2026-11-17 — Security patch: Next.js 16.4.1 → 16.4.5
 **Agent:** Windows Claude | **Surface:** youarepayingtoomuch.com and onepercentblues.com (no visible change) | **Rack:** none (shut down)
 - Why: the build stopped once on 2026-11-17 with Next.js's "known security vulnerability" notice. The advisories are GHSA-mfr8-8qww-v76h and GHSA-vc7v-qv4w-wrv8 (medium; cross-request cache/information leaks in `'use cache'`), both affecting up to 16.4.4 and fixed in 16.4.5. 16.4.5 is the smallest fixing release and has no open advisories.

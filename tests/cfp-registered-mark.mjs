@@ -12,7 +12,6 @@ const checks = [
   ["src/components/WhatWhyWhoHow.tsx", "CFA Charter Holder and CFP® Professional with over 20 years’ experience.", "CFA Charter Holder and CFP Professional with over 20 years’ experience."],
   ["src/app/(site)/layout.tsx", 'honorificSuffix: "CFA, CFP®",', 'honorificSuffix: "CFA, CFP",'],
   ["src/config/onePercentBlues.ts", 'honorificSuffix: "CFA, CFP®",', 'honorificSuffix: "CFA, CFP",'],
-  ["src/app/(site)/upgrade-your-advice/page.tsx", 'jobTitle: "CFA Charterholder, CFP® Practitioner",', 'jobTitle: "CFA Charterholder, CFP Practitioner",'],
   ["public/agent-info.json", "David J. Van Osdol, CFA, CFP®", "David J. Van Osdol, CFA, CFP\""],
   ["public/llms.txt", "David J. Van Osdol, CFA, CFP®", "David J. Van Osdol, CFA, CFP\n"],
   ["src/app/(blues)/blues/llms.txt/route.ts", "David J. Van Osdol, CFA, CFP®", "David J. Van Osdol, CFA, CFP\n"],
