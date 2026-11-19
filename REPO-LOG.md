@@ -1,6 +1,9 @@
 ### 2026-11-19 — One Percent Blues: "Talk to David first" link becomes the navy "Questions? / Schedule 15 minutes" button
 **Agent:** Claude (Opus 5.5, claude.ai cloud session) | **Surface:** the sign-up card under the calculator (One Percent Blues; same card on the older marketing pages) | **Source chat:** https://claude.ai/code/session_01PL1vvFoe2d24LkCCkHdHMM
-- David's order (2026-11-19, 5:34 PM ET), answering "the Talk to David first for 15 minutes to see if you are a good fit link, under the green sign-up button, on onepercentblues.com: keep it as is, or tell me the words": "2. yes change it". Change made is the Oct 30 audit's recommendation, which is David's 09-24 standard call button.
+- David's order: "2. yes change it"
+- Source chat: https://claude.ai/code/session_01PL1vvFoe2d24LkCCkHdHMM
+- Ordered: 2026-11-19 5:34 PM ET
+- Context: David was asked about "the Talk to David first for 15 minutes to see if you are a good fit link, under the green sign-up button, on onepercentblues.com: keep it as is, or tell me the words". The change made is the Oct 30 audit's recommendation, which is David's 09-24 standard call button.
 - changed: the underlined text link is now the navy "Questions?" / "Schedule 15 minutes" button, same destination (smarterwaywealth.com/meet), same click label for analytics. "Not sure yet?" above it and "No obligation. Nobody will try to sell you anything." below it are unchanged.
 - not changed: anything else on the card or page.
 
