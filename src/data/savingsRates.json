@@ -8,12 +8,12 @@
   "fdic": {
     "sourceName": "FDIC National Rates and Rate Caps",
     "sourceUrl": "https://www.fdic.gov/national-rates-and-rate-caps",
-    "ratesAsOf": "2026-07-20",
+    "ratesAsOf": "2026-10-19",
     "updateCadence": "Published monthly, on the third Monday of each month",
     "savingsApyPercent": 0.38,
-    "moneyMarketApyPercent": 0.65,
+    "moneyMarketApyPercent": 0.63,
     "interestCheckingApyPercent": 0.07,
-    "lastVerified": "2026-07-31"
+    "lastVerified": "2026-11-16"
   },
   "bigBankAnchor": {
     "label": "Chase Savings (standard rate, all balance tiers)",
@@ -41,7 +41,7 @@
         "conditions": "APY applies to all balances",
         "institutionRateAsOf": null,
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "sources": [
           {
             "name": "Bread Savings rate page",
@@ -71,7 +71,7 @@
         "conditions": "APY applies to all balances",
         "institutionRateAsOf": null,
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "sources": [
           {
             "name": "EverBank Performance Savings page",
@@ -101,7 +101,7 @@
         "conditions": "APY applies to all balances",
         "institutionRateAsOf": "2026-07-13",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "sources": [
           {
             "name": "Popular Direct rate page",
@@ -131,7 +131,7 @@
         "conditions": "APY applies to all balances",
         "institutionRateAsOf": null,
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "sources": [
           {
             "name": "Zynlo Bank rate page",
@@ -163,7 +163,7 @@
         "conditions": "APY applies to all balances",
         "institutionRateAsOf": null,
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "sources": [
           {
             "name": "Zynlo Bank rate page",
@@ -193,7 +193,7 @@
         "conditions": "APY applies to all balance tiers",
         "institutionRateAsOf": "2026-04-14",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "sources": [
           {
             "name": "Quontic Bank Money Market page",
@@ -223,7 +223,7 @@
         "conditions": "$1,000 daily minimum to earn APY and avoid a $10 monthly fee",
         "institutionRateAsOf": "2026-07-27",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "sources": [
           {
             "name": "CFG Bank money market rate page",
@@ -289,7 +289,7 @@
         "nySharePercent": 35.7,
         "institutionRateAsOf": "2026-07-10",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
@@ -323,11 +323,11 @@
           "ct-top5",
           "ny-top5"
         ],
-        "ctSharePercent": 23.0,
+        "ctSharePercent": 23,
         "nySharePercent": 4.9,
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
@@ -361,7 +361,7 @@
         ],
         "institutionRateAsOf": null,
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
@@ -395,7 +395,7 @@
         ],
         "institutionRateAsOf": null,
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
@@ -429,7 +429,7 @@
         ],
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
@@ -463,7 +463,7 @@
         ],
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
@@ -496,7 +496,7 @@
           "regional"
         ],
         "institutionRateAsOf": null,
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-11-16",
         "verification": "verified",
         "autoCheck": true,
         "sources": [
@@ -522,16 +522,16 @@
       {
         "institution": "Capital One",
         "product": "360 Performance Savings",
-        "apyPercent": 3.0,
+        "apyPercent": 3,
         "verifyString": "3.00",
-        "apyNote": "Capital One's mainline consumer savings is itself high-yield \u2014 flat rate on all balances, no minimums; there is no lower standard product.",
+        "apyNote": "Capital One's mainline consumer savings is itself high-yield — flat rate on all balances, no minimums; there is no lower standard product.",
         "group": "online-arm",
         "tags": [
           "regional"
         ],
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
@@ -564,10 +564,10 @@
           "regional",
           "ct-top5"
         ],
-        "ctSharePercent": 5.0,
+        "ctSharePercent": 5,
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
@@ -601,7 +601,7 @@
         ],
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
@@ -635,7 +635,7 @@
         ],
         "ctSharePercent": 22.8,
         "institutionRateAsOf": "2026-07-31",
-        "lastVerified": "2026-07-31",
+        "lastVerified": "2026-11-16",
         "verification": "verified",
         "autoCheck": true,
         "sources": [
@@ -668,10 +668,10 @@
         "tags": [
           "ct-top5"
         ],
-        "ctSharePercent": 11.0,
+        "ctSharePercent": 11,
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
@@ -706,7 +706,7 @@
         "nySharePercent": 8.7,
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": true,
         "sources": [
           {
@@ -741,7 +741,7 @@
         "nySharePercent": 8.1,
         "institutionRateAsOf": "2026-07-31",
         "lastVerified": "2026-07-31",
-        "verification": "verified",
+        "verification": "stale",
         "autoCheck": false,
         "sources": [
           {
