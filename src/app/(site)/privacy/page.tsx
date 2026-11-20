@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     "How Smarter Way Wealth, LLC collects, uses, and protects information from visitors to youarepayingtoomuch.com.",
 };
 
-const LAST_UPDATED = "2026-11-13";
+const LAST_UPDATED = "2026-11-20";
 
 export default function PrivacyPolicy() {
   return (
@@ -44,9 +44,13 @@ export default function PrivacyPolicy() {
           When you visit, our service providers automatically receive standard
           technical and usage information, such as IP address, browser and
           device information, referring or campaign information, pages viewed,
-          clicks, timestamps, and an identifier stored in your browser. This
+          clicks and where they occur on the page, how far down each page you
+          scroll, page loading speed, error reports, timestamps, and
+          identifiers stored in your browser for you and for each visit. This
           site also records how visitors move through its pages, with anything
           typed into form fields masked.
+          This information is sent through our own site address, so browser
+          tools that block analytics services may not prevent its collection.
         </p>
 
         <h2 id="advertising-measurement" className="pt-4 text-lg font-semibold text-neutral-900">
@@ -100,7 +104,7 @@ export default function PrivacyPolicy() {
         </h2>
         <p>
           This site does not currently respond to browser &ldquo;Do Not
-          Track&rdquo; signals.
+          Track&rdquo; or Global Privacy Control signals.
         </p>
 
         <h2 id="disclosures" className="pt-4 text-lg font-semibold text-neutral-900">
