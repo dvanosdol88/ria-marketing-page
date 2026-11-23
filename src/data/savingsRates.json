@@ -8,12 +8,12 @@
   "fdic": {
     "sourceName": "FDIC National Rates and Rate Caps",
     "sourceUrl": "https://www.fdic.gov/national-rates-and-rate-caps",
-    "ratesAsOf": "2026-10-19",
+    "ratesAsOf": "2026-11-16",
     "updateCadence": "Published monthly, on the third Monday of each month",
-    "savingsApyPercent": 0.38,
-    "moneyMarketApyPercent": 0.63,
+    "savingsApyPercent": 0.39,
+    "moneyMarketApyPercent": 0.64,
     "interestCheckingApyPercent": 0.07,
-    "lastVerified": "2026-11-16"
+    "lastVerified": "2026-11-23"
   },
   "bigBankAnchor": {
     "label": "Chase Savings (standard rate, all balance tiers)",
@@ -496,7 +496,7 @@
           "regional"
         ],
         "institutionRateAsOf": null,
-        "lastVerified": "2026-11-16",
+        "lastVerified": "2026-11-23",
         "verification": "verified",
         "autoCheck": true,
         "sources": [
@@ -635,7 +635,7 @@
         ],
         "ctSharePercent": 22.8,
         "institutionRateAsOf": "2026-07-31",
-        "lastVerified": "2026-11-16",
+        "lastVerified": "2026-11-23",
         "verification": "verified",
         "autoCheck": true,
         "sources": [
