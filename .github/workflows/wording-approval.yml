@@ -60,7 +60,18 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24
+      # Reuse complete evidence, never the approval decision. No restore prefixes.
+      - name: Identify immutable site tree
+        id: snapshot-key
+        run: echo "tree=$(git -C site rev-parse 'HEAD^{tree}')" >> "$GITHUB_OUTPUT"
+      - name: Restore matching wording evidence
+        id: evidence
+        uses: actions/cache/restore@v4
+        with:
+          path: snapshot.json
+          key: calculator-wording-v1-ubuntu24-node24-${{ steps.snapshot-key.outputs.tree }}-${{ hashFiles('trusted/scripts/wording/**', 'trusted/package.json', 'trusted/package-lock.json', 'trusted/.github/workflows/wording-approval.yml') }}
       - name: Install trusted browser tooling
+        if: steps.evidence.outputs.cache-hit != 'true'
         working-directory: trusted
         run: |
           npm ci
@@ -69,20 +80,32 @@ jobs:
           npx playwright install chromium
           node --test tests/wording/compare.test.mjs tests/wording/extract.test.mjs tests/wording/probes.test.mjs tests/wording/interact.test.mjs
       - name: Build isolated candidate
+        if: steps.evidence.outputs.cache-hit != 'true'
         run: |
           node trusted/scripts/wording/prepare-probes.mjs site
           docker build -f trusted/scripts/wording/Dockerfile -t wording-site site
       - name: Start isolated website
+        if: steps.evidence.outputs.cache-hit != 'true'
         run: |
           docker network create --internal wording-isolated
           docker run --detach --network wording-isolated --name wording-site wording-site
           site_ip="$(docker inspect --format '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' wording-site)"
           echo "WORDING_CONNECT_HOST=$site_ip" >> "$GITHUB_ENV"
       - name: Confirm isolated website responds
+        if: steps.evidence.outputs.cache-hit != 'true'
         run: |
           curl --fail --retry 45 --retry-connrefused --retry-delay 1 --max-time 5 -H "Host: youarepayingtoomuch.com" "http://${WORDING_CONNECT_HOST}:3000/" --output /dev/null
       - name: Read built website wording outside candidate container
+        if: steps.evidence.outputs.cache-hit != 'true'
         run: node trusted/scripts/wording/capture.mjs site snapshot.json 3000 trusted
+      - name: Validate complete wording evidence
+        run: node --input-type=module -e "import {readFileSync} from 'node:fs'; import {compare} from './trusted/scripts/wording/compare.mjs'; const s=JSON.parse(readFileSync('snapshot.json','utf8')); compare(s,s,'validation',0);"
+      - name: Save successful wording evidence
+        if: steps.evidence.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: snapshot.json
+          key: ${{ steps.evidence.outputs.cache-primary-key }}
       - uses: actions/upload-artifact@v4
         with:
           name: wording-${{ matrix.side }}
