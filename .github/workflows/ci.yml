@@ -1,11 +1,14 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - main
-      - 'renovate/**'
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   verify:
@@ -41,6 +44,7 @@ jobs:
   # A separate job, not extra steps on `verify`, so the two run in parallel and
   # the wait stays close to the slower of the pair rather than their sum.
   test:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     # Browsers ship in this image. Live Playwright CDN downloads from the
     # hosted runner have been hanging for the full job budget.

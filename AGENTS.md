@@ -103,3 +103,8 @@ gcloud secrets versions access latest --secret=<NAME> --project=mg-dashboard-ee0
 ```
 
 Do not store raw values in this file or commit `.env.local`. Public `NEXT_PUBLIC_*` values may live in Vercel, but provider/admin tokens belong in the vault.
+
+
+## Paid checks: batch changes (DAV-53, David, 2026-11-24)
+
+David ordered all five cost reductions. Finish the scoped edits, journal and focused local checks before one final push. Keep exploratory work local or in a draft PR; do not push each tiny edit or repeatedly rerun passing checks. Only run changed-area checks during iteration. Full browser/full-site suites are manual release tools, not a per-edit requirement. Keep David's wording approval; only reuse complete evidence when the website inputs and trusted collector match. Do not raise the Actions budget. A focused live check after an actual visitor-facing change is still required; workflow-only maintenance is proved against the saved GitHub configuration, without testing the unchanged websites.

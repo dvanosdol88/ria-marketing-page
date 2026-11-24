@@ -1535,3 +1535,8 @@ Lead-gen marketing site for Smarter Way Wealth, LLC deployed at https://youarepa
 
 - David requested that the round CFA badge on YAPT open the same CFA Institute verification page as SWW. Added the public credential link in a new tab and made it keyboard accessible. The companion mark and the badge layout are retained.
 - Source chat: codex://threads/01a1e677-3ef3-75b2-a8e8-eed1aac88508, 2026-11-17 3:06 PM ET.
+
+
+## DAV-53 — 2026-11-24 — Reduce repeated paid checks
+
+David authorized all five reductions: manual heavy suites, focused math/changed-code checks, matching wording-evidence reuse without caching approval, changed-backend-only validation without duplicate main suites, and batch-before-push instructions. No visitor copy, calculations, deployment destination or budget changed. Workflow-only change; proof is YAML validation, focused selector/policy checks and the saved workflows on main. No whole-site test or manual deployment is warranted. Linked work: https://linear.app/smarter-way-wealth/issue/DAV-53/cut-repeated-paid-website-checks-while-keeping-wording-approval
