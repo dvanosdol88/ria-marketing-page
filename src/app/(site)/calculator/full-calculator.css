@@ -1,0 +1,127 @@
+/*
+ * Styles the firm calculator needs that live in smarterwaywealth.com's
+ * src/app/globals.css, copied for the hidden /calculator page only. Every
+ * rule is scoped to an attribute that only the full calculator renders
+ * (data-calc-theme, data-calc-banner, data-step-folded, data-step-go-pulse,
+ * data-full-calculator), so nothing else on this site is affected.
+ */
+
+/* The firm calculator's sticky summary bar sits under the site header. This
+   site's header is 58px (phone/tablet) or 52px (desktop) once it has
+   collapsed on scroll, which is when the summary bar appears. */
+[data-full-calculator] {
+  --site-nav-height: 58px;
+}
+@media (min-width: 1280px) {
+  [data-full-calculator] {
+    --site-nav-height: 52px;
+  }
+}
+
+/* ==========================================================================
+   Calculator theme (firm site globals.css, verbatim)
+   --------------------------------------------------------------------------
+   A LOCAL theme for the calculator surface only, so the advanced and basic
+   calculators can present identically. Applied by putting data-calc-theme on
+   the calculator wrapper; nothing outside that wrapper is affected.
+
+   Names describe ROLE, not colour: --calc-accent is always the flat-fee side,
+   --calc-aum is always the asset-based side, --calc-loss is always the gap
+   between them.
+   ========================================================================== */
+
+[data-calc-theme] {
+  --calc-stage: #EEF0F5;
+  --calc-stage-deep: #FFFFFF;
+  --calc-panel: #FFFFFF;
+  --calc-panel-solid: #F8FAFC;
+  --calc-border: #DFE6EE;
+  --calc-border-strong: #C9D8E4;
+  --calc-text: #10233A;
+  --calc-text-strong: #062B43;
+  --calc-text-muted: #52657A;
+  --calc-text-dim: #667587;
+  --calc-body: #42556C;
+  --calc-body-soft: #31506D;
+  --calc-body-faint: #5E6F80;
+  --calc-disabled: #5E6F80;
+
+  --calc-accent: #0E7A3C;
+  --calc-accent-bright: #0A5C2B;
+  --calc-accent-mid: #0E7A3C;
+  --calc-accent-soft: #0A5C2B;
+  --calc-accent-solid: #0E7A3C;
+  --calc-accent-dim: #B7E3C8;
+  --calc-accent-deep: #0A5C2B;
+  --calc-on-accent: #FFFFFF;
+
+  --calc-aum: #064B84;
+  --calc-aum-soft: #31506D;
+
+  --calc-loss: #D92D20;
+  --calc-loss-text: #B42318;
+  --calc-loss-soft: #B42318;
+  --calc-loss-dim: #F0C2BD;
+
+  --calc-inert: #C9D8E4;
+  --calc-ink: #10233A;
+
+  --calc-ring-accent: rgba(16, 136, 67, 0.28);
+  --calc-ring-accent-strong: rgba(16, 136, 67, 0.45);
+  --calc-loss-wash: rgba(217, 45, 32, 0.14);
+  --calc-loss-wash-strong: rgba(217, 45, 32, 0.5);
+  --calc-accent-wash: rgba(16, 136, 67, 0.12);
+  --calc-accent-wash-strong: rgba(16, 136, 67, 0.5);
+  --calc-stage-wash: rgba(238, 240, 245, 0.85);
+  --calc-stage-mid: #E7EBF2;
+  --calc-ink-wash: rgba(255, 255, 255, 0);
+  --calc-wash-03: rgba(16, 35, 58, 0.02);
+  --calc-wash-05: rgba(16, 35, 58, 0.035);
+  --calc-wash-07: rgba(16, 35, 58, 0.05);
+  --calc-wash-12: rgba(16, 35, 58, 0.07);
+  --calc-wash-18: rgba(16, 35, 58, 0.10);
+  --calc-wash-45: rgba(255, 255, 255, 0.9);
+  --calc-line-10: rgba(16, 35, 58, 0.10);
+  --calc-line-15: rgba(16, 35, 58, 0.14);
+  --calc-line-20: rgba(16, 35, 58, 0.18);
+  --calc-recess: #FFFFFF;
+  --calc-recess-strong: #F4F7FA;
+  --calc-shadow: rgba(16, 35, 58, 0.16);
+  --calc-shadow-strong: rgba(16, 35, 58, 0.22);
+  --calc-marker-accent: rgba(16, 136, 67, 0.20);
+  --calc-marker-aum: rgba(6, 75, 132, 0.18);
+  --calc-banner: #064B84;
+  --calc-on-banner: #FFFFFF;
+  --calc-toggle-on: #0A5C2B;
+  --calc-on-toggle: #FFFFFF;
+}
+
+/* The /calculator banner slims once the answer is on screen (David,
+   2026-11-11, idea B4), giving the answer the space. */
+[data-calc-banner] {
+  transition: padding 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-calc-banner] h1 {
+  transition: font-size 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+main:has([data-step-folded]) [data-calc-banner] {
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+main:has([data-step-folded]) [data-calc-banner] h1 {
+  font-size: clamp(1.45rem, 2.6vw, 2.2rem);
+}
+
+/* The example has filled every box: its Go circle pulses gently until it is
+   pressed (David, 2026-11-11). Uses `scale`, not `transform`, so it never
+   fights the circle's own pop-in. */
+@keyframes step-go-pulse {
+  0%, 100% { scale: 1; box-shadow: 0 6px 16px rgba(0, 122, 47, 0.3), 0 0 0 0 rgba(0, 122, 47, 0.38); }
+  50% { scale: 1.07; box-shadow: 0 6px 16px rgba(0, 122, 47, 0.3), 0 0 0 12px rgba(0, 122, 47, 0); }
+}
+[data-step-go-pulse="true"] {
+  animation: step-go-pulse 1.7s ease-in-out 0.35s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-step-go-pulse="true"] { animation: none; }
+}
