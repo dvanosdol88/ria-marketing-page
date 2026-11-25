@@ -19,8 +19,8 @@ plan's "Improvement flow"). This register is enforced by
 `tests/calculator-canon-manifest.test.mjs`.
 
 Counterpart repo: `D:\smarter-way-wealth` (smarterwaywealth.com)
-Last synced: 2026-09-22
-syncVersion: 9
+Last synced: 2026-11-25
+syncVersion: 10
 
 ## Narrowed scope (Phase B1 adjudication — read before editing this file)
 
@@ -43,6 +43,7 @@ investigation.
 
 ## Why these files, and not others
 
+- **v10**: 2026-11-25 — the fee engine (feeProjection) is shared and hash-locked on both sites (David's fee-lab plan, step 1). It is exempt from the CANON banner-comment check because it must stay byte-identical to the firm site's file.
 - **v9 (2026-09-22, quieter poll result)**: `Quiz.tsx` still records the
   visitor's vote and reveals the real percentage distribution, result bars,
   and top answer, but no longer prints the aggregate number of votes. The
@@ -179,7 +180,7 @@ investigation.
     exact `flat/portfolio/years/growth/fee/mfe` query shape
     `buildQueryFromState` produces) — `siteCalculatorConfig.buildShareCardPath`
     points there instead of standing up a parallel route.
-  - The math engine (`src/lib/feeProjection.ts`, `src/lib/calculatorState.ts`)
+  - (Superseded at v10: `src/lib/feeProjection.ts` is now shared and hash-locked.) The math engine (`src/lib/feeProjection.ts`, `src/lib/calculatorState.ts`)
     — per-repo by design; the two repos' engines have different
     capabilities (this repo: single-rate, steady-growth only) and are not
     meant to be identical. Not covered by any hash lock.
@@ -192,6 +193,7 @@ investigation.
 | src/components/calculator/ShareMyResults.tsx | 4618AD2CAD62F05ABC3B9D038D2C0288971C190C5B7614BC103921566CF546B1 |
 | src/components/calculator/SocialShareRow.tsx | 8A221CD817F4D0A171CECCB6E217A43FAF8433CB0AA856DA42B69DCA4086934D |
 | src/lib/shareSummary.ts | 54BB6E49E805E1CC7861AEC4E53B9358394F592A26B0560FF7460CAA07B325E7 |
+| src/lib/feeProjection.ts | 6AFD56D8FD36A74C02CC434FF75D6A93269FF41036DC1932474C84775B9D46E0 |
 
 **Line endings (review fix round, 2026-08-13):** `.gitattributes` now forces
 `text eol=lf` on all four paths above, closing a real drift: this repo's

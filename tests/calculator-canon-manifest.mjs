@@ -71,7 +71,10 @@ test("layer 1: every registered canon file's hash matches CALCULATOR-CANON.md", 
 
 test("layer 1: every canon file carries the CANON banner comment", () => {
   const register = parseRegister(readFileSync(REGISTER_PATH, "utf8"));
+  // The shared fee engine is byte-identical to the firm site's file, which carries no banner.
+  const BANNER_EXEMPT = new Set(["src/lib/feeProjection.ts"]);
   for (const { path: relativePath } of register.files) {
+    if (BANNER_EXEMPT.has(relativePath)) continue;
     const source = readFileSync(new URL(relativePath, REPO_ROOT), "utf8");
     assert.match(
       source,
