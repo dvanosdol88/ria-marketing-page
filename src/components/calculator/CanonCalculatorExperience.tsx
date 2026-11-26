@@ -252,8 +252,11 @@ export function CanonCalculatorExperience({
     detailedState,
     searchParamsToQuery(searchParams),
   );
-  const shareCardPath = siteCalculatorConfig.buildShareCardPath(calculatorQuery);
-  const canonicalUrl = origin ? siteCalculatorConfig.buildCanonicalUrl(origin, calculatorQuery) : "";
+  // Fee site: a link shared from the full calculator reopens /calculator
+  // with the whole detailed scenario, and its card draws that scenario
+  // (fullCalculatorSite; the home page keeps siteCalculatorConfig's links).
+  const shareCardPath = fullCalculatorSite.buildShareCardPath(calculatorQuery);
+  const canonicalUrl = origin ? fullCalculatorSite.buildShareUrl(origin, calculatorQuery) : "";
 
   // Address-bar sync (A3 fix wave, Finding 2): restores the guarded
   // replaceState pattern the retired DetailedFeeCalculator had, so the
