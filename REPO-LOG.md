@@ -1,3 +1,10 @@
+### 2026-11-26 — DAV-17 — Match the paired content and calculator rule documents
+
+- David's order: "Match them." (handoff to Windows Codex, 2026-11-26; no source-chat URL supplied). Road to 50: side work - prevents agents following stale instructions while preparing the sites.
+- Compared every difference with history. This site's content strategy now matches the firm site's newer, dated snapshot verbatim. Both calculator registers now contain identical shared rules and explicit descriptions of each site's intentional differences; all four registered hashes and syncVersion 9 are unchanged.
+- Full difference-by-difference disposition: [reconciliation audit](docs/agent-rule-reconciliation-2026-11-26.md). No genuine rule disagreement found; no open LANGUAGE choice. No visitor-facing wording, disclosure, calculation, code, dependency or workflow change.
+- Verification: three existing calculator manifest tests pass in each isolated worktree; paired-document equality and unchanged implementation hashes checked. Docs-only release through a PR; no runtime change to production. Final merge receipts are in `D:\dvo-downloads\agent-jobs\DAV-17\result.md`.
+
 ### 2026-11-19 — youarepayingtoomuch.com becomes a single page: four extra pages removed
 **Agent:** Claude (Opus 5.5, claude.ai cloud session) | **Surface:** /save-a-ton, /upgrade-your-advice, /improve-your-tools, /our-math, sitemap, llms.txt | **Source chat:** https://claude.ai/code/session_01PL1vvFoe2d24LkCCkHdHMM
 - David's order: "I don't want those pages to show at all, so we don't have to worry about forwarding."

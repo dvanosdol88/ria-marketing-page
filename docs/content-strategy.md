@@ -36,6 +36,12 @@ repo.
 
 ## 1. Current-state summary
 
+> **2026-11 snapshot warning:** the planning recommendations in this file are
+> an old draft, not live inventory. smarterwaywealth.com is public and
+> indexed. The SWW bullets below are a 2026-11 inventory from the live
+> sitemap. Do not treat the rest of this section, or section 10, as the
+> live site map.
+
 ### youarepayingtoomuch.com (repo: ria-marketing-page)
 
 **What it's doing now**
@@ -69,15 +75,12 @@ repo.
 
 ### smarterwaywealth.com (repo: smarter-way-wealth)
 
-**What it's doing now**
-- Single home page: hero "Upgrade the advice, not the fee," three pillars
-  (Serious planning, Better tools, Flat monthly fee), proof chips
-  (20 yrs, CFA, CFP), `$100/mo` sidebar, two CTAs (Compare my fee → off-site
-  calculator; Verify the firm → IAPD CRD #342140).
-- Site is pre-launch: `noindex, nofollow`.
-- No `/about`, no `/how-it-works`, no `/faq`, no `/services`, no `/start`,
-  no `/disclosures`.
-- Only `/privacy` exists besides home.
+**What it's doing now** — 2026-11 live inventory from `src/app/sitemap.js`
+(same twelve URLs as the live sitemap on 2026-11-03):
+- The site is public and indexed (`index, follow`).
+- Public pages: `/` (home), `/save`, `/calculator`, `/verify-math`,
+  `/improve`, `/how`, `/what-you-get`, `/right-for-me`, `/meet`, `/faq`,
+  `/disclosures`, `/privacy`.
 
 **Gaps**
 - Founder story / About Me page is missing. This is the biggest hole and
@@ -525,6 +528,12 @@ cancel?" — same plain-English voice.
 
 ## 10. Final recommendation
 
+> **2026-11 snapshot warning:** the planning recommendations in this file are
+> an old draft, not live inventory. smarterwaywealth.com is public and
+> indexed. The SWW bullets in section 1 are a 2026-11 inventory from the live
+> sitemap. Do not treat the rest of this section, or section 1's older
+> recommendations, as the live site map.
+
 Put it where it belongs and stop hedging.
 
 1. **youarepayingtoomuch.com is a single-purpose calculator + lead-gen
@@ -538,9 +547,10 @@ Put it where it belongs and stop hedging.
    Build out the missing pages in this order: `/about` → `/how-it-works`
    → `/services` → `/faq` → `/start` → `/disclosures`. Replace the
    homepage's primary CTA so it keeps users on-site (`/start`) and demote
-   "Run the calculator" to a secondary CTA off-site. Drop `noindex` only
-   after `/about`, `/how-it-works`, and `/services` exist with real
-   content and disclosures.
+   "Run the calculator" to a secondary CTA off-site. **Obsolete:** Drop
+   `noindex` only after `/about`, `/how-it-works`, and `/services` exist
+   with real content and disclosures. The public site has been indexed
+   since PR #43 (2026-07-28).
 
 3. **The "how we keep costs low" explanation appears three times at three
    depths:** a 70-word block on the homepage, a 180-word block inside
