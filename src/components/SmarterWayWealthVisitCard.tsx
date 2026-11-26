@@ -39,16 +39,17 @@ export function SmarterWayWealthVisitCard({
   surfaceClassName = "bg-[#EEF0F5]",
 }: SmarterWayWealthVisitCardProps) {
   const destinations = [
-    /* The advanced calculator is this site's own /calculator page (fee-lab
-       stage 1, section 2, David 2026-11-26): an internal link, so it opens
-       in the same tab and carries no external-link icon. The other rows
-       leave the site. */
+    /* On the green home the advanced calculator is this site's own
+       /calculator page (fee-lab stage 1, section 2, David 2026-11-26): an
+       internal link, so it opens in the same tab and carries no
+       external-link icon. One Percent Blues still passes the firm site's
+       address, which leaves the site like the other rows. */
     {
       href: advancedCalculatorHref,
       label: "Use the advanced calculator and see how we do the math",
       location: "home_firm_visit_card_calculator",
       text: "Use the advanced calculator and see how we do the math",
-      external: false,
+      external: !advancedCalculatorHref.startsWith("/"),
     },
     ...FIRM_DESTINATIONS,
   ];
