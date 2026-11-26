@@ -1,45 +1,46 @@
 # Calculator Canon Register
 
-Canon principle: ONE calculator design, expressed identically (by file
-content) in this repo (youarepayingtoomuch.com) and the sister repo
-(smarterwaywealth.com, `D:\smarter-way-wealth`). See
-`docs/plans/2026-08-12-calculator-canon.md` in the sister repo ("Lock
-mechanism", "Phase B") for the full design and the Phase B1 controller
-adjudication that narrowed this register (Option A, 2026-08-13).
+This agent rule document is identical in the two repositories:
+- Firm site: smarterwaywealth.com, `D:\smarter-way-wealth`.
+- Fee site: youarepayingtoomuch.com, `D:\ria-marketing-page` (also serves onepercentblues.com).
 
-Per-site differences are confined to `src/lib/siteCalculatorConfig.ts`
-(domain, URL builders, brand line, analytics tags, details presentation) —
-every file listed below imports that config rather than hard-coding
-site-specific values, so its content can be identical across both repos
-while its rendered *behavior* still varies per site.
+Canon principle: ONE calculator design, with the four registered files below
+identical by content in both repositories. The engines and page compositions
+are deliberately site-specific; this register does not require copying them.
+The full design is `docs/plans/2026-08-12-calculator-canon.md` in the firm-site
+repository ("Lock mechanism", "Phase B", and "Improvement flow").
 
-Editing a listed file requires updating its hash below in the SAME commit
-(and editing the sister repo's copy in the same working session — see the
-plan's "Improvement flow"). This register is enforced by
-`tests/calculator-canon-manifest.test.mjs`.
+For the registered files, per-site domain, URL builders, brand line, analytics
+tags, details presentation and poll upstream origin come from
+`src/lib/siteCalculatorConfig.ts`. Those configuration values may differ.
+The fee site's One Percent Blues accent values also remain site-specific.
 
-Counterpart repo: `D:\smarter-way-wealth` (smarterwaywealth.com)
+Editing a registered file requires updating its hash here in the SAME commit
+and editing the other repository's copy in the same working session. Review
+the mirrored files together whenever either side changes. Do not copy either
+engine or change page wording, disclosures or calculations to reconcile this
+document. David's website, language and compliance rules still govern those
+changes.
+
 Last synced: 2026-09-22
 syncVersion: 9
 
-## Narrowed scope (Phase B1 adjudication — read before editing this file)
+The date and version above describe the shared implementation, not this
+documentation reconciliation (DAV-17, 2026-11-26). No registered hash or
+implementation changed during that reconciliation.
 
-The Phase B1 brief originally called for `CostAnalysisCalculator.tsx` and
-`HomeCalculatorExperience.tsx` to also be installed byte-identical from the
-sister repo. Investigation found the sister repo's versions of those two
-files were never actually a faithful sync of this repo's — this repo's
-copies are the entire homepage composition (hero variants, EDDM/QR mailer
-campaign attribution, the "Advanced Calculator" handoff-link builder, its
-own `PillSlider`/`SimpleRangeControl` input controls, variant/banner A-B
-testing), all CI-gated (`test:eddm-attribution`), none of which the sister
-repo's leaner calculator-only files have any equivalent for. A literal
-overwrite would have deleted live, revenue-facing functionality and broken
-CI. The controller adjudicated **Option A**: narrow the hash-locked
-register to the files that are genuinely portable without engine or
-composition differences, and treat the two base-experience files as
-**design DNA to mirror by review discipline, not files to byte-lock**. See
-`.superpowers/sdd/canon-b1-report.md` in the sister repo for the full
-investigation.
+## Narrowed scope (Phase B1 adjudication)
+
+Phase B1 originally called for `CostAnalysisCalculator.tsx` and
+`HomeCalculatorExperience.tsx` to be byte-identical too. The fee site's
+versions include its homepage composition, EDDM/QR mailer attribution,
+Advanced Calculator handoff, PillSlider/SimpleRangeControl inputs and A/B
+variants. The firm site's leaner files are not equivalent. Overwriting the
+fee-site copies would have removed working features and broken checks.
+
+The controller chose Option A (2026-08-13): lock only genuinely portable
+files, and mirror the base experience by review rather than by file hash.
+See `.superpowers/sdd/canon-b1-report.md` in the firm-site repository.
 
 ## Why these files, and not others
 
@@ -139,50 +140,21 @@ investigation.
   page-level duplicate SocialShareRow (it now lives only inside the
   panel); PostHog CTA labels/locations are unchanged except that the
   page-level `detailed_calculator_results_social` surface no longer exists.
-- **Quiz.tsx (v2)**: unified in Phase B1. Built by merging this repo's
-  existing API-backed voting UI (real `/api/quiz/vote` counts, no seeded
-  numbers, no "Sample responses" caption, silent degradation on fetch
-  failure — already the target behavior) with the sister repo's
-  `siteCalculatorConfig`-driven `poll_voted` analytics capture, guarded so
-  a missing capture util never blocks voting. This is the version the
-  sister repo's own Phase B2 task installs next, byte-identical.
+- **Quiz.tsx (v2, Phases B1/B2)**: Phase B1 merged the fee site's real
+  `/api/quiz/vote` counts and silent no-percentage fallback with the firm
+  site's config-driven `poll_voted` capture. Phase B2 installed that file
+  byte-identically in the firm site (firm-site PR #103, 2026-08-13).
+  That installation is completed history, not future work. The fee site
+  owns the Firestore vote endpoint; the firm site's same-origin endpoint
+  forwards to it. No seeded counts or sample-response caption remain.
 - **ShareMyResults.tsx, SocialShareRow.tsx, shareSummary.ts**: built in the
-  sister repo (Phases A1/A2), installed here verbatim in Phase B1. Pure
-  presentation + narrative-text generation — no dependency on either
-  repo's fee-projection engine internals, so genuinely identical by
-  content.
-- **Excluded, deliberately**:
-  - `src/lib/siteCalculatorConfig.ts` — the per-site parameter file itself;
-    its content is SUPPOSED to differ between repos, so it has no register
-    entry.
-  - `CostAnalysisCalculator.tsx`, `HomeCalculatorExperience.tsx` — see
-    "Narrowed scope" above. Listed instead in "Mirrored files" below.
-  - `CalculationDetailsPanel.tsx`, `gapDecomposition.ts` — this repo
-    already has its own "View calculation details" experience
-    (`SeeOurMathBento` inside `HomeCalculatorExperience.tsx`: its own gap-
-    breakdown bars, its own inline assumption editor), built independently
-    and predating the canon program. Mounting the sister repo's separate
-    `CalculationDetailsPanel` component alongside it would duplicate the
-    same UI with two different implementations. `gapDecomposition.ts`
-    additionally depends on `FeeProjectionResult.monthlyLedger`, a field
-    this repo's simpler fee engine (no tiered fees, no market-mode replay)
-    doesn't produce — engine freeze applies, so the file isn't portable as
-    written. The one canon-bound addition that DOES apply — the gray
-    fee-derivation annotation with its exact-equality guard — was ported
-    by hand into the existing `SeeOurMathBento` gap-breakdown block
-    instead (same formula, `directFeeGap === totalAssetBasedFees -
-    totalFlatFees`, already computed locally there).
-  - `shareCardData.ts`, `app/calculator/share-card/route.tsx` — both
-    depend on `DetailedCalculatorState` (tiered fees, market-mode replay,
-    `sp500Returns.ts`), none of which exist in this repo's engine. This
-    repo already has its own dynamic OG-card route (`/api/og`, reading the
-    exact `flat/portfolio/years/growth/fee/mfe` query shape
-    `buildQueryFromState` produces) — `siteCalculatorConfig.buildShareCardPath`
-    points there instead of standing up a parallel route.
-  - The math engine (`src/lib/feeProjection.ts`, `src/lib/calculatorState.ts`)
-    — per-repo by design; the two repos' engines have different
-    capabilities (this repo: single-rate, steady-growth only) and are not
-    meant to be identical. Not covered by any hash lock.
+  firm site (Phases A1/A2), installed verbatim in the fee site (Phase B1).
+  Presentation and summary generation do not depend on either math engine.
+- **Excluded, deliberately**: per-site configuration, engines, base page
+  compositions, details implementations, share-card routes, gap helpers
+  and the firm site's advanced calculator chrome. Their distinctions and
+  review obligations are listed below; exclusion from this four-file lock
+  does not remove the separate protections on either engine.
 
 ## Register
 
@@ -193,42 +165,54 @@ investigation.
 | src/components/calculator/SocialShareRow.tsx | 8A221CD817F4D0A171CECCB6E217A43FAF8433CB0AA856DA42B69DCA4086934D |
 | src/lib/shareSummary.ts | 54BB6E49E805E1CC7861AEC4E53B9358394F592A26B0560FF7460CAA07B325E7 |
 
-**Line endings (review fix round, 2026-08-13):** `.gitattributes` now forces
-`text eol=lf` on all four paths above, closing a real drift: this repo's
-`core.autocrlf=true` had round-tripped `ShareMyResults.tsx`'s committed
-CRLF content back onto disk unchanged during a `git stash`/rebase cycle,
-and forcing it to LF changed ITS hash (was `773CB711CEE842D65DF959145FBBA1D94AC2191B9BCA5436873DD4D6011FE1E3`,
-the value that matched the sister repo's own CRLF copy at the time — now
-`23767A947D889085DCDCBA6135530B434ABE969A28BA94460EE07600915DE5B6`). Quiz.tsx,
-SocialShareRow.tsx, and shareSummary.ts were already LF and are unchanged.
-**The sister repo (`D:\smarter-way-wealth`) must add the equivalent
-`.gitattributes` rule and renormalize its own `ShareMyResults.tsx` to LF**
-so both repos converge on the new hash above — until then, Layer 2's
-same-syncVersion comparison would flag `ShareMyResults.tsx` as drifted for
-that one file even though nothing meaningful changed, only its line
-endings became deterministic.
+**Line endings:** both repositories' `.gitattributes` force `text eol=lf`
+on all four registered paths. The Phase B1 review found a real CRLF/LF
+round-trip difference in ShareMyResults.tsx; Phase B2 applied the equivalent
+firm-site rule. The old instruction that the firm site still needed to do
+this was stale. The current register above is authoritative for current
+hashes; historical hashes are not targets to restore. Verify committed
+content as well as the worktree when investigating line-ending drift.
 
-## Mirrored files (review discipline, not hash-locked)
+## Mirrored / site-specific (not hash-locked)
 
-These share the same design DNA as the sister repo's equivalents and
-should be reviewed together whenever either changes, but their content is
-NOT required to match byte-for-byte — each repo's composition around the
-shared calculator design differs by necessity (see "Narrowed scope"
-above).
+Review the shared design together; do not require these files to match byte
+for byte. Each table row describes both sites, regardless of which repository
+contains this document.
 
-| This repo | Sister repo equivalent | What must stay in sync |
+| Firm site | Fee site | Shared rule or deliberate distinction |
 |---|---|---|
-| `src/components/CostAnalysisCalculator.tsx` | `src/components/CostAnalysisCalculator.tsx` | Control layout below the chart, 3-row results shape, range-hint presentation, share-button treatment |
-| `src/components/HomeCalculatorExperience.tsx` (`SeeOurMathBento`'s gap-breakdown block) | `src/components/HomeCalculatorExperience.tsx` | Gray fee-derivation annotation wording/guard, "Actual fees"/"Lost compounding" bar-breakdown copy and colors, canon share-stack mount (ShareMyResults; since v3 the SocialShareRow renders only inside its panel, with no page-level duplicate) placement relative to the poll and the details entry point; since 2026-09-17 the final-c layout reads its accent colours from `theme.accent` (`CalculatorAccentTheme`, defaults = the previous green literals, via a module-private context) so the One Percent Blues front door can re-skin it — mirror the type, not the blue values |
+| `src/components/CostAnalysisCalculator.tsx` | Same path | Mirror the base control layout below the chart, three-row results shape, range hints and share-button treatment. Preserve the fee site's mailer attribution, inputs and variants. |
+| `src/components/HomeCalculatorExperience.tsx` | Same path, including `SeeOurMathBento` | Mirror gray fee-derivation wording and its exact-equality guard (`directFeeGap === totalAssetBasedFees - totalFlatFees`), Actual fees/Lost compounding breakdown copy and colors, and ShareMyResults placement relative to poll and details. SocialShareRow lives inside the share panel, with no duplicate at page level. |
+| Review the equivalent shared design | `HomeCalculatorExperience.tsx`, `CalculatorAccentTheme`, `theme.accent` | Since 2026-09-17, the fee site's final-c layout accepts an accent theme for One Percent Blues. Mirror the type, not the blue values. |
+| `src/components/calculator/CalculationDetailsPanel.tsx` | Inline `SeeOurMathBento` modal | The fee site's pre-existing details experience serves this role. Do not add a second details UI. The common gray derivation annotation was ported by hand. |
+| `src/lib/gapDecomposition.ts` | Formula inline in `SeeOurMathBento` | The firm-site helper needs `FeeProjectionResult.monthlyLedger`, absent from the fee site's simpler engine. Preserve the engine freeze; review the equivalent annotation rather than copying the helper. |
+| `src/app/calculator/share-card/route.tsx`, `src/lib/shareCardData.ts` | Existing `/api/og` route | Firm-site files need DetailedCalculatorState (tiered fees, market replay). Fee-site siteCalculatorConfig uses its own OG route and its flat/portfolio/years/growth/fee/mfe query shape. |
+| `src/components/calculator/ThemedCalculatorExperience.tsx`, `CalculatorChrome.tsx`, `MarketTimeMachine.tsx`, `CalculatorStickyHeader.tsx`, `InlineFeeScheduleEditor.tsx`, `CanonCalculatorExperience.tsx` | No equivalent advanced chrome | Firm-site advanced composition was never registered. The fee site's `calculator/` directory contains shared presentation files; it does not contain this advanced chrome. |
+| `src/app/api/quiz/vote/route.ts` (proxy) | Same route path (real Firestore backend) | Same address, deliberately different implementation. Firm-site proxy has its own `tests/quiz-vote-proxy.test.mjs`. |
+| `src/lib/siteCalculatorConfig.ts` | Same path | Values intentionally differ by site; firm-site value assertions are in `tests/site-calculator-config.test.mjs`. |
+| `src/lib/feeProjection.ts`, `src/data/sp500Returns.ts` and related engine files | `src/lib/feeProjection.ts`, `src/lib/calculatorState.ts` | Firm site supports tiered fees and market replay; fee site uses a single rate and steady growth. Firm-site math is independently checked by `scripts/verify-calculator.mjs`; the engines are not part of this four-file lock. No engine changes are authorized by matching the rule documents. |
 
-## Register semantics (mirrors the sister repo's, same one-version-grace)
+## Register semantics and actual check entry points
 
-Layer 1 (this repo, `npm run test:calculator-canon-manifest`): every listed
-file's hash must match this table. Layer 2 (local only, when
-`D:\smarter-way-wealth` is present on this machine): compares this
-register against the sister repo's; at the SAME `syncVersion`, hashes for
-every path both registers list must agree exactly; a sibling exactly one
-`syncVersion` behind is allowed and reported, not failed (covers the merge
-gap while a canon change is mid-flight across both repos — the sister
-repo's Phase B2 task lands Quiz v2 there next). Skips gracefully when the
-sibling path or its register is absent.
+Layer 1: every registered file must match its hash above and carry the CANON
+banner. Layer 2: paths appearing in both registers must have identical hashes
+at the same syncVersion. A difference of exactly one version is reported and
+allowed while a coordinated update is between merges; a larger difference
+fails. Both repositories currently use the same four paths, without prefix
+mapping. Missing sibling directories or registers are skipped gracefully.
+
+| Repository | Focused check | Sibling read behavior |
+|---|---|---|
+| Firm site | `node --test tests/calculator-canon-manifest.test.mjs` (also included in local `npm test`) | Reads the fee site's `origin/main` register first, then falls back to its working copy if that ref is unavailable. |
+| Fee site | `npm run test:calculator-canon-manifest` (`tests/calculator-canon-manifest.mjs`, without `.test.`) | Reads the firm site's working-copy register. |
+
+Both checks accept `CALCULATOR_CANON_SIBLING_ROOT` for an explicit sibling
+directory. Neither writes to the sibling. Do not describe these two read
+strategies as identical or mistake a stale shared checkout for published drift.
+
+As checked on 2026-11-26, neither site's automatic pull-request jobs invoke
+this focused manifest check. The firm site's local `npm test` includes it;
+no workflow runs the full `npm test`. The fee site's manual-only `test` job
+in `.github/workflows/ci.yml` invokes its focused command. Both sites have separate
+wording approval and selectively run calculator checks. Adding a remote gate
+would be separate work; this document does not install or change a gate.
