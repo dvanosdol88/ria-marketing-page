@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 
 type SmarterWayWealthVisitCardProps = {
   advancedCalculatorHref: string;
@@ -130,7 +130,13 @@ export function SmarterWayWealthVisitCard({
                   className="h-5 w-5 shrink-0 text-white/50 transition duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white"
                   strokeWidth={2}
                 />
-              ) : null}
+              ) : (
+                <ArrowRight
+                  aria-hidden="true"
+                  className="h-5 w-5 shrink-0 text-white/50 transition duration-200 group-hover:translate-x-0.5 group-hover:text-white"
+                  strokeWidth={2}
+                />
+              )}
             </a>
           ))}
         </nav>

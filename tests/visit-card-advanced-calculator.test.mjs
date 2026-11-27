@@ -1,6 +1,7 @@
 /**
  * The visit card's advanced-calculator row, per surface (fee-lab stage 1,
- * section 2 and its fix round, 2026-11-26).
+ * section 2 and its fix round, 2026-11-26; plain right arrow on the green
+ * home row per David, 2026-11-27).
  *
  * The visit card renders client-side on both home pages, so this renders the
  * real component to markup with each surface's real href:
@@ -41,18 +42,19 @@ test("the two surfaces use their own advanced-calculator destinations", () => {
   assert.equal(BLUES_ADVANCED_CALCULATOR_URL, "https://smarterwaywealth.com/save");
 });
 
-test("green home: the row opens /calculator in the same tab with no external-link icon", () => {
+test("green home: the row opens /calculator in the same tab with a plain right arrow, not the external-link icon", () => {
   const [calculator, ...firmRows] = rows(ADVANCED_CALCULATOR_URL);
   assertSameTracking(calculator);
   assert.match(calculator, /href="\/calculator"/);
   assert.doesNotMatch(calculator, /target=/);
   assert.doesNotMatch(calculator, /rel=/);
-  assert.doesNotMatch(calculator, /<svg/);
+  assert.match(calculator, /lucide-arrow-right/);
+  assert.doesNotMatch(calculator, /lucide-external-link/);
   assert.equal(firmRows.length, 3);
   for (const row of firmRows) {
     assert.match(row, /href="https:\/\/smarterwaywealth\.com\//);
     assert.match(row, /target="_blank"/);
-    assert.match(row, /<svg/);
+    assert.match(row, /lucide-external-link/);
   }
 });
 
