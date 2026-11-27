@@ -122,9 +122,14 @@ try {
   await page.waitForTimeout(400); assert.equal(requests.length, 1);
   const handoff = page.locator('a[data-posthog-cta-location="home_firm_visit_card_calculator"]');
   await handoff.evaluate((link) => { link.addEventListener("click", (event) => event.preventDefault(), { once: true }); link.click(); });
-  const href = new URL(await handoff.getAttribute("href"));
-  assert.equal(href.pathname, "/save");
-  assert.deepEqual([...href.searchParams.keys()].sort(), ["utm_campaign", "utm_content", "utm_medium", "utm_source"]);
+  // Fee-lab stage 1, section 2 (David, 2026-11-26): the advanced calculator is
+  // this site's own /calculator, so the link stays internal (same tab, no
+  // firm-handoff UTM rewrite); the click itself still carries the campaign.
+  const href = new URL(await handoff.getAttribute("href"), SITE);
+  assert.equal(href.origin, SITE);
+  assert.equal(href.pathname, "/calculator");
+  assert.equal(href.search, "");
+  assert.equal(await handoff.getAttribute("target"), null);
   await until(() => events.some((e) => e.event === "cta_clicked" && e.properties.cta_location === "home_firm_visit_card_calculator"), "attributed conversion after cleanup");
   assert.equal(events.find((e) => e.event === "cta_clicked" && e.properties.cta_location === "home_firm_visit_card_calculator").properties.is_eddm_visitor, true);
   const oldId = requests[0].openingId;

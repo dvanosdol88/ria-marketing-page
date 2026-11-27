@@ -10,10 +10,12 @@ import {
 
 /**
  * On the Blues host, green-only APIs (including /api/og, but not /api/og/blues
- * or the shared quiz vote routes) 404.
+ * or the shared quiz vote routes) 404, and so does the green full calculator
+ * (/calculator and its share card, fee-lab stage 1, section 2): One Percent
+ * Blues is a separate campaign and keeps the not-found it had before.
  */
 const BLUES_GATED_PATH =
-  /^\/(?:api\/(?:become-a-client|gallery\/statuses|eddm-evals(?:\/|$)|savings-rates|analytics\/mailer-scans|calculator|version|og(?!\/))|agent-info\.json)/;
+  /^\/(?:api\/(?:become-a-client|gallery\/statuses|eddm-evals(?:\/|$)|savings-rates|analytics\/mailer-scans|calculator|version|og(?!\/))|agent-info\.json|calculator(?:\/|$))/;
 
 // David, 2026-11-18: count a printed-QR arrival on the server, the moment it is
 // requested, so a scan no longer depends on the phone running the page's script.
@@ -71,5 +73,7 @@ export const config = {
     "/api/version",
     "/api/og",
     "/agent-info.json",
+    "/calculator",
+    "/calculator/:path*",
   ],
 };

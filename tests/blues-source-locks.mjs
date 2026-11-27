@@ -261,3 +261,31 @@ test("the share and poll panels show the blue domain and blue card on the blue h
   assert.match(experience, /shareCardPathForMode\(shareQuery, isBluesShareMode\(accent\)\)/);
   assert.match(bluesPage, /data-blues-share-domain=\{bluesShareSite\.displayDomain\}/);
 });
+
+test("One Percent Blues keeps its pre-section-2 advanced calculator and does not serve /calculator", async () => {
+  const [advancedCalculator, visitCard, proxy] = await Promise.all([
+    read("../src/config/advancedCalculator.ts"),
+    read("../src/components/SmarterWayWealthVisitCard.tsx"),
+    read("../src/proxy.ts"),
+  ]);
+  // The blue page's row goes where it went before section 2; the green home's is internal.
+  assert.match(advancedCalculator, /export const BLUES_ADVANCED_CALCULATOR_URL = `\$\{SMARTER_WAY_WEALTH_ORIGIN\}\/save`;/);
+  assert.match(advancedCalculator, /export const ADVANCED_CALCULATOR_URL = "\/calculator";/);
+  assert.match(
+    calculator,
+    /const advancedCalculatorHref = isOnePercentBlues \? BLUES_ADVANCED_CALCULATOR_URL : ADVANCED_CALCULATOR_URL;/,
+  );
+  // Only a site-relative href is treated as internal (same tab, no icon).
+  assert.match(visitCard, /external: !advancedCalculatorHref\.startsWith\("\/"\)/);
+  // The blue host 404s the green full calculator and its share card.
+  const gate = new RegExp(proxy.match(/const BLUES_GATED_PATH =\s*\/(.*)\/;/)?.[1] ?? "(?!)");
+  for (const path of ["/calculator", "/calculator/", "/calculator/share-card"]) {
+    assert.ok(gate.test(path), `${path} must be gated on the blue host`);
+  }
+  for (const path of ["/", "/calculator-evals", "/api/og/blues", "/api/quiz/vote"]) {
+    assert.ok(!gate.test(path), `${path} must not be gated by the calculator rule`);
+  }
+  const matcher = proxy.match(/matcher:\s*\[([\s\S]*?)\]/)?.[1] ?? "";
+  assert.match(matcher, /"\/calculator"/);
+  assert.match(matcher, /"\/calculator\/:path\*"/);
+});

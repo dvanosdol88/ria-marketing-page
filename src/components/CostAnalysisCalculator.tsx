@@ -34,6 +34,7 @@ import type { HomeTopBannerId } from "@/config/homeTopBanners";
 import { capturePostHogEvent } from "@/lib/posthog";
 import {
   ADVANCED_CALCULATOR_URL,
+  BLUES_ADVANCED_CALCULATOR_URL,
 } from "@/config/advancedCalculator";
 
 const HomeMarketingHero = dynamic(() =>
@@ -411,7 +412,7 @@ export function CostAnalysisCalculator({
       }),
     [state.annualFlatFee, state.annualGrowthPercent, state.portfolioValue, state.years, totalAnnualFeePercent]
   );
-  const advancedCalculatorHref = ADVANCED_CALCULATOR_URL;
+  const advancedCalculatorHref = isOnePercentBlues ? BLUES_ADVANCED_CALCULATOR_URL : ADVANCED_CALCULATOR_URL;
 
   useEffect(() => {
     if (!assumptionsCustomized || calculatorSubmittedRef.current) return;

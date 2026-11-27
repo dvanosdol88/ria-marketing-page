@@ -210,7 +210,7 @@ test("lean root composition retains the approved homepage order", () => {
   );
   assert.match(
     calculatorSource,
-    /const advancedCalculatorHref = ADVANCED_CALCULATOR_URL;/,
+    /const advancedCalculatorHref = isOnePercentBlues \? BLUES_ADVANCED_CALCULATOR_URL : ADVANCED_CALCULATOR_URL;/,
     "the advanced-calculator handoff must render without calculator-state query parameters",
   );
   assert.doesNotMatch(

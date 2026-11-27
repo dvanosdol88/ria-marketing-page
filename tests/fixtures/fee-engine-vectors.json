@@ -1,0 +1,4506 @@
+{
+ "generatedFrom": "origin/main:src/lib/feeProjection.ts (original fee-site engine, before the shared-engine replacement, 2026-11-25)",
+ "tolerance": 0.005,
+ "cases": [
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 249.43,
+    "totalFlatFees": 1200,
+    "savings": -950.57,
+    "finalValueWithFees": 49750.57,
+    "finalValueWithoutFees": 48800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 2439.02,
+    "totalFlatFees": 12000,
+    "savings": -9560.98,
+    "finalValueWithFees": 47560.98,
+    "finalValueWithoutFees": 38000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 4759.07,
+    "totalFlatFees": 24000,
+    "savings": -19240.93,
+    "finalValueWithFees": 45240.93,
+    "finalValueWithoutFees": 26000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 6965.95,
+    "totalFlatFees": 36000,
+    "savings": -29034.05,
+    "finalValueWithFees": 43034.05,
+    "finalValueWithoutFees": 14000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 9065.17,
+    "totalFlatFees": 48000,
+    "savings": -38934.83,
+    "finalValueWithFees": 40934.83,
+    "finalValueWithoutFees": 2000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 254.8,
+    "totalFlatFees": 1200,
+    "savings": -962.44,
+    "finalValueWithFees": 51740.6,
+    "finalValueWithoutFees": 50778.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 2986.51,
+    "totalFlatFees": 12000,
+    "savings": -11059.24,
+    "finalValueWithFees": 70401.86,
+    "finalValueWithoutFees": 59342.62
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 7191.63,
+    "totalFlatFees": 24000,
+    "savings": -25956.46,
+    "finalValueWithFees": 99128.44,
+    "finalValueWithoutFees": 73171.98
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 13112.59,
+    "totalFlatFees": 36000,
+    "savings": -45933.72,
+    "finalValueWithFees": 139576.54,
+    "finalValueWithoutFees": 93642.82
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 21449.53,
+    "totalFlatFees": 48000,
+    "savings": -72584.32,
+    "finalValueWithFees": 196528.97,
+    "finalValueWithoutFees": 123944.66
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 258.78,
+    "totalFlatFees": 1200,
+    "savings": -971.14,
+    "finalValueWithFees": 53233.11,
+    "finalValueWithoutFees": 52261.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 3486.54,
+    "totalFlatFees": 12000,
+    "savings": -12307.24,
+    "finalValueWithFees": 93559.64,
+    "finalValueWithoutFees": 81252.39
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 10010.53,
+    "totalFlatFees": 24000,
+    "savings": -32337.53,
+    "finalValueWithFees": 175068.12,
+    "finalValueWithoutFees": 142730.59
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 22218.18,
+    "totalFlatFees": 36000,
+    "savings": -63918.7,
+    "finalValueWithFees": 327586.19,
+    "finalValueWithoutFees": 263667.49
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 45061.03,
+    "totalFlatFees": 48000,
+    "savings": -111408.22,
+    "finalValueWithFees": 612976.91,
+    "finalValueWithoutFees": 501568.69
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 262.73,
+    "totalFlatFees": 1200,
+    "savings": -979.68,
+    "finalValueWithFees": 54725.63,
+    "finalValueWithoutFees": 53745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 4078.66,
+    "totalFlatFees": 12000,
+    "savings": -13660.18,
+    "finalValueWithFees": 123360.92,
+    "finalValueWithoutFees": 109700.74
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 14141.6,
+    "totalFlatFees": 24000,
+    "savings": -39809.27,
+    "finalValueWithFees": 304358.34,
+    "finalValueWithoutFees": 264549.07
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 38969.07,
+    "totalFlatFees": 36000,
+    "savings": -84732.73,
+    "finalValueWithFees": 750918.51,
+    "finalValueWithoutFees": 666185.78
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 100223.86,
+    "totalFlatFees": 48000,
+    "savings": -144752.04,
+    "finalValueWithFees": 1852680,
+    "finalValueWithoutFees": 1707927.96
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 497.71,
+    "totalFlatFees": 1200,
+    "savings": -702.29,
+    "finalValueWithFees": 49502.29,
+    "finalValueWithoutFees": 48800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 4760.02,
+    "totalFlatFees": 12000,
+    "savings": -7239.98,
+    "finalValueWithFees": 45239.98,
+    "finalValueWithoutFees": 38000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 9066.88,
+    "totalFlatFees": 24000,
+    "savings": -14933.12,
+    "finalValueWithFees": 40933.12,
+    "finalValueWithoutFees": 26000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 12963.72,
+    "totalFlatFees": 36000,
+    "savings": -23036.28,
+    "finalValueWithFees": 37036.28,
+    "finalValueWithoutFees": 14000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 16489.59,
+    "totalFlatFees": 48000,
+    "savings": -31510.41,
+    "finalValueWithFees": 33510.41,
+    "finalValueWithoutFees": 2000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 508.42,
+    "totalFlatFees": 1200,
+    "savings": -704.22,
+    "finalValueWithFees": 51482.38,
+    "finalValueWithoutFees": 50778.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 5818.98,
+    "totalFlatFees": 12000,
+    "savings": -7623.61,
+    "finalValueWithFees": 66966.23,
+    "finalValueWithoutFees": 59342.62
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 13612.49,
+    "totalFlatFees": 24000,
+    "savings": -16517.53,
+    "finalValueWithFees": 89689.52,
+    "finalValueWithoutFees": 73171.98
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 24050.53,
+    "totalFlatFees": 36000,
+    "savings": -26480.55,
+    "finalValueWithFees": 120123.37,
+    "finalValueWithoutFees": 93642.82
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 38030.45,
+    "totalFlatFees": 48000,
+    "savings": -36939.53,
+    "finalValueWithFees": 160884.19,
+    "finalValueWithoutFees": 123944.66
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 516.36,
+    "totalFlatFees": 1200,
+    "savings": -705.47,
+    "finalValueWithFees": 52967.45,
+    "finalValueWithoutFees": 52261.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 6785.29,
+    "totalFlatFees": 12000,
+    "savings": -7741.5,
+    "finalValueWithFees": 88993.9,
+    "finalValueWithoutFees": 81252.39
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 18862.28,
+    "totalFlatFees": 24000,
+    "savings": -15667.69,
+    "finalValueWithFees": 158398.28,
+    "finalValueWithoutFees": 142730.59
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 40357.85,
+    "totalFlatFees": 36000,
+    "savings": -18262.11,
+    "finalValueWithFees": 281929.6,
+    "finalValueWithoutFees": 263667.49
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 78617.35,
+    "totalFlatFees": 48000,
+    "savings": -231.59,
+    "finalValueWithFees": 501800.28,
+    "finalValueWithoutFees": 501568.69
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 524.24,
+    "totalFlatFees": 1200,
+    "savings": -706.57,
+    "finalValueWithFees": 54452.51,
+    "finalValueWithoutFees": 53745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 7928.73,
+    "totalFlatFees": 12000,
+    "savings": -7640.13,
+    "finalValueWithFees": 117340.87,
+    "finalValueWithoutFees": 109700.74
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 26536.03,
+    "totalFlatFees": 24000,
+    "savings": -10828.52,
+    "finalValueWithFees": 275377.59,
+    "finalValueWithoutFees": 264549.07
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 70203.95,
+    "totalFlatFees": 36000,
+    "savings": 19924.86,
+    "finalValueWithFees": 646260.92,
+    "finalValueWithoutFees": 666185.78
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 172684.58,
+    "totalFlatFees": 48000,
+    "savings": 191271.59,
+    "finalValueWithFees": 1516656.38,
+    "finalValueWithoutFees": 1707927.96
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 744.87,
+    "totalFlatFees": 1200,
+    "savings": -455.13,
+    "finalValueWithFees": 49255.13,
+    "finalValueWithoutFees": 48800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 6968.64,
+    "totalFlatFees": 12000,
+    "savings": -5031.36,
+    "finalValueWithFees": 43031.36,
+    "finalValueWithoutFees": 38000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 12966.04,
+    "totalFlatFees": 24000,
+    "savings": -11033.96,
+    "finalValueWithFees": 37033.96,
+    "finalValueWithoutFees": 26000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 18127.57,
+    "totalFlatFees": 36000,
+    "savings": -17872.43,
+    "finalValueWithFees": 31872.43,
+    "finalValueWithoutFees": 14000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 22569.72,
+    "totalFlatFees": 48000,
+    "savings": -25430.28,
+    "finalValueWithFees": 27430.28,
+    "finalValueWithoutFees": 2000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 760.87,
+    "totalFlatFees": 1200,
+    "savings": -447.18,
+    "finalValueWithFees": 51225.34,
+    "finalValueWithoutFees": 50778.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 8505.05,
+    "totalFlatFees": 12000,
+    "savings": -4354.3,
+    "finalValueWithFees": 63696.93,
+    "finalValueWithoutFees": 59342.62
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 19339.97,
+    "totalFlatFees": 24000,
+    "savings": -7973.98,
+    "finalValueWithFees": 81145.97,
+    "finalValueWithoutFees": 73171.98
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 33142.98,
+    "totalFlatFees": 36000,
+    "savings": -9732.16,
+    "finalValueWithFees": 103374.98,
+    "finalValueWithoutFees": 93642.82
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 50727.17,
+    "totalFlatFees": 48000,
+    "savings": -7748.71,
+    "finalValueWithFees": 131693.36,
+    "finalValueWithoutFees": 123944.66
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 772.75,
+    "totalFlatFees": 1200,
+    "savings": -441.02,
+    "finalValueWithFees": 52702.99,
+    "finalValueWithoutFees": 52261.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 9905.76,
+    "totalFlatFees": 12000,
+    "savings": -3396.81,
+    "finalValueWithFees": 84649.2,
+    "finalValueWithoutFees": 81252.39
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 26676.05,
+    "totalFlatFees": 24000,
+    "savings": -579.16,
+    "finalValueWithFees": 143309.74,
+    "finalValueWithoutFees": 142730.59
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 55067.88,
+    "totalFlatFees": 36000,
+    "savings": 21046.39,
+    "finalValueWithFees": 242621.1,
+    "finalValueWithoutFees": 263667.49
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 103134.8,
+    "totalFlatFees": 48000,
+    "savings": 90815.05,
+    "finalValueWithFees": 410753.65,
+    "finalValueWithoutFees": 501568.69
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 784.53,
+    "totalFlatFees": 1200,
+    "savings": -434.7,
+    "finalValueWithFees": 54180.65,
+    "finalValueWithoutFees": 53745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 11562.03,
+    "totalFlatFees": 12000,
+    "savings": -1911.53,
+    "finalValueWithFees": 111612.27,
+    "finalValueWithoutFees": 109700.74
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 37371.32,
+    "totalFlatFees": 24000,
+    "savings": 15403.11,
+    "finalValueWithFees": 249145.97,
+    "finalValueWithoutFees": 264549.07
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 94983.98,
+    "totalFlatFees": 36000,
+    "savings": 110030.85,
+    "finalValueWithFees": 556154.93,
+    "finalValueWithoutFees": 666185.78
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 50000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 223589.58,
+    "totalFlatFees": 48000,
+    "savings": 466453.69,
+    "finalValueWithFees": 1241474.28,
+    "finalValueWithoutFees": 1707927.96
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 598.63,
+    "totalFlatFees": 1200,
+    "savings": -601.37,
+    "finalValueWithFees": 119401.37,
+    "finalValueWithoutFees": 118800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 5853.66,
+    "totalFlatFees": 12000,
+    "savings": -6146.34,
+    "finalValueWithFees": 114146.34,
+    "finalValueWithoutFees": 108000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 11421.77,
+    "totalFlatFees": 24000,
+    "savings": -12578.23,
+    "finalValueWithFees": 108578.23,
+    "finalValueWithoutFees": 96000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 16718.27,
+    "totalFlatFees": 36000,
+    "savings": -19281.73,
+    "finalValueWithFees": 103281.73,
+    "finalValueWithoutFees": 84000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 21756.4,
+    "totalFlatFees": 48000,
+    "savings": -26243.6,
+    "finalValueWithFees": 98243.6,
+    "finalValueWithoutFees": 72000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 611.51,
+    "totalFlatFees": 1200,
+    "savings": -599.27,
+    "finalValueWithFees": 124177.43,
+    "finalValueWithoutFees": 123578.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 7167.63,
+    "totalFlatFees": 12000,
+    "savings": -6004.75,
+    "finalValueWithFees": 168964.47,
+    "finalValueWithoutFees": 162959.72
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 17259.91,
+    "totalFlatFees": 24000,
+    "savings": -11357.66,
+    "finalValueWithFees": 237908.27,
+    "finalValueWithoutFees": 226550.6
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 31470.22,
+    "totalFlatFees": 36000,
+    "savings": -14303.06,
+    "finalValueWithFees": 334983.7,
+    "finalValueWithoutFees": 320680.64
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 51478.87,
+    "totalFlatFees": 48000,
+    "savings": -11653.43,
+    "finalValueWithFees": 471669.53,
+    "finalValueWithoutFees": 460016.1
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 621.07,
+    "totalFlatFees": 1200,
+    "savings": -597.5,
+    "finalValueWithFees": 127759.47,
+    "finalValueWithoutFees": 127161.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 8367.7,
+    "totalFlatFees": 12000,
+    "savings": -5590.14,
+    "finalValueWithFees": 224543.13,
+    "finalValueWithoutFees": 218952.99
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 24025.28,
+    "totalFlatFees": 24000,
+    "savings": -6554.98,
+    "finalValueWithFees": 420163.48,
+    "finalValueWithoutFees": 413608.5
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 53323.62,
+    "totalFlatFees": 36000,
+    "savings": 10318.48,
+    "finalValueWithFees": 786206.86,
+    "finalValueWithoutFees": 796525.34
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 108146.47,
+    "totalFlatFees": 48000,
+    "savings": 78636.16,
+    "finalValueWithFees": 1471144.58,
+    "finalValueWithoutFees": 1549780.74
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 630.56,
+    "totalFlatFees": 1200,
+    "savings": -595.56,
+    "finalValueWithFees": 131341.51,
+    "finalValueWithoutFees": 130745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 9788.78,
+    "totalFlatFees": 12000,
+    "savings": -4803.5,
+    "finalValueWithFees": 296066.21,
+    "finalValueWithoutFees": 291262.71
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 33939.83,
+    "totalFlatFees": 24000,
+    "savings": 5014.05,
+    "finalValueWithFees": 730460.02,
+    "finalValueWithoutFees": 735474.07
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 93525.76,
+    "totalFlatFees": 36000,
+    "savings": 85439.51,
+    "finalValueWithFees": 1802204.43,
+    "finalValueWithoutFees": 1887643.94
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 240537.26,
+    "totalFlatFees": 48000,
+    "savings": 429643.85,
+    "finalValueWithFees": 4446432,
+    "finalValueWithoutFees": 4876075.85
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 1194.52,
+    "totalFlatFees": 1200,
+    "savings": -5.48,
+    "finalValueWithFees": 118805.48,
+    "finalValueWithoutFees": 118800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 11424.04,
+    "totalFlatFees": 12000,
+    "savings": -575.96,
+    "finalValueWithFees": 108575.96,
+    "finalValueWithoutFees": 108000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 21760.5,
+    "totalFlatFees": 24000,
+    "savings": -2239.5,
+    "finalValueWithFees": 98239.5,
+    "finalValueWithoutFees": 96000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 31112.93,
+    "totalFlatFees": 36000,
+    "savings": -4887.07,
+    "finalValueWithFees": 88887.07,
+    "finalValueWithoutFees": 84000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 39575.01,
+    "totalFlatFees": 48000,
+    "savings": -8424.99,
+    "finalValueWithFees": 80424.99,
+    "finalValueWithoutFees": 72000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 1220.2,
+    "totalFlatFees": 1200,
+    "savings": 20.45,
+    "finalValueWithFees": 123557.7,
+    "finalValueWithoutFees": 123578.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 13965.56,
+    "totalFlatFees": 12000,
+    "savings": 2240.77,
+    "finalValueWithFees": 160718.95,
+    "finalValueWithoutFees": 162959.72
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 32669.98,
+    "totalFlatFees": 24000,
+    "savings": 11295.76,
+    "finalValueWithFees": 215254.84,
+    "finalValueWithoutFees": 226550.6
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 57721.27,
+    "totalFlatFees": 36000,
+    "savings": 32384.55,
+    "finalValueWithFees": 288296.1,
+    "finalValueWithoutFees": 320680.64
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 91273.07,
+    "totalFlatFees": 48000,
+    "savings": 73894.05,
+    "finalValueWithFees": 386122.05,
+    "finalValueWithoutFees": 460016.1
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 1239.27,
+    "totalFlatFees": 1200,
+    "savings": 40.1,
+    "finalValueWithFees": 127121.87,
+    "finalValueWithoutFees": 127161.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 16284.7,
+    "totalFlatFees": 12000,
+    "savings": 5367.64,
+    "finalValueWithFees": 213585.35,
+    "finalValueWithoutFees": 218952.99
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 45269.48,
+    "totalFlatFees": 24000,
+    "savings": 33452.64,
+    "finalValueWithFees": 380155.86,
+    "finalValueWithoutFees": 413608.5
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 96858.85,
+    "totalFlatFees": 36000,
+    "savings": 119894.31,
+    "finalValueWithFees": 676631.04,
+    "finalValueWithoutFees": 796525.34
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 188681.63,
+    "totalFlatFees": 48000,
+    "savings": 345460.08,
+    "finalValueWithFees": 1204320.66,
+    "finalValueWithoutFees": 1549780.74
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 1258.18,
+    "totalFlatFees": 1200,
+    "savings": 59.91,
+    "finalValueWithFees": 130686.03,
+    "finalValueWithoutFees": 130745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 19028.96,
+    "totalFlatFees": 12000,
+    "savings": 9644.62,
+    "finalValueWithFees": 281618.09,
+    "finalValueWithoutFees": 291262.71
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 63686.47,
+    "totalFlatFees": 24000,
+    "savings": 74567.85,
+    "finalValueWithFees": 660906.22,
+    "finalValueWithoutFees": 735474.07
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 168489.47,
+    "totalFlatFees": 36000,
+    "savings": 336617.72,
+    "finalValueWithFees": 1551026.22,
+    "finalValueWithoutFees": 1887643.94
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 414442.99,
+    "totalFlatFees": 48000,
+    "savings": 1236100.55,
+    "finalValueWithFees": 3639975.3,
+    "finalValueWithoutFees": 4876075.85
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 1787.68,
+    "totalFlatFees": 1200,
+    "savings": 587.68,
+    "finalValueWithFees": 118212.32,
+    "finalValueWithoutFees": 118800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 16724.73,
+    "totalFlatFees": 12000,
+    "savings": 4724.73,
+    "finalValueWithFees": 103275.27,
+    "finalValueWithoutFees": 108000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 31118.49,
+    "totalFlatFees": 24000,
+    "savings": 7118.49,
+    "finalValueWithFees": 88881.51,
+    "finalValueWithoutFees": 96000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 43506.16,
+    "totalFlatFees": 36000,
+    "savings": 7506.16,
+    "finalValueWithFees": 76493.84,
+    "finalValueWithoutFees": 84000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 54167.32,
+    "totalFlatFees": 48000,
+    "savings": 6167.32,
+    "finalValueWithFees": 65832.68,
+    "finalValueWithoutFees": 72000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 1826.09,
+    "totalFlatFees": 1200,
+    "savings": 637.34,
+    "finalValueWithFees": 122940.82,
+    "finalValueWithoutFees": 123578.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 20412.13,
+    "totalFlatFees": 12000,
+    "savings": 10087.1,
+    "finalValueWithFees": 152872.62,
+    "finalValueWithoutFees": 162959.72
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 46415.92,
+    "totalFlatFees": 24000,
+    "savings": 31800.28,
+    "finalValueWithFees": 194750.32,
+    "finalValueWithoutFees": 226550.6
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 79543.15,
+    "totalFlatFees": 36000,
+    "savings": 72580.7,
+    "finalValueWithFees": 248099.94,
+    "finalValueWithoutFees": 320680.64
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 121745.21,
+    "totalFlatFees": 48000,
+    "savings": 143952.03,
+    "finalValueWithFees": 316064.07,
+    "finalValueWithoutFees": 460016.1
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 1854.6,
+    "totalFlatFees": 1200,
+    "savings": 674.78,
+    "finalValueWithFees": 126487.19,
+    "finalValueWithoutFees": 127161.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 23773.82,
+    "totalFlatFees": 12000,
+    "savings": 15794.91,
+    "finalValueWithFees": 203158.08,
+    "finalValueWithoutFees": 218952.99
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 64022.52,
+    "totalFlatFees": 24000,
+    "savings": 69665.12,
+    "finalValueWithFees": 343943.38,
+    "finalValueWithoutFees": 413608.5
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 132162.92,
+    "totalFlatFees": 36000,
+    "savings": 214234.7,
+    "finalValueWithFees": 582290.64,
+    "finalValueWithoutFees": 796525.34
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 247523.53,
+    "totalFlatFees": 48000,
+    "savings": 563971.99,
+    "finalValueWithFees": 985808.75,
+    "finalValueWithoutFees": 1549780.74
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 1882.88,
+    "totalFlatFees": 1200,
+    "savings": 712.39,
+    "finalValueWithFees": 130033.56,
+    "finalValueWithoutFees": 130745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 27748.87,
+    "totalFlatFees": 12000,
+    "savings": 23393.27,
+    "finalValueWithFees": 267869.44,
+    "finalValueWithoutFees": 291262.71
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 89691.16,
+    "totalFlatFees": 24000,
+    "savings": 137523.75,
+    "finalValueWithFees": 597950.33,
+    "finalValueWithoutFees": 735474.07
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 227961.55,
+    "totalFlatFees": 36000,
+    "savings": 552872.1,
+    "finalValueWithFees": 1334771.84,
+    "finalValueWithoutFees": 1887643.94
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 120000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 536614.99,
+    "totalFlatFees": 48000,
+    "savings": 1896537.59,
+    "finalValueWithFees": 2979538.26,
+    "finalValueWithoutFees": 4876075.85
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 2494.28,
+    "totalFlatFees": 1200,
+    "savings": 1294.28,
+    "finalValueWithFees": 497505.72,
+    "finalValueWithoutFees": 498800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 24390.24,
+    "totalFlatFees": 12000,
+    "savings": 12390.24,
+    "finalValueWithFees": 475609.76,
+    "finalValueWithoutFees": 488000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 47590.72,
+    "totalFlatFees": 24000,
+    "savings": 23590.72,
+    "finalValueWithFees": 452409.28,
+    "finalValueWithoutFees": 476000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 69659.46,
+    "totalFlatFees": 36000,
+    "savings": 33659.46,
+    "finalValueWithFees": 430340.54,
+    "finalValueWithoutFees": 464000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 90651.68,
+    "totalFlatFees": 48000,
+    "savings": 42651.68,
+    "finalValueWithFees": 409348.32,
+    "finalValueWithoutFees": 452000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 2547.96,
+    "totalFlatFees": 1200,
+    "savings": 1372.21,
+    "finalValueWithFees": 517405.95,
+    "finalValueWithoutFees": 518778.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 29865.11,
+    "totalFlatFees": 12000,
+    "savings": 21433.93,
+    "finalValueWithFees": 704018.62,
+    "finalValueWithoutFees": 725452.55
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 71916.29,
+    "totalFlatFees": 24000,
+    "savings": 67892.95,
+    "finalValueWithFees": 991284.45,
+    "finalValueWithoutFees": 1059177.4
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 131125.92,
+    "totalFlatFees": 36000,
+    "savings": 157406.28,
+    "finalValueWithFees": 1395765.42,
+    "finalValueWithoutFees": 1553171.7
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 214495.28,
+    "totalFlatFees": 48000,
+    "savings": 319114.23,
+    "finalValueWithFees": 1965289.71,
+    "finalValueWithoutFees": 2284403.94
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 2587.8,
+    "totalFlatFees": 1200,
+    "savings": 1430.85,
+    "finalValueWithFees": 532331.12,
+    "finalValueWithoutFees": 533761.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 34865.41,
+    "totalFlatFees": 12000,
+    "savings": 30874.13,
+    "finalValueWithFees": 935596.38,
+    "finalValueWithoutFees": 966470.51
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 100105.32,
+    "totalFlatFees": 24000,
+    "savings": 133407.43,
+    "finalValueWithFees": 1750681.17,
+    "finalValueWithoutFees": 1884088.59
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 222181.75,
+    "totalFlatFees": 36000,
+    "savings": 413320.34,
+    "finalValueWithFees": 3275861.92,
+    "finalValueWithoutFees": 3689182.26
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 450610.3,
+    "totalFlatFees": 48000,
+    "savings": 1110305.63,
+    "finalValueWithFees": 6129769.09,
+    "finalValueWithoutFees": 7240074.72
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 2627.31,
+    "totalFlatFees": 1200,
+    "savings": 1489.65,
+    "finalValueWithFees": 547256.29,
+    "finalValueWithoutFees": 548745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 40786.58,
+    "totalFlatFees": 12000,
+    "savings": 43275.62,
+    "finalValueWithFees": 1233609.22,
+    "finalValueWithoutFees": 1276884.84
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 141415.97,
+    "totalFlatFees": 24000,
+    "savings": 248340.64,
+    "finalValueWithFees": 3043583.42,
+    "finalValueWithoutFees": 3291924.05
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 389690.67,
+    "totalFlatFees": 36000,
+    "savings": 1009231.68,
+    "finalValueWithFees": 7509185.13,
+    "finalValueWithoutFees": 8518416.8
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 1002238.58,
+    "totalFlatFees": 48000,
+    "savings": 3547792.95,
+    "finalValueWithFees": 18526800.02,
+    "finalValueWithoutFees": 22074592.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 4977.15,
+    "totalFlatFees": 1200,
+    "savings": 3777.15,
+    "finalValueWithFees": 495022.85,
+    "finalValueWithoutFees": 498800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 47600.15,
+    "totalFlatFees": 12000,
+    "savings": 35600.15,
+    "finalValueWithFees": 452399.85,
+    "finalValueWithoutFees": 488000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 90668.75,
+    "totalFlatFees": 24000,
+    "savings": 66668.75,
+    "finalValueWithFees": 409331.25,
+    "finalValueWithoutFees": 476000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 129637.21,
+    "totalFlatFees": 36000,
+    "savings": 93637.21,
+    "finalValueWithFees": 370362.79,
+    "finalValueWithoutFees": 464000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 164895.86,
+    "totalFlatFees": 48000,
+    "savings": 116895.86,
+    "finalValueWithFees": 335104.14,
+    "finalValueWithoutFees": 452000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 5084.17,
+    "totalFlatFees": 1200,
+    "savings": 3954.39,
+    "finalValueWithFees": 514823.77,
+    "finalValueWithoutFees": 518778.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 58189.83,
+    "totalFlatFees": 12000,
+    "savings": 55790.26,
+    "finalValueWithFees": 669662.29,
+    "finalValueWithoutFees": 725452.55
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 136124.91,
+    "totalFlatFees": 24000,
+    "savings": 162282.23,
+    "finalValueWithFees": 896895.16,
+    "finalValueWithoutFees": 1059177.4
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 240505.27,
+    "totalFlatFees": 36000,
+    "savings": 351937.96,
+    "finalValueWithFees": 1201233.74,
+    "finalValueWithoutFees": 1553171.7
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 380304.46,
+    "totalFlatFees": 48000,
+    "savings": 675562.07,
+    "finalValueWithFees": 1608841.87,
+    "finalValueWithoutFees": 2284403.94
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 5163.62,
+    "totalFlatFees": 1200,
+    "savings": 4087.52,
+    "finalValueWithFees": 529674.45,
+    "finalValueWithoutFees": 533761.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 67852.92,
+    "totalFlatFees": 12000,
+    "savings": 76531.53,
+    "finalValueWithFees": 889938.98,
+    "finalValueWithoutFees": 966470.51
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 188622.83,
+    "totalFlatFees": 24000,
+    "savings": 300105.83,
+    "finalValueWithFees": 1583982.76,
+    "finalValueWithoutFees": 1884088.59
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 403578.53,
+    "totalFlatFees": 36000,
+    "savings": 869886.27,
+    "finalValueWithFees": 2819295.99,
+    "finalValueWithoutFees": 3689182.26
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 786173.45,
+    "totalFlatFees": 48000,
+    "savings": 2222071.95,
+    "finalValueWithFees": 5018002.77,
+    "finalValueWithoutFees": 7240074.72
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 5242.4,
+    "totalFlatFees": 1200,
+    "savings": 4220.81,
+    "finalValueWithFees": 544525.14,
+    "finalValueWithoutFees": 548745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 79287.35,
+    "totalFlatFees": 12000,
+    "savings": 103476.15,
+    "finalValueWithFees": 1173408.7,
+    "finalValueWithoutFees": 1276884.84
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 265360.28,
+    "totalFlatFees": 24000,
+    "savings": 538148.12,
+    "finalValueWithFees": 2753775.93,
+    "finalValueWithoutFees": 3291924.05
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 702039.47,
+    "totalFlatFees": 36000,
+    "savings": 2055807.56,
+    "finalValueWithFees": 6462609.24,
+    "finalValueWithoutFees": 8518416.8
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 1726845.78,
+    "totalFlatFees": 48000,
+    "savings": 6908029.21,
+    "finalValueWithFees": 15166563.76,
+    "finalValueWithoutFees": 22074592.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 7448.65,
+    "totalFlatFees": 1200,
+    "savings": 6248.65,
+    "finalValueWithFees": 492551.35,
+    "finalValueWithoutFees": 498800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 69686.39,
+    "totalFlatFees": 12000,
+    "savings": 57686.39,
+    "finalValueWithFees": 430313.61,
+    "finalValueWithoutFees": 488000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 129660.39,
+    "totalFlatFees": 24000,
+    "savings": 105660.39,
+    "finalValueWithFees": 370339.61,
+    "finalValueWithoutFees": 476000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 181275.65,
+    "totalFlatFees": 36000,
+    "savings": 145275.65,
+    "finalValueWithFees": 318724.35,
+    "finalValueWithoutFees": 464000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 225697.15,
+    "totalFlatFees": 48000,
+    "savings": 177697.15,
+    "finalValueWithFees": 274302.85,
+    "finalValueWithoutFees": 452000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 7608.7,
+    "totalFlatFees": 1200,
+    "savings": 6524.75,
+    "finalValueWithFees": 512253.4,
+    "finalValueWithoutFees": 518778.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 85050.52,
+    "totalFlatFees": 12000,
+    "savings": 88483.29,
+    "finalValueWithFees": 636969.26,
+    "finalValueWithoutFees": 725452.55
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 193399.66,
+    "totalFlatFees": 24000,
+    "savings": 247717.71,
+    "finalValueWithFees": 811459.68,
+    "finalValueWithoutFees": 1059177.4
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 331429.79,
+    "totalFlatFees": 36000,
+    "savings": 519421.94,
+    "finalValueWithFees": 1033749.75,
+    "finalValueWithoutFees": 1553171.7
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 507271.7,
+    "totalFlatFees": 48000,
+    "savings": 967470.3,
+    "finalValueWithFees": 1316933.64,
+    "finalValueWithoutFees": 2284403.94
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 7727.51,
+    "totalFlatFees": 1200,
+    "savings": 6732.03,
+    "finalValueWithFees": 527029.94,
+    "finalValueWithoutFees": 533761.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 99057.59,
+    "totalFlatFees": 12000,
+    "savings": 119978.5,
+    "finalValueWithFees": 846492,
+    "finalValueWithoutFees": 966470.51
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 266760.49,
+    "totalFlatFees": 24000,
+    "savings": 450991.17,
+    "finalValueWithFees": 1433097.42,
+    "finalValueWithoutFees": 1884088.59
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 550678.83,
+    "totalFlatFees": 36000,
+    "savings": 1262971.24,
+    "finalValueWithFees": 2426211.02,
+    "finalValueWithoutFees": 3689182.26
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 1031348.04,
+    "totalFlatFees": 48000,
+    "savings": 3132538.27,
+    "finalValueWithFees": 4107536.45,
+    "finalValueWithoutFees": 7240074.72
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 7845.32,
+    "totalFlatFees": 1200,
+    "savings": 6939.46,
+    "finalValueWithFees": 541806.48,
+    "finalValueWithoutFees": 548745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 115620.3,
+    "totalFlatFees": 12000,
+    "savings": 160762.16,
+    "finalValueWithFees": 1116122.68,
+    "finalValueWithoutFees": 1276884.84
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 373713.18,
+    "totalFlatFees": 24000,
+    "savings": 800464.36,
+    "finalValueWithFees": 2491459.69,
+    "finalValueWithoutFees": 3291924.05
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 949839.81,
+    "totalFlatFees": 36000,
+    "savings": 2956867.46,
+    "finalValueWithFees": 5561549.35,
+    "finalValueWithoutFees": 8518416.8
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 500000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 2235895.81,
+    "totalFlatFees": 48000,
+    "savings": 9659850.21,
+    "finalValueWithFees": 12414742.76,
+    "finalValueWithoutFees": 22074592.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 4988.56,
+    "totalFlatFees": 1200,
+    "savings": 3788.56,
+    "finalValueWithFees": 995011.44,
+    "finalValueWithoutFees": 998800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 48780.49,
+    "totalFlatFees": 12000,
+    "savings": 36780.49,
+    "finalValueWithFees": 951219.51,
+    "finalValueWithoutFees": 988000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 95181.44,
+    "totalFlatFees": 24000,
+    "savings": 71181.44,
+    "finalValueWithFees": 904818.56,
+    "finalValueWithoutFees": 976000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 139318.93,
+    "totalFlatFees": 36000,
+    "savings": 103318.93,
+    "finalValueWithFees": 860681.07,
+    "finalValueWithoutFees": 964000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 181303.37,
+    "totalFlatFees": 48000,
+    "savings": 133303.37,
+    "finalValueWithFees": 818696.63,
+    "finalValueWithoutFees": 952000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 5095.91,
+    "totalFlatFees": 1200,
+    "savings": 3966.26,
+    "finalValueWithFees": 1034811.9,
+    "finalValueWithoutFees": 1038778.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 59730.21,
+    "totalFlatFees": 12000,
+    "savings": 57537.44,
+    "finalValueWithFees": 1408037.25,
+    "finalValueWithoutFees": 1465574.69
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 143832.57,
+    "totalFlatFees": 24000,
+    "savings": 172170.08,
+    "finalValueWithFees": 1982568.89,
+    "finalValueWithoutFees": 2154738.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 262251.83,
+    "totalFlatFees": 36000,
+    "savings": 383339.61,
+    "finalValueWithFees": 2791530.85,
+    "finalValueWithoutFees": 3174870.45
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 428990.56,
+    "totalFlatFees": 48000,
+    "savings": 754334.84,
+    "finalValueWithFees": 3930579.41,
+    "finalValueWithoutFees": 4684914.25
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 5175.61,
+    "totalFlatFees": 1200,
+    "savings": 4099.73,
+    "finalValueWithFees": 1064662.24,
+    "finalValueWithoutFees": 1068761.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 69730.82,
+    "totalFlatFees": 12000,
+    "savings": 78853.43,
+    "finalValueWithFees": 1871192.76,
+    "finalValueWithoutFees": 1950046.18
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 200210.63,
+    "totalFlatFees": 24000,
+    "savings": 317568.49,
+    "finalValueWithFees": 3501362.33,
+    "finalValueWithoutFees": 3818930.82
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 444363.51,
+    "totalFlatFees": 36000,
+    "savings": 943585.95,
+    "finalValueWithFees": 6551723.83,
+    "finalValueWithoutFees": 7495309.78
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 901220.6,
+    "totalFlatFees": 48000,
+    "savings": 2467765.46,
+    "finalValueWithFees": 12259538.18,
+    "finalValueWithoutFees": 14727303.64
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 5254.63,
+    "totalFlatFees": 1200,
+    "savings": 4233.36,
+    "finalValueWithFees": 1094512.59,
+    "finalValueWithoutFees": 1098745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 81573.15,
+    "totalFlatFees": 12000,
+    "savings": 106537.63,
+    "finalValueWithFees": 2467218.44,
+    "finalValueWithoutFees": 2573756.07
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 282831.94,
+    "totalFlatFees": 24000,
+    "savings": 568507.2,
+    "finalValueWithFees": 6087166.83,
+    "finalValueWithoutFees": 6655674.03
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 779381.34,
+    "totalFlatFees": 36000,
+    "savings": 2224747.68,
+    "finalValueWithFees": 15018370.25,
+    "finalValueWithoutFees": 17243117.94
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 2004477.16,
+    "totalFlatFees": 48000,
+    "savings": 7650620.72,
+    "finalValueWithFees": 37053600.03,
+    "finalValueWithoutFees": 44704220.75
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 9954.29,
+    "totalFlatFees": 1200,
+    "savings": 8754.29,
+    "finalValueWithFees": 990045.71,
+    "finalValueWithoutFees": 998800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 95200.3,
+    "totalFlatFees": 12000,
+    "savings": 83200.3,
+    "finalValueWithFees": 904799.7,
+    "finalValueWithoutFees": 988000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 181337.51,
+    "totalFlatFees": 24000,
+    "savings": 157337.51,
+    "finalValueWithFees": 818662.49,
+    "finalValueWithoutFees": 976000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 259274.43,
+    "totalFlatFees": 36000,
+    "savings": 223274.43,
+    "finalValueWithFees": 740725.57,
+    "finalValueWithoutFees": 964000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 329791.73,
+    "totalFlatFees": 48000,
+    "savings": 281791.73,
+    "finalValueWithFees": 670208.27,
+    "finalValueWithoutFees": 952000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 10168.35,
+    "totalFlatFees": 1200,
+    "savings": 9130.62,
+    "finalValueWithFees": 1029647.53,
+    "finalValueWithoutFees": 1038778.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 116379.67,
+    "totalFlatFees": 12000,
+    "savings": 126250.11,
+    "finalValueWithFees": 1339324.58,
+    "finalValueWithoutFees": 1465574.69
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 272249.82,
+    "totalFlatFees": 24000,
+    "savings": 360948.64,
+    "finalValueWithFees": 1793790.33,
+    "finalValueWithoutFees": 2154738.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 481010.55,
+    "totalFlatFees": 36000,
+    "savings": 772402.98,
+    "finalValueWithFees": 2402467.48,
+    "finalValueWithoutFees": 3174870.45
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 760608.92,
+    "totalFlatFees": 48000,
+    "savings": 1467230.51,
+    "finalValueWithFees": 3217683.74,
+    "finalValueWithoutFees": 4684914.25
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 10327.25,
+    "totalFlatFees": 1200,
+    "savings": 9413.06,
+    "finalValueWithFees": 1059348.91,
+    "finalValueWithoutFees": 1068761.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 135705.84,
+    "totalFlatFees": 12000,
+    "savings": 170168.23,
+    "finalValueWithFees": 1779877.95,
+    "finalValueWithoutFees": 1950046.18
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 377245.66,
+    "totalFlatFees": 24000,
+    "savings": 650965.31,
+    "finalValueWithFees": 3167965.52,
+    "finalValueWithoutFees": 3818930.82
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 807157.07,
+    "totalFlatFees": 36000,
+    "savings": 1856717.81,
+    "finalValueWithFees": 5638591.98,
+    "finalValueWithoutFees": 7495309.78
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 1572346.91,
+    "totalFlatFees": 48000,
+    "savings": 4691298.11,
+    "finalValueWithFees": 10036005.53,
+    "finalValueWithoutFees": 14727303.64
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 10484.81,
+    "totalFlatFees": 1200,
+    "savings": 9695.67,
+    "finalValueWithFees": 1089050.28,
+    "finalValueWithoutFees": 1098745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 158574.7,
+    "totalFlatFees": 12000,
+    "savings": 226938.68,
+    "finalValueWithFees": 2346817.39,
+    "finalValueWithoutFees": 2573756.07
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 530720.56,
+    "totalFlatFees": 24000,
+    "savings": 1148122.16,
+    "finalValueWithFees": 5507551.86,
+    "finalValueWithoutFees": 6655674.03
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 1404078.93,
+    "totalFlatFees": 36000,
+    "savings": 4317899.45,
+    "finalValueWithFees": 12925218.49,
+    "finalValueWithoutFees": 17243117.94
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 3453691.56,
+    "totalFlatFees": 48000,
+    "savings": 14371093.23,
+    "finalValueWithFees": 30333127.52,
+    "finalValueWithoutFees": 44704220.75
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 14897.3,
+    "totalFlatFees": 1200,
+    "savings": 13697.3,
+    "finalValueWithFees": 985102.7,
+    "finalValueWithoutFees": 998800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 139372.78,
+    "totalFlatFees": 12000,
+    "savings": 127372.78,
+    "finalValueWithFees": 860627.22,
+    "finalValueWithoutFees": 988000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 259320.79,
+    "totalFlatFees": 24000,
+    "savings": 235320.79,
+    "finalValueWithFees": 740679.21,
+    "finalValueWithoutFees": 976000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 362551.31,
+    "totalFlatFees": 36000,
+    "savings": 326551.31,
+    "finalValueWithFees": 637448.69,
+    "finalValueWithoutFees": 964000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 451394.3,
+    "totalFlatFees": 48000,
+    "savings": 403394.3,
+    "finalValueWithFees": 548605.7,
+    "finalValueWithoutFees": 952000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 15217.4,
+    "totalFlatFees": 1200,
+    "savings": 14271.35,
+    "finalValueWithFees": 1024506.8,
+    "finalValueWithoutFees": 1038778.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 170101.04,
+    "totalFlatFees": 12000,
+    "savings": 191636.17,
+    "finalValueWithFees": 1273938.53,
+    "finalValueWithoutFees": 1465574.69
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 386799.31,
+    "totalFlatFees": 24000,
+    "savings": 531819.6,
+    "finalValueWithFees": 1622919.37,
+    "finalValueWithoutFees": 2154738.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 662859.59,
+    "totalFlatFees": 36000,
+    "savings": 1107370.95,
+    "finalValueWithFees": 2067499.51,
+    "finalValueWithoutFees": 3174870.45
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 1014543.41,
+    "totalFlatFees": 48000,
+    "savings": 2051046.98,
+    "finalValueWithFees": 2633867.28,
+    "finalValueWithoutFees": 4684914.25
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 15455.02,
+    "totalFlatFees": 1200,
+    "savings": 14702.09,
+    "finalValueWithFees": 1054059.89,
+    "finalValueWithoutFees": 1068761.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 198115.17,
+    "totalFlatFees": 12000,
+    "savings": 257062.18,
+    "finalValueWithFees": 1692984.01,
+    "finalValueWithoutFees": 1950046.18
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 533520.99,
+    "totalFlatFees": 24000,
+    "savings": 952735.98,
+    "finalValueWithFees": 2866194.85,
+    "finalValueWithoutFees": 3818930.82
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 1101357.67,
+    "totalFlatFees": 36000,
+    "savings": 2642887.74,
+    "finalValueWithFees": 4852422.04,
+    "finalValueWithoutFees": 7495309.78
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 2062696.09,
+    "totalFlatFees": 48000,
+    "savings": 6512230.73,
+    "finalValueWithFees": 8215072.91,
+    "finalValueWithoutFees": 14727303.64
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 15690.64,
+    "totalFlatFees": 1200,
+    "savings": 15132.98,
+    "finalValueWithFees": 1083612.97,
+    "finalValueWithoutFees": 1098745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 231240.6,
+    "totalFlatFees": 12000,
+    "savings": 341510.71,
+    "finalValueWithFees": 2232245.37,
+    "finalValueWithoutFees": 2573756.07
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 747426.36,
+    "totalFlatFees": 24000,
+    "savings": 1672754.65,
+    "finalValueWithFees": 4982919.38,
+    "finalValueWithoutFees": 6655674.03
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 1899679.62,
+    "totalFlatFees": 36000,
+    "savings": 6120019.24,
+    "finalValueWithFees": 11123098.69,
+    "finalValueWithoutFees": 17243117.94
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 1000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 4471791.62,
+    "totalFlatFees": 48000,
+    "savings": 19874735.23,
+    "finalValueWithFees": 24829485.52,
+    "finalValueWithoutFees": 44704220.75
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 14965.67,
+    "totalFlatFees": 1200,
+    "savings": 13765.67,
+    "finalValueWithFees": 2985034.33,
+    "finalValueWithoutFees": 2998800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 146341.46,
+    "totalFlatFees": 12000,
+    "savings": 134341.46,
+    "finalValueWithFees": 2853658.54,
+    "finalValueWithoutFees": 2988000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 285544.31,
+    "totalFlatFees": 24000,
+    "savings": 261544.31,
+    "finalValueWithFees": 2714455.69,
+    "finalValueWithoutFees": 2976000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 417956.78,
+    "totalFlatFees": 36000,
+    "savings": 381956.78,
+    "finalValueWithFees": 2582043.22,
+    "finalValueWithoutFees": 2964000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 543910.11,
+    "totalFlatFees": 48000,
+    "savings": 495910.11,
+    "finalValueWithFees": 2456089.89,
+    "finalValueWithoutFees": 2952000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 15287.74,
+    "totalFlatFees": 1200,
+    "savings": 14342.46,
+    "finalValueWithFees": 3104435.7,
+    "finalValueWithoutFees": 3118778.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 179190.64,
+    "totalFlatFees": 12000,
+    "savings": 201951.52,
+    "finalValueWithFees": 4224111.74,
+    "finalValueWithoutFees": 4426063.26
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 431497.72,
+    "totalFlatFees": 24000,
+    "savings": 589278.58,
+    "finalValueWithFees": 5947706.68,
+    "finalValueWithoutFees": 6536985.26
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 786755.5,
+    "totalFlatFees": 36000,
+    "savings": 1287072.93,
+    "finalValueWithFees": 8374592.54,
+    "finalValueWithoutFees": 9661665.47
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 1286971.69,
+    "totalFlatFees": 48000,
+    "savings": 2495217.27,
+    "finalValueWithFees": 11791738.23,
+    "finalValueWithoutFees": 14286955.51
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 15526.82,
+    "totalFlatFees": 1200,
+    "savings": 14775.24,
+    "finalValueWithFees": 3193986.73,
+    "finalValueWithoutFees": 3208761.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 209192.47,
+    "totalFlatFees": 12000,
+    "savings": 270770.63,
+    "finalValueWithFees": 5613578.27,
+    "finalValueWithoutFees": 5884348.9
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 600631.9,
+    "totalFlatFees": 24000,
+    "savings": 1054212.76,
+    "finalValueWithFees": 10504086.99,
+    "finalValueWithoutFees": 11558299.75
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 1333090.52,
+    "totalFlatFees": 36000,
+    "savings": 3064648.37,
+    "finalValueWithFees": 19655171.5,
+    "finalValueWithoutFees": 22719819.87
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 2703661.79,
+    "totalFlatFees": 48000,
+    "savings": 7897604.79,
+    "finalValueWithFees": 36778614.53,
+    "finalValueWithoutFees": 44676219.32
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 15763.89,
+    "totalFlatFees": 1200,
+    "savings": 15208.19,
+    "finalValueWithFees": 3283537.76,
+    "finalValueWithoutFees": 3298745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 244719.46,
+    "totalFlatFees": 12000,
+    "savings": 359585.67,
+    "finalValueWithFees": 7401655.32,
+    "finalValueWithoutFees": 7761240.99
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 848495.83,
+    "totalFlatFees": 24000,
+    "savings": 1849173.43,
+    "finalValueWithFees": 18261500.49,
+    "finalValueWithoutFees": 20110673.93
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 2338144.01,
+    "totalFlatFees": 36000,
+    "savings": 7086811.71,
+    "finalValueWithFees": 45055110.76,
+    "finalValueWithoutFees": 52141922.48
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 0.5,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 6013431.48,
+    "totalFlatFees": 48000,
+    "savings": 24061931.79,
+    "finalValueWithFees": 111160800.1,
+    "finalValueWithoutFees": 135222731.89
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 29862.88,
+    "totalFlatFees": 1200,
+    "savings": 28662.88,
+    "finalValueWithFees": 2970137.12,
+    "finalValueWithoutFees": 2998800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 285600.91,
+    "totalFlatFees": 12000,
+    "savings": 273600.91,
+    "finalValueWithFees": 2714399.09,
+    "finalValueWithoutFees": 2988000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 544012.53,
+    "totalFlatFees": 24000,
+    "savings": 520012.53,
+    "finalValueWithFees": 2455987.47,
+    "finalValueWithoutFees": 2976000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 777823.28,
+    "totalFlatFees": 36000,
+    "savings": 741823.28,
+    "finalValueWithFees": 2222176.72,
+    "finalValueWithoutFees": 2964000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 989375.18,
+    "totalFlatFees": 48000,
+    "savings": 941375.18,
+    "finalValueWithFees": 2010624.82,
+    "finalValueWithoutFees": 2952000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 30505.04,
+    "totalFlatFees": 1200,
+    "savings": 29835.55,
+    "finalValueWithFees": 3088942.6,
+    "finalValueWithoutFees": 3118778.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 349139.01,
+    "totalFlatFees": 12000,
+    "savings": 408089.52,
+    "finalValueWithFees": 4017973.74,
+    "finalValueWithoutFees": 4426063.26
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 816749.47,
+    "totalFlatFees": 24000,
+    "savings": 1155614.27,
+    "finalValueWithFees": 5381370.99,
+    "finalValueWithoutFees": 6536985.26
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 1443031.65,
+    "totalFlatFees": 36000,
+    "savings": 2454263.04,
+    "finalValueWithFees": 7207402.43,
+    "finalValueWithoutFees": 9661665.47
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 2281826.76,
+    "totalFlatFees": 48000,
+    "savings": 4633904.27,
+    "finalValueWithFees": 9653051.23,
+    "finalValueWithoutFees": 14286955.51
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 30981.74,
+    "totalFlatFees": 1200,
+    "savings": 30715.25,
+    "finalValueWithFees": 3178046.72,
+    "finalValueWithoutFees": 3208761.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 407117.51,
+    "totalFlatFees": 12000,
+    "savings": 544715.05,
+    "finalValueWithFees": 5339633.85,
+    "finalValueWithoutFees": 5884348.9
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 1131736.98,
+    "totalFlatFees": 24000,
+    "savings": 2054403.19,
+    "finalValueWithFees": 9503896.56,
+    "finalValueWithoutFees": 11558299.75
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 2421471.21,
+    "totalFlatFees": 36000,
+    "savings": 5804043.94,
+    "finalValueWithFees": 16915775.93,
+    "finalValueWithoutFees": 22719819.87
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 4717040.72,
+    "totalFlatFees": 48000,
+    "savings": 14568202.72,
+    "finalValueWithFees": 30108016.59,
+    "finalValueWithoutFees": 44676219.32
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 31454.42,
+    "totalFlatFees": 1200,
+    "savings": 31595.12,
+    "finalValueWithFees": 3267150.83,
+    "finalValueWithoutFees": 3298745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 475724.1,
+    "totalFlatFees": 12000,
+    "savings": 720788.82,
+    "finalValueWithFees": 7040452.17,
+    "finalValueWithoutFees": 7761240.99
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 1592161.68,
+    "totalFlatFees": 24000,
+    "savings": 3588018.34,
+    "finalValueWithFees": 16522655.59,
+    "finalValueWithoutFees": 20110673.93
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 4212236.8,
+    "totalFlatFees": 36000,
+    "savings": 13366267.01,
+    "finalValueWithFees": 38775655.47,
+    "finalValueWithoutFees": 52141922.48
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 10361074.67,
+    "totalFlatFees": 48000,
+    "savings": 44223349.32,
+    "finalValueWithFees": 90999382.57,
+    "finalValueWithoutFees": 135222731.89
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 44691.91,
+    "totalFlatFees": 1200,
+    "savings": 43491.91,
+    "finalValueWithFees": 2955308.09,
+    "finalValueWithoutFees": 2998800
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 418118.34,
+    "totalFlatFees": 12000,
+    "savings": 406118.34,
+    "finalValueWithFees": 2581881.66,
+    "finalValueWithoutFees": 2988000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 777962.36,
+    "totalFlatFees": 24000,
+    "savings": 753962.36,
+    "finalValueWithFees": 2222037.64,
+    "finalValueWithoutFees": 2976000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 1087653.92,
+    "totalFlatFees": 36000,
+    "savings": 1051653.92,
+    "finalValueWithFees": 1912346.08,
+    "finalValueWithoutFees": 2964000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 0,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 1354182.9,
+    "totalFlatFees": 48000,
+    "savings": 1306182.9,
+    "finalValueWithFees": 1645817.1,
+    "finalValueWithoutFees": 2952000
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 45652.21,
+    "totalFlatFees": 1200,
+    "savings": 45257.74,
+    "finalValueWithFees": 3073520.41,
+    "finalValueWithoutFees": 3118778.16
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 510303.13,
+    "totalFlatFees": 12000,
+    "savings": 604247.68,
+    "finalValueWithFees": 3821815.58,
+    "finalValueWithoutFees": 4426063.26
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 1160397.94,
+    "totalFlatFees": 24000,
+    "savings": 1668227.15,
+    "finalValueWithFees": 4868758.11,
+    "finalValueWithoutFees": 6536985.26
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 1988578.76,
+    "totalFlatFees": 36000,
+    "savings": 3459166.95,
+    "finalValueWithFees": 6202498.52,
+    "finalValueWithoutFees": 9661665.47
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 4,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 3043630.22,
+    "totalFlatFees": 48000,
+    "savings": 6385353.68,
+    "finalValueWithFees": 7901601.83,
+    "finalValueWithoutFees": 14286955.51
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 46365.07,
+    "totalFlatFees": 1200,
+    "savings": 46582.31,
+    "finalValueWithFees": 3162179.66,
+    "finalValueWithoutFees": 3208761.97
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 594345.51,
+    "totalFlatFees": 12000,
+    "savings": 805396.88,
+    "finalValueWithFees": 5078952.02,
+    "finalValueWithoutFees": 5884348.9
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 1600562.96,
+    "totalFlatFees": 24000,
+    "savings": 2959715.21,
+    "finalValueWithFees": 8598584.54,
+    "finalValueWithoutFees": 11558299.75
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 3304073,
+    "totalFlatFees": 36000,
+    "savings": 8162553.75,
+    "finalValueWithFees": 14557266.11,
+    "finalValueWithoutFees": 22719819.87
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 7,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 6188088.26,
+    "totalFlatFees": 48000,
+    "savings": 20031000.6,
+    "finalValueWithFees": 24645218.72,
+    "finalValueWithoutFees": 44676219.32
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 1
+   },
+   "expected": {
+    "totalFees": 47071.91,
+    "totalFlatFees": 1200,
+    "savings": 47907.05,
+    "finalValueWithFees": 3250838.9,
+    "finalValueWithoutFees": 3298745.95
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 10
+   },
+   "expected": {
+    "totalFees": 693721.8,
+    "totalFlatFees": 12000,
+    "savings": 1064504.89,
+    "finalValueWithFees": 6696736.1,
+    "finalValueWithoutFees": 7761240.99
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 20
+   },
+   "expected": {
+    "totalFees": 2242279.07,
+    "totalFlatFees": 24000,
+    "savings": 5161915.79,
+    "finalValueWithFees": 14948758.13,
+    "finalValueWithoutFees": 20110673.93
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 30
+   },
+   "expected": {
+    "totalFees": 5699038.85,
+    "totalFlatFees": 36000,
+    "savings": 18772626.39,
+    "finalValueWithFees": 33369296.08,
+    "finalValueWithoutFees": 52141922.48
+   }
+  },
+  {
+   "input": {
+    "initialInvestment": 3000000,
+    "annualFeePercent": 1.5,
+    "annualGrowthPercent": 10,
+    "years": 40
+   },
+   "expected": {
+    "totalFees": 13415374.87,
+    "totalFlatFees": 48000,
+    "savings": 60734275.32,
+    "finalValueWithFees": 74488456.57,
+    "finalValueWithoutFees": 135222731.89
+   }
+  }
+ ]
+}

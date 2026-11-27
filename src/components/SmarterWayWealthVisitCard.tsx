@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 
 type SmarterWayWealthVisitCardProps = {
   advancedCalculatorHref: string;
@@ -13,12 +13,14 @@ const FIRM_DESTINATIONS = [
     label: "Find out how we work",
     location: "home_firm_visit_card_how",
     text: "Find out how we work",
+    external: true,
   },
   {
     href: "https://smarterwaywealth.com/about-david",
     label: "Learn more about David",
     location: "home_firm_visit_card_david",
     text: "Learn more about David",
+    external: true,
   },
   {
     href: "https://smarterwaywealth.com/faq",
@@ -28,6 +30,7 @@ const FIRM_DESTINATIONS = [
     label: "See our frequently asked questions",
     location: "home_firm_visit_card_faq",
     text: "See ALL of our FAQs",
+    external: true,
   },
 ] as const;
 
@@ -36,11 +39,17 @@ export function SmarterWayWealthVisitCard({
   surfaceClassName = "bg-[#EEF0F5]",
 }: SmarterWayWealthVisitCardProps) {
   const destinations = [
+    /* On the green home the advanced calculator is this site's own
+       /calculator page (fee-lab stage 1, section 2, David 2026-11-26): an
+       internal link, so it opens in the same tab and carries no
+       external-link icon. One Percent Blues still passes the firm site's
+       address, which leaves the site like the other rows. */
     {
       href: advancedCalculatorHref,
       label: "Use the advanced calculator and see how we do the math",
       location: "home_firm_visit_card_calculator",
       text: "Use the advanced calculator and see how we do the math",
+      external: !advancedCalculatorHref.startsWith("/"),
     },
     ...FIRM_DESTINATIONS,
   ];
@@ -106,8 +115,8 @@ export function SmarterWayWealthVisitCard({
               data-posthog-cta-location={destination.location}
               href={destination.href}
               key={destination.location}
-              rel="noreferrer"
-              target="_blank"
+              rel={destination.external ? "noreferrer" : undefined}
+              target={destination.external ? "_blank" : undefined}
             >
               <span aria-hidden="true" className="w-6 shrink-0 text-[13px] font-bold tabular-nums tracking-[0.04em] text-[#3FC87C]">
                 {String(index + 1).padStart(2, "0")}
@@ -115,11 +124,19 @@ export function SmarterWayWealthVisitCard({
               <span className="flex-1 text-[17px] font-medium leading-6 text-white/90 transition-colors duration-200 group-hover:text-white sm:text-lg">
                 {destination.text}
               </span>
-              <ExternalLink
-                aria-hidden="true"
-                className="h-5 w-5 shrink-0 text-white/50 transition duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white"
-                strokeWidth={2}
-              />
+              {destination.external ? (
+                <ExternalLink
+                  aria-hidden="true"
+                  className="h-5 w-5 shrink-0 text-white/50 transition duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white"
+                  strokeWidth={2}
+                />
+              ) : (
+                <ArrowRight
+                  aria-hidden="true"
+                  className="h-5 w-5 shrink-0 text-white/50 transition duration-200 group-hover:translate-x-0.5 group-hover:text-white"
+                  strokeWidth={2}
+                />
+              )}
             </a>
           ))}
         </nav>

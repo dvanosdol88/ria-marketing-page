@@ -312,6 +312,10 @@ try {
     { path: "/api/version", method: "GET" },
     { path: "/api/og", method: "GET" },
     { path: "/agent-info.json", method: "GET" },
+    // Fee-lab section 2 fix: the green full calculator is not served here.
+    { path: "/calculator", method: "GET" },
+    { path: "/calculator?portfolio=1500000&years=25&return=market", method: "GET" },
+    { path: "/calculator/share-card?portfolio=1000000&years=20", method: "GET" },
   ];
   for (const { path, method, headers = {}, body } of gatedApis) {
     const blocked = await request(port, path, { method, headers: { ...headers, ...blues }, body });

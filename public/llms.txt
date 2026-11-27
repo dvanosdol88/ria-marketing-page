@@ -5,6 +5,7 @@ This site is an educational fee calculator and lead-generation surface for Smart
 Primary URLs:
 
 - Home and calculator: https://youarepayingtoomuch.com/
+- Detailed fee calculator (compare a flat monthly advisory fee with your own marginal tiered advisory-fee schedule using steady or historical market returns): https://youarepayingtoomuch.com/calculator
 - Sister campaign page (same calculator, blue skin, three-question check): https://onepercentblues.com/
 - Become a client (sign-up, flat $100/month): https://smarterwaywealth.com/onboarding/verify
 - Structured calculator API: https://youarepayingtoomuch.com/api/calculator

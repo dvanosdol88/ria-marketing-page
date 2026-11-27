@@ -17,3 +17,6 @@ src/components/Quiz.tsx text eol=lf
 src/components/calculator/ShareMyResults.tsx text eol=lf
 src/components/calculator/SocialShareRow.tsx text eol=lf
 src/lib/shareSummary.ts text eol=lf
+
+# Shared fee engine (fee-lab step 1): must be byte-identical with the firm site.
+src/lib/feeProjection.ts text eol=lf
